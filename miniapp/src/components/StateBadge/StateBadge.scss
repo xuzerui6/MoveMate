@@ -1,0 +1,38 @@
+.state-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+.state-badge--recruiting {
+  background: #0F172A;
+  color: #fff;
+}
+
+.state-badge--full {
+  background: #E2E8F0;
+  color: #64748B;
+}
+
+.state-badge--ready {
+  background: #ECFDF5;
+  color: #10B981;
+}
+
+.state-badge--in_progress {
+  background: #F3F4F6;
+  color: #111827;
+}
+
+.state-badge--completed,
+.state-badge--cancelled,
+.state-badge--archived {
+  background: transparent;
+  color: #94A3B8;
+  border: 1px solid #E2E8F0;
+}

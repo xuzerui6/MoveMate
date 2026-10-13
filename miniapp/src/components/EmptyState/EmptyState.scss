@@ -1,0 +1,30 @@
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px 40px;
+}
+
+.empty-state__icon {
+  font-size: 80px;
+  margin-bottom: 24px;
+}
+
+.empty-state__title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0F172A;
+  margin-bottom: 12px;
+}
+
+.empty-state__desc {
+  font-size: 24px;
+  color: #94A3B8;
+  line-height: 1.7;
+  text-align: center;
+  white-space: pre-line;
+}
+
+.empty-state__action {
+  margin-top: 32px;
+}

@@ -1,0 +1,148 @@
+/* 常驻挂载，切换 --show 触发动画；隐藏时遮罩 pointer-events: none 不挡点击 */
+
+.publish-sheet__mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 200;
+  background: rgba(15, 23, 42, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.publish-sheet--show .publish-sheet__mask {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.publish-sheet__panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 201;
+  background: #fff;
+  border-radius: 28px 28px 0 0;
+  padding: 20px 32px calc(32px + env(safe-area-inset-bottom));
+  transform: translateY(100%);
+  transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.publish-sheet--show .publish-sheet__panel {
+  transform: translateY(0);
+}
+
+.publish-sheet__handle {
+  width: 72px;
+  height: 8px;
+  border-radius: 999px;
+  background: #E2E8F0;
+  margin: 0 auto 24px;
+}
+
+.publish-sheet__title {
+  display: block;
+  font-size: 36px;
+  font-weight: 800;
+  color: #0F172A;
+  margin-bottom: 28px;
+}
+
+.publish-sheet__section {
+  margin-bottom: 28px;
+}
+
+.publish-sheet__label {
+  display: block;
+  font-size: 24px;
+  font-weight: 600;
+  color: #94A3B8;
+  margin-bottom: 14px;
+}
+
+.publish-sheet__sports {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.publish-sheet__sports .chip {
+  padding: 12px 20px;
+  font-size: 23px;
+}
+
+.publish-sheet__row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.publish-sheet__field {
+  flex: 1;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.publish-sheet__field-label {
+  font-size: 20px;
+  color: #94A3B8;
+  font-weight: 600;
+}
+
+.publish-sheet__field-value {
+  font-size: 26px;
+  color: #0F172A;
+  font-weight: 700;
+}
+
+.publish-sheet__stepper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.publish-sheet__step-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #F1F5F9;
+  color: #334155;
+  font-size: 30px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.publish-sheet__step-num {
+  font-size: 26px;
+  color: #0F172A;
+  font-weight: 800;
+  min-width: 36px;
+  text-align: center;
+}
+
+.publish-sheet__input {
+  width: 100%;
+  box-sizing: border-box;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 20px 22px;
+  font-size: 26px;
+  color: #0F172A;
+}
+
+.publish-sheet__placeholder {
+  color: #CBD5E1;
+}
+
+.publish-sheet__submit {
+  margin-top: 8px;
+}

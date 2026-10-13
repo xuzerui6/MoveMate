@@ -1,0 +1,50 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.navbar__bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar__side {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.navbar__back {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20px;
+}
+
+.navbar__back-icon {
+  font-size: 56px;
+  color: #0F172A;
+  line-height: 1;
+  margin-top: -6px; /* 视觉居中（‹ 字符基线偏上） */
+}
+
+.navbar__title {
+  position: absolute;
+  text-align: center;
+  font-size: 34px;
+  font-weight: 700;
+  color: #0F172A;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

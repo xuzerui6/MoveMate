@@ -1,0 +1,36 @@
+.filter-bar {
+  margin-bottom: 24px;
+}
+
+.filter-bar__hint {
+  display: block;
+  font-size: 22px;
+  color: #94A3B8;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.filter-bar__wrap {
+  position: relative;
+}
+
+.filter-bar__scroll {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.filter-bar__inner {
+  display: flex;
+  gap: 16px;
+  padding-right: 24px;
+}
+
+.filter-bar__fade {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 64px;
+  background: linear-gradient(to right, rgba(248, 250, 252, 0), #f8fafc);
+  pointer-events: none;
+}

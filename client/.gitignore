@@ -1,0 +1,8 @@
+node_modules
+dist
+.env
+.env.local
+*.log
+.DS_Store
+# TypeScript 构建缓存，不进版本库
+tsconfig.tsbuildinfo

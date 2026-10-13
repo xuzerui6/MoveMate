@@ -1,0 +1,140 @@
+/**
+ * 认证状态管理 —— 用户登录、注册、登出、Token 持久化
+ */
+import { create } from 'zustand';
+import type { User, LoginData, RegisterData } from '../types';
+import * as authApi from '../api/auth';
+import { getErrorMessage } from '../api/client';
+
+interface AuthState {
+  user: User | null;
+  token: string | null;
+  isLoggedIn: boolean;
+  loading: boolean;
+  error: string | null;
+
+  /** 初始化：从 localStorage 恢复登录态 */
+  init: () => void;
+
+  /** 持久化当前登录态 */
+  setSession: (user: User | null, token?: string | null) => void;
+
+  /** 使用 token 从服务端恢复用户信息 */
+  hydrateSession: () => Promise<void>;
+
+  /** 邮箱登录 */
+  login: (data: LoginData) => Promise<void>;
+
+  /** 邮箱注册 */
+  register: (data: RegisterData) => Promise<void>;
+
+  /** 退出登录 */
+  logout: () => void;
+  verifyEmail: (code: string) => Promise<void>;
+
+  /** 更新用户资料（本地 + 远端） */
+  updateProfile: (data: { nickname?: string; avatar?: string; department?: string; campus_id?: number; qq_email?: string; sport_preferences?: string[] }) => Promise<void>;
+
+  /** 清除错误信息 */
+  clearError: () => void;
+}
+
+function persistSession(user: User | null, token: string | null) {
+  if (token && user) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+    return;
+  }
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+}
+
+export const useAuthStore = create<AuthState>((set, get) => ({
+  user: null,
+  token: null,
+  isLoggedIn: false,
+  loading: false,
+  error: null,
+
+  init: () => {
+    const token = localStorage.getItem('token');
+    const userStr = localStorage.getItem('user');
+    if (token && userStr) {
+      try {
+        const user = authApi.normalizeUser(JSON.parse(userStr));
+        set({ token, user, isLoggedIn: true });
+      } catch {
+        persistSession(null, null);
+      }
+    }
+  },
+
+  setSession: (user, token = get().token) => {
+    const nextToken = user ? (token ?? null) : null;
+    persistSession(user, nextToken);
+    set({
+      user,
+      token: nextToken,
+      isLoggedIn: Boolean(user && nextToken),
+    });
+  },
+
+  hydrateSession: async () => {
+    const token = get().token || localStorage.getItem('token');
+    if (!token) return;
+
+    try {
+      const user = await authApi.getMe();
+      if (get().token === token) get().setSession(user, token);
+    } catch {
+      if (get().token === token) get().logout();
+    }
+  },
+
+  login: async (data: LoginData) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await authApi.login(data);
+      const { user, token } = res;
+      get().setSession(user, token);
+      set({ loading: false });
+    } catch (err) {
+      set({ loading: false, error: getErrorMessage(err) });
+      throw err;
+    }
+  },
+
+  register: async (data: RegisterData) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await authApi.register(data);
+      const { user, token } = res;
+      get().setSession(user, token);
+      set({ loading: false });
+    } catch (err) {
+      set({ loading: false, error: getErrorMessage(err) });
+      throw err;
+    }
+  },
+
+  logout: () => {
+    persistSession(null, null);
+    set({ user: null, token: null, isLoggedIn: false, error: null });
+  },
+
+  verifyEmail: async (code) => {
+    const session = await authApi.verifyStudentCode(code);
+    get().setSession(session.user, session.token);
+  },
+
+  updateProfile: async (data) => {
+    const token = get().token;
+    const updated = await authApi.updateProfile(data);
+    if (get().token !== token) return;
+    const newUser = { ...get().user!, ...updated };
+    get().setSession(newUser);
+    window.dispatchEvent(new Event('motion:refresh'));
+  },
+
+  clearError: () => set({ error: null }),
+}));

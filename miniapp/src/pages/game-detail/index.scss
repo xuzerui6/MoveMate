@@ -1,0 +1,285 @@
+.detail__content {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.detail__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 40px;
+}
+.detail__empty-icon {
+  font-size: 80px;
+  margin-bottom: 24px;
+}
+.detail__empty-title {
+  font-size: 34px;
+  font-weight: 700;
+  color: #0F172A;
+  margin-bottom: 12px;
+}
+.detail__empty-desc {
+  font-size: 24px;
+  color: #94A3B8;
+  margin-bottom: 36px;
+}
+
+/* ===== 局信息头 ===== */
+.detail-header {
+  padding: 32px 28px;
+  margin-bottom: 24px;
+}
+
+.detail-header__top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.detail-header__icon {
+  width: 72px;
+  height: 72px;
+  background: #F8FAFC;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.detail-header__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.detail-header__title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detail-header__name {
+  font-size: 40px;
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: -0.02em;
+}
+
+.detail-header__tag {
+  font-size: 22px;
+  color: #64748B;
+}
+
+.detail-header__box {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #F8FAFC;
+  padding: 24px;
+  border-radius: 16px;
+}
+
+.detail-header__row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.detail-header__label {
+  font-size: 24px;
+  font-weight: 600;
+  color: #94A3B8;
+  width: 48px;
+  flex-shrink: 0;
+}
+
+.detail-header__value {
+  font-size: 26px;
+  color: #334155;
+  font-weight: 500;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.detail-header__remaining {
+  color: #2563EB;
+  font-weight: 600;
+}
+
+/* ===== 成员列表 ===== */
+.detail-members {
+  padding: 28px;
+  margin-bottom: 24px;
+}
+
+.detail-section-title {
+  display: block;
+  font-size: 30px;
+  font-weight: 800;
+  color: #0F172A;
+  margin-bottom: 20px;
+}
+
+.detail-members__list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.detail-members__item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.detail-members__avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.detail-members__avatar-text {
+  color: #fff;
+}
+
+.detail-members__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.detail-members__name-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.detail-members__name {
+  font-size: 28px;
+  color: #1A1A2E;
+  font-weight: 500;
+}
+
+.detail-members__level {
+  font-size: 21px;
+  color: #7C3AED;
+  background: #F5F3FF;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.detail-members__status {
+  font-size: 22px;
+  color: #64748B;
+  font-weight: 500;
+}
+
+.detail-members__creator {
+  font-size: 21px;
+  color: #FF6B35;
+  background: #FFF3EE;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* ===== 留言板占位 ===== */
+.detail-chat {
+  padding: 28px;
+}
+
+.detail-chat__list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.detail-chat__msg {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-chat__name {
+  font-size: 21px;
+  color: #94A3B8;
+  font-weight: 600;
+}
+
+.detail-chat__body {
+  font-size: 26px;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.detail-chat__placeholder {
+  margin-top: 24px;
+  background: #F8FAFC;
+  border-radius: 12px;
+  padding: 22px;
+}
+
+.detail-chat__placeholder-text {
+  font-size: 22px;
+  color: #94A3B8;
+  text-align: center;
+  display: block;
+}
+
+/* ===== 底部操作栏 ===== */
+.detail__bottom-space {
+  height: 160px;
+}
+
+.detail__action-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background: #fff;
+  padding: 20px 32px calc(20px + env(safe-area-inset-bottom));
+  border-top: 1px solid #F1F5F9;
+  box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.04);
+}
+
+.detail__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail__action-gap {
+  margin: 0;
+}
+
+.detail__lock-hint {
+  display: block;
+  text-align: center;
+  font-size: 26px;
+  color: #9CA3AF;
+  padding: 12px 0;
+}

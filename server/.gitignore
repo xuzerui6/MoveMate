@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+.env.demo
+*.log
+.DS_Store
+coverage/
+.vscode/
+.idea/
+# 运行数据不进版本库（SQLite 数据库 + WAL/SHM 临时文件）
+data/
+# 用户上传文件不进版本库
+uploads/

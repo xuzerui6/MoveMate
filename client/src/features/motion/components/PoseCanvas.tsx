@@ -1,0 +1,35 @@
+import { useEffect, useRef } from 'react'
+import type { NormalizedLandmark } from '@mediapipe/tasks-vision'
+
+const connections = [[11,12],[11,13],[13,15],[12,14],[14,16],[11,23],[12,24],[23,24],[23,25],[25,27],[24,26],[26,28]]
+
+export function PoseCanvas({ videoRef, landmarks, demo, phase, affectedJoints = [] }: { videoRef: React.RefObject<HTMLVideoElement>; landmarks: NormalizedLandmark[] | null; demo: boolean; phase: string; affectedJoints?: number[] }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  useEffect(() => {
+    const canvas = canvasRef.current; if (!canvas) return
+    const ctx = canvas.getContext('2d'); if (!ctx) return
+    const draw = () => {
+      const w = canvas.width, h = canvas.height; ctx.clearRect(0,0,w,h)
+      const video=videoRef.current;
+      const scale=video?.videoWidth?Math.min(w/video.videoWidth,h/video.videoHeight):1;
+      const frameWidth=video?.videoWidth?video.videoWidth*scale:w,frameHeight=video?.videoHeight?video.videoHeight*scale:h;
+      const offsetX=(w-frameWidth)/2,offsetY=(h-frameHeight)/2;
+      if (video?.readyState && !demo) { ctx.fillStyle='#f6f8f7';ctx.fillRect(0,0,w,h);ctx.save();ctx.translate(w,0);ctx.scale(-1,1);ctx.drawImage(video,offsetX,offsetY,frameWidth,frameHeight);ctx.restore() }
+      else {
+        const g = ctx.createLinearGradient(0,0,w,h); g.addColorStop(0,'#111814'); g.addColorStop(1,'#26332d'); ctx.fillStyle=g; ctx.fillRect(0,0,w,h)
+        ctx.fillStyle='rgba(255,255,255,.04)'; for(let x=0;x<w;x+=28) for(let y=0;y<h;y+=28) ctx.fillRect(x,y,1,1)
+      }
+      let pts: {x:number;y:number}[] = []
+      if (landmarks && !demo) pts = landmarks.map(p => ({ x:offsetX+(1-p.x)*frameWidth, y:offsetY+p.y*frameHeight }))
+      else {
+        const down = phase === 'bottom'; const cx=w/2, hip=down?h*.60:h*.48, knee=down?h*.70:h*.67
+        pts=Array.from({length:29},()=>({x:cx,y:h*.4})); Object.assign(pts[11],{x:cx-34,y:h*.3}); Object.assign(pts[12],{x:cx+34,y:h*.3}); Object.assign(pts[13],{x:cx-55,y:h*.43}); Object.assign(pts[14],{x:cx+55,y:h*.43}); Object.assign(pts[15],{x:cx-70,y:h*.35}); Object.assign(pts[16],{x:cx+70,y:h*.35}); Object.assign(pts[23],{x:cx-28,y:hip}); Object.assign(pts[24],{x:cx+28,y:hip}); Object.assign(pts[25],{x:cx-58,y:knee}); Object.assign(pts[26],{x:cx+58,y:knee}); Object.assign(pts[27],{x:cx-70,y:h*.88}); Object.assign(pts[28],{x:cx+70,y:h*.88})
+      }
+      ctx.strokeStyle='#21ed80'; ctx.lineWidth=5; ctx.lineCap='round'; ctx.shadowColor='#21ed80'; ctx.shadowBlur=8
+      for (const [a,b] of connections) if (pts[a]&&pts[b]) { ctx.beginPath(); ctx.moveTo(pts[a].x,pts[a].y); ctx.lineTo(pts[b].x,pts[b].y); ctx.stroke() }
+      ctx.shadowBlur=0; for (const i of [11,12,13,14,15,16,23,24,25,26,27,28]) if(pts[i]) {ctx.fillStyle=affectedJoints.includes(i)?'#ffbe3d':'#36f093';ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,affectedJoints.includes(i)?8:6,0,Math.PI*2);ctx.fill()}
+    }
+    draw()
+  }, [landmarks, demo, phase, videoRef, affectedJoints])
+  return <><video ref={videoRef} className="hidden-video" muted playsInline/><canvas ref={canvasRef} width={360} height={410} className="pose-canvas"/></>
+}
