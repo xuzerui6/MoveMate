@@ -18,6 +18,9 @@ import { pool } from '../db/pool';
 import { redis } from '../db/index';
 import { registerChatHandlers } from './chat.handler';
 import { initNotificationHandler } from './notification.handler';
+import { ensureCloudRuntime, isVercelRuntime } from '../cloud';
+import { ensureSocketAdapter } from './cloud-adapter';
+import { isAllowedOrigin } from '../xiaozhi/identity';
 
 // ----------------------------------------------------------------
 // Socket.IO Server 实例（模块级单例）
@@ -50,6 +53,8 @@ export function getIO(): Server {
  */
 async function authenticateSocket(socket: Socket, next: (err?: Error) => void): Promise<void> {
   try {
+    await ensureCloudRuntime();
+    await ensureSocketAdapter(io);
     const token = socket.handshake.auth.token as string | undefined;
 
     if (!token) {
@@ -147,10 +152,11 @@ async function onDisconnect(socket: Socket): Promise<void> {
  */
 export function createWebSocketServer(httpServer: HttpServer): Server {
   io = new Server(httpServer, {
+    allowRequest: (req, callback) => callback(null, !isVercelRuntime || isAllowedOrigin(req.headers.origin)),
     // 生产环境建议配置 CORS
     cors: {
-      origin: (_origin: string | undefined, callback: (err: Error | null, allow: boolean) => void) => {
-        callback(null, true);  // 允许所有来源
+      origin: (origin: string | undefined, callback: (err: Error | null, allow: boolean) => void) => {
+        callback(null, !isVercelRuntime || isAllowedOrigin(origin));
       },
       methods: ['GET', 'POST'],
       credentials: true,
@@ -159,7 +165,7 @@ export function createWebSocketServer(httpServer: HttpServer): Server {
     pingInterval: 25000,
     pingTimeout: 20000,
     // 传输层：优先 WebSocket，降级到 HTTP 长轮询
-    transports: ['websocket', 'polling'],
+    transports: isVercelRuntime ? ['websocket'] : ['websocket', 'polling'],
     destroyUpgrade: false, // The same HTTP server also owns the Xiaozhi ws bridge.
   });
 

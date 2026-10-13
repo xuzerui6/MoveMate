@@ -182,9 +182,10 @@ export const AuthService = {
       department: input.department?.trim(),
       qq_email: input.qq_email?.trim() || '',
     };
+    // Consume the code in its own transaction so failed attempts survive registration rollback.
+    if (!await verifyCode(email, input.verify_code)) throw new ValidationError('验证码错误或已过期');
     const user = await withTransaction(async () => {
       if (await UserModel.findByEmail(email)) throw new AppError(40001, '该邮箱已被注册', 409);
-      if (!verifyCode(email, input.verify_code)) throw new ValidationError('验证码错误或已过期');
       const created = await UserModel.create(createData);
       await UserModel.updateEmailVerified(created.id, true);
       return (await UserModel.findById(created.id))!;

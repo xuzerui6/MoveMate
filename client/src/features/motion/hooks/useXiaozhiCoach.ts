@@ -307,6 +307,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
           return
         }
         if (message.type === 'hello') {
+          setErrorMessage('')
           sessionIdRef.current = typeof message.session_id === 'string' ? message.session_id : ''
           const sampleRate = Number(message.audio_params?.sample_rate) || 24_000
           audioRef.current ||= new XiaozhiAudio(packet => socketRef.current?.send(packet), () => undefined)
@@ -362,6 +363,12 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
           setErrorMessage('小智设备尚未激活，已切换到文字反馈')
           return
         }
+        if (event.code === 4403) {
+          setErrorMessage('语音连接被服务端拒绝，请检查小智是否启用及当前网址是否在语音白名单中。')
+          setFallbackMode(true)
+          setState('fallback')
+          return
+        }
         setState('reconnecting')
         const delay = RECONNECT_DELAYS[Math.min(reconnectIndex, RECONNECT_DELAYS.length - 1)]
         reconnectIndex += 1
@@ -375,9 +382,11 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
       if(disposed) return
       setState('connecting')
       try {
-        const status = await fetch('/ai/__status',{headers:{Authorization:'Bearer '+accountToken}}).then(r=>r.json())
+        const statusResponse = await fetch('/ai/__status',{headers:{Authorization:'Bearer '+accountToken}})
+        if (!statusResponse.ok) throw new Error(statusResponse.status === 401 ? '登录已过期，请重新登录后使用语音陪练。' : `语音配置读取失败（HTTP ${statusResponse.status}）`)
+        const status = await statusResponse.json()
         if(disposed) return
-        if(!status.xiaozhiEnabled){setFallbackMode(true);setState('fallback');return}
+        if(!status.xiaozhiEnabled){setErrorMessage('小智语音尚未启用，当前仅显示文字反馈；需启用服务并完成小智账号绑定。');setFallbackMode(true);setState('fallback');return}
         const response = await fetch('/api/xiaozhi/device', { method: 'POST', credentials: 'include',headers:{Authorization:'Bearer '+accountToken} })
         const body = await response.json() as XiaozhiDeviceBootstrap & { error?: string }
         if(disposed) return
@@ -398,6 +407,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
               if(disposed) return
               if (result.status === 200) {
                 setActivationCode('')
+                setErrorMessage('')
                 return connect()
               }
               if (result.status !== 202) throw new Error((await result.json()).error || '激活失败')
@@ -574,10 +584,14 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
   }, [enqueueVision, fallbackMode, sendJson, videoRef])
 
   const retry = useCallback(() => {
+    if (fallbackMode && fallback.state === 'failed') {
+      fallback.rearm()
+      return
+    }
     setErrorMessage('')
     setFallbackMode(!XIAOZHI_ENABLED)
     setRetryNonce(value => value + 1)
-  }, [])
+  }, [fallbackMode, fallback.state, fallback.rearm])
 
   const prepareAudio = useCallback(() => {
     if (fallbackMode || !XIAOZHI_ENABLED) return
@@ -618,7 +632,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
     source, wake, interrupt, retry, prepareAudio,
     sendWorkoutContext,
     say, requestVision, captureRepFrame, notifyCompletedRep, dataSyncState,
-    activationCode, activationMessage, identityMode, errorMessage: errorMessage || fallback.errorMessage,
+    activationCode, activationMessage, identityMode, errorMessage: [errorMessage, fallbackMode ? fallback.errorMessage : ''].filter(Boolean).join(' '),
     muted, toggleMute, supported: fallbackMode ? fallback.supported : Boolean(recognizerCtor()),
     inConversation: publicState === 'listening' || publicState === 'thinking' || publicState === 'speaking',
     hasModel: source !== 'local', neural: source === 'xiaozhi', xiaozhiVoiceReady: source === 'xiaozhi' && xiaozhiVoiceReady,

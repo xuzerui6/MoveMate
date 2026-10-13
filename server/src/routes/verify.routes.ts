@@ -44,7 +44,7 @@ router.post('/send', sendRateLimit, async (req: Request, res: Response, next: Ne
       return;
     }
 
-    const code = createCode(email);
+    const code = await createCode(email);
     await sendVerificationCode(email, code);
 
     res.json({ code: 0, message: '验证码已发送', data: { email } });
@@ -60,20 +60,22 @@ router.post('/send', sendRateLimit, async (req: Request, res: Response, next: Ne
 });
 
 // POST /verify/check — 校验验证码
-router.post('/check', async (req: Request, res: Response) => {
+router.post('/check', async (req: Request, res: Response, next:NextFunction) => {
+  try {
   const { email, code } = req.body;
   if (!email || !code) {
     res.status(400).json({ code: 40001, message: '请提供邮箱和验证码', data: null });
     return;
   }
 
-  const valid = verifyCode(email, code);
+  const valid = await verifyCode(email, code);
   if (!valid) {
     res.status(400).json({ code: 40003, message: '验证码错误或已过期', data: null });
     return;
   }
 
   res.json({ code: 0, message: '验证通过', data: { email } });
+  }catch(error){next(error)}
 });
 
 export default router;

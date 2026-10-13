@@ -1,0 +1,29 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "client": {
+      "root": "client",
+      "framework": "vite",
+      "installCommand": "npm ci",
+      "buildCommand": "npm run build:vercel",
+      "outputDirectory": "dist"
+    },
+    "server": {
+      "root": "server",
+      "framework": "express",
+      "entrypoint": "src/app.ts",
+      "installCommand": "npm ci",
+      "buildCommand": "npm run build",
+      "functions": { "src/app.ts": { "maxDuration": 300 } }
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": { "service": "server" } },
+    { "source": "/ai/(.*)", "destination": { "service": "server" } },
+    { "source": "/socket.io/:path*", "destination": { "service": "server" } },
+    { "source": "/uploads/:path*", "destination": { "service": "server" } },
+    { "source": "/health", "destination": { "service": "server" } },
+    { "source": "/(.*)", "destination": { "service": "client" } }
+  ],
+  "crons": [{ "path": "/api/cron", "schedule": "0 0 * * *" }]
+}

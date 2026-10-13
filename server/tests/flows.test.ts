@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, readdirSync } from 'node:fs';
 import { DatabaseSync } from 'node:sqlite';
 import { createServer } from 'node:http';
-import { WebSocket } from 'ws';
+import { WebSocket, WebSocketServer } from 'ws';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { once } from 'node:events';
@@ -11,8 +11,8 @@ import { spawnSync } from 'node:child_process';
 
 const temporary = mkdtempSync(path.join(tmpdir(), 'dajju-tests-'));
 Object.assign(process.env, {
-  SQLITE_PATH: path.join(temporary, 'test.db'), JWT_SECRET: 'isolated-test-secret',
-  STUDENT_ID_SALT: 'isolated-test-salt', SMTP_USER: '', SMTP_PASS: '', ADMIN_EMAIL: '',
+  SQLITE_PATH: path.join(temporary, 'test.db'), JWT_SECRET: 'isolated-test-secret-at-least-32-characters',
+  STUDENT_ID_SALT: 'isolated-test-salt-at-least-32-characters', SMTP_USER: '', SMTP_PASS: '', ADMIN_EMAIL: '',
   ENV_FILE: path.join(temporary, 'absent.env'), NODE_ENV: 'test',
   AI_BASE_URL:'', AI_API_KEY:'', XIAOZHI_IDENTITY_MODE:'disabled',
 });
@@ -87,7 +87,7 @@ async function request(route: string, data?: any, token?: string, method = data 
 }
 async function account(name: string) {
   const email = name + '@mails.jlu.edu.cn';
-  return AuthService.register({ email, nickname: name, password: 'TestPass123', campus_id: 1, verify_code: createCode(email) });
+  return AuthService.register({ email, nickname: name, password: 'TestPass123', campus_id: 1, verify_code: await createCode(email) });
 }
 function input(maxPlayers = 6, minutes = 120) {
   return { host_id: host.user.id, sport_type: 'basketball', campus_id: 1, location: '测试球场', max_players: maxPlayers, start_time: new Date(Date.now() + minutes * 60000).toISOString() };
@@ -150,7 +150,7 @@ test('registration requires a valid unexpired code and grants activity access', 
   const data = { email: 'registration@mails.jlu.edu.cn', nickname: '注册测试', password: 'TestPass123', campus_id: 1 };
   assert.equal((await request('/auth/register', data)).status, 400);
   assert.equal((await request('/auth/register', { ...data, verify_code: '000000' })).status, 400);
-  const validCode = createCode(data.email);
+  const validCode = await createCode(data.email);
   const registered = await request('/auth/register', { ...data, verify_code: validCode });
   assert.equal(registered.status, 201); assert.equal(registered.body.data.user.email_verified, true);
   assert.equal(verifyToken(registered.body.data.token).email_verified, true);
@@ -158,10 +158,10 @@ test('registration requires a valid unexpired code and grants activity access', 
   const game = await games.createGame(input());
   assert.equal((await request('/games/' + game.id + '/join', {}, registered.body.data.token)).status, 200);
   await assert.rejects(AuthService.register({ ...data, verify_code: validCode }), /已被注册/);
-  const replayEmail = 'replay@mails.jlu.edu.cn', consumed = createCode(replayEmail);
+  const replayEmail = 'replay@mails.jlu.edu.cn', consumed = await createCode(replayEmail);
   await request('/verify/check', { email: replayEmail, code: consumed });
   assert.equal((await request('/auth/register', { ...data, email: replayEmail, verify_code: consumed })).status, 400);
-  const expiryEmail = 'expired@mails.jlu.edu.cn', now = Date.now, expired = createCode(expiryEmail);
+  const expiryEmail = 'expired@mails.jlu.edu.cn', now = Date.now, expired = await createCode(expiryEmail);
   try {
     Date.now = () => now() + 6 * 60000;
     await assert.rejects(AuthService.register({ ...data, email: expiryEmail, verify_code: expired }), /验证码/);
@@ -206,7 +206,7 @@ test('existing unverified accounts receive a refreshed session', async () => {
   await pool.query('UPDATE users SET email_verified = 0 WHERE id = $1', [existing.user.id]);
   const oldToken = signToken({ sub: existing.user.id, email: existing.user.email, email_verified: false });
   assert.equal((await request('/games', { ...input(), host_id: undefined }, oldToken)).status, 403);
-  const response = await request('/auth/verify-email', { code: createCode(existing.user.email) }, oldToken);
+  const response = await request('/auth/verify-email', { code: await createCode(existing.user.email) }, oldToken);
   assert.equal(response.status, 200); assert.equal(response.body.data.user.email_verified, true);
   assert.equal(verifyToken(response.body.data.token).email_verified, true);
   assert.equal((await request('/games', { ...input(), host_id: undefined }, response.body.data.token)).status, 200);
@@ -402,9 +402,22 @@ test('game timing requires check-in, clips on completion and serializes finish r
 });
 
 test('coach routes require login and preserve local fallback without external services',async()=>{
+  assert.equal((await fetch(base+'/api/v1/auth/missing-route')).status,404);
+  assert.equal((await fetch(base+'/uploads/missing-avatar.png')).status,404);
   const unauth=await fetch(base+'/ai/__status');assert.equal(unauth.status,401);
-  const status=await fetch(base+'/ai/__status',{headers:{Authorization:'Bearer '+host.token}});assert.equal((await status.json() as any).configured,false);
+  const status=await fetch(base+'/ai/__status',{headers:{Authorization:'Bearer '+host.token}});assert.deepEqual(await status.json(),{configured:false,xiaozhiEnabled:false});
   const device=await fetch(base+'/api/xiaozhi/device',{method:'POST',headers:{Authorization:'Bearer '+host.token}});assert.equal(device.status,503);
+});
+
+test('voice origins allow the local demo while retaining production and foreign-origin restrictions',()=>{
+  const {isAllowedOrigin}=require('../src/xiaozhi/identity');
+  for(const origin of ['http://localhost:3001','http://127.0.0.1:3001']) {
+    assert.equal(isAllowedOrigin(origin,undefined,'development'),true);
+    assert.equal(isAllowedOrigin(origin,undefined,'production'),false);
+    assert.equal(isAllowedOrigin(origin,origin,'production'),true);
+  }
+  assert.equal(isAllowedOrigin('http://localhost:3001.evil.example',undefined,'development'),false);
+  assert.equal(isAllowedOrigin(undefined,undefined,'development'),false);
 });
 
 test('HTTP coach proxy and separate authenticated voice WebSocket share the backend',async()=>{
@@ -434,6 +447,51 @@ test('invalid database paths stop startup with a nonzero exit', () => {
     env: { ...process.env, SQLITE_PATH: temporary, PORT: '0' },
   });
   assert.notEqual(result.status, 0); assert.match(result.stderr, /数据库初始化失败/);
+});
+
+test('abnormal voice disconnects cannot crash the backend and the next bridge still works',async()=>{
+  const {attachXiaozhi,upstreamCloseCode}=require('../src/xiaozhi/socket');
+  const {createDeviceIdentity,encryptIdentity,IDENTITY_COOKIE}=require('../src/xiaozhi/identity');
+  for(const code of [0,999,1004,1005,1006,1015,2999,5000,1000.5])assert.equal(upstreamCloseCode(code),1012);
+  for(const code of [1000,1001,1011,1012,4401,4403])assert.equal(upstreamCloseCode(code),code);
+  const upstreamHttp=createServer(),bridgeHttp=createServer();
+  const upstreamWs=new WebSocketServer({server:upstreamHttp});
+  let attempts=0;
+  upstreamWs.on('connection',ws=>{
+    if(++attempts===1)return ws.terminate();
+    ws.on('message',(data,binary)=>ws.send(data,{binary}));
+  });
+  upstreamHttp.listen(0,'127.0.0.1');await once(upstreamHttp,'listening');
+  const upstreamUrl='ws://127.0.0.1:'+(upstreamHttp.address() as any).port;
+  const bridgeWs=attachXiaozhi(bridgeHttp,async()=>({websocket:{url:upstreamUrl,token:'test-voice-token'}}));
+  bridgeHttp.listen(0,'127.0.0.1');await once(bridgeHttp,'listening');
+  const bridgeBase='http://127.0.0.1:'+(bridgeHttp.address() as any).port;
+  const oldMode=process.env.XIAOZHI_IDENTITY_MODE,oldOrigins=process.env.XIAOZHI_ALLOWED_ORIGINS;
+  process.env.XIAOZHI_IDENTITY_MODE='personal';process.env.XIAOZHI_ALLOWED_ORIGINS=bridgeBase;
+  const identity={...createDeviceIdentity(),userId:host.user.id,activated:true};
+  const options={headers:{Origin:bridgeBase,Cookie:`motion_account=${host.token}; ${IDENTITY_COOKIE}=${encryptIdentity(identity)}`}};
+  let browser:WebSocket|undefined;
+  try{
+    browser=new WebSocket(bridgeBase.replace('http:','ws:')+'/api/xiaozhi/socket',options);
+    const [code]=await once(browser,'close',{signal:AbortSignal.timeout(5000)});assert.equal(code,1012);
+    assert.equal((await fetch(base+'/ai/__status',{headers:{Authorization:'Bearer '+host.token}})).status,200);
+    browser=new WebSocket(bridgeBase.replace('http:','ws:')+'/api/xiaozhi/socket',options);
+    const echoed=new Promise<string>((resolve,reject)=>{
+      browser!.on('error',reject);browser!.on('message',data=>{
+        const text=data.toString();if(text.includes('"bridge":"ready"'))browser!.send('voice-bridge-recovered');else resolve(text);
+      });
+    });
+    assert.equal(await Promise.race([echoed,new Promise((_,reject)=>{const timeout=setTimeout(()=>reject(new Error('voice echo timed out')),5000);timeout.unref()})]),'voice-bridge-recovered');
+    const closed=once(browser,'close');browser.close(1000);await closed;
+    assert.equal(attempts,2);
+  }finally{
+    browser?.terminate();
+    process.env.XIAOZHI_IDENTITY_MODE=oldMode;
+    if(oldOrigins===undefined)delete process.env.XIAOZHI_ALLOWED_ORIGINS;else process.env.XIAOZHI_ALLOWED_ORIGINS=oldOrigins;
+    for(const ws of upstreamWs.clients)ws.terminate();for(const ws of bridgeWs.clients)ws.terminate();
+    await Promise.all([new Promise<void>(resolve=>upstreamWs.close(()=>resolve())),new Promise<void>(resolve=>bridgeWs.close(()=>resolve()))]);
+    await Promise.all([new Promise<void>(resolve=>upstreamHttp.close(()=>resolve())),new Promise<void>(resolve=>bridgeHttp.close(()=>resolve()))]);
+  }
 });
 
 test('incremental motion migration backs up and preserves legacy accounts and activities',async()=>{

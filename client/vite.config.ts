@@ -10,6 +10,9 @@ export default defineConfig({
     outDir: '../server/public',
     emptyOutDir: true,
   },
+  define: {
+    'import.meta.env.VITE_WEBSOCKET_ONLY': JSON.stringify(process.env.VERCEL ? 'true' : process.env.VITE_WEBSOCKET_ONLY || 'false'),
+  },
   server: {
     port: 5173,
     proxy: {

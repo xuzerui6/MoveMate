@@ -31,7 +31,7 @@ export const config = {
   verifyCodeExpireMinutes: parseInt(process.env.VERIFY_CODE_EXPIRE_MINUTES || '10', 10),
 
   /** 对外可访问的站点 URL（用于邮件中的链接） */
-  baseUrl: process.env.BASE_URL || `http://localhost:${process.env.PORT || '3001'}`,
+  baseUrl: process.env.BASE_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : `http://localhost:${process.env.PORT || '3001'}`),
 
   /** CORS 允许的前端域名（多个用逗号分隔，* 表示允许所有） */
   corsOrigin: process.env.CORS_ORIGIN || '*',

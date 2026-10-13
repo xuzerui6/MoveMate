@@ -40,6 +40,14 @@ export function useGameDetail(gameId: string | undefined) {
   }, [fetchDetail]);
 
   useEffect(() => {
+    if (import.meta.env.VITE_WEBSOCKET_ONLY !== 'true') return;
+    const refresh = () => { if (document.visibilityState === 'visible') void fetchDetail(true); };
+    const timer = window.setInterval(refresh, 60000);
+    document.addEventListener('visibilitychange', refresh);
+    return () => { window.clearInterval(timer); document.removeEventListener('visibilitychange', refresh); };
+  }, [fetchDetail]);
+
+  useEffect(() => {
     if (!socket || !gameId) return;
     const update = (data: { gameId: number; changes?: unknown }) => {
       if (String(data.gameId) === String(gameId) && data.changes) void fetchDetail(true);

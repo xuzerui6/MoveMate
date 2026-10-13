@@ -1,5 +1,5 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { initSQLite, sqliteQuery } from './sqlite-adapter';
+import { initDatabase, databaseQuery } from './runtime';
 
 type QueryResult<T> = { rows: T[]; rowCount: number };
 type Transaction = { client: PoolClient; active: boolean; effects: Array<() => void | Promise<void>> };
@@ -18,7 +18,7 @@ export class PoolClient {
   async query<T = any>(sql: string, params?: any[]): Promise<QueryResult<T>> {
     if (this.released) throw new Error('Client already released');
     const current = context.getStore();
-    if (current?.active && current.client === this) return sqliteQuery<T>(sql, params);
+    if (current?.active && current.client === this) return databaseQuery<T>(sql, params);
     if (/^\s*(BEGIN|COMMIT|ROLLBACK)\b/i.test(sql)) throw new Error('Use withTransaction()');
     return pool.query<T>(sql, params);
   }
@@ -27,10 +27,10 @@ export class PoolClient {
 
 export const pool = {
   async query<T = any>(sql: string, params?: any[]): Promise<QueryResult<T>> {
-    if (context.getStore()?.active) return sqliteQuery<T>(sql, params);
+    if (context.getStore()?.active) return databaseQuery<T>(sql, params);
     return exclusive(async () => {
-      await initSQLite();
-      return sqliteQuery<T>(sql, params);
+      await initDatabase();
+      return databaseQuery<T>(sql, params);
     });
   },
   async connect(): Promise<PoolClient> {
@@ -51,16 +51,16 @@ export async function withTransaction<T>(operation: (client: PoolClient) => Prom
   if (parent?.active) return operation(parent.client);
   const effects: Transaction['effects'] = [];
   const result = await exclusive(async () => {
-    await initSQLite();
+    await initDatabase();
     const client = new PoolClient();
     const transaction: Transaction = { client, active: true, effects };
-    sqliteQuery('BEGIN IMMEDIATE');
+    await databaseQuery('BEGIN IMMEDIATE');
     try {
       const value = await context.run(transaction, () => operation(client));
-      sqliteQuery('COMMIT');
+      await databaseQuery('COMMIT');
       return value;
     } catch (error) {
-      try { sqliteQuery('ROLLBACK'); } catch (rollbackError) { console.error('[DB] Rollback failed:', rollbackError); }
+      try { await databaseQuery('ROLLBACK'); } catch (rollbackError) { console.error('[DB] Rollback failed:', rollbackError); }
       throw error;
     } finally {
       transaction.active = false;

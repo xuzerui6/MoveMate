@@ -9,12 +9,15 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/app.js",
+    "start:cloud": "node scripts/cloud.cjs",
     "seed:demo": "node scripts/demo.cjs seed",
     "start:demo": "node scripts/demo.cjs",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "test": "node --test --import tsx tests/**/*.test.ts"
   },
   "dependencies": {
+    "@libsql/client": "^0.18.0",
+    "@socket.io/redis-adapter": "^8.3.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

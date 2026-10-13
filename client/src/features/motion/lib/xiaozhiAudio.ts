@@ -13,20 +13,6 @@ type AudioDecoderLike = {
   reset(): void
 }
 
-const workletSource = `
-class MotionBuddyMicProcessor extends AudioWorkletProcessor {
-  process(inputs) {
-    const channel = inputs[0] && inputs[0][0]
-    if (channel) {
-      const copy = channel.slice(0)
-      this.port.postMessage(copy, [copy.buffer])
-    }
-    return true
-  }
-}
-registerProcessor('motion-buddy-mic', MotionBuddyMicProcessor)
-`
-
 function resample(input: Float32Array, fromRate: number, toRate: number): Float32Array {
   if (fromRate === toRate) return input
   const length = Math.max(1, Math.round(input.length * toRate / fromRate))
@@ -54,7 +40,6 @@ export class XiaozhiAudio {
   private decoderTimestamp = 0
   private scheduledSources = new Set<AudioBufferSourceNode>()
   private nextPlayAt = 0
-  private objectUrl = ''
   private sending = true
 
   constructor(private readonly sendPacket: (packet: ArrayBuffer) => void, private readonly onPlaybackEnd: () => void) {}
@@ -81,41 +66,46 @@ export class XiaozhiAudio {
     if (!context) throw new Error('小智音频上下文初始化失败')
     const stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true }, video: false })
     this.stream = stream
-    this.objectUrl = URL.createObjectURL(new Blob([workletSource], { type: 'text/javascript' }))
-    await context.audioWorklet.addModule(this.objectUrl)
-    this.source = context.createMediaStreamSource(stream)
-    const node = new AudioWorkletNode(context, 'motion-buddy-mic')
-    this.node = node
-    const Encoder = (window as unknown as { AudioEncoder: new (init: { output: (chunk: { byteLength: number; copyTo(target: ArrayBuffer): void }) => void; error: (error: DOMException) => void }) => AudioEncoderLike }).AudioEncoder
-    const AudioDataCtor = (window as unknown as { AudioData: new (init: Record<string, unknown>) => { close(): void } }).AudioData
-    this.encoder = new Encoder({
-      output: chunk => {
-        const bytes = new ArrayBuffer(chunk.byteLength)
-        chunk.copyTo(bytes)
-        if (this.sending) this.sendPacket(bytes)
-      },
-      error: error => console.warn('[动伴] Opus 编码失败', error.message),
-    })
-    this.encoder.configure({ codec: 'opus', sampleRate: 16_000, numberOfChannels: 1, bitrate: 24_000 })
-    node.port.onmessage = event => {
-      const samples = resample(event.data as Float32Array, context.sampleRate, 16_000)
-      this.pendingSamples.push(...samples)
-      while (this.pendingSamples.length >= 960) {
-        const frame = new Float32Array(this.pendingSamples.splice(0, 960))
-        const data = new AudioDataCtor({
-          format: 'f32-planar', sampleRate: 16_000, numberOfFrames: 960, numberOfChannels: 1,
-          timestamp: this.encoderTimestamp, data: frame,
-        })
-        this.encoderTimestamp += 60_000
-        this.encoder?.encode(data)
-        data.close()
+    try {
+      // Same-origin file works under the app's script-src 'self' policy.
+      await context.audioWorklet.addModule('/audio/motion-buddy-mic.worklet.js')
+      this.source = context.createMediaStreamSource(stream)
+      const node = new AudioWorkletNode(context, 'motion-buddy-mic')
+      this.node = node
+      const Encoder = (window as unknown as { AudioEncoder: new (init: { output: (chunk: { byteLength: number; copyTo(target: ArrayBuffer): void }) => void; error: (error: DOMException) => void }) => AudioEncoderLike }).AudioEncoder
+      const AudioDataCtor = (window as unknown as { AudioData: new (init: Record<string, unknown>) => { close(): void } }).AudioData
+      this.encoder = new Encoder({
+        output: chunk => {
+          const bytes = new ArrayBuffer(chunk.byteLength)
+          chunk.copyTo(bytes)
+          if (this.sending) this.sendPacket(bytes)
+        },
+        error: error => console.warn('[动伴] Opus 编码失败', error.message),
+      })
+      this.encoder.configure({ codec: 'opus', sampleRate: 16_000, numberOfChannels: 1, bitrate: 24_000 })
+      node.port.onmessage = event => {
+        const samples = resample(event.data as Float32Array, context.sampleRate, 16_000)
+        this.pendingSamples.push(...samples)
+        while (this.pendingSamples.length >= 960) {
+          const frame = new Float32Array(this.pendingSamples.splice(0, 960))
+          const data = new AudioDataCtor({
+            format: 'f32-planar', sampleRate: 16_000, numberOfFrames: 960, numberOfChannels: 1,
+            timestamp: this.encoderTimestamp, data: frame,
+          })
+          this.encoderTimestamp += 60_000
+          this.encoder?.encode(data)
+          data.close()
+        }
       }
+      this.source.connect(node)
+      // Worklet must stay connected, but a zero-gain node prevents mic sidetone.
+      const mute = context.createGain()
+      mute.gain.value = 0
+      node.connect(mute).connect(context.destination)
+    } catch (error) {
+      await this.stopCapture()
+      throw error
     }
-    this.source.connect(node)
-    // Worklet must stay connected, but a zero-gain node prevents mic sidetone.
-    const mute = context.createGain()
-    mute.gain.value = 0
-    node.connect(mute).connect(context.destination)
   }
 
   configureDecoder(sampleRate = 24_000): void {
@@ -182,8 +172,6 @@ export class XiaozhiAudio {
     }
     this.encoder = null
     this.pendingSamples = []
-    if (this.objectUrl) URL.revokeObjectURL(this.objectUrl)
-    this.objectUrl = ''
   }
 
   async dispose(): Promise<void> {

@@ -16,7 +16,7 @@ export function useSocketConnection() {
     useGameStore.setState({games:[],loading:false,error:null,page:1,hasMore:true,filter:{size:20,scope:'campus'}});
     if (!isLoggedIn || !token) { store.setStatus('disconnected'); return; }
     const connection = io('/', {
-      autoConnect: false, auth: { token }, transports: ['websocket', 'polling'],
+      autoConnect: false, auth: { token }, transports: import.meta.env.VITE_WEBSOCKET_ONLY==='true'?['websocket']:['websocket', 'polling'],
       reconnection: true, reconnectionAttempts: 10, reconnectionDelay: 1000, timeout: 10000,
     });
     store.setSocket(connection);

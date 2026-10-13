@@ -176,7 +176,14 @@ export function isAllowedOrigin(
   if (!origin) return false
   const allowed = new Set((configured || 'https://dongban.xzrcloud.xyz,https://dongban.vercel.app')
     .split(',').map(value => value.trim()).filter(Boolean))
+  if (process.env.VERCEL === '1') {
+    for (const hostname of [process.env.VERCEL_URL, process.env.VERCEL_PROJECT_PRODUCTION_URL]) {
+      if (hostname) allowed.add(`https://${hostname}`)
+    }
+  }
   if (nodeEnv !== 'production') {
+    allowed.add('http://localhost:3001')
+    allowed.add('http://127.0.0.1:3001')
     allowed.add('http://localhost:4173')
     allowed.add('http://127.0.0.1:4173')
     allowed.add('http://localhost:5173')

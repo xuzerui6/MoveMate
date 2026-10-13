@@ -12,7 +12,9 @@ import { config } from './config';
 import { authRequired } from './middleware/auth';
 import { errorHandler } from './middleware/error-handler';
 import { testConnection } from './db';
-import { startAllCronJobs, stopAllCronJobs } from './cron/state-machine';
+import { startAllCronJobs, stopAllCronJobs, runCronTick } from './cron/state-machine';
+import { ensureCloudRuntime, isVercelRuntime } from './cloud';
+import { ensureSocketAdapter, closeSocketAdapter } from './websocket/cloud-adapter';
 
 // 路由模块
 import authRoutes from './routes/auth.routes';
@@ -27,11 +29,14 @@ import checkinRoutes from './routes/checkin.routes';
 import motionRoutes from './routes/motion.routes';
 import { coachRouter } from './routes/coach.routes';
 import { attachXiaozhi } from './xiaozhi/socket';
+import {cloudUploadsRouter} from './routes/cloud-uploads.routes';
+import { isAllowedOrigin } from './xiaozhi/identity';
 
 // ================================================================
 // Express 应用初始化
 // ================================================================
 const app = express();
+if (isVercelRuntime) app.set('trust proxy', 1);
 
 // 安全响应头（nosniff / X-Frame-Options / CSP 等）
 app.use(helmet({
@@ -46,7 +51,9 @@ const corsOrigins = (config.corsOrigin || '*')
   .map((s: string) => s.trim())
   .filter(Boolean);
 app.use(cors({
-  origin: corsOrigins.includes('*')
+  origin: isVercelRuntime
+    ? (origin, callback) => callback(null, !origin || isAllowedOrigin(origin, process.env.CORS_ORIGIN))
+    : corsOrigins.includes('*')
     ? true
     : (origin, callback) => {
         // 无 Origin 的请求（同源/curl）放行；有 Origin 的必须在白名单
@@ -56,19 +63,37 @@ app.use(cors({
   credentials: true,
 }));
 app.use(express.json());
+app.use(async (_req, _res, next) => {
+  try { await ensureCloudRuntime(); await ensureSocketAdapter(io); next(); }
+  catch (error) { next(error); }
+});
+// Serverless instances cannot keep node-cron running between requests.
+// Active clients advance the existing state machine; the daily cron handles idle periods.
+let lastLifecycleTick = 0;
+app.use('/api/v1', async (_req, _res, next) => {
+  if (!isVercelRuntime || Date.now() - lastLifecycleTick < 60000) return next();
+  try { await runCronTick(); lastLifecycleTick = Date.now(); next(); }
+  catch (error) { next(error); }
+});
+app.get('/api/cron', async (req, res, next) => {
+  if (!process.env.CRON_SECRET || req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
+    res.status(401).json({ error: 'Unauthorized' }); return;
+  }
+  try { await runCronTick(); res.json({ status: 'ok' }); } catch (error) { next(error); }
+});
 app.use(coachRouter);
 
 // 生产模式：托管前端静态文件
 const publicDir = path.join(__dirname, '..', 'public');
-if (fs.existsSync(publicDir)) {
+if (!isVercelRuntime && fs.existsSync(publicDir)) {
   console.log('[静态文件] 托管前端: ' + publicDir);
   app.use(express.static(publicDir));
 }
 
 // 托管用户上传文件（独立目录，不会被 vite build 覆盖）
 const uploadsDir = path.join(__dirname, '..', 'uploads');
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
-app.use('/uploads', express.static(uploadsDir));
+if (!process.env.TURSO_DATABASE_URL && !isVercelRuntime && !fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+app.use('/uploads', process.env.TURSO_DATABASE_URL?cloudUploadsRouter:express.static(uploadsDir));
 
 // 认证中间件（跳过 auth 和 verify 路由）
 app.use('/api/v1', (req, res, next) => {
@@ -94,8 +119,9 @@ app.get('/health', (_req, res) => {
 });
 
 // SPA fallback: 所有非 API 路由返回 index.html
-if (fs.existsSync(publicDir)) {
-  app.get('*', (_req, res) => {
+if (!isVercelRuntime && fs.existsSync(publicDir)) {
+  app.get('*', (req, res, next) => {
+    if (/^\/(api|ai|socket\.io|uploads|health)(\/|$)/.test(req.path)) return next();
     res.sendFile(path.join(publicDir, 'index.html'));
   });
 }
@@ -131,12 +157,14 @@ function getLanUrls(port: number): string[] {
 // 服务启动
 // ================================================================
 async function start(): Promise<void> {
+  await ensureCloudRuntime();
+  await ensureSocketAdapter(io);
   const dbOk = await testConnection();
   if (!dbOk) {
     throw new Error('数据库初始化失败，服务启动已停止');
   }
 
-  startAllCronJobs();
+  if (!isVercelRuntime) startAllCronJobs();
 
   server.listen(config.port, config.host, () => {
     const lanUrls = config.host === '0.0.0.0' ? getLanUrls(config.port) : [];
@@ -160,6 +188,7 @@ async function start(): Promise<void> {
 async function shutdown(signal: string): Promise<void> {
   console.log(`\n[关闭] 收到 ${signal} 信号，正在优雅关闭...`);
   stopAllCronJobs();
+  closeSocketAdapter();
   if (io) io.close();
   xiaozhi.clients.forEach((client)=>client.close());
   xiaozhi.close();
@@ -167,12 +196,19 @@ async function shutdown(signal: string): Promise<void> {
   setTimeout(() => { process.exit(1); }, 5000);
 }
 
-process.on('SIGTERM', () => shutdown('SIGTERM'));
-process.on('SIGINT', () => shutdown('SIGINT'));
+if (!isVercelRuntime) {
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+  process.on('SIGINT', () => shutdown('SIGINT'));
+}
 
-if (require.main === module) start().catch((err) => {
+if (!isVercelRuntime && require.main === module) start().catch((err) => {
   console.error('[启动] 启动失败:', err);
   process.exit(1);
 });
 
 export { app, server, io, start, shutdown };
+// CLI 63's local Node runner discovers HTTP servers through its intercepted listen().
+// The port is supplied only by that runner, which owns the actual local listener.
+if (process.env.VERCEL_DEV_PORT) server.listen(0);
+// Vercel's HTTP-server export retains both Socket.IO and Xiaozhi upgrade listeners.
+export default server;

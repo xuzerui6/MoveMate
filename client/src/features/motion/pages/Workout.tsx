@@ -169,7 +169,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     {existing&&<p>恢复记录：已完成 {existing.reps} {exercise.unit}，已计时 {existing.effectiveSeconds} 秒</p>}
     <button className="primary" disabled={busy || visionConsent === null || existing?.source==='demo'} onClick={startRealPose}><Icon name="camera"/> 开启 AI 摄像头识别</button>
     <button className="secondary" disabled={busy || existing?.source==='camera'} onClick={startDemo}><Icon name="play"/> 使用演示动作</button>
-    <div className="voice-hint"><Icon name="mic" size={15}/><span><b>小智音色对话 · 说「你好动伴」连续聊</b><small>所有可听回复只播放小智官方音频；语音由云端实时处理，演示账号可能保留对话历史，本站不保存完整录音。</small></span></div>
+    <div className="voice-hint"><Icon name="mic" size={15}/><span><b>可选小智语音陪练 · 启用并绑定后使用</b><small>未配置时仅显示文字反馈，没有语音回复。连接成功后可点击开启对话；唤醒词需浏览器支持。云端实时处理语音，本站不保存完整录音。</small></span></div>
     <div className="ble-setup"><div><Icon name="bluetooth"/><span><b>{heartRate.deviceName || 'BLE 心率带'}</b><small>{heartRate.status === 'unsupported' ? '请使用桌面 Chrome 或 Edge' : heartRate.connected ? `${heartRate.currentBpm || '--'} BPM · Zone ${heartRate.currentZone || '--'}` : heartRate.errorMessage || '标准 0x180D / 0x2A37'}</small></span></div><button disabled={heartRate.status === 'connecting' || heartRate.status === 'unsupported' || heartRate.connected} onClick={heartRate.connect}>{heartRate.status === 'connecting' ? '正在连接…' : heartRate.connected ? '已连接' : '连接心率带'}</button></div>
   </div>
 
@@ -188,15 +188,16 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     <div className={`feedback ${metrics.poseFeedback.status}`}><Icon name="spark"/><span><b>{metrics.poseFeedback.primaryIssue ? POSE_ISSUE_COPY[metrics.poseFeedback.primaryIssue].label : POSE_STATUS[metrics.poseFeedback.status]}</b><small>{metrics.feedback}</small></span></div>
     <div className={`coach-panel ${voice.state}`}>
       <span className={`coach-face ${voice.emotion}`} aria-label={`动伴表情：${voice.emotion}`}>{voice.emotion === 'celebrating' ? 'AI' : voice.emotion === 'concerned' ? 'AI' : voice.emotion === 'thinking' ? 'AI' : voice.emotion === 'listening' ? 'AI' : 'AI'}</span>
-      <button className="voice-status" onClick={voice.state === 'idle' || voice.state === 'fallback' ? voice.wake : voice.state === 'failed' ? voice.retry : undefined} disabled={!['idle', 'fallback', 'failed'].includes(voice.state)}>
-        <span><b>{VOICE_LABEL[voice.state]}</b><small>{voice.state === 'speaking' || voice.state === 'thinking' ? voice.reply || '…' : voice.transcript || voice.reply || voice.errorMessage || '随时叫我，我会先听你说'}</small></span>
+      <button className="voice-status" onClick={voice.state === 'idle' || voice.state === 'fallback' ? voice.wake : voice.state === 'failed' ? voice.retry : undefined} disabled={!['idle', 'fallback', 'failed'].includes(voice.state) || (voice.state === 'fallback' && !voice.supported)}>
+        <span><b>{voice.source !== 'xiaozhi' && voice.state === 'listening' ? '正在识别语音 · 回复仅文字' : voice.source !== 'xiaozhi' && voice.state === 'thinking' ? '正在准备文字回复…' : VOICE_LABEL[voice.state]}</b><small>{voice.errorMessage || (voice.state === 'speaking' || voice.state === 'thinking' ? voice.reply || '…' : voice.transcript || voice.reply || '随时叫我，我会先听你说')}</small></span>
       </button>
+      {voice.source !== 'xiaozhi' && <button className="interrupt-btn" onClick={voice.retry}>重试连接</button>}
       {(voice.state === 'speaking' || voice.state === 'thinking') && <button className="interrupt-btn" onClick={voice.interrupt}>打断</button>}
-      <button className="voice-mute" onClick={voice.toggleMute} aria-label={voice.muted ? '打开声音' : '关闭声音'}><Icon name={voice.muted ? 'volumeOff' : 'volume'} size={15}/></button>
+      {voice.source === 'xiaozhi' && <button className="voice-mute" onClick={voice.toggleMute} aria-label={voice.muted ? '打开声音' : '关闭声音'}><Icon name={voice.muted ? 'volumeOff' : 'volume'} size={15}/></button>}
       <em>{SOURCE_LABEL[voice.source]}{voice.xiaozhiVoiceReady ? ' · 声音就绪' : ''}{voice.visionAvailable && visionConsent ? ' · 视觉就绪' : ''}</em>
     </div>
     <div className="xiaozhi-sync" aria-live="polite">
-      <span className={voice.dataSyncState.mcpReady ? 'ok' : ''}>{voice.dataSyncState.mcpReady ? 'MCP 已连接' : 'MCP 等待中'}</span>
+      <span className={voice.dataSyncState.mcpReady ? 'ok' : ''}>{voice.source !== 'xiaozhi' ? '本地陪练 · 云端同步未启用' : voice.dataSyncState.mcpReady ? 'MCP 已连接' : 'MCP 等待中'}</span>
       {voice.dataSyncState.lastRepSynced > 0 && <span className="ok">第 {voice.dataSyncState.lastRepSynced} {exercise.unit}数据已同步</span>}
       {voice.dataSyncState.visionStatus !== 'idle' && <span className={voice.dataSyncState.visionStatus === 'failed' ? 'error' : voice.dataSyncState.visionStatus === 'reviewed' ? 'ok' : ''}>
         {voice.dataSyncState.visionRep ? `第 ${voice.dataSyncState.visionRep} ${exercise.unit}` : '当前'}关键帧{voice.dataSyncState.visionStatus === 'queued' ? '已排队' : voice.dataSyncState.visionStatus === 'reviewed' ? '已复核' : '复核失败'}

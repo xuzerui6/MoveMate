@@ -59,7 +59,7 @@ interface ConvertResult { sql: string; params: any[]; }
  *      SQL = '... SET a = $2, b = $3, c = $1'，params = [1, 2, 3]
  *   → SQL: '... SET a = ?, b = ?, c = ?', params: [2, 3, 1]
  */
-function pgToSqlite(sql: string, params: any[] = []): ConvertResult {
+export function pgToSqlite(sql: string, params: any[] = []): ConvertResult {
   const PH = new RegExp('\\$\\d+', 'g');
   const NAMES: number[] = [];
   const replaced = sql.replace(PH, (m) => {
@@ -77,7 +77,7 @@ function pgToSqlite(sql: string, params: any[] = []): ConvertResult {
  * 业务层继续使用 PG 习惯的 SQL（NOW() / TRUE / FALSE / CURRENT_TIMESTAMP），
  * 由适配层在执行前统一转换，保持上层代码与 PG 兼容。
  */
-function toSqliteDialect(sql: string): string {
+export function toSqliteDialect(sql: string): string {
   return sql
     // 关键字大小写保留原文，仅替换函数/字面量
     .replace(/\bNOW\s*\(\s*\)/gi, "datetime('now')")
@@ -89,7 +89,7 @@ function toSqliteDialect(sql: string): string {
 }
 
 /** 规范化布尔字段：DB 0/1 → JS boolean */
-function coerceRow(row: any, columns: string[]): any {
+export function coerceRow(row: any, columns: string[]): any {
   if (!row) return row;
   for (const col of columns) {
     if (BOOLEAN_COLUMNS.has(col) && typeof row[col] === 'number') {
@@ -105,7 +105,7 @@ function coerceRow(row: any, columns: string[]): any {
 }
 
 /** 规范化参数：JS boolean → 0/1 */
-function coerceParams(params: any[] | undefined): any[] {
+export function coerceParams(params: any[] | undefined): any[] {
   if (!params) return [];
   return params.map((p) => (typeof p === 'boolean' ? (p ? 1 : 0) : p));
 }
@@ -531,6 +531,25 @@ function backfillLegacyData(conn: DatabaseSync): void {
 }
 
 /** 初始化 SQLite 数据库 */
+export function databaseBootstrap(): { schema: string[]; metadata: Array<{sql:string;args:any[]}> } {
+  // Generate the current schema and public campus metadata without reading a user's database.
+  const conn = new DatabaseSync(':memory:');
+  try {
+    ensureSchema(conn);
+    seedJluMetadata(conn);
+    const entries=conn.prepare("SELECT type,sql FROM sqlite_master WHERE sql IS NOT NULL AND name NOT LIKE 'sqlite_%' ORDER BY CASE type WHEN 'table' THEN 0 ELSE 1 END").all() as Array<{type:string;sql:string}>;
+    const schema=entries.map(row=>row.sql.replace(/^CREATE (TABLE|UNIQUE INDEX|INDEX) /i,'CREATE $1 IF NOT EXISTS '));
+    const metadata:Array<{sql:string;args:any[]}>=[];
+    for(const table of ['schools','campuses','venues']) {
+      for(const row of conn.prepare(`SELECT * FROM ${table}`).all()) {
+        const columns=Object.keys(row);
+        metadata.push({sql:`INSERT OR IGNORE INTO ${table} (${columns.join(',')}) VALUES (${columns.map(()=>'?').join(',')})`,args:columns.map(key=>row[key])});
+      }
+    }
+    return {schema,metadata};
+  } finally {conn.close()}
+}
+
 export async function initSQLite(): Promise<void> {
   if (initPromise) return initPromise;
   if (db) return;

@@ -1,5 +1,4 @@
 import type { VirtualDeviceIdentity } from './identity.js'
-import { activationHmac } from './identity.js'
 
 const OTA_URL = (process.env.XIAOZHI_OTA_URL || 'https://api.tenclass.net/xiaozhi/ota/').replace(/\/+$/, '')
 
@@ -8,13 +7,15 @@ export interface OtaResponse {
   activation?: { code?: string; challenge?: string; message?: string; timeout_ms?: number }
 }
 
-const headers = (identity: VirtualDeviceIdentity, activationVersion = '2.1.2') => ({
+// This is a browser device, without a manufacturer's registered hardware key.
+// Activation-Version is the activation protocol, not the application version.
+const headers = (identity: VirtualDeviceIdentity) => ({
   'Device-Id': identity.deviceId,
   'Client-Id': identity.clientId,
   'Content-Type': 'application/json',
   'User-Agent': 'web/motion-buddy-1.0.0',
   'Accept-Language': 'zh-CN',
-  'Activation-Version': activationVersion,
+  'Activation-Version': '1',
 })
 
 export async function fetchOta(identity: VirtualDeviceIdentity): Promise<OtaResponse> {
@@ -33,11 +34,8 @@ export async function pollActivation(identity: VirtualDeviceIdentity): Promise<'
   const activation = identity.activation
   if (!activation?.challenge) throw new Error('激活挑战已失效，请重新获取激活码')
   const response = await fetch(`${OTA_URL}/activate`, {
-    method: 'POST', headers: headers(identity, '2'), signal: AbortSignal.timeout(10_000),
-    body: JSON.stringify({ Payload: {
-      algorithm: 'hmac-sha256', serial_number: identity.serialNumber,
-      challenge: activation.challenge, hmac: activationHmac(identity, activation.challenge),
-    } }),
+    method: 'POST', headers: headers(identity), signal: AbortSignal.timeout(10_000),
+    body: '{}',
   })
   if (response.status === 200) return 'ready'
   if (response.status === 202) return 'waiting'

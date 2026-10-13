@@ -332,13 +332,14 @@ export function useCoachVoice(enabled: boolean, context: CoachContext, options: 
     }
     const Recognizer = getRecognizer()
     if (!Recognizer) {
+      setErrorMessage('当前浏览器不支持语音识别；文字反馈仍可使用。可用桌面 Chrome 或 Edge 重试。')
       setVoiceState('unsupported')
       return
     }
     // 非安全上下文（如用 http://192.168.x.x 打开）浏览器会直接禁用麦克风，
     // 表现就是「喊了完全没反应」。这里提前拦住并说清原因。
     if (!window.isSecureContext) {
-      setErrorMessage('当前用非 https 地址打开，浏览器禁用了麦克风。请改用 http://localhost:5173 访问')
+      setErrorMessage('当前用非 https 地址打开，浏览器禁用了麦克风。请改用 http://localhost:3001 访问')
       setVoiceState('failed')
       return
     }

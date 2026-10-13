@@ -156,7 +156,7 @@ router.post(
         return;
       }
       // 真正校验验证码：code 以用户邮箱为 key 存储在 verify-code.service
-      const valid = verifyCode(req.user.email, req.body.code);
+      const valid = await verifyCode(req.user.email, req.body.code);
       if (!valid) {
         throw new ValidationError('验证码错误或已过期');
       }

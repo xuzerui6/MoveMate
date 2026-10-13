@@ -36,7 +36,19 @@ async function explainFrame(config: VisionConfig, identity: VirtualDeviceIdentit
   try { return JSON.parse(body) as unknown } catch { return { success: true, text: body } }
 }
 
-export function attachXiaozhi(server: HttpServer) {
+// Abnormal/no-status codes are local observations, never valid close frames.
+export function upstreamCloseCode(code: number): number {
+  return Number.isInteger(code) && ((code >= 1000 && code <= 1014 && ![1004, 1005, 1006].includes(code))
+    || (code >= 3000 && code <= 4999)) ? code : 1012
+}
+
+function closeReason(reason: Buffer): string {
+  let text = reason.toString()
+  while (Buffer.byteLength(text) > 123) text = [...text].slice(0, -1).join('')
+  return text
+}
+
+export function attachXiaozhi(server: HttpServer, fetchDeviceOta = fetchOta) {
 const wss = new WebSocketServer({ noServer: true, maxPayload: 2000000 })
 server.on('upgrade',(request,socket,head)=>{
  if(request.url?.split('?')[0] !== '/api/xiaozhi/socket') return
@@ -57,9 +69,14 @@ wss.on('connection', async (browser, request) => {
   let upstream: WebSocket | null = null
   let vision: VisionConfig | null = null
   const pending: Array<{ data: Buffer; binary: boolean }> = []
+  browser.on('close', () => {
+    pending.length = 0
+    upstream?.close(1000, 'browser closed')
+  })
 
   try {
-    const ota = await fetchOta(identity)
+    const ota = await fetchDeviceOta(identity)
+    if (browser.readyState !== WebSocket.OPEN) return
     if (!ota.websocket?.url || !ota.websocket.token || ota.activation) return browser.close(4401, 'device activation required')
     upstream = new WebSocket(ota.websocket.url, {
       headers: {
@@ -88,14 +105,17 @@ wss.on('connection', async (browser, request) => {
       browser.send(text)
     })
     upstream.on('close', (code, reason) => {
-      if (browser.readyState === WebSocket.OPEN) browser.close(code || 1012, reason.toString().slice(0, 120))
+      if (browser.readyState === WebSocket.OPEN) browser.close(upstreamCloseCode(code), closeReason(reason))
     })
     upstream.on('error', () => {
       if (browser.readyState === WebSocket.OPEN) browser.send(json({ bridge: 'error', message: '小智上游连接失败' }))
     })
   } catch (error) {
-    browser.send(json({ bridge: 'error', message: error instanceof Error ? error.message : '小智连接失败' }))
-    return browser.close(1011, 'upstream unavailable')
+    if (browser.readyState === WebSocket.OPEN) {
+      browser.send(json({ bridge: 'error', message: error instanceof Error ? error.message : '小智连接失败' }))
+      browser.close(1011, 'upstream unavailable')
+    }
+    return
   }
 
   browser.on('message', async (data, isBinary) => {
@@ -134,7 +154,6 @@ wss.on('connection', async (browser, request) => {
     if (upstream?.readyState === WebSocket.OPEN) upstream.send(bytes, { binary: isBinary })
     else pending.push({ data: bytes, binary: isBinary })
   })
-  browser.on('close', () => upstream?.close(1000, 'browser closed'))
 })
 
 return wss
