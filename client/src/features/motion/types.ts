@@ -1,3 +1,4 @@
+import type { CameraExerciseType } from './lib/exercises'
 export type Route = 'home' | 'workout' | 'summary' | 'avatar' | 'inventory'
 export type AvatarGender = 'male' | 'female'
 export type OutfitPreset = 'default' | 'penguin' | 'sakura' | 'sunset_sakura' | 'sea_runner' | 'violet_court' | 'sunlight_explorer'
@@ -9,7 +10,7 @@ export type WorkoutPhase = 'standing' | 'descending' | 'bottom' | 'ascending'
 export type XiaozhiState = 'off' | 'idle' | 'activating' | 'connecting' | 'listening' | 'thinking' | 'speaking' | 'reconnecting' | 'fallback' | 'failed'
 export type XiaozhiIdentityMode = 'personal' | 'shared' | 'disabled'
 export type CoachEmotion = 'neutral' | 'listening' | 'thinking' | 'happy' | 'confident' | 'caring' | 'concerned' | 'celebrating'
-export type PoseIssue = 'out_of_frame' | 'insufficient_depth' | 'knee_instability' | 'excessive_trunk_lean' | 'asymmetry'
+export type PoseIssue = 'out_of_frame' | 'insufficient_depth' | 'knee_instability' | 'excessive_trunk_lean' | 'asymmetry' | 'insufficient_range' | 'unstable_movement' | 'body_alignment' | 'poor_coordination'
 export type PoseConfidence = 'stable' | 'adjust' | 'uncertain'
 
 export interface FormBreakdown {
@@ -76,6 +77,8 @@ export type XiaozhiDeviceBootstrap =
   | { status: 'activating'; mode: 'personal'; code: string; message: string; expiresAt: number }
 
 export interface WorkoutContext {
+  exerciseType: CameraExerciseType
+  countUnit: string
   reps: number
   targetReps: number
   phase: WorkoutPhase
@@ -101,7 +104,10 @@ export interface Equipment {
   owned: boolean
 }
 
+export interface ScoreAccumulator extends FormBreakdown { count: number; total: number }
+
 export interface WorkoutMetrics {
+  scoreAccumulator?: ScoreAccumulator
   reps: number
   targetReps: number
   formScore: number
@@ -122,7 +128,7 @@ export interface WorkoutSession extends WorkoutMetrics, ZoneDurations {
   source?: 'camera' | 'timer' | 'demo';
   settled?: boolean;
   id: string
-  exerciseType: 'squat'
+  exerciseType: string
   startTime: string
   endTime: string | null
   durationSeconds: number

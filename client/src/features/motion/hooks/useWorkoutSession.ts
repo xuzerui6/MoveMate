@@ -1,3 +1,4 @@
+import type { CameraExerciseType } from '../lib/exercises'
 import { useEffect, useRef, useState } from 'react'
 import { emptyZoneDurations, incrementZone } from '../lib/heartRate'
 import type { FormBreakdown, HeartRateZone, PoseIssue, VisionInsight, WorkoutMetrics, WorkoutSession } from '../types'
@@ -22,6 +23,7 @@ export function useWorkoutSession(
   paused: boolean,
   assistant: { visionInsights: VisionInsight[]; conversationTurnCount: number } = EMPTY_ASSISTANT,
   restoredSeconds = 0,
+  exerciseType: CameraExerciseType = 'squat',
 ) {
   const [session, setSession] = useState<WorkoutSession | null>(null)
   const sessionRef = useRef<WorkoutSession | null>(null)
@@ -42,7 +44,7 @@ export function useWorkoutSession(
     heartSamples.current = { count: 0, total: 0, max: 0 }
     previousPacket.current = null
     const started: WorkoutSession = {
-      id: newId(), exerciseType: 'squat', startTime: new Date().toISOString(), endTime: null, durationSeconds: restoredSeconds,
+      id: newId(), exerciseType, startTime: new Date().toISOString(), endTime: null, durationSeconds: restoredSeconds,
       ...metrics, currentBpm: null, averageBpm: null, maxBpm: null, heartRateSource: null,
       ...emptyZoneDurations(), xpEarned: 0, unlocked: [],
       visionInsights: assistant.visionInsights, conversationTurnCount: assistant.conversationTurnCount,

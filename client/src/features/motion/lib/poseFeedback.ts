@@ -3,6 +3,10 @@ import type { PoseFeedback, PoseIssue, WorkoutPhase } from '../types'
 import type { SquatFrameAnalysis } from './squatMetrics'
 
 export const POSE_ISSUE_COPY: Record<PoseIssue, { label: string; action: string; joints: number[] }> = {
+  insufficient_range: { label: '动作幅度偏小', action: '在舒服的范围内完成展开或屈伸，再回到起始位置', joints: [13, 14, 15, 16, 25, 26] },
+  unstable_movement: { label: '支撑或落地不稳', action: '放慢一点，先保持支撑稳定', joints: [23, 24, 27, 28] },
+  body_alignment: { label: '身体姿态需调整', action: '收紧核心，保持躯干稳定', joints: [11, 12, 23, 24] },
+  poor_coordination: { label: '动作配合需调整', action: '放慢一点，让动作的各个部分配合起来', joints: [13, 14, 25, 26] },
   out_of_frame: { label: '身体未完整入镜', action: '往后站一点，让肩、髋、膝和脚踝都入镜', joints: [11, 12, 23, 24, 25, 26, 27, 28] },
   insufficient_depth: { label: '下蹲深度不足', action: '下一次可以再低一点点，以舒服为准', joints: [23, 24, 25, 26] },
   knee_instability: { label: '膝盖轨迹不稳', action: '膝盖跟着脚尖方向走，脚掌保持贴地', joints: [25, 26, 27, 28] },

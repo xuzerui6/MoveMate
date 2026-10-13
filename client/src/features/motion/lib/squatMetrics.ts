@@ -20,12 +20,13 @@ const angle = (a: NormalizedLandmark, b: NormalizedLandmark, c: NormalizedLandma
 const distance = (a: NormalizedLandmark, b: NormalizedLandmark) => Math.hypot(a.x - b.x, a.y - b.y)
 const midpoint = (a: NormalizedLandmark, b: NormalizedLandmark): NormalizedLandmark => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, z: ((a.z || 0) + (b.z || 0)) / 2, visibility: Math.min(a.visibility || 1, b.visibility || 1) })
 
-export function analyzeSquatFrame(points: NormalizedLandmark[]): SquatFrameAnalysis | null {
+export function analyzeSquatFrame(points: NormalizedLandmark[], aspectRatio = 1): SquatFrameAnalysis | null {
   if (points.length < 29) return null
   const required = [11, 12, 23, 24, 25, 26, 27, 28]
   const confidence = Math.min(...required.map(index => points[index].visibility ?? 0))
   if (confidence < .55) return null
   if (required.some(index => points[index].x < .035 || points[index].x > .965 || points[index].y < .025 || points[index].y > .985)) return null
+  points = points.map(p => ({ ...p, x: p.x * aspectRatio }))
   const leftKnee = angle(points[23], points[25], points[27])
   const rightKnee = angle(points[24], points[26], points[28])
   const kneeAngle = (leftKnee + rightKnee) / 2

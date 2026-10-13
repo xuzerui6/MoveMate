@@ -30,6 +30,54 @@ let base: string;
 let host: any, player1: any, player2: any;
 const sockets: any[] = [];
 
+test('four camera exercises settle by complete reps, demo stays zero and squat totals stay isolated', async () => {
+  const owner=await account('camera-exercises'),other=await account('camera-other');
+  const baseline=await motion.trainingState(owner.user.id);
+  for(const sportType of ['squat','jumping_jack','high_knees','push_up']) {
+    const started=await request('/sport-sessions',{sportType,source:'camera'},owner.token);
+    assert.equal(started.status,200);const id=started.body.data.id;
+    assert.equal((await request(`/sport-sessions/${id}/finish`,{reps:2},other.token)).status,404);
+    const stats={reps:2,perfectReps:2,scoreAccumulator:{count:2,total:190,depth:190,stability:190,trunk:190,symmetry:190},correctionCounts:{body_alignment:1}};
+    assert.equal((await request(`/sport-sessions/${id}/progress`,stats,owner.token)).status,200);
+    await motion.sessionAction(id,owner.user.id,'pause');
+    const restored=await motion.activeSession(owner.user.id);
+    assert.equal(restored.reps,2);assert.equal(restored.metrics.formScore,95);assert.equal(restored.metrics.correctionCounts.body_alignment,1);
+    await motion.sessionAction(id,owner.user.id,'resume');
+    const finished=await motion.sessionAction(id,owner.user.id,'finish');assert.equal(finished.xpEarned,4);
+    assert.equal((await motion.sessionAction(id,owner.user.id,'finish',{reps:999})).xpEarned,4);
+    const demo=await motion.createSession(owner.user.id,{sportType,source:'demo'});
+    assert.equal((await motion.sessionAction(demo.id,owner.user.id,'finish',{reps:20,formScore:100})).xpEarned,0);
+    const zero=await motion.createSession(owner.user.id,{sportType,source:'camera'});
+    assert.equal((await motion.sessionAction(zero.id,owner.user.id,'finish',{reps:0,formScore:100})).xpEarned,0);
+  }
+  const state=await motion.trainingState(owner.user.id);
+  assert.equal(state.totalXp-baseline.totalXp,16);assert.equal(state.totalSquats,2);
+  assert.equal(state.completedWorkoutCount,4);assert.equal(state.highScoreWorkoutCount,4);
+  assert.equal(state.unlockedOutfits.violet_court,true);
+  assert.equal(state.history.filter((s:any)=>s.source==='camera'&&s.reps===2).length,4);
+  assert.equal((await motion.trainingState(other.user.id)).totalXp,0);
+  await assert.rejects(motion.createSession(owner.user.id,{sportType:'burpee',source:'camera'}),/不支持/);
+  await assert.rejects(motion.createSession(owner.user.id,{sportType:'toString',source:'demo'}),/不支持/);
+});
+
+test('camera metric merging survives pause, stale progress, rollback and concurrent finish',async()=>{
+  const owner=await account('camera-merge');
+  const row=await motion.createSession(owner.user.id,{sportType:'high_knees',source:'camera'});
+  await assert.rejects(motion.createSession(owner.user.id,{id:row.id,sportType:'push_up',source:'camera'}),/不可更改/);
+  await assert.rejects(motion.createSession(owner.user.id,{id:row.id,sportType:'high_knees',source:'demo'}),/不可更改/);
+  const first={reps:1,formScore:90,perfectReps:1,formBreakdown:{depth:90,stability:85,trunk:95,symmetry:90}};
+  await motion.sessionAction(row.id,owner.user.id,'progress',first);
+  await motion.sessionAction(row.id,owner.user.id,'pause',{reps:2,scoreAccumulator:{count:2,total:180,depth:180,stability:170,trunk:190,symmetry:180}});
+  await motion.sessionAction(row.id,owner.user.id,'resume');
+  await motion.sessionAction(row.id,owner.user.id,'progress',{reps:1,formScore:10});
+  let active=await motion.activeSession(owner.user.id);assert.equal(active.reps,2);assert.equal(active.metrics.formScore,90);assert.equal(active.metrics.perfectReps,1);
+  await assert.rejects(motion.sessionAction(row.id,owner.user.id,'pause',{reps:2,scoreAccumulator:{count:2,total:999,depth:180,stability:170,trunk:190,symmetry:180}}),/评分累计/);
+  active=await motion.activeSession(owner.user.id);assert.equal(active.status,'running');assert.equal(active.metrics.formScore,90);
+  const results=await Promise.all([motion.sessionAction(row.id,owner.user.id,'finish'),motion.sessionAction(row.id,owner.user.id,'finish')]);
+  assert.equal(results[0].xpEarned,4);assert.equal(results[1].xpEarned,4);assert.equal((await motion.trainingState(owner.user.id)).totalXp,4);
+  const next=await motion.createSession(owner.user.id,{sportType:'push_up',source:'camera'});assert.equal((await motion.sessionAction(next.id,owner.user.id,'finish')).xpEarned,0);
+});
+
 async function request(route: string, data?: any, token?: string, method = data ? 'POST' : 'GET') {
   const response = await fetch(base + '/api/v1' + route, {
     method, headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },

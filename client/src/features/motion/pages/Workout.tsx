@@ -1,3 +1,4 @@
+import {getErrorMessage} from '../../../api/client'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Header } from '../components/Header'
 import { Icon } from '../components/Icons'
@@ -8,7 +9,8 @@ import { createCorrectionGateState, decideCorrectionCue, POSE_ISSUE_COPY } from 
 import { unlockAudio } from '../lib/tts'
 import { useHeartRateMonitor } from '../hooks/useHeartRateMonitor'
 import { usePose } from '../hooks/usePose'
-import { useSquatMetrics } from '../hooks/useSquatMetrics'
+import { useExerciseMetrics } from '../hooks/useExerciseMetrics'
+import {exerciseInfo,type CameraExerciseType} from '../lib/exercises'
 import { useWorkoutSession } from '../hooks/useWorkoutSession'
 import { useStore } from '../lib/store'
 import type { SportSession } from '../lib/store'
@@ -25,24 +27,37 @@ const VOICE_LABEL: Record<XiaozhiState, string> = {
 const SOURCE_LABEL = { xiaozhi: '小智官方音色', compatible: '兼容模型 · 仅文字', local: '本地话术 · 仅文字' }
 const POSE_STATUS = { stable: '姿势稳定', adjust: '建议调整', uncertain: '无法判断' }
 
-export function Workout({ back, finish, existing }: { back: () => void; finish: (session: WorkoutSession) => Promise<void>; existing?:SportSession }) {
+export function Workout({ back, finish, existing, exerciseType }: { exerciseType:CameraExerciseType; back: () => void; finish: (session: WorkoutSession) => Promise<void>; existing?:SportSession }) {
+  const exercise=exerciseInfo(exerciseType)
   const { state: appState, startSession, act } = useStore()
   const serverId = useRef<string>('')
+  const closing=useRef(false)
+  const accountToken=useRef(localStorage.getItem('token'))
   const [busy,setBusy]=useState(false)
   const [failure,setFailure]=useState('')
+  const [syncFailed,setSyncFailed]=useState(false)
   const [active, setActive] = useState(false)
   const [simulatedPose, setSimulatedPose] = useState(false)
   const [paused, setPaused] = useState(false)
+  useEffect(()=>{if(active)document.querySelector('.motion-screen')?.scrollTo({top:0})},[active])
   const [visionConsent, setVisionConsent] = useState<boolean | null>(null)
   const pose = usePose(active && !simulatedPose)
   useEffect(()=>{if(active && !simulatedPose && pose.status==='idle')void pose.start()},[active,simulatedPose,pose.status])
   const heartRate = useHeartRateMonitor(appState.age)
-  const metrics = useSquatMetrics(pose.landmarks, simulatedPose, active, 20, paused, existing ? {...existing.metrics,reps:existing.reps} : {})
-  const workout = useWorkoutSession(metrics, heartRate, active, paused, undefined,existing?.effectiveSeconds||0)
+  const {metrics,demoLandmarks} = useExerciseMetrics(exerciseType,pose.landmarks,simulatedPose,active,paused,pose.videoRef.current?.videoWidth && pose.videoRef.current.videoHeight ? pose.videoRef.current.videoWidth/pose.videoRef.current.videoHeight : 1,existing ? {...existing.metrics,reps:existing.reps} : {})
+  const workout = useWorkoutSession(metrics, heartRate, active, paused, undefined,existing?.effectiveSeconds||0,exerciseType)
   const session = workout.session
+  const progress=useRef<Record<string,unknown>>({})
+  progress.current={...session,...metrics}
+  useEffect(()=>{
+    const flush=()=>{if(serverId.current && !closing.current && accountToken.current)void fetch('/api/v1/sport-sessions/'+serverId.current+'/progress',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+accountToken.current},body:JSON.stringify(progress.current),keepalive:true}).catch(()=>undefined)}
+    window.addEventListener('pagehide',flush)
+    return()=>{window.removeEventListener('pagehide',flush);flush()}
+  },[])
+  const leave=async()=>{if(!active){back();return}setBusy(true);try{await act(serverId.current,'pause',progress.current);back()}catch(err){setFailure(getErrorMessage(err))}finally{setBusy(false)}}
 
   const voiceContext: WorkoutContext = useMemo(() => ({
-    reps: metrics.reps, targetReps: metrics.targetReps, phase: metrics.phase,
+    exerciseType,countUnit:exercise.unit,reps: metrics.reps, targetReps: metrics.targetReps, phase: metrics.phase,
     durationSeconds: session?.durationSeconds || 0,
     bpm: heartRate.connected && !heartRate.signalInterrupted ? heartRate.currentBpm : null,
     active: active && !paused,
@@ -52,7 +67,7 @@ export function Workout({ back, finish, existing }: { back: () => void; finish: 
     lastRepAt: null,
     lastRepIssues: metrics.lastRepIssues,
     latestVisionInsight: null,
-  }), [metrics.reps, metrics.targetReps, metrics.phase, metrics.poseFeedback.status, metrics.poseFeedback.issues, metrics.formScore, session?.durationSeconds, heartRate.connected, heartRate.signalInterrupted, heartRate.currentBpm, active, paused])
+  }), [exerciseType,exercise.unit,metrics.reps, metrics.targetReps, metrics.phase, metrics.poseFeedback.status, metrics.poseFeedback.issues, metrics.formScore, session?.durationSeconds, heartRate.connected, heartRate.signalInterrupted, heartRate.currentBpm, active, paused])
 
   const voice = useXiaozhiCoach({ enabled: active, context: voiceContext, videoRef: pose.videoRef, visionConsent: visionConsent === true })
   const voiceRef = useRef(voice)
@@ -60,18 +75,18 @@ export function Workout({ back, finish, existing }: { back: () => void; finish: 
   useEffect(() => { voice.sendWorkoutContext(voiceContext) }, [voiceContext])
 
   const personalBest = useMemo(
-    () => appState.history.reduce((best, item) => Math.max(best, item.reps || 0), 0),
-    [appState.history],
+    () => appState.history.filter(item=>item.exerciseType===exerciseType && item.source!=='demo').reduce((best, item) => Math.max(best, item.reps || 0), 0),
+    [appState.history,exerciseType],
   )
   const cueStateRef = useRef(createCueState())
   const correctionGateRef = useRef(createCorrectionGateState())
   const lastRepAtRef = useRef(Date.now())
-  const cueInputRef = useRef({ reps: 0, targetReps: 0, feedback: '', phase: 'standing', demo: false })
+  const cueInputRef = useRef({ reps: 0, targetReps: 0, feedback: '', phase: 'standing', demo: false, countUnit:exercise.unit, exerciseType })
 
   useEffect(() => {
     cueInputRef.current = {
       reps: metrics.reps, targetReps: metrics.targetReps, feedback: metrics.feedback,
-      phase: metrics.phase, demo: true, // 逐帧提示只显示；语音由完整动作门控器决定。
+      phase: metrics.phase, demo: true, countUnit:exercise.unit, exerciseType, // 逐帧提示只显示；语音由完整动作门控器决定。
     }
   }, [metrics.reps, metrics.targetReps, metrics.feedback, metrics.phase])
   useEffect(() => { lastRepAtRef.current = Date.now() }, [metrics.reps])
@@ -90,7 +105,8 @@ export function Workout({ back, finish, existing }: { back: () => void; finish: 
     voiceRef.current.captureRepFrame()
   }, [active, paused, simulatedPose, visionConsent, metrics.phase, metrics.reps])
 
-  const syncedRepRef = useRef(0)
+  useEffect(()=>{if(paused || !metrics.poseFeedback.calibrated)capturedBottomRepRef.current=-1},[paused,metrics.poseFeedback.calibrated])
+  const syncedRepRef = useRef(existing?.reps||0)
   useEffect(() => {
     if (!active || metrics.reps <= syncedRepRef.current) return
     syncedRepRef.current = metrics.reps
@@ -98,7 +114,7 @@ export function Workout({ back, finish, existing }: { back: () => void; finish: 
   }, [active, metrics.reps, metrics.lastRepIssues])
   useEffect(() => {
     if (active) return
-    syncedRepRef.current = 0
+    syncedRepRef.current = existing?.reps||0
     capturedBottomRepRef.current = -1
   }, [active])
 
@@ -114,10 +130,10 @@ export function Workout({ back, finish, existing }: { back: () => void; finish: 
   }, [active, paused, personalBest])
 
   // 矫姿语音只在一次完整动作结束后决策；连续问题才提醒，改善则优先确认。
-  const correctedRepRef = useRef(0)
+  const correctedRepRef = useRef(existing?.reps||0)
   useEffect(()=>{
-    if(!active || !serverId.current || metrics.reps===0) return
-    const timer=setTimeout(()=>{void act(serverId.current,'progress',{reps:metrics.reps,formScore:metrics.formScore}).catch(err=>setFailure(err instanceof Error?err.message:'记录暂未同步'))},400)
+    if(!active || closing.current || !serverId.current || metrics.reps===0) return
+    const timer=setTimeout(()=>{!closing.current && void act(serverId.current,'progress',progress.current).then(()=>{setSyncFailed(false);setFailure('')}).catch(err=>{setSyncFailed(true);setFailure(getErrorMessage(err))})},400)
     return()=>clearTimeout(timer)
   },[active,metrics.reps])
   useEffect(() => {
@@ -130,26 +146,27 @@ export function Workout({ back, finish, existing }: { back: () => void; finish: 
   const begin = async (demo:boolean) => {
     if (!demo && visionConsent === null) return
     setBusy(true);setFailure('')
-    try {const record=existing?await act(existing.id,'resume'):await startSession('squat',demo?'demo':'camera');serverId.current=record.id;unlockAudio();voice.prepareAudio();setSimulatedPose(demo);setActive(true)} catch(err){setFailure(err instanceof Error?err.message:'开始失败')}finally{setBusy(false)}
+    try {const record=existing?await act(existing.id,'resume'):await startSession(exerciseType,demo?'demo':'camera');if(record.sportType!==exerciseType || record.source!==(demo?'demo':'camera'))throw new Error('现有运动的动作或来源不同，请返回训练入口恢复原记录');serverId.current=record.id;unlockAudio();voice.prepareAudio();setSimulatedPose(demo);setActive(true)} catch(err){setFailure(getErrorMessage(err))}finally{setBusy(false)}
   }
+  const retrySync=async()=>{setBusy(true);try{await act(serverId.current,'progress',progress.current);setSyncFailed(false);setFailure('')}catch(err){setFailure(getErrorMessage(err))}finally{setBusy(false)}}
   const startRealPose=()=>void begin(false)
   const startDemo=()=>void begin(true)
-  const togglePause=async()=>{setBusy(true);try{await act(serverId.current,paused?'resume':'pause',{reps:metrics.reps});setPaused(!paused)}catch(err){setFailure(err instanceof Error?err.message:'操作失败')}finally{setBusy(false)}}
-  const done=async()=>{const completed=workout.finish();if(!completed)return;setBusy(true);try{await finish({...completed,id:serverId.current,source:simulatedPose?'demo':'camera',visionInsights:[],conversationTurnCount:voice.conversationTurnCount})}finally{setBusy(false)}}
+  const togglePause=async()=>{setBusy(true);try{await act(serverId.current,paused?'resume':'pause',progress.current);setPaused(!paused);setFailure('');setSyncFailed(false)}catch(err){setFailure(getErrorMessage(err))}finally{setBusy(false)}}
+  const done=async()=>{const completed=workout.finish();if(!completed)return;setBusy(true);closing.current=true;try{await finish({...completed,id:serverId.current,source:simulatedPose?'demo':'camera',visionInsights:[],conversationTurnCount:voice.conversationTurnCount})}catch(err){closing.current=false;setFailure(getErrorMessage(err))}finally{setBusy(false)}}
   const scoreLabel = metrics.formScore === 0 ? '待完成' : metrics.formScore >= 90 ? '优秀' : metrics.formScore >= 80 ? '良好' : '需调整'
 
   if (!active) return <div className="page workout-page setup">
-    <Header title="深蹲 SQUAT" back={back}/>{failure&&<p role="alert">{failure}</p>}
-    <div className="setup-visual"><div className="scan-ring"><Icon name="spark" size={42}/></div><span className="eyebrow">准备训练</span><h2>选择识别方式</h2><p>姿态识别和实时矫正始终在浏览器本地运行；原始视频不会保存。</p></div>
+    <Header title={`${exercise.name} ${exercise.english}`} back={()=>void leave()}/>{failure&&<p role="alert">{failure}</p>}
+    <div className="setup-visual"><div className="scan-ring"><Icon name="spark" size={42}/></div><span className="eyebrow">准备训练</span><h2>{exercise.name} · 准备训练</h2><p>{exercise.placement}</p><p>{exercise.instruction}</p><p>姿态识别和实时矫正始终在浏览器本地运行；原始视频不会保存。</p></div>
     <div className="vision-consent" role="group" aria-label="关键帧复核选择">
       <b>开始前确认视觉范围</b>
-      <p>允许后，每次完整动作最多上传一张最低点附近的压缩关键帧；你主动说“看看动作”时也可即时复核。图片不落盘、不写入训练历史。</p>
+      <p>允许后，每次完整动作最多上传一张动作关键阶段的压缩关键帧；你主动说“看看动作”时也可即时复核。图片不落盘、不写入训练历史。</p>
       <div>
         <button className={visionConsent === false ? 'selected' : ''} onClick={() => setVisionConsent(false)}>仅本地分析</button>
         <button className={visionConsent === true ? 'selected' : ''} onClick={() => setVisionConsent(true)}>允许智能复核</button>
       </div>
     </div>
-    {existing&&<p>恢复记录：已完成 {existing.reps} 次，已计时 {existing.effectiveSeconds} 秒</p>}
+    {existing&&<p>恢复记录：已完成 {existing.reps} {exercise.unit}，已计时 {existing.effectiveSeconds} 秒</p>}
     <button className="primary" disabled={busy || visionConsent === null || existing?.source==='demo'} onClick={startRealPose}><Icon name="camera"/> 开启 AI 摄像头识别</button>
     <button className="secondary" disabled={busy || existing?.source==='camera'} onClick={startDemo}><Icon name="play"/> 使用演示动作</button>
     <div className="voice-hint"><Icon name="mic" size={15}/><span><b>小智音色对话 · 说「你好动伴」连续聊</b><small>所有可听回复只播放小智官方音频；语音由云端实时处理，演示账号可能保留对话历史，本站不保存完整录音。</small></span></div>
@@ -157,17 +174,17 @@ export function Workout({ back, finish, existing }: { back: () => void; finish: 
   </div>
 
   return <div className="page workout-page live">
-    <Header title="深蹲 SQUAT" back={back} action={<span className="live-pill"><i/>{simulatedPose ? 'DEMO' : 'AI 识别中'}</span>}/>
+    <Header title={`${exercise.name} ${exercise.english}`} back={()=>void leave()} action={<span className="live-pill"><i/>{simulatedPose ? '演示 · 不计 XP' : 'AI 识别中'}</span>}/>
     {voice.state === 'activating' && voice.identityMode === 'personal' && <div className="activation-card"><span className="coach-face caring">AI</span><div><b>绑定小智账号</b><small>{voice.activationMessage}</small><strong>{voice.activationCode}</strong><a href="https://xiaozhi.me" target="_blank" rel="noreferrer">打开 xiaozhi.me 完成绑定</a></div></div>}
     <div className="workout-stats"><div><Icon name="flame"/><span><b>{format(session?.durationSeconds || 0)}</b><small>训练时长</small></span></div><div><Icon name="heart"/><span><b>{!heartRate.connected ? '未连接' : heartRate.signalInterrupted ? '信号中断' : heartRate.currentBpm ? `${heartRate.currentBpm} BPM` : '等待数据'}</b><small>{heartRate.currentZone ? `BLE · Zone ${heartRate.currentZone}` : 'BLE 心率设备'}</small></span></div></div>
     <div className="workout-actions"><button className="secondary" disabled={busy} onClick={()=>void togglePause()}><Icon name={paused ? 'play' : 'pause'}/>{paused ? '继续' : '暂停'}</button><button className="primary" disabled={busy} onClick={()=>void done()}><Icon name="check"/>完成本组</button></div>
     <div className="camera-card">
-      <PoseCanvas videoRef={pose.videoRef} landmarks={pose.landmarks} demo={simulatedPose} phase={metrics.phase} affectedJoints={metrics.poseFeedback.affectedJoints}/>
+      <PoseCanvas videoRef={pose.videoRef} landmarks={simulatedPose?demoLandmarks:pose.landmarks} demo={simulatedPose} phase={metrics.phase} affectedJoints={metrics.poseFeedback.affectedJoints}/>
       <div className="camera-label"><i/>{simulatedPose ? 'DEMO 姿态模型' : pose.status === 'loading' ? '模型加载中' : pose.status === 'denied' ? '摄像头被拒绝' : pose.status === 'error' ? '姿态模型加载失败' : 'AI 骨骼追踪'}</div>
-      <div className="phase-tag">{metrics.phase.toUpperCase()}</div>
-      <div className={`pose-confidence ${metrics.poseFeedback.status}`}><b>{POSE_STATUS[metrics.poseFeedback.status]}</b><small>{metrics.poseFeedback.calibrated ? `${Math.round(metrics.poseFeedback.confidence * 100)}% 置信` : '站姿校准中'}</small></div>
+      <div className="phase-tag">{metrics.phase==='standing'?(exerciseType==='push_up'?'伸臂支撑':'起始位置'):metrics.phase==='bottom'?'动作关键阶段':'动作进行中'}</div>
+      <div className={`pose-confidence ${metrics.poseFeedback.status}`}><b>{POSE_STATUS[metrics.poseFeedback.status]}</b><small>{metrics.poseFeedback.calibrated ? `${Math.round(metrics.poseFeedback.confidence * 100)}% 置信` : '起始姿势校准中'}</small></div>
     </div>
-    <div className="count-score"><div className="rep-count"><b>{metrics.reps}</b><span>/ {metrics.targetReps} 次</span></div><div className="score-ring" style={{ '--score': `${metrics.formScore * 3.6}deg` } as React.CSSProperties}><div><b>{metrics.formScore || '--'}</b><small>分</small></div></div><div className="score-copy"><small>平均动作评分</small><b>{scoreLabel}</b></div></div>
+    <div className="count-score"><div className="rep-count"><b>{metrics.reps}</b><span>/ {metrics.targetReps} {exercise.unit}</span></div><div className="score-ring" style={{ '--score': `${metrics.formScore * 3.6}deg` } as React.CSSProperties}><div><b>{metrics.formScore || '--'}</b><small>分</small></div></div><div className="score-copy"><small>平均动作评分</small><b>{scoreLabel}</b></div></div>
     <div className={`feedback ${metrics.poseFeedback.status}`}><Icon name="spark"/><span><b>{metrics.poseFeedback.primaryIssue ? POSE_ISSUE_COPY[metrics.poseFeedback.primaryIssue].label : POSE_STATUS[metrics.poseFeedback.status]}</b><small>{metrics.feedback}</small></span></div>
     <div className={`coach-panel ${voice.state}`}>
       <span className={`coach-face ${voice.emotion}`} aria-label={`动伴表情：${voice.emotion}`}>{voice.emotion === 'celebrating' ? 'AI' : voice.emotion === 'concerned' ? 'AI' : voice.emotion === 'thinking' ? 'AI' : voice.emotion === 'listening' ? 'AI' : 'AI'}</span>
@@ -180,14 +197,15 @@ export function Workout({ back, finish, existing }: { back: () => void; finish: 
     </div>
     <div className="xiaozhi-sync" aria-live="polite">
       <span className={voice.dataSyncState.mcpReady ? 'ok' : ''}>{voice.dataSyncState.mcpReady ? 'MCP 已连接' : 'MCP 等待中'}</span>
-      {voice.dataSyncState.lastRepSynced > 0 && <span className="ok">第 {voice.dataSyncState.lastRepSynced} 次数据已同步</span>}
+      {voice.dataSyncState.lastRepSynced > 0 && <span className="ok">第 {voice.dataSyncState.lastRepSynced} {exercise.unit}数据已同步</span>}
       {voice.dataSyncState.visionStatus !== 'idle' && <span className={voice.dataSyncState.visionStatus === 'failed' ? 'error' : voice.dataSyncState.visionStatus === 'reviewed' ? 'ok' : ''}>
-        {voice.dataSyncState.visionRep ? `第 ${voice.dataSyncState.visionRep} 次` : '当前'}关键帧{voice.dataSyncState.visionStatus === 'queued' ? '已排队' : voice.dataSyncState.visionStatus === 'reviewed' ? '已复核' : '复核失败'}
+        {voice.dataSyncState.visionRep ? `第 ${voice.dataSyncState.visionRep} ${exercise.unit}` : '当前'}关键帧{voice.dataSyncState.visionStatus === 'queued' ? '已排队' : voice.dataSyncState.visionStatus === 'reviewed' ? '已复核' : '复核失败'}
       </span>}
       {voice.dataSyncState.wakeDetected && <span className="heard">已听到唤醒词</span>}
     </div>
     <div className="zone-card"><div><Icon name="heart"/><span>当前心率<b>{!heartRate.connected ? '未连接' : heartRate.signalInterrupted ? '信号中断' : heartRate.currentBpm ? <>{heartRate.currentBpm} <small>BPM</small></> : '等待数据'}</b></span></div><div className="zones">{[1, 2, 3, 4, 5].map(zone => <span key={zone} className={heartRate.currentZone === zone ? 'current' : ''}><i/>Zone {zone}</span>)}</div></div>
-    {failure&&<p role="alert">{failure}</p>}
+    {!simulatedPose && ['denied','error'].includes(pose.status)&&<div className="motion-error" role="alert"><p>{pose.status==='denied'?'摄像头权限被拒绝，请允许访问后重试。':'摄像头或模型暂时不可用，请重试。'}当前不计动作次数。</p><button className="secondary" onClick={()=>void pose.start()}>重试摄像头</button></div>}
+    {failure&&<div role="alert"><p>{failure}</p>{syncFailed&&<button className="secondary" disabled={busy} onClick={()=>void retrySync()}>重试同步</button>}</div>}
   </div>
 }
 

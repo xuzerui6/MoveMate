@@ -2,7 +2,7 @@ import type { FormBreakdown, PoseIssue, WorkoutSession } from '../types'
 
 export const emptyFormBreakdown = (): FormBreakdown => ({ depth: 0, stability: 0, trunk: 0, symmetry: 0 })
 export const emptyCorrectionCounts = (): Record<PoseIssue, number> => ({
-  out_of_frame: 0, insufficient_depth: 0, knee_instability: 0, excessive_trunk_lean: 0, asymmetry: 0,
+  out_of_frame: 0, insufficient_depth: 0, knee_instability: 0, excessive_trunk_lean: 0, asymmetry: 0, insufficient_range: 0, unstable_movement: 0, body_alignment: 0, poor_coordination: 0,
 })
 
 /** 旧版本训练记录没有视觉和对话字段，加载时补空值而不丢历史。 */

@@ -1,3 +1,4 @@
+import {exerciseInfo} from '../lib/exercises'
 import { AvatarFigure } from '../components/AvatarFigure'
 import { Icon } from '../components/Icons'
 import { useStore } from '../lib/store'
@@ -10,10 +11,12 @@ const fmt = (seconds: number) => `${Math.floor(seconds / 60)}:${String(seconds %
 
 export function Summary({ result, avatar, home }: { result: WorkoutSession; avatar: () => void; home: () => void }) {
   const { state, setActiveOutfit, markOutfitsSeen } = useStore()
-  const grade = result.formScore >= 90 ? 'S' : result.formScore >= 80 ? 'A' : result.formScore >= 70 ? 'B' : 'C'
+  const grade = !result.reps ? '—' : result.formScore >= 90 ? 'S' : result.formScore >= 80 ? 'A' : result.formScore >= 70 ? 'B' : 'C'
   const zones = [result.zone1Seconds, result.zone2Seconds, result.zone3Seconds, result.zone4Seconds, result.zone5Seconds]
   const corrections = (Object.entries(result.correctionCounts || {}) as [PoseIssue, number][]).filter(([, count]) => count > 0).sort((a, b) => b[1] - a[1])
-  const breakdown = [['下蹲深度', result.formBreakdown?.depth || 0], ['膝盖稳定', result.formBreakdown?.stability || 0], ['躯干控制', result.formBreakdown?.trunk || 0], ['左右对称', result.formBreakdown?.symmetry || 0]] as const
+  const exercise=exerciseInfo(result.exerciseType)
+  const labels=exercise.axes
+  const breakdown = [[labels[0], result.formBreakdown?.depth || 0], [labels[1], result.formBreakdown?.stability || 0], [labels[2], result.formBreakdown?.trunk || 0], [labels[3], result.formBreakdown?.symmetry || 0]] as const
   const levelBefore = result.levelBefore ?? state.level
   const levelAfter = result.levelAfter ?? state.level
   const xpBefore = result.xpBefore ?? Math.max(0, state.xp - result.xpEarned)
@@ -23,10 +26,10 @@ export function Summary({ result, avatar, home }: { result: WorkoutSession; avat
   const wear = (outfit: typeof state.activeOutfit) => { setActiveOutfit(outfit); markOutfitsSeen([outfit]) }
 
   return <div className="page summary-page">
-    <div className="summary-hero"><span className="eyebrow">{result.source==='demo'?'DEMO COMPLETE':'WORKOUT COMPLETE'}</span><h2>{result.source==='demo'?'演示训练完成！':'训练完成！'}</h2><p>{result.reps} 次深蹲 · 动作评分 {result.formScore}</p>{result.source==='demo'&&<p>演示体验，不增加 XP 或解锁装备。</p>}<div className="summary-avatar"><AvatarFigure view="front"/></div><div className="xp-earned">+{result.xpEarned} <small>XP</small></div></div>
+    <div className="summary-hero"><span className="eyebrow">{result.source==='demo'?'DEMO COMPLETE':'WORKOUT COMPLETE'}</span><h2>{result.source==='demo'?'演示训练完成！':'训练完成！'}</h2><p>{result.reps} {exercise.unit}{exercise.name} · 动作评分 {result.reps?result.formScore:'暂无'}</p>{result.source==='demo'&&<p>演示体验，不增加 XP 或解锁装备。</p>}<div className="summary-avatar"><AvatarFigure view="front"/></div><div className="xp-earned">+{result.xpEarned} <small>XP</small></div></div>
     <section className="summary-sheet">
-      <div className="score-title"><div className="big-score">{result.formScore}<small>分</small></div><div><b>{result.formScore >= 90 ? '稳定完成这一组' : '这一组认真做完了'}</b><span>{result.perfectReps} 次高质量动作 · {result.conversationTurnCount || 0} 轮陪练对话</span></div><span className="grade">{grade}</span></div>
-      <div className="summary-grid"><div><small>训练时长</small><b>{fmt(result.durationSeconds)}</b></div><div><small>完成次数</small><b>{result.reps} 次</b></div><div><small>平均心率</small><b>{result.averageBpm !== null ? `${result.averageBpm} BPM` : '无数据'}</b></div><div><small>最高心率</small><b>{result.maxBpm !== null ? `${result.maxBpm} BPM` : '无数据'}</b></div></div>
+      <div className="score-title"><div className="big-score">{result.reps?result.formScore:'—'}<small>分</small></div><div><b>{!result.reps?'尚未完成完整动作':result.formScore >= 90 ? '稳定完成这一组' : '这一组认真做完了'}</b><span>{result.perfectReps} {exercise.unit}高质量动作 · {result.conversationTurnCount || 0} 轮陪练对话</span></div><span className="grade">{grade}</span></div>
+      <div className="summary-grid"><div><small>训练时长</small><b>{fmt(result.durationSeconds)}</b></div><div><small>完成次数</small><b>{result.reps} {exercise.unit}</b></div><div><small>平均心率</small><b>{result.averageBpm !== null ? `${result.averageBpm} BPM` : '无数据'}</b></div><div><small>最高心率</small><b>{result.maxBpm !== null ? `${result.maxBpm} BPM` : '无数据'}</b></div></div>
 
       <div className="reward-stack">
         <div className="summary-xp-reward"><span><small>本次获得</small><b>+{result.xpEarned} XP</b></span><div><small>训练 {result.baseXpEarned ?? result.xpEarned} XP{result.missionXpEarned ? ` · 任务 ${result.missionXpEarned} XP` : ''}</small><strong>{xpBefore} → {xpAfter} / {requiredXp(levelAfter)}</strong></div><div className="progress"><i style={{ width: `${Math.min(100, xpAfter / requiredXp(levelAfter) * 100)}%` }}/></div></div>
@@ -36,7 +39,7 @@ export function Summary({ result, avatar, home }: { result: WorkoutSession; avat
       </div>
 
       <div className="form-breakdown"><div className="section-title"><b>动作维度</b><span>本地 MediaPipe</span></div>{breakdown.map(([label, score]) => <div key={label}><span>{label}</span><i><b style={{ width: `${score}%` }}/></i><em>{score || '--'}</em></div>)}</div>
-      <div className="correction-summary"><div className="section-title"><b>本组调整线索</b><span>{corrections.length ? '继续关注' : '整体稳定'}</span></div>{corrections.length ? corrections.slice(0, 3).map(([issue, count]) => <span key={issue}><b>{POSE_ISSUE_COPY[issue].label}</b><em>{count} 次</em></span>) : <p>没有持续出现的姿势问题，下一组继续保持节奏。</p>}</div>
+      <div className="correction-summary"><div className="section-title"><b>本组调整线索</b><span>{!result.reps?'暂无数据':corrections.length ? '继续关注' : '整体稳定'}</span></div>{corrections.length ? corrections.slice(0, 3).map(([issue, count]) => <span key={issue}><b>{POSE_ISSUE_COPY[issue].label}</b><em>{count} 次</em></span>) : <p>{result.reps?'没有持续出现的姿势问题，下一组继续保持节奏。':'尚未完成完整动作，暂无评分线索。'}</p>}</div>
       {result.visionInsights?.length > 0 && <div className="vision-summary"><div className="section-title"><b>视觉复核摘要</b><span>不保存图片</span></div><p>{result.visionInsights[result.visionInsights.length - 1].summary}</p></div>}
       <div className="zone-summary">{zones.map((seconds, index) => <div key={index}><span>Zone {index + 1}</span><b>{fmt(seconds)}</b></div>)}</div>
       <div className="reward-row"><Icon name="spark"/><span><b>成长已记录</b><small>{result.heartRateSource === 'ble' ? '心率来源：BLE 设备' : '本次未收到 BLE 心率包'}</small></span><em>+{result.xpEarned} XP</em></div>

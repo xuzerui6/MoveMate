@@ -1,3 +1,4 @@
+import {exerciseInfo} from '../lib/exercises'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useCoachVoice } from './useCoachVoice'
 import { cancelSpeech, releaseAudio } from '../lib/tts'
@@ -103,6 +104,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
   useEffect(() => { consentRef.current = visionConsent }, [visionConsent])
 
   const fallbackContext = useMemo(() => ({
+    exerciseType:context.exerciseType,countUnit:context.countUnit,
     reps: context.reps, targetReps: context.targetReps, phase: context.phase,
     durationSeconds: context.durationSeconds, bpm: context.bpm, active: context.active,
   }), [context])
@@ -566,7 +568,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
     const issue = issues[0] || null
     return enqueueVision({
       id: crypto.randomUUID(), rep, image,
-      question: `这是第 ${rep} 次完整深蹲在最低点附近的关键帧。本地检测问题：${issues.length ? issues.join('、') : '无明显问题'}。请简短复核最值得保持或调整的一点，不做医疗诊断，不推翻本地计数。`,
+      question: `这是第 ${rep} ${contextRef.current.countUnit}完整${exerciseInfo(contextRef.current.exerciseType).name}在动作关键阶段的关键帧。本地检测问题：${issues.length ? issues.join('、') : '无明显问题'}。请简短复核最值得保持或调整的一点，不做医疗诊断，不推翻本地计数。`,
       trigger: 'completed_rep', issue, retries: 0, priority: 'automatic', sessionId: sessionIdRef.current,
     })
   }, [enqueueVision, fallbackMode, sendJson, videoRef])

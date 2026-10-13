@@ -10,7 +10,13 @@ export function usePose(active: boolean) {
   const streamRef=useRef<MediaStream|null>(null)
   const mounted=useRef(true)
 
+  const starting=useRef(false)
   const start = async () => {
+    if(starting.current || !mounted.current)return
+    starting.current=true
+    streamRef.current?.getTracks().forEach(t=>t.stop())
+    landmarker.current?.close();landmarker.current=null
+    setLandmarks(null)
     setStatus('loading')
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 720, height: 960 }, audio: false })
@@ -35,7 +41,7 @@ export function usePose(active: boolean) {
     } catch (e) {
       streamRef.current?.getTracks().forEach(t=>t.stop())
       setStatus(e instanceof DOMException && e.name === 'NotAllowedError' ? 'denied' : 'error')
-    }
+    } finally { starting.current=false }
   }
 
   useEffect(() => {

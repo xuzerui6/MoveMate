@@ -1,3 +1,4 @@
+import type {CameraExerciseType} from './exercises'
 // 主动教练：决定训练中什么时候该开口说什么。
 //
 // 纯逻辑、无 IO、不碰 DOM，可以单独跑单元测试。
@@ -15,9 +16,11 @@ export interface Cue {
 }
 
 export interface CueInput {
+  countUnit?: string
+  exerciseType?:CameraExerciseType
   reps: number
   targetReps: number
-  /** useSquatMetrics 产出的当前提示语 */
+  /** useExerciseMetrics 产出的当前提示语 */
   feedback: string
   phase: string
   /** 历史最佳单组次数，用于「破纪录」鼓励 */
@@ -63,10 +66,11 @@ const IDLE_COOLDOWN_MS = 45_000
 const ENCOURAGE = ['节奏很稳', '就这样', '保持住', '状态不错', '很好']
 
 /**
- * 把 useSquatMetrics 的提示语映射成「可执行 + 不评判」的口语。
+ * 把 useExerciseMetrics 的提示语映射成「可执行 + 不评判」的口语。
  * key 用于冷却去重；null 表示这条提示不值得打断用户去说。
  */
-function mapForm(feedback: string): { key: string; text: string } | null {
+function mapForm(feedback: string, exerciseType?:CameraExerciseType): { key: string; text: string } | null {
+  if(exerciseType && exerciseType!=='squat')return /(放慢|收紧核心|幅度|支撑|入镜)/.test(feedback)?{key:feedback,text:feedback}:null
   if (feedback.includes('再蹲低')) return { key: 'depth', text: '还能再低一点点' }
   if (feedback.includes('膝盖')) return { key: 'knee', text: '膝盖跟着脚尖的方向' }
   if (feedback.includes('躯干') || feedback.includes('胸口')) return { key: 'trunk', text: '胸口打开，背别塌' }
@@ -81,6 +85,7 @@ function mapForm(feedback: string): { key: string; text: string } | null {
  */
 export function pickCue(input: CueInput, state: CueState): Cue | null {
   const { now } = input
+  const unit=input.countUnit||'次'
 
   // 冷启动：第一次调用时把基线对齐到当前次数，避免进页面就把历史次数全报一遍
   if (state.lastAnyAt === 0 && state.announcedReps === 0 && input.reps > 0) {
@@ -98,30 +103,30 @@ export function pickCue(input: CueInput, state: CueState): Cue | null {
     // 目标达成
     if (input.targetReps > 0 && reps >= input.targetReps && !state.celebratedTarget) {
       state.celebratedTarget = true
-      return { text: `${reps} 个，目标完成了`, kind: 'milestone' }
+      return { text: `${reps} ${unit}，目标完成了`, kind: 'milestone' }
     }
     // 破个人纪录
     if (input.personalBest > 0 && reps > input.personalBest && !state.celebratedBest) {
       state.celebratedBest = true
-      return { text: `${reps} 个，这是你目前最多的一组`, kind: 'milestone' }
+      return { text: `${reps} ${unit}，这是你目前最多的一组`, kind: 'milestone' }
     }
     // 第一个
-    if (reps === 1) return { text: '第一个，开始了', kind: 'milestone' }
+    if (reps === 1) return { text: `第一${unit}，开始了`, kind: 'milestone' }
     // 半程
     if (input.targetReps > 0 && reps === Math.floor(input.targetReps / 2)) {
-      return { text: `${reps} 个，一半了`, kind: 'milestone' }
+      return { text: `${reps} ${unit}，一半了`, kind: 'milestone' }
     }
     // 每 5 次带一句鼓励，其余只报数字
     if (reps % 5 === 0) {
       const word = ENCOURAGE[(reps / 5 - 1) % ENCOURAGE.length]
-      return { text: `${reps} 个，${word}`, kind: 'milestone' }
+      return { text: `${reps} ${unit}，${word}`, kind: 'milestone' }
     }
     return { text: `${reps}`, kind: 'rep' }
   }
 
   // ── 2. 动作提示 ─────────────────────────────────────────────
   if (!input.demo && now - state.lastFormAt > FORM_COOLDOWN_MS) {
-    const hint = mapForm(input.feedback)
+    const hint = mapForm(input.feedback,input.exerciseType)
     if (hint) {
       const sameAgain = hint.key === state.lastFormKey && now - state.lastFormAt < SAME_FORM_COOLDOWN_MS
       if (!sameAgain) {

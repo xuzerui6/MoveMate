@@ -20,8 +20,8 @@ export function PoseCanvas({ videoRef, landmarks, demo, phase, affectedJoints = 
         ctx.fillStyle='rgba(255,255,255,.04)'; for(let x=0;x<w;x+=28) for(let y=0;y<h;y+=28) ctx.fillRect(x,y,1,1)
       }
       let pts: {x:number;y:number}[] = []
-      if (landmarks && !demo) pts = landmarks.map(p => ({ x:offsetX+(1-p.x)*frameWidth, y:offsetY+p.y*frameHeight }))
-      else {
+      if (landmarks) pts = landmarks.map(p => ({ x:offsetX+(1-p.x)*frameWidth, y:offsetY+p.y*frameHeight }))
+      else if(demo) {
         const down = phase === 'bottom'; const cx=w/2, hip=down?h*.60:h*.48, knee=down?h*.70:h*.67
         pts=Array.from({length:29},()=>({x:cx,y:h*.4})); Object.assign(pts[11],{x:cx-34,y:h*.3}); Object.assign(pts[12],{x:cx+34,y:h*.3}); Object.assign(pts[13],{x:cx-55,y:h*.43}); Object.assign(pts[14],{x:cx+55,y:h*.43}); Object.assign(pts[15],{x:cx-70,y:h*.35}); Object.assign(pts[16],{x:cx+70,y:h*.35}); Object.assign(pts[23],{x:cx-28,y:hip}); Object.assign(pts[24],{x:cx+28,y:hip}); Object.assign(pts[25],{x:cx-58,y:knee}); Object.assign(pts[26],{x:cx+58,y:knee}); Object.assign(pts[27],{x:cx-70,y:h*.88}); Object.assign(pts[28],{x:cx+70,y:h*.88})
       }

@@ -3,10 +3,11 @@ import { pool, withTransaction, afterCommit } from '../db';
 import { ForbiddenError, InvalidStateError, NotFoundError, ValidationError } from '../utils/errors';
 import { pushToUser, broadcastToGame } from '../websocket/notification.handler';
 
+export const CAMERA_TYPES = new Set(['squat','jumping_jack','high_knees','push_up']);
 export const SPORT_RATES: Record<string, number> = { running: 3, swimming: 3, basketball: 2, badminton: 2, soccer: 2, volleyball: 2, tennis: 2, table_tennis: 2 };
 export function calculateXp(type: string, seconds: number, reps: number, source: string): number {
   if (source === 'demo') return 0;
-  return type === 'squat' && source === 'camera' ? reps * 2 : Math.floor(seconds * (SPORT_RATES[type] || 1) / 60);
+  return CAMERA_TYPES.has(type) && source === 'camera' ? reps * 2 : Math.floor(seconds * (SPORT_RATES[type] || 1) / 60);
 }
 export function progress(totalXp: number) {
   let level = 1, xp = totalXp;
@@ -37,7 +38,11 @@ export async function createSession(userId:number, data:{ id?:string; sportType:
   return withTransaction(async () => {
     const id = data.id || randomUUID();
     const old = (await pool.query<SessionRow>('SELECT * FROM sport_sessions WHERE id=$1',[id])).rows[0];
-    if (old) { if (old.user_id !== userId) throw new ForbiddenError(); return sessionView(old); }
+    if (old) {
+      if (old.user_id !== userId) throw new ForbiddenError();
+      if (old.source!==data.source || old.game_id!==(data.gameId||null) || (!data.gameId && old.sport_type!==data.sportType)) throw new InvalidStateError('运动记录的动作与来源不可更改');
+      return sessionView(old);
+    }
     if ((await pool.query('SELECT id FROM sport_sessions WHERE user_id=$1 AND status IN (\'running\',\'paused\')',[userId])).rowCount) throw new InvalidStateError('你已有运动记录，请先结束或恢复');
     let sport = data.sportType;
     if (data.gameId) {
@@ -46,7 +51,8 @@ export async function createSession(userId:number, data:{ id?:string; sportType:
       sport = (await pool.query('SELECT sport_type FROM games WHERE id=$1',[data.gameId])).rows[0].sport_type;
       if ((await pool.query('SELECT id FROM sport_sessions WHERE game_id=$1 AND user_id=$2',[data.gameId,userId])).rowCount) throw new InvalidStateError('已有该活动运动记录，请继续原记录');
     }
-    if (data.source !== 'timer' && sport !== 'squat') throw new ValidationError('动作识别仅支持深蹲');
+    if (!['camera','timer','demo'].includes(data.source)) throw new ValidationError('运动来源无效');
+    if (data.source !== 'timer' && !CAMERA_TYPES.has(sport)) throw new ValidationError('不支持该摄像头动作');
     const now = new Date().toISOString();
     const row = (await pool.query<SessionRow>('INSERT INTO sport_sessions(id,user_id,game_id,sport_type,source,created_at,active_since) VALUES($1,$2,$3,$4,$5,$6,$6) RETURNING *',[id,userId,data.gameId || null,sport,data.source,now])).rows[0];
     await pool.query('INSERT INTO sport_intervals(session_id,started_at) VALUES($1,$2)',[id,now]);
@@ -60,19 +66,33 @@ function changed(row: SessionRow) {
     return pushToUser(row.user_id,{id:0,type:'motion_changed',title:'',content:'',gameId:row.game_id,createdAt:new Date().toISOString()});
   });
 }
-function cleanMetrics(data:any) {
-  const out:any = {};
+function cleanMetrics(data:any, previous:any={}) {
+  const out:any = { ...previous };
   for (const key of ['formScore','perfectReps','averageBpm','maxBpm','currentBpm','zone1Seconds','zone2Seconds','zone3Seconds','zone4Seconds','zone5Seconds','conversationTurnCount']) {
     const value = data?.[key];
     if (value === null) out[key]=null;
     else if (typeof value === 'number' && Number.isFinite(value) && value >= 0) out[key] = key === 'formScore' ? Math.min(100,value) : Math.min(100000,value);
   }
-  out.heartRateSource = data?.heartRateSource === 'ble' ? 'ble' : null;
+  if ('heartRateSource' in data) out.heartRateSource = data.heartRateSource === 'ble' ? 'ble' : null;
   for(const key of ['formBreakdown','correctionCounts']) {
-    out[key] = {};
-    for(const field of (key === 'formBreakdown' ? ['depth','stability','trunk','symmetry'] : ['out_of_frame','insufficient_depth','knee_instability','excessive_trunk_lean','asymmetry'])) {
-      const n = data?.[key]?.[field];out[key][field]=typeof n === 'number' && Number.isFinite(n) ? Math.max(0,Math.min(key === 'formBreakdown' ? 100 : 100000,n)) : 0;
+    if (!data?.[key] || typeof data[key] !== 'object') continue;
+    out[key] = { ...previous[key] };
+    for(const field of (key === 'formBreakdown' ? ['depth','stability','trunk','symmetry'] : ['out_of_frame','insufficient_depth','knee_instability','excessive_trunk_lean','asymmetry','insufficient_range','unstable_movement','body_alignment','poor_coordination'])) {
+      if (!(field in data[key])) continue;
+      const n = data[key][field];out[key][field]=typeof n === 'number' && Number.isFinite(n) ? Math.max(0,Math.min(key === 'formBreakdown' ? 100 : 100000,n)) : 0;
     }
+  }
+  if (data.scoreAccumulator != null) {
+    const acc=data.scoreAccumulator;
+    if (!acc || !Number.isInteger(acc.count) || acc.count<0 || acc.count>100000) throw new ValidationError('评分累计次数无效');
+    out.scoreAccumulator={count:acc.count};
+    for(const key of ['total','depth','stability','trunk','symmetry']) {
+      const n=acc[key];
+      if(typeof n!=='number'||!Number.isFinite(n)||n<0||n>acc.count*100)throw new ValidationError('评分累计值无效');
+      out.scoreAccumulator[key]=n;
+    }
+    out.formScore=acc.count?Math.round(acc.total/acc.count):0;
+    out.formBreakdown=Object.fromEntries(['depth','stability','trunk','symmetry'].map(k=>[k,acc.count?Math.round(acc[k]/acc.count):0]));
   }
   return out;
 }
@@ -108,11 +128,15 @@ export async function sessionAction(id:string,userId:number,action:'pause'|'resu
       await closeInterval(row,Date.parse(now));
       row = (await pool.query<SessionRow>('UPDATE sport_sessions SET status=\'paused\',effective_ms=$2,active_since=NULL WHERE id=$1 RETURNING *',[id,elapsed(row,Date.parse(now))])).rows[0];
     }
-    if (action === 'progress' || action === 'finish') {
+    if (['pause','resume','progress','finish'].includes(action)) {
       if (data.reps != null && (!Number.isInteger(data.reps) || data.reps < 0 || data.reps > 100000)) throw new ValidationError('动作次数无效');
       const reps = row.source === 'timer' ? 0 : Math.max(row.reps,data.reps || 0);
-      const metrics = Object.keys(data).length ? JSON.stringify(cleanMetrics(data)) : row.metrics;
-      if (action === 'progress') row = (await pool.query<SessionRow>('UPDATE sport_sessions SET reps=$2,metrics=$3 WHERE id=$1 RETURNING *',[id,reps,metrics])).rows[0];
+      const oldMetrics=decode<any>(row.metrics,{});
+      const stale=row.source!=='timer' && data.reps!=null && data.reps<row.reps;
+      const cleaned=stale?oldMetrics:cleanMetrics(data,oldMetrics);
+      if(cleaned.scoreAccumulator && cleaned.scoreAccumulator.count!==reps)throw new ValidationError('评分累计次数与动作次数不一致');
+      const metrics=JSON.stringify(cleaned);
+      if (action !== 'finish') row = (await pool.query<SessionRow>('UPDATE sport_sessions SET reps=$2,metrics=$3 WHERE id=$1 RETURNING *',[id,reps,metrics])).rows[0];
       else {
         await closeInterval(row,Date.parse(now));
         row = (await pool.query<SessionRow>('UPDATE sport_sessions SET status=\'finished\',effective_ms=$2,active_since=NULL,reps=$3,metrics=$4,ended_at=$5 WHERE id=$1 RETURNING *',[id,elapsed(row,Date.parse(now)),reps,metrics,now])).rows[0];
@@ -162,7 +186,7 @@ export async function trainingState(userId:number) {
     const seen=decode<string[]>(profile.seen_outfits,['default']);
     const ownedIds=equipment.filter(id=>id!=='sakura_gloves'||high>0);
     const history=rows.filter(r=>r.status==='finished').map(r=>({ ...decode<any>(r.metrics,{}), id:r.id, exerciseType:r.sport_type, sportType:r.sport_type, source:r.source, gameId:r.game_id, startTime:r.created_at,endTime:r.ended_at,durationSeconds:Math.floor(r.effective_ms/1000),reps:r.reps,targetReps:20,formScore:Number(decode<any>(r.metrics,{}).formScore||0),xpEarned:r.xp,settled:Boolean(r.settled),unlocked:[],unlockedOutfits:[] }));
-    return {nickname:user.nickname,age:profile.age,totalXp:profile.total_xp,xp,level,avatarGender:profile.avatar_gender,activeOutfit:profile.active_outfit,unlockedOutfits,seenOutfits:seen,newlyUnlockedOutfits:Object.keys(unlockedOutfits).filter(k=>(unlockedOutfits as any)[k]&&!seen.includes(k)),equipped:{...defaultEquipment,...decode(profile.equipped,{})},ownedEquipment:ownedIds,completedWorkoutCount:real.length,workouts:real.length,highScoreWorkoutCount:high,totalSquats:real.reduce((sum,r)=>sum+r.reps,0),history,sessions:rows.map(sessionView)};
+    return {nickname:user.nickname,age:profile.age,totalXp:profile.total_xp,xp,level,avatarGender:profile.avatar_gender,activeOutfit:profile.active_outfit,unlockedOutfits,seenOutfits:seen,newlyUnlockedOutfits:Object.keys(unlockedOutfits).filter(k=>(unlockedOutfits as any)[k]&&!seen.includes(k)),equipped:{...defaultEquipment,...decode(profile.equipped,{})},ownedEquipment:ownedIds,completedWorkoutCount:real.length,workouts:real.length,highScoreWorkoutCount:high,totalSquats:real.filter(r=>r.sport_type==='squat').reduce((sum,r)=>sum+r.reps,0),history,sessions:rows.map(sessionView)};
   });
 }
 export async function updateAvatar(userId:number,data:any) {
