@@ -43,6 +43,8 @@ Hobby 定时任务仅每天一次。根配置安排 `0 0 * * *`（UTC 每日 00:
 
 ## 本地验证
 
+后端显式设置 `entrypoint: src/app.ts` 和 `outputDirectory: .`。Vercel Services 的 backends builder 会优先复用 dist 中的入口，并将入口与依赖映射到不一致的路径；此配置强制编译源码，保留正确的模块解析路径。此前扩大 includeFiles 未解决问题，已移除。参见 [Vercel issue #17651](https://github.com/vercel/vercel/issues/17651)。
+
 ```powershell
 npx vercel@63.1.2 dev -L --listen 4011
 ```
