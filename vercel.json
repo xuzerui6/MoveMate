@@ -14,7 +14,7 @@
       "entrypoint": "src/app.ts",
       "installCommand": "npm ci",
       "buildCommand": "npm run build",
-      "functions": { "src/app.ts": { "maxDuration": 300 } }
+      "functions": { "src/app.ts": { "maxDuration": 300, "includeFiles": "node_modules/**" } }
     }
   },
   "rewrites": [
