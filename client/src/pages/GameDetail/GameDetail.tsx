@@ -14,10 +14,10 @@ const stages:Record<string,[string,string]>={recruiting:['招募搭子中','加�
 export default function GameDetail(){
  const {id}=useParams<{id:string}>(),navigate=useNavigate(),user=useAuthStore(s=>s.user);
  const {game,loading,error,actionLoading,join,leave,cancel,confirmStart,confirmEnd,checkIn,confirmAttendance}=useGameDetail(id);
- const {messages,loading:chatLoading,error:chatError,refetch:retryChat,sendMessage,bottomRef}=useChat(id);
+ const isCreator=Number(game?.host_id)===Number(user?.id),member=game?.participants?.find((p:any)=>Number(p.user_id)===Number(user?.id)),isMember=Boolean(member);
+ const {messages,loading:chatLoading,error:chatError,refetch:retryChat,sendMessage,bottomRef}=useChat(isMember&&!['archived','cancelled'].includes(game?.status||'')?id:undefined);
  if(loading)return <div className="game-detail-page"><Header title="组局详情" back={()=>navigate('/groups')}/><div className="motion-loading">正在读取活动信息…</div></div>;
  if(error||!game)return <div className="game-detail-page"><Header title="组局详情" back={()=>navigate('/groups')}/><div className="empty-state"><Icon name="users" size={40}/><h3>暂时无法读取活动</h3><p>{error||'活动不存在'}</p><button className="btn btn--primary" onClick={()=>window.location.reload()}>重新加载</button></div></div>;
- const isCreator=Number(game.host_id)===Number(user?.id),member=game.participants?.find((p:any)=>Number(p.user_id)===Number(user?.id)),isMember=Boolean(member);
  const hasCheckedIn=Boolean(member?.checked_in_at),attendanceConfirmed=Boolean(member?.attendance_confirmed_at);
  const phase=['recruiting','full'].includes(game.status)?0:game.status==='ready'?1:game.status==='in_progress'?2:3;
  const disabled=['archived','cancelled'].includes(game.status),readOnly=game.status==='completed',stage=stages[game.status]||['活动详情',''];

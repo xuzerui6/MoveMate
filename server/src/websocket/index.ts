@@ -4,7 +4,7 @@
  * 负责：
  *   1. 从 HTTP Server 创建 Socket.IO 实例
  *   2. JWT 认证中间件 —— 验证 token，注入 socket.data（userId/userName/userAvatar）
- *   3. 连接/断连时维护 Redis 在线状态（user:{userId}:sockets SET）
+ *   3. 按认证账号加入个人房间，由 adapter 跨实例推送通知
  *   4. 注册 chat.handler 和 notification.handler 的事件监听
  *
  * 架构说明：
@@ -15,7 +15,6 @@ import { Server as HttpServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import { verifyToken } from '../utils/jwt';
 import { pool } from '../db/pool';
-import { redis } from '../db/index';
 import { registerChatHandlers } from './chat.handler';
 import { initNotificationHandler } from './notification.handler';
 import { ensureCloudRuntime, isVercelRuntime } from '../cloud';
@@ -96,43 +95,21 @@ async function authenticateSocket(socket: Socket, next: (err?: Error) => void): 
 // ----------------------------------------------------------------
 
 /**
- * 将 socket ID 注册到 Redis，标记用户在线
- * key: user:{userId}:sockets → SET 类型，支持多端同时在线
+ * 个人房间由服务器认证后指定，连接断开时由 Socket.IO 自动清理。
  */
 async function onConnection(socket: Socket): Promise<void> {
   const userId = socket.data.userId as number;
   console.log(`[WebSocket] 用户 ${userId} 已连接 (socket: ${socket.id})`);
+  socket.join(`user:${userId}`);
   registerChatHandlers(io, socket);
-
-  // Redis: 将 socket.id 加入用户活跃 socket 集合
-  try {
-    await redis.sadd(`user:${userId}:sockets`, socket.id);
-  } catch (err) {
-    console.error(`[WebSocket] Redis sadd 失败 (userId=${userId}):`, (err as Error).message);
-  }
-
 }
 
 /**
- * 断连时从 Redis 移除 socket ID
- * 若用户所有 socket 均已断开，删除 Redis key
+ * 断连日志；个人房间和活动房间均由 Socket.IO 自动清理。
  */
 async function onDisconnect(socket: Socket): Promise<void> {
   const userId = socket.data.userId as number;
   console.log(`[WebSocket] 用户 ${userId} 已断开 (socket: ${socket.id})`);
-
-  try {
-    // 从集合中移除当前 socket
-    await redis.srem(`user:${userId}:sockets`, socket.id);
-
-    // 检查是否还有其他活跃连接，若全部断开则清理 key
-    const remaining = await redis.scard(`user:${userId}:sockets`);
-    if (remaining === 0) {
-      await redis.del(`user:${userId}:sockets`);
-    }
-  } catch (err) {
-    console.error(`[WebSocket] Redis srem 失败 (userId=${userId}):`, (err as Error).message);
-  }
 }
 
 // ----------------------------------------------------------------

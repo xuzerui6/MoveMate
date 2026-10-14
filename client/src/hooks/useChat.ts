@@ -30,7 +30,7 @@ export function useChat(gameId: string | undefined) {
   const activeGame = useRef(gameId);
   activeGame.current = gameId;
   const fetchHistory = useCallback(async () => {
-    if (!gameId) return;
+    if (!gameId) { setLoading(false); setError(null); return; }
     try {
       const response: any = await messagesApi.fetchMessages(gameId);
       const body = response.data || response;

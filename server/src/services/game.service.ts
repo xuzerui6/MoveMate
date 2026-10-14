@@ -17,7 +17,7 @@ import {
   HostCannotLeaveError,
   ForbiddenError,
 } from '../utils/errors';
-import { pushToUser, broadcastToGame } from '../websocket/notification.handler';
+import { pushToUser, broadcastToGame, removeUserFromGame } from '../websocket/notification.handler';
 
 // ================================================================
 // 类型定义
@@ -616,6 +616,7 @@ export async function leaveGame(
       `UPDATE game_members SET left_at = NOW() WHERE game_id = $1 AND user_id = $2 AND left_at IS NULL`,
       [gameId, userId],
     );
+    afterCommit(() => removeUserFromGame(gameId, userId));
 
 
     // --- 更新计数 + 回退状态判定 ---

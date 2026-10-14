@@ -6,7 +6,6 @@
  * 避免与 websocket/index.ts 产生循环依赖。
  */
 import { Server } from 'socket.io';
-import { redis } from '../db/index';
 
 // ----------------------------------------------------------------
 // Socket.IO Server 实例引用（由 index.ts 初始化时注入）
@@ -37,9 +36,9 @@ function getIO(): Server {
  * 向指定用户的所有活跃连接推送通知
  *
  * 工作流程：
- * 1. 从 Redis SET `user:{userId}:sockets` 获取该用户所有活跃 socket ID
- * 2. 逐个 emit 'notification' 事件
- * 3. Redis 不可用时静默跳过（通知已写入 DB，用户下次拉取可见）
+ * 1. 发到经认证的账号房间 `user:{userId}`，覆盖该账号的所有连接。
+ * 2. Redis adapter 负责跨实例传播；不依赖进程内的在线连接表。
+ * 3. 推送失败时保留已写入数据库的通知，用户可以重新拉取。
  *
  * @param userId - 接收通知的用户 ID
  * @param notification - 通知对象（含 id/type/title/content/gameId/createdAt）
@@ -56,21 +55,15 @@ export async function pushToUser(
   },
 ): Promise<void> {
   try {
-    const socketIds = await redis.smembers(`user:${userId}:sockets`);
-    if (socketIds.length === 0) return; // 用户离线，通知已在 DB 中
-
     const server = getIO();
-    for (const sid of socketIds) {
-      // 定向推送给该用户的每一个活跃连接（覆盖多端场景）
-      server.to(sid).emit('notification', {
+    server.to(`user:${userId}`).emit('notification', {
         id: notification.id,
         type: notification.type,
         title: notification.title,
         content: notification.content,
         gameId: notification.gameId,
         createdAt: notification.createdAt,
-      });
-    }
+    });
   } catch (err) {
     // Redis 或 IO 异常不应阻断业务流程——通知已落 DB
     console.error('[NotificationHandler] pushToUser 失败:', (err as Error).message);
@@ -96,16 +89,7 @@ export function broadcastToGame(
     const room = `game:${gameId}`;
 
     if (excludeUserId !== undefined) {
-      // 排除发送者：获取房间内所有 socket，过滤掉属于 excludeUserId 的连接
-      const sockets = server.sockets.adapter.rooms.get(room);
-      if (!sockets || sockets.size === 0) return;
-
-      for (const sid of sockets) {
-        const sock = server.sockets.sockets.get(sid);
-        if (sock && sock.data.userId !== excludeUserId) {
-          sock.emit(event, data);
-        }
-      }
+      server.to(room).except(`user:${excludeUserId}`).emit(event, data);
     } else {
       // 广播给房间内所有人
       server.to(room).emit(event, data);
@@ -113,4 +97,9 @@ export function broadcastToGame(
   } catch (err) {
     console.error('[NotificationHandler] broadcastToGame 失败:', (err as Error).message);
   }
+}
+
+/** Revoke every connection of a member who has left, including remote instances. */
+export function removeUserFromGame(gameId: number, userId: number): void {
+  getIO().in(`user:${userId}`).socketsLeave(`game:${gameId}`);
 }

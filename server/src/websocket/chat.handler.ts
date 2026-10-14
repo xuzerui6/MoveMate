@@ -60,6 +60,15 @@ export function registerChatHandlers(io: Server, socket: Socket): void {
       const game = gameResult.rows[0];
       const room = `game:${gameId}`;
 
+      const membership = await pool.query(
+        'SELECT 1 FROM game_members WHERE game_id=$1 AND user_id=$2 AND left_at IS NULL',
+        [gameId, userId],
+      );
+      if (!membership.rowCount) {
+        socket.emit('error', { message: '你还未加入该局，无法查看聊天' });
+        return;
+      }
+
       // 归档/取消的局：拒绝加入房间（聊天已完全关闭）
       if (game.status === 'archived' || game.status === 'cancelled') {
         socket.emit('error', { message: '该局已结束，聊天已关闭' });

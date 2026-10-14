@@ -124,11 +124,13 @@ test('new outfits share existing unlock rules, reject unauthorized choices and p
   assert.equal((await motion.trainingState(other.user.id)).activeOutfit,'default');
   assert.equal((await request('/training/avatar',{activeOutfit:'violet_court'},other.token,'PATCH')).status,403);
 });
-async function socketFor(token: string, gameId: number) {
+async function socketFor(token: string, gameId?: number) {
   const socket = connect(base, { autoConnect: false, auth: { token }, transports: ['websocket'], reconnection: false });
   sockets.push(socket);
   const connected = once(socket, 'connect', { signal: AbortSignal.timeout(5000) }); socket.connect(); await connected;
-  const entered = once(socket, 'chat_mode', { signal: AbortSignal.timeout(5000) }); socket.emit('join_room', { gameId }); await entered;
+  if (gameId) {
+    const entered = once(socket, 'chat_mode', { signal: AbortSignal.timeout(5000) }); socket.emit('join_room', { gameId }); await entered;
+  }
   return socket;
 }
 function send(socket: any, gameId: number, content: string): Promise<any> {
@@ -281,8 +283,29 @@ test('chat persists, broadcasts to both accounts, reconnects and rejects invalid
   assert.equal(older.body.data.messages[0].id, reply.message.id);
   assert.ok(latest.body.data.messages[0].id > reply.message.id);
   assert.match((await send(first, game.id, '')).error, /不能为空/);
-  const outsider = await socketFor(player2.token, game.id);
+  const outsider = await socketFor(player2.token);
+  const denied = once(outsider, 'error', { signal: AbortSignal.timeout(5000) });
+  outsider.emit('join_room', { gameId: game.id });
+  assert.match((await denied)[0].message, /未加入/);
+  assert.equal((await request('/games/' + game.id + '/messages', undefined, player2.token)).status, 403);
+  assert.equal(io.sockets.adapter.rooms.get('game:' + game.id).has(outsider.id), false);
   assert.match((await send(outsider, game.id, '未加入发送')).error, /未加入/);
+  await games.leaveGame(game.id, player1.user.id);
+  assert.equal(io.sockets.adapter.rooms.get('game:' + game.id).has(reconnected.id), false);
+  assert.equal((await request('/games/' + game.id + '/messages', undefined, player1.token)).status, 403);
+});
+
+test('account rooms deliver notifications to all authenticated sessions without a process-local presence index', async () => {
+  const first = await socketFor(player2.token), second = await socketFor(player2.token);
+  const outsider = await socketFor(host.token);
+  const received: any[] = []; outsider.on('notification', (item: any) => received.push(item));
+  const { redis } = require('../src/db'); await redis.del(`user:${player2.user.id}:sockets`);
+  const firstEvent = once(first, 'notification', { signal: AbortSignal.timeout(5000) });
+  const secondEvent = once(second, 'notification', { signal: AbortSignal.timeout(5000) });
+  await games.createNotification({ user_id: player2.user.id, game_id: null, type: 'member_joined', title: '多会话通知', content: '仅接收者可见' });
+  const [a, b] = await Promise.all([firstEvent, secondEvent]);
+  assert.equal(a[0].title, '多会话通知'); assert.equal(a[0].id, b[0].id);
+  assert.equal(received.length, 0);
 });
 
 test('notifications update unread counts idempotently', async () => {

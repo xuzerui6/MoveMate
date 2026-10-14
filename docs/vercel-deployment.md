@@ -27,7 +27,7 @@
 - `SEED_DEMO_ACCOUNTS=true`、`CLOUD_DEMO_PASSWORD`（至少 12 字符）：首次请求创建 host/player1/player2@dajju.local 三个普通已认证账号。不会删除活动、修改已有密码或导入本机数据。
 - `SOCKET_CHANNEL_PREFIX`：例如 `movemate-production` / `movemate-preview`。
 - `BASE_URL`、`CORS_ORIGIN`、`XIAOZHI_ALLOWED_ORIGINS`：自定义域名时填精确 HTTPS 来源。Vercel 提供的生产域名及当前部署域名自动加入语音来源白名单。
-- `XIAOZHI_IDENTITY_MODE=personal`：开启小智个人绑定；线上域名需要自己的浏览器设备绑定。默认 disabled。
+- `XIAOZHI_IDENTITY_MODE=personal`、`XIAOZHI_COOKIE_SECRET`：开启小智个人绑定时必须生成独立随机 cookie 加密密钥；线上域名需要自己的浏览器设备绑定。默认 disabled。
 - `AI_BASE_URL`、`AI_API_KEY`：HTTP 陪练。不配置时继续使用本地文字陪练。
 - `SMTP_HOST`、`SMTP_PORT`、`SMTP_USER`、`SMTP_PASS`：正式注册的邮件验证码。没有 SMTP 时可登录已创建的演示账号，不能完成普通注册。
 

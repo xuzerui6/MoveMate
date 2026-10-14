@@ -37,6 +37,14 @@ router.get('/', async (req: Request, res: Response) => {
       return;
     }
 
+    const membership = await pool.query(
+      'SELECT 1 FROM game_members WHERE game_id=$1 AND user_id=$2 AND left_at IS NULL',
+      [gameId, userId],
+    );
+    if (!membership.rowCount) {
+      res.status(403).json({ code: 20008, message: '你还未加入该局，无法查看聊天', data: null });
+      return;
+    }
     const messages = await ChatService.getMessages(gameId, beforeId, limit);
     res.json({ code: 0, message: 'success', data: { messages } });
   } catch (err) {
