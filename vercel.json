@@ -21,7 +21,7 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": { "service": "server" } },
     { "source": "/ai/(.*)", "destination": { "service": "server" } },
-    { "source": "/socket.io/:path*", "destination": { "service": "server" } },
+    { "source": "/socket.io/:path*", "destination": { "service": "server", "path": "/health" } },
     { "source": "/uploads/:path*", "destination": { "service": "server" } },
     { "source": "/health", "destination": { "service": "server" } },
     { "source": "/(.*)", "destination": { "service": "client" } }
