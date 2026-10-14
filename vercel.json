@@ -6,7 +6,8 @@
       "framework": "vite",
       "installCommand": "npm ci --include=dev",
       "buildCommand": "npm run build:vercel",
-      "outputDirectory": "dist"
+      "outputDirectory": "dist",
+      "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
     },
     "server": {
       "root": "server",

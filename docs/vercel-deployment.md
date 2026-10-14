@@ -4,12 +4,12 @@
 
 | 服务 | 目录 / 构建 | 公开路径 |
 |---|---|---|
-| client | `client`，`npm ci` → `npm run build:vercel`，输出 `dist` | 其余所有页面和静态资源 |
-| server | `server`，`npm ci` → `npm run build`，入口 `src/app.ts` | `/api/*`、`/ai/*`、`/socket.io/*`、`/uploads/*`、`/health` |
+| client | `client`，`npm ci --include=dev` → `npm run build:vercel`，输出 `dist` | 其余所有页面和静态资源 |
+| server | `server`，`npm ci --include=dev` → `npm run build`，入口 `src/vercel.ts` | `/api/*`、`/ai/*`、`/socket.io/*`、`/uploads/*`、`/health` |
 
 没有内部服务调用和 bindings。client 是静态 Vite 应用，不运行服务端函数。浏览器使用同域 `/api/v1`、`/api/xiaozhi/socket`、`/ai/*` 和 `/socket.io`；无需设置 API 域名或手动设置绑定变量。localhost:3001 只用于本机开发代理及启动提示。
 
-服务路由保留原请求路径，后端继续挂载 `/api/v1`。client 的 `vercel.json` 提供 React 路由的 index.html fallback。后端默认导出 HTTP Server，保留聊天及小智的 upgrade 监听；Vercel 运行时不自行 listen、不创建本机上传目录、不运行常驻 node-cron。
+服务路由保留原请求路径，后端继续挂载 `/api/v1`。根配置的 `services.client.rewrites` 提供 React 路由的 index.html fallback；Services 模式不能依赖子目录的 `client/vercel.json` 自动合并。后端默认导出 HTTP Server，保留聊天及小智的 upgrade 监听；Vercel 运行时不自行 listen、不创建本机上传目录、不运行常驻 node-cron。
 
 ## 云端环境变量
 
@@ -37,7 +37,7 @@ Turso 保存账号、活动、消息、训练、XP、验证码哈希和头像。
 
 ## 实时与状态维护
 
-云端 Socket.IO 使用 WebSocket-only，Redis adapter 负责跨实例消息、通知及活动广播。连接到达 Vercel 的 300 秒上限后客户端重连、重新加入活动房间并拉取状态。小智与聊天保持不同的协议路径；同域 cookie 鉴权，不额外建立跨域票据接口。
+云端 Socket.IO 使用 WebSocket-only，客户端和服务器均使用 `/socket.io/connect` 及 `addTrailingSlash: false`。实测 Services 将末尾斜杠的升级请求返回平台 404；去掉末尾斜杠后正常鉴权和连接。本机仍使用原 `/socket.io/`。Redis adapter 负责跨实例消息、通知及活动广播。连接到达 Vercel 的 300 秒上限后客户端重连、重新加入活动房间并拉取状态。小智与聊天保持不同的协议路径；同域 cookie 鉴权，不额外建立跨域票据接口。
 
 Hobby 定时任务仅每天一次。根配置安排 `0 0 * * *`（UTC 每日 00:00，平台执行可能在该小时内），访问 `/api/cron`，校验 CRON_SECRET。在线活动详情每分钟及回到前台时静默刷新，相关 API 请求按一分钟节流推进既有状态机。没有在线请求时，状态通知可能延迟到每日维护；此免费部署不保证后台每分钟调度。
 
@@ -45,7 +45,7 @@ Hobby 定时任务仅每天一次。根配置安排 `0 0 * * *`（UTC 每日 00:
 
 两个服务的安装命令使用 `npm ci --include=dev`，确保在 NODE_ENV=production 的构建环境中仍安装 TypeScript、Vite 等编译工具；运行时继续使用 production 配置。
 
-后端显式设置 `entrypoint: src/app.ts` 和 `outputDirectory: .`。Vercel Services 的 backends builder 会优先复用 dist 中的入口，并将入口与依赖映射到不一致的路径；此配置强制编译源码，保留正确的模块解析路径。此前扩大 includeFiles 未解决问题，已移除。参见 [Vercel issue #17651](https://github.com/vercel/vercel/issues/17651)。
+后端显式设置 `entrypoint: src/vercel.ts` 和 `outputDirectory: .`。入口仅默认导出一个 HTTP Server，避免混合命名导出影响升级监听。Vercel Services 的 backends builder 会优先复用 dist 中的入口，并将入口与依赖映射到不一致的路径；此配置强制编译源码，保留正确的模块解析路径。此前扩大 includeFiles 未解决问题，已移除。参见 [Vercel issue #17651](https://github.com/vercel/vercel/issues/17651)。
 
 ```powershell
 npx vercel@63.1.2 dev -L --listen 4011
