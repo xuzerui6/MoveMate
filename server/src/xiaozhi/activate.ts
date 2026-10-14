@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 import { getIdentityMode, readIdentity, writeIdentity } from './identity.js'
 import { fetchOta, pollActivation } from './ota.js'
 
-export const maxDuration = 30
+export const maxDuration = 45
 
 export default async function handler(request: Request, response: Response) {
   if (request.method !== 'POST') return response.status(405).json({ error: 'Method not allowed' })

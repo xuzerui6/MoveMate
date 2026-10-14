@@ -32,3 +32,22 @@ test('browser OTA uses activation v1 consistently and does not invent hardware a
   delete identity.activation;await assert.rejects(pollActivation(identity),/激活挑战已失效/);
   assert.equal(requests,4);
 });
+
+test('normal activation long polls can return waiting instead of being aborted', async t => {
+  const originalFetch = globalThis.fetch, originalTimeout = AbortSignal.timeout;
+  t.after(() => { globalThis.fetch = originalFetch; AbortSignal.timeout = originalTimeout; });
+  // Scale the real timeout and provider delay equally to exercise the race quickly.
+  AbortSignal.timeout = ms => originalTimeout(ms / 1000);
+  globalThis.fetch = (async (_url, init) => new Promise<Response>((resolve, reject) => {
+    const signal = init?.signal;
+    const abort = () => { clearTimeout(timer); reject(signal?.reason); };
+    const timer = setTimeout(() => {
+      signal?.removeEventListener('abort', abort);
+      resolve(new Response('{}', { status: 202 }));
+    }, 20);
+    if (signal?.aborted) abort(); else signal?.addEventListener('abort', abort, { once: true });
+  })) as typeof fetch;
+  const identity = createDeviceIdentity();
+  identity.activation = { code: '123456', challenge: 'waiting', message: 'waiting', expiresAt: Date.now() + 60000 };
+  assert.equal(await pollActivation(identity), 'waiting');
+});

@@ -34,7 +34,9 @@ export async function pollActivation(identity: VirtualDeviceIdentity): Promise<'
   const activation = identity.activation
   if (!activation?.challenge) throw new Error('激活挑战已失效，请重新获取激活码')
   const response = await fetch(`${OTA_URL}/activate`, {
-    method: 'POST', headers: headers(identity), signal: AbortSignal.timeout(10_000),
+    // The provider holds an unbound-device poll for about 10 seconds before 202.
+    // Leave headroom for the network instead of aborting a normal waiting response.
+    method: 'POST', headers: headers(identity), signal: AbortSignal.timeout(30_000),
     body: '{}',
   })
   if (response.status === 200) return 'ready'
