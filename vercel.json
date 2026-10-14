@@ -4,7 +4,7 @@
     "client": {
       "root": "client",
       "framework": "vite",
-      "installCommand": "npm ci",
+      "installCommand": "npm ci --include=dev",
       "buildCommand": "npm run build:vercel",
       "outputDirectory": "dist"
     },
@@ -12,7 +12,7 @@
       "root": "server",
       "framework": "express",
       "entrypoint": "src/app.ts",
-      "installCommand": "npm ci",
+      "installCommand": "npm ci --include=dev",
       "buildCommand": "npm run build",
       "outputDirectory": ".",
       "functions": { "src/app.ts": { "maxDuration": 300 } }
