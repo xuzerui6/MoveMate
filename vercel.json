@@ -11,11 +11,11 @@
     "server": {
       "root": "server",
       "framework": "express",
-      "entrypoint": "src/app.ts",
+      "entrypoint": "src/vercel.ts",
       "installCommand": "npm ci --include=dev",
       "buildCommand": "npm run build",
       "outputDirectory": ".",
-      "functions": { "src/app.ts": { "maxDuration": 300 } }
+      "functions": { "src/vercel.ts": { "maxDuration": 300 } }
     }
   },
   "rewrites": [
