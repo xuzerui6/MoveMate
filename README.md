@@ -8,7 +8,7 @@
 
 ## 本机启动
 
-Vercel 单项目上线使用仓库根目录的 Services 配置；前端、API、聊天与语音共用域名。云数据库、Redis 及环境变量说明见 [Vercel 部署说明](docs/vercel-deployment.md)。本机启动方式继续使用下列脚本。
+线上地址：[https://movemate-phi.vercel.app](https://movemate-phi.vercel.app)。Vercel 单项目使用仓库根目录的 Services 配置；前端、API、聊天与语音共用域名。云数据库、Redis 及环境变量说明见 [Vercel 部署说明](docs/vercel-deployment.md)。本机启动方式继续使用下列脚本。
 
 需要 Node.js **22.13+，推荐 24**（实际验证 24.16.0）、npm 和内置 `node:sqlite`；不需要 PostgreSQL、Redis 或外部 SQLite 驱动。运行时可能出现 Node 的 SQLite 实验性提示，属于当前运行时提示。
 
@@ -117,7 +117,7 @@ npm run build
 
 `client/src/features/motion/` 为动伴模块；原组局页面在 `client/src/pages/`。后端运动逻辑在 `server/src/services/motion.service.ts`，语音桥接在 `server/src/xiaozhi/`。运行记录见 [DEMO_ACCEPTANCE.md](DEMO_ACCEPTANCE.md)。历史 PRD、架构文档中的 PostgreSQL／Redis 与积分规则为旧方案，以当前实现及本说明为准。
 
-原 `start.bat` 为旧局域网脚本，可能申请防火墙规则；本机请使用 `start-demo.bat`。本次未部署公网或合并小程序；源码按用户要求推送到 [MoveMate](https://github.com/xuzerui6/MoveMate)。
+原 `start.bat` 为旧局域网脚本，可能申请防火墙规则；本机请使用 `start-demo.bat`。网页端现已提供 Vercel 访问地址，小程序仍未合并或部署；源码按用户要求推送到 [MoveMate](https://github.com/xuzerui6/MoveMate)。
 
 许可证见 [LICENSE](LICENSE)，动伴第三方声明见 [DONGBAN_THIRD_PARTY_NOTICES.md](DONGBAN_THIRD_PARTY_NOTICES.md)。不要提交 `.env*`、数据库、备份或服务日志。
 
