@@ -16,6 +16,9 @@ export function useSocketConnection() {
     useGameStore.setState({games:[],loading:false,error:null,page:1,hasMore:true,filter:{size:20,scope:'campus'}});
     if (!isLoggedIn || !token) { store.setStatus('disconnected'); return; }
     const connection = io('/', {
+      // Services routing does not preserve a trailing-slash upgrade path.
+      path: import.meta.env.VITE_WEBSOCKET_ONLY==='true' ? '/socket.io/connect' : '/socket.io',
+      addTrailingSlash: import.meta.env.VITE_WEBSOCKET_ONLY!=='true',
       autoConnect: false, auth: { token }, transports: import.meta.env.VITE_WEBSOCKET_ONLY==='true'?['websocket']:['websocket', 'polling'],
       reconnection: true, reconnectionAttempts: 10, reconnectionDelay: 1000, timeout: 10000,
     });

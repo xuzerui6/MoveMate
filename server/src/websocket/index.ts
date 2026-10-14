@@ -152,6 +152,8 @@ async function onDisconnect(socket: Socket): Promise<void> {
  */
 export function createWebSocketServer(httpServer: HttpServer): Server {
   io = new Server(httpServer, {
+    path: isVercelRuntime ? '/socket.io/connect' : '/socket.io',
+    addTrailingSlash: !isVercelRuntime,
     allowRequest: (req, callback) => callback(null, !isVercelRuntime || isAllowedOrigin(req.headers.origin)),
     // 生产环境建议配置 CORS
     cors: {
