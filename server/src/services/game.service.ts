@@ -379,9 +379,8 @@ export async function transitionGame(
 
 
 
-    // 4. 事务外：触发副作用（通知）
-    // 在 commit 之后发通知，确保通知发送失败不会回滚业务数据
-    afterCommit(() => handleTransitionSideEffects(updated, from, to));
+    // 4. 同事务保存通知记录；网络推送在提交后执行。
+    await handleTransitionSideEffects(updated, from, to);
     afterCommit(() => notifyGameChanged(gameId));
 
     return updated;
@@ -530,8 +529,8 @@ export async function joinGame(
     );
     const updated = toGameRow(updatedRows[0]);
 
-    afterCommit(async () => {
-      // --- 事务外：发送通知 ---
+    await (async () => {
+      // --- 同事务保存通知；提交后推送 ---
       // 通知发起人：有人加入
       const { rows: joinerRows } = await pool.query(
         `SELECT nickname FROM users WHERE id = $1`, [userId],
@@ -563,7 +562,7 @@ export async function joinGame(
           game_id: gameId,
         });
       }
-    });
+    })();
 
     afterCommit(() => notifyGameChanged(gameId, 'member_change'));
     return { game: updated, member_count: newCount };
@@ -630,8 +629,8 @@ export async function leaveGame(
     );
     const updated = toGameRow(updatedRows[0]);
 
-    afterCommit(async () => {
-      // --- 事务外：发送通知 ---
+    await (async () => {
+      // --- 同事务保存通知；提交后推送 ---
       const shouldNotify = game.status === 'full' || game.status === 'ready';
       if (shouldNotify) {
         const { rows: leaverRows } = await pool.query(
@@ -662,7 +661,7 @@ export async function leaveGame(
         }
       }
 
-    });
+    })();
 
     afterCommit(() => notifyGameChanged(gameId, 'member_change'));
     return { game: updated, member_count: newCount };
@@ -834,8 +833,8 @@ export async function cancelGame(
     );
     const updated = toGameRow(updatedRows[0]);
 
-    afterCommit(async () => {
-      // --- 事务外：通知所有已加入的成员 ---
+    await (async () => {
+      // --- 同事务保存所有成员通知 ---
       const { rows: allMembers } = await pool.query(
         `SELECT gm.user_id, u.nickname
       FROM game_members gm
@@ -853,7 +852,7 @@ export async function cancelGame(
           game_id: gameId,
         });
       }
-    });
+    })();
 
     afterCommit(() => notifyGameChanged(gameId));
     return updated;
@@ -898,7 +897,7 @@ export async function startGameWithAuth(
     );
     const updated = toGameRow(updatedRows[0]);
 
-    afterCommit(async () => {
+    await (async () => {
       const { rows: members } = await pool.query<{ user_id: number }>(
         `SELECT user_id FROM game_members WHERE game_id = $1 AND left_at IS NULL`,
         [gameId],
@@ -912,7 +911,7 @@ export async function startGameWithAuth(
           game_id: gameId,
         });
       }
-    });
+    })();
 
     afterCommit(() => notifyGameChanged(gameId));
     return updated;
@@ -958,11 +957,11 @@ export async function completeGameWithAuth(
 
     const notifications = await settleGameSessions(updated);
 
-    afterCommit(async () => {
+    await (async () => {
       for (const notification of notifications) {
         await createNotification(notification);
       }
-    });
+    })();
 
     afterCommit(() => notifyGameChanged(gameId));
     return updated;
@@ -993,11 +992,11 @@ export async function completeGameBySystem(gameId: number): Promise<GameRow> {
     const updated = toGameRow(updatedRows[0]);
     const notifications = await settleGameSessions(updated);
 
-    afterCommit(async () => {
+    await (async () => {
       for (const notification of notifications) {
         await createNotification(notification);
       }
-    });
+    })();
 
     afterCommit(() => notifyGameChanged(gameId));
     return updated;
@@ -1239,38 +1238,24 @@ interface CreateNotificationInput {
 
 /**
  * 创建通知记录（写入 notifications 表）
- * 事务完成后调用，不阻塞主流程
+ * 通知记录与业务共用事务；网络发送失败不会回滚已提交的数据。
  */
 export async function createNotification(input: CreateNotificationInput): Promise<void> {
-  try {
-
+  await withTransaction(async () => {
     const { rows } = await pool.query<{ id: number; created_at: string }>(
       `INSERT INTO notifications (user_id, type, title, content, game_id, is_read, created_at)
-       VALUES ($1, $2, $3, $4, $5, FALSE, NOW())
-       RETURNING id, created_at`,
+       VALUES ($1, $2, $3, $4, $5, FALSE, NOW()) RETURNING id, created_at`,
       [input.user_id, input.type, input.title, input.content, input.game_id],
     );
-
-    redis.incr(`notif:${input.user_id}:unread`).catch(() => { });
     const created = rows[0];
-    if (created) {
+    afterCommit(async () => {
+      await redis.incr(`notif:${input.user_id}:unread`).catch(() => {});
       await pushToUser(input.user_id, {
-        id: Number(created.id),
-        type: input.type,
-        title: input.title,
-        content: input.content,
-        gameId: input.game_id,
-        createdAt: created.created_at,
+        id: Number(created.id), type: input.type, title: input.title, content: input.content,
+        gameId: input.game_id, createdAt: created.created_at,
       });
-    }
-
-
-  } catch (err) {
-
-
-    // 通知发送失败不影响主流程，仅记录日志
-    console.error(`[Notification] 创建通知失败: user=${input.user_id}, type=${input.type}`, err);
-  }
+    });
+  });
 }
 
 // ================================================================

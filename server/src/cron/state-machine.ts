@@ -1,4 +1,5 @@
 import cron from 'node-cron';
+import { sourceMaintenance } from '../source-migration';
 import { pool, withTransaction, afterCommit } from '../db';
 import { completeGameBySystem, createNotification, notifyGameChanged } from '../services/game.service';
 import { sendGameEmail } from '../services/email.service';
@@ -338,8 +339,16 @@ let currentTick: Promise<void> | null = null;
 export function runCronTick(): Promise<void> {
   if (currentTick) return currentTick;
   currentTick = (async () => {
+    if (await sourceMaintenance()) return;
     for (const task of [checkGameReady, startInProgress, autoCancelExpired, autoComplete, archiveCompleted]) {
-      try { await task(); } catch (error) { console.error('[Cron] Task failed:', error); }
+      try {
+        // The cloud alarm persists transitions and their notification records together.
+        if (process.env.CLOUDFLARE === '1') await withTransaction(() => task());
+        else await task();
+      } catch (error) {
+        console.error('[Cron] Task failed:', error);
+        if (process.env.CLOUDFLARE === '1') throw error;
+      }
     }
   })().finally(() => { currentTick = null; });
   return currentTick;

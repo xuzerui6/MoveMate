@@ -1,0 +1,457 @@
+{
+  "schema": [
+    "CREATE TABLE IF NOT EXISTS motion_profiles (\n      user_id INTEGER PRIMARY KEY REFERENCES users(id), total_xp INTEGER NOT NULL DEFAULT 0,\n      avatar_gender TEXT NOT NULL DEFAULT 'male', active_outfit TEXT NOT NULL DEFAULT 'default',\n      equipped TEXT NOT NULL DEFAULT '{}', seen_outfits TEXT NOT NULL DEFAULT '[\"default\"]', age INTEGER NOT NULL DEFAULT 24\n    )",
+    "CREATE TABLE IF NOT EXISTS sport_sessions (\n      id TEXT PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id), game_id INTEGER REFERENCES games(id),\n      sport_type TEXT NOT NULL, source TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'running',\n      active_since TEXT, effective_ms INTEGER NOT NULL DEFAULT 0, reps INTEGER NOT NULL DEFAULT 0,\n      metrics TEXT NOT NULL DEFAULT '{}', xp INTEGER NOT NULL DEFAULT 0, settled INTEGER NOT NULL DEFAULT 0,\n      created_at TEXT NOT NULL, ended_at TEXT\n    )",
+    "CREATE TABLE IF NOT EXISTS sport_intervals (\n      id INTEGER PRIMARY KEY AUTOINCREMENT, session_id TEXT NOT NULL REFERENCES sport_sessions(id),\n      started_at TEXT NOT NULL, ended_at TEXT, effective_ms INTEGER NOT NULL DEFAULT 0\n    )",
+    "CREATE TABLE IF NOT EXISTS xp_ledger (\n      session_id TEXT PRIMARY KEY REFERENCES sport_sessions(id), user_id INTEGER NOT NULL REFERENCES users(id),\n      xp INTEGER NOT NULL, created_at TEXT NOT NULL\n    )",
+    "CREATE TABLE IF NOT EXISTS schools (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      code TEXT NOT NULL UNIQUE,\n      name TEXT NOT NULL,\n      is_active INTEGER NOT NULL DEFAULT 1\n    )",
+    "CREATE TABLE IF NOT EXISTS campuses (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      school_id INTEGER NOT NULL REFERENCES schools(id),\n      code TEXT NOT NULL,\n      name TEXT NOT NULL,\n      is_active INTEGER NOT NULL DEFAULT 1\n    )",
+    "CREATE TABLE IF NOT EXISTS venues (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      school_id INTEGER NOT NULL REFERENCES schools(id),\n      campus_id INTEGER NOT NULL REFERENCES campuses(id),\n      name TEXT NOT NULL,\n      sport_types TEXT DEFAULT '[]',\n      is_active INTEGER NOT NULL DEFAULT 1\n    )",
+    "CREATE TABLE IF NOT EXISTS users (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      nickname TEXT NOT NULL,\n      email TEXT NOT NULL UNIQUE,\n      password_hash TEXT NOT NULL,\n      avatar_url TEXT DEFAULT '',\n      department TEXT DEFAULT '',\n      student_id TEXT NOT NULL,\n      email_verified INTEGER DEFAULT 0,\n      school_id INTEGER DEFAULT 1,\n      campus_id INTEGER DEFAULT 1,\n      is_admin INTEGER NOT NULL DEFAULT 0,\n      reward_points INTEGER NOT NULL DEFAULT 0,\n      reward_level INTEGER NOT NULL DEFAULT 1,\n      reward_streak INTEGER NOT NULL DEFAULT 0,\n      completed_games INTEGER NOT NULL DEFAULT 0,\n      hosted_completed_games INTEGER NOT NULL DEFAULT 0,\n      reward_badges TEXT DEFAULT '[]',\n      last_rewarded_date TEXT,\n      qq_email TEXT DEFAULT '',\n      sport_preferences TEXT NOT NULL DEFAULT '[]',\n      created_at TEXT DEFAULT (datetime('now')),\n      updated_at TEXT DEFAULT (datetime('now'))\n    )",
+    "CREATE TABLE IF NOT EXISTS games (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      host_id INTEGER NOT NULL REFERENCES users(id),\n      sport_type TEXT NOT NULL,\n      title TEXT DEFAULT '',\n      location TEXT NOT NULL,\n      max_players INTEGER NOT NULL,\n      start_time TEXT NOT NULL,\n      end_time TEXT,\n      completed_at TEXT,\n      status TEXT DEFAULT 'recruiting',\n      tag TEXT,\n      member_count INTEGER DEFAULT 1,\n      school_id INTEGER DEFAULT 1,\n      campus_id INTEGER DEFAULT 1,\n      venue_id INTEGER,\n      venue_name_snapshot TEXT DEFAULT '',\n      meeting_note TEXT DEFAULT '',\n      created_at TEXT DEFAULT (datetime('now')),\n      updated_at TEXT DEFAULT (datetime('now'))\n    )",
+    "CREATE TABLE IF NOT EXISTS game_members (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      game_id INTEGER NOT NULL REFERENCES games(id),\n      user_id INTEGER NOT NULL REFERENCES users(id),\n      joined_at TEXT DEFAULT (datetime('now')),\n      checked_in_at TEXT,\n      attendance_confirmed_at TEXT,\n      reward_points INTEGER NOT NULL DEFAULT 0,\n      reward_granted_at TEXT,\n      left_at TEXT,\n      hidden_in_profile_at TEXT\n    )",
+    "CREATE TABLE IF NOT EXISTS chat_messages (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      game_id INTEGER NOT NULL REFERENCES games(id),\n      sender_id INTEGER NOT NULL REFERENCES users(id),\n      content TEXT NOT NULL,\n      created_at TEXT DEFAULT (datetime('now'))\n    )",
+    "CREATE TABLE IF NOT EXISTS notifications (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      user_id INTEGER NOT NULL REFERENCES users(id),\n      type TEXT NOT NULL,\n      title TEXT NOT NULL,\n      content TEXT NOT NULL,\n      game_id INTEGER REFERENCES games(id),\n      is_read INTEGER DEFAULT 0,\n      created_at TEXT DEFAULT (datetime('now'))\n    )",
+    "CREATE TABLE IF NOT EXISTS feedback (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      user_id INTEGER REFERENCES users(id),\n      content TEXT NOT NULL,\n      contact TEXT DEFAULT '',\n      created_at TEXT DEFAULT (datetime('now'))\n    )",
+    "CREATE UNIQUE INDEX IF NOT EXISTS one_active_sport ON sport_sessions(user_id) WHERE status IN ('running','paused')",
+    "CREATE UNIQUE INDEX IF NOT EXISTS one_game_sport ON sport_sessions(game_id,user_id) WHERE game_id IS NOT NULL",
+    "CREATE UNIQUE INDEX IF NOT EXISTS one_open_interval ON sport_intervals(session_id) WHERE ended_at IS NULL"
+  ],
+  "metadata": [
+    {
+      "sql": "INSERT OR IGNORE INTO schools (id,code,name,is_active) VALUES (?,?,?,?)",
+      "args": [
+        1,
+        "jlu",
+        "吉林大学",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO campuses (id,school_id,code,name,is_active) VALUES (?,?,?,?,?)",
+      "args": [
+        1,
+        1,
+        "qianwei-center",
+        "前卫校区（中心校区）",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO campuses (id,school_id,code,name,is_active) VALUES (?,?,?,?,?)",
+      "args": [
+        2,
+        1,
+        "nanling",
+        "南岭校区",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO campuses (id,school_id,code,name,is_active) VALUES (?,?,?,?,?)",
+      "args": [
+        3,
+        1,
+        "chaoyang",
+        "朝阳校区（地质宫校区）",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        1,
+        1,
+        1,
+        "前卫校区田径场",
+        "[\"running\",\"soccer\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        2,
+        1,
+        1,
+        "前卫南区足球场",
+        "[\"soccer\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        3,
+        1,
+        1,
+        "前卫校区北苑篮球场",
+        "[\"basketball\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        4,
+        1,
+        1,
+        "前卫校区经信楼附近篮球场",
+        "[\"basketball\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        5,
+        1,
+        1,
+        "前卫校区北苑排球场",
+        "[\"volleyball\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        6,
+        1,
+        1,
+        "前卫校区经信楼东侧网球场",
+        "[\"tennis\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        7,
+        1,
+        1,
+        "鼎新楼南侧轮滑场地",
+        "[\"roller_skating\",\"skateboarding\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        8,
+        1,
+        1,
+        "宋治平体育馆室内田径馆",
+        "[\"running\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        9,
+        1,
+        1,
+        "宋治平体育馆篮球比赛馆",
+        "[\"basketball\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        10,
+        1,
+        1,
+        "宋治平体育馆篮球训练馆",
+        "[\"basketball\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        11,
+        1,
+        1,
+        "宋治平体育馆乒乓球馆",
+        "[\"table_tennis\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        12,
+        1,
+        1,
+        "宋治平体育馆网球馆",
+        "[\"tennis\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        13,
+        1,
+        1,
+        "宋治平体育馆排球馆",
+        "[\"volleyball\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        14,
+        1,
+        1,
+        "宋治平体育馆健身馆",
+        "[\"fitness\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        15,
+        1,
+        1,
+        "中心体育馆篮球馆",
+        "[\"basketball\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        16,
+        1,
+        1,
+        "中心体育馆羽毛球馆",
+        "[\"badminton\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        17,
+        1,
+        1,
+        "中心体育馆乒乓球馆",
+        "[\"table_tennis\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        18,
+        1,
+        1,
+        "日新楼游泳馆",
+        "[\"swimming\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        19,
+        1,
+        1,
+        "日新楼健身中心",
+        "[\"fitness\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        20,
+        1,
+        1,
+        "鼎新楼健身中心",
+        "[\"fitness\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        21,
+        1,
+        2,
+        "南岭校区田径场",
+        "[\"running\",\"soccer\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        22,
+        1,
+        2,
+        "南岭校区真草足球场",
+        "[\"soccer\",\"running\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        23,
+        1,
+        2,
+        "南岭校区二教东侧篮球场",
+        "[\"basketball\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        24,
+        1,
+        2,
+        "南岭校区宿舍区篮球场",
+        "[\"basketball\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        25,
+        1,
+        2,
+        "南岭校区排球场",
+        "[\"volleyball\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        26,
+        1,
+        2,
+        "南岭校区东门网球场",
+        "[\"tennis\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        27,
+        1,
+        2,
+        "南岭体育馆篮球馆",
+        "[\"basketball\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        28,
+        1,
+        2,
+        "南岭体育馆羽毛球馆",
+        "[\"badminton\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        29,
+        1,
+        2,
+        "南岭体育馆乒乓球馆",
+        "[\"table_tennis\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        30,
+        1,
+        2,
+        "南岭体育馆二楼健身中心",
+        "[\"fitness\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        31,
+        1,
+        3,
+        "朝阳校区田径场",
+        "[\"running\",\"soccer\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        32,
+        1,
+        3,
+        "朝阳校区宿舍区篮球场",
+        "[\"basketball\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        33,
+        1,
+        3,
+        "朝阳校区排球场",
+        "[\"volleyball\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        34,
+        1,
+        3,
+        "朝阳体育馆羽毛球馆",
+        "[\"badminton\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        35,
+        1,
+        3,
+        "朝阳体育馆乒乓球馆",
+        "[\"table_tennis\"]",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        36,
+        1,
+        3,
+        "朝阳体育馆健身室",
+        "[\"fitness\"]",
+        1
+      ]
+    }
+  ]
+}

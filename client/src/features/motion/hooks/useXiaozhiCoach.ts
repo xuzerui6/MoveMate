@@ -244,6 +244,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
     let reconnectIndex = 0
     let reconnectTimer = 0
     let activationTimer = 0
+    let handshakeTimer = 0
 
     const connect = () => {
       if (disposed) return
@@ -252,6 +253,10 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
       const socket = new WebSocket(`${protocol}//${location.host}/api/xiaozhi/socket`)
       socket.binaryType = 'arraybuffer'
       socketRef.current = socket
+      handshakeTimer = window.setTimeout(() => {
+        setErrorMessage('小智语音握手超时，请稍后重试')
+        socket.close(4000, 'voice handshake timeout')
+      }, 20_000)
       socket.onmessage = event => {
         if (event.data instanceof ArrayBuffer) {
           if (!mutedRef.current) audioRef.current?.decode(event.data)
@@ -260,7 +265,6 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
         let message: any
         try { message = JSON.parse(String(event.data)) } catch { return }
         if (message.bridge === 'ready') {
-          reconnectIndex = 0
           sendJson(helloMessage())
           return
         }
@@ -307,6 +311,8 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
           return
         }
         if (message.type === 'hello') {
+          clearTimeout(handshakeTimer)
+          reconnectIndex = 0
           setErrorMessage('')
           sessionIdRef.current = typeof message.session_id === 'string' ? message.session_id : ''
           const sampleRate = Number(message.audio_params?.sample_rate) || 24_000
@@ -347,6 +353,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
         if (message.type === 'mcp' && message.payload) void handleMcp(message.payload, message.session_id)
       }
       socket.onclose = event => {
+        clearTimeout(handshakeTimer)
         if (disposed) return
         socketRef.current = null
         sessionIdRef.current = ''
@@ -365,6 +372,12 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
         }
         if (event.code === 4403) {
           setErrorMessage('语音连接被服务端拒绝，请检查小智是否启用及当前网址是否在语音白名单中。')
+          setFallbackMode(true)
+          setState('fallback')
+          return
+        }
+        if (reconnectIndex >= RECONNECT_DELAYS.length) {
+          setErrorMessage('小智语音连接连续失败，已切换到本地陪练。可点击重试重新连接。')
           setFallbackMode(true)
           setState('fallback')
           return
@@ -433,6 +446,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
       disposed = true
       clearTimeout(reconnectTimer)
       clearTimeout(activationTimer)
+      clearTimeout(handshakeTimer)
       socketRef.current?.close(1000, 'workout ended')
       socketRef.current = null
     }

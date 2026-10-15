@@ -4,6 +4,9 @@ dist/
 build/
 coverage/
 .vercel/
+.wrangler/
+.dev.vars
+.dev.vars.*
 *.tsbuildinfo
 /server/public/
 

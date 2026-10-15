@@ -13,6 +13,7 @@
  *   - 消息内容 ≤ 500 字服务端二次校验
  */
 import { Server, Socket } from 'socket.io';
+import { sourceMaintenance } from '../source-migration';
 import { pool } from '../db/pool';
 import * as ChatService from '../services/chat.service';
 
@@ -46,6 +47,7 @@ export function registerChatHandlers(io: Server, socket: Socket): void {
     }
 
     try {
+      if (await sourceMaintenance()) { socket.emit('error', {message:'系统迁移维护中'}); return; }
       // 查询局状态
       const gameResult = await pool.query<GameStateRow>(
         'SELECT status, title, host_id FROM games WHERE id = $1',
@@ -122,6 +124,7 @@ export function registerChatHandlers(io: Server, socket: Socket): void {
     }
 
     try {
+      if (await sourceMaintenance()) { fail('系统迁移维护中'); return; }
       // 2. 查询局状态，校验发送权限
       const gameResult = await pool.query<GameStateRow>(
         'SELECT status, title, host_id FROM games WHERE id = $1',

@@ -2,13 +2,13 @@
  * WebSocket 连接状态管理
  */
 import { create } from 'zustand';
-import type { Socket } from 'socket.io-client';
+import type { RealtimeSocket } from '../services/realtime';
 
 type ConnectionStatus = 'disconnected' | 'connecting' | 'connected' | 'error';
 
 interface SocketState {
-  socket: Socket | null;
-  setSocket: (socket: Socket | null) => void;
+  socket: RealtimeSocket | null;
+  setSocket: (socket: RealtimeSocket | null) => void;
   status: ConnectionStatus;
   setStatus: (status: ConnectionStatus) => void;
 }

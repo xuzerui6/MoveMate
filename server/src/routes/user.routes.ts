@@ -10,6 +10,7 @@ import { validate } from '../middleware/validate';
 import { authRequired } from '../middleware/auth';
 import { pool,withTransaction } from '../db/pool';
 
+import { saveAvatar } from '../storage/avatars';
 const router = Router();
 
 const updateProfileSchema = z.object({
@@ -193,7 +194,7 @@ router.get('/leaderboard', authRequired, async (req: Request, res: Response, nex
 // POST /avatar — 上传头像（必须在 /:id 之前注册）
 // 安全：不保留原始扩展名（防伪装文件）+ 上传后校验文件内容（magic bytes）
 const avatarUpload = multer({
-  storage: process.env.TURSO_DATABASE_URL?multer.memoryStorage():multer.diskStorage({
+  storage: (process.env.TURSO_DATABASE_URL || process.env.CLOUDFLARE === '1')?multer.memoryStorage():multer.diskStorage({
     destination: path.join(__dirname, '..', '..', 'uploads'),
     filename: (_req, _file, cb) => {
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
@@ -201,7 +202,7 @@ const avatarUpload = multer({
       cb(null, 'avatar-' + uniqueSuffix + '.jpg');
     },
   }),
-  limits: { fileSize: process.env.VERCEL === '1' ? 4 * 1024 * 1024 : 5 * 1024 * 1024 },
+  limits: { fileSize: process.env.VERCEL === '1' || process.env.CLOUDFLARE === '1' ? 4 * 1024 * 1024 : 5 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
     const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
     cb(null, allowed.includes(file.mimetype));
@@ -229,7 +230,7 @@ router.post('/avatar', authRequired, avatarUpload.single('file'), async (req: Re
   let savedPath: string | null = null;
   try {
     if (!req.file) { res.status(400).json({ code: 40000, message: '请选择图片文件', data: null }); return; }
-    if(process.env.TURSO_DATABASE_URL) {
+    if(process.env.TURSO_DATABASE_URL || process.env.CLOUDFLARE === '1') {
       const bytes=req.file.buffer;
       const ext=detectImageType(bytes);
       if(!ext){res.status(400).json({code:40000,message:'文件不是有效的图片格式',data:null});return}
@@ -237,7 +238,7 @@ router.post('/avatar', authRequired, avatarUpload.single('file'), async (req: Re
       const contentType=ext==='.jpg'?'image/jpeg':'image/'+ext.slice(1);
       const url='/uploads/'+name;
       await withTransaction(async client=>{
-        await client.query('INSERT INTO uploaded_avatars(id,user_id,content,content_type,created_at) VALUES($1,$2,$3,$4,$5)',[name,req.user!.id,bytes,contentType,new Date().toISOString()]);
+        await saveAvatar(name,req.user!.id,bytes,contentType);
         await UserService.updateProfile(req.user!.id,{avatar_url:url});
       });
       res.json({code:0,message:'头像上传成功',data:{url}});return;

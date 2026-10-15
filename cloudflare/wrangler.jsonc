@@ -1,0 +1,36 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "movemate",
+  "account_id": "1f2504fb31c1cf2e43cbbc9948b689f7",
+  "main": "dist/worker.js",
+  "no_bundle": true,
+  "compatibility_date": "2026-10-14",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "dongban.xyz", "custom_domain": true },
+    { "pattern": "www.dongban.xyz", "custom_domain": true }
+  ],
+  "assets": {
+    "directory": "../client/dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/*"]
+  },
+  "durable_objects": { "bindings": [{ "name": "BACKEND", "class_name": "MoveMateBackend" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["MoveMateBackend"] }],
+  "vars": {
+    "CLOUDFLARE": "1", "NODE_ENV": "production", "INSTANCE": "production",
+    "BASE_URL": "https://dongban.xyz", "CORS_ORIGIN": "https://dongban.xyz",
+    "XIAOZHI_ALLOWED_ORIGINS": "https://dongban.xyz", "XIAOZHI_IDENTITY_MODE": "personal"
+  },
+  "observability": { "enabled": true, "head_sampling_rate": 0.1 },
+  "env": {
+    "preview": {
+      "name": "movemate-preview",
+      "routes": [],
+      "durable_objects": { "bindings": [{ "name": "BACKEND", "class_name": "MoveMateBackend" }] },
+      "vars": { "CLOUDFLARE": "1", "NODE_ENV": "production", "INSTANCE": "preview", "XIAOZHI_IDENTITY_MODE": "personal" }
+    }
+  }
+}

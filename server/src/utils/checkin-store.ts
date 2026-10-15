@@ -13,7 +13,7 @@ interface CheckinEntry {
 const store = new Map<string, CheckinEntry>();
 
 // 每小时清理一次过期条目
-setInterval(() => {
+if (process.env.CLOUDFLARE !== '1') setInterval(() => {
   const now = Date.now();
   for (const [code, entry] of store) {
     if (entry.expiresAt < now) store.delete(code);

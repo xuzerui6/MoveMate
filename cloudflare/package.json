@@ -1,0 +1,22 @@
+{
+  "name": "movemate-cloudflare",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bundle": "node scripts/build.mjs",
+    "build": "npm run build:web && npm run bundle && wrangler deploy --dry-run --outdir dist/deployment",
+    "dev": "npm run bundle && wrangler dev",
+    "test": "node scripts/test.mjs",
+    "deploy:preview": "npm run build:web && npm run bundle && wrangler deploy --env preview",
+    "deploy": "npm run build:web && npm run bundle && wrangler deploy",
+    "build:web": "node scripts/web.mjs",
+    "typecheck": "node ../server/node_modules/typescript/bin/tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261015.1",
+    "esbuild": "^0.28.2",
+    "miniflare": "^5.20261012.0-beta",
+    "wrangler": "^4.151.0"
+  }
+}

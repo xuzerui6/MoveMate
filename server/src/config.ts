@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 
 // 加载 .env 文件，优先于默认值
-dotenv.config({ path: process.env.ENV_FILE || '.env' });
+if (process.env.CLOUDFLARE !== '1') dotenv.config({ path: process.env.ENV_FILE || '.env' });
 
 /**
  * 全局配置对象，从环境变量读取所有运行时参数

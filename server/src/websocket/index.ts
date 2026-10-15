@@ -19,6 +19,7 @@ import { registerChatHandlers } from './chat.handler';
 import { initNotificationHandler } from './notification.handler';
 import { ensureCloudRuntime, isVercelRuntime } from '../cloud';
 import { ensureSocketAdapter } from './cloud-adapter';
+import { sourceMaintenance } from '../source-migration';
 import { isAllowedOrigin } from '../xiaozhi/identity';
 
 // ----------------------------------------------------------------
@@ -54,6 +55,7 @@ async function authenticateSocket(socket: Socket, next: (err?: Error) => void): 
   try {
     await ensureCloudRuntime();
     await ensureSocketAdapter(io);
+    if (await sourceMaintenance()) return next(new Error('系统迁移维护中'));
     const token = socket.handshake.auth.token as string | undefined;
 
     if (!token) {

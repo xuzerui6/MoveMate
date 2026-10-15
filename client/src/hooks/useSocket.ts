@@ -1,5 +1,5 @@
 import { useEffect, useCallback } from 'react';
-import { io } from 'socket.io-client';
+import { createRealtimeSocket } from '../services/realtime';
 import { useAuthStore } from '../stores/authStore';
 import { useSocketStore } from '../stores/socketStore';
 import { useGameStore } from '../stores/gameStore';
@@ -15,13 +15,7 @@ export function useSocketConnection() {
     useNotificationStore.setState({notifications:[],unreadCount:0,loading:false,error:null});
     useGameStore.setState({games:[],loading:false,error:null,page:1,hasMore:true,filter:{size:20,scope:'campus'}});
     if (!isLoggedIn || !token) { store.setStatus('disconnected'); return; }
-    const connection = io('/', {
-      // Services routing does not preserve a trailing-slash upgrade path.
-      path: import.meta.env.VITE_WEBSOCKET_ONLY==='true' ? '/socket.io/connect' : '/socket.io',
-      addTrailingSlash: import.meta.env.VITE_WEBSOCKET_ONLY!=='true',
-      autoConnect: false, auth: { token }, transports: import.meta.env.VITE_WEBSOCKET_ONLY==='true'?['websocket']:['websocket', 'polling'],
-      reconnection: true, reconnectionAttempts: 10, reconnectionDelay: 1000, timeout: 10000,
-    });
+    const connection = createRealtimeSocket(token);
     store.setSocket(connection);
     store.setStatus('connecting');
     connection.on('connect', () => {

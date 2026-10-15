@@ -24,7 +24,7 @@ export const SEND_COOLDOWN_MS = 60 * 1000;
 const store = new Map<string, CodeEntry>();
 
 // 每 60 秒清理过期验证码
-setInterval(() => {
+if (process.env.CLOUDFLARE !== '1') setInterval(() => {
   const now = Date.now();
   for (const [key, entry] of store) {
     if (entry.expiresAt < now) store.delete(key);
@@ -47,7 +47,7 @@ export function isAllowedEmail(email: string): boolean {
  */
 export function createCode(email: string): string|Promise<string> {
   const key = email.toLowerCase();
-  if(process.env.TURSO_DATABASE_URL)return withTransaction(async client=>{
+  if(process.env.TURSO_DATABASE_URL || process.env.CLOUDFLARE === '1')return withTransaction(async client=>{
     const now=Date.now();
     const {rows}=await client.query('SELECT last_sent_at FROM email_codes WHERE email=$1',[key]);
     if(rows[0]&&now-rows[0].last_sent_at<SEND_COOLDOWN_MS)throw new Error(`发送过于频繁，请 ${Math.ceil((SEND_COOLDOWN_MS-now+rows[0].last_sent_at)/1000)} 秒后再试`);
@@ -75,7 +75,7 @@ export function createCode(email: string): string|Promise<string> {
 /** 验证验证码。成功返回 true 并删除记录，失败返回 false */
 export function verifyCode(email: string, input: string): boolean|Promise<boolean> {
   const key = email.toLowerCase();
-  if(process.env.TURSO_DATABASE_URL)return withTransaction(async client=>{
+  if(process.env.TURSO_DATABASE_URL || process.env.CLOUDFLARE === '1')return withTransaction(async client=>{
     const {rows}=await client.query('SELECT * FROM email_codes WHERE email=$1',[key]);
     const entry=rows[0];
     if(!entry)return false;

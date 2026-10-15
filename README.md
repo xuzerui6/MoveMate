@@ -8,7 +8,7 @@
 
 ## 本机启动
 
-线上地址：[https://movemate-phi.vercel.app](https://movemate-phi.vercel.app)。Vercel 单项目使用仓库根目录的 Services 配置；前端、API、聊天与语音共用域名。云数据库、Redis 及环境变量说明见 [Vercel 部署说明](docs/vercel-deployment.md)。本机启动方式继续使用下列脚本。
+正式地址：[https://dongban.xyz](https://dongban.xyz)，`www` 跳转至主域名。网页、接口、SQLite、实时聊天、通知和小智桥接运行在 Cloudflare Workers Free 与 SQLite-backed Durable Object；没有新增 R2、Containers 或付费套餐。原 Vercel 站点维护，Turso／Upstash 仅保留为备份。部署、迁移和只回滚代码的说明见 [Cloudflare 部署说明](docs/cloudflare-deployment.md)，实际验证见 [迁移验收](docs/cloudflare-acceptance.md)。本机启动方式继续使用下列脚本。
 
 需要 Node.js **22.13+，推荐 24**（实际验证 24.16.0）、npm 和内置 `node:sqlite`；不需要 PostgreSQL、Redis 或外部 SQLite 驱动。运行时可能出现 Node 的 SQLite 实验性提示，属于当前运行时提示。
 
