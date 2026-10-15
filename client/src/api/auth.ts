@@ -14,6 +14,7 @@ type RawUser = {
   department?: string;
   campus_verified?: boolean;
   email_verified?: boolean;
+  is_admin?: boolean | number;
   campus?: string;
   school_id?: number;
   campus_id?: number;
@@ -43,6 +44,7 @@ export function normalizeUser(user: RawUser) {
     qq_email: user.qq_email ?? '',
     department: user.department ?? '',
     campus_verified: user.campus_verified ?? user.email_verified ?? false,
+    is_admin: user.is_admin === true || user.is_admin === 1,
     campus: user.campus ?? user.campus_name ?? '',
     school_id: user.school_id,
     campus_id: user.campus_id,

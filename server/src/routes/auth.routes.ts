@@ -37,8 +37,8 @@ const registerSchema = z.object({
 
 /** 登录请求体校验 */
 const loginSchema = z.object({
-  email: z.string().email('邮箱格式不正确'),
-  password: z.string().min(1, '密码不能为空'),
+  email: z.union([z.literal('admin'), z.string().email('账号或邮箱格式不正确')]),
+  password: z.string().min(1, '密码不能为空').max(128, '密码过长'),
 });
 
 /** 邮箱验证请求体校验 */

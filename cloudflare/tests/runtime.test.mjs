@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
 import { fixture, password } from './fixture.mjs';
+import bcrypt from '../../server/node_modules/bcryptjs/index.js';
 const migrationSecret = 'm'.repeat(64);
 const mf = new Miniflare(convertV4MiniflareOptions({ workers:[{name:'app',outboundService:'voice-provider', modules: true, scriptPath:'dist/test-worker.js', compatibilityDate:'2026-10-14', compatibilityFlags:['nodejs_compat'], durableObjects:{BACKEND:{className:'TestBackend',useSQLite:true},PROBE:{className:'RuntimeProbe',useSQLite:true}}, bindings:{INSTANCE:'test',JWT_SECRET:'j'.repeat(64),STUDENT_ID_SALT:'s'.repeat(64),XIAOZHI_COOKIE_SECRET:'x'.repeat(64),MIGRATION_SECRET:migrationSecret,NODE_ENV:'production',CLOUDFLARE:'1',XIAOZHI_IDENTITY_MODE:'personal'}, serviceBindings:{ASSETS:request=>new URL(request.url).pathname==='/assets/missing.js'?new Response('<html>SPA</html>',{headers:{'Content-Type':'text/html'}}):new Response('asset')} },{name:'voice-provider',modules:true,compatibilityDate:'2026-10-14',script:`
 export default {async fetch(request){
@@ -140,6 +141,19 @@ await test('Workers runtime migration and business regression', async t=>{
  const other=await call('/api/v1/training/state',{token:tokens[1]});assert.equal(other.data.data.totalXp,2);
  assert.equal((await call('/api/v1/training/avatar',{method:'PATCH',token:tokens[0],body:{activeOutfit:'running'}})).status,403);
  assert.equal((await call('/api/v1/users/me',{method:'PUT',token:tokens[0],body:{nickname:'Worker saved',sport_preferences:'["running"]'}})).status,200);
+ });
+ await t.test('operator provisioning supports admin login without granting ordinary users access',async()=>{
+ const passwordHash=await bcrypt.hash('op5!!',10);
+ // An early rejected POST body can reset Miniflare's reused HTTP socket.
+ assert.equal((await call('/api/migration/provision-admin',{method:'POST',token:tokens[0],body:{passwordHash},headers:{Connection:'close'}})).status,401);
+ const first=await migrate('provision-admin',{passwordHash});assert.equal(first.status,200);assert.equal(first.data.created,true);
+ const again=await migrate('provision-admin',{passwordHash:await bcrypt.hash('other-password',10)});assert.equal(again.status,200);assert.equal(again.data.created,false);assert.equal(again.data.id,first.data.id);
+ assert.equal((await call('/api/v1/auth/login',{method:'POST',body:{email:'admin',password:'wrong'}})).status,404);
+ const login=await call('/api/v1/auth/login',{method:'POST',body:{email:'admin',password:'op5!!'}});assert.equal(login.status,200,JSON.stringify(login.data));assert.equal(login.data.data.user.is_admin,true);
+ for(const panel of ['stats','users','games','venues','feedback']){
+ assert.equal((await call('/api/v1/admin/'+panel,{token:login.data.data.token})).status,200,panel);
+ assert.equal((await call('/api/v1/admin/'+panel,{token:tokens[0]})).status,403,panel);
+ }
  });
  }finally{for(const ws of sockets){try{ws.close()}catch{}}await mf.dispose()}
 });

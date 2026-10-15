@@ -2,6 +2,7 @@ import { withTransaction } from '../../server/src/db/pool';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import type { ActorDatabase } from './db';
 import { readAvatar, saveAvatar } from '../../server/src/storage/avatars';
+import { provisionAdmin } from '../../server/src/services/admin-provision.service';
 
 export const hash = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 export type TableManifest = { name: string; columns: string[]; count: number; digest: string; order: string[] };
@@ -26,6 +27,12 @@ export class Migration {
     const action = new URL(request.url).pathname.split('/').pop();
     try {
       const body = request.method === 'POST' ? await request.json() : null;
+      if (action === 'provision-admin' && request.method === 'POST') {
+        if (!this.active()) throw new Error('Instance is not active');
+        const input = body as { passwordHash?: unknown } | null;
+        if (typeof input?.passwordHash !== 'string') throw new Error('Password hash required');
+        return Response.json(await provisionAdmin(input.passwordHash));
+      }
       if (action === 'status' && request.method === 'GET') return Response.json({ active: this.active(), manifest: JSON.parse(this.meta('manifest') || 'null'), verified: this.meta('verified') || null, parts: this.db.storage.sql.exec('SELECT snapshot,part,hash FROM import_checkpoints ORDER BY part').toArray() });
       if (action === 'begin' && request.method === 'POST') {
         const manifest = body as Manifest;

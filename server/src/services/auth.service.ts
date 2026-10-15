@@ -11,6 +11,7 @@ import { hashStudentId } from '../utils/hash';
 import { ValidationError, NotFoundError, AppError } from '../utils/errors';
 import { isAllowedEmail, verifyCode } from './verify-code.service';
 import { withTransaction } from '../db';
+import { ADMIN_LOGIN_EMAIL, loginEmail } from '../utils/login-identity';
 
 /** 注册请求参数 */
 export interface RegisterInput {
@@ -212,12 +213,13 @@ export const AuthService = {
    */
   async login(input: LoginInput): Promise<AuthResult> {
 
-    validateEmail(input.email);
-    validatePassword(input.password);
+    const email = loginEmail(input.email);
+    validateEmail(email);
+    if (!input.password || input.password.length > 128) throw new ValidationError('密码不能为空或过长');
 
-    const user = await UserModel.findByEmail(input.email.trim().toLowerCase());
-    if (!user) {
-      throw new NotFoundError('邮箱或密码错误');
+    const user = await UserModel.findByEmail(email);
+    if (!user || (email === ADMIN_LOGIN_EMAIL && !user.is_admin)) {
+      throw new NotFoundError('账号或密码错误');
     }
 
     // bcrypt 密码比对

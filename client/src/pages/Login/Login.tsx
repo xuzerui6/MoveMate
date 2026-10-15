@@ -119,14 +119,14 @@ const Login: React.FC = () => {
     const errors: Record<string, string> = {};
 
     if (!email.trim()) {
-      errors.email = '请输入邮箱';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.email = mode === 'login' ? '请输入账号或邮箱' : '请输入邮箱';
+    } else if (!(mode === 'login' && email.trim() === 'admin') && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       errors.email = '请输入有效的邮箱地址';
     }
 
     if (!password) {
       errors.password = '请输入密码';
-    } else if (password.length < 6) {
+    } else if (mode === 'register' && password.length < 6) {
       errors.password = '密码至少 6 位';
     }
 
@@ -258,7 +258,7 @@ const Login: React.FC = () => {
 
         {/* 邮箱 */}
         <div className="form-group">
-          <label className="form-label" htmlFor="auth-email">校园邮箱 <span className="form-label__required">*</span>
+          <label className="form-label" htmlFor="auth-email">{mode === 'login' ? '账号 / 校园邮箱' : '校园邮箱'} <span className="form-label__required">*</span>
           </label>
           {mode === 'register' && (
             <p className="ui-pages-login-login-inline-0">
@@ -273,7 +273,8 @@ const Login: React.FC = () => {
           <div className="ui-pages-login-login-inline-2">
             <input
               
-              type="email"
+              type={mode === 'login' ? 'text' : 'email'}
+              autoComplete={mode === 'login' ? 'username' : 'email'}
               id="auth-email" value={email}
               onChange={(e) => { setEmail(e.target.value); setVerifyCodeSent(false); }}
               placeholder=""
@@ -341,7 +342,7 @@ const Login: React.FC = () => {
             type="password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
             id="auth-password" value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="至少 6 位密码"
+            placeholder={mode === 'register' ? '至少 6 位密码' : '请输入密码'}
           />
           {validationErrors.password && (
             <p className="form-error">{validationErrors.password}</p>
