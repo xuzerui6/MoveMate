@@ -36,9 +36,11 @@ const Feedback: React.FC = () => {
       <p className="ui-pages-feedback-feedback-desc">遇到问题或有建议？请告诉我们，帮助我们做得更好。</p>
       <form onSubmit={handleSubmit} className="ui-pages-feedback-feedback-form">
         <div className="form-group">
-          <label className="form-label">反馈内容</label>
+          <label className="form-label" htmlFor="feedback-content">反馈内容</label>
           <textarea
-            
+            id="feedback-content"
+            required
+            aria-describedby="feedback-count"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="请详细描述你遇到的问题或建议..."
@@ -47,11 +49,12 @@ const Feedback: React.FC = () => {
             className={["form-input","ui-pages-feedback-feedback-inline-0"].filter(Boolean).join(" ")}
             autoFocus
           />
-          <span className="ui-pages-feedback-feedback-charCount">{content.length}/1000</span>
+          <span id="feedback-count" className="ui-pages-feedback-feedback-charCount">{content.length}/1000</span>
         </div>
         <div className="form-group">
-          <label className="form-label">联系方式（选填）</label>
+          <label className="form-label" htmlFor="feedback-contact">联系方式（选填）</label>
           <input
+            id="feedback-contact"
             className="form-input"
             value={contact}
             onChange={(e) => setContact(e.target.value)}

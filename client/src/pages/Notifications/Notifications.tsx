@@ -110,7 +110,7 @@ const Notifications: React.FC = () => {
       {error&&<div className="inline-error" role="alert"><p>{error}</p><button className="btn btn--secondary" onClick={()=>void refresh()}>重试</button></div>}
       {loading && notifications.length === 0 ? (
         <div className="loading-spinner"><div className="spinner" /></div>
-      ) : notifications.length === 0 ? (
+      ) : error && notifications.length === 0 ? null : notifications.length === 0 ? (
         <div className="empty-state">
           <div className="empty-state__icon"><Icon name="bell" size={42}/></div>
           <h3 className="empty-state__title">干净得很</h3>

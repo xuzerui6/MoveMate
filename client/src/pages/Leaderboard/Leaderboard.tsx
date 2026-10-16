@@ -219,7 +219,7 @@ const Leaderboard: React.FC = () => {
                       <div className="ui-pages-leaderboard-leaderboard-mainCol">
                         <div className="ui-pages-leaderboard-leaderboard-nameRow">
                           <strong className="ui-pages-leaderboard-leaderboard-name">{entry.nickname}</strong>
-                          <span className="ui-pages-leaderboard-leaderboard-points">{entry.reward_points} 分</span>
+                          <span className="ui-pages-leaderboard-leaderboard-points">{entry.reward_points} XP</span>
                         </div>
                         <div className="ui-pages-leaderboard-leaderboard-metaRow">
                           Lv.{entry.reward_level} · 连续 {entry.reward_streak} 天 · 完成 {entry.completed_games} 场

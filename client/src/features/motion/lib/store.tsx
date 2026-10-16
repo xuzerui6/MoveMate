@@ -30,11 +30,12 @@ export function StoreProvider({children}:{children:React.ReactNode}) {
   },[userId]);
   const refresh=useCallback(async()=>{
     const current=++requestId.current;
+    setLoading(true);
     try {const res:any=await client.get('/training/state');if(current===requestId.current){apply(res.data);setError('');}}
-    catch(err){if(alive.current)setError(getErrorMessage(err));}
-    finally{if(alive.current)setLoading(false);}
+    catch(err){if(alive.current&&current===requestId.current)setError(getErrorMessage(err));}
+    finally{if(alive.current&&current===requestId.current)setLoading(false);}
   },[apply]);
-  useEffect(()=>{alive.current=true;void refresh();const listener=()=>void refresh();const visibility=()=>{if(document.visibilityState==='visible')listener();};window.addEventListener('motion:refresh',listener);document.addEventListener('visibilitychange',visibility);return()=>{alive.current=false;window.removeEventListener('motion:refresh',listener);document.removeEventListener('visibilitychange',visibility);localStorage.removeItem('motion-buddy:account:'+userId);};},[refresh,userId]);
+  useEffect(()=>{alive.current=true;void refresh();const listener=()=>void refresh();const visibility=()=>{if(document.visibilityState==='visible')listener();};window.addEventListener('motion:refresh',listener);window.addEventListener('online',listener);document.addEventListener('visibilitychange',visibility);return()=>{alive.current=false;window.removeEventListener('motion:refresh',listener);window.removeEventListener('online',listener);document.removeEventListener('visibilitychange',visibility);localStorage.removeItem('motion-buddy:account:'+userId);};},[refresh,userId]);
   const startSession=async(sportType:string,source:string,gameId?:number)=>{try{const res:any=await client.post('/sport-sessions',{id:crypto.randomUUID(),sportType,source,gameId});return res.data;}finally{await refresh();}};
   const act=async(id:string,action:string,data:any={})=>{try{const res:any=await client.post('/sport-sessions/'+id+'/'+action,data);return res.data;}finally{await refresh();}};
   const finishWorkout=async(raw:WorkoutSession)=>{

@@ -2,6 +2,7 @@
  * 认证状态管理 —— 用户登录、注册、登出、Token 持久化
  */
 import { create } from 'zustand';
+import { isAxiosError } from 'axios';
 import type { User, LoginData, RegisterData } from '../types';
 import * as authApi from '../api/auth';
 import { getErrorMessage } from '../api/client';
@@ -69,18 +70,24 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       user,
       token: nextToken,
       isLoggedIn: Boolean(user && nextToken),
+      loading: false,
+      error: null,
     });
   },
 
   hydrateSession: async () => {
     const token = get().token || localStorage.getItem('token');
     if (!token) return;
-
+    set({ loading: true });
     try {
       const user = await authApi.getMe();
       if (get().token === token) get().setSession(user, token);
-    } catch {
-      if (get().token === token) get().logout();
+    } catch (err) {
+      if (get().token !== token) return;
+      if (isAxiosError(err) && err.response?.status === 401) get().logout();
+      else set({ error: getErrorMessage(err) });
+    } finally {
+      if (get().token === token) set({ loading: false });
     }
   },
 
@@ -112,7 +119,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   logout: () => {
     persistSession(null, null);
-    set({ user: null, token: null, isLoggedIn: false, error: null });
+    set({ user: null, token: null, isLoggedIn: false, loading: false, error: null });
   },
 
   verifyEmail: async (code) => {

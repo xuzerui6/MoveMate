@@ -13,6 +13,7 @@ import './design-system.css';
 import { useAuthStore } from './stores/authStore';
 useAuthStore.getState().init();
 void useAuthStore.getState().hydrateSession();
+window.addEventListener('online', () => { void useAuthStore.getState().hydrateSession(); });
 window.addEventListener('storage', event => {
   if (event.storageArea !== localStorage || (event.key !== null && !['token', 'user'].includes(event.key))) return;
   const previousToken = useAuthStore.getState().token;

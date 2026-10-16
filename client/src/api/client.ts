@@ -5,7 +5,7 @@ import axios, { AxiosError } from 'axios';
 
 const client = axios.create({
   baseURL: '/api/v1',
-  timeout: Number(import.meta.env.VITE_API_TIMEOUT_MS) || 10000,
+  timeout: Number(import.meta.env?.VITE_API_TIMEOUT_MS) || 10000,
   headers: {
     'Content-Type': 'application/json',
   },

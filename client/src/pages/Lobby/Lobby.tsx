@@ -146,6 +146,7 @@ const Lobby: React.FC = () => {
         </button>
         <div className="ui-pages-lobby-lobby-selectWrapper">
           <select
+            aria-label="筛选校区"
             className="form-select ui-pages-lobby-lobby-campusSelect"
             value={filter.scope === 'school' ? '' : (filter.campus_id || user?.campus_id || '')}
             onChange={(e) => filterByCampus(e.target.value ? Number(e.target.value) : undefined, 'campus')}
