@@ -5,6 +5,7 @@ import { create } from 'zustand';
 import type { User, LoginData, RegisterData } from '../types';
 import * as authApi from '../api/auth';
 import { getErrorMessage } from '../api/client';
+import { readStoredSession } from '../services/stored-session';
 
 interface AuthState {
   user: User | null;
@@ -57,16 +58,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   error: null,
 
   init: () => {
-    const token = localStorage.getItem('token');
-    const userStr = localStorage.getItem('user');
-    if (token && userStr) {
-      try {
-        const user = authApi.normalizeUser(JSON.parse(userStr));
-        set({ token, user, isLoggedIn: true });
-      } catch {
-        persistSession(null, null);
-      }
-    }
+    const session = readStoredSession(localStorage.getItem('token'), localStorage.getItem('user'));
+    set({ token: session?.token || null, user: session ? authApi.normalizeUser(session.user) : null, isLoggedIn: !!session, loading: false, error: null });
   },
 
   setSession: (user, token = get().token) => {

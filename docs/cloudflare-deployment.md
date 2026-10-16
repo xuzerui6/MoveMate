@@ -76,7 +76,7 @@ node cloudflare/scripts/migrate.mjs open https://movemate.xuzerui6.workers.dev
 node cloudflare/scripts/migrate.mjs source-seal https://movemate-phi.vercel.app
 ```
 
-原账号 ID、密码哈希和业务数据保留。日期在既有 API 的 UTC ISO 格式下导出，保留同一时间含义；不补发 XP。新域名需要重新登录，小智设备身份按浏览器和域名重新绑定。
+原账号 ID、密码哈希和业务数据保留。日期在既有 API 的 UTC ISO 格式下导出，保留同一时间含义；不补发 XP。新域名需要重新登录，此前个人模式的小智设备身份按浏览器和域名重新绑定；当前云端共享模式由管理员集中绑定，演示用户无需个人绑定，许可与隔离限制见 [统一语音陪练](shared-voice.md)。
 
 ## 回滚与运维
 
