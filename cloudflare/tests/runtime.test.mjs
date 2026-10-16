@@ -3,13 +3,14 @@ import assert from 'node:assert/strict';
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
 import { fixture, password } from './fixture.mjs';
 import bcrypt from '../../server/node_modules/bcryptjs/index.js';
+import { voicePoolTests } from './voice-pool.mjs';
 const migrationSecret = 'm'.repeat(64);
-const mf = new Miniflare(convertV4MiniflareOptions({ workers:[{name:'app',outboundService:'voice-provider', modules: true, scriptPath:'dist/test-worker.js', compatibilityDate:'2026-10-14', compatibilityFlags:['nodejs_compat'], durableObjects:{BACKEND:{className:'TestBackend',useSQLite:true},PROBE:{className:'RuntimeProbe',useSQLite:true}}, bindings:{INSTANCE:'test',JWT_SECRET:'j'.repeat(64),STUDENT_ID_SALT:'s'.repeat(64),XIAOZHI_COOKIE_SECRET:'x'.repeat(64),MIGRATION_SECRET:migrationSecret,NODE_ENV:'production',CLOUDFLARE:'1',XIAOZHI_IDENTITY_MODE:'personal'}, serviceBindings:{ASSETS:request=>new URL(request.url).pathname==='/assets/missing.js'?new Response('<html>SPA</html>',{headers:{'Content-Type':'text/html'}}):new Response('asset')} },{name:'voice-provider',modules:true,compatibilityDate:'2026-10-14',script:`
+const mf = new Miniflare(convertV4MiniflareOptions({ workers:[{name:'app',outboundService:'voice-provider', modules: true, scriptPath:'dist/test-worker.js', compatibilityDate:'2026-10-14', compatibilityFlags:['nodejs_compat'], durableObjects:{BACKEND:{className:'TestBackend',useSQLite:true},PROBE:{className:'RuntimeProbe',useSQLite:true}}, bindings:{INSTANCE:'test',JWT_SECRET:'j'.repeat(64),STUDENT_ID_SALT:'s'.repeat(64),XIAOZHI_COOKIE_SECRET:'x'.repeat(64),XIAOZHI_POOL_SECRET:'p'.repeat(64),MIGRATION_SECRET:migrationSecret,NODE_ENV:'production',CLOUDFLARE:'1',XIAOZHI_IDENTITY_MODE:'personal'}, serviceBindings:{ASSETS:request=>new URL(request.url).pathname==='/assets/missing.js'?new Response('<html>SPA</html>',{headers:{'Content-Type':'text/html'}}):new Response('asset')} },{name:'voice-provider',modules:true,compatibilityDate:'2026-10-14',script:`
 export default {async fetch(request){
  if(new URL(request.url).hostname==='api.tenclass.net')return Response.json({websocket:{url:'wss://voice.invalid/socket',token:'synthetic-test-token'}});
  if(request.headers.get('upgrade')!=='websocket')return new Response('missing upgrade',{status:400});
- const [client,server]=Object.values(new WebSocketPair());server.binaryType='arraybuffer';server.accept();
- server.addEventListener('message',event=>{if(typeof event.data==='string'){const m=JSON.parse(event.data);if(m.type==='hello')server.send(JSON.stringify({type:'hello',session_id:'synthetic-session',audio_params:{sample_rate:24000}}));else server.send(event.data);}else server.send(event.data)});
+ const [client,server]=Object.values(new WebSocketPair());server.binaryType='arraybuffer';server.accept();server.addEventListener('close',()=>{try{server.close()}catch{}});
+ server.addEventListener('message',event=>{if(typeof event.data==='string'){const m=JSON.parse(event.data);if(m.type==='hello')server.send(JSON.stringify({type:'hello',session_id:crypto.randomUUID(),audio_params:{sample_rate:24000}}));else server.send(event.data);}else server.send(event.data)});
  return new Response(null,{status:101,webSocket:client});
 }};`}] }));
 const call = async (path, {method='GET',body,token,migration=false,headers={}}={}) => {
@@ -17,7 +18,7 @@ const call = async (path, {method='GET',body,token,migration=false,headers={}}={
  let data; const text=await response.text(); try{data=JSON.parse(text)}catch{data=text};return {status:response.status,data,headers:response.headers};
 };
 const migrate=(action,body)=>call('/api/migration/'+action,{method:body?'POST':'GET',body,migration:true});
-let tokens=[],gameId;
+let tokens=[],gameId,adminToken;
 const sockets=[];
 const socket = async token => {
  const response=await mf.dispatchFetch('http://localhost/api/realtime/socket',{headers:{Upgrade:'websocket',Origin:'http://localhost'}});
@@ -149,11 +150,12 @@ await test('Workers runtime migration and business regression', async t=>{
  const first=await migrate('provision-admin',{passwordHash});assert.equal(first.status,200);assert.equal(first.data.created,true);
  const again=await migrate('provision-admin',{passwordHash:await bcrypt.hash('other-password',10)});assert.equal(again.status,200);assert.equal(again.data.created,false);assert.equal(again.data.id,first.data.id);
  assert.equal((await call('/api/v1/auth/login',{method:'POST',body:{email:'admin',password:'wrong'}})).status,404);
- const login=await call('/api/v1/auth/login',{method:'POST',body:{email:'admin',password:'op5!!'}});assert.equal(login.status,200,JSON.stringify(login.data));assert.equal(login.data.data.user.is_admin,true);
+ const login=await call('/api/v1/auth/login',{method:'POST',body:{email:'admin',password:'op5!!'}});assert.equal(login.status,200,JSON.stringify(login.data));assert.equal(login.data.data.user.is_admin,true);adminToken=login.data.data.token;
  for(const panel of ['stats','users','games','venues','feedback']){
  assert.equal((await call('/api/v1/admin/'+panel,{token:login.data.data.token})).status,200,panel);
  assert.equal((await call('/api/v1/admin/'+panel,{token:tokens[0]})).status,403,panel);
  }
  });
+ await voicePoolTests(t,{mf,call,tokens,adminToken,sockets,password});
  }finally{for(const ws of sockets){try{ws.close()}catch{}}await mf.dispose()}
 });

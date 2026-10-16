@@ -18,6 +18,7 @@ interface Options {
   context: WorkoutContext
   videoRef: React.RefObject<HTMLVideoElement>
   visionConsent: boolean
+  testSlot?: number
 }
 
 const recognizerCtor = () => {
@@ -52,7 +53,7 @@ const resultText = (result: unknown): string => {
   return '视觉复核已完成，实时计数仍以本地姿态模型为准。'
 }
 
-export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: Options) {
+export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent, testSlot }: Options) {
   const [state, setState] = useState<XiaozhiState>('off')
   const [transcript, setTranscript] = useState('')
   const [reply, setReply] = useState('')
@@ -108,8 +109,10 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
     reps: context.reps, targetReps: context.targetReps, phase: context.phase,
     durationSeconds: context.durationSeconds, bpm: context.bpm, active: context.active,
   }), [context])
-  const fallback = useCoachVoice(enabled && fallbackMode, fallbackContext, { audible: false })
-  const source: CoachSource = fallbackMode ? (fallback.hasModel ? 'compatible' : 'local') : 'xiaozhi'
+  const localMode = !enabled || fallbackMode
+  const fallback = useCoachVoice(false, fallbackContext, { audible: false })
+  const source: CoachSource = localMode ? (fallback.hasModel ? 'compatible' : 'local') : 'xiaozhi'
+  useEffect(() => { if (enabled) { setFallbackMode(!XIAOZHI_ENABLED); setErrorMessage('') } }, [enabled])
 
   const sendJson = useCallback((message: unknown) => {
     if (socketRef.current?.readyState !== WebSocket.OPEN) return false
@@ -157,6 +160,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
     if (fallbackMode) return fallback.openConversation()
     if (socketRef.current?.readyState !== WebSocket.OPEN || stateRef.current === 'activating') return
     stopWakeRecognition()
+    let audio: XiaozhiAudio | null = null
     try {
       if (!audioRef.current) {
         audioRef.current = new XiaozhiAudio(
@@ -164,7 +168,9 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
           () => undefined,
         )
       }
-      await audioRef.current.startCapture()
+      audio = audioRef.current
+      await audio.startCapture()
+      if (audioRef.current !== audio) { await audio.dispose(); return }
       setXiaozhiVoiceReady(true)
       audioRef.current.setSending(true)
       conversationUntilRef.current = Date.now() + 25_000
@@ -172,6 +178,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
       setState('listening')
       sendJson(listenMessage('start', sessionIdRef.current))
     } catch (error) {
+      if (audio && audioRef.current !== audio) return
       setErrorMessage(error instanceof Error ? error.message : '麦克风或 Opus 初始化失败')
       setFallbackMode(true)
       setState('fallback')
@@ -245,6 +252,19 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
     let reconnectTimer = 0
     let activationTimer = 0
     let handshakeTimer = 0
+    let heartbeatTimer = 0
+    let lastPong = Date.now()
+    let leaseId = ''
+    const clientId = crypto.randomUUID()
+    const accountToken = localStorage.getItem('token')
+    const releaseLease = (id: string) => {
+      if (!id) return
+      void fetch('/api/xiaozhi/release', { method: 'POST', credentials: 'include', keepalive: true,
+        headers: { Authorization: 'Bearer ' + accountToken, 'Content-Type': 'application/json' }, body: JSON.stringify({ leaseId: id }),
+      }).catch(() => undefined)
+    }
+    const onPageHide = () => { socketRef.current?.close(1000, 'page hidden'); releaseLease(leaseId) }
+    window.addEventListener('pagehide', onPageHide)
 
     const connect = () => {
       if (disposed) return
@@ -253,17 +273,26 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
       const socket = new WebSocket(`${protocol}//${location.host}/api/xiaozhi/socket`)
       socket.binaryType = 'arraybuffer'
       socketRef.current = socket
+      lastPong = Date.now()
+      clearInterval(heartbeatTimer)
+      heartbeatTimer = window.setInterval(() => {
+        if (socket.readyState !== WebSocket.OPEN) return
+        if (Date.now() - lastPong > 45_000) { socket.close(4000, 'heartbeat timed out'); return }
+        socket.send(JSON.stringify({ bridge: 'ping' }))
+      }, 15_000)
       handshakeTimer = window.setTimeout(() => {
         setErrorMessage('小智语音握手超时，请稍后重试')
         socket.close(4000, 'voice handshake timeout')
       }, 20_000)
       socket.onmessage = event => {
+        if (disposed) return
         if (event.data instanceof ArrayBuffer) {
           if (!mutedRef.current) audioRef.current?.decode(event.data)
           return
         }
         let message: any
         try { message = JSON.parse(String(event.data)) } catch { return }
+        if (message.bridge === 'pong') { lastPong = Date.now(); return }
         if (message.bridge === 'ready') {
           sendJson(helloMessage())
           return
@@ -281,6 +310,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
           activeVisionJobsRef.current = Math.max(0, activeVisionJobsRef.current - 1)
           if (message.error && message.retryable && job.retries < 1) {
             window.setTimeout(() => {
+              if (disposed) return
               const retryJob = { ...job, retries: job.retries + 1 }
               if (retryJob.priority === 'user') visionQueueRef.current.unshift(retryJob)
               else visionQueueRef.current.push(retryJob)
@@ -354,11 +384,18 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
       }
       socket.onclose = event => {
         clearTimeout(handshakeTimer)
+        clearInterval(heartbeatTimer)
         if (disposed) return
         socketRef.current = null
         sessionIdRef.current = ''
         mcpReadyRef.current = false
         setDataSyncState(current => ({ ...current, mcpReady: false }))
+        if (event.code === 4001 && identityModeRef.current === 'shared') {
+          setErrorMessage('语音已释放（空闲超时或服务已停用），可手动重新开启')
+          setFallbackMode(true)
+          setState('fallback')
+          return
+        }
         if (event.code === 4401) {
           if (identityModeRef.current === 'shared') {
             setErrorMessage('语音会话已过期，正在恢复连接')
@@ -385,12 +422,11 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
         setState('reconnecting')
         const delay = RECONNECT_DELAYS[Math.min(reconnectIndex, RECONNECT_DELAYS.length - 1)]
         reconnectIndex += 1
-        reconnectTimer = window.setTimeout(connect, delay)
+        reconnectTimer = window.setTimeout(() => { if (identityModeRef.current === 'shared') void initialize(); else connect() }, delay)
       }
       socket.onerror = () => setErrorMessage('小智连接中断，正在尝试恢复')
     }
 
-    const accountToken=localStorage.getItem('token')
     const initialize = async () => {
       if(disposed) return
       setState('connecting')
@@ -399,10 +435,12 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
         if (!statusResponse.ok) throw new Error(statusResponse.status === 401 ? '登录已过期，请重新登录后使用语音陪练。' : `语音配置读取失败（HTTP ${statusResponse.status}）`)
         const status = await statusResponse.json()
         if(disposed) return
-        if(!status.xiaozhiEnabled){setErrorMessage('小智语音尚未启用，当前仅显示文字反馈；需启用服务并完成小智账号绑定。');setFallbackMode(true);setState('fallback');return}
-        const response = await fetch('/api/xiaozhi/device', { method: 'POST', credentials: 'include',headers:{Authorization:'Bearer '+accountToken} })
+        if (status.xiaozhiMode === 'shared') { identityModeRef.current = 'shared'; setIdentityMode('shared') }
+        if(!status.xiaozhiEnabled){setErrorMessage('语音服务尚未启用，当前可继续使用本地文字反馈。');setFallbackMode(true);setState('fallback');return}
+        const response = await fetch('/api/xiaozhi/device', { method: 'POST', credentials: 'include',headers:{Authorization:'Bearer '+accountToken,'Content-Type':'application/json'},body:JSON.stringify({clientId,...(testSlot !== undefined ? {testSlot} : {})}) })
         const body = await response.json() as XiaozhiDeviceBootstrap & { error?: string }
-        if(disposed) return
+        if (body.status === 'ready' && body.leaseId) leaseId = body.leaseId
+        if(disposed) { releaseLease(leaseId); return }
         if (!response.ok) throw new Error(body.error || `HTTP ${response.status}`)
         identityModeRef.current = body.mode
         setIdentityMode(body.mode)
@@ -447,10 +485,30 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
       clearTimeout(reconnectTimer)
       clearTimeout(activationTimer)
       clearTimeout(handshakeTimer)
+      clearInterval(heartbeatTimer)
+      window.removeEventListener('pagehide', onPageHide)
       socketRef.current?.close(1000, 'workout ended')
       socketRef.current = null
+      releaseLease(leaseId)
+      sessionIdRef.current = ''
+      mcpReadyRef.current = false
+      pendingProgressRef.current = []
+      visionPendingRef.current.clear()
+      visionQueueRef.current = []
+      activeVisionJobsRef.current = 0
+      repFrameCandidateRef.current = null
+      latestVisionInsightRef.current = null
+      visionAvailableRef.current = false
+      setVisionAvailable(false)
+      setTranscript(''); setReply(''); setVisionInsights([])
+      setDataSyncState({ mcpReady:false,lastRepSynced:0,visionRep:null,visionStatus:'idle',wakeDetected:false })
+      stopWakeRecognition()
+      releaseAudio()
+      void audioRef.current?.dispose()
+      audioRef.current = null
+      setXiaozhiVoiceReady(false)
     }
-  }, [enabled, fallbackMode, retryNonce, handleMcp, sendJson])
+  }, [enabled, fallbackMode, retryNonce, testSlot, handleMcp, sendJson, stopWakeRecognition])
 
   // 空闲时监听宽松唤醒词。Chrome 拆开的 final 结果会在六秒窗口中合并，
   // interim 连续命中两次才触发，final 命中则立即触发。
@@ -480,13 +538,15 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
       }
     }
     recognition.onerror = () => { wakeRunningRef.current = false }
+    let stopped = false
     recognition.onend = () => {
       wakeRunningRef.current = false
-      if (stateRef.current === 'idle') window.setTimeout(() => { try { recognition.start(); wakeRunningRef.current = true } catch { /* ignore */ } }, 300)
+      if (!stopped && stateRef.current === 'idle') window.setTimeout(() => { if (stopped) return; try { recognition.start(); wakeRunningRef.current = true } catch { /* ignore */ } }, 300)
     }
     wakeRecognitionRef.current = recognition
     try { recognition.start(); wakeRunningRef.current = true } catch { /* permission can be requested by click */ }
     return () => {
+      stopped = true
       try { recognition.abort() } catch { /* ignore */ }
       wakeWindowRef.current.reset()
       wakeRunningRef.current = false
@@ -598,10 +658,6 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
   }, [enqueueVision, fallbackMode, sendJson, videoRef])
 
   const retry = useCallback(() => {
-    if (fallbackMode && fallback.state === 'failed') {
-      fallback.rearm()
-      return
-    }
     setErrorMessage('')
     setFallbackMode(!XIAOZHI_ENABLED)
     setRetryNonce(value => value + 1)
@@ -613,9 +669,11 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
       packet => { if (socketRef.current?.readyState === WebSocket.OPEN) socketRef.current.send(packet) },
       () => undefined,
     )
-    void audioRef.current.ensurePlaybackReady().then(
-      () => setXiaozhiVoiceReady(true),
+    const audio = audioRef.current
+    void audio.ensurePlaybackReady().then(
+      () => { if (audioRef.current === audio) setXiaozhiVoiceReady(true) },
       error => {
+        if (audioRef.current !== audio) return
         setXiaozhiVoiceReady(false)
         setErrorMessage(error instanceof Error ? error.message : '小智音频初始化失败')
       },
@@ -634,14 +692,14 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent }: O
 
   const sendWorkoutContext = useCallback((next: WorkoutContext) => { contextRef.current = next }, [])
 
-  const publicState: XiaozhiState = fallbackMode
+  const publicState: XiaozhiState = !enabled ? 'off' : fallbackMode
     ? (fallback.state === 'thinking' ? 'thinking' : fallback.state === 'speaking' ? 'speaking' : fallback.state === 'active' ? 'listening' : fallback.state === 'failed' ? 'failed' : 'fallback')
     : state
 
   return {
     state: publicState,
-    transcript: fallbackMode ? fallback.transcript : transcript,
-    reply: fallbackMode ? fallback.reply : reply,
+    transcript: localMode ? fallback.transcript : transcript,
+    reply: localMode ? reply || fallback.reply : reply,
     emotion: fallbackMode ? (fallback.state === 'thinking' ? 'thinking' : fallback.state === 'speaking' ? 'happy' : 'neutral') as CoachEmotion : emotion,
     source, wake, interrupt, retry, prepareAudio,
     sendWorkoutContext,

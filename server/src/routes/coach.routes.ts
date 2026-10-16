@@ -6,7 +6,7 @@ import activate from '../xiaozhi/activate';
 process.env.XIAOZHI_COOKIE_SECRET ||= config.jwt.secret;
 process.env.XIAOZHI_IDENTITY_MODE ||= 'disabled';
 export const coachRouter=Router();
-coachRouter.get('/ai/__status',authRequired,(_req,res)=>res.json({configured:Boolean(process.env.AI_BASE_URL && process.env.AI_API_KEY),xiaozhiEnabled:process.env.XIAOZHI_IDENTITY_MODE!=='disabled'}));
+coachRouter.get('/ai/__status',authRequired,(_req,res)=>res.json({configured:Boolean(process.env.AI_BASE_URL && process.env.AI_API_KEY),xiaozhiEnabled:process.env.XIAOZHI_IDENTITY_MODE!=='disabled',xiaozhiMode:process.env.XIAOZHI_IDENTITY_MODE}));
 coachRouter.post('/ai/chat/completions',authRequired,async(req,res)=>{
   if(!process.env.AI_BASE_URL || !process.env.AI_API_KEY) {res.status(503).json({error:'本地陪练已启用'});return;}
   try{

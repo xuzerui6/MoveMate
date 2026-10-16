@@ -12,6 +12,8 @@ import { ActorDatabase } from './db';
 import { withEvents, type EventSink } from './events';
 import { Migration, authorized } from './migration';
 import { bridgeXiaozhi } from './xiaozhi';
+import { VoicePool, VoiceError, LEASE_MS } from './voice-pool';
+import { getIdentityMode } from '../../server/src/xiaozhi/identity';
 
 interface Env {
   ASSETS: Fetcher;
@@ -21,6 +23,7 @@ interface Env {
   JWT_SECRET: string;
   STUDENT_ID_SALT: string;
   XIAOZHI_COOKIE_SECRET: string;
+  XIAOZHI_POOL_SECRET?: string;
 }
 type Identity = { userId?: number; exp?: number; rooms: number[]; deadline: number };
 
@@ -36,15 +39,22 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
   private ready: Promise<void>;
   private tick?: Promise<void>;
   private generation = crypto.randomUUID();
+  private voicePool: VoicePool;
+  private voiceConnections = new Map<string, { connectionId: string; close: (code?: number, reason?: string) => void; check: () => Promise<boolean> }>();
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
     this.db = new ActorDatabase(ctx.storage);
     this.scope = new DatabaseScope(this.db);
     this.migration = new Migration(this.db);
-    this.ready = ctx.blockConcurrencyWhile(async () => { await ctx.storage.transaction(async () => this.db.bootstrap()); });
+    this.voicePool = new VoicePool(env.XIAOZHI_POOL_SECRET, this.generation);
+    this.ready = ctx.blockConcurrencyWhile(async () => {
+      await ctx.storage.transaction(async () => this.db.bootstrap());
+      await this.run(() => this.voicePool.restart());
+    });
     ctx.setWebSocketAutoResponse(new WebSocketRequestResponsePair('ping', 'pong'));
   }
-  private run<T>(fn: () => T): T { return runWithDatabaseScope(this.scope, () => withEvents(this, fn)); }
+  protected run<T>(fn: () => T): T { return runWithDatabaseScope(this.scope, () => withEvents(this, fn)); }
+  private background<T>(task: Promise<T>): Promise<T> { this.ctx.waitUntil(task.catch(() => { console.warn('[Voice] background operation failed'); })); return task; }
   private attachment(ws: WebSocket): Identity { return ws.deserializeAttachment() as Identity; }
   private send(ws: WebSocket, event: string, data: any, requestId?: string) {
     try { ws.send(JSON.stringify({ event, data, ...(requestId ? { requestId } : {}) })); }
@@ -70,6 +80,8 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
         await this.schedule(); return result;
       }
       if (!this.migration.active()) return Response.json({ code: 50300, message: '系统迁移维护中，请稍后再试', data: null }, { status: 503, headers: { 'Retry-After': '60' } });
+      const native = await this.voiceRequest(request);
+      if (native) { native.headers.set('Cache-Control', 'no-store'); await this.schedule(); return native; }
       if (path === '/api/realtime/socket') {
         const origin = request.headers.get('origin');
         if (!origin || origin !== new URL(request.url).origin) return new Response('Forbidden origin', { status: 403 });
@@ -81,13 +93,7 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
         await this.schedule();
         return new Response(null, { status: 101, webSocket: client });
       }
-      if (path === '/api/xiaozhi/socket') return bridgeXiaozhi(request, (stage, detail) => this.run(() => withTransaction(async () => {
-        const previous = (await pool.query("SELECT value FROM actor_meta WHERE key='voice_diagnostic'")).rows[0]?.value;
-        const parsed = previous ? JSON.parse(previous) : [];
-        const history = Array.isArray(parsed) ? parsed : [parsed];
-        history.push({ stage, detail, time: new Date().toISOString() });
-        await pool.query("INSERT INTO actor_meta(key,value) VALUES('voice_diagnostic',$1) ON CONFLICT(key) DO UPDATE SET value=$1", [JSON.stringify(history.slice(-24))]);
-      })));
+      if (path === '/api/xiaozhi/socket') return this.voiceSocket(request);
       if (path === '/api/cron') return new Response('Use Durable Object alarms', { status: 404 });
       const response = await handleAsNodeRequest(3001, request);
       // Consume the response while the actor scope is still active. Express may finish
@@ -99,6 +105,96 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
       if (path === '/health') headers.set('X-MoveMate-Actor-Generation', this.generation);
       return new Response(bytes, { status: response.status, headers });
     });
+  }
+  private async jsonInput(request: Request) {
+    const text = await request.text();
+    if (text.length > 8192) throw new VoiceError('请求内容过长', 400);
+    try { const input = text ? JSON.parse(text) : {}; if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error(); return input; }
+    catch { throw new VoiceError('请求格式不正确', 400); }
+  }
+  private async voiceRequest(request: Request): Promise<Response | null> {
+    const path = new URL(request.url).pathname;
+    const admin = path === '/api/v1/admin/voice' || path.startsWith('/api/v1/admin/voice/');
+    const shared = getIdentityMode() === 'shared' && ['/api/xiaozhi/device', '/api/xiaozhi/release', '/api/xiaozhi/activate'].includes(path);
+    if (!admin && !shared) return null;
+    try {
+      const actor = await this.voicePool.actor(request);
+      if (admin) {
+        if (!actor.admin) throw new VoiceError('无管理员权限', 403);
+        if (request.method === 'GET' && path === '/api/v1/admin/voice') return Response.json({ code: 0, data: await this.voicePool.snapshot() });
+        const input = await this.jsonInput(request);
+        if (request.method === 'PATCH' && path === '/api/v1/admin/voice') {
+          await this.voicePool.configure(input);
+          for (const connection of this.voiceConnections.values()) if (!(await connection.check())) connection.close(4001, 'voice service disabled');
+        } else {
+          const match = path.match(/^\/api\/v1\/admin\/voice\/devices\/([1-5])(?:\/(create|activate))?$/);
+          if (!match) throw new VoiceError('接口不存在', 404);
+          const slot = Number(match[1]), action = match[2];
+          if (request.method === 'POST' && (action === 'create' || action === 'activate')) await this.voicePool.bind(slot, action === 'create');
+          else if (!action && ['PATCH', 'DELETE'].includes(request.method)) {
+            const revoke = await this.voicePool.changeDevice(slot, input, request.method === 'DELETE');
+            for (const id of revoke) { const connection = this.voiceConnections.get(id); if (connection) connection.close(4001, 'voice device disabled'); else await this.voicePool.release(id); }
+          } else throw new VoiceError('请求方法不支持', 405);
+        }
+        return Response.json({ code: 0, data: await this.voicePool.snapshot() });
+      }
+      if (request.method !== 'POST') throw new VoiceError('请求方法不支持', 405);
+      if (path.endsWith('/activate')) throw new VoiceError('统一语音由管理员配置，普通用户无需绑定');
+      const input = await this.jsonInput(request);
+      if (path.endsWith('/release')) {
+        const id = await this.voicePool.releaseRequest(request, actor, input.leaseId);
+        if (id) {
+          const connection = this.voiceConnections.get(id);
+          if (connection) connection.close(1000, 'voice stopped');
+          else {
+            await this.voicePool.release(id);
+            await pool.query("UPDATE voice_leases SET phase='closing' WHERE id=$1", [id]);
+          }
+        }
+        return Response.json({ ok: true });
+      }
+      const lease = await this.voicePool.acquire(actor, input.clientId, input.testSlot);
+      const headers = new Headers({ 'Cache-Control': 'no-store' });
+      this.voicePool.cookies(lease, actor).forEach(cookie => headers.append('Set-Cookie', cookie));
+      return Response.json({ status: 'ready', mode: 'shared', leaseId: lease.id, test: !!lease.is_test }, { headers });
+    } catch (error) {
+      const status = error instanceof VoiceError ? error.status : 503;
+      const message = error instanceof VoiceError ? error.message : '统一语音暂不可用，请稍后重试';
+      return Response.json({ code: status * 100, message, error: message, mode: 'shared', data: null }, { status, headers: { 'Cache-Control': 'no-store' } });
+    }
+  }
+  private async voiceSocket(request: Request): Promise<Response> {
+    const report = (stage: string, detail?: string | number) => this.background(this.run(() => withTransaction(async () => {
+        const previous = (await pool.query("SELECT value FROM actor_meta WHERE key='voice_diagnostic'")).rows[0]?.value;
+        const parsed = previous ? JSON.parse(previous) : [];
+        const history = Array.isArray(parsed) ? parsed : [parsed];
+        history.push({ stage, detail, time: new Date().toISOString() });
+        await pool.query("INSERT INTO actor_meta(key,value) VALUES('voice_diagnostic',$1) ON CONFLICT(key) DO UPDATE SET value=$1", [JSON.stringify(history.slice(-24))]);
+    })));
+    if (getIdentityMode() !== 'shared') return bridgeXiaozhi(request, report);
+    try {
+      if (request.headers.get('origin') !== new URL(request.url).origin) throw new VoiceError('来源不被允许', 403);
+      const actor = await this.voicePool.actor(request, true);
+      const claim = await this.voicePool.claim(request, actor);
+      const release = () => this.background(this.run(async () => {
+        await this.voicePool.release(claim.lease.id, claim.connectionId);
+        if (this.voiceConnections.get(claim.lease.id)?.connectionId === claim.connectionId) this.voiceConnections.delete(claim.lease.id);
+        await this.schedule();
+      }));
+      const response = await bridgeXiaozhi(request, report, {
+        identity: claim.identity,
+        release,
+        heartbeat: activity => this.background(this.run(async () => { const valid = await this.voicePool.heartbeat(claim.lease.id, claim.connectionId, actor, activity); await this.schedule(); return valid; })),
+        register: (close, check) => { this.voiceConnections.set(claim.lease.id, { connectionId: claim.connectionId, close, check }); },
+      });
+      if (response.status !== 101) {
+        if (response.status === 401) await pool.query("UPDATE voice_devices SET state='error',enabled=0,verified=0,last_error='小智绑定已失效，请重新检查设备绑定' WHERE slot=$1", [claim.lease.slot]);
+        await release();
+      }
+      await this.schedule(); return response;
+    } catch (error) {
+      return Response.json({ error: error instanceof VoiceError ? error.message : '统一语音连接失败' }, { status: error instanceof VoiceError ? error.status : 503 });
+    }
   }
   async webSocketMessage(ws: WebSocket, raw: string | ArrayBuffer): Promise<void> {
     await this.ready;
@@ -194,6 +290,7 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
   }
   private async schedule(): Promise<void> {
     const deadlines = this.ctx.getWebSockets().map(ws => this.attachment(ws)).filter(id => !id.userId).map(id => id.deadline);
+    deadlines.push(...await this.voicePool.deadlines());
     if (this.migration.active()) {
       const pending = (await pool.query("SELECT 1 FROM games WHERE status IN ('recruiting','full','ready','in_progress','completed') LIMIT 1")).rowCount;
       const outbox = (await pool.query('SELECT 1 FROM event_outbox LIMIT 1')).rowCount;
@@ -210,6 +307,19 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
   async alarm(): Promise<void> {
     await this.ready;
     await this.run(async () => {
+      for (const lease of await this.voicePool.expired()) {
+        const connection = this.voiceConnections.get(lease.id);
+        if (connection && lease.phase !== 'closing') {
+          await pool.query("UPDATE voice_leases SET phase='closing',expires_at=$1,last_activity=$1 WHERE id=$2", [Date.now() + LEASE_MS, lease.id]);
+          connection.close(4001, 'voice lease expired or idle');
+        } else {
+          if (connection) {
+            await pool.query("UPDATE voice_devices SET enabled=0,verified=0,state='error',last_error='连接未能正常释放，请重新检查设备' WHERE slot=$1", [lease.slot]);
+            this.voiceConnections.delete(lease.id);
+          }
+          await pool.query('DELETE FROM voice_leases WHERE id=$1', [lease.id]);
+        }
+      }
       for (const ws of this.ctx.getWebSockets()) {
         const identity = this.attachment(ws);
         if (!identity?.userId && identity.deadline <= Date.now()) ws.close(4401, 'authentication timeout');

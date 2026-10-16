@@ -22,7 +22,7 @@
   "vars": {
     "CLOUDFLARE": "1", "NODE_ENV": "production", "INSTANCE": "production",
     "BASE_URL": "https://dongban.xyz", "CORS_ORIGIN": "https://dongban.xyz",
-    "XIAOZHI_ALLOWED_ORIGINS": "https://dongban.xyz", "XIAOZHI_IDENTITY_MODE": "personal"
+    "XIAOZHI_ALLOWED_ORIGINS": "https://dongban.xyz", "XIAOZHI_IDENTITY_MODE": "shared"
   },
   "observability": { "enabled": true, "head_sampling_rate": 0.1 },
   "env": {
@@ -30,7 +30,7 @@
       "name": "movemate-preview",
       "routes": [],
       "durable_objects": { "bindings": [{ "name": "BACKEND", "class_name": "MoveMateBackend" }] },
-      "vars": { "CLOUDFLARE": "1", "NODE_ENV": "production", "INSTANCE": "preview", "XIAOZHI_IDENTITY_MODE": "personal" }
+      "vars": { "CLOUDFLARE": "1", "NODE_ENV": "production", "INSTANCE": "preview", "XIAOZHI_IDENTITY_MODE": "shared" }
     }
   }
 }

@@ -96,7 +96,7 @@ AI 动作训练：进入「训练」，选择深蹲、开合跳、高抬腿或�
 
 正式运行先复制 `server/.env.example` 为 `.env`，生成随机 JWT_SECRET、STUDENT_ID_SALT，配置 SMTP。普通注册要求吉林大学校园邮箱和真实验证码；已有账号可在个人中心补做认证。演示账号由本地种子脚本生成，没有免验证码注册接口。
 
-可选 AI 配置：`AI_BASE_URL`（含 `/v1`）、`AI_API_KEY`；小智默认 `XIAOZHI_IDENTITY_MODE=disabled`，个人绑定设为 `personal`，共享设备设为 `shared` 并提供 `XIAOZHI_SHARED_IDENTITY_B64`。`XIAOZHI_COOKIE_SECRET` 默认复用 JWT 密钥。未配置 SMTP 或云端服务不影响本机演示。
+可选 AI 配置：`AI_BASE_URL`（含 `/v1`）、`AI_API_KEY`；本机小智默认 `XIAOZHI_IDENTITY_MODE=disabled`，个人绑定设为 `personal`。Cloudflare 使用 `shared` 与独立 `XIAOZHI_POOL_SECRET`，管理员在「语音服务」集中绑定同一个专用智能体下的设备，最多五个位置，普通用户按需开启，无须个人绑定。服务默认未公开，须完成免费额度及隔离、有声验证后开启，详见 [统一语音配置](docs/shared-voice.md)。本机旧单设备共享模式仍读取 `XIAOZHI_SHARED_IDENTITY_B64`。`XIAOZHI_COOKIE_SECRET` 默认复用 JWT 密钥。未配置 SMTP 或云端服务不影响本机演示。
 
 语音排查：本机演示配置读取 `server/.env.demo`。未设置小智模式时服务关闭，陪练只显示文字，不播放声音；HTTP AI 模型配置也不等于启用小智音频。要使用小智官方语音，在该配置文件设置 `XIAOZHI_IDENTITY_MODE=personal` 并重启服务，开始训练后按页面激活码在自己的小智账号完成绑定。开发环境允许 `http://localhost:3001` 和 `http://127.0.0.1:3001`；生产环境必须在 `XIAOZHI_ALLOWED_ORIGINS` 中明确配置访问网址。浏览器支持语音识别才可使用唤醒词，语音识别网络错误或麦克风拒绝会在陪练面板显示，允许权限后可以重试。小智连接成功后也可点击开启对话。未完成真实账号绑定与麦克风／音频验证前，不算有声对话验收通过。
 

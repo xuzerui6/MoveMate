@@ -428,7 +428,7 @@ test('coach routes require login and preserve local fallback without external se
   assert.equal((await fetch(base+'/api/v1/auth/missing-route')).status,404);
   assert.equal((await fetch(base+'/uploads/missing-avatar.png')).status,404);
   const unauth=await fetch(base+'/ai/__status');assert.equal(unauth.status,401);
-  const status=await fetch(base+'/ai/__status',{headers:{Authorization:'Bearer '+host.token}});assert.deepEqual(await status.json(),{configured:false,xiaozhiEnabled:false});
+  const status=await fetch(base+'/ai/__status',{headers:{Authorization:'Bearer '+host.token}});assert.deepEqual(await status.json(),{configured:false,xiaozhiEnabled:false,xiaozhiMode:'disabled'});
   const device=await fetch(base+'/api/xiaozhi/device',{method:'POST',headers:{Authorization:'Bearer '+host.token}});assert.equal(device.status,503);
 });
 

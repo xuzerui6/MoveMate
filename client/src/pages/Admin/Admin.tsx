@@ -4,7 +4,7 @@ import {Icon} from '../../features/motion/components/Icons';
  * 鉴权检查 + 顶部栏 + Tab 导航 + 子面板切换
  * 移动端优先，桌面端表格（见 design-system.css）
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import client from '../../api/client';
 import Dashboard from './Dashboard';
@@ -12,9 +12,10 @@ import UserList from './UserList';
 import GameList from './GameList';
 import VenueList from './VenueList';
 import FeedbackList from './FeedbackList';
+import VoiceService from './VoiceService';
 
 
-type AdminTab = 'dashboard' | 'users' | 'games' | 'venues' | 'feedback';
+type AdminTab = 'dashboard' | 'users' | 'games' | 'venues' | 'feedback' | 'voice';
 
 const TABS: { key: AdminTab; label: string }[] = [
   { key: 'dashboard', label: '概览' },
@@ -22,6 +23,7 @@ const TABS: { key: AdminTab; label: string }[] = [
   { key: 'games', label: '活动' },
   { key: 'venues', label: '场地' },
   { key: 'feedback', label: '反馈' },
+  { key: 'voice', label: '语音服务' },
 ];
 
 const Admin: React.FC = () => {
@@ -29,13 +31,23 @@ const Admin: React.FC = () => {
   const [tab, setTab] = useState<AdminTab>('dashboard');
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
+  const [voicePoolAvailable, setVoicePoolAvailable] = useState(false);
   const [currentUserId, setCurrentUserId] = useState<number>(0);
+  const tabsRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const scroller = tabsRef.current, active = scroller?.querySelector('.admin-tab--active');
+    if (!scroller || !active) return;
+    const box = scroller.getBoundingClientRect(), selected = active.getBoundingClientRect();
+    if (selected.right > box.right) scroller.scrollLeft += selected.right - box.right + 8;
+    else if (selected.left < box.left) scroller.scrollLeft -= box.left - selected.left + 8;
+  }, [tab, loading]);
 
   useEffect(() => {
     client
       .get('/admin/me')
       .then((r: any) => {
         setAuthorized(true);
+        setVoicePoolAvailable(Boolean(r.data.voice_pool_available));
         setCurrentUserId(Number(r.data.user_id) || 0);
       })
       .catch(() => {})
@@ -80,8 +92,8 @@ const Admin: React.FC = () => {
       <p className="admin-intro">维护校园运动社区的日常运行。</p>
 
       {/* Tab 导航 */}
-      <div className="admin-tabs">
-        {TABS.map((t) => (
+      <div className="admin-tabs" ref={tabsRef}>
+        {TABS.filter(t => t.key !== 'voice' || voicePoolAvailable).map((t) => (
           <button
             key={t.key}
             className={`admin-tab ${tab === t.key ? 'admin-tab--active' : ''}`}
@@ -100,6 +112,7 @@ const Admin: React.FC = () => {
         {tab === 'games' && <GameList />}
         {tab === 'venues' && <VenueList />}
         {tab === 'feedback' && <FeedbackList />}
+        {tab === 'voice' && <VoiceService />}
       </div>
     </div>
   );

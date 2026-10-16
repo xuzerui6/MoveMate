@@ -13,7 +13,7 @@
 - 数据库作用域、操作队列和嵌套事务上下文按实例隔离；原生 `storage.transaction()` 提交或回滚。通知写入与业务变更同事务，SQL trigger 生成持久化 outbox，提交后投递。
 - WebSocket `/api/realtime/socket` 首帧提交 JWT，不把令牌放 URL。序列化身份和房间支持休眠恢复；广播前再校验成员权限，退出后撤销所有连接订阅。
 - 后台使用 Durable Object Alarm。有待推进活动或 outbox 时按分钟唤醒，没有任务时不保留周期任务；另处理未认证连接超时。重试依赖条件更新和 XP 唯一流水。
-- 小智保持个人身份 Cookie、30 秒激活轮询和视觉授权；桥接不保存原始图片、音频或完整对话。未配置 HTTP AI 时继续本地陪练。
+- 小智云端采用管理员集中配置的设备池（同一个专用智能体可绑定多设备），使用独立租约 Cookie、30 秒激活轮询和逐用户视觉授权；默认关闭公开服务。详见 [统一语音配置与验证](shared-voice.md)。本机个人模式保留。桥接不保存原始图片、音频或完整对话。
 - 构建在本机被忽略的 `.wrangler/asset-history` 保留前两次脚本资源，减少发布影响已打开页面；跨机器部署需带上这份非敏感资源缓存才能保留同样的历史资源。HTML 不缓存，成功的哈希资源长期缓存，缺失脚本不回退成可缓存 HTML。
 
 Cloudflare 免费额度存在每日请求、CPU、数据库读写与存储限制。到达免费上限可能请求失败；本项目不自动升级套餐。
@@ -44,7 +44,7 @@ npm run deploy --prefix cloudflare
 
 部署脚本生成纯 schema 与公共校区元数据，再打包 Worker；检查不包含 `node:sqlite` 适配器、Turso、Redis、Socket.IO server 和 node-cron。测试专用 `TestBackend` 与测试时钟不进入生产 bundle。
 
-必须配置 `JWT_SECRET`、`STUDENT_ID_SALT`、`XIAOZHI_COOKIE_SECRET`、`MIGRATION_SECRET`，均至少 32 字符。通过 Wrangler `secret bulk` 输入被 Git 和 Vercel 部署排除的本机 JSON；不可写进 wrangler vars、日志、客户端或 Git。生产与预览使用各自的密钥文件。
+必须配置 `JWT_SECRET`、`STUDENT_ID_SALT`、`XIAOZHI_COOKIE_SECRET`、`MIGRATION_SECRET`，统一语音另需 `XIAOZHI_POOL_SECRET`，均至少 32 字符。通过 Wrangler `secret bulk` 输入被 Git 和 Vercel 部署排除的本机 JSON；不可写进 wrangler vars、日志、客户端或 Git。生产与预览使用各自的密钥文件。
 
 ```powershell
 cd cloudflare

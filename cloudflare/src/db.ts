@@ -15,6 +15,9 @@ export class ActorDatabase implements DatabaseRuntime {
       CREATE TABLE IF NOT EXISTS event_outbox(id INTEGER PRIMARY KEY AUTOINCREMENT,event TEXT NOT NULL,payload TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS ephemeral_cache(key TEXT PRIMARY KEY,value TEXT NOT NULL,expires_at INTEGER);
       CREATE TABLE IF NOT EXISTS import_checkpoints(snapshot TEXT NOT NULL,part INTEGER NOT NULL,hash TEXT NOT NULL,PRIMARY KEY(snapshot,part));
+      CREATE TABLE IF NOT EXISTS voice_devices(slot INTEGER PRIMARY KEY CHECK(slot BETWEEN 1 AND 5),identity TEXT,state TEXT NOT NULL DEFAULT 'empty',enabled INTEGER NOT NULL DEFAULT 0,verified INTEGER NOT NULL DEFAULT 0,revision INTEGER NOT NULL DEFAULT 0,last_error TEXT NOT NULL DEFAULT '',updated_at INTEGER NOT NULL DEFAULT 0);
+      CREATE TABLE IF NOT EXISTS voice_leases(id TEXT PRIMARY KEY,user_id INTEGER NOT NULL UNIQUE REFERENCES users(id),slot INTEGER NOT NULL UNIQUE REFERENCES voice_devices(slot),client_id TEXT NOT NULL,connection_id TEXT,phase TEXT NOT NULL DEFAULT 'pending',expires_at INTEGER NOT NULL,last_activity INTEGER NOT NULL,generation TEXT NOT NULL,is_test INTEGER NOT NULL DEFAULT 0);
+      INSERT OR IGNORE INTO voice_devices(slot) VALUES(1),(2),(3),(4),(5);
       CREATE TRIGGER IF NOT EXISTS notification_outbox AFTER INSERT ON notifications BEGIN
         INSERT INTO event_outbox(event,payload) VALUES('notification',json_object('userId',NEW.user_id,'id',NEW.id,'type',NEW.type,'title',NEW.title,'content',NEW.content,'gameId',NEW.game_id,'createdAt',NEW.created_at));
       END;

@@ -323,7 +323,7 @@ router.delete('/feedback/:id', async (req: Request, res: Response, next: NextFun
 
 // ---------- 验证管理员身份 ----------
 router.get('/me', async (req: Request, res: Response) => {
-  res.json({ code: 0, message: 'success', data: { is_admin: true, user_id: req.user!.id } });
+  res.json({ code: 0, message: 'success', data: { is_admin: true, user_id: req.user!.id, voice_pool_available: process.env.CLOUDFLARE === '1' } });
 });
 
 export default router;

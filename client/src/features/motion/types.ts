@@ -73,7 +73,7 @@ export interface XiaozhiDataSyncState {
 }
 
 export type XiaozhiDeviceBootstrap =
-  | { status: 'ready'; mode: 'shared' | 'personal' }
+  | { status: 'ready'; mode: 'shared' | 'personal'; leaseId?: string; test?: boolean }
   | { status: 'activating'; mode: 'personal'; code: string; message: string; expiresAt: number }
 
 export interface WorkoutContext {

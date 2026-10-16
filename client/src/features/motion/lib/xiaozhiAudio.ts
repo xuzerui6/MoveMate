@@ -41,6 +41,9 @@ export class XiaozhiAudio {
   private scheduledSources = new Set<AudioBufferSourceNode>()
   private nextPlayAt = 0
   private sending = true
+  private disposed = false
+  private captureGeneration = 0
+  private starting: Promise<void> | null = null
 
   constructor(private readonly sendPacket: (packet: ArrayBuffer) => void, private readonly onPlaybackEnd: () => void) {}
 
@@ -50,25 +53,36 @@ export class XiaozhiAudio {
   }
 
   /**
-   * 必须在用户点击开始训练时调用，提前解锁小智音频使用的 AudioContext。
+   * 必须在用户点击开启语音时调用，提前解锁小智音频使用的 AudioContext。
    * 这样服务端首个 Opus 包到达时不会被浏览器的自动播放策略静音。
    */
   async ensurePlaybackReady(): Promise<void> {
+    if (this.disposed) throw new Error('语音已关闭')
     if (!XiaozhiAudio.supported()) throw new Error('当前浏览器缺少 WebCodecs Opus 或 AudioWorklet')
     this.context ||= new AudioContext({ latencyHint: 'interactive' })
     if (this.context.state === 'suspended') await this.context.resume()
   }
 
-  async startCapture(): Promise<void> {
+  startCapture(): Promise<void> {
+    if (this.starting) return this.starting
+    this.starting = this.capture().finally(() => { this.starting = null })
+    return this.starting
+  }
+
+  private async capture(): Promise<void> {
     if (this.node) return
+    const generation = this.captureGeneration
     await this.ensurePlaybackReady()
+    if (this.disposed || generation !== this.captureGeneration) throw new Error('语音已关闭')
     const context = this.context
     if (!context) throw new Error('小智音频上下文初始化失败')
     const stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true }, video: false })
+    if (this.disposed || generation !== this.captureGeneration) { stream.getTracks().forEach(track => track.stop()); throw new Error('语音已关闭') }
     this.stream = stream
     try {
       // Same-origin file works under the app's script-src 'self' policy.
       await context.audioWorklet.addModule('/audio/motion-buddy-mic.worklet.js')
+      if (this.disposed || generation !== this.captureGeneration) throw new Error('语音已关闭')
       this.source = context.createMediaStreamSource(stream)
       const node = new AudioWorkletNode(context, 'motion-buddy-mic')
       this.node = node
@@ -78,7 +92,7 @@ export class XiaozhiAudio {
         output: chunk => {
           const bytes = new ArrayBuffer(chunk.byteLength)
           chunk.copyTo(bytes)
-          if (this.sending) this.sendPacket(bytes)
+          if (this.sending && !this.disposed) this.sendPacket(bytes)
         },
         error: error => console.warn('[动伴] Opus 编码失败', error.message),
       })
@@ -109,6 +123,7 @@ export class XiaozhiAudio {
   }
 
   configureDecoder(sampleRate = 24_000): void {
+    if (this.disposed) return
     if (!XiaozhiAudio.supported()) return
     this.context ||= new AudioContext({ latencyHint: 'interactive' })
     this.decoder?.close()
@@ -139,6 +154,7 @@ export class XiaozhiAudio {
   }
 
   decode(packet: ArrayBuffer): void {
+    if (this.disposed) return
     if (!this.decoder) this.configureDecoder()
     if (this.context?.state === 'suspended') void this.context.resume().catch(() => undefined)
     const Chunk = (window as unknown as { EncodedAudioChunk: new (init: Record<string, unknown>) => unknown }).EncodedAudioChunk
@@ -160,6 +176,8 @@ export class XiaozhiAudio {
   }
 
   async stopCapture(): Promise<void> {
+    this.captureGeneration += 1
+    this.sending = false
     this.node?.disconnect()
     this.source?.disconnect()
     this.node = null
@@ -175,6 +193,8 @@ export class XiaozhiAudio {
   }
 
   async dispose(): Promise<void> {
+    if (this.disposed) return
+    this.disposed = true
     this.clearPlayback()
     await this.stopCapture()
     try { this.decoder?.close() } catch { /* ignore */ }

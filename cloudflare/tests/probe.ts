@@ -4,8 +4,22 @@ import { DatabaseScope, runWithDatabaseScope } from '../../server/src/db/scope';
 import { pool, withTransaction } from '../../server/src/db/pool';
 export { default, MoveMateBackend } from '../src/worker';
 import { MoveMateBackend } from '../src/worker';
+import { VoicePool } from '../src/voice-pool';
 
 export class TestBackend extends MoveMateBackend {
+  async voiceMode(mode: string) { process.env.XIAOZHI_IDENTITY_MODE = mode; }
+  async seedVoiceUsers() {
+    const original = this.ctx.storage.sql.exec('SELECT password_hash FROM users WHERE id=1').one();
+    for (const id of [5, 6]) this.ctx.storage.sql.exec("INSERT OR IGNORE INTO users(id,email,password_hash,nickname,campus_id,email_verified,student_id) VALUES(?,?,?,?,1,1,?)", id, `voice${id}@dajju.local`, original.password_hash, 'Voice test ' + id, 'synthetic-voice-' + id);
+  }
+  async ageVoiceLease(id: string, idle = false) {
+    this.ctx.storage.sql.exec(`UPDATE voice_leases SET ${idle ? 'last_activity' : 'expires_at'}=? WHERE id=?`, Date.now() - (idle ? 121000 : 1000), id);
+  }
+  async voiceLeaseRows() { return this.ctx.storage.sql.exec('SELECT id,slot,connection_id,phase,expires_at FROM voice_leases').toArray(); }
+  async encryptedDevices() { return this.ctx.storage.sql.exec('SELECT identity FROM voice_devices WHERE identity IS NOT NULL').toArray().every(row => !String(row.identity).includes('deviceId') && String(row.identity).split('.').length === 3); }
+  async staleRelease(id: string, connection: string) { await this.run(() => new VoicePool('p'.repeat(64), 'test').release(id, connection)); }
+  async testIdle(id: string, connection: string, actor: any) { return this.run(() => new VoicePool('p'.repeat(64), 'test').heartbeat(id, connection, actor, Date.now() - 121000)); }
+  async simulateVoiceRestart() { await this.run(() => new VoicePool('p'.repeat(64), 'new-generation').restart()); }
   async forceAlarm() {
     this.ctx.storage.sql.exec("UPDATE actor_meta SET value='1' WHERE key='lifecycle_due'");
     await this.alarm();

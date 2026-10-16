@@ -19,7 +19,7 @@ import type { WorkoutContext, WorkoutSession, XiaozhiState } from '../types'
 const format = (seconds: number) => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
 
 const VOICE_LABEL: Record<XiaozhiState, string> = {
-  off: '', idle: '语音陪练已连接 · 说「你好动伴」', activating: '首次使用，需要绑定小智账号',
+  off: '本地文字陪练', idle: '语音陪练已连接 · 点击对话', activating: '正在配置语音设备',
   connecting: '正在连接动伴…', listening: '我在听，你接着说', thinking: '动伴在想…',
   speaking: '动伴正在用小智音色说话', reconnecting: '网络波动，正在恢复…', fallback: '小智语音离线 · 文字反馈中', failed: '语音暂不可用 · 点此重试',
 }
@@ -37,6 +37,9 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const [failure,setFailure]=useState('')
   const [syncFailed,setSyncFailed]=useState(false)
   const [active, setActive] = useState(false)
+  const [voiceEnabled, setVoiceEnabled] = useState(false)
+  const testSlotValue = new URLSearchParams(window.location.search).get('voiceTestSlot')
+  const testSlot = testSlotValue ? Number(testSlotValue) : undefined
   const [simulatedPose, setSimulatedPose] = useState(false)
   const [paused, setPaused] = useState(false)
   useEffect(()=>{if(active)document.querySelector('.motion-screen')?.scrollTo({top:0})},[active])
@@ -69,7 +72,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     latestVisionInsight: null,
   }), [exerciseType,exercise.unit,metrics.reps, metrics.targetReps, metrics.phase, metrics.poseFeedback.status, metrics.poseFeedback.issues, metrics.formScore, session?.durationSeconds, heartRate.connected, heartRate.signalInterrupted, heartRate.currentBpm, active, paused])
 
-  const voice = useXiaozhiCoach({ enabled: active, context: voiceContext, videoRef: pose.videoRef, visionConsent: visionConsent === true })
+  const voice = useXiaozhiCoach({ enabled: active && voiceEnabled, context: voiceContext, videoRef: pose.videoRef, visionConsent: visionConsent === true, testSlot })
   const voiceRef = useRef(voice)
   useEffect(() => { voiceRef.current = voice }, [voice])
   useEffect(() => { voice.sendWorkoutContext(voiceContext) }, [voiceContext])
@@ -146,7 +149,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const begin = async (demo:boolean) => {
     if (!demo && visionConsent === null) return
     setBusy(true);setFailure('')
-    try {const record=existing?await act(existing.id,'resume'):await startSession(exerciseType,demo?'demo':'camera');if(record.sportType!==exerciseType || record.source!==(demo?'demo':'camera'))throw new Error('现有运动的动作或来源不同，请返回训练入口恢复原记录');serverId.current=record.id;unlockAudio();voice.prepareAudio();setSimulatedPose(demo);setActive(true)} catch(err){setFailure(getErrorMessage(err))}finally{setBusy(false)}
+    try {const record=existing?await act(existing.id,'resume'):await startSession(exerciseType,demo?'demo':'camera');if(record.sportType!==exerciseType || record.source!==(demo?'demo':'camera'))throw new Error('现有运动的动作或来源不同，请返回训练入口恢复原记录');serverId.current=record.id;unlockAudio();setSimulatedPose(demo);setActive(true)} catch(err){setFailure(getErrorMessage(err))}finally{setBusy(false)}
   }
   const retrySync=async()=>{setBusy(true);try{await act(serverId.current,'progress',progress.current);setSyncFailed(false);setFailure('')}catch(err){setFailure(getErrorMessage(err))}finally{setBusy(false)}}
   const startRealPose=()=>void begin(false)
@@ -169,7 +172,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     {existing&&<p>恢复记录：已完成 {existing.reps} {exercise.unit}，已计时 {existing.effectiveSeconds} 秒</p>}
     <button className="primary" disabled={busy || visionConsent === null || existing?.source==='demo'} onClick={startRealPose}><Icon name="camera"/> 开启 AI 摄像头识别</button>
     <button className="secondary" disabled={busy || existing?.source==='camera'} onClick={startDemo}><Icon name="play"/> 使用演示动作</button>
-    <div className="voice-hint"><Icon name="mic" size={15}/><span><b>可选小智语音陪练 · 启用并绑定后使用</b><small>未配置时仅显示文字反馈，没有语音回复。连接成功后可点击开启对话；唤醒词需浏览器支持。云端实时处理语音，本站不保存完整录音。</small></span></div>
+    <div className="voice-hint"><Icon name="mic" size={15}/><span><b>语音陪练 · 训练开始后按需开启</b><small>进入训练不会占用设备。点击“开启语音陪练”后连接；共享服务由管理员统一配置。云端实时处理语音，本站不保存完整录音。</small></span></div>
     <div className="ble-setup"><div><Icon name="bluetooth"/><span><b>{heartRate.deviceName || 'BLE 心率带'}</b><small>{heartRate.status === 'unsupported' ? '请使用桌面 Chrome 或 Edge' : heartRate.connected ? `${heartRate.currentBpm || '--'} BPM · Zone ${heartRate.currentZone || '--'}` : heartRate.errorMessage || '标准 0x180D / 0x2A37'}</small></span></div><button disabled={heartRate.status === 'connecting' || heartRate.status === 'unsupported' || heartRate.connected} onClick={heartRate.connect}>{heartRate.status === 'connecting' ? '正在连接…' : heartRate.connected ? '已连接' : '连接心率带'}</button></div>
   </div>
 
@@ -186,12 +189,13 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     </div>
     <div className="count-score"><div className="rep-count"><b>{metrics.reps}</b><span>/ {metrics.targetReps} {exercise.unit}</span></div><div className="score-ring" style={{ '--score': `${metrics.formScore * 3.6}deg` } as React.CSSProperties}><div><b>{metrics.formScore || '--'}</b><small>分</small></div></div><div className="score-copy"><small>平均动作评分</small><b>{scoreLabel}</b></div></div>
     <div className={`feedback ${metrics.poseFeedback.status}`}><Icon name="spark"/><span><b>{metrics.poseFeedback.primaryIssue ? POSE_ISSUE_COPY[metrics.poseFeedback.primaryIssue].label : POSE_STATUS[metrics.poseFeedback.status]}</b><small>{metrics.feedback}</small></span></div>
+    <div className="workout-actions"><button className="secondary" onClick={() => { if (!voiceEnabled) { voice.prepareAudio(); voice.retry() } setVoiceEnabled(!voiceEnabled) }}><Icon name="mic"/>{voiceEnabled ? '关闭语音陪练' : '开启语音陪练'}</button>{testSlot !== undefined && <small>管理员设备 {testSlot} 测试 · 不代表已公开开放</small>}</div>
     <div className={`coach-panel ${voice.state}`}>
       <span className={`coach-face ${voice.emotion}`} aria-label={`动伴表情：${voice.emotion}`}>{voice.emotion === 'celebrating' ? 'AI' : voice.emotion === 'concerned' ? 'AI' : voice.emotion === 'thinking' ? 'AI' : voice.emotion === 'listening' ? 'AI' : 'AI'}</span>
-      <button className="voice-status" onClick={voice.state === 'idle' || voice.state === 'fallback' ? voice.wake : voice.state === 'failed' ? voice.retry : undefined} disabled={!['idle', 'fallback', 'failed'].includes(voice.state) || (voice.state === 'fallback' && !voice.supported)}>
-        <span><b>{voice.source !== 'xiaozhi' && voice.state === 'listening' ? '正在识别语音 · 回复仅文字' : voice.source !== 'xiaozhi' && voice.state === 'thinking' ? '正在准备文字回复…' : VOICE_LABEL[voice.state]}</b><small>{voice.errorMessage || (voice.state === 'speaking' || voice.state === 'thinking' ? voice.reply || '…' : voice.transcript || voice.reply || '随时叫我，我会先听你说')}</small></span>
+      <button className="voice-status" onClick={voiceEnabled && voice.state === 'idle' ? voice.wake : voice.state === 'failed' ? voice.retry : undefined} disabled={!voiceEnabled || !['idle', 'failed'].includes(voice.state)}>
+        <span><b>{voice.source !== 'xiaozhi' && voice.state === 'listening' ? '正在识别语音 · 回复仅文字' : voice.source !== 'xiaozhi' && voice.state === 'thinking' ? '正在准备文字回复…' : VOICE_LABEL[voice.state]}</b><small>{voice.errorMessage || (voice.state === 'speaking' || voice.state === 'thinking' ? voice.reply || '…' : voice.transcript || voice.reply || (voiceEnabled ? '连接后点击对话，我会先听你说' : '训练照常进行，可随时开启语音'))}</small></span>
       </button>
-      {voice.source !== 'xiaozhi' && <button className="interrupt-btn" onClick={voice.retry}>重试连接</button>}
+      {voiceEnabled && voice.source !== 'xiaozhi' && <button className="interrupt-btn" onClick={voice.retry}>重试连接</button>}
       {(voice.state === 'speaking' || voice.state === 'thinking') && <button className="interrupt-btn" onClick={voice.interrupt}>打断</button>}
       {voice.source === 'xiaozhi' && <button className="voice-mute" onClick={voice.toggleMute} aria-label={voice.muted ? '打开声音' : '关闭声音'}><Icon name={voice.muted ? 'volumeOff' : 'volume'} size={15}/></button>}
       <em>{SOURCE_LABEL[voice.source]}{voice.xiaozhiVoiceReady ? ' · 声音就绪' : ''}{voice.visionAvailable && visionConsent ? ' · 视觉就绪' : ''}</em>
