@@ -812,3 +812,5 @@
     font-size: 22px;
   }
 }
+
+.gym-inline-actions{display:flex;flex-wrap:wrap;gap:8px}.gym-inline-actions button{min-height:44px;padding:8px 12px;border:1px solid var(--border,#dce5df);border-radius:12px;background:#fff;color:inherit}.gym-edit-row{flex-wrap:wrap;gap:10px}.gym-edit-row>span{min-width:0;overflow-wrap:anywhere}.gym-form details{max-width:100%}

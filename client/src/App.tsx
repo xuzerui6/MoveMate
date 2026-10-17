@@ -19,6 +19,7 @@ import { StoreProvider, useStore } from './features/motion/lib/store';
 import { HeartRateProvider } from './features/motion/hooks/useHeartRateMonitor';
 import { Home } from './features/motion/pages/Home';
 import './features/gym/gym.css';
+const FreeWorkout=lazy(()=>import('./features/gym/FreeWorkout'));
 const PlanHub=lazy(()=>import('./features/gym/PlanHub'));
 const PlanEditor=lazy(()=>import('./features/gym/PlanEditor'));
 const PlanWorkout=lazy(()=>import('./features/gym/PlanWorkout'));
@@ -38,6 +39,7 @@ function Pages(){return <BrowserRouter><ErrorBoundary><AvatarPreview/><Suspense 
   <Route path="/login" element={<Login/>}/>
   <Route path="/" element={<ProtectedRoute><Layout/></ProtectedRoute>}>
     <Route index element={<MotionHome/>}/><Route path="train" element={<MotionView><Training/></MotionView>}/>
+    <Route path="train/free" element={<MotionView><FreeWorkout/></MotionView>}/>
     <Route path="train/plans" element={<MotionView><PlanHub/></MotionView>}/>
     <Route path="train/plans/:planId/edit" element={<MotionView><PlanEditor/></MotionView>}/>
     <Route path="train/workout/:workoutId" element={<MotionView><PlanWorkout/></MotionView>}/>

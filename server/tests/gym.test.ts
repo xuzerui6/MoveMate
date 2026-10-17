@@ -534,3 +534,28 @@ test("supersets alternate exercises and rest only between rounds", async () => {
   assert.ok(Date.parse(w.restUntil) > Date.now() + 59000);
   await act(w, "finish");
 });
+
+test("free workout structural changes preserve IDs, effort, idempotence and unique XP",async()=>{
+ let w=await gym.startWorkout(owner,{id:randomUUID(),free:{exercises:[{exerciseId:"motion:squat",sets:[{reps:10}]}]}});
+ const first=w.sets[0].id;
+ w=await act(w,"edit",{edit:{kind:"copy",targetId:first}});const copied=w.sets[1].id;
+ w=await act(w,"edit",{edit:{kind:"remove",targetId:first}});assert.equal(w.sets[w.cursor].id,copied);
+ w=await act(w,"edit",{edit:{kind:"undo",targetId:first}});assert.equal(w.sets.filter((s:any)=>s.status==="pending").length,2);
+ w=await act(w,"start");
+ await assert.rejects(act(w,"edit",{edit:{kind:"replace",targetId:first,exerciseId:"motion:jumping_jack"}}),/当前组/);
+ w=await act(w,"pause",{reps:6,effort:{kind:"rpe",value:7},notes:"备注"});assert.equal(w.sets[w.cursor].effort.value,7);
+ w=await act(w,"complete",{reps:6});const elapsed=w.session.effectiveSeconds;
+ w=await act(w,"rest",{restDelta:15});w=await act(w,"rest",{restSkip:true});assert.equal(w.session.effectiveSeconds,elapsed);
+ const op={operationId:randomUUID(),version:w.version,action:"edit",edit:{kind:"add",exerciseId:"motion:jumping_jack"}};
+ w=await gym.actWorkout(owner,w.id,op);const count=w.sets.length;w=await gym.actWorkout(owner,w.id,op);assert.equal(w.sets.length,count);
+ await assert.rejects(gym.actWorkout(owner,w.id,{...op,operationId:randomUUID()}),/其他页面/);
+ w=await act(w,"finish");assert.equal(w.session.xpEarned,0);
+ const p=await gym.saveWorkoutPlan(owner,w.id,{name:"另存自由训练"});assert.ok(p.id);assert.equal(w.planId,null);
+ await assert.rejects(gym.saveWorkoutPlan(other,w.id,{name:"越权"}));
+});
+test("training preferences merge without losing account or body settings",async()=>{
+ const prefs=require("../src/gym/preferences");await prefs.saveSettings(owner,{unit:"lb",effort:"rir",timeZone:"Pacific/Auckland"});
+ await gym.saveMeasurement(owner,{date:"2026-10-17",weightKg:70,goalKg:68});
+ assert.equal((await prefs.settings(owner)).unit,"lb");assert.equal((await prefs.settings(other)).unit,"kg");
+ await assert.rejects(prefs.saveSettings(owner,{timeZone:"invalid/timezone"}));
+});

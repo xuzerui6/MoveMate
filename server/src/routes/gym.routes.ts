@@ -1,6 +1,7 @@
 import { Router } from "express";
 import * as gym from "../gym/service";
 import { previewImport, commitImport, importPlan } from "../gym/imports";
+import {settings,saveSettings} from "../gym/preferences";
 const router = Router();
 const wrap =
   (handler: (req: any) => any) => async (req: any, res: any, next: any) => {
@@ -10,6 +11,8 @@ const wrap =
       next(error);
     }
   };
+router.get("/training-settings",wrap(r=>settings(r.user.id)));
+router.put("/training-settings",wrap(r=>saveSettings(r.user.id,r.body)));
 router.get(
   "/exercises",
   wrap((r) => gym.library(r.user.id, r.query)),
@@ -58,6 +61,7 @@ router.post(
   "/workout-sessions/:id/actions",
   wrap((r) => gym.actWorkout(r.user.id, r.params.id, r.body)),
 );
+router.post("/workout-sessions/:id/save-plan",wrap(r=>gym.saveWorkoutPlan(r.user.id,r.params.id,r.body)));
 router.patch(
   "/workout-sessions/:id/history",
   wrap((r) => gym.editHistory(r.user.id, r.params.id, r.body)),

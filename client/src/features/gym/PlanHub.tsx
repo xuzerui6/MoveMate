@@ -88,6 +88,7 @@ export function PlanEntry() {
           </Link>
         </article>
       )}
+      <Link className="secondary" to="/train/free">自由训练 · 先选动作再开始</Link>
       <div className="gym-shortcuts">
         <Link to="/train/library">
           <Icon name="dumbbell" />

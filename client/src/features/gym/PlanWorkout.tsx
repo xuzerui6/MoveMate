@@ -13,6 +13,7 @@ import type { WorkoutContext } from "../motion/types";
 import { request, getErrorMessage, formatTime } from "./api";
 import { WorkoutSync, restoredSetMetrics } from "./workoutSync";
 import Dialog from "../../components/Dialog";
+import {useWorkoutPreferences,WorkoutEditor,SaveAsPlan} from "./WorkoutOptions";
 const stamp = (w: any) => ({
   ...w,
   session: w.session ? { ...w.session, receivedAt: Date.now() } : null,
@@ -28,6 +29,8 @@ export default function PlanWorkout() {
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     [blocked, setBlocked] = useState(false),
+    [effort,setEffort]=useState<number|null>(null),
+    [notes,setNotes]=useState(""),
     [manualReps, setManualReps] = useState(0),
     [weight, setWeight] = useState(0),
     [voiceOn, setVoiceOn] = useState(false),
@@ -139,17 +142,20 @@ export default function PlanWorkout() {
     (current?.id || "none") + ":" + recoveryKey,
     pose.worldLandmarks,
   );
+  const restSeconds=Math.max(0,Math.ceil((Date.parse(row?.restUntil||"")-tick)/1000))||0;
+  const options=useWorkoutPreferences(!!row&&!finished,restSeconds);
   const snapshot = useRef<any>({});
   snapshot.current = camera
     ? { reps: metrics.reps, loadKg: weight, score: metrics.scoreAccumulator }
     : { reps: current?.targetSeconds ? 0 : manualReps, loadKg: weight };
+  snapshot.current={...snapshot.current,effort:options.prefs?.effort&&options.prefs.effort!=="off"&&effort!==null?{kind:options.prefs.effort,value:effort}:null,notes};
   useEffect(() => {
     if (!current || loadedId.current === current.id + ":" + recoveryKey) return;
     loadedId.current = current.id + ":" + recoveryKey;
-    setManualReps(
-      current.reps || (current.targetSeconds ? 0 : current.targetReps),
-    );
-    setWeight(current.loadKg);
+    const suggestion=row.previous?.[current.exercise.id];
+    setManualReps(current.reps || (current.targetSeconds ? 0 : suggestion?.reps ?? current.targetReps));
+    setWeight(current.status === "pending" ? suggestion?.loadKg ?? current.loadKg : current.loadKg);
+    setEffort(current.effort?.value ?? null);setNotes(current.notes||"");
     lastSynced.current = current.reps;
   }, [current?.id, recoveryKey]);
   const run = async (action: string, values: any = {}, control = true) => {
@@ -435,6 +441,7 @@ export default function PlanWorkout() {
             <Link className="primary" to="/train/records">
               查看逐组记录
             </Link>
+            <SaveAsPlan id={row.id}/>
             <Link className="secondary" to="/train/stats">
               查看训练分析
             </Link>
@@ -565,6 +572,7 @@ export default function PlanWorkout() {
                   <span>组间休息</span>
                   <strong>{rest ? formatTime(rest) : "休息结束"}</strong>
                   <p>准备好后，手动开始下一组。</p>
+                  <div className="gym-inline-actions"><button disabled={busy||blocked} onClick={()=>act("rest",{restDelta:-15})}>−15 秒</button><button disabled={busy||blocked} onClick={()=>act("rest",{restDelta:15})}>+15 秒</button><button disabled={busy||blocked} onClick={()=>act("rest",{restSkip:true})}>跳过休息</button></div>
                 </div>
               )}
               {current?.targetSeconds > 0 && (
@@ -594,7 +602,7 @@ export default function PlanWorkout() {
               {current && !camera && (
                 <div className="gym-two">
                   <label>
-                    本组实际次数
+                    本组实际次数（上回建议，完成时确认）
                     <input
                       type="number"
                       min="0"
@@ -620,6 +628,8 @@ export default function PlanWorkout() {
                   </label>
                 </div>
               )}
+              {current && options.prefs?.effort!=="off" && options.prefs?.effort && <label>本组 {options.prefs.effort.toUpperCase()}（可不填）<input type="number" min="0" max="10" step="0.5" value={effort??""} onChange={e=>setEffort(e.target.value===""?null:Number(e.target.value))}/></label>}
+              {current&&<label>本组备注（可选）<input maxLength={500} value={notes} onChange={e=>setNotes(e.target.value)}/></label>}
               {!working && current?.exercise.cameraType && (
                 <label className="gym-checkbox">
                   <input
@@ -764,6 +774,7 @@ export default function PlanWorkout() {
           </div>
         </>
       )}
+      {!finished&&<><WorkoutEditor row={row} run={run} busy={busy||blocked}/>{options.settings}{options.deviceMessage&&<p role="status">{options.deviceMessage}</p>}</>}
       <details className="gym-all-sets">
         <summary>查看全部训练组</summary>
         {row.sets.map((s: any, i: number) => (
@@ -781,6 +792,7 @@ export default function PlanWorkout() {
                     working: "当前组",
                     completed: "已完成",
                     skipped: "已跳过",
+                    removed:"已移除（可撤销）",
                   } as any
                 )[s.status]
               }

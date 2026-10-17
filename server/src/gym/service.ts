@@ -1,5 +1,7 @@
 import { randomUUID, createHash } from "node:crypto";
 import { z } from "zod";
+import { editWorkout } from "./editing";
+import {saveSettings} from "./preferences";
 import { pool, withTransaction, afterCommit } from "../db";
 import * as motion from "../services/motion.service";
 import { pushToUser, broadcastToGame } from "../websocket/notification.handler";
@@ -414,6 +416,7 @@ export async function startWorkout(uid: number, input: any) {
         planId: z.string().optional(),
         routineId: z.string().optional(),
         gameId: z.number().int().positive().optional(),
+        free: z.object({name:z.string().min(1).max(80).default("自由训练"), exercises:planSchema.shape.routines.element.shape.exercises}).optional(),
       })
       .parse(input);
     const duplicate = (
@@ -428,6 +431,7 @@ export async function startWorkout(uid: number, input: any) {
         (old.session?.gameId || null) !== (data.gameId || null)
       )
         throw new InvalidStateError("训练动作与来源不可更改");
+      if(data.free && json(duplicate.snapshot).creationDigest!==digest(data.free)) throw new InvalidStateError("创建请求内容已改变");
       return old;
     }
     let snapshot: any,
@@ -436,6 +440,9 @@ export async function startWorkout(uid: number, input: any) {
       snapshot = (await gamePlan(uid, data.gameId)).snapshot;
       if (!snapshot) throw new NotFoundError("活动尚未附计划");
       planId = null;
+    } else if (data.free) {
+      snapshot=await snapshotRoutine(uid,data.free.name,{id:"free",name:"自由安排",weekdays:[],exercises:data.free.exercises});
+      snapshot.creationDigest=digest(data.free);
     } else {
       const p = json<Plan>(
         (await owned("gym_plans", data.planId || "", uid)).data,
@@ -484,8 +491,15 @@ const actionSchema = z.object({
     "resume",
     "finish",
     "manual",
+    "edit",
+    "rest",
   ]),
   setId: z.string().optional(),
+  edit: z.unknown().optional(),
+  restDelta: z.number().int().min(-900).max(900).optional(),
+  restSkip: z.boolean().optional(),
+  effort: z.object({kind:z.enum(["rpe","rir"]),value:z.number().min(0).max(10)}).nullable().optional(),
+  notes: z.string().max(500).optional(),
   inputMode: z.enum(["manual", "camera"]).optional(),
   reps: z.number().int().min(0).max(100000).optional(),
   loadKg: z.number().min(0).max(1000).optional(),
@@ -557,6 +571,7 @@ export async function actWorkout(uid: number, id: string, input: any) {
     };
     const update = async () => {
       if (!setRow) return;
+      if(data.effort!==undefined || data.notes!==undefined) await pool.query("UPDATE gym_sets SET data=$2 WHERE id=$1",[set.id,JSON.stringify({...json(setRow.data),...(data.effort!==undefined?{effort:data.effort}:{}),...(data.notes!==undefined?{notes:data.notes}:{})})]);
       const mode =
         data.action === "manual"
           ? set.inputMode === "camera"
@@ -590,7 +605,14 @@ export async function actWorkout(uid: number, id: string, input: any) {
         ],
       );
     };
-    if (data.action === "start") {
+    if(data.action === "edit") {
+      await editWorkout(w,current,data.edit,await allExercises(uid));
+    } else if(data.action === "rest") {
+      if(w.phase!=="resting") throw new InvalidStateError("当前不在组间休息");
+      const left=Math.max(0,Math.ceil((Date.parse(w.rest_until||now())-Date.now())/1000));
+      const next=data.restSkip?0:Math.min(900,Math.max(0,left+(data.restDelta||0)));
+      await pool.query("UPDATE gym_workouts SET rest_until=$2 WHERE id=$1",[id,new Date(Date.now()+next*1000).toISOString()]);
+    } else if (data.action === "start") {
       if (!set || !["ready", "resting"].includes(w.phase))
         throw new InvalidStateError("请先完成或恢复当前组");
       const mode = data.inputMode || "manual";
@@ -650,7 +672,8 @@ export async function actWorkout(uid: number, id: string, input: any) {
             set.id,
             data.action === "skip" ? "skipped" : "completed",
           ]);
-          const next = current.sets[w.cursor + 1],
+          const nextIndex=current.sets.findIndex((s:any,i:number)=>i>w.cursor && s.status==="pending");
+          const next = current.sets[nextIndex],
             rest =
               next &&
               set.superset &&
@@ -661,8 +684,8 @@ export async function actWorkout(uid: number, id: string, input: any) {
                 ? 0
                 : set.restSec;
           await pool.query(
-            "UPDATE gym_workouts SET phase='resting',cursor=cursor+1,rest_until=$2 WHERE id=$1",
-            [id, new Date(Date.now() + rest * 1000).toISOString()],
+            "UPDATE gym_workouts SET phase='resting',cursor=$3,rest_until=$2 WHERE id=$1",
+            [id, new Date(Date.now() + rest * 1000).toISOString(),nextIndex<0?current.sets.length:nextIndex],
           );
         }
       }
@@ -710,7 +733,7 @@ export async function actWorkout(uid: number, id: string, input: any) {
         ).rows[0];
         if (planRow) {
           const p = json<Plan>(planRow.data);
-          if (p.mode === "rotation") {
+          if (p.mode === "rotation" && p.routines[p.rotationCursor % p.routines.length]?.id === current.routineId && rows.every((r:any)=>["completed","removed"].includes(r.status))) {
             p.rotationCursor = (p.rotationCursor + 1) % p.routines.length;
             await pool.query(
               "UPDATE gym_plans SET data=$2,version=version+1 WHERE id=$1",
@@ -805,11 +828,7 @@ export async function saveMeasurement(uid: number, input: any) {
       "INSERT INTO gym_measurements(user_id,date,data) VALUES($1,$2,$3) ON CONFLICT(user_id,date) DO UPDATE SET data=$3",
       [uid, data.date, JSON.stringify({ ...json(old?.data || "{}"), ...data })],
     );
-    if (data.goalKg)
-      await pool.query(
-        "INSERT INTO gym_settings(user_id,data) VALUES($1,$2) ON CONFLICT(user_id) DO UPDATE SET data=$2",
-        [uid, JSON.stringify({ goalKg: data.goalKg })],
-      );
+    if (data.goalKg) await saveSettings(uid,{goalKg:data.goalKg});
   });
   return measurements(uid);
 }
@@ -956,3 +975,16 @@ export async function exportData(uid: number) {
   };
 }
 export { digest };
+
+export async function saveWorkoutPlan(uid:number,id:string,input:any){
+ const w=await workout(uid,id);
+ if(w.phase!=="finished") throw new InvalidStateError("结束后才能另存新计划");
+ const exercises:any[]=[];
+ for(const s of w.sets.filter((s:any)=>s.status!=="removed")){
+  const last=exercises[exercises.length-1];
+  const target=setSchema.parse({...s,reps:s.targetReps,seconds:s.targetSeconds,loadKg:s.loadKg});
+  if(last?.exerciseId===s.exercise.id && last.sets.length<20) last.sets.push(target);
+  else exercises.push({exerciseId:s.exercise.id,sets:[target]});
+ }
+ return savePlan(uid,{name:z.string().trim().min(1).max(80).parse(input.name),routines:[{id:randomUUID(),name:"训练日 A",weekdays:[],exercises}]});
+}
