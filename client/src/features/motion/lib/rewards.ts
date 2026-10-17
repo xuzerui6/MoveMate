@@ -12,7 +12,7 @@ export function calculateDailyMissionProgress(history: WorkoutSession[], date = 
   const today = history.filter(session => session.startTime && localDateKey(new Date(session.startTime)) === dateKey)
   return {
     date: dateKey,
-    squatReps: today.filter(session=>session.exerciseType==='squat' && session.source!=='demo').reduce((sum, session) => sum + session.reps, 0),
+    squatReps: today.filter(session=>session.source!=='demo').reduce((sum, session) => sum + (session.exerciseType==='squat'?session.reps:session.planSquatReps||0), 0),
     zone3Seconds: today.reduce((sum, session) => sum + session.zone3Seconds, 0),
     hasHighScoreWorkout: today.some(session => session.formScore >= 90),
   }

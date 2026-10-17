@@ -16,7 +16,7 @@ client.interceptors.request.use(
   (config) => {
     // 从 localStorage 读取 token（Zustand store 可能尚未初始化）
     const token = localStorage.getItem('token');
-    if (token) {
+    if (token && !config.headers.Authorization) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;

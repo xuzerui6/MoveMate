@@ -5,7 +5,7 @@ import { equipmentSeed, initialState } from './data';
 import { calculateDailyMissionProgress, calculateStreakDays } from './rewards';
 import { SessionQueue, reconcileMutation } from './sessionRuntime';
 import type { AppState, Slot, WorkoutSession } from '../types';
-export type SportSession = { id:string; gameId:number|null; sportType:string; source:string; status:string; effectiveSeconds:number; reps:number; xpEarned:number; settled:boolean; startTime:string; endTime:string|null; metrics:any; receivedAt?:number };
+export type SportSession = { id:string; workoutId?:string; gameId:number|null; sportType:string; source:string; status:string; effectiveSeconds:number; reps:number; xpEarned:number; settled:boolean; startTime:string; endTime:string|null; metrics:any; receivedAt?:number };
 type Store = {
   state:AppState; sessions:SportSession[]; loading:boolean; loaded:boolean; error:string; refresh:()=>Promise<void>;
   startSession:(sportType:string,source:string,gameId?:number)=>Promise<SportSession>;

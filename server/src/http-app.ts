@@ -17,6 +17,7 @@ import adminRoutes from './routes/admin.routes';
 import verifyRoutes from './routes/verify.routes';
 import checkinRoutes from './routes/checkin.routes';
 import motionRoutes from './routes/motion.routes';
+import gymRoutes from './routes/gym.routes';
 import { coachRouter } from './routes/coach.routes';
 import {cloudUploadsRouter} from './routes/cloud-uploads.routes';
 import { isAllowedOrigin } from './xiaozhi/identity';
@@ -58,6 +59,7 @@ app.use(cors({
       },
   credentials: true,
 }));
+app.use('/api/v1/training-imports',express.json({limit:'2mb'}));
 app.use(express.json());
 if (options.maintenance) app.use(options.maintenance);
 app.use(async (_req, _res, next) => {
@@ -100,6 +102,7 @@ app.use('/api/v1/feedback', feedbackRoutes);
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/checkin', checkinRoutes);
 app.use('/api/v1', motionRoutes);
+app.use('/api/v1', gymRoutes);
 
 // 健康检查
 app.get('/health', (_req, res) => {

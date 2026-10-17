@@ -3,16 +3,19 @@ import type { NormalizedLandmark } from '@mediapipe/tasks-vision'
 import { demonstrationPose, ExerciseTracker, type ExerciseMetrics } from '../lib/exerciseMetrics'
 import type { CameraExerciseType } from '../lib/exercises'
 
-export function useExerciseMetrics(type:CameraExerciseType, landmarks:NormalizedLandmark[]|null, simulated:boolean, active:boolean, paused:boolean, aspect:number, restored:Partial<ExerciseMetrics>={}) {
+export function useExerciseMetrics(type:CameraExerciseType, landmarks:NormalizedLandmark[]|null, simulated:boolean, active:boolean, paused:boolean, aspect:number, restored:Partial<ExerciseMetrics>={}, targetReps=20, resetKey='standalone') {
   const tracker=useRef<ExerciseTracker>()
-  if(!tracker.current)tracker.current=new ExerciseTracker(type,20,restored)
-  const [metrics,setMetrics]=useState(()=>tracker.current!.metrics)
+  const key=type+':'+resetKey+':'+targetReps,trackerKey=useRef('')
+  if(!tracker.current||trackerKey.current!==key){tracker.current=new ExerciseTracker(type,targetReps,restored);trackerKey.current=key}
+  const [snapshot,setSnapshot]=useState(()=>({key,metrics:tracker.current!.metrics}))
+  const setMetrics=(metrics:ExerciseMetrics)=>setSnapshot({key,metrics})
+  const metrics=snapshot.key===key?snapshot.metrics:tracker.current.metrics
   const [demoLandmarks,setDemoLandmarks]=useState<NormalizedLandmark[]|null>(null)
-  useEffect(()=>{if(!active||paused)setMetrics({...tracker.current!.interrupt()})},[active,paused])
+  useEffect(()=>{if(!active||paused)setMetrics({...tracker.current!.interrupt()})},[active,paused,key])
   useEffect(()=>{
     if(!active||paused||simulated)return
     setMetrics({...tracker.current!.update(landmarks,performance.now(),aspect)})
-  },[active,paused,simulated,landmarks,aspect])
+  },[active,paused,simulated,landmarks,aspect,key])
   useEffect(()=>{
     if(!active||paused||!simulated)return
     const start=performance.now()
@@ -23,6 +26,6 @@ export function useExerciseMetrics(type:CameraExerciseType, landmarks:Normalized
       const frame=demonstrationPose(type,stage);setDemoLandmarks(frame);setMetrics({...tracker.current!.update(frame,now,1)})
     }
     tick();const interval=window.setInterval(tick,100);return()=>window.clearInterval(interval)
-  },[active,paused,simulated,type])
+  },[active,paused,simulated,type,key])
   return {metrics,demoLandmarks}
 }

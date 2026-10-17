@@ -12,6 +12,7 @@
 import { pgToSqlite, toSqliteDialect, coerceRow, coerceParams } from './sql-dialect';
 export { pgToSqlite, toSqliteDialect, coerceRow, coerceParams } from './sql-dialect';
 import { DatabaseSync } from 'node:sqlite';
+import { gymSchema } from '../gym/schema';
 import '../config';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -143,10 +144,11 @@ function ensureSchema(conn: DatabaseSync): void {
   const hasUsers=Boolean(conn.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='users'").get());
   const hasMotion=Boolean(conn.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='sport_intervals'").get());
   const hasPreferences=hasUsers&&(conn.prepare('PRAGMA table_info(users)').all() as {name:string}[]).some(column=>column.name==='sport_preferences');
-  if(hasUsers && (!hasMotion || !hasPreferences)) {
+  const hasGym=Boolean(conn.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='gym_plans'").get());
+  if(hasUsers && (!hasMotion || !hasPreferences || !hasGym)) {
     const backupDir=path.join(path.dirname(path.resolve(DB_PATH)),'backups');
     fs.mkdirSync(backupDir,{recursive:true});
-    const backupPath=path.join(backupDir,path.basename(DB_PATH,'.db')+(hasMotion?'-pre-profile-':'-pre-motion-')+new Date().toISOString().replace(/[:.]/g,'-')+'.db');
+    const backupPath=path.join(backupDir,path.basename(DB_PATH,'.db')+(!hasGym?'-pre-gym-':hasMotion?'-pre-profile-':'-pre-motion-')+new Date().toISOString().replace(/[:.]/g,'-')+'.db');
     conn.prepare('VACUUM INTO ?').run(backupPath);
     console.log('[SQLite] 迁移前备份: '+backupPath);
   }
@@ -291,6 +293,7 @@ function ensureSchema(conn: DatabaseSync): void {
     );
   `);
 
+  conn.exec(gymSchema);
   // 兼容旧库的列扩展
   const tableColumns = (table: string): string[] => {
     const rows = conn

@@ -5,7 +5,8 @@ import { exerciseInfo, type CameraExerciseType } from './exercises'
 // 模型只决定怎么说。所有输出在进入 TTS 之前必须先过这里。
 
 export interface CoachContext {
-  exerciseType?: CameraExerciseType
+  exerciseType?: CameraExerciseType | 'plan'
+  plan?: { name:string; exerciseName:string; setNumber:number; weightKg:number; restSeconds:number; phase:string; instruction:string }
   countUnit?: string
   reps: number
   targetReps: number
@@ -81,7 +82,7 @@ export function buildSystemPrompt(context: CoachContext): string {
     `长度上限：${context.active ? '15 字' : '40 字'}。`,
     '',
     '现在的实际情况（只能用这些，不要编）：',
-    `- 动作是${exerciseInfo(context.exerciseType||'squat').name}；这组做了 ${context.reps} ${context.countUnit||'次'}${context.targetReps ? `，目标 ${context.targetReps} ${context.countUnit||'次'}` : ''}`,
+    `- 动作是${context.plan?.exerciseName||exerciseInfo(context.exerciseType||'squat').name}；这组做了 ${context.reps} ${context.countUnit||'次'}${context.targetReps ? `，目标 ${context.targetReps} ${context.countUnit||'次'}` : ''}${context.plan?`；计划${context.plan.name}，第${context.plan.setNumber}组，${context.plan.weightKg}kg，阶段${context.plan.phase}，休息剩余${context.plan.restSeconds}秒；只解释已定目标，不更改计划。`:''}`,
     `- 已经练了 ${Math.floor(context.durationSeconds / 60)} 分 ${context.durationSeconds % 60} 秒`,
     context.bpm ? `- 心率 ${context.bpm}` : '- 没戴心率带，别提心率',
   ].join('\n')
@@ -121,8 +122,8 @@ interface LocalRule {
 const LOCAL_RULES: LocalRule[] = [
   { match: /(多少|几个|几次|计数|数量|进度)/, reply: c => `已经 ${c.reps} ${c.countUnit||'次'}了${c.targetReps ? `，目标 ${c.targetReps}` : ''}。` },
   { match: /(累|喘|顶不住|不行了|没力|酸|吃力)/, reply: () => '嗯，听起来这组挺顶的。要不要先歇一会儿？' },
-  { match: /(怎么(做|练)|动作|要领|姿势|正确)/, reply: c => exerciseInfo(c.exerciseType||'squat').instruction },
-  { match: /(呼吸|喘气|憋气)/, reply: c => exerciseInfo(c.exerciseType||'squat').breathing },
+  { match: /(怎么(做|练)|动作|要领|姿势|正确)/, reply: c => c.plan?.instruction||exerciseInfo(c.exerciseType||'squat').instruction },
+  { match: /(呼吸|喘气|憋气)/, reply: c => c.exerciseType==='plan'?'保持自然呼吸，不憋气；不舒服就先暂停。':exerciseInfo(c.exerciseType||'squat').breathing },
   { match: /(停|暂停|结束|不练了|休息)/, reply: () => '好，那就停在这。这组你自己感觉怎么样？' },
   { match: /(加油|鼓励|给我|打气)/, reply: () => '你已经在做了，这就是最难的一步。' },
   { match: /(时间|多久|几分钟)/, reply: c => `练了 ${Math.floor(c.durationSeconds / 60)} 分 ${c.durationSeconds % 60} 秒。` },

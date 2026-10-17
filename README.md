@@ -6,6 +6,10 @@
 
 动伴素材和前端逻辑引自 [xuzerui6/dongban](https://github.com/xuzerui6/dongban) 的 main，版本 `0d03c94170f6154a0c1d42618e841729ad8baf00`。保留 React 18，整合现有 Express 后端；没有第二套登录或独立站点。小程序目录为原有样例，本次没有修改或部署。
 
+## 计划训练
+
+新增动作库、个人计划、逐组跟练、四动作摄像头记组、组间休息、训练分析、身体记录、规则进阶、导入导出与健身组局关联。计划训练统一按有效运动每分钟 1 XP；独立摄像头训练仍为每次／对 2 XP。入口在「训练 → 计划训练」，使用方法、数据来源和增量备份见 [计划训练说明](docs/plan-training.md)，实际验收见 [计划训练验收](docs/plan-training-acceptance.md)。
+
 ## 本机启动
 
 正式地址：[https://dongban.xyz](https://dongban.xyz)，`www` 跳转至主域名。网页、接口、SQLite、实时聊天、通知和小智桥接运行在 Cloudflare Workers Free 与 SQLite-backed Durable Object；没有新增 R2、Containers 或付费套餐。原 Vercel 站点维护，Turso／Upstash 仅保留为备份。部署、迁移和只回滚代码的说明见 [Cloudflare 部署说明](docs/cloudflare-deployment.md)，实际验证见 [迁移验收](docs/cloudflare-acceptance.md)。本机启动方式继续使用下列脚本。

@@ -48,7 +48,12 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
     this.migration = new Migration(this.db);
     this.voicePool = new VoicePool(env.XIAOZHI_POOL_SECRET, this.generation);
     this.ready = ctx.blockConcurrencyWhile(async () => {
-      await ctx.storage.transaction(async () => this.db.bootstrap());
+      const needsGymBackup = !ctx.storage.sql.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='gym_workouts'").toArray().length;
+      const beforeGym = needsGymBackup ? await ctx.storage.getCurrentBookmark() : null;
+      await ctx.storage.transaction(async () => {
+        this.db.bootstrap();
+        if (beforeGym) this.migration.set('pre_gym_bookmark', JSON.stringify({bookmark:beforeGym,createdAt:new Date().toISOString()}));
+      });
       await this.run(() => this.voicePool.restart());
     });
     ctx.setWebSocketAutoResponse(new WebSocketRequestResponsePair('ping', 'pong'));
@@ -76,6 +81,7 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
         if (!authorized(request, this.env.MIGRATION_SECRET)) return new Response('Unauthorized', { status: 401 });
         // Migration commands share the actor's database operation queue.
         if (path === '/api/migration/diagnostics') return Response.json((await pool.query("SELECT value FROM actor_meta WHERE key='voice_diagnostic'")).rows.map(row => JSON.parse(row.value)));
+        if (path === '/api/migration/gym-backup') return Response.json({backup:this.migration.meta('pre_gym_bookmark')||null});
         const result = await withTransaction(() => this.migration.handle(request));
         await this.schedule(); return result;
       }

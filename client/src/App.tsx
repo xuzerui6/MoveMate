@@ -18,6 +18,15 @@ import { useAuthStore } from './stores/authStore';
 import { StoreProvider, useStore } from './features/motion/lib/store';
 import { HeartRateProvider } from './features/motion/hooks/useHeartRateMonitor';
 import { Home } from './features/motion/pages/Home';
+import './features/gym/gym.css';
+const PlanHub=lazy(()=>import('./features/gym/PlanHub'));
+const PlanEditor=lazy(()=>import('./features/gym/PlanEditor'));
+const PlanWorkout=lazy(()=>import('./features/gym/PlanWorkout'));
+const ExerciseLibrary=lazy(()=>import('./features/gym/Library'));
+const Analytics=lazy(()=>import('./features/gym/GymTools').then(m=>({default:m.Analytics})));
+const BodyRecords=lazy(()=>import('./features/gym/GymTools').then(m=>({default:m.BodyRecords})));
+const WorkoutRecords=lazy(()=>import('./features/gym/GymTools').then(m=>({default:m.WorkoutRecords})));
+const DataManagement=lazy(()=>import('./features/gym/GymTools').then(m=>({default:m.DataManagement})));
 const Training=lazy(()=>import('./features/motion/Training'));
 const History=lazy(()=>import('./features/motion/History'));
 const Avatar=lazy(()=>import('./features/motion/pages/Avatar').then(m=>({default:m.Avatar})));
@@ -29,6 +38,14 @@ function Pages(){return <BrowserRouter><ErrorBoundary><AvatarPreview/><Suspense 
   <Route path="/login" element={<Login/>}/>
   <Route path="/" element={<ProtectedRoute><Layout/></ProtectedRoute>}>
     <Route index element={<MotionHome/>}/><Route path="train" element={<MotionView><Training/></MotionView>}/>
+    <Route path="train/plans" element={<MotionView><PlanHub/></MotionView>}/>
+    <Route path="train/plans/:planId/edit" element={<MotionView><PlanEditor/></MotionView>}/>
+    <Route path="train/workout/:workoutId" element={<MotionView><PlanWorkout/></MotionView>}/>
+    <Route path="train/library" element={<MotionView><ExerciseLibrary/></MotionView>}/>
+    <Route path="train/stats" element={<MotionView><Analytics/></MotionView>}/>
+    <Route path="train/body" element={<MotionView><BodyRecords/></MotionView>}/>
+    <Route path="train/records" element={<MotionView><WorkoutRecords/></MotionView>}/>
+    <Route path="train/data" element={<MotionView><DataManagement/></MotionView>}/>
     <Route path="groups" element={<Lobby/>}/><Route path="create" element={<CreateGame/>}/><Route path="game/:id" element={<GameDetail/>}/>
     <Route path="notifications" element={<Notifications/>}/><Route path="profile" element={<Profile/>}/>
     <Route path="leaderboard" element={<Leaderboard/>}/><Route path="history" element={<MotionView><History/></MotionView>}/>

@@ -105,7 +105,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent, tes
   useEffect(() => { consentRef.current = visionConsent }, [visionConsent])
 
   const fallbackContext = useMemo(() => ({
-    exerciseType:context.exerciseType,countUnit:context.countUnit,
+    exerciseType:context.exerciseType,countUnit:context.countUnit,plan:context.plan,
     reps: context.reps, targetReps: context.targetReps, phase: context.phase,
     durationSeconds: context.durationSeconds, bpm: context.bpm, active: context.active,
   }), [context])

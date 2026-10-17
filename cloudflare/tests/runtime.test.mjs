@@ -156,6 +156,28 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.equal((await call('/api/v1/admin/'+panel,{token:tokens[0]})).status,403,panel);
  }
  });
+ await t.test('native plan operations persist, isolate accounts and settle once by valid time',async()=>{
+ const token=tokens[0],p=(await call('/api/v1/training-plans',{method:'POST',token,body:{name:'Worker plan',routines:[{id:'a',name:'A',exercises:[{exerciseId:'motion:high_knees',sets:[{reps:2,restSec:60}]}]}]}})).data.data;
+ const created=await call('/api/v1/workout-sessions',{method:'POST',token,body:{id:crypto.randomUUID(),planId:p.id,routineId:'a'}});assert.equal(created.status,200,JSON.stringify(created.data));let w=created.data.data;assert.equal(w.session.status,'paused');
+ const action=async(a,extra={})=>{const r=await call(`/api/v1/workout-sessions/${w.id}/actions`,{method:'POST',token,body:{operationId:crypto.randomUUID(),version:w.version,action:a,...extra}});assert.equal(r.status,200,JSON.stringify(r.data));return r.data.data};
+ assert.equal((await call('/api/v1/workout-sessions/'+w.id,{token:tokens[1]})).status,404);
+ w=await action('start',{inputMode:'camera'});const ns=await mf.getDurableObjectNamespace('BACKEND');await ns.get(ns.idFromName('test')).ageSession(w.session.id,61);
+ const bad=await call(`/api/v1/workout-sessions/${w.id}/actions`,{method:'POST',token,body:{operationId:'bad',version:w.version,action:'complete',reps:2,score:{count:1,total:999,depth:90,stability:90,trunk:90,symmetry:90}}});assert.equal(bad.status,400);
+ w=await action('complete',{reps:2,score:{count:2,total:190,depth:190,stability:190,trunk:190,symmetry:190}});assert.equal(w.phase,'resting');
+ const finish={operationId:'finish-once',version:w.version,action:'finish'};const first=await call(`/api/v1/workout-sessions/${w.id}/actions`,{method:'POST',token,body:finish});assert.equal(first.status,200,JSON.stringify(first.data));assert.equal(first.data.data.session.xpEarned,1);
+ const again=await call(`/api/v1/workout-sessions/${w.id}/actions`,{method:'POST',token,body:finish});assert.equal(again.data.data.session.xpEarned,1);
+ const state=await call('/api/v1/training/state',{token});assert.equal(state.data.data.totalXp,26);assert.equal(state.data.data.history.find(s=>s.id===w.session.id).workoutId,w.id);
+ const backup=await migrate('gym-backup');assert.equal(backup.status,200);assert.ok(JSON.parse(backup.data.backup).bookmark);
+ });
+ await t.test('native imports stay idempotent, body data private and no credentials leak in export',async()=>{
+ const token=tokens[0],body={format:'strong',text:'Date,Workout Name,Exercise Name,Weight,Reps,Seconds\n2026-10-01,Worker import,徒手深蹲,5,10,30'};
+ assert.equal((await call('/api/v1/training-imports/preview',{method:'POST',token,body})).data.data.missing.length,0);
+ assert.equal((await call('/api/v1/training-imports/commit',{method:'POST',token,body})).data.data.imported,1);
+ assert.equal((await call('/api/v1/training-imports/commit',{method:'POST',token,body})).data.data.duplicates,1);
+ await call('/api/v1/body-measurements',{method:'PUT',token,body:{date:'2026-10-17',weightKg:70}});
+ assert.equal((await call('/api/v1/body-measurements',{token:tokens[1]})).data.data.items.length,0);
+ const exported=(await call('/api/v1/training-export',{token})).data.data;assert.equal(exported.workouts.filter(w=>w.imported).length,1);assert.ok(!JSON.stringify(exported).includes('password_hash'));
+ });
  await voicePoolTests(t,{mf,call,tokens,adminToken,sockets,password});
  }finally{for(const ws of sockets){try{ws.close()}catch{}}await mf.dispose()}
 });

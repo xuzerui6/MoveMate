@@ -77,7 +77,8 @@ export type XiaozhiDeviceBootstrap =
   | { status: 'activating'; mode: 'personal'; code: string; message: string; expiresAt: number }
 
 export interface WorkoutContext {
-  exerciseType: CameraExerciseType
+  exerciseType: CameraExerciseType | 'plan'
+  plan?: { name:string; exerciseName:string; setNumber:number; weightKg:number; restSeconds:number; phase:string; instruction:string }
   countUnit: string
   reps: number
   targetReps: number
@@ -125,6 +126,8 @@ export interface ZoneDurations {
 }
 
 export interface WorkoutSession extends WorkoutMetrics, ZoneDurations {
+  workoutId?: string;
+  planSquatReps?: number;
   source?: 'camera' | 'timer' | 'demo';
   settled?: boolean;
   growthPending?: boolean;

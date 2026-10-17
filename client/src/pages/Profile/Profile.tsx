@@ -270,7 +270,7 @@ const Profile: React.FC = () => {
   return (
     <div className="profile-page">
       <div className="motion-growth">{motionLoaded?<><div className="profile-level"><b>Lv.{motion.level}</b><div><p>当前经验 <strong>{motion.xp} / {300+(motion.level-1)*100} XP</strong></p><div className="progress"><i style={{width:Math.min(100,motion.xp/(300+(motion.level-1)*100)*100)+'%'}}/></div></div></div><div className="profile-growth-stats"><div><strong>{motion.totalXp}</strong><small>累计 XP</small></div><div><strong>{motion.completedWorkoutCount}</strong><small>有效训练</small></div><div><strong>{motion.streakDays}</strong><small>连续运动天数</small></div></div></>:<p>正在读取成长数据…</p>}</div>
-      <div className="motion-shortcuts"><Link to="/avatar"><Icon name="user"/>我的形象</Link><Link to="/inventory"><Icon name="bag"/>装备背包</Link><Link to="/history"><Icon name="clock"/>训练历史</Link><a href="#my-games"><Icon name="calendar"/>活动记录</a><Link to="/leaderboard"><Icon name="trophy"/>成长榜单</Link><Link to="/feedback"><Icon name="spark"/>意见反馈</Link></div>
+      <div className="motion-shortcuts"><Link to="/avatar"><Icon name="user"/>我的形象</Link><Link to="/inventory"><Icon name="bag"/>装备背包</Link><Link to="/history"><Icon name="clock"/>训练历史</Link><Link to="/train/plans"><Icon name="dumbbell"/>训练计划</Link><Link to="/train/body"><Icon name="user"/>身体记录</Link><a href="#my-games"><Icon name="calendar"/>活动记录</a><Link to="/leaderboard"><Icon name="trophy"/>成长榜单</Link><Link to="/feedback"><Icon name="spark"/>意见反馈</Link></div>
       <div className="ui-pages-profile-profile-header">
         <h1 className="ui-pages-profile-profile-title">我的</h1>
         <div className="ui-pages-profile-profile-headerActions">

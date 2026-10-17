@@ -17,14 +17,14 @@ export function progress(totalXp: number) {
 const equipment = ['penguin_hood', 'sunset_bandana', 'ocean_wave_top', 'purple_star_shorts', 'comet_running_shoes', 'sakura_gloves', 'shiba_bottle', 'emerald_star_medal'];
 const slots: Record<string, string[]> = { head: ['penguin_hood','sunset_bandana'], top:['ocean_wave_top'], bottom:['purple_star_shorts'], shoes:['comet_running_shoes'], gloves:['sakura_gloves'], prop:['shiba_bottle'], badge:['emerald_star_medal'] };
 const defaultEquipment = { head:'penguin_hood', top:'ocean_wave_top', bottom:'purple_star_shorts', shoes:'comet_running_shoes', prop:'shiba_bottle', badge:'emerald_star_medal' };
-export interface SessionRow { id:string; user_id:number; game_id:number|null; sport_type:string; source:string; status:string; active_since:string|null; effective_ms:number; reps:number; metrics:string; xp:number; settled:number; created_at:string; ended_at:string|null }
+export interface SessionRow { id:string; user_id:number; game_id:number|null; sport_type:string; source:string; status:string; active_since:string|null; effective_ms:number; reps:number; metrics:string; xp:number; settled:number; created_at:string; ended_at:string|null; workout_id?:string }
 function elapsed(row: SessionRow, now = Date.now()) { return Number(row.effective_ms) + (row.status === 'running' && row.active_since ? Math.max(0, now - Date.parse(row.active_since)) : 0); }
 function decode<T>(raw: string, fallback: T): T { try { return JSON.parse(raw); } catch { return fallback; } }
 export function sessionView(row: SessionRow) {
-  return { id:row.id, gameId:row.game_id, sportType:row.sport_type, source:row.source, status:row.status, effectiveSeconds:Math.floor(elapsed(row)/1000), reps:row.reps, xpEarned:row.xp, settled:Boolean(row.settled), startTime:row.created_at, endTime:row.ended_at, metrics:decode(row.metrics,{}) };
+  return { id:row.id, workoutId:row.workout_id||undefined, gameId:row.game_id, sportType:row.sport_type, source:row.source, status:row.status, effectiveSeconds:Math.floor(elapsed(row)/1000), reps:row.reps, xpEarned:row.xp, settled:Boolean(row.settled), startTime:row.created_at, endTime:row.ended_at, metrics:decode(row.metrics,{}) };
 }
 async function owned(id:string, userId:number):Promise<SessionRow> {
-  const row = (await pool.query<SessionRow>('SELECT * FROM sport_sessions WHERE id=$1 AND user_id=$2',[id,userId])).rows[0];
+  const row = (await pool.query<SessionRow>('SELECT s.*,w.id AS workout_id FROM sport_sessions s LEFT JOIN gym_workouts w ON w.sport_session_id=s.id WHERE s.id=$1 AND s.user_id=$2',[id,userId])).rows[0];
   if (!row) throw new NotFoundError('运动记录不存在');
   return row;
 }
@@ -109,9 +109,10 @@ async function closeInterval(row:SessionRow, cutoff:number) {
   await pool.query('UPDATE sport_intervals SET ended_at=$2,effective_ms=$3 WHERE session_id=$1 AND ended_at IS NULL',
     [row.id,new Date(cutoff).toISOString(),row.active_since ? Math.max(0,cutoff-Date.parse(row.active_since)) : 0]);
 }
-export async function sessionAction(id:string,userId:number,action:'pause'|'resume'|'finish'|'progress',data:any={}) {
+export async function sessionAction(id:string,userId:number,action:'pause'|'resume'|'finish'|'progress',data:any={},fromPlan=false) {
   return withTransaction(async () => {
     let row = await owned(id,userId);
+    if(row.workout_id && !fromPlan)throw new InvalidStateError('请从计划训练页面操作本次运动');
     if (row.settled) { if (action === 'finish') return sessionView(row); throw new InvalidStateError('运动已结算'); }
     if (row.game_id) await ensureGame(row);
     const now = new Date().toISOString();
@@ -135,6 +136,7 @@ export async function sessionAction(id:string,userId:number,action:'pause'|'resu
       const stale=row.source!=='timer' && data.reps!=null && data.reps<row.reps;
       const cleaned=stale?oldMetrics:cleanMetrics(data,oldMetrics);
       if(cleaned.scoreAccumulator && cleaned.scoreAccumulator.count!==reps)throw new ValidationError('评分累计次数与动作次数不一致');
+      if(fromPlan && data.planSquatReps!=null)cleaned.planSquatReps=data.planSquatReps;
       const metrics=JSON.stringify(cleaned);
       if (action !== 'finish') row = (await pool.query<SessionRow>('UPDATE sport_sessions SET reps=$2,metrics=$3 WHERE id=$1 RETURNING *',[id,reps,metrics])).rows[0];
       else {
@@ -147,7 +149,7 @@ export async function sessionAction(id:string,userId:number,action:'pause'|'resu
   });
 }
 export async function activeSession(userId:number) {
-  const row = (await pool.query<SessionRow>('SELECT * FROM sport_sessions WHERE user_id=$1 AND status IN (\'running\',\'paused\')',[userId])).rows[0];
+  const row = (await pool.query<SessionRow>('SELECT s.*,w.id AS workout_id FROM sport_sessions s LEFT JOIN gym_workouts w ON w.sport_session_id=s.id WHERE s.user_id=$1 AND s.status IN (\'running\',\'paused\')',[userId])).rows[0];
   return row ? sessionView(row) : null;
 }
 export async function settleGameSessions(game:any) {
@@ -161,6 +163,15 @@ export async function settleGameSessions(game:any) {
     if (row.settled) continue;
     const member = members.find(m=>Number(m.user_id) === row.user_id);
     const eligible = checked >= 2 && member?.checked_in_at && (row.user_id === game.host_id || member.attendance_confirmed_at);
+    const plan=(await pool.query('SELECT id,cursor FROM gym_workouts WHERE sport_session_id=$1',[row.id])).rows[0];
+    if(plan){
+      await pool.query("UPDATE gym_sets SET seconds=seconds+$2,status='completed' WHERE workout_id=$1 AND status='working'",[plan.id,row.status==='running'&&row.active_since?Math.max(0,Math.floor((cutoff-Date.parse(row.active_since))/1000)):0]);
+      const sets=(await pool.query("SELECT data,reps,input_mode,score FROM gym_sets WHERE workout_id=$1 AND status='completed'",[plan.id])).rows.filter(s=>s.input_mode==='camera');
+      const count=sets.reduce((n,s)=>n+(decode<any>(s.score,{}).count||0),0),total=sets.reduce((n,s)=>n+(decode<any>(s.score,{}).total||0),0);
+      row.metrics=JSON.stringify({...decode<any>(row.metrics,{}),formScore:count?Math.round(total/count):0,planSquatReps:sets.filter(s=>decode<any>(s.data,{}).exercise?.cameraType==='squat').reduce((n,s)=>n+s.reps,0)});
+      await pool.query('UPDATE sport_sessions SET metrics=$2 WHERE id=$1',[row.id,row.metrics]);
+      await pool.query("UPDATE gym_workouts SET phase='finished',rest_until=NULL,version=version+1 WHERE id=$1",[plan.id]);
+    }
     await closeInterval(row,cutoff);
     row=(await pool.query<SessionRow>('UPDATE sport_sessions SET status=\'finished\',effective_ms=$2,active_since=NULL,ended_at=COALESCE(ended_at,$3) WHERE id=$1 RETURNING *',[row.id,elapsed(row,cutoff),now])).rows[0];
     row=await settle(row,Boolean(eligible));changed(row);
@@ -177,7 +188,7 @@ export async function trainingState(userId:number) {
     await pool.query('INSERT INTO motion_profiles(user_id) VALUES($1) ON CONFLICT(user_id) DO NOTHING',[userId]);
     const profile=(await pool.query('SELECT * FROM motion_profiles WHERE user_id=$1',[userId])).rows[0];
     const user=(await pool.query('SELECT nickname FROM users WHERE id=$1',[userId])).rows[0];
-    const rows=(await pool.query<SessionRow>('SELECT * FROM sport_sessions WHERE user_id=$1 ORDER BY created_at DESC',[userId])).rows;
+    const rows=(await pool.query<SessionRow>('SELECT s.*,w.id AS workout_id FROM sport_sessions s LEFT JOIN gym_workouts w ON w.sport_session_id=s.id WHERE s.user_id=$1 ORDER BY s.created_at DESC',[userId])).rows;
     const real=rows.filter(r=>r.settled && r.source!=='demo' && r.xp>0);
     const high=real.filter(r=>Number(decode<any>(r.metrics,{}).formScore || 0)>=90).length;
     const {level,xp}=progress(profile.total_xp);
@@ -185,8 +196,8 @@ export async function trainingState(userId:number) {
     const unlockedOutfits={default:true,penguin:runningUnlocked,sakura:courtUnlocked,sunset_sakura:outdoorUnlocked,sea_runner:runningUnlocked,violet_court:courtUnlocked,sunlight_explorer:outdoorUnlocked};
     const seen=decode<string[]>(profile.seen_outfits,['default']);
     const ownedIds=equipment.filter(id=>id!=='sakura_gloves'||high>0);
-    const history=rows.filter(r=>r.status==='finished').map(r=>({ ...decode<any>(r.metrics,{}), id:r.id, exerciseType:r.sport_type, sportType:r.sport_type, source:r.source, gameId:r.game_id, startTime:r.created_at,endTime:r.ended_at,durationSeconds:Math.floor(r.effective_ms/1000),reps:r.reps,targetReps:20,formScore:Number(decode<any>(r.metrics,{}).formScore||0),xpEarned:r.xp,settled:Boolean(r.settled),unlocked:[],unlockedOutfits:[] }));
-    return {nickname:user.nickname,age:profile.age,totalXp:profile.total_xp,xp,level,avatarGender:profile.avatar_gender,activeOutfit:profile.active_outfit,unlockedOutfits,seenOutfits:seen,newlyUnlockedOutfits:Object.keys(unlockedOutfits).filter(k=>(unlockedOutfits as any)[k]&&!seen.includes(k)),equipped:{...defaultEquipment,...decode(profile.equipped,{})},ownedEquipment:ownedIds,completedWorkoutCount:real.length,workouts:real.length,highScoreWorkoutCount:high,totalSquats:real.filter(r=>r.sport_type==='squat').reduce((sum,r)=>sum+r.reps,0),history,sessions:rows.map(sessionView)};
+    const history=rows.filter(r=>r.status==='finished').map(r=>({ ...decode<any>(r.metrics,{}), id:r.id, workoutId:r.workout_id||undefined,exerciseType:r.sport_type, sportType:r.sport_type, source:r.source, gameId:r.game_id, startTime:r.created_at,endTime:r.ended_at,durationSeconds:Math.floor(r.effective_ms/1000),reps:r.reps,targetReps:20,formScore:Number(decode<any>(r.metrics,{}).formScore||0),xpEarned:r.xp,settled:Boolean(r.settled),unlocked:[],unlockedOutfits:[] }));
+    return {nickname:user.nickname,age:profile.age,totalXp:profile.total_xp,xp,level,avatarGender:profile.avatar_gender,activeOutfit:profile.active_outfit,unlockedOutfits,seenOutfits:seen,newlyUnlockedOutfits:Object.keys(unlockedOutfits).filter(k=>(unlockedOutfits as any)[k]&&!seen.includes(k)),equipped:{...defaultEquipment,...decode(profile.equipped,{})},ownedEquipment:ownedIds,completedWorkoutCount:real.length,workouts:real.length,highScoreWorkoutCount:high,totalSquats:real.reduce((sum,r)=>sum+(r.sport_type==='squat'?r.reps:decode<any>(r.metrics,{}).planSquatReps||0),0),history,sessions:rows.map(sessionView)};
   });
 }
 export async function updateAvatar(userId:number,data:any) {

@@ -88,7 +88,7 @@ node node_modules/wrangler/bin/wrangler.js versions list
 node node_modules/wrangler/bin/wrangler.js rollback <已验证版本ID>
 ```
 
-若新代码包含 schema 变化，应先检查向后兼容性；本次业务表结构沿用原版本，只新增 Cloudflare 存储与迁移辅助表。
+若新代码包含 schema 变化，应先检查向后兼容性。2026-10-17 的计划训练更新增量增加 `gym_*` 表，原账号、活动、聊天与 XP 表保留。只回滚 Worker 代码，新增训练数据仍保留；PITR 书签用于灾难恢复，开放新写入后不要用旧快照覆盖数据库。计划训练备份与数据说明见 [plan-training.md](plan-training.md)。
 
 Vercel 当前部署必须保留 `.vercelignore`。验收已发现 CLI 不自动采用 Git 的运行数据排除规则，因此显式排除 `.env*`、数据目录、上传、数据库、构建输出和 Cloudflare 本机配置。此次误上传的部署已删除；替换部署文件清单已核对没有敏感目录。Cloudflare 迁移密钥已轮换。
 
