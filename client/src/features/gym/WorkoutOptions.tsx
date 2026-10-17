@@ -1,17 +1,35 @@
 import { useEffect, useRef, useState } from "react";
 import { ExerciseLibrary } from "./Library";
 import { request, useGymQuery, getErrorMessage } from "./api";
+import { activateRestAudio } from "./restAudio";
 export function useWorkoutPreferences(active: boolean, rest: number) {
   const query = useGymQuery("/training-settings"),
-    [deviceMessage, setDeviceMessage] = useState("");
+    [deviceMessage, setDeviceMessage] = useState(""),
+    [audioReady, setAudioReady] = useState(false);
   const audio = useRef<AudioContext | null>(null),
+    mounted = useRef(true),
     previous = useRef(rest);
-  useEffect(
-    () => () => {
+  const activateAudio = async () => {
+    const result = await activateRestAudio(
+      audio.current,
+      typeof AudioContext === "undefined" ? undefined : AudioContext,
+    );
+    if (!mounted.current) {
+      void result.context?.close().catch(() => {});
+      return false;
+    }
+    audio.current = result.context;
+    setAudioReady(result.ready);
+    setDeviceMessage(result.message);
+    return result.ready;
+  };
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
       void audio.current?.close().catch(() => {});
-    },
-    [],
-  );
+    };
+  }, []);
   useEffect(() => {
     if (
       query.data?.sound &&
@@ -20,15 +38,21 @@ export function useWorkoutPreferences(active: boolean, rest: number) {
       active &&
       audio.current
     ) {
-      const ctx = audio.current,
-        o = ctx.createOscillator(),
-        g = ctx.createGain();
-      o.connect(g);
-      g.connect(ctx.destination);
-      g.gain.value = 0.12;
-      o.frequency.value = 660;
-      o.start();
-      o.stop(ctx.currentTime + 0.25);
+      try {
+        const ctx = audio.current;
+        if (ctx.state !== "running") throw Error("suspended");
+        const o = ctx.createOscillator(),
+          g = ctx.createGain();
+        o.connect(g);
+        g.connect(ctx.destination);
+        g.gain.value = 0.12;
+        o.frequency.value = 660;
+        o.start();
+        o.stop(ctx.currentTime + 0.25);
+      } catch {
+        setAudioReady(false);
+        setDeviceMessage("声音播放不可用，请查看休息倒计时");
+      }
     }
     previous.current = rest;
   }, [rest, active, query.data?.sound]);
@@ -72,8 +96,7 @@ export function useWorkoutPreferences(active: boolean, rest: number) {
                   checked={query.data[k]}
                   onChange={async (e) => {
                     if (k === "sound" && e.target.checked) {
-                      audio.current ||= new AudioContext();
-                      void audio.current.resume();
+                      if (!(await activateAudio())) return;
                     }
                     try {
                       query.setData(
@@ -91,6 +114,16 @@ export function useWorkoutPreferences(active: boolean, rest: number) {
                   : "训练时保持屏幕常亮"}
               </label>
             ))}
+            {query.data.sound && (
+              <button
+                type="button"
+                className="secondary"
+                disabled={audioReady}
+                onClick={() => void activateAudio()}
+              >
+                {audioReady ? "本次声音提醒已激活" : "激活本次声音提醒"}
+              </button>
+            )}
             <label>
               手动用力程度
               <select
