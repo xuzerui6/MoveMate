@@ -13,6 +13,7 @@ interface HeartRateContextValue {
   status: BleConnectionStatus
   signalInterrupted: boolean
   errorMessage: string | null
+  disconnect: () => void
   connect: () => Promise<void>
 }
 const HeartRateContext = createContext<HeartRateContextValue | null>(null)
@@ -45,7 +46,7 @@ export function HeartRateProvider({ children }: { children: React.ReactNode }) {
       signalTimer.current = window.setTimeout(() => setSignalInterrupted(true), 5000)
     })
     const offStatus = bleHeartRateService.onStatus((nextStatus, name, message) => {
-      setStatus(nextStatus); setDeviceName(name); setErrorMessage(message || null)
+      setStatus(bleHeartRateService.isSupported() ? nextStatus : 'unsupported'); setDeviceName(name); setErrorMessage(message || null)
       if (nextStatus === 'connecting') {
         samples.current = { count: 0, total: 0, max: 0 }
         setConnected(false); setCurrentBpm(null); setAverageBpm(null); setMaxBpm(null); setLastPacketAt(null); setPacketCount(0); setSignalInterrupted(false)
@@ -63,7 +64,7 @@ export function HeartRateProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const connect = async () => { if (!connected) await bleHeartRateService.connect() }
-  return <HeartRateContext.Provider value={{ connected, deviceName, currentBpm, averageBpm, maxBpm, lastPacketAt, packetCount, status, signalInterrupted, errorMessage, connect }}>{children}</HeartRateContext.Provider>
+  return <HeartRateContext.Provider value={{ connected, deviceName, currentBpm, averageBpm, maxBpm, lastPacketAt, packetCount, status, signalInterrupted, errorMessage, connect, disconnect: () => bleHeartRateService.disconnect() }}>{children}</HeartRateContext.Provider>
 }
 
 export function useHeartRateMonitor(age: number) {

@@ -1,77 +1,62 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { NormalizedLandmark, PoseLandmarker } from '@mediapipe/tasks-vision'
+import { ResourceScope } from '../lib/sessionRuntime'
 
 export function usePose(active: boolean) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [landmarks, setLandmarks] = useState<NormalizedLandmark[] | null>(null)
   const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'denied' | 'error'>('idle')
-  const landmarker = useRef<PoseLandmarker | null>(null)
-  const raf = useRef(0)
-  const streamRef=useRef<MediaStream|null>(null)
-  const mounted=useRef(true)
-
-  const starting=useRef(false)
-  const start = async () => {
-    if(starting.current || !mounted.current)return
-    starting.current=true
-    streamRef.current?.getTracks().forEach(t=>t.stop())
-    landmarker.current?.close();landmarker.current=null
-    setLandmarks(null)
+  const model = useRef<PoseLandmarker | null>(null), raf = useRef(0)
+  const scope = useRef(new ResourceScope()), mounted = useRef(true)
+  const stop = useCallback(() => {
+    scope.current.cancel(); cancelAnimationFrame(raf.current); model.current = null
+    if (videoRef.current) videoRef.current.srcObject = null
+    if (mounted.current) { setLandmarks(null); setStatus('idle') }
+  }, [])
+  const start = useCallback(async () => {
+    stop()
+    const current = new ResourceScope(); scope.current = current
     setStatus('loading')
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 720, height: 960 }, audio: false })
-      if (!mounted.current || !videoRef.current) {stream.getTracks().forEach(t=>t.stop());return}
-      streamRef.current=stream
+      if (!current.own(() => stream.getTracks().forEach(track => track.stop())) || !videoRef.current) { current.cancel(); return false }
       videoRef.current.srcObject = stream
       await videoRef.current.play()
+      if (current.cancelled) return false
       const { FilesetResolver, PoseLandmarker } = await import('@mediapipe/tasks-vision')
       const vision = await FilesetResolver.forVisionTasks('/pose/wasm')
-      const options={runningMode:'VIDEO' as const,numPoses:1,minPoseDetectionConfidence:.55,minTrackingConfidence:.55}
-      try {
-        landmarker.current = await PoseLandmarker.createFromOptions(vision, {
-          ...options,baseOptions:{modelAssetPath:'/pose/pose_landmarker_lite.task',delegate:'GPU'},
-        })
-      } catch {
-        landmarker.current = await PoseLandmarker.createFromOptions(vision, {
-          ...options,baseOptions:{modelAssetPath:'/pose/pose_landmarker_lite.task',delegate:'CPU'},
-        })
+      if (current.cancelled) return false
+      const options = { runningMode: 'VIDEO' as const, numPoses: 1, minPoseDetectionConfidence: .55, minTrackingConfidence: .55 }
+      let instance: PoseLandmarker
+      try { instance = await PoseLandmarker.createFromOptions(vision, { ...options, baseOptions: { modelAssetPath: '/pose/pose_landmarker_lite.task', delegate: 'GPU' } }) }
+      catch {
+        if (current.cancelled) return false
+        instance = await PoseLandmarker.createFromOptions(vision, { ...options, baseOptions: { modelAssetPath: '/pose/pose_landmarker_lite.task', delegate: 'CPU' } })
       }
-      if(!mounted.current){landmarker.current.close();stream.getTracks().forEach(t=>t.stop());return}
-      setStatus('ready')
-    } catch (e) {
-      streamRef.current?.getTracks().forEach(t=>t.stop())
-      setStatus(e instanceof DOMException && e.name === 'NotAllowedError' ? 'denied' : 'error')
-    } finally { starting.current=false }
-  }
-
+      if (!current.own(() => instance.close())) return false
+      model.current = instance; setStatus('ready'); return true
+    } catch (error) {
+      const cancelled = current.cancelled; current.cancel()
+      if (!mounted.current || scope.current !== current || cancelled) return false
+      model.current = null; setLandmarks(null)
+      setStatus(error instanceof DOMException && error.name === 'NotAllowedError' ? 'denied' : 'error')
+      return false
+    }
+  }, [stop])
   useEffect(() => {
     if (!active || status !== 'ready') return
     let last = -1
     const loop = () => {
       const video = videoRef.current
-      if (video && video.readyState>=2 && landmarker.current && video.currentTime !== last) {
+      if (video && video.readyState >= 2 && model.current && video.currentTime !== last) {
         last = video.currentTime
-        try {
-          const result = landmarker.current.detectForVideo(video, performance.now())
-          setLandmarks(result.landmarks[0] || null)
-        } catch {
-          streamRef.current?.getTracks().forEach(t=>t.stop())
-          setStatus('error')
-          return
-        }
+        try { setLandmarks(model.current.detectForVideo(video, performance.now()).landmarks[0] || null) }
+        catch { scope.current.cancel(); model.current = null; setLandmarks(null); setStatus('error'); return }
       }
       raf.current = requestAnimationFrame(loop)
     }
-    loop()
-    return () => cancelAnimationFrame(raf.current)
+    loop(); return () => cancelAnimationFrame(raf.current)
   }, [active, status])
-
-  useEffect(() => {mounted.current=true;return () => {
-    mounted.current=false
-    cancelAnimationFrame(raf.current)
-    const stream = streamRef.current
-    stream?.getTracks().forEach(t => t.stop())
-    landmarker.current?.close()
-  }}, [])
-  return { videoRef, landmarks, status, start }
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; stop() } }, [stop])
+  return { videoRef, landmarks, status, start, stop }
 }

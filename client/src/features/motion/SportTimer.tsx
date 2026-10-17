@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useSessionClock } from './hooks/useSessionClock';
+import type { SportSession } from './lib/store';
 import { useStore } from './lib/store';
 import { SPORT_LABELS } from '../../types';
 import { getErrorMessage } from '../../api/client';
 import Dialog from '../../components/Dialog';
 const rate=(sport:string)=>['running','swimming'].includes(sport)?3:['basketball','badminton','soccer','volleyball','tennis','table_tennis'].includes(sport)?2:1;
-export default function SportTimer({gameId,sportType='fitness',enabled=true}:{gameId?:number;sportType?:string;enabled?:boolean}) {
+export default function SportTimer({gameId,sportType='fitness',enabled=true,onComplete}:{gameId?:number;sportType?:string;enabled?:boolean;onComplete?:(row:SportSession)=>void}) {
   const {sessions,startSession,act}=useStore();
   const row=gameId?sessions.find(s=>s.gameId===gameId):sessions.find(s=>!s.gameId&&['running','paused'].includes(s.status));
   const another=sessions.find(s=>['running','paused'].includes(s.status)&&s.id!==row?.id);
-  const [now,setNow]=useState(Date.now()),[baseline,setBaseline]=useState(Date.now()),[busy,setBusy]=useState(false),[error,setError]=useState(''),[result,setResult]=useState<any>(null),[confirming,setConfirming]=useState(false);
-  useEffect(()=>{setBaseline(Date.now());},[row]);
-  useEffect(()=>{const timer=setInterval(()=>setNow(Date.now()),500);return()=>clearInterval(timer);},[]);
-  const seconds=(row?.effectiveSeconds||0)+(row?.status==='running'?Math.max(0,Math.floor((now-baseline)/1000)):0);
-  const action=async(name:string)=>{setBusy(true);setError('');try{const r=name==='start'?await startSession(sportType,'timer',gameId):await act(row!.id,name);if(name==='finish')setResult(r);return true;}catch(err){setError(getErrorMessage(err));return false;}finally{setBusy(false);}};
+  const [busy,setBusy]=useState(false),[error,setError]=useState(''),[result,setResult]=useState<any>(null),[confirming,setConfirming]=useState(false);
+  const seconds=useSessionClock(row);
+  const action=async(name:string)=>{setBusy(true);setError('');try{const r=name==='start'?await startSession(sportType,'timer',gameId):await act(row!.id,name);if(name==='finish'){setResult(r);if(!gameId)onComplete?.(r);}return true;}catch(err){setError(getErrorMessage(err));return false;}finally{setBusy(false);}};
   const label=SPORT_LABELS[row?.sportType||sportType]||row?.sportType||sportType;
-  return <div className="motion-view"><section className="sport-timer card" aria-label="个人运动计时">
+  return <div className="motion-view training-timer"><section className="sport-timer card" aria-label="个人运动计时">
     <div className="section-title"><b>{label+' · 个人计时'}</b><span>{row?.source==='camera'?'2 XP / 次':row?.source==='demo'?'演示 · 0 XP':`${rate(row?.sportType||sportType)} XP / 有效分钟`}</span></div>
     <strong className="timer-clock" data-testid="sport-clock">{String(Math.floor(seconds/60)).padStart(2,'0')}:{String(seconds%60).padStart(2,'0')}</strong>
     <p className={gameId&&row?.status==='running'?'sr-only':undefined}>{row?.settled?`已结算 · +${row.xpEarned} XP`:row?.status==='finished'?'运动已结束，等待活动结算':row?.status==='paused'?'已暂停，休息不计时':row?.status==='running'?'正在记录你的运动时长':'每人独立计时，开始后记录有效时长'}</p>

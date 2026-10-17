@@ -127,6 +127,7 @@ export interface ZoneDurations {
 export interface WorkoutSession extends WorkoutMetrics, ZoneDurations {
   source?: 'camera' | 'timer' | 'demo';
   settled?: boolean;
+  growthPending?: boolean;
   id: string
   exerciseType: string
   startTime: string

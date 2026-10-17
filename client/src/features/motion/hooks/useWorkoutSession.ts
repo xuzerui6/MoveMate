@@ -24,6 +24,8 @@ export function useWorkoutSession(
   assistant: { visionInsights: VisionInsight[]; conversationTurnCount: number } = EMPTY_ASSISTANT,
   restoredSeconds = 0,
   exerciseType: CameraExerciseType = 'squat',
+  elapsedSeconds = restoredSeconds,
+  restoredMetrics: Partial<WorkoutSession> = {},
 ) {
   const [session, setSession] = useState<WorkoutSession | null>(null)
   const sessionRef = useRef<WorkoutSession | null>(null)
@@ -41,11 +43,11 @@ export function useWorkoutSession(
   useEffect(() => {
     if (!running || sessionRef.current) return
     startPacketCount.current = heartRate.packetCount
-    heartSamples.current = { count: 0, total: 0, max: 0 }
+    heartSamples.current = { count: 0, total: 0, max: restoredMetrics.maxBpm || 0 }
     previousPacket.current = null
     const started: WorkoutSession = {
       id: newId(), exerciseType, startTime: new Date().toISOString(), endTime: null, durationSeconds: restoredSeconds,
-      ...metrics, currentBpm: null, averageBpm: null, maxBpm: null, heartRateSource: null,
+      ...metrics, ...restoredMetrics, currentBpm: null, averageBpm: null, maxBpm: null, heartRateSource: null,
       ...emptyZoneDurations(), xpEarned: 0, unlocked: [],
       visionInsights: assistant.visionInsights, conversationTurnCount: assistant.conversationTurnCount,
     }
@@ -86,15 +88,10 @@ export function useWorkoutSession(
   }, [running, paused, heartRate.packetCount])
 
   useEffect(() => {
-    if (!running || paused) return
-    const timer = window.setInterval(() => {
-      const current = sessionRef.current
-      if (!current || current.endTime) return
-      const next = { ...current, durationSeconds: current.durationSeconds + 1 }
-      sessionRef.current = next; setSession(next)
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [running, paused])
+    if (!sessionRef.current) return
+    const next = { ...sessionRef.current, durationSeconds: elapsedSeconds }
+    sessionRef.current = next; setSession(next)
+  }, [elapsedSeconds])
 
   useEffect(() => {
     if (!sessionRef.current || heartRate.connected) return
