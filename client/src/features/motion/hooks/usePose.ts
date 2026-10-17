@@ -18,7 +18,8 @@ export function usePose(active: boolean) {
     const current = new ResourceScope(); scope.current = current
     setStatus('loading')
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 720, height: 960 }, audio: false })
+      const phone = window.matchMedia('(max-width: 699px)').matches
+      const stream = await navigator.mediaDevices.getUserMedia({ video: phone ? { facingMode: 'user', width: { ideal: 720 }, height: { ideal: 960 }, aspectRatio: { ideal: 3 / 4 } } : { facingMode: 'user', width: 720, height: 960 }, audio: false })
       if (!current.own(() => stream.getTracks().forEach(track => track.stop())) || !videoRef.current) { current.cancel(); return false }
       videoRef.current.srcObject = stream
       await videoRef.current.play()

@@ -13,6 +13,7 @@ import { useExerciseMetrics } from '../hooks/useExerciseMetrics'
 import { exerciseInfo, type CameraExerciseType } from '../lib/exercises'
 import { useWorkoutSession } from '../hooks/useWorkoutSession'
 import { useSessionClock } from '../hooks/useSessionClock'
+import type { CameraFit } from '../lib/cameraFrame'
 import { useStore, type SportSession } from '../lib/store'
 import type { WorkoutContext, WorkoutSession, XiaozhiState } from '../types'
 
@@ -36,6 +37,16 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const [pendingAction, setPendingAction] = useState<'pause'|'resume'|null>(null)
   const frozenFinish = useRef<WorkoutSession | null>(null)
   const [ending, setEnding] = useState(false)
+  const [cameraExpanded, setCameraExpanded] = useState(false), [cameraFit, setCameraFit] = useState<CameraFit>('contain')
+  const cameraExpandButton = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    if (!cameraExpanded) return
+    const close = (event: KeyboardEvent) => { if (event.key === 'Escape') { setCameraExpanded(false); cameraExpandButton.current?.focus() } }
+    const desktop = window.matchMedia('(min-width: 700px)')
+    const resized = () => { if (desktop.matches) setCameraExpanded(false) }
+    window.addEventListener('keydown', close); desktop.addEventListener('change', resized)
+    return () => { window.removeEventListener('keydown', close); desktop.removeEventListener('change', resized) }
+  }, [cameraExpanded])
   const [visionConsent, setVisionConsent] = useState<boolean | null>(null)
   const testSlotValue = new URLSearchParams(window.location.search).get('voiceTestSlot')
   const testSlot = testSlotValue ? Number(testSlotValue) : undefined
@@ -218,7 +229,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   }, [failure, poseFailed])
   const statusLabel = ending ? '正在确认结束' : pendingAction ? '状态待确认' : paused ? '已暂停' : simulatedPose ? '演示 · 不计 XP' : metrics.poseFeedback.calibrated ? '识别中' : '请站稳，准备校准'
   const hint = ending ? '本组数据已冻结，正在确认保存结果。' : pendingAction ? '本地识别已停止，服务端状态待确认；时长以服务端为准。' : paused ? '休息不计时，继续后重新校准起始姿势。' : metrics.reps >= metrics.targetReps ? '目标已完成，可以结束并保存这一组。' : metrics.feedback
-  return <div className={`page workout-page training-workout ${active ? 'live' : 'setup'}`}>
+  return <div className={`page workout-page training-workout ${active ? 'live' : 'setup'}${cameraExpanded ? ' camera-expanded' : ''}`}>
     <Header title={exercise.name + '训练'} back={leave} action={active ? <span className={'training-status' + (paused ? ' paused' : '')}>{statusLabel}</span> : <span className="muted">目标 20 {exercise.unit}</span>}/>
     {!active && <section className="training-prep">
       <h2>{restored ? '继续上次训练' : '准备好，就开始'}</h2>
@@ -239,9 +250,13 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     </section>}
     <div className="training-live-grid">
       <div className="camera-card training-camera" hidden={!active && !preparing}>
-        <PoseCanvas videoRef={pose.videoRef} landmarks={simulatedPose ? demoLandmarks : pose.landmarks} demo={simulatedPose} phase={metrics.phase} affectedJoints={paused ? [] : metrics.poseFeedback.affectedJoints}/>
+        <PoseCanvas videoRef={pose.videoRef} landmarks={simulatedPose ? demoLandmarks : pose.landmarks} demo={simulatedPose} phase={metrics.phase} fit={cameraFit} affectedJoints={paused ? [] : metrics.poseFeedback.affectedJoints}/>
         {paused && <div className="camera-paused"><Icon name="pause" size={30}/><b>{ending ? '正在保存' : pendingAction ? '等待状态确认' : '已暂停'}</b><span>已完成 {metrics.reps} {exercise.unit}</span></div>}
         {preparing && <div className="camera-paused"><Icon name="camera"/><b>正在准备摄像头与模型</b><span>此时尚未开始新记录</span></div>}
+        {active && <div className="training-camera-tools"><button ref={cameraExpandButton} type="button" aria-pressed={cameraExpanded} onClick={() => setCameraExpanded(value => !value)}><Icon name={cameraExpanded ? 'collapse' : 'expand'} size={18}/>{cameraExpanded ? '收起画面' : '放大画面'}</button>
+          {!simulatedPose && <button type="button" aria-pressed={cameraFit === 'cover'} onClick={() => setCameraFit(value => value === 'contain' ? 'cover' : 'contain')}>{cameraFit === 'contain' ? '铺满画面' : '显示全身'}</button>}
+        </div>}
+        {active && !simulatedPose && cameraFit === 'cover' && <span className="training-camera-crop-note">画面已裁切 · 请确认全身可见</span>}
       </div>
       {active && <section className="training-live-info" aria-label="本组训练数据">
         <div className="training-numbers"><div className="training-reps"><strong>{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}</span></div><div><strong>{format(seconds)}</strong><span>有效时长</span></div><div><strong>{metrics.reps ? metrics.formScore : '—'}</strong><span>动作评分</span></div></div>
