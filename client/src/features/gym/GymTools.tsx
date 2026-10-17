@@ -4,6 +4,10 @@ import { Header } from "../motion/components/Header";
 import Dialog from "../../components/Dialog";
 import { ExerciseLibrary } from "./Library";
 import paths from "./muscle-paths.json";
+import { WeightInput } from "./WeightInput";
+import { canonicalWeight, displayWeight } from "./trainingMath";
+import FullTransfer from "./FullTransfer";
+import { AnalysisExtras } from "./AnalysisExtras";
 import {
   request,
   useGymQuery,
@@ -69,6 +73,8 @@ const muscleBody: Record<string, string> = {
   tibialis: "lower legs",
 };
 export function Analytics() {
+  const prefs = useGymQuery("/training-settings"),
+    unit = prefs.data?.unit || "kg";
   const query = useGymQuery("/training-analytics"),
     a = query.data,
     [side, setSide] = useState<"front" | "back">("front"),
@@ -76,7 +82,8 @@ export function Analytics() {
     [period, setPeriod] = useState("months");
   return (
     <Page title="训练分析">
-      <nav className="gym-links"><Link to="/history">全部运动记录</Link>
+      <nav className="gym-links">
+        <Link to="/history">全部运动记录</Link>
         <Link to="/train/records">逐组记录</Link>
         <Link to="/train/body">身体记录</Link>
         <Link to="/train/data">导入与导出</Link>
@@ -84,16 +91,17 @@ export function Analytics() {
       <Status query={query} />
       {a && (
         <>
+          <AnalysisExtras data={a} />
           <p className="gym-muted">
-            统计计划训练及导入的逐组记录；独立动作与个人计时可在运动记录查看。外部负重训练量 = kg ×
-            次数，每侧记录按两侧合计。徒手动作不估算体重负重。
+            统计计划训练及导入的逐组记录；独立动作与个人计时可在运动记录查看。外部负重训练量
+            = kg × 次数，每侧记录按两侧合计。徒手动作不估算体重负重。
           </p>
           <div className="gym-stat-grid">
             {[
               ["训练次数", a.workouts],
               ["完成组数", a.sets],
               ["累计次数", a.reps],
-              ["外部训练量 kg", a.volume],
+              ["外部训练量 " + unit, displayWeight(a.volume, unit)],
             ].map(([name, value]) => (
               <div key={name}>
                 <span>{name}</span>
@@ -205,7 +213,9 @@ export function Analytics() {
                     )}
                     value={v}
                   />
-                  <b>{Math.round(v)} kg</b>
+                  <b>
+                    {displayWeight(v, unit)} {unit}
+                  </b>
                 </div>
               ))}
             {!Object.keys(a[period] || {}).length && <p>尚无训练量记录。</p>}
@@ -237,7 +247,10 @@ export function Analytics() {
                 <div key={i} className="gym-list-row">
                   <b>{r.name}</b>
                   <span>
-                    最大负重 {r.loadKg}kg · 最多 {r.reps} 次 · 单组 {r.volume}kg
+                    最大负重 {displayWeight(r.loadKg, unit)}
+                    {unit} · 最多 {r.reps} 次 · 单组{" "}
+                    {displayWeight(r.volume, unit)}
+                    {unit}·次
                   </span>
                 </div>
               ))
@@ -259,6 +272,7 @@ export function BodyRecords() {
     [error, setError] = useState(""),
     [message, setMessage] = useState(""),
     [measure, setMeasure] = useState("weightKg");
+  const unit = q.data?.settings?.unit || "kg";
   return (
     <Page title="身体记录">
       <p className="gym-muted">
@@ -299,8 +313,8 @@ export function BodyRecords() {
         </label>
         <div className="gym-two">
           {[
-            ["weightKg", "体重 kg"],
-            ["goalKg", "目标体重 kg"],
+            ["weightKg", "体重 " + unit],
+            ["goalKg", "目标体重 " + unit],
             ["waistCm", "腰围 cm"],
             ["chestCm", "胸围 cm"],
             ["hipCm", "臀围 cm"],
@@ -310,10 +324,26 @@ export function BodyRecords() {
               <input
                 type="number"
                 min="1"
-                max={id.endsWith("Kg") ? "700" : "400"}
+                max={
+                  id.endsWith("Kg") ? (unit === "lb" ? 1543.2358 : 700) : 400
+                }
                 step="0.1"
-                value={form[id] || ""}
-                onChange={(e) => setForm({ ...form, [id]: e.target.value })}
+                value={
+                  form[id]
+                    ? id.endsWith("Kg")
+                      ? displayWeight(Number(form[id]), unit)
+                      : form[id]
+                    : ""
+                }
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    [id]:
+                      e.target.value !== "" && id.endsWith("Kg")
+                        ? String(canonicalWeight(Number(e.target.value), unit))
+                        : e.target.value,
+                  })
+                }
               />
             </label>
           ))}
@@ -338,7 +368,7 @@ export function BodyRecords() {
           <p>
             目标体重：
             {q.data.settings.goalKg
-              ? `${q.data.settings.goalKg} kg`
+              ? `${displayWeight(q.data.settings.goalKg, unit)} ${unit}`
               : "尚未设置"}
           </p>
           <label>
@@ -348,7 +378,7 @@ export function BodyRecords() {
               onChange={(e) => setMeasure(e.target.value)}
             >
               {[
-                ["weightKg", "体重 kg"],
+                ["weightKg", "体重 " + unit],
                 ["waistCm", "腰围 cm"],
                 ["chestCm", "胸围 cm"],
                 ["hipCm", "臀围 cm"],
@@ -366,8 +396,10 @@ export function BodyRecords() {
               .map((r: any) => (
                 <div key={r.date}>
                   <span>
-                    {r[measure]}
-                    {measure === "weightKg" ? "kg" : "cm"}
+                    {measure === "weightKg"
+                      ? displayWeight(r[measure], unit)
+                      : r[measure]}
+                    {measure === "weightKg" ? unit : "cm"}
                   </span>
                   <div
                     style={{
@@ -404,8 +436,10 @@ export function BodyRecords() {
                 >
                   <b>{r.date}</b>
                   <span>
-                    体重 {r.weightKg ?? "—"}kg · 腰 {r.waistCm ?? "—"} · 胸{" "}
-                    {r.chestCm ?? "—"} · 臀 {r.hipCm ?? "—"} cm
+                    体重{" "}
+                    {r.weightKg != null ? displayWeight(r.weightKg, unit) : "—"}
+                    {unit} · 腰 {r.waistCm ?? "—"} · 胸 {r.chestCm ?? "—"} · 臀{" "}
+                    {r.hipCm ?? "—"} cm
                   </span>
                   <small>编辑</small>
                 </button>
@@ -419,6 +453,8 @@ export function BodyRecords() {
   );
 }
 export function WorkoutRecords() {
+  const prefs = useGymQuery("/training-settings"),
+    unit = prefs.data?.unit || "kg";
   const q = useGymQuery("/workout-sessions"),
     [editing, setEditing] = useState<any>(null),
     [error, setError] = useState(""),
@@ -470,7 +506,8 @@ export function WorkoutRecords() {
                         <b>
                           {s.reps}{" "}
                           {s.exercise.cameraType === "high_knees" ? "对" : "次"}{" "}
-                          × {s.loadKg}kg · {s.seconds}秒
+                          × {displayWeight(s.loadKg, unit)}
+                          {unit} · {s.seconds}秒
                         </b>
                         <small>
                           {s.inputMode === "camera"
@@ -479,6 +516,13 @@ export function WorkoutRecords() {
                               : "未产生评分"
                             : "手动记录"}
                         </small>
+                        {s.effort && (
+                          <small>
+                            本人填写 {s.effort.kind.toUpperCase()}：
+                            {s.effort.value} / 10
+                          </small>
+                        )}
+                        {s.notes && <small>备注：{s.notes}</small>}
                       </div>
                     ))}
                   </details>
@@ -511,10 +555,7 @@ export function WorkoutRecords() {
               <div className="gym-form" key={s.id}>
                 <b>{s.exercise.nameZh}</b>
                 <div className="gym-two">
-                  {[
-                    ["reps", "实际次数"],
-                    ["loadKg", "外部负重 kg"],
-                  ].map(([key, title]) => (
+                  {[["reps", "实际次数"]].map(([key, title]) => (
                     <label key={key}>
                       {title}
                       <input
@@ -536,6 +577,18 @@ export function WorkoutRecords() {
                       />
                     </label>
                   ))}
+                  <WeightInput
+                    kg={s.loadKg}
+                    unit={unit}
+                    onChange={(kg) =>
+                      setEditing((w: any) => ({
+                        ...w,
+                        sets: w.sets.map((x: any, j: number) =>
+                          j === i ? { ...x, loadKg: kg } : x,
+                        ),
+                      }))
+                    }
+                  />
                 </div>
               </div>
             ))}
@@ -605,12 +658,13 @@ export function DataManagement() {
   const payload = { format, text, unit, mapping };
   return (
     <Page title="训练数据管理">
+      <FullTransfer />
       <p className="gym-muted">
-        仅导入和导出本人训练数据。导入和补录均不补发 XP；每批最多 100
+        下方粘贴入口只处理单批内容，导入和补录均不补发 XP；每批最多 100
         次训练、2000 组、1.8 MB。所有未知动作匹配后才会写入。
       </p>
-      <section className="gym-form">
-        <h2>导入训练记录或分享计划</h2>
+      <details className="gym-form">
+        <summary>粘贴记录／导入分享计划</summary>
         <div className="gym-two">
           <label>
             文件格式
@@ -779,11 +833,11 @@ export function DataManagement() {
             </button>
           </div>
         )}
-      </section>
+      </details>
       <section className="gym-form">
         <h2>导出本人数据</h2>
         <p>
-          JSON 包含计划、自定义动作、逐组记录和身体记录；CSV
+          版本 2 JSON 包含计划、自定义动作、逐组记录、身体记录及个人设置；CSV
           用于表格查看，不包含账号凭据。计划在编辑页可打印为 PDF。
         </p>
         <div className="gym-links">

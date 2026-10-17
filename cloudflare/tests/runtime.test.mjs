@@ -1,4 +1,5 @@
 import { test } from 'node:test';
+import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
 import { fixture, password } from './fixture.mjs';
@@ -177,6 +178,20 @@ await test('Workers runtime migration and business regression', async t=>{
  await call('/api/v1/body-measurements',{method:'PUT',token,body:{date:'2026-10-17',weightKg:70}});
  assert.equal((await call('/api/v1/body-measurements',{token:tokens[1]})).data.data.items.length,0);
  const exported=(await call('/api/v1/training-export',{token})).data.data;assert.equal(exported.workouts.filter(w=>w.imported).length,1);assert.ok(!JSON.stringify(exported).includes('password_hash'));
+ });
+ await t.test('free workout editing, schedule preferences and checkpoint imports persist in native transactions',async()=>{
+ const token=tokens[0];let r=await call('/api/v1/workout-sessions',{method:'POST',token,body:{id:crypto.randomUUID(),free:{exercises:[{exerciseId:'motion:squat',sets:[{reps:3}]}]}}});assert.equal(r.status,200,JSON.stringify(r.data));let w=r.data.data;
+ const edit={operationId:crypto.randomUUID(),version:w.version,action:'edit',edit:{kind:'copy',targetId:w.sets[0].id}};
+ const results=await Promise.all([call('/api/v1/workout-sessions/'+w.id+'/actions',{method:'POST',token,body:edit}),call('/api/v1/workout-sessions/'+w.id+'/actions',{method:'POST',token,body:edit})]);assert.ok(results.every(r=>r.status===200));assert.equal(results[1].data.data.sets.length,2);w=results[1].data.data;
+ r=await call('/api/v1/workout-sessions/'+w.id+'/actions',{method:'POST',token,body:{operationId:crypto.randomUUID(),version:w.version,action:'finish'}});assert.equal(r.status,200);assert.equal(r.data.data.session.xpEarned,0);
+ assert.equal((await call('/api/v1/training-settings',{method:'PUT',token,body:{unit:'lb',effort:'rir'}})).data.data.unit,'lb');
+ assert.equal((await call('/api/v1/training-settings',{token:tokens[1]})).data.data.unit,'kg');
+ const payload={format:'movemate-gym',version:2,body:{items:[{date:'2026-09-02',weightKg:72}]}};
+ const preview=(await call('/api/v1/training-imports/transfer-preview',{method:'POST',token,body:{format:'movemate',payload}})).data.data;
+ const op={format:'movemate',payload,batchId:crypto.randomUUID(),part:0,total:1,manifest:[createHash('sha256').update(JSON.stringify(payload)).digest('hex')],previewHash:preview.previewHash};
+ const first=await call('/api/v1/training-imports/transfer-commit',{method:'POST',token,body:op});assert.equal(first.status,200,JSON.stringify(first.data));assert.equal(first.data.data.cursor,1);
+ const again=await call('/api/v1/training-imports/transfer-commit',{method:'POST',token,body:op});assert.equal(again.data.data.imported,first.data.data.imported);
+ assert.equal((await call('/api/v1/training-imports/batches/'+op.batchId,{token:tokens[1]})).data.data.cursor,0);
  });
  await voicePoolTests(t,{mf,call,tokens,adminToken,sockets,password});
  }finally{for(const ws of sockets){try{ws.close()}catch{}}await mf.dispose()}

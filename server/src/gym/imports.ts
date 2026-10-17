@@ -102,6 +102,29 @@ export function parseImport(format: string, text: string, unit = "kg"): any[] {
               loadKg: number(s.loadKg),
               seconds: number(s.seconds),
               kind: s.kind || "work",
+              effort:
+                s.effort == null
+                  ? null
+                  : z
+                      .object({
+                        kind: z.enum(["rpe", "rir"]),
+                        value: z.number().min(0).max(10),
+                      })
+                      .parse(s.effort),
+              notes: z
+                .string()
+                .max(500)
+                .parse(s.notes || ""),
+              target: s.target
+                ? setSchema.parse(s.target)
+                : setSchema.parse({
+                    ...s,
+                    reps:
+                      s.targetReps ??
+                      Math.min(500, Math.max(1, number(s.reps))),
+                    seconds: s.targetSeconds ?? number(s.seconds),
+                    loadKg: number(s.loadKg),
+                  }),
             })),
     }));
   }
@@ -174,7 +197,14 @@ export async function previewImport(uid: number, input: any) {
       id: w.externalId || null,
       date: w.date,
       name: w.name,
-      sets: w.sets,
+      sets: w.sets.map((s: any) => ({
+        exerciseId: s.exerciseId,
+        name: s.name,
+        reps: s.reps,
+        loadKg: s.loadKg,
+        seconds: s.seconds,
+        kind: s.kind,
+      })),
     }),
     sets: w.sets.map((s: any) => {
       const name = String(s.name || s.exerciseId || "未命名动作");
@@ -240,12 +270,16 @@ export async function commitImport(uid: number, input: any) {
             id,
             i,
             JSON.stringify({
-              ...setSchema.parse({
-                kind: s.kind,
-                reps: Math.min(500, Math.max(1, s.reps)),
-                seconds: s.seconds,
-                loadKg: s.loadKg,
-              }),
+              ...setSchema.parse(
+                s.target || {
+                  kind: s.kind,
+                  reps: Math.min(500, Math.max(1, s.reps)),
+                  seconds: s.seconds,
+                  loadKg: s.loadKg,
+                },
+              ),
+              effort: s.effort || null,
+              notes: s.notes || "",
               exercise: s.exercise,
               exerciseIndex: i,
               setIndex: 0,

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuthStore } from "../../stores/authStore";
 import Dialog from "../../components/Dialog";
 import { Header } from "../motion/components/Header";
+import { WeightInput } from "./WeightInput";
 import { ExerciseLibrary } from "./Library";
 import { request, useGymQuery, getErrorMessage, download } from "./api";
 const emptySet = () => ({
@@ -18,6 +19,7 @@ export default function PlanEditor() {
   const { planId } = useParams(),
     navigate = useNavigate(),
     query = useGymQuery("/training-plans"),
+    prefs = useGymQuery("/training-settings"),
     [plan, setPlan] = useState<any>(null),
     [day, setDay] = useState(0),
     [picker, setPicker] = useState(false),
@@ -249,6 +251,71 @@ export default function PlanEditor() {
                 </button>
               </div>
             </div>
+            <details>
+              <summary>此动作的进阶覆盖（不选则沿用计划）</summary>
+              <label>
+                规则
+                <select
+                  value={entry.progression?.mode ?? "inherit"}
+                  onChange={(e) =>
+                    edit((p) => {
+                      const entry = p.routines[day].exercises[index];
+                      if (e.target.value === "inherit")
+                        delete entry.progression;
+                      else
+                        entry.progression = {
+                          ...p.progression,
+                          mode: e.target.value,
+                        };
+                    })
+                  }
+                >
+                  <option value="inherit">沿用计划</option>
+                  <option value="off">关闭</option>
+                  <option value="linear">线性加重</option>
+                  <option value="double">次数再重量</option>
+                  <option value="triple">次数、组数再重量</option>
+                  <option value="time">增加有效秒数</option>
+                </select>
+              </label>
+              {entry.progression &&
+                [
+                  "incrementKg",
+                  "minReps",
+                  "maxReps",
+                  "maxSets",
+                  "incrementSeconds",
+                ].map((k) => (
+                  <label key={k}>
+                    {
+                      {
+                        incrementKg: "增加 kg",
+                        minReps: "最低次数",
+                        maxReps: "次数上限",
+                        maxSets: "组数上限",
+                        incrementSeconds: "增加秒数",
+                      }[k]
+                    }
+                    <input
+                      type="number"
+                      min={k === "incrementKg" ? 0.25 : 1}
+                      max={k === "incrementKg" || k === "maxSets" ? 20 : 500}
+                      step={k === "incrementKg" ? 0.25 : 1}
+                      value={
+                        entry.progression[k] ??
+                        (k === "incrementSeconds" ? 5 : 1)
+                      }
+                      onChange={(e) =>
+                        edit(
+                          (p) =>
+                            (p.routines[day].exercises[index].progression[k] =
+                              Number(e.target.value)),
+                        )
+                      }
+                    />
+                  </label>
+                ))}
+            </details>
             {entry.sets.map((s: any, i: number) => (
               <div className="gym-set-editor" key={i}>
                 <b>第{i + 1}组</b>
@@ -278,7 +345,7 @@ export default function PlanEditor() {
                 </label>
                 {[
                   ["reps", "目标次数／对", 1, 500],
-                  ["loadKg", "外部负重 kg", 0, 1000],
+
                   ["seconds", "计时目标秒（0为次数）", 0, 7200],
                   ["restSec", "组后休息秒", 0, 900],
                 ].map(([key, title, min, max]) => (
@@ -300,6 +367,16 @@ export default function PlanEditor() {
                     />
                   </label>
                 ))}
+                <WeightInput
+                  kg={s.loadKg}
+                  unit={prefs.data?.unit || "kg"}
+                  onChange={(kg) =>
+                    edit(
+                      (p) =>
+                        (p.routines[day].exercises[index].sets[i].loadKg = kg),
+                    )
+                  }
+                />
                 <label>
                   左右侧
                   <select
@@ -383,6 +460,7 @@ export default function PlanEditor() {
             onChange={(e) => edit((p) => (p.progression.mode = e.target.value))}
           >
             <option value="off">关闭</option>
+            <option value="time">计时：完成后增加有效秒数</option>
             <option value="linear">线性：完成后增加负重</option>
             <option value="double">双重：先加次数，再加负重</option>
             <option value="triple">三级：次数、组数、负重</option>
@@ -394,6 +472,7 @@ export default function PlanEditor() {
             ["minReps", "加重后次数", 1, 500],
             ["maxReps", "次数上限", 1, 500],
             ["maxSets", "组数上限", 1, 20],
+            ["incrementSeconds", "计时进阶增加秒数", 1, 300],
           ].map(([key, title, min, max]) => (
             <label key={key}>
               {title}
@@ -438,7 +517,8 @@ export default function PlanEditor() {
             {proposal.suggestions.map((s: any, i: number) => (
               <p key={i}>
                 {map[s.exerciseId]?.nameZh || s.exerciseId}：{s.before.loadKg}→
-                {s.after.loadKg}kg，{s.before.reps}→{s.after.reps}次
+                {s.after.loadKg}kg，{s.before.reps}→{s.after.reps}次，
+                {s.before.seconds || 0}→{s.after.seconds || 0}秒 · {s.reason}
               </p>
             ))}
             {!!proposal.suggestions.length && (

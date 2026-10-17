@@ -13,7 +13,14 @@ import type { WorkoutContext } from "../motion/types";
 import { request, getErrorMessage, formatTime } from "./api";
 import { WorkoutSync, restoredSetMetrics } from "./workoutSync";
 import Dialog from "../../components/Dialog";
-import {useWorkoutPreferences,WorkoutEditor,SaveAsPlan} from "./WorkoutOptions";
+import { WeightInput } from "./WeightInput";
+import { displayWeight } from "./trainingMath";
+import { PlateCalculator } from "./AnalysisExtras";
+import {
+  useWorkoutPreferences,
+  WorkoutEditor,
+  SaveAsPlan,
+} from "./WorkoutOptions";
 const stamp = (w: any) => ({
   ...w,
   session: w.session ? { ...w.session, receivedAt: Date.now() } : null,
@@ -29,8 +36,9 @@ export default function PlanWorkout() {
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     [blocked, setBlocked] = useState(false),
-    [effort,setEffort]=useState<number|null>(null),
-    [notes,setNotes]=useState(""),
+    [offline, setOffline] = useState(!navigator.onLine),
+    [effort, setEffort] = useState<number | null>(null),
+    [notes, setNotes] = useState(""),
     [manualReps, setManualReps] = useState(0),
     [weight, setWeight] = useState(0),
     [voiceOn, setVoiceOn] = useState(false),
@@ -82,8 +90,17 @@ export default function PlanWorkout() {
             b,
             token,
           ),
-        () =>
-          request("GET", "/workout-sessions/" + workoutId, undefined, token),
+        async () => {
+          const next = await request(
+            "GET",
+            "/workout-sessions/" + workoutId,
+            undefined,
+            token,
+          );
+          if (next.__offline)
+            throw new Error("当前只能读取缓存，请联网后再核对服务端");
+          return next;
+        },
         {
           get: () => JSON.parse(localStorage.getItem(key) || "null"),
           set: (v) => {
@@ -95,11 +112,12 @@ export default function PlanWorkout() {
         },
         accept,
       );
-      setBlocked(!!localStorage.getItem(key));
+      setBlocked(!!localStorage.getItem(key) || !!raw.__offline);
       if (
         raw.phase === "working" &&
         raw.sets[raw.cursor]?.inputMode === "camera" &&
-        !localStorage.getItem(key)
+        !localStorage.getItem(key) &&
+        !raw.__offline
       ) {
         await sync.current.run("pause", { reps: raw.sets[raw.cursor].reps });
       }
@@ -121,8 +139,8 @@ export default function PlanWorkout() {
     camera = !!current && current.inputMode === "camera",
     working = row?.phase === "working",
     finished = row?.phase === "finished";
-  const pose = usePose(camera && working && !busy && !blocked),
-    seconds = useSessionClock(row?.session, busy);
+  const pose = usePose(camera && working && !busy && !blocked && !offline),
+    seconds = useSessionClock(row?.session, busy || blocked || offline);
   const type = current?.exercise.cameraType || "squat";
   const restored = useMemo(
     () => restoredSetMetrics(current),
@@ -133,7 +151,7 @@ export default function PlanWorkout() {
     pose.landmarks,
     false,
     camera && pose.status === "ready",
-    !working || busy || blocked,
+    !working || busy || blocked || offline,
     pose.videoRef.current?.videoWidth && pose.videoRef.current.videoHeight
       ? pose.videoRef.current.videoWidth / pose.videoRef.current.videoHeight
       : 1,
@@ -142,24 +160,43 @@ export default function PlanWorkout() {
     (current?.id || "none") + ":" + recoveryKey,
     pose.worldLandmarks,
   );
-  const restSeconds=Math.max(0,Math.ceil((Date.parse(row?.restUntil||"")-tick)/1000))||0;
-  const options=useWorkoutPreferences(!!row&&!finished,restSeconds);
+  const restSeconds =
+    Math.max(0, Math.ceil((Date.parse(row?.restUntil || "") - tick) / 1000)) ||
+    0;
+  const options = useWorkoutPreferences(!!row && !finished, restSeconds);
   const snapshot = useRef<any>({});
   snapshot.current = camera
     ? { reps: metrics.reps, loadKg: weight, score: metrics.scoreAccumulator }
     : { reps: current?.targetSeconds ? 0 : manualReps, loadKg: weight };
-  snapshot.current={...snapshot.current,effort:options.prefs?.effort&&options.prefs.effort!=="off"&&effort!==null?{kind:options.prefs.effort,value:effort}:null,notes};
+  snapshot.current = {
+    ...snapshot.current,
+    effort:
+      options.prefs?.effort && options.prefs.effort !== "off" && effort !== null
+        ? { kind: options.prefs.effort, value: effort }
+        : null,
+    notes,
+  };
   useEffect(() => {
     if (!current || loadedId.current === current.id + ":" + recoveryKey) return;
     loadedId.current = current.id + ":" + recoveryKey;
-    const suggestion=row.previous?.[current.exercise.id];
-    setManualReps(current.reps || (current.targetSeconds ? 0 : suggestion?.reps ?? current.targetReps));
-    setWeight(current.status === "pending" ? suggestion?.loadKg ?? current.loadKg : current.loadKg);
-    setEffort(current.effort?.value ?? null);setNotes(current.notes||"");
+    const suggestion = row.previous?.[current.exercise.id];
+    setManualReps(
+      current.reps ||
+        (current.targetSeconds ? 0 : (suggestion?.reps ?? current.targetReps)),
+    );
+    setWeight(
+      current.status === "pending"
+        ? (suggestion?.loadKg ?? current.loadKg)
+        : current.loadKg,
+    );
+    setEffort(current.effort?.value ?? null);
+    setNotes(current.notes || "");
     lastSynced.current = current.reps;
   }, [current?.id, recoveryKey]);
   const run = async (action: string, values: any = {}, control = true) => {
     if (!sync.current || (control && controlLock.current)) return;
+    if (!navigator.onLine)
+      throw new Error("当前离线，已停止本地识别；联网后先恢复同步");
     if (control) {
       controlLock.current = true;
       setBusy(true);
@@ -208,6 +245,10 @@ export default function PlanWorkout() {
   };
   const recover = async () => {
     if (!sync.current) return;
+    if (!navigator.onLine) {
+      setError("请先联网，再读取服务端状态");
+      return;
+    }
     setBusy(true);
     setError("");
     try {
@@ -245,6 +286,46 @@ export default function PlanWorkout() {
     }, 400);
     return () => clearTimeout(id);
   }, [camera, working, busy, blocked, metrics.reps]);
+  useEffect(() => {
+    if (!working || busy || blocked || offline) return;
+    const timer = setInterval(() => {
+      void run("heartbeat", {}, false).catch(() => {});
+    }, 15000);
+    return () => clearInterval(timer);
+  }, [working, busy, blocked, offline]);
+  useEffect(() => {
+    const off = () => {
+      setOffline(true);
+      setBlocked(true);
+      setVoiceOn(false);
+      if (latest.current?.phase === "working") {
+        const pending = JSON.parse(localStorage.getItem(key) || "null");
+        if (!pending)
+          localStorage.setItem(
+            key,
+            JSON.stringify({
+              ...snapshot.current,
+              action: "pause",
+              offline: true,
+              operationId: crypto.randomUUID(),
+              version: latest.current.version,
+              setId: latest.current.sets[latest.current.cursor]?.id,
+            }),
+          );
+      }
+    };
+    const on = () => {
+      setOffline(false);
+      setBlocked(true);
+      setError("网络已恢复，请先读取服务端并恢复同步；离线时段不补计 XP");
+    };
+    window.addEventListener("offline", off);
+    window.addEventListener("online", on);
+    return () => {
+      window.removeEventListener("offline", off);
+      window.removeEventListener("online", on);
+    };
+  }, [key]);
   const automatic = useRef("");
   useEffect(() => {
     if (
@@ -396,8 +477,19 @@ export default function PlanWorkout() {
       <Header
         title={finished ? "训练记录" : row.name}
         back={() => navigate("/train")}
-        action={row.session?.gameId?<Link to={'/game/'+row.session.gameId}>返回活动</Link>:<Link to="/train/plans">我的计划</Link>}
+        action={
+          row.session?.gameId ? (
+            <Link to={"/game/" + row.session.gameId}>返回活动</Link>
+          ) : (
+            <Link to="/train/plans">我的计划</Link>
+          )
+        }
       />
+      {offline && (
+        <p className="gym-error" role="status">
+          离线只读 · 已停止识别与计时显示，未确认操作已保留，联网后核对再继续。
+        </p>
+      )}
       {error && (
         <div className="gym-error" role="alert">
           {error}
@@ -441,7 +533,7 @@ export default function PlanWorkout() {
             <Link className="primary" to="/train/records">
               查看逐组记录
             </Link>
-            <SaveAsPlan id={row.id}/>
+            <SaveAsPlan id={row.id} />
             <Link className="secondary" to="/train/stats">
               查看训练分析
             </Link>
@@ -477,7 +569,12 @@ export default function PlanWorkout() {
                     {current.targetSeconds
                       ? formatTime(current.targetSeconds)
                       : `${current.targetReps} ${type === "high_knees" && current.exercise.cameraType ? "对" : "次"}`}{" "}
-                    · {current.loadKg} kg
+                    ·{" "}
+                    {displayWeight(
+                      current.targetLoadKg ?? current.loadKg,
+                      options.prefs?.unit,
+                    )}{" "}
+                    {options.prefs?.unit || "kg"}
                     {current.side === "each" ? " · 每侧分别完成" : ""} ·{" "}
                     {
                       (
@@ -493,7 +590,7 @@ export default function PlanWorkout() {
                   <p className="gym-muted">
                     上回：
                     {row.previous?.[current.exercise.id]
-                      ? `${row.previous[current.exercise.id].reps} 次 × ${row.previous[current.exercise.id].loadKg} kg`
+                      ? `${row.previous[current.exercise.id].reps} 次 × ${displayWeight(row.previous[current.exercise.id].loadKg, options.prefs?.unit)} ${options.prefs?.unit || "kg"}`
                       : "尚无记录"}
                   </p>
                 </>
@@ -536,16 +633,18 @@ export default function PlanWorkout() {
                     {type === "high_knees" ? "对" : "次"}
                   </strong>
                   <p>
-                    {!working
-                      ? "已暂停识别；继续后重新校准"
-                      : metrics.feedback}
+                    {!working ? "已暂停识别；继续后重新校准" : metrics.feedback}
                   </p>
                   <small>
                     {metrics.scoreAccumulator.count
                       ? `识别均分 ${metrics.formScore}`
                       : "尚无完整动作评分"}
                   </small>
-                  <RecognitionStatus type={type} diagnostics={diagnostics} paused={!working || busy || blocked}/>
+                  <RecognitionStatus
+                    type={type}
+                    diagnostics={diagnostics}
+                    paused={!working || busy || blocked}
+                  />
                 </div>
               )}
               {current && (
@@ -572,7 +671,26 @@ export default function PlanWorkout() {
                   <span>组间休息</span>
                   <strong>{rest ? formatTime(rest) : "休息结束"}</strong>
                   <p>准备好后，手动开始下一组。</p>
-                  <div className="gym-inline-actions"><button disabled={busy||blocked} onClick={()=>act("rest",{restDelta:-15})}>−15 秒</button><button disabled={busy||blocked} onClick={()=>act("rest",{restDelta:15})}>+15 秒</button><button disabled={busy||blocked} onClick={()=>act("rest",{restSkip:true})}>跳过休息</button></div>
+                  <div className="gym-inline-actions">
+                    <button
+                      disabled={busy || blocked}
+                      onClick={() => act("rest", { restDelta: -15 })}
+                    >
+                      −15 秒
+                    </button>
+                    <button
+                      disabled={busy || blocked}
+                      onClick={() => act("rest", { restDelta: 15 })}
+                    >
+                      +15 秒
+                    </button>
+                    <button
+                      disabled={busy || blocked}
+                      onClick={() => act("rest", { restSkip: true })}
+                    >
+                      跳过休息
+                    </button>
+                  </div>
                 </div>
               )}
               {current?.targetSeconds > 0 && (
@@ -599,6 +717,17 @@ export default function PlanWorkout() {
                   <small>达到目标后请确认完成本组，结束累计本组时长。</small>
                 </div>
               )}
+              {working &&
+                current &&
+                row.personalBests?.[current.exercise.id] &&
+                (weight > row.personalBests[current.exercise.id].loadKg ||
+                  (weight >= row.personalBests[current.exercise.id].loadKg &&
+                    (camera ? metrics.reps : manualReps) >
+                      row.personalBests[current.exercise.id].reps)) && (
+                  <p className="gym-success" role="status">
+                    本组超过历史最佳；确认完成并保存后计入个人纪录。
+                  </p>
+                )}
               {current && !camera && (
                 <div className="gym-two">
                   <label>
@@ -613,23 +742,42 @@ export default function PlanWorkout() {
                       }
                     />
                   </label>
+                  <WeightInput
+                    kg={weight}
+                    unit={options.prefs?.unit || "kg"}
+                    onChange={setWeight}
+                  />
+                </div>
+              )}
+              {current &&
+                options.prefs?.effort !== "off" &&
+                options.prefs?.effort && (
                   <label>
-                    外部负重 kg
+                    本组 {options.prefs.effort.toUpperCase()}（可不填）
                     <input
                       type="number"
                       min="0"
-                      max="1000"
-                      step="0.25"
-                      value={weight}
+                      max="10"
+                      step="0.5"
+                      value={effort ?? ""}
                       onChange={(e) =>
-                        setWeight(Math.max(0, Number(e.target.value)))
+                        setEffort(
+                          e.target.value === "" ? null : Number(e.target.value),
+                        )
                       }
                     />
                   </label>
-                </div>
+                )}
+              {current && (
+                <label>
+                  本组备注（可选）
+                  <input
+                    maxLength={500}
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                  />
+                </label>
               )}
-              {current && options.prefs?.effort!=="off" && options.prefs?.effort && <label>本组 {options.prefs.effort.toUpperCase()}（可不填）<input type="number" min="0" max="10" step="0.5" value={effort??""} onChange={e=>setEffort(e.target.value===""?null:Number(e.target.value))}/></label>}
-              {current&&<label>本组备注（可选）<input maxLength={500} value={notes} onChange={e=>setNotes(e.target.value)}/></label>}
               {!working && current?.exercise.cameraType && (
                 <label className="gym-checkbox">
                   <input
@@ -706,6 +854,13 @@ export default function PlanWorkout() {
                     >
                       确认本组完成
                     </button>
+                    <button
+                      className="text-btn"
+                      disabled={busy || blocked}
+                      onClick={() => act("skip", snapshot.current)}
+                    >
+                      跳过当前组（保留已记录）
+                    </button>
                     {camera && (
                       <button
                         className="text-btn"
@@ -752,6 +907,7 @@ export default function PlanWorkout() {
                 )}
                 <button
                   className="secondary"
+                  disabled={offline}
                   onClick={() => {
                     if (!voiceOn) {
                       voice.prepareAudio();
@@ -774,7 +930,16 @@ export default function PlanWorkout() {
           </div>
         </>
       )}
-      {!finished&&<><WorkoutEditor row={row} run={run} busy={busy||blocked}/>{options.settings}{options.deviceMessage&&<p role="status">{options.deviceMessage}</p>}</>}
+      {!finished && (
+        <>
+          <WorkoutEditor row={row} run={run} busy={busy || blocked} />
+          {options.settings}
+          <PlateCalculator />
+          {options.deviceMessage && (
+            <p role="status">{options.deviceMessage}</p>
+          )}
+        </>
+      )}
       <details className="gym-all-sets">
         <summary>查看全部训练组</summary>
         {row.sets.map((s: any, i: number) => (
@@ -792,7 +957,7 @@ export default function PlanWorkout() {
                     working: "当前组",
                     completed: "已完成",
                     skipped: "已跳过",
-                    removed:"已移除（可撤销）",
+                    removed: "已移除（可撤销）",
                   } as any
                 )[s.status]
               }

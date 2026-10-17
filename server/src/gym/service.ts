@@ -1,7 +1,8 @@
 import { randomUUID, createHash } from "node:crypto";
 import { z } from "zod";
+import { refreshOnline, onlineCutoff } from "./online";
 import { editWorkout } from "./editing";
-import {saveSettings} from "./preferences";
+import { settings, dateInZone, saveSettings } from "./preferences";
 import { pool, withTransaction, afterCommit } from "../db";
 import * as motion from "../services/motion.service";
 import { pushToUser, broadcastToGame } from "../websocket/notification.handler";
@@ -58,6 +59,7 @@ export async function allExercises(uid: number): Promise<Exercise[]> {
   ];
 }
 export async function library(uid: number, query: any) {
+  const prefs = await settings(uid);
   const list = await allExercises(uid),
     favorite = new Set(
       (
@@ -77,15 +79,21 @@ export async function library(uid: number, query: any) {
     limit = Math.min(wanted ? 500 : 50, Math.max(1, Number(query.limit) || 24));
   const result = list.filter(
     (e) =>
+      (!(e as any).archived || query.archived === "1") &&
+      (!query.owned ||
+        e.equipment === "body weight" ||
+        prefs.equipment.includes(e.equipment)) &&
       (!wanted || wanted.has(e.id)) &&
       (!q ||
-        [e.name, e.nameZh, ...e.instructions]
+        [e.name, e.nameZh, ...((e as any).aliases || []), ...e.instructions]
           .join(" ")
           .toLowerCase()
           .includes(q)) &&
       (!query.muscle ||
         e.bodyPart === query.muscle ||
-        e.target === query.muscle) &&
+        e.target === query.muscle ||
+        (query.role !== "primary" &&
+          e.secondaryMuscles.includes(query.muscle))) &&
       (!query.equipment || e.equipment === query.equipment) &&
       (!query.category || e.category === query.category) &&
       (!query.favorite || favorite.has(e.id)),
@@ -96,7 +104,13 @@ export async function library(uid: number, query: any) {
       .map((e) => ({ ...e, favorite: favorite.has(e.id) })),
     total: result.length,
     next: cursor + limit < result.length ? cursor + limit : null,
-    muscles: [...new Set(list.map((e) => e.bodyPart))],
+    muscles: [
+      ...new Set([
+        ...list.map((e) => e.bodyPart),
+        ...list.map((e) => e.target),
+        ...list.flatMap((e) => e.secondaryMuscles),
+      ]),
+    ],
     equipment: [...new Set(list.map((e) => e.equipment))],
     categories: [...new Set(list.map((e) => e.category))],
   };
@@ -110,16 +124,14 @@ export async function saveExercise(uid: number, data: any) {
       target: z.string().max(40),
       instructions: z.array(z.string().min(1).max(500)).min(1).max(12),
       category: z.enum(["strength", "cardio", "timed"]).default("strength"),
+      secondaryMuscles: z.array(z.string().max(40)).max(10).default([]),
+      archived: z.boolean().default(false),
     })
     .parse(data);
   const id = "user:" + uid + ":" + randomUUID();
   await pool.query(
     "INSERT INTO gym_exercises(id,user_id,data) VALUES($1,$2,$3)",
-    [
-      id,
-      uid,
-      JSON.stringify({ ...e, id, name: e.nameZh, secondaryMuscles: [] }),
-    ],
+    [id, uid, JSON.stringify({ ...e, id, name: e.nameZh })],
   );
   return { id, ...e };
 }
@@ -152,6 +164,14 @@ export async function savePlan(uid: number, input: any, id?: string) {
       throw new ValidationError("循环训练日超出计划范围");
     if (data.progression.minReps > data.progression.maxReps)
       throw new ValidationError("进阶最低次数不能大于次数上限");
+    if (
+      data.routines.some((r) =>
+        r.exercises.some(
+          (e) => e.progression && e.progression.minReps > e.progression.maxReps,
+        ),
+      )
+    )
+      throw new ValidationError("动作进阶最低次数不能大于次数上限");
     if (new Set(data.routines.map((r) => r.id)).size !== data.routines.length)
       throw new ValidationError("训练日ID重复");
     if (
@@ -310,6 +330,7 @@ export async function workout(uid: number, id: string) {
     id: r.id,
     targetReps: json(r.data).reps,
     targetSeconds: json(r.data).seconds,
+    targetLoadKg: json(r.data).loadKg,
     status: r.status,
     reps: r.reps,
     loadKg: r.load_g / 1000,
@@ -319,13 +340,21 @@ export async function workout(uid: number, id: string) {
   }));
   const previous = (
     await pool.query(
-      "SELECT g.data,g.reps,g.load_g FROM gym_sets g JOIN gym_workouts w ON w.id=g.workout_id WHERE w.user_id=$1 AND w.id!=$2 AND g.status='completed' ORDER BY w.created_at DESC LIMIT 300",
+      "SELECT g.data,g.reps,g.load_g FROM gym_sets g JOIN gym_workouts w ON w.id=g.workout_id WHERE w.user_id=$1 AND w.id!=$2 AND g.status='completed' ORDER BY w.created_at DESC,g.position DESC",
       [uid, id],
     )
   ).rows;
-  const best: Record<string, any> = {};
+  const best: Record<string, any> = {},
+    personalBests: Record<string, any> = {};
   for (const p of previous) {
     const d = json(p.data);
+    if (d.kind !== "warmup") {
+      const b = personalBests[d.exercise.id] || { loadKg: 0, reps: 0 };
+      personalBests[d.exercise.id] = {
+        loadKg: Math.max(b.loadKg, p.load_g / 1000),
+        reps: Math.max(b.reps, p.reps),
+      };
+    }
     if (!best[d.exercise.id])
       best[d.exercise.id] = { reps: p.reps, loadKg: p.load_g / 1000 };
   }
@@ -344,12 +373,13 @@ export async function workout(uid: number, id: string) {
       (s?.status === "running" && s.active_since
         ? Math.max(
             0,
-            Math.floor((Date.now() - Date.parse(s.active_since)) / 1000),
+            Math.floor((onlineCutoff(s) - Date.parse(s.active_since)) / 1000),
           )
         : 0),
     imported: !s,
     sets,
     previous: best,
+    personalBests,
     session: s ? { ...motion.sessionView(s), workoutId: w.id } : null,
   };
 }
@@ -380,6 +410,7 @@ export async function listWorkouts(uid: number) {
       id: r.id,
       targetReps: json(r.data).reps,
       targetSeconds: json(r.data).seconds,
+      targetLoadKg: json(r.data).loadKg,
       status: r.status,
       reps: r.reps,
       loadKg: r.load_g / 1000,
@@ -416,9 +447,16 @@ export async function startWorkout(uid: number, input: any) {
         planId: z.string().optional(),
         routineId: z.string().optional(),
         gameId: z.number().int().positive().optional(),
-        free: z.object({name:z.string().min(1).max(80).default("自由训练"), exercises:planSchema.shape.routines.element.shape.exercises}).optional(),
+        free: z
+          .object({
+            name: z.string().min(1).max(80).default("自由训练"),
+            exercises: planSchema.shape.routines.element.shape.exercises,
+          })
+          .optional(),
       })
       .parse(input);
+    if (data.free && (data.planId || data.routineId || data.gameId))
+      throw new ValidationError("自由训练不能同时指定计划或活动");
     const duplicate = (
       await pool.query("SELECT * FROM gym_workouts WHERE id=$1", [data.id])
     ).rows[0];
@@ -431,7 +469,11 @@ export async function startWorkout(uid: number, input: any) {
         (old.session?.gameId || null) !== (data.gameId || null)
       )
         throw new InvalidStateError("训练动作与来源不可更改");
-      if(data.free && json(duplicate.snapshot).creationDigest!==digest(data.free)) throw new InvalidStateError("创建请求内容已改变");
+      if (
+        data.free &&
+        json(duplicate.snapshot).creationDigest !== digest(data.free)
+      )
+        throw new InvalidStateError("创建请求内容已改变");
       return old;
     }
     let snapshot: any,
@@ -441,8 +483,13 @@ export async function startWorkout(uid: number, input: any) {
       if (!snapshot) throw new NotFoundError("活动尚未附计划");
       planId = null;
     } else if (data.free) {
-      snapshot=await snapshotRoutine(uid,data.free.name,{id:"free",name:"自由安排",weekdays:[],exercises:data.free.exercises});
-      snapshot.creationDigest=digest(data.free);
+      snapshot = await snapshotRoutine(uid, data.free.name, {
+        id: "free",
+        name: "自由安排",
+        weekdays: [],
+        exercises: data.free.exercises,
+      });
+      snapshot.creationDigest = digest(data.free);
     } else {
       const p = json<Plan>(
         (await owned("gym_plans", data.planId || "", uid)).data,
@@ -451,6 +498,8 @@ export async function startWorkout(uid: number, input: any) {
       if (!r) throw new NotFoundError("训练日不存在");
       snapshot = await snapshotRoutine(uid, p.name, r);
     }
+    if (snapshot.sets.length > 500)
+      throw new ValidationError("每次训练最多500组");
     const parent = await motion.createSession(uid, {
       id: "gym:" + data.id,
       sportType: "fitness",
@@ -458,6 +507,10 @@ export async function startWorkout(uid: number, input: any) {
       gameId: data.gameId,
     });
     await motion.sessionAction(parent.id, uid, "pause", {}, true);
+    await pool.query("UPDATE sport_sessions SET metrics=$2 WHERE id=$1", [
+      parent.id,
+      JSON.stringify({ planOnlineAt: Date.now() }),
+    ]);
     await pool.query(
       "INSERT INTO gym_workouts(id,user_id,sport_session_id,plan_id,snapshot,created_at) VALUES($1,$2,$3,$4,$5,$6)",
       [data.id, uid, parent.id, planId, JSON.stringify(snapshot), now()],
@@ -493,12 +546,17 @@ const actionSchema = z.object({
     "manual",
     "edit",
     "rest",
+    "heartbeat",
   ]),
   setId: z.string().optional(),
   edit: z.unknown().optional(),
+  offline: z.boolean().optional(),
   restDelta: z.number().int().min(-900).max(900).optional(),
   restSkip: z.boolean().optional(),
-  effort: z.object({kind:z.enum(["rpe","rir"]),value:z.number().min(0).max(10)}).nullable().optional(),
+  effort: z
+    .object({ kind: z.enum(["rpe", "rir"]), value: z.number().min(0).max(10) })
+    .nullable()
+    .optional(),
   notes: z.string().max(500).optional(),
   inputMode: z.enum(["manual", "camera"]).optional(),
   reps: z.number().int().min(0).max(100000).optional(),
@@ -539,6 +597,12 @@ export async function actWorkout(uid: number, id: string, input: any) {
     }
     if (data.version !== w.version)
       throw new InvalidStateError("训练已在其他页面更新，请重新读取后重试");
+    if (
+      w.sport_session_id &&
+      (await refreshOnline(w.sport_session_id, false, data.offline === true))
+    )
+      return workout(uid, id);
+
     const set = current.sets[w.cursor],
       setRow = set
         ? (await pool.query("SELECT * FROM gym_sets WHERE id=$1", [set.id]))
@@ -571,7 +635,15 @@ export async function actWorkout(uid: number, id: string, input: any) {
     };
     const update = async () => {
       if (!setRow) return;
-      if(data.effort!==undefined || data.notes!==undefined) await pool.query("UPDATE gym_sets SET data=$2 WHERE id=$1",[set.id,JSON.stringify({...json(setRow.data),...(data.effort!==undefined?{effort:data.effort}:{}),...(data.notes!==undefined?{notes:data.notes}:{})})]);
+      if (data.effort !== undefined || data.notes !== undefined)
+        await pool.query("UPDATE gym_sets SET data=$2 WHERE id=$1", [
+          set.id,
+          JSON.stringify({
+            ...json(setRow.data),
+            ...(data.effort !== undefined ? { effort: data.effort } : {}),
+            ...(data.notes !== undefined ? { notes: data.notes } : {}),
+          }),
+        ]);
       const mode =
         data.action === "manual"
           ? set.inputMode === "camera"
@@ -605,13 +677,37 @@ export async function actWorkout(uid: number, id: string, input: any) {
         ],
       );
     };
-    if(data.action === "edit") {
-      await editWorkout(w,current,data.edit,await allExercises(uid));
-    } else if(data.action === "rest") {
-      if(w.phase!=="resting") throw new InvalidStateError("当前不在组间休息");
-      const left=Math.max(0,Math.ceil((Date.parse(w.rest_until||now())-Date.now())/1000));
-      const next=data.restSkip?0:Math.min(900,Math.max(0,left+(data.restDelta||0)));
-      await pool.query("UPDATE gym_workouts SET rest_until=$2 WHERE id=$1",[id,new Date(Date.now()+next*1000).toISOString()]);
+    if (
+      [
+        "start",
+        "resume",
+        "heartbeat",
+        "progress",
+        "complete",
+        "pause",
+        "finish",
+      ].includes(data.action) &&
+      !data.offline
+    )
+      await refreshOnline(parent.id, true);
+    if (data.action === "heartbeat") {
+      // Checkpoint is server time only; client durations are never accepted.
+    } else if (data.action === "edit") {
+      await editWorkout(w, current, data.edit, await allExercises(uid));
+    } else if (data.action === "rest") {
+      if (w.phase !== "resting")
+        throw new InvalidStateError("当前不在组间休息");
+      const left = Math.max(
+        0,
+        Math.ceil((Date.parse(w.rest_until || now()) - Date.now()) / 1000),
+      );
+      const next = data.restSkip
+        ? 0
+        : Math.min(900, Math.max(0, left + (data.restDelta || 0)));
+      await pool.query("UPDATE gym_workouts SET rest_until=$2 WHERE id=$1", [
+        id,
+        new Date(Date.now() + next * 1000).toISOString(),
+      ]);
     } else if (data.action === "start") {
       if (!set || !["ready", "resting"].includes(w.phase))
         throw new InvalidStateError("请先完成或恢复当前组");
@@ -672,7 +768,9 @@ export async function actWorkout(uid: number, id: string, input: any) {
             set.id,
             data.action === "skip" ? "skipped" : "completed",
           ]);
-          const nextIndex=current.sets.findIndex((s:any,i:number)=>i>w.cursor && s.status==="pending");
+          const nextIndex = current.sets.findIndex(
+            (s: any, i: number) => i > w.cursor && s.status === "pending",
+          );
           const next = current.sets[nextIndex],
             rest =
               next &&
@@ -685,7 +783,11 @@ export async function actWorkout(uid: number, id: string, input: any) {
                 : set.restSec;
           await pool.query(
             "UPDATE gym_workouts SET phase='resting',cursor=$3,rest_until=$2 WHERE id=$1",
-            [id, new Date(Date.now() + rest * 1000).toISOString(),nextIndex<0?current.sets.length:nextIndex],
+            [
+              id,
+              new Date(Date.now() + rest * 1000).toISOString(),
+              nextIndex < 0 ? current.sets.length : nextIndex,
+            ],
           );
         }
       }
@@ -733,7 +835,12 @@ export async function actWorkout(uid: number, id: string, input: any) {
         ).rows[0];
         if (planRow) {
           const p = json<Plan>(planRow.data);
-          if (p.mode === "rotation" && p.routines[p.rotationCursor % p.routines.length]?.id === current.routineId && rows.every((r:any)=>["completed","removed"].includes(r.status))) {
+          if (
+            p.mode === "rotation" &&
+            p.routines[p.rotationCursor % p.routines.length]?.id ===
+              current.routineId &&
+            rows.every((r: any) => ["completed", "removed"].includes(r.status))
+          ) {
             p.rotationCursor = (p.rotationCursor + 1) % p.routines.length;
             await pool.query(
               "UPDATE gym_plans SET data=$2,version=version+1 WHERE id=$1",
@@ -828,11 +935,14 @@ export async function saveMeasurement(uid: number, input: any) {
       "INSERT INTO gym_measurements(user_id,date,data) VALUES($1,$2,$3) ON CONFLICT(user_id,date) DO UPDATE SET data=$3",
       [uid, data.date, JSON.stringify({ ...json(old?.data || "{}"), ...data })],
     );
-    if (data.goalKg) await saveSettings(uid,{goalKg:data.goalKg});
+    if (data.goalKg) await saveSettings(uid, { goalKg: data.goalKg });
   });
   return measurements(uid);
 }
 export async function analytics(uid: number) {
+  const prefs = await settings(uid),
+    exerciseHistory: Record<string, any[]> = {},
+    muscleDetails: Record<string, any> = {};
   const workouts = (await listWorkouts(uid)).filter(
       (w) => w.phase === "finished",
     ),
@@ -845,7 +955,7 @@ export async function analytics(uid: number) {
     reps = 0,
     sets = 0;
   for (const w of workouts) {
-    const date = w.createdAt.slice(0, 10),
+    const date = dateInZone(w.createdAt, prefs.timeZone),
       d = new Date(date + "T12:00:00Z");
     d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
     const week = d.toISOString().slice(0, 10);
@@ -859,6 +969,41 @@ export async function analytics(uid: number) {
       reps += count;
       sets++;
       const m = s.exercise.bodyPart;
+      if (Date.parse(w.createdAt) >= Date.now() - 30 * 86400000) {
+        for (const [muscle, role] of [
+          [s.exercise.target, "primary"],
+          ...s.exercise.secondaryMuscles.map((name: string) => [
+            name,
+            "secondary",
+          ]),
+        ]) {
+          if (!muscle) continue;
+          muscleDetails[muscle] ||= {
+            primary: 0,
+            secondary: 0,
+            lastAt: w.createdAt,
+          };
+          muscleDetails[muscle][role]++;
+        }
+      }
+      const history = (exerciseHistory[s.exercise.id] ||= []);
+      let point = history.find((p) => p.date === date);
+      if (!point) {
+        point = {
+          date,
+          name: s.exercise.nameZh,
+          loadKg: 0,
+          reps: 0,
+          volume: 0,
+          e1rm: null,
+        };
+        history.push(point);
+      }
+      point.loadKg = Math.max(point.loadKg, s.loadKg);
+      point.reps += count;
+      point.volume += v;
+      if (s.kind === "work" && s.loadKg > 0 && s.reps >= 1 && s.reps <= 10)
+        point.e1rm = Math.max(point.e1rm || 0, s.loadKg * (1 + s.reps / 30));
       if (Date.parse(w.createdAt) >= Date.now() - 30 * 86400000) {
         muscles[m] ||= { sets: 0, lastAt: w.createdAt };
         muscles[m].sets++;
@@ -883,6 +1028,15 @@ export async function analytics(uid: number) {
       Object.entries(r).sort(([a], [b]) => a.localeCompare(b)),
     );
   return {
+    timeZone: prefs.timeZone,
+    today: dateInZone(now(), prefs.timeZone),
+    muscleDetails,
+    exerciseHistory: Object.fromEntries(
+      Object.entries(exerciseHistory).map(([key, rows]) => [
+        key,
+        rows.sort((a, b) => a.date.localeCompare(b.date)),
+      ]),
+    ),
     workouts: workouts.length,
     volume: Math.round(volume * 10) / 10,
     reps,
@@ -896,7 +1050,12 @@ export async function analytics(uid: number) {
 }
 export async function progression(uid: number, id: string) {
   const p = json<Plan>((await owned("gym_plans", id, uid)).data);
-  if (p.progression.mode === "off")
+  if (
+    p.progression.mode === "off" &&
+    !p.routines.some((r) =>
+      r.exercises.some((e) => e.progression && e.progression.mode !== "off"),
+    )
+  )
     return { plan: p, suggestions: [], reason: "进阶规则尚未开启" };
   const history = (await listWorkouts(uid)).filter(
       (w) => w.phase === "finished" && w.planId === id && !w.imported,
@@ -904,7 +1063,10 @@ export async function progression(uid: number, id: string) {
     suggestions: any[] = [];
   for (const routine of p.routines)
     for (const [entryIndex, entry] of routine.exercises.entries()) {
-      const last = history.find((w) => w.routineId === routine.id);
+      const rule = entry.progression || p.progression;
+      if (rule.mode === "off") continue;
+      const matching = history.filter((w) => w.routineId === routine.id);
+      const last = matching[0];
       if (!last) continue;
       const target = entry.sets.filter((s) => s.kind !== "warmup"),
         done = last.sets.filter(
@@ -913,22 +1075,76 @@ export async function progression(uid: number, id: string) {
             s.exerciseIndex === entryIndex &&
             s.kind !== "warmup",
         );
-      if (
-        !target.length ||
-        done.length !== target.length ||
-        done.some(
-          (s, i) =>
-            s.status !== "completed" ||
-            s.reps < target[i].reps ||
-            s.loadKg < target[i].loadKg,
-        ) ||
-        target.some((s) => s.seconds > 0)
-      )
+      const met = (items: any[]) =>
+        items.length === target.length &&
+        items.every(
+          (s: any, i: number) =>
+            s.status === "completed" &&
+            (target[i].seconds > 0
+              ? s.seconds >= target[i].seconds
+              : s.reps >= target[i].reps) &&
+            s.loadKg >= target[i].loadKg,
+        );
+      if (!target.length) continue;
+      if (!met(done)) {
+        const recent = matching.slice(0, 3);
+        const failed =
+          recent.length === 3 &&
+          recent.every((h) => {
+            const items = h.sets.filter(
+              (s: any) =>
+                s.exerciseIndex === entryIndex &&
+                s.exercise.id === entry.exerciseId &&
+                s.kind !== "warmup" &&
+                s.status !== "removed",
+            );
+            return (
+              h.sets.every((s: any) =>
+                ["completed", "removed"].includes(s.status),
+              ) &&
+              items.length === target.length &&
+              items.some(
+                (s: any) =>
+                  s.status !== "completed" ||
+                  (s.targetSeconds > 0
+                    ? s.seconds < s.targetSeconds
+                    : s.reps < s.targetReps) ||
+                  s.loadKg < (s.targetLoadKg ?? 0),
+              )
+            );
+          });
+        if (failed)
+          for (const set of target) {
+            if (set.loadKg <= 0) continue;
+            const before = { ...set };
+            set.loadKg = Math.round(set.loadKg * 0.9 * 1000) / 1000;
+            suggestions.push({
+              exerciseId: entry.exerciseId,
+              before,
+              after: { ...set },
+              reason: "连续三次完整训练未达标，建议降载 10%；需本人确认",
+            });
+          }
         continue;
+      }
+      if (rule.mode === "time") {
+        for (const set of target.filter((s) => s.seconds > 0)) {
+          const before = { ...set };
+          set.seconds = Math.min(7200, set.seconds + rule.incrementSeconds);
+          suggestions.push({
+            exerciseId: entry.exerciseId,
+            before,
+            after: { ...set },
+            reason: "达到计时目标，建议增加有效秒数；确认后应用",
+          });
+        }
+        continue;
+      }
+      if (target.some((s) => s.seconds > 0)) continue;
       if (
-        p.progression.mode === "triple" &&
-        target.every((s) => s.reps >= p.progression.maxReps) &&
-        target.length < p.progression.maxSets &&
+        rule.mode === "triple" &&
+        target.every((s) => s.reps >= rule.maxReps) &&
+        target.length < rule.maxSets &&
         entry.sets.length < 20
       ) {
         const added = { ...target[target.length - 1] };
@@ -943,13 +1159,13 @@ export async function progression(uid: number, id: string) {
       }
       for (const set of target) {
         const before = { ...set };
-        if (p.progression.mode === "linear") {
-          set.loadKg = Math.min(1000, set.loadKg + p.progression.incrementKg);
-        } else if (set.reps < p.progression.maxReps) {
+        if (rule.mode === "linear") {
+          set.loadKg = Math.min(1000, set.loadKg + rule.incrementKg);
+        } else if (set.reps < rule.maxReps) {
           set.reps++;
         } else {
-          set.loadKg = Math.min(1000, set.loadKg + p.progression.incrementKg);
-          set.reps = p.progression.minReps;
+          set.loadKg = Math.min(1000, set.loadKg + rule.incrementKg);
+          set.reps = rule.minReps;
         }
         suggestions.push({
           exerciseId: entry.exerciseId,
@@ -964,7 +1180,8 @@ export async function progression(uid: number, id: string) {
 export async function exportData(uid: number) {
   return {
     format: "movemate-gym",
-    version: 1,
+    version: 2,
+    settings: await settings(uid),
     exportedAt: now(),
     plans: (await plans(uid)).items,
     customExercises: (
@@ -976,15 +1193,66 @@ export async function exportData(uid: number) {
 }
 export { digest };
 
-export async function saveWorkoutPlan(uid:number,id:string,input:any){
- const w=await workout(uid,id);
- if(w.phase!=="finished") throw new InvalidStateError("结束后才能另存新计划");
- const exercises:any[]=[];
- for(const s of w.sets.filter((s:any)=>s.status!=="removed")){
-  const last=exercises[exercises.length-1];
-  const target=setSchema.parse({...s,reps:s.targetReps,seconds:s.targetSeconds,loadKg:s.loadKg});
-  if(last?.exerciseId===s.exercise.id && last.sets.length<20) last.sets.push(target);
-  else exercises.push({exerciseId:s.exercise.id,sets:[target]});
- }
- return savePlan(uid,{name:z.string().trim().min(1).max(80).parse(input.name),routines:[{id:randomUUID(),name:"训练日 A",weekdays:[],exercises}]});
+export async function saveWorkoutPlan(uid: number, id: string, input: any) {
+  const w = await workout(uid, id);
+  if (w.phase !== "finished")
+    throw new InvalidStateError("结束后才能另存新计划");
+  const exercises: any[] = [];
+  for (const s of w.sets.filter((s: any) => s.status !== "removed")) {
+    const last = exercises[exercises.length - 1];
+    const target = setSchema.parse({
+      ...s,
+      reps: s.targetReps,
+      seconds: s.targetSeconds,
+      loadKg: s.loadKg,
+    });
+    if (last?.exerciseId === s.exercise.id && last.sets.length < 20)
+      last.sets.push(target);
+    else exercises.push({ exerciseId: s.exercise.id, sets: [target] });
+  }
+  return savePlan(uid, {
+    name: z.string().trim().min(1).max(80).parse(input.name),
+    routines: [{ id: randomUUID(), name: "训练日 A", weekdays: [], exercises }],
+  });
+}
+
+export async function updateExercise(uid: number, id: string, input: any) {
+  return withTransaction(async () => {
+    const row = (
+      await pool.query(
+        "SELECT data FROM gym_exercises WHERE user_id=$1 AND id=$2",
+        [uid, id],
+      )
+    ).rows[0];
+    if (!row) throw new NotFoundError("仅能编辑自己的自定义动作");
+    const patch = z
+      .object({
+        nameZh: z.string().trim().min(1).max(80).optional(),
+        bodyPart: z.string().min(1).max(40).optional(),
+        equipment: z.string().min(1).max(40).optional(),
+        target: z.string().max(40).optional(),
+        secondaryMuscles: z.array(z.string().max(40)).max(10).optional(),
+        instructions: z
+          .array(z.string().min(1).max(500))
+          .min(1)
+          .max(12)
+          .optional(),
+        archived: z.boolean().optional(),
+      })
+      .parse(input);
+    const next = { ...json(row.data), ...patch };
+    await pool.query("UPDATE gym_exercises SET data=$2 WHERE id=$1", [
+      id,
+      JSON.stringify(next),
+    ]);
+    return next;
+  });
+}
+
+export async function readWorkout(uid: number, id: string) {
+  return withTransaction(async () => {
+    const w = await owned("gym_workouts", id, uid);
+    if (w.sport_session_id) await refreshOnline(w.sport_session_id, false);
+    return workout(uid, id);
+  });
 }

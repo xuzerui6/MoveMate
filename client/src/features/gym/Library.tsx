@@ -16,6 +16,10 @@ export function ExerciseLibrary({
     [equipment, setEquipment] = useState(""),
     [category, setCategory] = useState(""),
     [favorite, setFavorite] = useState(false),
+    [owned, setOwned] = useState(false),
+    [archived, setArchived] = useState(false),
+    [role, setRole] = useState("primary"),
+    [editing, setEditing] = useState<any>(null),
     [cursor, setCursor] = useState(0),
     [items, setItems] = useState<any[]>([]),
     [selected, setSelected] = useState<any>(null),
@@ -30,6 +34,9 @@ export function ExerciseLibrary({
   }, [query]);
   const params = new URLSearchParams({
     q: search,
+    role,
+    ...(owned ? { owned: "1" } : {}),
+    ...(archived ? { archived: "1" } : {}),
     muscle,
     equipment,
     category,
@@ -88,6 +95,44 @@ export function ExerciseLibrary({
           自定义动作
         </button>
       </div>
+      <div className="gym-inline-actions">
+        <label>
+          <input
+            type="checkbox"
+            checked={owned}
+            onChange={(e) => {
+              setOwned(e.target.checked);
+              setCursor(0);
+            }}
+          />
+          只用我拥有的器械
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={archived}
+            onChange={(e) => {
+              setArchived(e.target.checked);
+              setCursor(0);
+            }}
+          />
+          包含已归档动作
+        </label>
+        <label>
+          肌群筛选范围
+          <select
+            value={role}
+            onChange={(e) => {
+              setRole(e.target.value);
+              setCursor(0);
+            }}
+          >
+            <option value="primary">主练肌群</option>
+            <option value="all">主练或辅助肌群</option>
+          </select>
+        </label>
+      </div>
+      <p className="gym-muted">在“训练设置”配置拥有器械；徒手始终可选。</p>
       <div className="gym-filters">
         <label>
           肌群
@@ -209,6 +254,126 @@ export function ExerciseLibrary({
             {selected.name} · {label(selected.equipment)} ·{" "}
             {label(selected.bodyPart)}
           </p>
+          <p>
+            主练：{label(selected.target)} · 辅助：
+            {selected.secondaryMuscles.map(label).join("、") || "未标注"}
+          </p>
+          <p className="gym-muted">
+            来源：{selected.provenance?.source || "本人自定义／动伴原创"} ·{" "}
+            {selected.provenance?.license || "原创文字"}
+            ；保留原文名称，不包含上游媒体。
+          </p>
+          {selected.id.startsWith("user:") && (
+            <div className="gym-inline-actions">
+              <button onClick={() => setEditing(structuredClone(selected))}>
+                编辑自定义动作
+              </button>
+              <button
+                onClick={async () => {
+                  try {
+                    await request(
+                      "PUT",
+                      "/exercises/" + encodeURIComponent(selected.id),
+                      { archived: !selected.archived },
+                    );
+                    setSelected(null);
+                    result.reload();
+                  } catch (e) {
+                    setError(getErrorMessage(e));
+                  }
+                }}
+              >
+                {selected.archived ? "恢复归档" : "归档（保留历史）"}
+              </button>
+            </div>
+          )}
+          {editing && (
+            <form
+              className="gym-form"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                try {
+                  const next = await request(
+                    "PUT",
+                    "/exercises/" + encodeURIComponent(editing.id),
+                    {
+                      nameZh: editing.nameZh,
+                      instructions: editing.instructions,
+                      bodyPart: editing.bodyPart,
+                      equipment: editing.equipment,
+                      target: editing.target,
+                      secondaryMuscles: editing.secondaryMuscles,
+                    },
+                  );
+                  setSelected(next);
+                  setEditing(null);
+                  result.reload();
+                } catch (e) {
+                  setError(getErrorMessage(e));
+                }
+              }}
+            >
+              <label>
+                名称
+                <input
+                  value={editing.nameZh}
+                  maxLength={80}
+                  onChange={(e) =>
+                    setEditing({ ...editing, nameZh: e.target.value })
+                  }
+                />
+              </label>
+              <label>
+                主练肌群
+                <input
+                  value={editing.target}
+                  onChange={(e) =>
+                    setEditing({ ...editing, target: e.target.value })
+                  }
+                />
+              </label>
+              <label>
+                辅助肌群（逗号分隔）
+                <input
+                  value={editing.secondaryMuscles.join(",")}
+                  onChange={(e) =>
+                    setEditing({
+                      ...editing,
+                      secondaryMuscles: e.target.value
+                        .split(",")
+                        .filter(Boolean),
+                    })
+                  }
+                />
+              </label>
+              <label>
+                器械
+                <input
+                  value={editing.equipment}
+                  onChange={(e) =>
+                    setEditing({ ...editing, equipment: e.target.value })
+                  }
+                />
+              </label>
+              <label>
+                步骤
+                <textarea
+                  rows={4}
+                  value={editing.instructions.join("\n")}
+                  onChange={(e) =>
+                    setEditing({
+                      ...editing,
+                      instructions: e.target.value.split("\n"),
+                    })
+                  }
+                />
+              </label>
+              <button className="primary">保存修改</button>
+              <button type="button" onClick={() => setEditing(null)}>
+                取消
+              </button>
+            </form>
+          )}
           <ol>
             {selected.instructions.map((s: string, i: number) => (
               <li key={i}>{s}</li>
@@ -238,6 +403,7 @@ export function ExerciseLibrary({
               <small>
                 {label(ex.bodyPart)} · {label(ex.equipment)}
                 {ex.cameraType ? " · 摄像头" : ""}
+                {ex.archived ? " · 已归档" : ""}
               </small>
             </button>
             <button

@@ -2,6 +2,7 @@
  * Axios 实例 —— 统一封装 JWT 注入 + 错误拦截 + Toast 提示
  */
 import axios, { AxiosError } from 'axios';
+import {clearAccountCache} from '../features/gym/offline';
 
 const client = axios.create({
   baseURL: '/api/v1',
@@ -35,6 +36,7 @@ client.interceptors.response.use(
     const sentToken=String(error.config?.headers.Authorization || '');
     const currentToken=localStorage.getItem('token');
     if (error.response?.status === 401 && currentToken && sentToken===`Bearer ${currentToken}`) {
+      try{const uid=JSON.parse(localStorage.getItem('user')||'null')?.id;if(uid!=null)clearAccountCache(uid);}catch{}
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       for(const key of Object.keys(localStorage))if(key.startsWith('motion-buddy:account:'))localStorage.removeItem(key);

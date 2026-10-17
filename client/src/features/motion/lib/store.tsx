@@ -1,3 +1,4 @@
+import {readCache,writeCache} from '../../gym/offline';
 import { createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
 import client, { getErrorMessage } from '../../../api/client';
 import { useAuthStore } from '../../../stores/authStore';
@@ -33,10 +34,10 @@ export function StoreProvider({children}:{children:React.ReactNode}) {
   },[userId]);
   const refresh=useCallback(async()=>{
     if(!alive.current)return;
-    const current=++requestId.current;
+    const current=++requestId.current,requestToken=localStorage.getItem("token");
     setLoading(true);
-    try {const res:any=await client.get('/training/state');if(current===requestId.current){apply(res.data);setError('');}}
-    catch(err){if(alive.current&&current===requestId.current)setError(getErrorMessage(err));}
+    try {const res:any=await client.get('/training/state');if(alive.current&&current===requestId.current&&localStorage.getItem("token")===requestToken&&useAuthStore.getState().user?.id===userId){apply(res.data);if(userId!=null)writeCache(userId,'/training/state',res.data);setError('');}}
+    catch(err){if(alive.current&&current===requestId.current){const cached=userId!=null&&!(err as any)?.response?readCache(userId,'/training/state'):null;if(cached){apply(cached.data);setError('当前显示本人只读缓存，联网后核对训练状态');}else setError(getErrorMessage(err));}}
     finally{if(alive.current&&current===requestId.current)setLoading(false);}
   },[apply]);
   useEffect(()=>{alive.current=true;void refresh();const listener=()=>{if(Date.now()-lastWrite.current>1500)void refresh();};const online=()=>void refresh();const visibility=()=>{if(document.visibilityState==='visible')void refresh();};window.addEventListener('motion:refresh',listener);window.addEventListener('online',online);document.addEventListener('visibilitychange',visibility);return()=>{alive.current=false;window.removeEventListener('motion:refresh',listener);window.removeEventListener('online',online);document.removeEventListener('visibilitychange',visibility);localStorage.removeItem('motion-buddy:account:'+userId);};},[refresh,userId]);

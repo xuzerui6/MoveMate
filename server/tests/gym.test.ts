@@ -535,27 +535,443 @@ test("supersets alternate exercises and rest only between rounds", async () => {
   await act(w, "finish");
 });
 
-test("free workout structural changes preserve IDs, effort, idempotence and unique XP",async()=>{
- let w=await gym.startWorkout(owner,{id:randomUUID(),free:{exercises:[{exerciseId:"motion:squat",sets:[{reps:10}]}]}});
- const first=w.sets[0].id;
- w=await act(w,"edit",{edit:{kind:"copy",targetId:first}});const copied=w.sets[1].id;
- w=await act(w,"edit",{edit:{kind:"remove",targetId:first}});assert.equal(w.sets[w.cursor].id,copied);
- w=await act(w,"edit",{edit:{kind:"undo",targetId:first}});assert.equal(w.sets.filter((s:any)=>s.status==="pending").length,2);
- w=await act(w,"start");
- await assert.rejects(act(w,"edit",{edit:{kind:"replace",targetId:first,exerciseId:"motion:jumping_jack"}}),/当前组/);
- w=await act(w,"pause",{reps:6,effort:{kind:"rpe",value:7},notes:"备注"});assert.equal(w.sets[w.cursor].effort.value,7);
- w=await act(w,"complete",{reps:6});const elapsed=w.session.effectiveSeconds;
- w=await act(w,"rest",{restDelta:15});w=await act(w,"rest",{restSkip:true});assert.equal(w.session.effectiveSeconds,elapsed);
- const op={operationId:randomUUID(),version:w.version,action:"edit",edit:{kind:"add",exerciseId:"motion:jumping_jack"}};
- w=await gym.actWorkout(owner,w.id,op);const count=w.sets.length;w=await gym.actWorkout(owner,w.id,op);assert.equal(w.sets.length,count);
- await assert.rejects(gym.actWorkout(owner,w.id,{...op,operationId:randomUUID()}),/其他页面/);
- w=await act(w,"finish");assert.equal(w.session.xpEarned,0);
- const p=await gym.saveWorkoutPlan(owner,w.id,{name:"另存自由训练"});assert.ok(p.id);assert.equal(w.planId,null);
- await assert.rejects(gym.saveWorkoutPlan(other,w.id,{name:"越权"}));
+test("free workout structural changes preserve IDs, effort, idempotence and unique XP", async () => {
+  let w = await gym.startWorkout(owner, {
+    id: randomUUID(),
+    free: { exercises: [{ exerciseId: "motion:squat", sets: [{ reps: 10 }] }] },
+  });
+  const first = w.sets[0].id;
+  w = await act(w, "edit", { edit: { kind: "copy", targetId: first } });
+  const copied = w.sets[1].id;
+  w = await act(w, "edit", { edit: { kind: "remove", targetId: first } });
+  assert.equal(w.sets[w.cursor].id, copied);
+  w = await act(w, "edit", { edit: { kind: "undo", targetId: first } });
+  assert.equal(w.sets.filter((s: any) => s.status === "pending").length, 2);
+  w = await act(w, "start");
+  await assert.rejects(
+    act(w, "edit", {
+      edit: {
+        kind: "replace",
+        targetId: first,
+        exerciseId: "motion:jumping_jack",
+      },
+    }),
+    /当前组/,
+  );
+  w = await act(w, "pause", {
+    reps: 6,
+    effort: { kind: "rpe", value: 7 },
+    notes: "备注",
+  });
+  assert.equal(w.sets[w.cursor].effort.value, 7);
+  w = await act(w, "complete", { reps: 6 });
+  const elapsed = w.session.effectiveSeconds;
+  w = await act(w, "rest", { restDelta: 15 });
+  w = await act(w, "rest", { restSkip: true });
+  assert.equal(w.session.effectiveSeconds, elapsed);
+  const op = {
+    operationId: randomUUID(),
+    version: w.version,
+    action: "edit",
+    edit: { kind: "add", exerciseId: "motion:jumping_jack" },
+  };
+  w = await gym.actWorkout(owner, w.id, op);
+  const count = w.sets.length;
+  w = await gym.actWorkout(owner, w.id, op);
+  assert.equal(w.sets.length, count);
+  await assert.rejects(
+    gym.actWorkout(owner, w.id, { ...op, operationId: randomUUID() }),
+    /其他页面/,
+  );
+  w = await act(w, "finish");
+  assert.equal(w.session.xpEarned, 0);
+  const p = await gym.saveWorkoutPlan(owner, w.id, { name: "另存自由训练" });
+  assert.ok(p.id);
+  assert.equal(w.planId, null);
+  await assert.rejects(gym.saveWorkoutPlan(other, w.id, { name: "越权" }));
 });
-test("training preferences merge without losing account or body settings",async()=>{
- const prefs=require("../src/gym/preferences");await prefs.saveSettings(owner,{unit:"lb",effort:"rir",timeZone:"Pacific/Auckland"});
- await gym.saveMeasurement(owner,{date:"2026-10-17",weightKg:70,goalKg:68});
- assert.equal((await prefs.settings(owner)).unit,"lb");assert.equal((await prefs.settings(other)).unit,"kg");
- await assert.rejects(prefs.saveSettings(owner,{timeZone:"invalid/timezone"}));
+test("training preferences merge without losing account or body settings", async () => {
+  const prefs = require("../src/gym/preferences");
+  await prefs.saveSettings(owner, {
+    unit: "lb",
+    effort: "rir",
+    timeZone: "Pacific/Auckland",
+  });
+  await gym.saveMeasurement(owner, {
+    date: "2026-10-17",
+    weightKg: 70,
+    goalKg: 68,
+  });
+  assert.equal((await prefs.settings(owner)).unit, "lb");
+  assert.equal((await prefs.settings(other)).unit, "kg");
+  await assert.rejects(
+    prefs.saveSettings(owner, { timeZone: "invalid/timezone" }),
+  );
+});
+
+test("schedule moves retain collisions, optimistic exceptions and account timezone", async () => {
+  const { schedule, saveSchedule } = require("../src/gym/schedule");
+  const prefs = require("../src/gym/preferences");
+  await prefs.saveSettings(owner, { timeZone: "Asia/Shanghai" });
+  const p = await gym.savePlan(owner, {
+    name: "日程",
+    routines: [
+      {
+        id: "a",
+        name: "A",
+        weekdays: [1],
+        exercises: [{ exerciseId: "motion:squat", sets: [{}] }],
+      },
+      {
+        id: "b",
+        name: "B",
+        weekdays: [2],
+        exercises: [{ exerciseId: "motion:push_up", sets: [{}] }],
+      },
+    ],
+  });
+  await saveSchedule(owner, {
+    planId: p.id,
+    routineId: "a",
+    originalDate: "2026-10-19",
+    targetDate: "2026-10-20",
+    kind: "move",
+  });
+  let rows = await schedule(owner, { from: "2026-10-19", days: 2 });
+  assert.equal(
+    rows.entries.filter(
+      (e: any) => e.date === "2026-10-20" && e.plan.id === p.id,
+    ).length,
+    2,
+  );
+  await assert.rejects(
+    saveSchedule(owner, {
+      planId: p.id,
+      routineId: "a",
+      originalDate: "2026-10-19",
+      kind: "skip",
+    }),
+    /其他页面/,
+  );
+  await saveSchedule(owner, {
+    planId: p.id,
+    routineId: "a",
+    originalDate: "2026-10-19",
+    kind: "restore",
+    version: 1,
+  });
+  rows = await schedule(owner, { from: "2026-10-19", days: 1 });
+  assert.ok(rows.entries.some((e: any) => e.plan.id === p.id));
+  await assert.rejects(
+    saveSchedule(other, {
+      planId: p.id,
+      routineId: "a",
+      originalDate: "2026-10-19",
+      kind: "skip",
+    }),
+  );
+});
+test("custom exercise archive preserves snapshots; catalog Chinese names and aliases are independently extended", async () => {
+  const e = await gym.saveExercise(owner, {
+    nameZh: "归档动作",
+    bodyPart: "back",
+    equipment: "band",
+    target: "lats",
+    instructions: ["控制动作"],
+  });
+  let w = await gym.startWorkout(owner, {
+    id: randomUUID(),
+    free: { exercises: [{ exerciseId: e.id, sets: [{}] }] },
+  });
+  await gym.updateExercise(owner, e.id, { nameZh: "新名称", archived: true });
+  assert.equal(
+    (await gym.workout(owner, w.id)).sets[0].exercise.nameZh,
+    "归档动作",
+  );
+  assert.ok(!(await gym.library(owner, { q: "新名称" })).items.length);
+  assert.ok(
+    (await gym.library(owner, { q: "新名称", archived: "1" })).items.length,
+  );
+  await assert.rejects(gym.updateExercise(other, e.id, { archived: false }));
+  w = await act(w, "finish");
+  const all = await gym.allExercises(owner);
+  assert.ok(
+    all
+      .filter((e: any) => e.id.startsWith("exdb:"))
+      .every((e: any) => /[\u4e00-\u9fff]/.test(e.nameZh)),
+  );
+});
+
+test("rotation advances only after completing due routine; timed per-exercise suggestions are opt-in", async () => {
+  const p = await gym.savePlan(owner, {
+    name: "轮次",
+    mode: "rotation",
+    routines: [
+      {
+        id: "a",
+        name: "A",
+        exercises: [{ exerciseId: "motion:squat", sets: [{ reps: 1 }] }],
+      },
+      {
+        id: "b",
+        name: "B",
+        exercises: [
+          {
+            exerciseId: "motion:push_up",
+            progression: { mode: "time", incrementSeconds: 5 },
+            sets: [{ seconds: 1 }],
+          },
+        ],
+      },
+    ],
+  });
+  let w = await gym.startWorkout(owner, {
+    id: randomUUID(),
+    planId: p.id,
+    routineId: "b",
+  });
+  w = await act(w, "start");
+  await age(w, 2);
+  w = await act(w, "complete");
+  w = await act(w, "finish");
+  assert.equal(
+    (await gym.plans(owner)).items.find((x: any) => x.id === p.id)
+      .rotationCursor,
+    0,
+  );
+  const proposal = await gym.progression(owner, p.id);
+  assert.equal(proposal.suggestions[0].after.seconds, 6);
+  assert.equal(
+    (await gym.plans(owner)).items.find((x: any) => x.id === p.id).routines[1]
+      .exercises[0].sets[0].seconds,
+    1,
+  );
+  w = await gym.startWorkout(owner, {
+    id: randomUUID(),
+    planId: p.id,
+    routineId: "a",
+  });
+  w = await act(w, "start");
+  w = await act(w, "complete", { reps: 1 });
+  w = await act(w, "finish");
+  assert.equal(
+    (await gym.plans(owner)).items.find((x: any) => x.id === p.id)
+      .rotationCursor,
+    1,
+  );
+});
+test("analytics uses account dates, excludes warmups and bodyweight from Epley estimates", async () => {
+  const input = {
+    format: "strong",
+    text: "Date,Workout Name,Exercise Name,Weight,Reps,Seconds\n2026-10-10T18:30:00Z,曲线,徒手深蹲,20,5,1\n2026-10-11T18:30:00Z,曲线,徒手深蹲,0,10,1",
+  };
+  await imports.commitImport(owner, input);
+  const a = await gym.analytics(owner),
+    history = a.exerciseHistory["motion:squat"];
+  assert.ok(
+    history.find((x: any) => x.date === "2026-10-11").e1rm >= 20 * (1 + 5 / 30),
+  );
+  assert.equal(history.find((x: any) => x.date === "2026-10-12").e1rm, null);
+  assert.ok(a.muscleDetails.quadriceps.primary > 0);
+});
+
+test("versioned full transfer remaps ownership, resumes checkpoints and never restores XP or camera grades", async () => {
+  const transfer = require("../src/gym/transfer");
+  const c = await gym.saveExercise(owner, {
+    nameZh: "迁移动作",
+    bodyPart: "back",
+    equipment: "band",
+    target: "lats",
+    instructions: ["控制节奏"],
+  });
+  const p = await gym.savePlan(owner, {
+    name: "迁移计划",
+    routines: [
+      { id: "a", name: "A", exercises: [{ exerciseId: c.id, sets: [{}] }] },
+    ],
+  });
+  const root = {
+    format: "movemate-gym",
+    version: 2,
+    customExercises: [
+      { ...(await gym.allExercises(owner)).find((e: any) => e.id === c.id) },
+    ],
+    plans: [p],
+    workouts: [
+      {
+        id: "historical-full",
+        name: "历史",
+        createdAt: "2026-09-01T12:00:00Z",
+        phase: "finished",
+        sets: [
+          {
+            exercise: { id: c.id, name: "迁移动作" },
+            reps: 8,
+            loadKg: 10,
+            seconds: 65,
+            status: "completed",
+            inputMode: "camera",
+            notes: "恢复备注",
+            effort: { kind: "rpe", value: 7 },
+            score: { count: 8, total: 800 },
+          },
+        ],
+      },
+    ],
+    body: { items: [{ date: "2026-09-01", weightKg: 70 }] },
+    settings: { unit: "lb", timeZone: "Asia/Shanghai" },
+  };
+  const input = { format: "movemate", payload: root };
+  let preview = await transfer.previewTransfer(other, input);
+  assert.deepEqual(preview.missing, []);
+  const choices = Object.fromEntries(
+    preview.conflicts.map((x: any) => [x.key, "apply"]),
+  );
+  const op = {
+    ...input,
+    choices,
+    batchId: randomUUID(),
+    part: 0,
+    total: 1,
+    manifest: [gym.digest(root)],
+    previewHash: preview.previewHash,
+  };
+  let r = await transfer.commitTransfer(other, op);
+  assert.equal(r.cursor, 1);
+  assert.equal(r.xp, 0);
+  assert.deepEqual(await transfer.commitTransfer(other, op), r);
+  const imported = (await gym.listWorkouts(other)).find(
+    (w: any) => w.name === "历史",
+  );
+  assert.equal(imported.session, null);
+  assert.equal(imported.sets[0].inputMode, "manual");
+  assert.deepEqual(imported.sets[0].score, {});
+  assert.equal(imported.sets[0].notes, "恢复备注");
+  assert.equal(imported.sets[0].effort.value, 7);
+  assert.notEqual(imported.sets[0].exercise.id, c.id);
+  const ownPlan = (await gym.plans(other)).items.find(
+    (x: any) => x.name === "迁移计划",
+  );
+  assert.equal(
+    ownPlan.routines[0].exercises[0].exerciseId,
+    imported.sets[0].exercise.id,
+  );
+  assert.equal((await transfer.previewTransfer(other, input)).duplicates, 5);
+  await assert.rejects(transfer.commitTransfer(owner, op), /不属于/);
+  assert.equal((await gym.exportData(owner)).version, 2);
+});
+test("transfer refuses unknown mappings, unconfirmed conflicts, changed preview and out of order parts", async () => {
+  const transfer = require("../src/gym/transfer");
+  const root = {
+    format: "movemate-gym",
+    version: 2,
+    workouts: [
+      {
+        name: "未知历史",
+        createdAt: "2026-08-01T12:00:00Z",
+        sets: [{ exerciseId: "unknown-action", reps: 5, loadKg: 0 }],
+      },
+    ],
+  };
+  let input = { format: "movemate", payload: root, mapping: {} },
+    preview = await transfer.previewTransfer(other, input);
+  assert.deepEqual(preview.missing, ["unknown-action"]);
+  const op = {
+    ...input,
+    batchId: randomUUID(),
+    part: 0,
+    total: 1,
+    manifest: [gym.digest(root)],
+    previewHash: preview.previewHash,
+  };
+  await assert.rejects(transfer.commitTransfer(other, op), /匹配|映射/);
+  const mapped = { ...input, mapping: { "unknown-action": "motion:squat" } };
+  preview = await transfer.previewTransfer(other, mapped);
+  await assert.rejects(
+    transfer.commitTransfer(other, { ...op, ...mapped }),
+    /预览/,
+  );
+  await transfer.commitTransfer(other, {
+    ...op,
+    ...mapped,
+    previewHash: preview.previewHash,
+  });
+  const conflict = {
+    format: "movemate",
+    payload: {
+      format: "movemate-gym",
+      version: 2,
+      body: { items: [{ date: "2026-09-01", weightKg: 75, waistCm: 80 }] },
+    },
+  };
+  preview = await transfer.previewTransfer(other, conflict);
+  assert.equal(preview.conflicts.length, 1);
+  const b = {
+    ...conflict,
+    batchId: randomUUID(),
+    part: 0,
+    total: 1,
+    manifest: [gym.digest(conflict.payload)],
+    previewHash: preview.previewHash,
+  };
+  await assert.rejects(transfer.commitTransfer(other, b), /冲突/);
+  await transfer.commitTransfer(other, {
+    ...b,
+    choices: { [preview.conflicts[0].key]: "copy" },
+  });
+  const body = (await gym.measurements(other)).items.find(
+    (x: any) => x.date === "2026-09-01",
+  );
+  assert.equal(body.weightKg, 70);
+  assert.equal(body.waistCm, 80);
+  const next = {
+    ...op,
+    ...mapped,
+    batchId: randomUUID(),
+    part: 1,
+    total: 2,
+    manifest: [gym.digest(root), gym.digest(root)],
+    previewHash: (await transfer.previewTransfer(other, mapped)).previewHash,
+  };
+  await assert.rejects(transfer.commitTransfer(other, next), /断点/);
+});
+test("online plan checkpoints cut off disconnected time and preserve completed repetitions on recovery", async () => {
+  let w = await gym.startWorkout(owner, {
+    id: randomUUID(),
+    free: { exercises: [{ exerciseId: "motion:squat", sets: [{}] }] },
+  });
+  w = await act(w, "start");
+  await age(w, 180);
+  const last = Date.now() - 120000;
+  await pool.query("UPDATE sport_sessions SET metrics=$2 WHERE id=$1", [
+    w.session.id,
+    JSON.stringify({ planOnlineAt: last }),
+  ]);
+  w = await gym.readWorkout(owner, w.id);
+  assert.equal(w.phase, "paused");
+  assert.ok(
+    w.session.effectiveSeconds >= 59 && w.session.effectiveSeconds <= 61,
+  );
+  w = await act(w, "finish");
+  assert.equal(w.session.xpEarned, 1);
+  const end = await act(w, "finish");
+  assert.equal(end.session.xpEarned, 1);
+});
+
+test("a delayed offline pause cannot close a newer page's resumed interval", async () => {
+  let w = await gym.startWorkout(owner, {
+    id: randomUUID(),
+    free: { exercises: [{ exerciseId: "motion:squat", sets: [{}] }] },
+  });
+  w = await act(w, "start");
+  const stale = {
+    operationId: randomUUID(),
+    version: w.version,
+    action: "pause",
+    offline: true,
+  };
+  w = await act(w, "heartbeat");
+  await assert.rejects(gym.actWorkout(owner, w.id, stale), /其他页面/);
+  assert.equal((await gym.readWorkout(owner, w.id)).phase, "working");
+  w = await act(w, "finish");
 });

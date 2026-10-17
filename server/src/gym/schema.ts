@@ -1,4 +1,7 @@
 export const gymSchema = `
+CREATE TABLE IF NOT EXISTS gym_schedule(id TEXT PRIMARY KEY,user_id INTEGER NOT NULL REFERENCES users(id),plan_id TEXT NOT NULL,routine_id TEXT NOT NULL,original_date TEXT NOT NULL,target_date TEXT,kind TEXT NOT NULL,version INTEGER NOT NULL DEFAULT 1,UNIQUE(user_id,plan_id,routine_id,original_date));
+CREATE TABLE IF NOT EXISTS gym_import_batches(id TEXT PRIMARY KEY,user_id INTEGER NOT NULL REFERENCES users(id),fingerprint TEXT NOT NULL,data TEXT NOT NULL,created_at TEXT NOT NULL,UNIQUE(user_id,fingerprint));
+CREATE TABLE IF NOT EXISTS gym_restore_items(user_id INTEGER NOT NULL REFERENCES users(id),fingerprint TEXT NOT NULL,target_id TEXT,PRIMARY KEY(user_id,fingerprint));
 CREATE TABLE IF NOT EXISTS gym_exercises(id TEXT PRIMARY KEY,user_id INTEGER NOT NULL REFERENCES users(id),data TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS gym_favorites(user_id INTEGER NOT NULL REFERENCES users(id),exercise_id TEXT NOT NULL,PRIMARY KEY(user_id,exercise_id));
 CREATE TABLE IF NOT EXISTS gym_plans(id TEXT PRIMARY KEY,user_id INTEGER NOT NULL REFERENCES users(id),data TEXT NOT NULL,version INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL);

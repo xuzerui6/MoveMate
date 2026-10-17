@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import client, { getErrorMessage } from "../../api/client";
 import { useAuthStore } from "../../stores/authStore";
+import { readCache, writeCache } from "./offline";
 export { getErrorMessage };
 export async function request(
   method: string,
@@ -8,15 +9,41 @@ export async function request(
   body?: unknown,
   token = localStorage.getItem("token"),
 ): Promise<any> {
-  const response: any = await client.request({
-    method,
-    url: path,
-    data: body,
-    headers: { Authorization: "Bearer " + token },
-  });
-  return response.data;
+  const uid = useAuthStore.getState().user?.id;
+  const cacheable =
+    method.toUpperCase() === "GET" &&
+    uid != null &&
+    /^\/(exercises|training-plans|workout-sessions|training-settings|training-schedule|training-analytics|body-measurements)(?:[/?]|$)/.test(
+      path,
+    );
+  if (method.toUpperCase() !== "GET" && !navigator.onLine)
+    throw new Error("当前离线，正式操作需联网；草稿与未确认操作会保留");
+  try {
+    const response: any = await client.request({
+      method,
+      url: path,
+      data: body,
+      headers: { Authorization: "Bearer " + token },
+    });
+    if (
+      cacheable &&
+      useAuthStore.getState().user?.id === uid &&
+      localStorage.getItem("token") === token
+    )
+      writeCache(uid!, path, response.data);
+    return response.data;
+  } catch (error: any) {
+    if (cacheable && !error?.response) {
+      const cached = readCache(uid!, path);
+      if (cached)
+        return Object.assign(structuredClone(cached.data), { __offline: true });
+    }
+    throw error;
+  }
 }
 export async function beginWorkout(values: any) {
+  if (!navigator.onLine)
+    throw new Error("离线不能新建正式计时，请联网后再开始");
   const uid = useAuthStore.getState().user?.id,
     token = localStorage.getItem("token"),
     key = "gym:start:" + uid + ":" + JSON.stringify(values);
@@ -49,6 +76,7 @@ export async function beginWorkout(values: any) {
   }
 }
 export function useGymQuery(path: string) {
+  const uid = useAuthStore((s) => s.user?.id);
   const [data, setData] = useState<any>(null),
     [error, setError] = useState(""),
     [loading, setLoading] = useState(true),
@@ -56,6 +84,7 @@ export function useGymQuery(path: string) {
   useEffect(() => {
     let alive = true;
     setLoading(true);
+    setData(null);
     setError("");
     void request("GET", path)
       .then((value) => {
@@ -70,7 +99,7 @@ export function useGymQuery(path: string) {
     return () => {
       alive = false;
     };
-  }, [path, nonce]);
+  }, [path, nonce, uid]);
   const reload = useCallback(() => setNonce((n) => n + 1), []);
   return { data, error, loading, reload, setData };
 }
@@ -81,6 +110,24 @@ export const formatTime = (s: number) =>
     .toString()
     .padStart(2, "0")}`;
 export const partNames: Record<string, string> = {
+  quadriceps: "股四头肌",
+  hamstrings: "腘绳肌",
+  glutes: "臀肌",
+  calves: "小腿肌",
+  pectorals: "胸肌",
+  lats: "背阔肌",
+  biceps: "肱二头肌",
+  triceps: "肱三头肌",
+  abs: "腹肌",
+  delts: "三角肌",
+  traps: "斜方肌",
+  forearms: "前臂肌",
+  adductors: "内收肌",
+  abductors: "外展肌",
+  spine: "脊柱周围肌",
+  serratus_anterior: "前锯肌",
+  cardiovascular_system: "心肺",
+  obliques: "腹斜肌",
   assisted: "辅助器械",
   "medicine ball": "药球",
   "stability ball": "健身球",

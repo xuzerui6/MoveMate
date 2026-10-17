@@ -2,6 +2,7 @@
  * 认证状态管理 —— 用户登录、注册、登出、Token 持久化
  */
 import { create } from 'zustand';
+import {clearAccountCache} from '../features/gym/offline';
 import { isAxiosError } from 'axios';
 import type { User, LoginData, RegisterData } from '../types';
 import * as authApi from '../api/auth';
@@ -64,6 +65,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   setSession: (user, token = get().token) => {
+    const old=get().user?.id;if(old!=null&&old!==user?.id)clearAccountCache(old);
     const nextToken = user ? (token ?? null) : null;
     persistSession(user, nextToken);
     set({
@@ -118,6 +120,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   logout: () => {
+    const uid=get().user?.id;if(uid!=null)clearAccountCache(uid);
     persistSession(null, null);
     set({ user: null, token: null, isLoggedIn: false, loading: false, error: null });
   },

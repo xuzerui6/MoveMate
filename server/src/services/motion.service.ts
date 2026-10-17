@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import {onlineCutoff} from '../gym/online';
 import { pool, withTransaction, afterCommit } from '../db';
 import { ForbiddenError, InvalidStateError, NotFoundError, ValidationError } from '../utils/errors';
 import { pushToUser, broadcastToGame } from '../websocket/notification.handler';
@@ -18,7 +19,7 @@ const equipment = ['penguin_hood', 'sunset_bandana', 'ocean_wave_top', 'purple_s
 const slots: Record<string, string[]> = { head: ['penguin_hood','sunset_bandana'], top:['ocean_wave_top'], bottom:['purple_star_shorts'], shoes:['comet_running_shoes'], gloves:['sakura_gloves'], prop:['shiba_bottle'], badge:['emerald_star_medal'] };
 const defaultEquipment = { head:'penguin_hood', top:'ocean_wave_top', bottom:'purple_star_shorts', shoes:'comet_running_shoes', prop:'shiba_bottle', badge:'emerald_star_medal' };
 export interface SessionRow { id:string; user_id:number; game_id:number|null; sport_type:string; source:string; status:string; active_since:string|null; effective_ms:number; reps:number; metrics:string; xp:number; settled:number; created_at:string; ended_at:string|null; workout_id?:string }
-function elapsed(row: SessionRow, now = Date.now()) { return Number(row.effective_ms) + (row.status === 'running' && row.active_since ? Math.max(0, now - Date.parse(row.active_since)) : 0); }
+function elapsed(row: SessionRow, now = Date.now()) { return Number(row.effective_ms) + (row.status === 'running' && row.active_since ? Math.max(0, onlineCutoff(row,now) - Date.parse(row.active_since)) : 0); }
 function decode<T>(raw: string, fallback: T): T { try { return JSON.parse(raw); } catch { return fallback; } }
 export function sessionView(row: SessionRow) {
   return { id:row.id, workoutId:row.workout_id||undefined, gameId:row.game_id, sportType:row.sport_type, source:row.source, status:row.status, effectiveSeconds:Math.floor(elapsed(row)/1000), reps:row.reps, xpEarned:row.xp, settled:Boolean(row.settled), startTime:row.created_at, endTime:row.ended_at, metrics:decode(row.metrics,{}) };
@@ -106,6 +107,7 @@ async function settle(row: SessionRow, eligible = true) {
 }
 async function closeInterval(row:SessionRow, cutoff:number) {
   if(row.status !== 'running') return;
+  cutoff=onlineCutoff(row,cutoff);
   await pool.query('UPDATE sport_intervals SET ended_at=$2,effective_ms=$3 WHERE session_id=$1 AND ended_at IS NULL',
     [row.id,new Date(cutoff).toISOString(),row.active_since ? Math.max(0,cutoff-Date.parse(row.active_since)) : 0]);
 }
@@ -165,7 +167,7 @@ export async function settleGameSessions(game:any) {
     const eligible = checked >= 2 && member?.checked_in_at && (row.user_id === game.host_id || member.attendance_confirmed_at);
     const plan=(await pool.query('SELECT id,cursor FROM gym_workouts WHERE sport_session_id=$1',[row.id])).rows[0];
     if(plan){
-      await pool.query("UPDATE gym_sets SET seconds=seconds+$2,status='completed' WHERE workout_id=$1 AND status='working'",[plan.id,row.status==='running'&&row.active_since?Math.max(0,Math.floor((cutoff-Date.parse(row.active_since))/1000)):0]);
+      await pool.query("UPDATE gym_sets SET seconds=seconds+$2,status='completed' WHERE workout_id=$1 AND status='working'",[plan.id,row.status==='running'&&row.active_since?Math.max(0,Math.floor((onlineCutoff(row,cutoff)-Date.parse(row.active_since))/1000)):0]);
       const sets=(await pool.query("SELECT data,reps,input_mode,score FROM gym_sets WHERE workout_id=$1 AND status='completed'",[plan.id])).rows.filter(s=>s.input_mode==='camera');
       const count=sets.reduce((n,s)=>n+(decode<any>(s.score,{}).count||0),0),total=sets.reduce((n,s)=>n+(decode<any>(s.score,{}).total||0),0);
       row.metrics=JSON.stringify({...decode<any>(row.metrics,{}),formScore:count?Math.round(total/count):0,planSquatReps:sets.filter(s=>decode<any>(s.data,{}).exercise?.cameraType==='squat').reduce((n,s)=>n+s.reps,0)});

@@ -49,9 +49,12 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
     this.voicePool = new VoicePool(env.XIAOZHI_POOL_SECRET, this.generation);
     this.ready = ctx.blockConcurrencyWhile(async () => {
       const needsGymBackup = !ctx.storage.sql.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='gym_workouts'").toArray().length;
+      const needsStage2Backup = !ctx.storage.sql.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='gym_schedule'").toArray().length;
+      const beforeStage2 = needsStage2Backup ? await ctx.storage.getCurrentBookmark() : null;
       const beforeGym = needsGymBackup ? await ctx.storage.getCurrentBookmark() : null;
       await ctx.storage.transaction(async () => {
         this.db.bootstrap();
+        if(beforeStage2) this.migration.set('pre_gym_stage2_bookmark',JSON.stringify({bookmark:beforeStage2,createdAt:new Date().toISOString()}));
         if (beforeGym) this.migration.set('pre_gym_bookmark', JSON.stringify({bookmark:beforeGym,createdAt:new Date().toISOString()}));
       });
       await this.run(() => this.voicePool.restart());
@@ -81,7 +84,7 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
         if (!authorized(request, this.env.MIGRATION_SECRET)) return new Response('Unauthorized', { status: 401 });
         // Migration commands share the actor's database operation queue.
         if (path === '/api/migration/diagnostics') return Response.json((await pool.query("SELECT value FROM actor_meta WHERE key='voice_diagnostic'")).rows.map(row => JSON.parse(row.value)));
-        if (path === '/api/migration/gym-backup') return Response.json({backup:this.migration.meta('pre_gym_bookmark')||null});
+        if (path === '/api/migration/gym-backup') return Response.json({backup:this.migration.meta('pre_gym_bookmark')||null,stage2:this.migration.meta('pre_gym_stage2_bookmark')||null});
         const result = await withTransaction(() => this.migration.handle(request));
         await this.schedule(); return result;
       }

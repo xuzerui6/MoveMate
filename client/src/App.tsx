@@ -19,6 +19,8 @@ import { StoreProvider, useStore } from './features/motion/lib/store';
 import { HeartRateProvider } from './features/motion/hooks/useHeartRateMonitor';
 import { Home } from './features/motion/pages/Home';
 import './features/gym/gym.css';
+const TrainingSchedule=lazy(()=>import("./features/gym/Schedule"));
+const TrainingSettings=lazy(()=>import("./features/gym/Schedule").then(m=>({default:m.TrainingSettings})));
 const FreeWorkout=lazy(()=>import('./features/gym/FreeWorkout'));
 const PlanHub=lazy(()=>import('./features/gym/PlanHub'));
 const PlanEditor=lazy(()=>import('./features/gym/PlanEditor'));
@@ -32,13 +34,14 @@ const Training=lazy(()=>import('./features/motion/Training'));
 const History=lazy(()=>import('./features/motion/History'));
 const Avatar=lazy(()=>import('./features/motion/pages/Avatar').then(m=>({default:m.Avatar})));
 const Inventory=lazy(()=>import('./features/motion/pages/Inventory').then(m=>({default:m.Inventory})));
-function MotionView({children}:{children:React.ReactNode}){const {loaded,loading}=useStore();return <div className="motion-view">{loaded?children:<div className="motion-loading">{loading?'正在读取你的运动数据…':'运动数据尚未读取，请重试。'}</div>}</div>;}
+function MotionView({children}:{children:React.ReactNode}){const {loaded,loading,error}=useStore();return <div className="motion-view">{loaded?<>{error&&<p className="gym-error" role="status">{error}</p>}{children}</>:<div className="motion-loading">{loading?'正在读取你的运动数据…':'运动数据尚未读取，请重试。'}</div>}</div>;}
 function MotionHome(){const navigate=useNavigate();return <MotionView><Home start={()=>navigate('/train')}/></MotionView>;}
 function MotionAvatar(){const navigate=useNavigate();return <MotionView><Avatar inventory={()=>navigate('/inventory')}/></MotionView>;}
 function Pages(){return <BrowserRouter><ErrorBoundary><AvatarPreview/><Suspense fallback={<div className="motion-loading">正在加载…</div>}><Routes>
   <Route path="/login" element={<Login/>}/>
   <Route path="/" element={<ProtectedRoute><Layout/></ProtectedRoute>}>
     <Route index element={<MotionHome/>}/><Route path="train" element={<MotionView><Training/></MotionView>}/>
+    <Route path="train/schedule" element={<MotionView><TrainingSchedule/></MotionView>}/><Route path="train/settings" element={<MotionView><TrainingSettings/></MotionView>}/>
     <Route path="train/free" element={<MotionView><FreeWorkout/></MotionView>}/>
     <Route path="train/plans" element={<MotionView><PlanHub/></MotionView>}/>
     <Route path="train/plans/:planId/edit" element={<MotionView><PlanEditor/></MotionView>}/>

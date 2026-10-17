@@ -1,5 +1,6 @@
 import { z } from "zod";
 import catalogue from "./catalog.json";
+import zhTerms from "./zh-terms.json";
 export const cameraKeys = [
   "squat",
   "jumping_jack",
@@ -152,7 +153,20 @@ export const exercises: Exercise[] = [
   })),
   ...(catalogue as any[]).map((e) => ({
     ...e,
-    nameZh: e.nameZh || chineseName(e.name),
+    nameZh:
+      e.nameZh ||
+      chineseName(e.name).replace(
+        /[a-z]+/gi,
+        (word: string) =>
+          (zhTerms as Record<string, string>)[word.toLowerCase()] || word,
+      ),
+    aliases: [e.name, chineseName(e.name), e.target, e.equipment],
+    provenance: {
+      source: "exercises-dataset",
+      revision: "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
+      license: "MIT",
+      translation: "MoveMate 独立术语翻译",
+    },
     category:
       e.bodyPart === "cardio"
         ? "cardio"
@@ -173,6 +187,14 @@ export const setSchema = z.object({
   side: z.enum(["both", "each", "left", "right"]).default("both"),
   superset: z.string().max(20).default(""),
 });
+export const progressionSchema = z.object({
+  mode: z.enum(["off", "linear", "double", "triple", "time"]).default("off"),
+  incrementKg: z.number().min(0.25).max(20).default(2.5),
+  minReps: z.number().int().min(1).max(500).default(8),
+  maxReps: z.number().int().min(1).max(500).default(12),
+  maxSets: z.number().int().min(1).max(20).default(5),
+  incrementSeconds: z.number().int().min(1).max(300).default(5),
+});
 export const planSchema = z.object({
   name: z.string().trim().min(1).max(80),
   mode: z.enum(["weekly", "rotation"]).default("weekly"),
@@ -187,6 +209,7 @@ export const planSchema = z.object({
           .array(
             z.object({
               exerciseId: z.string().min(1).max(100),
+              progression: progressionSchema.optional(),
               sets: z.array(setSchema).min(1).max(20),
             }),
           )
@@ -196,15 +219,7 @@ export const planSchema = z.object({
     )
     .min(1)
     .max(14),
-  progression: z
-    .object({
-      mode: z.enum(["off", "linear", "double", "triple"]).default("off"),
-      incrementKg: z.number().min(0.25).max(20).default(2.5),
-      minReps: z.number().int().min(1).max(500).default(8),
-      maxReps: z.number().int().min(1).max(500).default(12),
-      maxSets: z.number().int().min(1).max(20).default(5),
-    })
-    .default({ mode: "off" }),
+  progression: progressionSchema.default({ mode: "off" }),
 });
 export type Plan = z.infer<typeof planSchema>;
 export const json = <T = any>(value: string, fallback: T = {} as T): T => {
