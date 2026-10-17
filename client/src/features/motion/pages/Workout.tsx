@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Header } from '../components/Header'
 import { Icon } from '../components/Icons'
 import { PoseCanvas } from '../components/PoseCanvas'
+import { RecognitionStatus } from '../components/RecognitionStatus'
 import { useXiaozhiCoach } from '../hooks/useXiaozhiCoach'
 import { createCueState, pickCue } from '../lib/coachCues'
 import { createCorrectionGateState, decideCorrectionCue, POSE_ISSUE_COPY } from '../lib/poseFeedback'
@@ -56,7 +57,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   useEffect(() => () => heartRef.current.disconnect(), [])
   const record = sessions.find(item => item.id === serverId.current) || restored
   const seconds = useSessionClock(record, paused || busy || ending)
-  const { metrics, demoLandmarks } = useExerciseMetrics(exerciseType, pose.landmarks, simulatedPose, active, paused || busy || ending,
+  const { metrics, diagnostics, demoLandmarks } = useExerciseMetrics(exerciseType, pose.landmarks, simulatedPose, active, paused || busy || ending,
     pose.videoRef.current?.videoWidth && pose.videoRef.current.videoHeight ? pose.videoRef.current.videoWidth / pose.videoRef.current.videoHeight : 1,
     restored ? { ...restored.metrics, reps: restored.reps } : {})
   const workout = useWorkoutSession(metrics, heartRate, active, paused || busy || ending, undefined, restored?.effectiveSeconds || 0, exerciseType, seconds, restored?.metrics)
@@ -261,6 +262,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
       {active && <section className="training-live-info" aria-label="本组训练数据">
         <div className="training-numbers"><div className="training-reps"><strong>{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}</span></div><div><strong>{format(seconds)}</strong><span>有效时长</span></div><div><strong>{metrics.reps ? metrics.formScore : '—'}</strong><span>动作评分</span></div></div>
         <div className={'training-hint' + (paused ? ' paused' : '')} role="status"><Icon name={paused ? 'pause' : 'spark'}/><p>{hint}</p></div>
+        <RecognitionStatus type={exerciseType} diagnostics={diagnostics} paused={paused || busy || ending} demo={simulatedPose}/>
         <div className="training-voice"><Icon name="mic" size={26}/><span><b>{voiceEnabled ? VOICE_LABEL[voice.state] : '语音陪练'}</b><small>{voiceEnabled ? voice.errorMessage || (voice.state === 'speaking' ? voice.reply : voice.transcript) || '连接后点击对话' : '语音指导你的动作节奏与要点'}</small></span>
           <button className="secondary" disabled={ending} onClick={!voiceEnabled ? toggleVoice : voice.state === 'idle' ? voice.wake : ['failed', 'fallback'].includes(voice.state) ? voice.retry : voice.inConversation ? voice.interrupt : toggleVoice}>{!voiceEnabled ? '开启' : voice.state === 'idle' ? '对话' : ['failed', 'fallback'].includes(voice.state) ? '重试' : voice.inConversation ? '打断' : '关闭'}</button>
         </div>

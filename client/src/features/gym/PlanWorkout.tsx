@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuthStore } from "../../stores/authStore";
 import { Header } from "../motion/components/Header";
 import { PoseCanvas } from "../motion/components/PoseCanvas";
+import { RecognitionStatus } from "../motion/components/RecognitionStatus";
 import { usePose } from "../motion/hooks/usePose";
 import { useExerciseMetrics } from "../motion/hooks/useExerciseMetrics";
 import { useXiaozhiCoach } from "../motion/hooks/useXiaozhiCoach";
@@ -124,7 +125,7 @@ export default function PlanWorkout() {
     () => restoredSetMetrics(current),
     [current?.id, recoveryKey],
   );
-  const { metrics } = useExerciseMetrics(
+  const { metrics, diagnostics } = useExerciseMetrics(
     type,
     pose.landmarks,
     false,
@@ -529,13 +530,14 @@ export default function PlanWorkout() {
                   <p>
                     {!working
                       ? "已暂停识别；继续后重新校准"
-                      : metrics.poseFeedback.message}
+                      : metrics.feedback}
                   </p>
                   <small>
                     {metrics.scoreAccumulator.count
                       ? `识别均分 ${metrics.formScore}`
                       : "尚无完整动作评分"}
                   </small>
+                  <RecognitionStatus type={type} diagnostics={diagnostics} paused={!working || busy || blocked}/>
                 </div>
               )}
               {current && (

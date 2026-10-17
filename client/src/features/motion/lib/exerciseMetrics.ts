@@ -13,7 +13,36 @@ export interface ExerciseMetrics extends WorkoutMetrics {
   lastRepIssues: PoseIssue[]
   repeatedIssue: PoseIssue | null
 }
-type Frame = { start: boolean; peak: boolean; side?: 'left' | 'right'; confidence: number; scores: FormBreakdown; score: number; issues: PoseIssue[] }
+type TrackingSide = 'left' | 'right'
+type Frame = { start: boolean; peak: boolean; side?: TrackingSide; trackingSide?: TrackingSide; angle?: number; confidence: number; scores: FormBreakdown; score: number; issues: PoseIssue[] }
+export interface RecognitionDiagnostics {
+  fps: number
+  confidence: number
+  side: TrackingSide | null
+  angle: number | null
+  stage: 'calibrating' | 'ready' | 'moving' | 'peak' | 'returning' | 'tracking_lost' | 'complete'
+  calibrationProgress: number
+  pairedSides: TrackingSide[]
+  lastResetReason: string | null
+}
+const leftSide = [11,13,15,23,27], rightSide = [12,14,16,24,28]
+const jointNames: Record<number,string> = {11:'左肩',12:'右肩',13:'左肘',14:'右肘',15:'左手腕',16:'右手腕',23:'左髋',24:'右髋',25:'左膝',26:'右膝',27:'左脚踝',28:'右脚踝'}
+const sideConfidence = (points: NormalizedLandmark[], indices: number[]) => Math.min(...indices.map(i => points[i]?.visibility ?? 0))
+function requiredJoints(type: CameraExerciseType, points: NormalizedLandmark[], side?: TrackingSide) {
+  if(type === 'push_up') {
+    const chosen = side || (visible(points,leftSide) && (!visible(points,rightSide) || sideConfidence(points,leftSide) >= sideConfidence(points,rightSide)) ? 'left' : 'right')
+    return chosen === 'left' ? leftSide : rightSide
+  }
+  return type === 'jumping_jack' ? [11,12,13,14,15,16,23,24,25,26,27,28] : [11,12,23,24,25,26,27,28]
+}
+function rejectedFrameReason(type: CameraExerciseType, points: NormalizedLandmark[], side?: TrackingSide) {
+  const required = requiredJoints(type,points,side)
+  const edge = required.find(i => points[i].x < .035 || points[i].x > .965 || points[i].y < .025 || points[i].y > .985)
+  if(edge !== undefined) return `${jointNames[edge]}靠近或超出画面边缘，请调整距离`
+  const hidden = required.find(i => (points[i].visibility ?? 0) < .55)
+  if(hidden !== undefined) return `${jointNames[hidden]}不够清晰，请调整光线或拍摄角度`
+  return '请从侧面拍摄伸臂支撑，让肩到脚踝的身体连线清晰可见'
+}
 const clamp = (n: number) => Math.min(100, Math.max(0, n))
 const mean = (a: number, b: number) => (a + b) / 2
 const angle = (a: NormalizedLandmark, b: NormalizedLandmark, c: NormalizedLandmark) => {
@@ -29,21 +58,16 @@ const visible = (points: NormalizedLandmark[], indices: number[]) => indices.eve
 })
 
 /** Thresholds are local heuristics, independently tunable after real-camera calibration. */
-export function analyzeExerciseFrame(type: CameraExerciseType, raw: NormalizedLandmark[], aspect = 1): Frame | null {
+export function analyzeExerciseFrame(type: CameraExerciseType, raw: NormalizedLandmark[], aspect = 1, trackingSide?: TrackingSide): Frame | null {
   if (raw.length < 29 || !Number.isFinite(aspect) || aspect <= 0) return null
+  const required = requiredJoints(type,raw,trackingSide)
+  if(!visible(raw,required))return null
   if (type === 'squat') {
     const s=analyzeSquatFrame(raw,aspect); if(!s)return null
     const phase: WorkoutPhase = s.kneeAngle<=102?'bottom':s.kneeAngle>=158?'standing':'descending'
-    return { start:s.kneeAngle>=158,peak:s.kneeAngle<=102,confidence:s.confidence,
+    return { start:s.kneeAngle>=158,peak:s.kneeAngle<=102,angle:s.kneeAngle,confidence:s.confidence,
       scores:{depth:s.depthScore,stability:s.stabilityScore,trunk:s.trunkScore,symmetry:s.symmetryScore},score:s.formScore,issues:detectPoseIssues(s,phase,true).issues }
   }
-  let required=[11,12,23,24,25,26,27,28]
-  if(type==='jumping_jack')required.push(13,14,15,16)
-  if(type==='push_up') {
-    const left=[11,13,15,23,27],right=[12,14,16,24,28]
-    required=visible(raw,left)&&(!visible(raw,right)||Math.min(...left.map(i=>raw[i].visibility))>=Math.min(...right.map(i=>raw[i].visibility)))?left:right
-  }
-  if(!visible(raw,required))return null
   const p=raw.map(v=>({...v,x:v.x*aspect}))
   const confidence=Math.min(...required.map(i=>raw[i].visibility))
   const hip={...p[23],x:mean(p[23].x,p[24].x),y:mean(p[23].y,p[24].y)}
@@ -51,7 +75,7 @@ export function analyzeExerciseFrame(type: CameraExerciseType, raw: NormalizedLa
   const width=Math.max(.04,distance(p[11],p[12]))
   const torso=Math.max(.05,distance(hip,shoulder))
   const upright=clamp(100-Math.max(0,Math.abs(shoulder.x-hip.x)/torso-.12)*150)
-  let start=false,peak=false,side: Frame['side'],scores=emptyFormBreakdown()
+  let start=false,peak=false,side: Frame['side'],measuredAngle:number|undefined,scores=emptyFormBreakdown()
   if(type==='jumping_jack') {
     const spread=Math.abs(p[27].x-p[28].x)/width
     const armRise=(shoulder.y-mean(p[15].y,p[16].y))/torso
@@ -69,6 +93,7 @@ export function analyzeExerciseFrame(type: CameraExerciseType, raw: NormalizedLa
   } else {
     const [s,e,w,h,a]=required
     const elbow=angle(p[s],p[e],p[w]),line=angle(p[s],p[h],p[a])
+    measuredAngle=elbow
     // Reject standing bends: shoulder-to-ankle line must be predominantly horizontal.
     if(Math.abs(p[s].x-p[a].x)<Math.abs(p[s].y-p[a].y)*1.2)return null
     start=elbow>=158;peak=elbow<=102
@@ -79,11 +104,12 @@ export function analyzeExerciseFrame(type: CameraExerciseType, raw: NormalizedLa
   if(scores.stability<72)issues.push('unstable_movement')
   if(scores.trunk<70)issues.push('body_alignment')
   if(scores.symmetry<70)issues.push('poor_coordination')
-  return {start,peak,side,confidence,scores,score:weights(scores),issues}
+  return {start,peak,side,angle:measuredAngle,trackingSide:type==='push_up'?(required===leftSide?'left':'right'):undefined,confidence,scores,score:weights(scores),issues}
 }
 
 export class ExerciseTracker {
   metrics: ExerciseMetrics
+  diagnostics: RecognitionDiagnostics = {fps:0,confidence:0,side:null,angle:null,stage:'calibrating',calibrationProgress:0,pairedSides:[],lastResetReason:null}
   private frames: NormalizedLandmark[][]=[]
   private calibrationAt: number|null=null
   private calibrated=false
@@ -94,6 +120,9 @@ export class ExerciseTracker {
   private pair=new Map<string,Frame>()
   private issues=new Set<PoseIssue>()
   private consecutive:Partial<Record<PoseIssue,number>>={}
+  private trackingSide: TrackingSide | undefined
+  private lastFrameAt: number | null = null
+  private frameTimes: number[] = []
   constructor(readonly type:CameraExerciseType, targetReps=20, restored:Partial<ExerciseMetrics>={}) {
     const reps=Math.max(0,restored.reps||0),breakdown={...emptyFormBreakdown(),...restored.formBreakdown}
     const acc=restored.scoreAccumulator || {count:reps,total:(restored.formScore||0)*reps,...Object.fromEntries(axes.map(k=>[k,breakdown[k]*reps]))} as ScoreAccumulator
@@ -103,22 +132,40 @@ export class ExerciseTracker {
     const issues=frame?.issues||['out_of_frame'],primaryIssue=issues[0]||null
     return {status:!frame||!calibrated?'uncertain':primaryIssue?'adjust':'stable',confidence:frame?.confidence||0,issues,primaryIssue,affectedJoints:primaryIssue?POSE_ISSUE_COPY[primaryIssue].joints:[],calibrated,message:!frame?exerciseInfo(this.type).placement:!calibrated?(this.type==='push_up'?'保持伸臂支撑，正在校准':'保持自然站姿，正在校准'):primaryIssue?POSE_ISSUE_COPY[primaryIssue].action:'姿势稳定，保持这个节奏'}
   }
-  interrupt() {
+  interrupt(reason = '训练暂停或已停止，继续后重新校准') {
     this.frames=[];this.calibrationAt=null;this.calibrated=false;this.armed=false;this.peakAt=null;this.peak=null;this.returnAt=null;this.pair.clear();this.issues.clear();this.consecutive={}
-    this.metrics={...this.metrics,phase:'standing',poseFeedback:this.feedback(null,false),feedback:exerciseInfo(this.type).placement}
+    this.trackingSide=undefined;this.lastFrameAt=null;this.frameTimes=[]
+    this.diagnostics={...this.diagnostics,fps:0,confidence:0,side:null,angle:null,stage:'tracking_lost',calibrationProgress:0,pairedSides:[],lastResetReason:reason}
+    this.metrics={...this.metrics,phase:'standing',poseFeedback:{...this.feedback(null,false),message:reason},feedback:reason}
     return this.metrics
   }
   update(raw:NormalizedLandmark[]|null,now:number,aspect=1):ExerciseMetrics {
-    if(!raw || !analyzeExerciseFrame(this.type,raw,aspect))return this.interrupt()
+    if(!raw)return this.interrupt('未检测到人体，请确认所需关节都在画面内')
+    if(raw.length<29 || raw.some(p=>!p || !Number.isFinite(p.x) || !Number.isFinite(p.y) || (p.visibility!==undefined&&!Number.isFinite(p.visibility))) || !Number.isFinite(aspect) || aspect<=0 || !Number.isFinite(now))return this.interrupt('关键点数据不完整，正在等待有效画面')
+    if(this.lastFrameAt!==null && now<=this.lastFrameAt)return this.metrics
+    if(this.lastFrameAt!==null && now-this.lastFrameAt>750)this.interrupt('画面更新中断，已丢弃半程动作，请重新校准')
+    this.lastFrameAt=now
+    this.frameTimes=[...this.frameTimes,now].filter(time=>now-time<=2000).slice(-120)
+    const elapsed=now-this.frameTimes[0]
+    this.diagnostics={...this.diagnostics,fps:elapsed>0?Math.round((this.frameTimes.length-1)*1000/elapsed):0}
+    // Severe loss must never be concealed by old, smoothed poses. Marginal noise
+    // (.25–.55) is filtered first; sustained uncertainty still fails the median.
+    const required=requiredJoints(this.type,raw,this.trackingSide)
+    if(required.some(i=>(raw[i].visibility??0)<.25 || raw[i].x<0 || raw[i].x>1 || raw[i].y<0 || raw[i].y>1))return this.interrupt(rejectedFrameReason(this.type,raw,this.trackingSide))
     this.frames=[...this.frames,raw].slice(-5)
-    const points=medianLandmarks(this.frames),frame=points?analyzeExerciseFrame(this.type,points,aspect):null
-    if(!frame)return this.interrupt()
+    const points=medianLandmarks(this.frames),frame=points?analyzeExerciseFrame(this.type,points,aspect,this.trackingSide):null
+    if(!frame)return this.interrupt(points?rejectedFrameReason(this.type,points,this.trackingSide):'正在等待完整人体关键点')
+    if(this.type==='push_up' && !this.trackingSide && frame.start)this.trackingSide=frame.trackingSide
+    this.diagnostics={...this.diagnostics,confidence:frame.confidence,side:this.trackingSide||frame.trackingSide||null,angle:frame.angle??null}
     if(!this.calibrated) {
       if(!frame.start)this.calibrationAt=null
       else if(this.calibrationAt===null)this.calibrationAt=now
       else if(now-this.calibrationAt>=2000){this.calibrated=true;this.armed=true}
       const feedback=this.feedback(frame,this.calibrated)
-      this.metrics={...this.metrics,poseFeedback:feedback,feedback:feedback.message};return this.metrics
+      const progress=this.calibrationAt===null?0:Math.min(1,(now-this.calibrationAt)/2000)
+      this.diagnostics={...this.diagnostics,stage:this.calibrated?'ready':'calibrating',calibrationProgress:progress}
+      const message=this.calibrated?'校准完成，可以开始完整动作':frame.start?`${feedback.message}（${Math.round(progress*100)}%）`:this.type==='push_up'?'先保持伸臂支撑，再开始动作':'先回到自然站姿，再开始动作'
+      this.metrics={...this.metrics,poseFeedback:feedback,feedback:message};return this.metrics
     }
     const feedback=this.feedback(frame,true)
     let phase:WorkoutPhase=frame.start?'standing':this.peak?'ascending':'descending'
@@ -128,6 +175,7 @@ export class ExerciseTracker {
       if(now-this.peakAt>=150 && (!this.peak || frame.score>=this.peak.score))this.peak=frame
     } else this.peakAt=null
     if(this.armed && !frame.start)frame.issues.forEach(i=>this.issues.add(i))
+    let completedRep=false
     if(this.peak && frame.start) {
       if(this.returnAt===null)this.returnAt=now
       if(now-this.returnAt>=150) {
@@ -148,12 +196,24 @@ export class ExerciseTracker {
           let repeated:PoseIssue|null=null
           for(const i of Object.keys(counts) as PoseIssue[]){if(repIssues.includes(i))counts[i]++;this.consecutive[i]=repIssues.includes(i)?(this.consecutive[i]||0)+1:0;if((this.consecutive[i]||0)>=2)repeated=i}
           this.metrics={...this.metrics,reps:this.metrics.reps+1,formScore:Math.round(acc.total/acc.count),perfectReps:this.metrics.perfectReps+(completed.score>=90?1:0),scoreAccumulator:acc,formBreakdown:breakdown,correctionCounts:counts,lastRepIssues:repIssues,repeatedIssue:repeated}
+          completedRep=true
           this.issues.clear()
         }
         this.peak=null;this.peakAt=null;this.returnAt=null
+        this.trackingSide=undefined
       }
     } else this.returnAt=null
-    this.metrics={...this.metrics,phase,poseFeedback:feedback,feedback:this.metrics.reps>=this.metrics.targetReps?'已完成目标次数':feedback.message}
+    const stage=this.metrics.reps>=this.metrics.targetReps?'complete':this.peak?(frame.start?'returning':'peak'):frame.peak?'peak':frame.start?'ready':'moving'
+    this.diagnostics={...this.diagnostics,stage,pairedSides:[...this.pair.keys()] as TrackingSide[],calibrationProgress:1}
+    const instructions = {
+      squat: {ready:'站姿就绪，开始下蹲',moving:'继续下蹲，尚未达到计数深度',peak:'已到下蹲位置，请回到站立',returning:'保持站立，正在确认本次动作'},
+      jumping_jack: {ready:'手脚合拢就绪，可以开始',moving:'手脚一起展开，双手抬过肩部',peak:'已完成展开，请让手脚一起合拢',returning:'保持合拢，正在确认本次动作'},
+      high_knees: {ready:'双脚落下就绪，交替抬腿',moving:'继续抬腿，尚未达到计数高度',peak:'已抬腿，请落下后换另一侧',returning:'保持落下，正在确认这一侧'},
+      push_up: {ready:'伸臂支撑就绪，可以开始下降',moving:'继续屈肘，尚未达到计数幅度',peak:'已完成下降，请推起回到伸臂支撑',returning:'保持伸臂，正在确认本次动作'},
+    }[this.type]
+    const pairMessage=this.type==='high_knees'&&frame.start&&this.pair.size===1?`已完成${this.pair.has('left')?'左':'右'}侧，请完成${this.pair.has('left')?'右':'左'}侧后计一组`:null
+    const message=stage==='complete'?'已完成目标次数':completedRep?`已记录第 ${this.metrics.reps} ${exerciseInfo(this.type).unit}`:frame.peak&&!this.peak?'幅度已达到，正在确认动作，请保持平稳':pairMessage||instructions[stage as keyof typeof instructions]
+    this.metrics={...this.metrics,phase,poseFeedback:feedback,feedback:message}
     return this.metrics
   }
 }

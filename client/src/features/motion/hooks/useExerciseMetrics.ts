@@ -7,9 +7,10 @@ export function useExerciseMetrics(type:CameraExerciseType, landmarks:Normalized
   const tracker=useRef<ExerciseTracker>()
   const key=type+':'+resetKey+':'+targetReps,trackerKey=useRef('')
   if(!tracker.current||trackerKey.current!==key){tracker.current=new ExerciseTracker(type,targetReps,restored);trackerKey.current=key}
-  const [snapshot,setSnapshot]=useState(()=>({key,metrics:tracker.current!.metrics}))
-  const setMetrics=(metrics:ExerciseMetrics)=>setSnapshot({key,metrics})
+  const [snapshot,setSnapshot]=useState(()=>({key,metrics:tracker.current!.metrics,diagnostics:tracker.current!.diagnostics}))
+  const setMetrics=(metrics:ExerciseMetrics)=>setSnapshot({key,metrics,diagnostics:tracker.current!.diagnostics})
   const metrics=snapshot.key===key?snapshot.metrics:tracker.current.metrics
+  const diagnostics=snapshot.key===key?snapshot.diagnostics:tracker.current.diagnostics
   const [demoLandmarks,setDemoLandmarks]=useState<NormalizedLandmark[]|null>(null)
   useEffect(()=>{if(!active||paused)setMetrics({...tracker.current!.interrupt()})},[active,paused,key])
   useEffect(()=>{
@@ -27,5 +28,5 @@ export function useExerciseMetrics(type:CameraExerciseType, landmarks:Normalized
     }
     tick();const interval=window.setInterval(tick,100);return()=>window.clearInterval(interval)
   },[active,paused,simulated,type,key])
-  return {metrics,demoLandmarks}
+  return {metrics,diagnostics,demoLandmarks}
 }

@@ -46,14 +46,15 @@ export function usePose(active: boolean) {
   }, [stop])
   useEffect(() => {
     if (!active || status !== 'ready') return
-    let last = -1
+    let last = -1, detectedAt = performance.now(), stalled = false
     const loop = () => {
       const video = videoRef.current
       if (video && video.readyState >= 2 && model.current && video.currentTime !== last) {
         last = video.currentTime
-        try { setLandmarks(model.current.detectForVideo(video, performance.now()).landmarks[0] || null) }
+        try { const now=performance.now(); setLandmarks(model.current.detectForVideo(video, now).landmarks[0] || null); detectedAt=now; stalled=false }
         catch { scope.current.cancel(); model.current = null; setLandmarks(null); setStatus('error'); return }
       }
+      else if(!stalled && performance.now()-detectedAt>1000){stalled=true;setLandmarks(null)}
       raf.current = requestAnimationFrame(loop)
     }
     loop(); return () => cancelAnimationFrame(raf.current)

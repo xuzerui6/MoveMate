@@ -1,0 +1,8 @@
+.recognition-status{margin:12px 0;color:var(--muted,#65736b);font-size:13px;line-height:1.65;min-width:0}
+.recognition-status .recognition-stage{margin:0 0 4px;color:var(--ink,#122019);font-size:13px;overflow-wrap:anywhere}
+.recognition-diagnostics summary{min-height:44px;display:list-item;align-content:center;cursor:pointer;list-style-position:inside}
+.recognition-diagnostics summary:focus-visible{outline:2px solid var(--green,#088c45);outline-offset:3px;border-radius:4px}
+.recognition-diagnostics dl{margin:4px 0 8px;display:grid;gap:4px}
+.recognition-diagnostics dl>div{display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap}
+.recognition-diagnostics dt{font-weight:500}.recognition-diagnostics dd{margin:0;text-align:right;max-width:100%;overflow-wrap:anywhere}
+.recognition-diagnostics p{font-size:12px;margin:0}
