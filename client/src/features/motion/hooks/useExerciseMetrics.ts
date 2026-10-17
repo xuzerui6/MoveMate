@@ -3,7 +3,7 @@ import type { NormalizedLandmark } from '@mediapipe/tasks-vision'
 import { demonstrationPose, ExerciseTracker, type ExerciseMetrics } from '../lib/exerciseMetrics'
 import type { CameraExerciseType } from '../lib/exercises'
 
-export function useExerciseMetrics(type:CameraExerciseType, landmarks:NormalizedLandmark[]|null, simulated:boolean, active:boolean, paused:boolean, aspect:number, restored:Partial<ExerciseMetrics>={}, targetReps=20, resetKey='standalone') {
+export function useExerciseMetrics(type:CameraExerciseType, landmarks:NormalizedLandmark[]|null, simulated:boolean, active:boolean, paused:boolean, aspect:number, restored:Partial<ExerciseMetrics>={}, targetReps=20, resetKey='standalone', worldLandmarks:NormalizedLandmark[]|null=null) {
   const tracker=useRef<ExerciseTracker>()
   const key=type+':'+resetKey+':'+targetReps,trackerKey=useRef('')
   if(!tracker.current||trackerKey.current!==key){tracker.current=new ExerciseTracker(type,targetReps,restored);trackerKey.current=key}
@@ -15,8 +15,8 @@ export function useExerciseMetrics(type:CameraExerciseType, landmarks:Normalized
   useEffect(()=>{if(!active||paused)setMetrics({...tracker.current!.interrupt()})},[active,paused,key])
   useEffect(()=>{
     if(!active||paused||simulated)return
-    setMetrics({...tracker.current!.update(landmarks,performance.now(),aspect)})
-  },[active,paused,simulated,landmarks,aspect,key])
+    setMetrics({...tracker.current!.update(landmarks,performance.now(),aspect,worldLandmarks)})
+  },[active,paused,simulated,landmarks,worldLandmarks,aspect,key])
   useEffect(()=>{
     if(!active||paused||!simulated)return
     const start=performance.now()

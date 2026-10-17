@@ -19,6 +19,8 @@ export function RecognitionStatus({type,diagnostics,paused=false,demo=false}:{ty
         <div><dt>关键关节置信度</dt><dd>{paused?'—':Math.round(diagnostics.confidence*100)+'%'}</dd></div>
         {type==='push_up'&&<div><dt>跟踪侧</dt><dd>{diagnostics.side===null?'待选择':diagnostics.side==='left'?'左侧':'右侧'}</dd></div>}
         {(type==='push_up'||type==='squat')&&<div><dt>{type==='push_up'?'肘角':'膝角'}</dt><dd>{paused||diagnostics.angle===null?'—':Math.round(diagnostics.angle)+'°'}</dd></div>}
+        {diagnostics.basis&&<div><dt>计数依据</dt><dd>{diagnostics.basis}</dd></div>}
+        {diagnostics.motion&&<div><dt>动作幅度</dt><dd>{paused?'—':diagnostics.motion}</dd></div>}
         <div><dt>最近重置原因</dt><dd>{diagnostics.lastResetReason||'暂无'}</dd></div>
       </dl><p>诊断数据仅在当前页面内存中使用，不上传或保存。{demo?'当前是演示，不是摄像头识别结果。':''}</p>
     </details>

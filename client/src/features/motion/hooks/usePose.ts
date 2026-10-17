@@ -4,14 +4,16 @@ import { ResourceScope } from '../lib/sessionRuntime'
 
 export function usePose(active: boolean) {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [landmarks, setLandmarks] = useState<NormalizedLandmark[] | null>(null)
+  // Keep image and world coordinates from the same inference together.
+  const [sample, setSample] = useState<{landmarks:NormalizedLandmark[]|null;worldLandmarks:NormalizedLandmark[]|null}>({landmarks:null,worldLandmarks:null})
+  const clearSample=()=>setSample({landmarks:null,worldLandmarks:null})
   const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'denied' | 'error'>('idle')
   const model = useRef<PoseLandmarker | null>(null), raf = useRef(0)
   const scope = useRef(new ResourceScope()), mounted = useRef(true)
   const stop = useCallback(() => {
     scope.current.cancel(); cancelAnimationFrame(raf.current); model.current = null
     if (videoRef.current) videoRef.current.srcObject = null
-    if (mounted.current) { setLandmarks(null); setStatus('idle') }
+    if (mounted.current) { setSample({landmarks:null,worldLandmarks:null}); setStatus('idle') }
   }, [])
   const start = useCallback(async () => {
     stop()
@@ -39,7 +41,7 @@ export function usePose(active: boolean) {
     } catch (error) {
       const cancelled = current.cancelled; current.cancel()
       if (!mounted.current || scope.current !== current || cancelled) return false
-      model.current = null; setLandmarks(null)
+      model.current = null; clearSample()
       setStatus(error instanceof DOMException && error.name === 'NotAllowedError' ? 'denied' : 'error')
       return false
     }
@@ -51,14 +53,14 @@ export function usePose(active: boolean) {
       const video = videoRef.current
       if (video && video.readyState >= 2 && model.current && video.currentTime !== last) {
         last = video.currentTime
-        try { const now=performance.now(); setLandmarks(model.current.detectForVideo(video, now).landmarks[0] || null); detectedAt=now; stalled=false }
-        catch { scope.current.cancel(); model.current = null; setLandmarks(null); setStatus('error'); return }
+        try { const now=performance.now(),result=model.current.detectForVideo(video, now); setSample({landmarks:result.landmarks[0]||null,worldLandmarks:result.worldLandmarks?.[0]||null}); detectedAt=now; stalled=false }
+        catch { scope.current.cancel(); model.current = null; clearSample(); setStatus('error'); return }
       }
-      else if(!stalled && performance.now()-detectedAt>1000){stalled=true;setLandmarks(null)}
+      else if(!stalled && performance.now()-detectedAt>1000){stalled=true;clearSample()}
       raf.current = requestAnimationFrame(loop)
     }
     loop(); return () => cancelAnimationFrame(raf.current)
   }, [active, status])
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; stop() } }, [stop])
-  return { videoRef, landmarks, status, start, stop }
+  return { videoRef, ...sample, status, start, stop }
 }

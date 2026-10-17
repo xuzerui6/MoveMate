@@ -8,6 +8,7 @@ export interface SquatFrameAnalysis {
   symmetryScore: number
   formScore: number
   confidence: number
+  angleSource: 'world' | 'image'
 }
 
 const clamp = (value: number, min = 0, max = 100) => Math.min(max, Math.max(min, value))
@@ -20,15 +21,24 @@ const angle = (a: NormalizedLandmark, b: NormalizedLandmark, c: NormalizedLandma
 const distance = (a: NormalizedLandmark, b: NormalizedLandmark) => Math.hypot(a.x - b.x, a.y - b.y)
 const midpoint = (a: NormalizedLandmark, b: NormalizedLandmark): NormalizedLandmark => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, z: ((a.z || 0) + (b.z || 0)) / 2, visibility: Math.min(a.visibility || 1, b.visibility || 1) })
 
-export function analyzeSquatFrame(points: NormalizedLandmark[], aspectRatio = 1): SquatFrameAnalysis | null {
+export function analyzeSquatFrame(points: NormalizedLandmark[], aspectRatio = 1, world?: NormalizedLandmark[] | null): SquatFrameAnalysis | null {
   if (points.length < 29) return null
   const required = [11, 12, 23, 24, 25, 26, 27, 28]
   const confidence = Math.min(...required.map(index => points[index].visibility ?? 0))
   if (confidence < .55) return null
   if (required.some(index => points[index].x < .035 || points[index].x > .965 || points[index].y < .025 || points[index].y > .985)) return null
   points = points.map(p => ({ ...p, x: p.x * aspectRatio }))
-  const leftKnee = angle(points[23], points[25], points[27])
-  const rightKnee = angle(points[24], points[26], points[28])
+  const worldAngle=(a:NormalizedLandmark,b:NormalizedLandmark,c:NormalizedLandmark)=>{
+    const u=[a.x-b.x,a.y-b.y,a.z-b.z],v=[c.x-b.x,c.y-b.y,c.z-b.z]
+    const denominator=Math.hypot(...u)*Math.hypot(...v)
+    return denominator>1e-6?Math.acos(Math.max(-1,Math.min(1,u.reduce((sum,n,i)=>sum+n*v[i],0)/denominator)))*180/Math.PI:NaN
+  }
+  const validWorld=!!world&&[23,24,25,26,27,28].every(i=>world[i]&&[world[i].x,world[i].y,world[i].z].every(Number.isFinite))
+  const leftWorld=validWorld?worldAngle(world![23],world![25],world![27]):NaN
+  const rightWorld=validWorld?worldAngle(world![24],world![26],world![28]):NaN
+  const useWorld=Number.isFinite(leftWorld)&&Number.isFinite(rightWorld)
+  const leftKnee = useWorld?leftWorld:angle(points[23], points[25], points[27])
+  const rightKnee = useWorld?rightWorld:angle(points[24], points[26], points[28])
   const kneeAngle = (leftKnee + rightKnee) / 2
   const depthScore = clamp((125 - kneeAngle) / 35 * 100)
   const symmetryScore = clamp(100 - Math.abs(leftKnee - rightKnee) * 2.5)
@@ -39,5 +49,5 @@ export function analyzeSquatFrame(points: NormalizedLandmark[], aspectRatio = 1)
   const trunkTilt = Math.abs(Math.atan2(shoulderMid.x - hipMid.x, hipMid.y - shoulderMid.y) * 180 / Math.PI)
   const trunkScore = clamp(100 - Math.max(0, trunkTilt - 10) * 3.5)
   const formScore = Math.round(depthScore * .35 + stabilityScore * .25 + trunkScore * .20 + symmetryScore * .20)
-  return { kneeAngle, depthScore, stabilityScore, trunkScore, symmetryScore, formScore, confidence }
+  return { kneeAngle, depthScore, stabilityScore, trunkScore, symmetryScore, formScore, confidence, angleSource:useWorld?'world':'image' }
 }

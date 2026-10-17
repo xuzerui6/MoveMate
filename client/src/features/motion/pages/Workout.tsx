@@ -59,7 +59,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const seconds = useSessionClock(record, paused || busy || ending)
   const { metrics, diagnostics, demoLandmarks } = useExerciseMetrics(exerciseType, pose.landmarks, simulatedPose, active, paused || busy || ending,
     pose.videoRef.current?.videoWidth && pose.videoRef.current.videoHeight ? pose.videoRef.current.videoWidth / pose.videoRef.current.videoHeight : 1,
-    restored ? { ...restored.metrics, reps: restored.reps } : {})
+    restored ? { ...restored.metrics, reps: restored.reps } : {},20,'standalone',pose.worldLandmarks)
   const workout = useWorkoutSession(metrics, heartRate, active, paused || busy || ending, undefined, restored?.effectiveSeconds || 0, exerciseType, seconds, restored?.metrics)
   const session = workout.session
   const progress = useRef<Record<string, unknown>>({})

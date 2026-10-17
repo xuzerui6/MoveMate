@@ -137,6 +137,7 @@ export default function PlanWorkout() {
     restored,
     current?.targetReps || 20,
     (current?.id || "none") + ":" + recoveryKey,
+    pose.worldLandmarks,
   );
   const snapshot = useRef<any>({});
   snapshot.current = camera
