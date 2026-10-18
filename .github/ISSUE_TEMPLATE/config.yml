@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 使用与开发文档
+    url: https://github.com/xuzerui6/MoveMate/blob/main/docs/README.md
+    about: 先查阅启动、媒体配置、训练及部署说明。
+  - name: 安全问题
+    url: https://github.com/xuzerui6/MoveMate/blob/main/SECURITY.md
+    about: 不要在公开 Issue 发送漏洞细节、凭据或个人数据。

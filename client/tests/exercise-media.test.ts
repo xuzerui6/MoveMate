@@ -17,10 +17,21 @@ import videoSizes from '../../cloudflare/src/media-sizes.json';
 import { verifyExerciseMedia } from '../../scripts/exercise-media-assets.mjs';
 
 const publicDir = fileURLToPath(new URL("../public/", import.meta.url));
-test("all released demonstrations are reviewed exact IDs with local immutable and verified bytes", () => {
+// Public CI has no rights to redistribute site-only binaries. Production builds
+// and the default npm test remain strict; this explicit test mode checks their
+// metadata and every repository-distributed file, never fabricates media bytes.
+const repositoryScope = process.env.MOVEMATE_MEDIA_TEST_SCOPE === 'repository';
+const verificationEntries = Object.fromEntries(Object.entries(exerciseMedia).map(([id, m]) => [id, {
+  ...m,
+  images: repositoryScope ? m.images.filter(f => f.distribution !== 'site-only') : m.images,
+  video: repositoryScope && m.video?.distribution === 'site-only' ? undefined : m.video,
+}]));
+test(repositoryScope
+  ? "public CI verifies all demonstration metadata and repository media bytes (site-only binaries excluded)"
+  : "all released demonstrations are reviewed exact IDs with local immutable and verified bytes", () => {
   const reviewed = [...approved.stills, ...approved.siteVideos.flatMap(row => row.exerciseIds.map(exerciseId => ({exerciseId, expectedName: row.expectedNames[exerciseId as keyof typeof row.expectedNames]})))];
   assert.equal(demonstratedIds.length, reviewed.length);
-  const verified = new Map(verifyExerciseMedia().map(f => [f.src, f]));
+  const verified = new Map(verifyExerciseMedia({manifest: {entries: verificationEntries}}).map(f => [f.src, f]));
   assert.ok(
     demonstratedIds.length <= 500,
     "Existing API ids filter has a 500-ID limit; change batching before expanding",
@@ -42,17 +53,20 @@ test("all released demonstrations are reviewed exact IDs with local immutable an
         f.src,
         /^\/exercise-media\/[a-z0-9_-]+\.[0-9a-f]{12}\.(webp|mp4)$/,
       );
-      const bytes = verified.get(f.src)!.bytes;
-      assert.equal(bytes.length,f.bytes);
-      assert.ok(bytes.length > 1000 && bytes.length < 25 * 1024 * 1024);
-      assert.equal(createHash("sha256").update(bytes).digest("hex"), f.sha256);
+      assert.match(f.sha256, /^[a-f0-9]{64}$/);
+      assert.ok(f.bytes > 1000 && f.bytes < 25 * 1024 * 1024);
       assert.ok(f.src.includes(f.sha256.slice(0, 12)));
+      if (!repositoryScope || f.distribution !== 'site-only') {
+        const bytes = verified.get(f.src)!.bytes;
+        assert.equal(bytes.length, f.bytes);
+        assert.equal(createHash("sha256").update(bytes).digest("hex"), f.sha256);
+      }
       if ('phase' in f && f.sourceIndex != null) {
         assert.ok(m.sources[f.sourceIndex], 'Every frame references its actual source');
         if (f.sourceTime != null) assert.ok(f.sourceTime >= 0);
       }
     }
-    if (m.video) assert.equal(createHash('sha256').update(verified.get(m.video.poster)!.bytes).digest('hex'),m.video.posterSha256);
+    if (m.video && (!repositoryScope || m.video.distribution !== 'site-only')) assert.equal(createHash('sha256').update(verified.get(m.video.poster)!.bytes).digest('hex'),m.video.posterSha256);
     for (const s of m.sources) {
       assert.ok(
         s.author && s.url && s.version && s.changes && s.sourceSha256?.length,

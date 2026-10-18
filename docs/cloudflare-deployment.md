@@ -27,20 +27,23 @@ npm ci --prefix server
 npm ci --prefix client
 npm ci --prefix cloudflare
 node cloudflare/node_modules/wrangler/bin/wrangler.js login
+$env:MOVEMATE_MEDIA_DIR='D:/movemate-licensed-media'
 npm test --prefix server
 npm test --prefix client
 npm test --prefix cloudflare
 node server/node_modules/typescript/bin/tsc -p cloudflare/tsconfig.json
 
-$env:VITE_REALTIME_TRANSPORT='cloudflare'
-npm run build:vercel --prefix client
-Remove-Item Env:VITE_REALTIME_TRANSPORT
-npm run build --prefix cloudflare
+# 先按素材清单准备外部目录；构建不自动下载站内专用素材
+npm run build:web --prefix cloudflare
+npm run bundle --prefix cloudflare
 npm run deploy:preview --prefix cloudflare
+# 预览验收通过后再发布
 npm run deploy --prefix cloudflare
 ```
 
-`build:vercel` 此处仅沿用输出至 `client/dist` 的现有构建命令，不依赖 Vercel 服务。普通 `npm run build --prefix client` 继续输出至本机 `server/public`，默认 Socket.IO。
+`build:web` 自动选择 Cloudflare 传输并输出至 `client/dist`，不依赖 Vercel 服务。普通 `npm run build --prefix client` 输出至本机 `server/public`，默认 Socket.IO。站内专用素材须在运行前端完整测试及构建前配置，详见[开发指南](development.md#动作示范素材)；公开源码 CI 使用 `npm run test:repository --prefix client`，不代表完整部署素材已验收。
+
+Fork 后部署到自己的账号，须修改 `wrangler.jsonc` 中的 account_id、Worker 名称、域名、BASE_URL 和来源白名单，使用自己的 Secrets 与独立数据库实例；不要沿用本项目账号或改写现有 production 实例。
 
 部署脚本生成纯 schema 与公共校区元数据，再打包 Worker；检查不包含 `node:sqlite` 适配器、Turso、Redis、Socket.IO server 和 node-cron。测试专用 `TestBackend` 与测试时钟不进入生产 bundle。
 

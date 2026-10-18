@@ -1,0 +1,46 @@
+name: Bug 反馈
+description: 报告可复现的问题，帮助定位与修复。
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: 请勿上传密码、Token、Cookie、数据库、完整录音或可识别的个人视频；安全问题请阅读 SECURITY.md。
+  - type: dropdown
+    id: environment
+    attributes:
+      label: 使用环境
+      options:
+        - dongban.xyz 线上站
+        - 本机演示或开发
+        - Cloudflare 预览或自行部署
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 版本与入口
+      description: 页面路径、提交号（如知道）及浏览器／系统／屏幕尺寸。
+      placeholder: /train/library，Chrome，Windows，1440px
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. 打开…
+        2. 点击…
+        3. 出现…
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期与实际结果
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 补充证据（可选）
+      description: 脱敏截图、错误提示。摄像头问题请写动作、拍摄角度、当前阶段及识别诊断；不要公开个人音视频。

@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-checks:
+    name: Source checks · Node 24
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Node.js 24
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: |
+            server/package-lock.json
+            client/package-lock.json
+            cloudflare/package-lock.json
+      - name: Install locked dependencies
+        run: |
+          npm ci --prefix server --no-audit --no-fund
+          npm ci --prefix client --no-audit --no-fund
+          npm ci --prefix cloudflare --no-audit --no-fund
+      - name: Server build and isolated database tests
+        run: |
+          npm run build --prefix server
+          npm test --prefix server
+      - name: Client tests · public media and complete metadata
+        run: npm run test:repository --prefix client
+      - name: Client typecheck
+        working-directory: client
+        run: npx --no-install tsc -b
+      - name: Workers typecheck and isolated runtime tests
+        run: |
+          npm run typecheck --prefix cloudflare
+          npm test --prefix cloudflare
+          npm run bundle --prefix cloudflare
+      - name: Record CI boundary
+        run: |
+          echo '### Source checks' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Server, client, Workers and repository-distributed media checked on Node 24.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Site-only media binaries, full Vite deployment build, real camera/BLE/voice and browser acceptance require the licensed deployment environment. This workflow does not deploy.' >> "$GITHUB_STEP_SUMMARY"

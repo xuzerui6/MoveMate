@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "build:vercel": "tsc -b && vite build --outDir dist",
     "preview": "vite preview",
-    "test": "node --test --import tsx tests/*.test.ts"
+    "test": "node --test --import tsx tests/*.test.ts",
+    "test:repository": "node scripts/test-repository.mjs"
   },
   "dependencies": {
     "@fontsource-variable/noto-sans-sc": "5.3.1",

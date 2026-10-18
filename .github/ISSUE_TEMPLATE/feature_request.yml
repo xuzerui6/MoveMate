@@ -1,0 +1,21 @@
+name: 功能建议
+description: 从使用场景出发，说明希望改进什么。
+title: "[建议] "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 遇到的困难或使用场景
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 希望如何改进
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 当前替代方法与参考（可选）
+      description: 可以附公开链接；引用其他项目不代表取得其代码或素材授权。
