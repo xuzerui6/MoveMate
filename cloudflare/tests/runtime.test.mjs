@@ -183,6 +183,8 @@ await test('Workers runtime migration and business regression', async t=>{
  const token=tokens[0];let r=await call('/api/v1/workout-sessions',{method:'POST',token,body:{id:crypto.randomUUID(),free:{exercises:[{exerciseId:'motion:squat',sets:[{reps:3}]}]}}});assert.equal(r.status,200,JSON.stringify(r.data));let w=r.data.data;
  const edit={operationId:crypto.randomUUID(),version:w.version,action:'edit',edit:{kind:'copy',targetId:w.sets[0].id}};
  const results=await Promise.all([call('/api/v1/workout-sessions/'+w.id+'/actions',{method:'POST',token,body:edit}),call('/api/v1/workout-sessions/'+w.id+'/actions',{method:'POST',token,body:edit})]);assert.ok(results.every(r=>r.status===200));assert.equal(results[1].data.data.sets.length,2);w=results[1].data.data;
+ r=await call('/api/v1/workout-sessions/'+w.id+'/actions',{method:'POST',token,body:{operationId:crypto.randomUUID(),version:w.version,action:'start'}});assert.equal(r.status,200);w=r.data.data;
+ r=await call('/api/v1/workout-sessions/'+w.id+'?recover=offline&version='+w.version,{token});assert.equal(r.status,200,JSON.stringify(r.data));assert.equal(r.data.data.phase,'paused');assert.equal(r.data.data.recovery.previousVersion,w.version);w=r.data.data;
  r=await call('/api/v1/workout-sessions/'+w.id+'/actions',{method:'POST',token,body:{operationId:crypto.randomUUID(),version:w.version,action:'finish'}});assert.equal(r.status,200);assert.equal(r.data.data.session.xpEarned,0);
  assert.equal((await call('/api/v1/training-settings',{method:'PUT',token,body:{unit:'lb',effort:'rir'}})).data.data.unit,'lb');
  assert.equal((await call('/api/v1/training-settings',{token:tokens[1]})).data.data.unit,'kg');

@@ -160,7 +160,24 @@ export const exercises: Exercise[] = [
         (word: string) =>
           (zhTerms as Record<string, string>)[word.toLowerCase()] || word,
       ),
-    aliases: [e.name, chineseName(e.name), e.target, e.equipment],
+    aliases: [
+      e.name,
+      chineseName(e.name),
+      e.target,
+      e.equipment,
+      ...[
+        ["row", "划船"],
+        ["curl", "弯举"],
+        ["squat", "深蹲"],
+        ["bench press", "卧推"],
+        ["deadlift", "硬拉"],
+        ["lunge", "弓步蹲"],
+        ["pulldown", "下拉"],
+        ["fly", "飞鸟"],
+      ]
+        .filter(([word]) => e.name.includes(word))
+        .map(([, zh]) => chineseName(e.equipment) + zh),
+    ],
     provenance: {
       source: "exercises-dataset",
       revision: "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",

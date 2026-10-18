@@ -1,6 +1,36 @@
-export function restoredSetMetrics(set:any){
-  const score=set?.score||{},count=score.count||0,mean=(n:number)=>count?Math.round((n||0)/count):0;
-  return {reps:set?.reps||0,scoreAccumulator:count?score:undefined,formScore:mean(score.total),formBreakdown:{depth:mean(score.depth),stability:mean(score.stability),trunk:mean(score.trunk),symmetry:mean(score.symmetry)}};
+export function restoredSetMetrics(set: any) {
+  const score = set?.score || {},
+    count = score.count || 0,
+    mean = (n: number) => (count ? Math.round((n || 0) / count) : 0);
+  return {
+    reps: set?.reps || 0,
+    scoreAccumulator: count ? score : undefined,
+    formScore: mean(score.total),
+    formBreakdown: {
+      depth: mean(score.depth),
+      stability: mean(score.stability),
+      trunk: mean(score.trunk),
+      symmetry: mean(score.symmetry),
+    },
+  };
+}
+/** Rebase only when the server proves its own disconnect pause was the sole change. */
+export function reconcileNetworkRecovery(pending: any, row: any) {
+  if (!pending) return null;
+  if (pending.action === "heartbeat" && row.phase !== "working") return null;
+  if (
+    row.recovery?.previousVersion === pending.version &&
+    row.recovery.paused &&
+    pending.setId === row.sets[row.cursor]?.id &&
+    ["pause", "progress", "complete", "skip", "finish"].includes(pending.action)
+  )
+    return {
+      ...pending,
+      version: row.version,
+      offline: false,
+      action: pending.action === "progress" ? "pause" : pending.action,
+    };
+  return pending;
 }
 /** An immutable operation is persisted before transmission. Replay keeps its ID and version. */
 export class WorkoutSync {

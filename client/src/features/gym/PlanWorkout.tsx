@@ -11,7 +11,11 @@ import { useSessionClock } from "../motion/hooks/useSessionClock";
 import { useStore } from "../motion/lib/store";
 import type { WorkoutContext } from "../motion/types";
 import { request, getErrorMessage, formatTime } from "./api";
-import { WorkoutSync, restoredSetMetrics } from "./workoutSync";
+import {
+  WorkoutSync,
+  restoredSetMetrics,
+  reconcileNetworkRecovery,
+} from "./workoutSync";
 import Dialog from "../../components/Dialog";
 import { WeightInput } from "./WeightInput";
 import { displayWeight } from "./trainingMath";
@@ -31,7 +35,18 @@ export default function PlanWorkout() {
     uid = useAuthStore((s) => s.user?.id),
     store = useStore();
   const token = useRef(localStorage.getItem("token")).current,
-    key = `gym:pending:${uid}:${workoutId}`;
+    key = `gym:pending:${uid}:${workoutId}`,
+    networkKey = key + ":network";
+  const markNetworkLoss = () => {
+    if (
+      useAuthStore.getState().user?.id === uid &&
+      localStorage.getItem("token") === token
+    )
+      localStorage.setItem(
+        networkKey,
+        String(latest.current?.version || sync.current?.row?.version || 0),
+      );
+  };
   const [row, setRow] = useState<any>(null),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
@@ -91,14 +106,33 @@ export default function PlanWorkout() {
             token,
           ),
         async () => {
+          const pending = JSON.parse(localStorage.getItem(key) || "null");
+          const force =
+            !!localStorage.getItem(networkKey) || !!pending?.offline;
           const next = await request(
             "GET",
-            "/workout-sessions/" + workoutId,
+            "/workout-sessions/" +
+              workoutId +
+              (force
+                ? "?recover=offline&version=" +
+                  (pending?.version ||
+                    Number(localStorage.getItem(networkKey)) ||
+                    raw.version) +
+                  (pending?.operationId
+                    ? "&operationId=" + encodeURIComponent(pending.operationId)
+                    : "")
+                : ""),
             undefined,
             token,
           );
           if (next.__offline)
             throw new Error("当前只能读取缓存，请联网后再核对服务端");
+          if (force) {
+            const replay = reconcileNetworkRecovery(pending, next);
+            if (replay) localStorage.setItem(key, JSON.stringify(replay));
+            else localStorage.removeItem(key);
+          }
+          if (force || !pending) localStorage.removeItem(networkKey);
           return next;
         },
         {
@@ -112,12 +146,17 @@ export default function PlanWorkout() {
         },
         accept,
       );
-      setBlocked(!!localStorage.getItem(key) || !!raw.__offline);
+      setBlocked(
+        !!localStorage.getItem(key) ||
+          !!localStorage.getItem(networkKey) ||
+          !!raw.__offline,
+      );
       if (
         raw.phase === "working" &&
         raw.sets[raw.cursor]?.inputMode === "camera" &&
         !localStorage.getItem(key) &&
-        !raw.__offline
+        !raw.__offline &&
+        !localStorage.getItem(networkKey)
       ) {
         await sync.current.run("pause", { reps: raw.sets[raw.cursor].reps });
       }
@@ -205,6 +244,11 @@ export default function PlanWorkout() {
     try {
       return await sync.current.run(action, values);
     } catch (e: any) {
+      if (
+        (!e?.response?.status || e.response.status >= 500) &&
+        localStorage.getItem(key)
+      )
+        markNetworkLoss();
       if (alive.current) {
         setError(getErrorMessage(e));
         setBlocked(e?.response?.status === 409 || !!localStorage.getItem(key));
@@ -235,6 +279,11 @@ export default function PlanWorkout() {
         resume ? {} : { inputMode: mode },
       );
     } catch (e: any) {
+      if (
+        (!e?.response?.status || e.response.status >= 500) &&
+        localStorage.getItem(key)
+      )
+        markNetworkLoss();
       pose.stop();
       setError(getErrorMessage(e));
       setBlocked(e?.response?.status === 409 || !!localStorage.getItem(key));
@@ -295,6 +344,7 @@ export default function PlanWorkout() {
   }, [working, busy, blocked, offline]);
   useEffect(() => {
     const off = () => {
+      markNetworkLoss();
       setOffline(true);
       setBlocked(true);
       setVoiceOn(false);
@@ -397,8 +447,9 @@ export default function PlanWorkout() {
       .then((r) => {
         if (r.ok && localStorage.getItem(key) === JSON.stringify(body))
           localStorage.removeItem(key);
+        else if (!r.ok && r.status >= 500) markNetworkLoss();
       })
-      .catch(() => {});
+      .catch(() => markNetworkLoss());
   };
   const flushRef = useRef(flush);
   flushRef.current = flush;

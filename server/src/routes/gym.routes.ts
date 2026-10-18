@@ -91,7 +91,15 @@ router.post(
 );
 router.get(
   "/workout-sessions/:id",
-  wrap((r) => gym.readWorkout(r.user.id, r.params.id)),
+  wrap((r) =>
+    gym.readWorkout(
+      r.user.id,
+      r.params.id,
+      r.query.recover === "offline",
+      r.query.version ? Number(r.query.version) : undefined,
+      r.query.operationId ? String(r.query.operationId) : undefined,
+    ),
+  ),
 );
 router.post(
   "/workout-sessions/:id/actions",

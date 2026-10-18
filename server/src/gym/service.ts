@@ -74,7 +74,8 @@ export async function library(uid: number, query: any) {
     : null;
   const q = String(query.q || "")
       .toLowerCase()
-      .trim(),
+      .trim()
+      .replace(/\s/g, ""),
     cursor = Math.max(0, Number(query.cursor) || 0),
     limit = Math.min(wanted ? 500 : 50, Math.max(1, Number(query.limit) || 24));
   const result = list.filter(
@@ -88,6 +89,7 @@ export async function library(uid: number, query: any) {
         [e.name, e.nameZh, ...((e as any).aliases || []), ...e.instructions]
           .join(" ")
           .toLowerCase()
+          .replace(/\s/g, "")
           .includes(q)) &&
       (!query.muscle ||
         e.bodyPart === query.muscle ||
@@ -1249,10 +1251,57 @@ export async function updateExercise(uid: number, id: string, input: any) {
   });
 }
 
-export async function readWorkout(uid: number, id: string) {
+export async function readWorkout(
+  uid: number,
+  id: string,
+  offlineRecovery = false,
+  expectedVersion?: number,
+  pendingOperationId?: string,
+) {
   return withTransaction(async () => {
     const w = await owned("gym_workouts", id, uid);
-    if (w.sport_session_id) await refreshOnline(w.sport_session_id, false);
-    return workout(uid, id);
+    if (
+      expectedVersion !== undefined &&
+      (!Number.isInteger(expectedVersion) || expectedVersion < 1)
+    )
+      throw new ValidationError("恢复版本无效");
+    let mayPause =
+      expectedVersion === undefined || expectedVersion === w.version;
+    if (!mayPause && w.version === expectedVersion! + 1 && pendingOperationId) {
+      mayPause = !!(
+        await pool.query(
+          "SELECT payload FROM gym_operations WHERE workout_id=$1 AND operation_id=$2",
+          [id, pendingOperationId],
+        )
+      ).rows[0];
+    }
+    const paused = w.sport_session_id
+      ? await refreshOnline(
+          w.sport_session_id,
+          false,
+          offlineRecovery && mayPause,
+        )
+      : false;
+    const snapshot = json(w.snapshot);
+    if (paused) {
+      snapshot.networkRecovery = {
+        previousVersion: w.version,
+        phaseVersion: w.version + 1,
+      };
+      await pool.query("UPDATE gym_workouts SET snapshot=$2 WHERE id=$1", [
+        id,
+        JSON.stringify(snapshot),
+      ]);
+    }
+    const result = await workout(uid, id);
+    const proof = snapshot.networkRecovery;
+    return offlineRecovery &&
+      result.phase === "paused" &&
+      proof?.phaseVersion === result.version
+      ? {
+          ...result,
+          recovery: { paused: true, previousVersion: proof.previousVersion },
+        }
+      : result;
   });
 }

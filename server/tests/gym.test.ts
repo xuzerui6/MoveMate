@@ -90,6 +90,8 @@ test("catalog is text-only, filters IDs, camera capability is restricted and cus
     limit: 500,
   });
   assert.equal(a.items.length, 2);
+  assert.ok((await gym.library(owner, { q: "哑铃划船" })).items.length > 0);
+  assert.ok((await gym.library(owner, { q: "杠铃卧推" })).items.length > 0);
   assert.ok(a.items.every((e: any) => e.cameraType));
   const all = await gym.allExercises(owner);
   assert.ok(all.length > 1300);
@@ -974,4 +976,67 @@ test("a delayed offline pause cannot close a newer page's resumed interval", asy
   await assert.rejects(gym.actWorkout(owner, w.id, stale), /其他页面/);
   assert.equal((await gym.readWorkout(owner, w.id)).phase, "working");
   w = await act(w, "finish");
+});
+
+test("explicit network recovery cuts even short unacknowledged gaps before replaying heartbeats", async () => {
+  let w = await gym.startWorkout(owner, {
+    id: randomUUID(),
+    free: { exercises: [{ exerciseId: "motion:squat", sets: [{}] }] },
+  });
+  w = await act(w, "start");
+  await age(w, 12);
+  await pool.query("UPDATE sport_sessions SET metrics=$2 WHERE id=$1", [
+    w.session.id,
+    JSON.stringify({ planOnlineAt: Date.now() - 8000 }),
+  ]);
+  const recovered = await gym.readWorkout(owner, w.id, true, w.version);
+  assert.equal(recovered.phase, "paused");
+  const recoveredAgain = await gym.readWorkout(owner, w.id, true, w.version);
+  assert.equal(recoveredAgain.recovery.previousVersion, w.version);
+  assert.equal(recoveredAgain.version, recovered.version);
+  assert.ok(
+    recovered.session.effectiveSeconds >= 3 &&
+      recovered.session.effectiveSeconds <= 5,
+  );
+  await assert.rejects(act(w, "heartbeat"), /其他页面/);
+  assert.equal((await gym.readWorkout(owner, w.id)).phase, "paused");
+  const save = {
+    operationId: randomUUID(),
+    version: recovered.version,
+    action: "pause",
+    setId: recovered.sets[recovered.cursor].id,
+    reps: 7,
+  };
+  const saved = await gym.actWorkout(owner, w.id, save);
+  assert.equal(saved.sets[saved.cursor].reps, 7);
+  assert.equal(
+    (await gym.actWorkout(owner, w.id, save)).version,
+    saved.version,
+  );
+  await act(saved, "finish");
+  let next = await gym.startWorkout(owner, {
+    id: randomUUID(),
+    free: { exercises: [{ exerciseId: "motion:squat", sets: [{}] }] },
+  });
+  next = await act(next, "start");
+  const previousVersion = next.version,
+    heartbeat = {
+      operationId: randomUUID(),
+      version: next.version,
+      action: "heartbeat",
+    };
+  next = await gym.actWorkout(owner, next.id, heartbeat);
+  assert.equal(
+    (await gym.readWorkout(owner, next.id, true, previousVersion)).phase,
+    "working",
+  );
+  const sameOperation = await gym.readWorkout(
+    owner,
+    next.id,
+    true,
+    previousVersion,
+    heartbeat.operationId,
+  );
+  assert.equal(sameOperation.phase, "paused");
+  await act(sameOperation, "finish");
 });
