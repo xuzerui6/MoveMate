@@ -1,0 +1,598 @@
+{
+  "version": 1,
+  "reviewedAt": "2026-10-18",
+  "entries": {
+    "motion:squat": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/bodyweight_squat-0.f12ef1ce0ea9.webp",
+          "sha256": "f12ef1ce0ea9ed857708a8ead0600e0c98e2cea6e97cc82a6c28e2f0f7a91ae1",
+          "bytes": 28194,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/bodyweight_squat-1.671fe7aecc5b.webp",
+          "sha256": "671fe7aecc5be93d9db465e076b1a2f8a23960c82d9116bf71e17876632a66d0",
+          "bytes": 31678,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Bodyweight_Squat",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Bodyweight_Squat",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "85715b9b75afe568ef7cb1863005be532a2457bf7e340802da0cd5cc06914b62",
+            "3fa6886632674f02308cdee53ce32649fd648774701fbd20ee280d63be40e5a4"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        }
+      ]
+    },
+    "motion:push_up": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/pushups-0.199e9e981894.webp",
+          "sha256": "199e9e98189453188da653fff0ba3fee3536eac0cf93043c7750771e75c8657d",
+          "bytes": 55638,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/pushups-1.798bdcff0bce.webp",
+          "sha256": "798bdcff0bcee42bb659c407db0a4a3b4f04e96d1d7c467f8fbd74cff7e2907f",
+          "bytes": 54712,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Pushups",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Pushups",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "8e6757ae0dc1d50a30f0ea67cdb330994947716a106451860cf7362bcd15f9f4",
+            "e835d50facea325828d7a3700185a0d8ba9f908db3f033334f81a6f85f774f27"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        }
+      ]
+    },
+    "exdb:0294": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/dumbbell_bicep_curl-0.2b061f86cb19.webp",
+          "sha256": "2b061f86cb19ed4b9df15cd203c6e20559f8d56c15b899824868fdd6a2beff53",
+          "bytes": 41376,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/dumbbell_bicep_curl-1.95c6b7eee4a2.webp",
+          "sha256": "95c6b7eee4a2997fb2a92a6316a7edb223bc120c7b03493de6ab17e34e036856",
+          "bytes": 41186,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Bicep_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Dumbbell_Bicep_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "fad8458c2f70c39e1abb0a9554bba280da5abf9f8dc2d76f7c0be44ffdbfc99b",
+            "ec2c3a539aa80ea911a85e00ca9fb74502407e8ef0d8a4526e3b076a5a52b30a"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        }
+      ]
+    },
+    "exdb:0416": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/dumbbell_bicep_curl-0.2b061f86cb19.webp",
+          "sha256": "2b061f86cb19ed4b9df15cd203c6e20559f8d56c15b899824868fdd6a2beff53",
+          "bytes": 41376,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/dumbbell_bicep_curl-1.95c6b7eee4a2.webp",
+          "sha256": "95c6b7eee4a2997fb2a92a6316a7edb223bc120c7b03493de6ab17e34e036856",
+          "bytes": 41186,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Bicep_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Dumbbell_Bicep_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "fad8458c2f70c39e1abb0a9554bba280da5abf9f8dc2d76f7c0be44ffdbfc99b",
+            "ec2c3a539aa80ea911a85e00ca9fb74502407e8ef0d8a4526e3b076a5a52b30a"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        }
+      ]
+    },
+    "exdb:0334": {
+      "note": "站姿双臂侧平举，抬至肩高后缓慢放回。实拍示范用于理解动作过程，负重按自身能力选择。",
+      "images": [
+        {
+          "src": "/exercise-media/side_lateral_raise-0.44594909513e.webp",
+          "sha256": "44594909513e74af6bb65dbdcab1b753386970299441d6cdbd4fa82383aba52d",
+          "bytes": 41670,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/side_lateral_raise-1.5866cecb708f.webp",
+          "sha256": "5866cecb708fff223eef3da989992e519f14f7611b9c300fad6b6c812e500a75",
+          "bytes": 41076,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Side_Lateral_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Side_Lateral_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "aa1982c367ea9151ee7769ac1f9f8795209db94a6eb85f7d51a7033886fb7ebc",
+            "9210e0fb0202c306026d45a55703aaec89b3bef7aafeb7791aa1d06adcf58ab3"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        },
+        {
+          "name": "wger / video 6",
+          "author": "Goulart",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "url": "https://wger.de/media/exercise-video/348/de69928a-8a35-4096-821c-1f46de5e0e03.MOV",
+          "version": "video:6; retrieved 2026-10-18; sha256:41c47c5efd245d0dfbcd25e4c1e6a4f46f2093281871df3503278ea9e5444d7f",
+          "sourceSha256": [
+            "41c47c5efd245d0dfbcd25e4c1e6a4f46f2093281871df3503278ea9e5444d7f"
+          ],
+          "changes": "仅保留原片 6–11.2 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面；无空间裁切。衍生视频及封面沿用 CC BY-SA 4.0。"
+        }
+      ],
+      "video": {
+        "src": "/exercise-media/wger-6.3ff533b71810.mp4",
+        "sha256": "3ff533b718107c94c9294cc8caaa85b0cc7182c5ebe7341f3411cfae14294612",
+        "bytes": 1809267,
+        "poster": "/exercise-media/wger-6-poster.97db848486ed.webp",
+        "posterSha256": "97db848486eda96e6986bb084ae43a2126d51c5921b67062a03624e5c7f05284",
+        "aspectRatio": 1.7777777777777777
+      }
+    },
+    "exdb:0405": {
+      "note": "坐姿双臂肩推，保持躯干稳定，控制回落。实拍示范用于理解动作过程，负重按自身能力选择。",
+      "images": [
+        {
+          "src": "/exercise-media/dumbbell_shoulder_press-0.23857b2522cf.webp",
+          "sha256": "23857b2522cf330bcad4235373050a2243357d32d443e23ff636952bc0a9b591",
+          "bytes": 51252,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/dumbbell_shoulder_press-1.ff408c11f097.webp",
+          "sha256": "ff408c11f097edcdb45724ded03106028cde68787063fd2f506d013c803d6a50",
+          "bytes": 51214,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Shoulder_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Dumbbell_Shoulder_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "e0a775bfa0b32b63c84f19fba2b1a05db535bde849feb3e54a3479a943b3bed6",
+            "940d5aad6b85960e833f88e218de8ce4f806d84cf2764741f1cbff9cce365d84"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        },
+        {
+          "name": "wger / video 12",
+          "author": "Goulart",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "url": "https://wger.de/media/exercise-video/567/64f33c19-1d96-4b7c-af17-6c6a4941c614.MOV",
+          "version": "video:12; retrieved 2026-10-18; sha256:0151a7cd43894d60c1fe1ffb34f4f4b709fc17aa6a5913c7edea4a14c9113985",
+          "sourceSha256": [
+            "0151a7cd43894d60c1fe1ffb34f4f4b709fc17aa6a5913c7edea4a14c9113985"
+          ],
+          "changes": "仅保留原片 2–16 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面；无空间裁切。衍生视频及封面沿用 CC BY-SA 4.0。"
+        }
+      ],
+      "video": {
+        "src": "/exercise-media/wger-12.ca5088d0dde6.mp4",
+        "sha256": "ca5088d0dde69e1069fb261fac47519a2d035eb172e8e5b8e6c796517e0d07f7",
+        "bytes": 3839261,
+        "poster": "/exercise-media/wger-12-poster.4263ff6cc4fb.webp",
+        "posterSha256": "4263ff6cc4fb8fff2494153bbb880654ec06ab4395f0eff6ae11ab1e27514bda",
+        "aspectRatio": 1.7777777777777777
+      }
+    },
+    "exdb:0293": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/bent_over_two-dumbbell_row-0.2ffebeb31fd0.webp",
+          "sha256": "2ffebeb31fd0793faf5e309f3623e1d9710dc8579b8b9a14cf6de66e7f61a9a6",
+          "bytes": 52328,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/bent_over_two-dumbbell_row-1.0c0a60dccc8b.webp",
+          "sha256": "0c0a60dccc8bd6ed5f066e51851dc2f040662a8ec2111c74caff0907b5eaf5bd",
+          "bytes": 52562,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Bent_Over_Two-Dumbbell_Row",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Bent_Over_Two-Dumbbell_Row",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "d691ee3c8d84dd4a7211081dd5c7d4f7c8f016ab764a3b80fd6712c0f523c9da",
+            "f38f85fc5b9fc401fd4963bb760464c45d8087bebb6afe69eaed57bfa6c51693"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        }
+      ]
+    },
+    "exdb:0025": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/barbell_bench_press_-_medium_grip-0.9ad5e6129baa.webp",
+          "sha256": "9ad5e6129baaa6483bd56365b0d8930a4448b96ba244f814f4f457aa942b97fa",
+          "bytes": 57946,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/barbell_bench_press_-_medium_grip-1.f0f66c51b370.webp",
+          "sha256": "f0f66c51b3708910d8775ea5be75b52d7fd43e64316d1912e989682d2c790fb0",
+          "bytes": 56054,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Barbell_Bench_Press_-_Medium_Grip",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Barbell_Bench_Press_-_Medium_Grip",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "44ba81b3ea124f625c555ae812b37263f82ae460749bbc9ebbeb55a6309f6663",
+            "5056475ae5def865dbe52882d30d2730142de2b03231bda304f82fd0b088f608"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        }
+      ]
+    },
+    "exdb:0031": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/barbell_curl-0.2e3eba56a08d.webp",
+          "sha256": "2e3eba56a08d0fcc5c312563d8256442e333447f267ea1e4c26098d8781191f6",
+          "bytes": 40858,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/barbell_curl-1.98d03ea2ae82.webp",
+          "sha256": "98d03ea2ae82e1af8c30fe440c32a845c4603a3ce36d1485b0e32f83c389729a",
+          "bytes": 42846,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Barbell_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Barbell_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "eb409ec1cced4d85c91c41920e66d8b2f0e4736dee43c01eab953fdcbeace673",
+            "27474187c68680520d3c6dbd3a452bb11f1e77b5474d9143517f43d02f5d8c0e"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        }
+      ]
+    },
+    "exdb:0032": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/barbell_deadlift-0.66a5064631ff.webp",
+          "sha256": "66a5064631ffd47cf86911f55f12e1a425777bf823633c586f5ac62289e20b13",
+          "bytes": 54024,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/barbell_deadlift-1.ff64b7c4989f.webp",
+          "sha256": "ff64b7c4989ff56dc9a575f982b3cd0910ea65844b9ec6043da7ef4d802361ff",
+          "bytes": 50208,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Barbell_Deadlift",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Barbell_Deadlift",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "f032a7e4566eb3e73258580add64bf2756cb465bfcee22fdfffbed0f43f1eae6",
+            "cf206d0738830af831872cfb054c7cf91a43b435f4cc20f4fdb00a2664654e90"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        }
+      ]
+    },
+    "exdb:0085": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/romanian_deadlift-0.168f6eba8af5.webp",
+          "sha256": "168f6eba8af5f22556c0e5a9e19337d6ae310914dd9148b3782684286dc1c497",
+          "bytes": 43436,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/romanian_deadlift-1.6e2874fc5c32.webp",
+          "sha256": "6e2874fc5c321260ef576bac69dc6a4595f374f8009161c71b24412c98e8dce3",
+          "bytes": 41066,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Romanian_Deadlift",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Romanian_Deadlift",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "cd62a031d395afa1f63f660370e79d812ca0f9cf52718a33ee24d9fec2a9709f",
+            "156406c703e8d4a172034e413b317b93907be82deaad5ea2f3cc0a9f181c7b9b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        }
+      ]
+    },
+    "exdb:0289": {
+      "note": "平板凳双哑铃卧推，控制下降，避免哑铃相撞。实拍示范用于理解动作过程，负重按自身能力选择。",
+      "images": [
+        {
+          "src": "/exercise-media/dumbbell_bench_press-0.c2a97058bdf7.webp",
+          "sha256": "c2a97058bdf790ea152f0500b8e99f847e8728963e0f493bab0fc0ef9dce9a3e",
+          "bytes": 47094,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/dumbbell_bench_press-1.6eed2ed56863.webp",
+          "sha256": "6eed2ed56863c4494cac297f3c4d7e8408967ffb902da5422800c982f8ab6b8f",
+          "bytes": 47938,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Bench_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Dumbbell_Bench_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "06494fc5d679283ad7de10fd60149e543396bbd9ba65b0821937de317ce9e001",
+            "29ce1d1335b10ae5e92b208c512f4f562493379a9c49bafb249f945c5b702299"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        },
+        {
+          "name": "wger / video 17",
+          "author": "Goulart",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "url": "https://wger.de/media/exercise-video/75/080c799b-8afd-4130-8d72-9cef0cd79f54.MOV",
+          "version": "video:17; retrieved 2026-10-18; sha256:d96fa783d10b476965e926a2c88f4b6d69da5f9e91cd7656fbafadb001981afa",
+          "sourceSha256": [
+            "d96fa783d10b476965e926a2c88f4b6d69da5f9e91cd7656fbafadb001981afa"
+          ],
+          "changes": "仅保留原片 0–14 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面；无空间裁切。衍生视频及封面沿用 CC BY-SA 4.0。"
+        }
+      ],
+      "video": {
+        "src": "/exercise-media/wger-17.790b0fd77b9d.mp4",
+        "sha256": "790b0fd77b9d0aa0a230ef70ed93ecfa06f7bf40439f2c13801e3977bf9dbf09",
+        "bytes": 2827579,
+        "poster": "/exercise-media/wger-17-poster.c9ce133eb728.webp",
+        "posterSha256": "c9ce133eb728922cffb6bdbbf571d174aef77e638e4c6efb79d240b81bfce158",
+        "aspectRatio": 1.7777777777777777
+      }
+    },
+    "exdb:0652": {
+      "note": "正握引体向上，控制上拉与下放，不用摆动借力。实拍示范用于理解动作过程，负重按自身能力选择。",
+      "images": [
+        {
+          "src": "/exercise-media/pullups-0.9e86f5076f44.webp",
+          "sha256": "9e86f5076f4424a42102e2c63876c825d6a5bea86971668fbf0c217e442e8b5e",
+          "bytes": 27356,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/pullups-1.b90c0476293d.webp",
+          "sha256": "b90c0476293d56c1de37efd3ffd7f15a9f168c6a69a1d87563315e7db845df57",
+          "bytes": 25906,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Pullups",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Pullups",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "e56c8c43a41cfe2489dcfffc2c8195fd9e8897ba25165dbc34a4154ed6df5c7a",
+            "40549a52b064e5084a85e2c36afb51438df6ac1097169379a05f21565f8b4f3f"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        },
+        {
+          "name": "wger / video 71",
+          "author": "Goulart",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "url": "https://wger.de/media/exercise-video/475/83067ffe-ccb9-4e22-8507-5131b211ce74.MOV",
+          "version": "video:71; retrieved 2026-10-18; sha256:4c459f322f506eb7bd0b51e7efd81aaf6bd1e10fc0569e182a4815dee325f1b8",
+          "sourceSha256": [
+            "4c459f322f506eb7bd0b51e7efd81aaf6bd1e10fc0569e182a4815dee325f1b8"
+          ],
+          "changes": "仅保留原片 0–10 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面；无空间裁切。衍生视频及封面沿用 CC BY-SA 4.0。"
+        }
+      ],
+      "video": {
+        "src": "/exercise-media/wger-71.28f8dad6ffdb.mp4",
+        "sha256": "28f8dad6ffdb8c63c2bc93062a00f505e4ce6dfd60e8fd55afc347cf4b409263",
+        "bytes": 1928971,
+        "poster": "/exercise-media/wger-71-poster.32879c59941c.webp",
+        "posterSha256": "32879c59941c4003e5aa86585fab54c8e05870ac44931d8523f3497924c3a094",
+        "aspectRatio": 1.7777777777777777
+      }
+    },
+    "exdb:0043": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/barbell_full_squat-0.dec3f9a757db.webp",
+          "sha256": "dec3f9a757db0e74a6aeedd5d7f9d94fa4818d4ea2d9384353e7fba522432d08",
+          "bytes": 56106,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/barbell_full_squat-1.6f0b8c7ee184.webp",
+          "sha256": "6f0b8c7ee184b286ade301014bc0970a09009c1b0a132e74e073d52eefa595c0",
+          "bytes": 55986,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Barbell_Full_Squat",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Barbell_Full_Squat",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "64f176d77b1edb444b35109c1c77975b44f58f374567f534338700cba3e15b38",
+            "be1b63ed2cc383c0b964d51ede69f26a29ef89f40c954770a51a9e83a33134f6"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        }
+      ]
+    },
+    "exdb:0030": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/close-grip_barbell_bench_press-0.76c510eb6c49.webp",
+          "sha256": "76c510eb6c4994eb78d81ffd1f7fe2ea754d3267856e4127f32a08f33d8ac719",
+          "bytes": 64532,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/close-grip_barbell_bench_press-1.b3423899e991.webp",
+          "sha256": "b3423899e991916e804f814228b484aff5b1e68efd27088b10d22967c7a3eca5",
+          "bytes": 68322,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Close-Grip_Barbell_Bench_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Close-Grip_Barbell_Bench_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "3a428440c0f95ee87234a260ca80cc1dfa205e3db8f8fa6098b7eeb2afb2cde8",
+            "108a66dc2dcb09d184157eb81b7fafba5f898b00654c39cb2f0c7f8bdfec5ceb"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        }
+      ]
+    },
+    "exdb:0027": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/bent_over_barbell_row-0.935bcd6d6de4.webp",
+          "sha256": "935bcd6d6de424aa35d88c02e8749f648bc7d50ddc80e5826f6f777f47953c90",
+          "bytes": 44334,
+          "phase": "分解 1"
+        },
+        {
+          "src": "/exercise-media/bent_over_barbell_row-1.635f59e1fc3f.webp",
+          "sha256": "635f59e1fc3fdc2607641093a44ee9851f90107c6ceaf417d043c7210212d7c2",
+          "bytes": 47882,
+          "phase": "分解 2"
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Bent_Over_Barbell_Row",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Bent_Over_Barbell_Row",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "09abbeb2fca7006d0e072bdc802158b34acf7923bd3069bb835951e49a95de41",
+            "3c323601573df29cc9c6343765e0d21e7cd99a2dc830105099ac95ecba2cea72"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        }
+      ]
+    }
+  }
+}

@@ -17,6 +17,7 @@ import { useSessionClock } from '../hooks/useSessionClock'
 import type { CameraFit } from '../lib/cameraFrame'
 import { useStore, type SportSession } from '../lib/store'
 import type { WorkoutContext, WorkoutSession, XiaozhiState } from '../types'
+import { ExerciseDemo } from '../../gym/ExerciseMedia'
 
 const format = (seconds: number) => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
 const VOICE_LABEL: Record<XiaozhiState, string> = {
@@ -235,6 +236,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     {!active && <section className="training-prep">
       <h2>{restored ? '继续上次训练' : '准备好，就开始'}</h2>
       <p className="prep-placement">{exercise.placement}</p><p>{exercise.instruction}</p>
+      <ExerciseDemo exercise={{id:'motion:'+exerciseType,nameZh:exercise.name,target:exerciseType==='push_up'?'pectorals':exerciseType==='jumping_jack'?'full body':'quadriceps',secondaryMuscles:[]}} suspended={preparing||busy}/>
       {restored && <p className="restore-copy">已完成 {restored.reps} {exercise.unit} · 有效时长 {format(restored.effectiveSeconds)} · {restored.source === 'demo' ? '演示，不计 XP' : '真实动作训练'}</p>}
       {restored?.source !== 'demo' && <fieldset className="training-consent"><legend>选择视觉范围</legend>
         <label><input type="radio" name="vision" checked={visionConsent === false} disabled={busy} onChange={() => setVisionConsent(false)}/><span><b>仅本地分析</b><small>视频在浏览器中识别，不上传</small></span></label>

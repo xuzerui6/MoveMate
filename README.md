@@ -133,7 +133,9 @@ npm run build
 
 `client/src/features/motion/` 为动伴模块；原组局页面在 `client/src/pages/`。后端运动逻辑在 `server/src/services/motion.service.ts`，语音桥接在 `server/src/xiaozhi/`。运行记录见 [DEMO_ACCEPTANCE.md](DEMO_ACCEPTANCE.md)。历史 PRD、架构文档中的 PostgreSQL／Redis 与积分规则为旧方案，以当前实现及本说明为准。
 
-原 `start.bat` 为旧局域网脚本，可能申请防火墙规则；本机请使用 `start-demo.bat`。网页端现已提供 Vercel 访问地址，小程序仍未合并或部署；源码按用户要求推送到 [MoveMate](https://github.com/xuzerui6/MoveMate)。
+原 `start.bat` 为旧局域网脚本，可能申请防火墙规则；本机请使用 `start-demo.bat`。正式网页使用 Cloudflare 的 [dongban.xyz](https://dongban.xyz)，小程序仍未合并或部署；源码推送到 [MoveMate](https://github.com/xuzerui6/MoveMate)。
+
+动作库已接入站内分解图片与连续视频，可勾选“有示范”筛选，计划编辑和训练准备也能展开查看。首批 16 个动作有图，其中 4 个有连续视频；其余明确标为待补。[覆盖情况、许可及验收说明](docs/exercise-media.md)随每批更新，未使用 openGym 的受限媒体。
 
 许可证见 [LICENSE](LICENSE)，动伴第三方声明见 [DONGBAN_THIRD_PARTY_NOTICES.md](DONGBAN_THIRD_PARTY_NOTICES.md)。不要提交 `.env*`、数据库、备份或服务日志。
 

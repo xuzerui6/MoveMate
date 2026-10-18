@@ -19,6 +19,7 @@ import {
   reconcileNetworkRecovery,
 } from "./workoutSync";
 import Dialog from "../../components/Dialog";
+import {ExerciseDemo} from './ExerciseMedia';
 import { WeightInput } from "./WeightInput";
 import { displayWeight } from "./trainingMath";
 import { PlateCalculator } from "./AnalysisExtras";
@@ -838,6 +839,7 @@ export default function PlanWorkout() {
                   />
                 </label>
               )}
+              {current && <ExerciseDemo exercise={current.exercise} suspended={working || busy || finished}/>}
               {!working && canRecognize && (
                 <section className="gym-camera-preparation">
                   <strong>摄像头自动记组{capability ? " · 试用" : ""}</strong>

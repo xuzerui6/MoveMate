@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Header } from "../motion/components/Header";
 import { Icon } from "../motion/components/Icons";
 import { useNavigate } from "react-router-dom";
 import { label, request, useGymQuery, getErrorMessage } from "./api";
 import { CameraCapability } from "./CameraCapability";
+import { ExerciseMediaPanel, ExerciseThumb } from "./ExerciseMedia";
+import { demonstratedIds, mediaFor } from "./media";
 export function ExerciseLibrary({
   onPick,
 }: {
@@ -18,6 +20,7 @@ export function ExerciseLibrary({
     [category, setCategory] = useState(""),
     [favorite, setFavorite] = useState(false),
     [cameraOnly, setCameraOnly] = useState(false),
+    [withDemo, setWithDemo] = useState(false),
     [owned, setOwned] = useState(false),
     [archived, setArchived] = useState(false),
     [role, setRole] = useState("primary"),
@@ -34,6 +37,10 @@ export function ExerciseLibrary({
     }, 250);
     return () => clearTimeout(id);
   }, [query]);
+  const detail = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (selected) detail.current?.scrollIntoView({ block: "start" });
+  }, [selected?.id]);
   const params = new URLSearchParams({
     q: search,
     role,
@@ -45,6 +52,7 @@ export function ExerciseLibrary({
     cursor: String(cursor),
     ...(favorite ? { favorite: "1" } : {}),
     ...(cameraOnly ? { camera: "1" } : {}),
+    ...(withDemo ? { ids: demonstratedIds.join(",") || "__no_demo__" } : {}),
   });
   const result = useGymQuery("/exercises?" + params);
   useEffect(() => {
@@ -99,99 +107,125 @@ export function ExerciseLibrary({
         </button>
       </div>
       <div className="gym-inline-actions">
-        <label><input type="checkbox" checked={cameraOnly} onChange={(e)=>{setCameraOnly(e.target.checked);setCursor(0);}}/>支持摄像头</label>
         <label>
           <input
             type="checkbox"
-            checked={owned}
+            checked={withDemo}
             onChange={(e) => {
-              setOwned(e.target.checked);
+              setWithDemo(e.target.checked);
               setCursor(0);
             }}
           />
-          只用我拥有的器械
+          有示范
         </label>
         <label>
           <input
             type="checkbox"
-            checked={archived}
+            checked={cameraOnly}
             onChange={(e) => {
-              setArchived(e.target.checked);
+              setCameraOnly(e.target.checked);
               setCursor(0);
             }}
           />
-          包含已归档动作
-        </label>
-        <label>
-          肌群筛选范围
-          <select
-            value={role}
-            onChange={(e) => {
-              setRole(e.target.value);
-              setCursor(0);
-            }}
-          >
-            <option value="primary">主练肌群</option>
-            <option value="all">主练或辅助肌群</option>
-          </select>
+          支持摄像头
         </label>
       </div>
-      <p className="gym-muted">在“训练设置”配置拥有器械；徒手始终可选。</p>
-      <div className="gym-filters">
-        <label>
-          肌群
-          <select
-            value={muscle}
-            onChange={(e) => filter(setMuscle)(e.target.value)}
-          >
-            <option value="">全部肌群</option>
-            {result.data?.muscles.map((v: string) => (
-              <option key={v} value={v}>
-                {label(v)}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          器械
-          <select
-            value={equipment}
-            onChange={(e) => filter(setEquipment)(e.target.value)}
-          >
-            <option value="">全部器械</option>
-            {result.data?.equipment.map((v: string) => (
-              <option key={v} value={v}>
-                {label(v)}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          类型
-          <select
-            value={category}
-            onChange={(e) => filter(setCategory)(e.target.value)}
-          >
-            <option value="">全部类型</option>
-            {["strength", "cardio", "timed"].map((v) => (
-              <option key={v} value={v}>
-                {label(v)}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="gym-check">
-          <input
-            type="checkbox"
-            checked={favorite}
-            onChange={(e) => {
-              setFavorite(e.target.checked);
-              setCursor(0);
-            }}
-          />
-          仅收藏
-        </label>
-      </div>
+      <details className="media-library-filters">
+        <summary>更多筛选 · 肌群、器械、收藏</summary>
+        <div className="gym-inline-actions">
+          <label>
+            <input
+              type="checkbox"
+              checked={owned}
+              onChange={(e) => {
+                setOwned(e.target.checked);
+                setCursor(0);
+              }}
+            />
+            只用我拥有的器械
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={archived}
+              onChange={(e) => {
+                setArchived(e.target.checked);
+                setCursor(0);
+              }}
+            />
+            包含已归档动作
+          </label>
+          <label>
+            肌群筛选范围
+            <select
+              value={role}
+              onChange={(e) => {
+                setRole(e.target.value);
+                setCursor(0);
+              }}
+            >
+              <option value="primary">主练肌群</option>
+              <option value="all">主练或辅助肌群</option>
+            </select>
+          </label>
+        </div>
+        <p className="gym-muted">在“训练设置”配置拥有器械；徒手始终可选。</p>
+        <div className="gym-filters">
+          <label>
+            肌群
+            <select
+              value={muscle}
+              onChange={(e) => filter(setMuscle)(e.target.value)}
+            >
+              <option value="">全部肌群</option>
+              {result.data?.muscles.map((v: string) => (
+                <option key={v} value={v}>
+                  {label(v)}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            器械
+            <select
+              value={equipment}
+              onChange={(e) => filter(setEquipment)(e.target.value)}
+            >
+              <option value="">全部器械</option>
+              {result.data?.equipment.map((v: string) => (
+                <option key={v} value={v}>
+                  {label(v)}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            类型
+            <select
+              value={category}
+              onChange={(e) => filter(setCategory)(e.target.value)}
+            >
+              <option value="">全部类型</option>
+              {["strength", "cardio", "timed"].map((v) => (
+                <option key={v} value={v}>
+                  {label(v)}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="gym-check">
+            <input
+              type="checkbox"
+              checked={favorite}
+              onChange={(e) => {
+                setFavorite(e.target.checked);
+                setCursor(0);
+              }}
+            />
+            仅收藏
+          </label>
+        </div>
+      </details>
       {(result.error || error) && (
         <div className="gym-error" role="alert">
           {result.error || error}
@@ -249,7 +283,7 @@ export function ExerciseLibrary({
           : `${result.data?.total || 0} 个匹配动作 · 按标识选择摄像头动作，新动作识别为试用`}
       </p>
       {selected && (
-        <article className="gym-exercise-detail">
+        <article className="gym-exercise-detail" ref={detail}>
           <button className="text-btn" onClick={() => setSelected(null)}>
             收起详情
           </button>
@@ -265,7 +299,7 @@ export function ExerciseLibrary({
           <p className="gym-muted">
             来源：{selected.provenance?.source || "本人自定义／动伴原创"} ·{" "}
             {selected.provenance?.license || "原创文字"}
-            ；保留原文名称，不包含上游媒体。
+            ；示范素材独立核验，来源见下方许可清单。
           </p>
           {selected.id.startsWith("user:") && (
             <div className="gym-inline-actions">
@@ -378,15 +412,15 @@ export function ExerciseLibrary({
               </button>
             </form>
           )}
+          <ExerciseMediaPanel key={selected.id} exercise={selected} />
+          <h4>动作步骤与要点</h4>
           <ol>
             {selected.instructions.map((s: string, i: number) => (
               <li key={i}>{s}</li>
             ))}
           </ol>
-          <p>
-            从舒适负重开始；不适时停止。
-          </p>
-          <CameraCapability exercise={selected}/>
+          <p>从舒适负重开始；不适时停止。</p>
+          <CameraCapability exercise={selected} />
           {onPick && (
             <button className="primary" onClick={() => onPick(selected)}>
               加入这个动作
@@ -401,12 +435,29 @@ export function ExerciseLibrary({
               className="gym-exercise-name"
               onClick={() => setSelected(ex)}
             >
-              <b>{ex.nameZh}</b>
-              <small>
-                {label(ex.bodyPart)} · {label(ex.equipment)}
-                {ex.planCamera ? " · 摄像头试用" : ex.cameraType ? " · 摄像头" : ""}
-                {ex.archived ? " · 已归档" : ""}
-              </small>
+              <ExerciseThumb exercise={ex} />
+              <span className="exercise-list-copy">
+                <b>{ex.nameZh}</b>
+                <small>
+                  {label(ex.bodyPart)} · {label(ex.equipment)}
+                  {ex.planCamera
+                    ? " · 摄像头试用"
+                    : ex.cameraType
+                      ? " · 摄像头"
+                      : ""}
+                  {ex.archived ? " · 已归档" : ""}
+                </small>
+                <span className="exercise-media-badges">
+                  {mediaFor(ex.id)?.images.length ? <span>图片</span> : null}
+                  {mediaFor(ex.id)?.video && <span>动态</span>}
+                  {(ex.planCamera || ex.cameraType) && (
+                    <span>摄像头{ex.planCamera ? "试用" : ""}</span>
+                  )}
+                  {!mediaFor(ex.id) && (
+                    <span className="pending">示范待补</span>
+                  )}
+                </span>
+              </span>
             </button>
             <button
               className="gym-favorite"

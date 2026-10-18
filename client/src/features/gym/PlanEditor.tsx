@@ -6,6 +6,7 @@ import { Header } from "../motion/components/Header";
 import { WeightInput } from "./WeightInput";
 import { ExerciseLibrary } from "./Library";
 import { CameraCapability } from "./CameraCapability";
+import {ExerciseDemo} from './ExerciseMedia';
 import { request, useGymQuery, getErrorMessage, download } from "./api";
 const emptySet = () => ({
   kind: "work",
@@ -253,6 +254,7 @@ export default function PlanEditor() {
               </div>
             </div>
             <CameraCapability exercise={map[entry.exerciseId]} />
+            <ExerciseDemo exercise={map[entry.exerciseId]}/>
             <details>
               <summary>此动作的进阶覆盖（不选则沿用计划）</summary>
               <label>

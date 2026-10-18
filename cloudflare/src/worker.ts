@@ -14,6 +14,8 @@ import { Migration, authorized } from './migration';
 import { bridgeXiaozhi } from './xiaozhi';
 import { VoicePool, VoiceError, LEASE_MS } from './voice-pool';
 import { getIdentityMode } from '../../server/src/xiaozhi/identity';
+import { applyVideoRange } from './media-ranges';
+import demoVideoSizes from './media-sizes.json';
 
 interface Env {
   ASSETS: Fetcher;
@@ -354,17 +356,21 @@ export default {
       const id = env.BACKEND.idFromName(env.INSTANCE || 'production');
       return env.BACKEND.get(id, { locationHint: 'apac' }).fetch(request);
     }
-    const response = await env.ASSETS.fetch(request);
+    const demoVideo=url.pathname.startsWith('/exercise-media/')&&url.pathname.endsWith('.mp4');
+    const assetHeaders=new Headers(request.headers);
+    if(demoVideo){assetHeaders.delete('Range');assetHeaders.set('Accept-Encoding','identity');}
+    let response = await env.ASSETS.fetch(demoVideo?new Request(request,{headers:assetHeaders}):request);
+    if(demoVideo&&response.ok&&!response.headers.get('Content-Type')?.includes('text/html'))response=applyVideoRange(request,response,(demoVideoSizes as Record<string,number>)[url.pathname]);
     const headers = new Headers(response.headers);
     // Vite content hashes make long browser caching safe. Keep HTML revalidated.
-    if (url.pathname.startsWith('/assets/')) {
+    if (url.pathname.startsWith('/assets/') || url.pathname.startsWith('/exercise-media/')) {
       // An SPA fallback is not a valid script. Never cache a temporary missing
       // chunk's HTML response for a year: that would keep a tab broken even
       // after the matching asset is deployed.
-      if (!response.ok || headers.get('Content-Type')?.includes('text/html')) {
+      if ((!response.ok&&response.status!==304&&response.status!==416) || headers.get('Content-Type')?.includes('text/html')) {
         return new Response('Asset not found', { status: 404, headers: { 'Cache-Control': 'no-store', 'Content-Type': 'text/plain', 'X-Content-Type-Options': 'nosniff' } });
       }
-      headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+      headers.set('Cache-Control', response.status===416?'no-store': /\.[a-f0-9]{12}\./.test(url.pathname) || url.pathname.startsWith('/assets/') ? 'public, max-age=31536000, immutable' : 'public, max-age=0, must-revalidate');
     }
     else if (headers.get('Content-Type')?.includes('text/html')) headers.set('Cache-Control', 'no-store');
     headers.set('X-Content-Type-Options', 'nosniff');

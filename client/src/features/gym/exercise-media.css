@@ -1,0 +1,407 @@
+.exercise-media {
+  border: 1px solid #deebe3;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+  margin: 16px 0;
+  color: #14241b;
+  min-width: 0;
+}
+.media-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5ece8;
+}
+.media-heading button,
+.media-controls button,
+.media-tabs button {
+  min-height: 44px;
+  background: #fff;
+  border: 1px solid #dce7e0;
+  border-radius: 12px;
+  padding: 8px 14px;
+  color: #145d35;
+  font: inherit;
+  cursor: pointer;
+}
+.media-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 8px;
+  border-bottom: 1px solid #e5ece8;
+  flex-wrap: wrap;
+}
+.media-tabs button {
+  flex: 1;
+  border: 0;
+  white-space: nowrap;
+}
+.media-tabs button[aria-selected="true"],
+.media-controls button[aria-pressed="true"] {
+  background: #e3f7eb;
+  color: #006b32;
+  font-weight: 800;
+}
+.media-tabs button:disabled {
+  color: #78867d;
+  cursor: default;
+  background: #f5f7f6;
+}
+.exercise-media button:focus-visible,
+.exercise-media select:focus-visible,
+.exercise-demo-disclosure summary:focus-visible {
+  outline: 3px solid #008b43;
+  outline-offset: 3px;
+}
+.exercise-media-stage {
+  background: #f3f6f4;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: clamp(260px, 40vw, 420px);
+  overflow: hidden;
+}
+.exercise-media-stage img,
+.exercise-media-stage video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  min-height: 0;
+  max-height: 100%;
+  align-self: center;
+}
+.exercise-media-stage .media-play {
+  position: absolute;
+  inset: auto;
+  min-height: 48px;
+  border: 0;
+  border-radius: 30px;
+  padding: 12px 24px;
+  background: #008b43;
+  color: white;
+  font: inherit;
+  font-weight: 700;
+  box-shadow: 0 3px 20px #0003;
+}
+.media-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 16px;
+}
+.media-controls label {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.media-controls select {
+  min-height: 44px !important;
+  width: auto !important;
+  padding: 8px !important;
+}
+.media-controls small {
+  color: #68776e;
+  font-size: 12px;
+}
+.media-error,
+.media-pending,
+.media-note {
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+}
+.media-error {
+  color: #9d341b;
+  background: #fff2e9;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.media-error button {
+  min-height: 44px;
+  border: 1px solid currentColor;
+  background: white;
+  border-radius: 10px;
+  padding: 8px;
+}
+.media-pending {
+  background: #f1f6f3;
+  color: #52695b;
+}
+.media-note {
+  color: #5c6d62;
+}
+.media-attribution {
+  padding: 0 16px 16px;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.media-attribution summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  color: #52695b;
+}
+.media-attribution p {
+  line-height: 1.6;
+}
+.media-attribution a {
+  color: #00753b;
+  text-decoration: underline;
+}
+.media-attribution small {
+  font-size: 12px;
+}
+.exercise-muscles {
+  padding: 16px;
+}
+.exercise-muscle-pair {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  height: 280px;
+}
+.exercise-muscle-pair svg {
+  height: 100%;
+  width: 40%;
+  max-width: 160px;
+}
+.exercise-muscles p {
+  font-size: 14px;
+  line-height: 1.9;
+}
+.exercise-muscles small {
+  font-size: 12px;
+  color: #66776c;
+}
+.media-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-right: 8px;
+}
+.primary-muscle {
+  background: #008b43;
+}
+.secondary-muscle {
+  background: #9be5ba;
+}
+.exercise-demo-disclosure {
+  margin: 12px 0;
+}
+.exercise-demo-disclosure > summary {
+  min-height: 44px;
+  cursor: pointer;
+  color: #00723b;
+  font-weight: 700;
+  display: list-item;
+  list-style-position: inside;
+}
+.exercise-demo-disclosure > .exercise-media {
+  margin-top: 4px;
+}
+.exercise-thumbnail {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  flex: 0 0 88px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f0f5f2;
+  color: #718177;
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.5;
+}
+.exercise-thumbnail img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.exercise-thumbnail .media-error {
+  font-size: 12px;
+  padding: 4px;
+}
+.exercise-thumbnail .media-error button {
+  padding: 0;
+}
+.gym-exercise-list .gym-exercise-name {
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  padding: 0;
+}
+.exercise-list-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+.exercise-list-copy b {
+  font-size: 16px;
+  line-height: 1.5;
+}
+.exercise-list-copy small {
+  font-size: 12px;
+  color: #68796e;
+}
+.exercise-media-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.exercise-media-badges span {
+  border-radius: 5px;
+  background: #e9f6ee;
+  color: #007039;
+  font-size: 12px;
+  padding: 1px 5px;
+}
+.exercise-media-badges .pending {
+  background: #f1f4f2;
+  color: #77847b;
+}
+.gym-library > .gym-inline-actions {
+  align-items: center;
+  gap: 8px 16px;
+}
+.gym-library > .gym-inline-actions > label:has(input[type="checkbox"]) {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.gym-library input[type="checkbox"] {
+  min-height: 20px;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.gym-exercise-detail {
+  scroll-margin-top: 24px;
+}
+.media-library-filters {
+  border-bottom: 1px solid #e0e9e3;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+.media-library-filters > summary {
+  min-height: 44px;
+  cursor: pointer;
+  color: #536a5c;
+  list-style-position: inside;
+}
+.media-library-filters .gym-inline-actions {
+  align-items: center;
+  gap: 12px;
+}
+.media-library-filters .gym-inline-actions > label:has(input[type="checkbox"]) {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.gym-library > .gym-inline-actions > label {
+  min-height: 44px;
+}
+.gym-library .gym-search {
+  flex-wrap: nowrap;
+  gap: 12px;
+}
+.gym-library .gym-search > label {
+  flex-basis: auto;
+  min-width: 0;
+}
+.gym-library .gym-search > button {
+  flex-shrink: 0;
+}
+.media-expanded {
+  border: 0;
+  margin: 0;
+}
+.media-expanded .exercise-media-stage {
+  height: min(58vh, 640px);
+}
+.ui-dialog:has(.media-expanded) {
+  max-width: 880px;
+  width: calc(100vw - 32px);
+}
+@media (max-width: 600px) {
+  .exercise-media-stage {
+    height: 310px;
+    max-height: 50svh;
+  }
+  .exercise-media {
+    border-radius: 16px;
+  }
+  .exercise-thumbnail {
+    width: 76px;
+    height: 86px;
+    flex-basis: 76px;
+  }
+  .gym-exercise-list .gym-exercise-name {
+    gap: 10px;
+  }
+  .media-controls {
+    padding: 10px;
+    gap: 6px;
+  }
+  .media-heading {
+    padding: 10px 12px;
+  }
+  .media-heading strong {
+    font-size: 15px;
+  }
+  .media-tabs {
+    gap: 0;
+    padding: 6px;
+  }
+  .media-tabs button {
+    font-size: 14px;
+    padding: 8px;
+  }
+  .exercise-muscle-pair {
+    height: 240px;
+  }
+  .gym-exercise-list article {
+    gap: 6px;
+  }
+  .gym-exercise-list .gym-favorite {
+    width: 36px;
+    min-width: 44px;
+  }
+  .gym-exercise-detail {
+    padding: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .exercise-media * {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+.exercise-media-stage {
+  height: auto;
+  aspect-ratio: 3/2;
+  max-height: 420px;
+}
+.exercise-media-stage:has(video) {
+  aspect-ratio: 16/9;
+}
+.media-expanded .exercise-media-stage {
+  height: min(58vh, 640px);
+  max-height: none;
+}
