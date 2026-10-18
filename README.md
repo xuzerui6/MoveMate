@@ -48,7 +48,7 @@ cd MoveMate
 
 **完整网页构建还需要站内专用素材。** 部分示范仅获准用于站内部署，不包含在 Git 中。先按[素材配置说明](docs/development.md#动作示范素材)设置 `MOVEMATE_MEDIA_DIR`；没有这些文件也可以完成公开源码测试和类型检查。构建不会自动下载、伪造或跳过授权素材。
 
-Windows 配置好素材后，双击根目录 [`start-demo.bat`](start-demo.bat)，访问 **http://localhost:3001**。脚本检查依赖、创建独立演示配置、构建并启动；失败即停止，不修改防火墙。
+Windows 配置好素材后，双击根目录 [`start-demo.bat`](start-demo.bat)，访问 [http://localhost:3001](http://localhost:3001)。脚本检查依赖、创建独立演示配置、构建并启动；失败即停止，不修改防火墙。
 
 | 本机演示账号 | 用途 |
 | --- | --- |

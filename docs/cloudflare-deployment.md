@@ -2,6 +2,8 @@
 
 正式域名：`https://dongban.xyz`。`www.dongban.xyz` 以 308 跳转至主域名。
 
+仓库 `vercel.json` 保留历史配置，并以 `git.deploymentEnabled: false` 停止旧 Vercel Git 自动部署；正式站由 Cloudflare 发布。该设置不删除历史部署、数据库或备份，也不阻止明确执行的手动 Vercel CLI 操作。
+
 ## 架构与免费边界
 
 - `cloudflare/` 是 Cloudflare 部署包；React Static Assets、API、原生实时 WebSocket 和小智桥接共用一个 Worker `movemate`。
