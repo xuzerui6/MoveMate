@@ -19,3 +19,10 @@
 - 连续视频：wger video 6、12、17、22、49、71，作者 Goulart，CC BY-SA 4.0。按原比例转码、去掉音轨、选取对应完整动作片段并提取封面及三阶段分解帧；视频衍生物、分解帧和封面继续采用 CC BY-SA 4.0。许可：`client/public/exercise-media/CC-BY-SA-4.0.txt`。
 - 每项来源 URL、固定版本／源文件校验、发布校验与修改说明：`client/public/exercise-media/attribution.json`；站内详情提供同一清单。肌群图继续采用已有 MuscleMap MIT 数据及署名。
 - 未复制或热链 openGym 的 Gym visual 图片、动画，也未将其用于生成素材输入。完整核验及缺失情况见 `docs/exercise-media.md`、`docs/exercise-media-batch2.md`。
+
+## 第三批动作示范（2026-10-18）
+
+- 新增八项双帧图片，仍来自上述固定提交的 free-exercise-db / Unlicense。具体原文件、原始校验值、阶段及变式审核见 `scripts/exercise-media-approved.json`。
+- Pexels video 3048952（fauxels）、5025964（olia danilevich）、8456719（Mikhail Nilov）采用 [Pexels License](https://www.pexels.com/license/) 与 [使用条款](https://www.pexels.com/terms-of-service/)。其许可不是 Unlicense 或 CC，不能按本站源码许可再授权。
+- 上述三段视频、封面和同源阶段图仅集成于网站动作说明；原片及衍生文件保存在项目外，由构建校验后部署，不在公开源码仓库分发，不提供独立素材下载入口。采用片段、修改说明、作者及来源链接保留于公开 attribution 清单。人物出现不表示其为本产品背书。
+- 已核验亚洲人物但形式不符的候选未采用；实际新增亚洲人物素材数量为 0，不凭外貌推定。完整结果见 `docs/exercise-media-batch3.md`。

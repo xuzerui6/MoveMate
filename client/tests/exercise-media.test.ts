@@ -14,16 +14,19 @@ import { createDemoPlaybackGroup } from "../src/features/gym/mediaPlayback";
 import approved from "../../scripts/exercise-media-approved.json";
 import catalogue from "../../server/src/gym/catalog.json";
 import videoSizes from '../../cloudflare/src/media-sizes.json';
+import { verifyExerciseMedia } from '../../scripts/exercise-media-assets.mjs';
 
 const publicDir = fileURLToPath(new URL("../public/", import.meta.url));
 test("all released demonstrations are reviewed exact IDs with local immutable and verified bytes", () => {
-  assert.equal(demonstratedIds.length, approved.stills.length);
+  const reviewed = [...approved.stills, ...approved.siteVideos.flatMap(row => row.exerciseIds.map(exerciseId => ({exerciseId, expectedName: row.expectedNames[exerciseId as keyof typeof row.expectedNames]})))];
+  assert.equal(demonstratedIds.length, reviewed.length);
+  const verified = new Map(verifyExerciseMedia().map(f => [f.src, f]));
   assert.ok(
     demonstratedIds.length <= 500,
     "Existing API ids filter has a 500-ID limit; change batching before expanding",
   );
   const ids = new Set<string>();
-  for (const row of approved.stills) {
+  for (const row of reviewed) {
     assert.ok(!ids.has(row.exerciseId));
     ids.add(row.exerciseId);
     const original = catalogue.find((e) => e.id === row.exerciseId);
@@ -39,7 +42,7 @@ test("all released demonstrations are reviewed exact IDs with local immutable an
         f.src,
         /^\/exercise-media\/[a-z0-9_-]+\.[0-9a-f]{12}\.(webp|mp4)$/,
       );
-      const bytes = fs.readFileSync(publicDir + f.src);
+      const bytes = verified.get(f.src)!.bytes;
       assert.equal(bytes.length,f.bytes);
       assert.ok(bytes.length > 1000 && bytes.length < 25 * 1024 * 1024);
       assert.equal(createHash("sha256").update(bytes).digest("hex"), f.sha256);
@@ -49,12 +52,17 @@ test("all released demonstrations are reviewed exact IDs with local immutable an
         if (f.sourceTime != null) assert.ok(f.sourceTime >= 0);
       }
     }
-    if (m.video) assert.equal(createHash('sha256').update(fs.readFileSync(publicDir+m.video.poster)).digest('hex'),m.video.posterSha256);
+    if (m.video) assert.equal(createHash('sha256').update(verified.get(m.video.poster)!.bytes).digest('hex'),m.video.posterSha256);
     for (const s of m.sources) {
       assert.ok(
         s.author && s.url && s.version && s.changes && s.sourceSha256?.length,
       );
-      assert.ok(["Unlicense", "CC BY-SA 4.0"].includes(s.license));
+      assert.ok(["Unlicense", "CC BY-SA 4.0", "Pexels License"].includes(s.license));
+      if (s.license === 'Pexels License') {
+        assert.equal(s.distribution, 'site-only');
+        assert.equal(m.video?.distribution, 'site-only');
+        assert.ok(m.images.every(f => f.distribution === 'site-only'));
+      }
       assert.ok(!s.url.includes("openGym"));
     }
   }
@@ -75,7 +83,7 @@ test("image and video filters send exact ID sets before server pagination", () =
   assert.ok(mediaIds('video')!.includes('exdb:0025'));
 });
 test("reviewed video breakdowns preserve chronological phases and provenance", () => {
-  for (const row of approved.videos) {
+  for (const row of [...approved.videos, ...approved.siteVideos]) {
     for (const id of row.exerciseIds) {
       const m=mediaFor(id)!;
       assert.equal(m.images.length,row.frames.length);
@@ -84,7 +92,7 @@ test("reviewed video breakdowns preserve chronological phases and provenance", (
       m.images.forEach((f,i)=>{
         assert.ok(f.sourceTime!>=row.start && f.sourceTime!<row.end);
         if(i) assert.ok(f.sourceTime!>m.images[i-1].sourceTime!);
-        assert.equal(m.sources[f.sourceIndex!].sourceSha256![0],row.source.sourceSha256);
+        assert.equal(m.sources[f.sourceIndex!].sourceSha256![0],Array.isArray(row.source.sourceSha256) ? row.source.sourceSha256[0] : row.source.sourceSha256);
       });
     }
   }
@@ -93,10 +101,7 @@ test("misleading variants and custom movements never inherit demonstration media
   for (const id of [
     "user:0334",
     "exdb:0333",
-    "movemate:reverse_lunge",
     "exdb:1373",
-    "motion:high_knees",
-    "motion:jumping_jack",
   ])
     assert.equal(mediaFor(id), undefined);
   assert.equal(mediaFor(undefined), undefined);

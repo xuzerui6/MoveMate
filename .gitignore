@@ -9,6 +9,9 @@ coverage/
 .dev.vars.*
 *.tsbuildinfo
 /server/public/
+# Site-only exercise media is supplied from outside Git at build time.
+/client/public/exercise-media/site-*
+/media-private/
 
 # Local configuration and credentials
 .env

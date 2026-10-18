@@ -145,6 +145,134 @@
         "09abbeb2fca7006d0e072bdc802158b34acf7923bd3069bb835951e49a95de41",
         "3c323601573df29cc9c6343765e0d21e7cd99a2dc830105099ac95ecba2cea72"
       ]
+    },
+    {
+      "sourceId": "Seated_Cable_Rows",
+      "sourceSha256": [
+        "f5a4adf972f93a6c7b09e003f23005a1163653a7e36b71f1e374acab0243ddf7",
+        "0b8e1a0b0fff86cafff45d851ea631a20d469713e9fd735031d3fffb0299fde6"
+      ],
+      "exerciseId": "exdb:0861",
+      "expectedName": "cable seated row",
+      "phases": [
+        "伸臂起始位",
+        "拉至腹部"
+      ],
+      "note": "本示范为坐姿低位绳索划船，V 形窄握、掌心相对；不是划船机有氧运动。实拍双帧图片，不是连续动画。",
+      "distribution": "repository",
+      "subjectOrigin": "来源未明确说明，不依据外貌判断。"
+    },
+    {
+      "sourceId": "Leg_Press",
+      "sourceSha256": [
+        "55079d514ae8d4dbc526731bb5120748e74a084ebcd546eaa890fa273427f0dc",
+        "f4e08d4ad4e6542f5dd923bbfabe9a28bf6c960bed02b1b9d65f6bafd6ceb051"
+      ],
+      "exerciseId": "exdb:0739",
+      "expectedName": "sled 45в° leg press",
+      "phases": [
+        "推起位置",
+        "屈膝回落"
+      ],
+      "note": "45°双腿腿举，双脚保持踩稳，不用单腿或提踵替代。实拍双帧图片，不是连续动画。",
+      "distribution": "repository",
+      "subjectOrigin": "来源未明确说明，不依据外貌判断。"
+    },
+    {
+      "sourceId": "Leg_Extensions",
+      "sourceSha256": [
+        "54fd46441d63459e3cdd26f26b826ad049e835fb7f1984b42398fdfbdefb5bfa",
+        "9e04d0e306d8fee608305766b14a56df1d1312956d374152f58dcbf267d591a9"
+      ],
+      "exerciseId": "exdb:0585",
+      "expectedName": "lever leg extension",
+      "phases": [
+        "屈膝起始位",
+        "双腿伸膝"
+      ],
+      "note": "坐姿双腿器械腿屈伸，控制推起和回落。实拍双帧图片，不是连续动画。",
+      "distribution": "repository",
+      "subjectOrigin": "来源未明确说明，不依据外貌判断。"
+    },
+    {
+      "sourceId": "Lying_Leg_Curls",
+      "sourceSha256": [
+        "0875bf50a6615d4dc33df63110d3c6ee55b41606ed79a9fe705e17fcb4626095",
+        "4ccf6f4a26dc97dcf8241cc55e08e22579b5a02bdebafe56d74f951ceab2bd06"
+      ],
+      "exerciseId": "exdb:0586",
+      "expectedName": "lever lying leg curl",
+      "phases": [
+        "伸腿起始位",
+        "屈膝抬起"
+      ],
+      "note": "俯卧双腿器械腿弯举，保持髋部贴近支撑。实拍双帧图片，不是连续动画。",
+      "distribution": "repository",
+      "subjectOrigin": "来源未明确说明，不依据外貌判断。"
+    },
+    {
+      "sourceId": "Hammer_Curls",
+      "sourceSha256": [
+        "f3c330d75545bed1cc325a4abf84940109db64fa5ab967b1963ecccccd3b2fe8",
+        "42adf0d1577528fdfab45b360918320394a5017b082d2502ab3a00600622907e"
+      ],
+      "exerciseId": "exdb:0313",
+      "expectedName": "dumbbell hammer curl",
+      "phases": [
+        "伸臂起始位",
+        "双臂弯举"
+      ],
+      "note": "双臂同时锤式弯举，全程掌心相对，不转为掌心向上。实拍双帧图片，不是连续动画。",
+      "distribution": "repository",
+      "subjectOrigin": "来源未明确说明，不依据外貌判断。"
+    },
+    {
+      "sourceId": "Triceps_Pushdown_-_V-Bar_Attachment",
+      "sourceSha256": [
+        "c461989452d9f0ebaa0f88bf452a8cee66235e7d901b48aceb3b414fd20692f8",
+        "d9896b2d9be8ed7f042831ca7acf3d282dde16facfef1280cd97b087a1023025"
+      ],
+      "exerciseId": "exdb:0241",
+      "expectedName": "cable triceps pushdown (v-bar)",
+      "phases": [
+        "屈肘起始位",
+        "向下伸臂"
+      ],
+      "note": "V 杆双臂下压，上臂稳定；不是绳索或直杆变式。实拍双帧图片，不是连续动画。",
+      "distribution": "repository",
+      "subjectOrigin": "来源未明确说明，不依据外貌判断。"
+    },
+    {
+      "sourceId": "Cable_Crunch",
+      "sourceSha256": [
+        "196cc4cb510ecafec24c1648c851aa160d4652917d7c0137b4cf7fb1eeb9c668",
+        "e65fc1effc632eb78d8cda09ef95bf89c4bb235b15757e9a33306ca61a78f606"
+      ],
+      "exerciseId": "exdb:0175",
+      "expectedName": "cable kneeling crunch",
+      "phases": [
+        "伸展起始位",
+        "躯干卷曲"
+      ],
+      "note": "跪姿绳索卷腹，以躯干卷曲发力，避免只用双臂拉动。实拍双帧图片，不是连续动画。",
+      "distribution": "repository",
+      "subjectOrigin": "来源未明确说明，不依据外貌判断。"
+    },
+    {
+      "sourceId": "Incline_Dumbbell_Press",
+      "sourceSha256": [
+        "5128af58efedb66e5d3e2454c7a1e3c7f9353b573e97c8430e37cb638da8882e",
+        "7e4cd389cd0c537911da937657333f33118102e69f050c36906a6d49ae3f921f"
+      ],
+      "exerciseId": "exdb:0314",
+      "expectedName": "dumbbell incline bench press",
+      "phases": [
+        "屈肘起始位",
+        "双臂推起"
+      ],
+      "note": "上斜凳双哑铃卧推；不是平板或单臂变式。实拍双帧图片，不是连续动画。",
+      "distribution": "repository",
+      "subjectOrigin": "来源未明确说明，不依据外貌判断。"
     }
   ],
   "videos": [
@@ -476,7 +604,7 @@
     {
       "source": "https://www.pexels.com/video/a-man-doing-dumbbell-curls-6547801/",
       "subjectOrigin": "来源描述标注 Asian man",
-      "reason": "交替弯举不匹配现有双臂同时摄像头形式；且尚未确认素材可随公开源码仓库独立分发，不发布。"
+      "reason": "实片逐阶段核对为交替旋转握法弯举，不匹配双臂同时锤式弯举；不以相近形式替代。"
     },
     {
       "source": "https://www.pexels.com/video/woman-working-out-at-the-gym-4861142/",
@@ -490,7 +618,151 @@
     {
       "source": "https://www.dvidshub.net/video/558574/high-knees",
       "reason": "向前移动且关键阶段取景不完整，不匹配原地交替高抬腿。"
+    },
+    {
+      "source": "https://www.pexels.com/photo/man-in-gray-tank-top-holding-black-and-red-exercise-equipment-6551053/",
+      "subjectOrigin": "来源描述 Asian man",
+      "reason": "实际为划船测功仪，不是坐姿绳索划船；不采用。"
     }
   ],
-  "batch": 2
+  "batch": 3,
+  "siteVideos": [
+    {
+      "key": "site-pexels-3048952",
+      "sourceFile": "pexels-3048952.mp4",
+      "exerciseIds": [
+        "motion:jumping_jack"
+      ],
+      "expectedNames": {
+        "motion:jumping_jack": "jumping_jack"
+      },
+      "start": 0,
+      "end": 8.6,
+      "frames": [
+        {
+          "time": 1.8,
+          "phase": "双脚合拢"
+        },
+        {
+          "time": 2.8,
+          "phase": "手脚展开"
+        },
+        {
+          "time": 3.8,
+          "phase": "回到合拢"
+        }
+      ],
+      "review": "正面全身、原地双脚开合与双手上举；完整合拢、展开、回位周期。逐阶段检查主体、器械及完整周期；不是专业教学认证。",
+      "subjectOrigin": "来源未明确标注亚洲人物；不按外貌、姓名或拍摄地点推断。",
+      "note": "正面全身、原地双脚开合与双手上举；完整合拢、展开、回位周期。真人实拍，分解帧来自同一视频；手动播放，默认静音。",
+      "source": {
+        "name": "Pexels / video 3048952",
+        "author": "fauxels",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/",
+        "termsUrl": "https://www.pexels.com/terms-of-service/",
+        "url": "https://www.pexels.com/video/a-woman-doing-jumping-exercises-along-the-river-banks-3048952/",
+        "version": "video:3048952; reviewed 2026-10-18; sha256:78ec5ada94326235536e8773801902de1d16f2b1c1ec380e6cbb5d8e702966a4",
+        "sourceSha256": [
+          "78ec5ada94326235536e8773801902de1d16f2b1c1ec380e6cbb5d8e702966a4"
+        ],
+        "distribution": "site-only",
+        "changes": "采用原片 0–8.6 秒，移除音轨，等比例 H.264 转码，提取封面及按原片时间标注的阶段帧；无空间裁切。仅作为站内训练说明的一部分部署，不向源码仓库分发原片或衍生文件；不表示人物为产品背书。"
+      }
+    },
+    {
+      "key": "site-pexels-5025964",
+      "sourceFile": "pexels-5025964.mp4",
+      "exerciseIds": [
+        "motion:high_knees"
+      ],
+      "expectedNames": {
+        "motion:high_knees": "high_knees"
+      },
+      "start": 0,
+      "end": 8,
+      "frames": [
+        {
+          "time": 0,
+          "phase": "抬膝至手掌附近"
+        },
+        {
+          "time": 0.3,
+          "phase": "落下并交替"
+        },
+        {
+          "time": 0.6,
+          "phase": "继续交替抬膝"
+        }
+      ],
+      "review": "原地左右交替高抬腿，全身入镜；左右各一次为一对。逐阶段检查主体、器械及完整周期；不是专业教学认证。",
+      "subjectOrigin": "来源未明确标注亚洲人物；不按外貌、姓名或拍摄地点推断。",
+      "note": "原地左右交替高抬腿，全身入镜；左右各一次为一对。真人实拍，分解帧来自同一视频；手动播放，默认静音。",
+      "source": {
+        "name": "Pexels / video 5025964",
+        "author": "olia danilevich",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/",
+        "termsUrl": "https://www.pexels.com/terms-of-service/",
+        "url": "https://www.pexels.com/video/woman-doing-high-knees-exercise-5025964/",
+        "version": "video:5025964; reviewed 2026-10-18; sha256:7ae18d28cbec5fbf1584d0a4dcde99615312d996b5b772d6dac29c6844599766",
+        "sourceSha256": [
+          "7ae18d28cbec5fbf1584d0a4dcde99615312d996b5b772d6dac29c6844599766"
+        ],
+        "distribution": "site-only",
+        "changes": "采用原片 0–8 秒，移除音轨，等比例 H.264 转码，提取封面及按原片时间标注的阶段帧；无空间裁切。仅作为站内训练说明的一部分部署，不向源码仓库分发原片或衍生文件；不表示人物为产品背书。"
+      }
+    },
+    {
+      "key": "site-pexels-8456719",
+      "sourceFile": "pexels-8456719.mp4",
+      "exerciseIds": [
+        "movemate:reverse_lunge"
+      ],
+      "expectedNames": {
+        "movemate:reverse_lunge": "reverse_lunge"
+      },
+      "start": 0,
+      "end": 12.5,
+      "frames": [
+        {
+          "time": 0,
+          "phase": "站立准备"
+        },
+        {
+          "time": 3.5,
+          "phase": "一侧后撤下沉"
+        },
+        {
+          "time": 6,
+          "phase": "回到站立"
+        },
+        {
+          "time": 9,
+          "phase": "换侧后撤下沉"
+        },
+        {
+          "time": 12,
+          "phase": "换侧后返回"
+        }
+      ],
+      "review": "徒手交替后撤弓步，完整后撤、下沉与站立；不用于前弓步、交叉弓步或负重形式。逐阶段检查主体、器械及完整周期；不是专业教学认证。",
+      "subjectOrigin": "来源未明确标注亚洲人物；不按外貌、姓名或拍摄地点推断。",
+      "note": "徒手交替后撤弓步，完整后撤、下沉与站立；不用于前弓步、交叉弓步或负重形式。真人实拍，分解帧来自同一视频；手动播放，默认静音。",
+      "source": {
+        "name": "Pexels / video 8456719",
+        "author": "Mikhail Nilov",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/",
+        "termsUrl": "https://www.pexels.com/terms-of-service/",
+        "url": "https://www.pexels.com/video/a-woman-doing-reverse-lunges-8456719/",
+        "version": "video:8456719; reviewed 2026-10-18; sha256:48e26aa8f23b7e792ff262ae6213bd62898bbf0aafa2b730d3c5dd80b7deff1a",
+        "sourceSha256": [
+          "48e26aa8f23b7e792ff262ae6213bd62898bbf0aafa2b730d3c5dd80b7deff1a"
+        ],
+        "distribution": "site-only",
+        "changes": "采用原片 0–12.5 秒，移除音轨，等比例 H.264 转码，提取封面及按原片时间标注的阶段帧；无空间裁切。仅作为站内训练说明的一部分部署，不向源码仓库分发原片或衍生文件；不表示人物为产品背书。"
+      }
+    }
+  ]
 }

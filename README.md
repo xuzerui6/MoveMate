@@ -135,7 +135,7 @@ npm run build
 
 原 `start.bat` 为旧局域网脚本，可能申请防火墙规则；本机请使用 `start-demo.bat`。正式网页使用 Cloudflare 的 [dongban.xyz](https://dongban.xyz)，小程序仍未合并或部署；源码推送到 [MoveMate](https://github.com/xuzerui6/MoveMate)。
 
-动作库已接入站内分解图片与连续视频，可选择“全部动作／有图片／有视频”，与摄像头等条件组合筛选；计划编辑和训练准备也能展开查看。当前 16 个动作有图，6 个有连续视频，六段视频均配同一人物的三阶段分解图；其余明确标为待补。[第二批覆盖、许可及验收说明](docs/exercise-media-batch2.md)如实记录亚洲人物素材候选及尚未通过的原因，未使用 openGym 的受限媒体。
+动作库已接入站内分解图片与连续视频，可选择“全部动作／有图片／有视频”，与摄像头等条件组合筛选；计划编辑和训练准备也能展开查看。当前 27 个动作有图、9 个有连续视频，视频均配同源分解帧；其余明确标为待补。[第三批覆盖、许可与构建说明](docs/exercise-media-batch3.md)记录逐动作完成状态、亚洲人物候选和站内专用素材要求。未使用 openGym 受限媒体。新增 Pexels 文件仅随网站部署，不包含在源码仓库；构建须通过 `MOVEMATE_MEDIA_DIR` 提供核验文件，缺失或校验不符即停止，不自动下载上游素材。当前电脑的忽略配置 `server/data/media-config.json` 已保存外部目录，一键启动方法不变。
 
 许可证见 [LICENSE](LICENSE)，动伴第三方声明见 [DONGBAN_THIRD_PARTY_NOTICES.md](DONGBAN_THIRD_PARTY_NOTICES.md)。不要提交 `.env*`、数据库、备份或服务日志。
 

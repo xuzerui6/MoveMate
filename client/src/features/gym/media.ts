@@ -7,6 +7,7 @@ export type MediaFile = {
   aspectRatio?: number;
   sourceIndex?: number;
   sourceTime?: number;
+  distribution?: "repository" | "site-only";
 };
 export type MediaSource = {
   name: string;
@@ -17,6 +18,7 @@ export type MediaSource = {
   version: string;
   changes: string;
   sourceSha256?: string[];
+  distribution?: "repository" | "site-only";
 };
 export type ExerciseMedia = {
   note: string;
