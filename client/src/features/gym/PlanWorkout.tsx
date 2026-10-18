@@ -3,9 +3,11 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuthStore } from "../../stores/authStore";
 import { Header } from "../motion/components/Header";
 import { PoseCanvas } from "../motion/components/PoseCanvas";
-import { RecognitionStatus } from "../motion/components/RecognitionStatus";
 import { usePose } from "../motion/hooks/usePose";
-import { useExerciseMetrics } from "../motion/hooks/useExerciseMetrics";
+import { usePlanRecognition, type PlanRecognitionType } from "./usePlanRecognition";
+import { PlanRecognitionStatus } from "./PlanRecognitionStatus";
+import { isNewPlanProfile } from "./planRecognition";
+import { exerciseInfo } from "../motion/lib/exercises";
 import { useXiaozhiCoach } from "../motion/hooks/useXiaozhiCoach";
 import { useSessionClock } from "../motion/hooks/useSessionClock";
 import { useStore } from "../motion/lib/store";
@@ -180,15 +182,16 @@ export default function PlanWorkout() {
     finished = row?.phase === "finished";
   const pose = usePose(camera && working && !busy && !blocked && !offline),
     seconds = useSessionClock(row?.session, busy || blocked || offline);
-  const type = current?.exercise.cameraType || "squat";
+  const type: PlanRecognitionType = current?.exercise.planCamera?.profile || current?.exercise.cameraType || "squat";
+  const capability = current?.exercise.planCamera;
+  const canRecognize = !!(capability || current?.exercise.cameraType) && !current?.targetSeconds && current?.side === "both";
   const restored = useMemo(
     () => restoredSetMetrics(current),
     [current?.id, recoveryKey],
   );
-  const { metrics, diagnostics } = useExerciseMetrics(
+  const { metrics, diagnostics } = usePlanRecognition(
     type,
     pose.landmarks,
-    false,
     camera && pose.status === "ready",
     !working || busy || blocked || offline,
     pose.videoRef.current?.videoWidth && pose.videoRef.current.videoHeight
@@ -271,7 +274,7 @@ export default function PlanWorkout() {
     try {
       if (mode === "camera" && pose.status !== "ready" && !(await pose.start()))
         throw new Error(
-          "摄像头或模型未就绪。请允许摄像头后重试，或改为手动记录。",
+          pose.errorReason.current || "摄像头或模型未就绪。请允许摄像头后重试，或改为手动记录。",
         );
       if (!alive.current) return;
       await sync.current!.run(
@@ -463,7 +466,7 @@ export default function PlanWorkout() {
     };
   }, []);
   const voiceContext: WorkoutContext = {
-    exerciseType: camera ? type : "plan",
+    exerciseType: camera && !isNewPlanProfile(type) ? type : "plan",
     countUnit: type === "high_knees" ? "对" : "次",
     reps: camera ? metrics.reps : current?.reps || 0,
     targetReps: current?.targetReps || 0,
@@ -488,7 +491,7 @@ export default function PlanWorkout() {
           Math.ceil((Date.parse(row?.restUntil || "") - tick) / 1000),
         ) || 0,
       phase: row?.phase || "ready",
-      instruction: current?.exercise.instructions.join(" ") || "",
+      instruction: (capability?.instruction || current?.exercise.instructions.join(" ") || "") + (camera ? " 当前使用摄像头记组，评分仅供训练反馈。" : ""),
     },
   };
   const voice = useXiaozhiCoach({
@@ -581,6 +584,7 @@ export default function PlanWorkout() {
             <p className="gym-muted">
               计划每有效分钟 1 XP，摄像头计数不额外发放 XP。
             </p>
+            {row.sets.some((s:any)=>s.inputMode === "camera" && s.score?.count > 0) && <p>训练识别均分 {Math.round(row.sets.reduce((sum:number,s:any)=>sum+(s.inputMode === "camera" ? s.score?.total || 0 : 0),0)/row.sets.reduce((sum:number,s:any)=>sum+(s.inputMode === "camera" ? s.score?.count || 0 : 0),0))} 分 · 仅统计可评分的完整动作</p>}
             <Link className="primary" to="/train/records">
               查看逐组记录
             </Link>
@@ -687,11 +691,15 @@ export default function PlanWorkout() {
                     {!working ? "已暂停识别；继续后重新校准" : metrics.feedback}
                   </p>
                   <small>
+                    {isNewPlanProfile(type) && <>本次评分 {metrics.lastRepScore == null ? "无法判断／待完成" : metrics.lastRepScore + " 分"} · </>}
                     {metrics.scoreAccumulator.count
                       ? `识别均分 ${metrics.formScore}`
                       : "尚无完整动作评分"}
                   </small>
-                  <RecognitionStatus
+                  {capability && metrics.scoreAccumulator.count > 0 && <p className="gym-muted">{capability.axes.map((name:string,i:number)=>name+" "+metrics.formBreakdown[(["depth","stability","trunk","symmetry"] as const)[i]]).join(" · ")}（已评分 {metrics.scoreAccumulator.count} 次）</p>}
+                  {type === "reverse_lunge" && <p>左侧 {metrics.scoreAccumulator.leftReps || 0} 次 · 右侧 {metrics.scoreAccumulator.rightReps || 0} 次 · 每侧完成计一次</p>}
+                  <p>{metrics.poseFeedback.primaryIssue ? metrics.poseFeedback.message : ""}</p>
+                  <PlanRecognitionStatus
                     type={type}
                     diagnostics={diagnostics}
                     paused={!working || busy || blocked}
@@ -800,6 +808,7 @@ export default function PlanWorkout() {
                   />
                 </div>
               )}
+              {current && camera && <WeightInput kg={weight} unit={options.prefs?.unit || "kg"} onChange={setWeight}/>}
               {current &&
                 options.prefs?.effort !== "off" &&
                 options.prefs?.effort && (
@@ -829,7 +838,17 @@ export default function PlanWorkout() {
                   />
                 </label>
               )}
-              {!working && current?.exercise.cameraType && (
+              {!working && canRecognize && (
+                <section className="gym-camera-preparation">
+                  <strong>摄像头自动记组{capability ? " · 试用" : ""}</strong>
+                  <p>本组目标 {current.targetReps} {type === "high_knees" ? "对" : "次"}，达到目标后自动进入休息。</p>
+                  <p>{capability?.placement || exerciseInfo(type).placement}</p>
+                  <p>{capability?.instruction || exerciseInfo(type).instruction}</p>
+                  {capability && <small>需看清：{capability.joints}。{capability.limitations}</small>}
+                  <p className="gym-muted">计划内只按有效运动时长结算 XP，不按动作重复奖励。</p>
+                </section>
+              )}
+              {!working && canRecognize && (
                 <label className="gym-checkbox">
                   <input
                     type="checkbox"
@@ -849,9 +868,7 @@ export default function PlanWorkout() {
                     >
                       {busy ? "正在准备…" : "手动记录 · 开始本组"}
                     </button>
-                    {current.exercise.cameraType &&
-                      !current.targetSeconds &&
-                      current.side === "both" && (
+                    {canRecognize && (
                         <button
                           className="secondary"
                           disabled={busy || blocked}

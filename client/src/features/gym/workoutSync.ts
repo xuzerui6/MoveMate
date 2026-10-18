@@ -4,7 +4,7 @@ export function restoredSetMetrics(set: any) {
     mean = (n: number) => (count ? Math.round((n || 0) / count) : 0);
   return {
     reps: set?.reps || 0,
-    scoreAccumulator: count ? score : undefined,
+    scoreAccumulator: Number.isFinite(score.count) ? score : undefined,
     formScore: mean(score.total),
     formBreakdown: {
       depth: mean(score.depth),

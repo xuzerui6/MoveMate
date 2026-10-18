@@ -105,9 +105,10 @@ export interface Equipment {
   owned: boolean
 }
 
-export interface ScoreAccumulator extends FormBreakdown { count: number; total: number }
+export interface ScoreAccumulator extends FormBreakdown { count: number; total: number; leftReps?: number; rightReps?: number }
 
 export interface WorkoutMetrics {
+  lastRepScore?: number | null
   scoreAccumulator?: ScoreAccumulator
   reps: number
   targetReps: number

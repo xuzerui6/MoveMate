@@ -42,6 +42,7 @@ export default function FreeWorkout() {
             <span>
               {i + 1}. {e.nameZh} · 3 组 ×{" "}
               {e.category === "timed" ? "30 秒" : "10 次"}
+              {e.planCamera ? " · 摄像头试用" : e.cameraType ? " · 支持摄像头" : " · 手动记录"}
             </span>
             <button
               onClick={() => setPicked((v) => v.filter((_, n) => n !== i))}

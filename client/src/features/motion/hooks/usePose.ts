@@ -4,6 +4,7 @@ import { ResourceScope } from '../lib/sessionRuntime'
 
 export function usePose(active: boolean) {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const errorReason = useRef('')
   // Keep image and world coordinates from the same inference together.
   const [sample, setSample] = useState<{landmarks:NormalizedLandmark[]|null;worldLandmarks:NormalizedLandmark[]|null}>({landmarks:null,worldLandmarks:null})
   const clearSample=()=>setSample({landmarks:null,worldLandmarks:null})
@@ -17,6 +18,8 @@ export function usePose(active: boolean) {
   }, [])
   const start = useCallback(async () => {
     stop()
+    errorReason.current = ''
+    let cameraOpened = false
     const current = new ResourceScope(); scope.current = current
     setStatus('loading')
     try {
@@ -25,6 +28,7 @@ export function usePose(active: boolean) {
       if (!current.own(() => stream.getTracks().forEach(track => track.stop())) || !videoRef.current) { current.cancel(); return false }
       videoRef.current.srcObject = stream
       await videoRef.current.play()
+      cameraOpened = true
       if (current.cancelled) return false
       const { FilesetResolver, PoseLandmarker } = await import('@mediapipe/tasks-vision')
       const vision = await FilesetResolver.forVisionTasks('/pose/wasm')
@@ -42,6 +46,7 @@ export function usePose(active: boolean) {
       const cancelled = current.cancelled; current.cancel()
       if (!mounted.current || scope.current !== current || cancelled) return false
       model.current = null; clearSample()
+      errorReason.current = error instanceof DOMException && error.name === 'NotAllowedError' ? '摄像头权限被拒绝，请在浏览器允许摄像头后重试，或改为手动记录。' : error instanceof DOMException && error.name === 'NotFoundError' ? '未找到摄像头，请连接设备后重试，或改为手动记录。' : error instanceof DOMException && error.name === 'NotReadableError' ? '摄像头无法读取，可能被其他应用占用，请关闭占用后重试。' : cameraOpened ? '姿态模型加载失败，请检查网络后重试；摄像头资源已释放，本组尚未开始。' : '无法启动摄像头，请检查设备和浏览器支持后重试，或改为手动记录。'
       setStatus(error instanceof DOMException && error.name === 'NotAllowedError' ? 'denied' : 'error')
       return false
     }
@@ -62,5 +67,5 @@ export function usePose(active: boolean) {
     loop(); return () => cancelAnimationFrame(raf.current)
   }, [active, status])
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; stop() } }, [stop])
-  return { videoRef, ...sample, status, start, stop }
+  return { videoRef, ...sample, status, start, stop, errorReason }
 }

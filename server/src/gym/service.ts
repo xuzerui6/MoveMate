@@ -1,6 +1,7 @@
 import { randomUUID, createHash } from "node:crypto";
 import { z } from "zod";
 import { refreshOnline, onlineCutoff } from "./online";
+import { snapshotCameraProfile } from "./camera";
 import { editWorkout } from "./editing";
 import { settings, dateInZone, saveSettings } from "./preferences";
 import { pool, withTransaction, afterCommit } from "../db";
@@ -80,6 +81,7 @@ export async function library(uid: number, query: any) {
     limit = Math.min(wanted ? 500 : 50, Math.max(1, Number(query.limit) || 24));
   const result = list.filter(
     (e) =>
+      (!query.camera || query.camera !== "1" || !!e.cameraType || !!e.planCamera) &&
       (!(e as any).archived || query.archived === "1") &&
       (!query.owned ||
         e.equipment === "body weight" ||
@@ -572,6 +574,8 @@ const actionSchema = z.object({
       stability: z.number().min(0),
       trunk: z.number().min(0),
       symmetry: z.number().min(0),
+      leftReps: z.number().int().min(0).max(100000).optional(),
+      rightReps: z.number().int().min(0).max(100000).optional(),
     })
     .optional(),
 });
@@ -656,8 +660,13 @@ export async function actWorkout(uid: number, id: string, input: any) {
         data.score &&
         data.action !== "manual" &&
         (mode !== "camera" ||
-          data.score.count !== (data.reps ?? set.reps) ||
-          Object.values(data.score).some((n) => n > data.score!.count * 100))
+          (set.exercise.planCamera
+            ? data.score.count > (data.reps ?? set.reps)
+            : data.score.count !== (data.reps ?? set.reps)) ||
+          [data.score.total, data.score.depth, data.score.stability, data.score.trunk, data.score.symmetry].some((n) => n > data.score!.count * 100) ||
+          ((data.score.leftReps !== undefined || data.score.rightReps !== undefined) &&
+            (snapshotCameraProfile(set.exercise) !== "reverse_lunge" ||
+              (data.score.leftReps || 0) + (data.score.rightReps || 0) !== (data.reps ?? set.reps))))
       )
         throw new ValidationError("识别评分与次数不一致");
       const reps =
@@ -716,7 +725,7 @@ export async function actWorkout(uid: number, id: string, input: any) {
       const mode = data.inputMode || "manual";
       if (
         mode === "camera" &&
-        (!set.exercise.cameraType ||
+        (!snapshotCameraProfile(set.exercise) ||
           set.targetSeconds > 0 ||
           set.side !== "both")
       )

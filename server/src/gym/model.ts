@@ -1,6 +1,7 @@
 import { z } from "zod";
 import catalogue from "./catalog.json";
 import zhTerms from "./zh-terms.json";
+import { planCameraFor } from "./camera";
 export const cameraKeys = [
   "squat",
   "jumping_jack",
@@ -18,6 +19,7 @@ export type Exercise = {
   instructions: string[];
   category: string;
   cameraType?: (typeof cameraKeys)[number];
+  planCamera?: ReturnType<typeof planCameraFor>;
 };
 const core = [
   [
@@ -153,6 +155,7 @@ export const exercises: Exercise[] = [
   })),
   ...(catalogue as any[]).map((e) => ({
     ...e,
+    planCamera: planCameraFor(e.id),
     nameZh:
       e.nameZh ||
       chineseName(e.name).replace(
@@ -194,6 +197,7 @@ export const exercises: Exercise[] = [
       ? e.instructions
       : [String(e.instructions)],
   })),
+  { id: "movemate:reverse_lunge", name: "alternating reverse lunge", nameZh: "交替后撤弓步", bodyPart: "upper legs", equipment: "body weight", target: "quadriceps", secondaryMuscles: ["glutes", "hamstrings"], category: "strength", instructions: ["双脚并立，保持身体直立。", "一侧向后撤步并屈膝下沉，保持前脚支撑。", "返回并脚站立，再换另一侧；每侧完成计一次。"], planCamera: planCameraFor("movemate:reverse_lunge") },
 ];
 export const setSchema = z.object({
   kind: z.enum(["warmup", "work", "drop", "rest_pause"]).default("work"),

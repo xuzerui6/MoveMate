@@ -3,6 +3,7 @@ import { Header } from "../motion/components/Header";
 import { Icon } from "../motion/components/Icons";
 import { useNavigate } from "react-router-dom";
 import { label, request, useGymQuery, getErrorMessage } from "./api";
+import { CameraCapability } from "./CameraCapability";
 export function ExerciseLibrary({
   onPick,
 }: {
@@ -16,6 +17,7 @@ export function ExerciseLibrary({
     [equipment, setEquipment] = useState(""),
     [category, setCategory] = useState(""),
     [favorite, setFavorite] = useState(false),
+    [cameraOnly, setCameraOnly] = useState(false),
     [owned, setOwned] = useState(false),
     [archived, setArchived] = useState(false),
     [role, setRole] = useState("primary"),
@@ -42,6 +44,7 @@ export function ExerciseLibrary({
     category,
     cursor: String(cursor),
     ...(favorite ? { favorite: "1" } : {}),
+    ...(cameraOnly ? { camera: "1" } : {}),
   });
   const result = useGymQuery("/exercises?" + params);
   useEffect(() => {
@@ -96,6 +99,7 @@ export function ExerciseLibrary({
         </button>
       </div>
       <div className="gym-inline-actions">
+        <label><input type="checkbox" checked={cameraOnly} onChange={(e)=>{setCameraOnly(e.target.checked);setCursor(0);}}/>支持摄像头</label>
         <label>
           <input
             type="checkbox"
@@ -242,7 +246,7 @@ export function ExerciseLibrary({
       <p className="gym-muted">
         {result.loading
           ? "正在读取动作…"
-          : `${result.data?.total || 0} 个匹配动作 · 仅四种指定徒手动作支持摄像头`}
+          : `${result.data?.total || 0} 个匹配动作 · 按标识选择摄像头动作，新动作识别为试用`}
       </p>
       {selected && (
         <article className="gym-exercise-detail">
@@ -381,10 +385,8 @@ export function ExerciseLibrary({
           </ol>
           <p>
             从舒适负重开始；不适时停止。
-            {selected.cameraType
-              ? "支持本地摄像头自动记组。"
-              : "本动作使用手动记录。"}
           </p>
+          <CameraCapability exercise={selected}/>
           {onPick && (
             <button className="primary" onClick={() => onPick(selected)}>
               加入这个动作
@@ -402,7 +404,7 @@ export function ExerciseLibrary({
               <b>{ex.nameZh}</b>
               <small>
                 {label(ex.bodyPart)} · {label(ex.equipment)}
-                {ex.cameraType ? " · 摄像头" : ""}
+                {ex.planCamera ? " · 摄像头试用" : ex.cameraType ? " · 摄像头" : ""}
                 {ex.archived ? " · 已归档" : ""}
               </small>
             </button>

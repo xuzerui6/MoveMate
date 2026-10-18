@@ -12,6 +12,8 @@
 
 第二阶段已补齐自由训练、训练中结构调整、单次调课、逐动作进阶、训练曲线与配重、完整数据恢复和 PWA 只读缓存。入口及验收边界见 [第二阶段说明与验收](docs/training-stage2.md)。
 
+动作库新增六类计划摄像头识别试用：双臂弯举、侧平举、坐姿肩推、俯身划船、后撤弓步与双脚提踵。在动作库勾选“支持摄像头”，加入计划或自由训练后使用；标准形式、评分与实际验收边界见 [摄像头记组说明](docs/plan-camera.md)。
+
 ## 本机启动
 
 正式地址：[https://dongban.xyz](https://dongban.xyz)，`www` 跳转至主域名。网页、接口、SQLite、实时聊天、通知和小智桥接运行在 Cloudflare Workers Free 与 SQLite-backed Durable Object；没有新增 R2、Containers 或付费套餐。原 Vercel 站点维护，Turso／Upstash 仅保留为备份。部署、迁移和只回滚代码的说明见 [Cloudflare 部署说明](docs/cloudflare-deployment.md)，实际验证见 [迁移验收](docs/cloudflare-acceptance.md)。本机启动方式继续使用下列脚本。

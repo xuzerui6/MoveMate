@@ -522,6 +522,9 @@
 .gym-camera[hidden] {
   display: none;
 }
+.gym-camera-preparation { padding: 16px; border: 1px solid #d9e9df; border-radius: 16px; background: #f5fbf7; margin: 12px 0; line-height: 1.7; }
+.gym-camera-preparation summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-weight: 700; }
+.gym-camera-preparation p { margin: 8px 0; }
 .gym-camera .pose-canvas {
   width: 100%;
   height: 100%;
