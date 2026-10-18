@@ -8,6 +8,7 @@ import {
   demonstratedIds,
   exerciseMedia,
   muscleRegions,
+  mediaIds,
 } from "../src/features/gym/media";
 import { createDemoPlaybackGroup } from "../src/features/gym/mediaPlayback";
 import approved from "../../scripts/exercise-media-approved.json";
@@ -43,6 +44,10 @@ test("all released demonstrations are reviewed exact IDs with local immutable an
       assert.ok(bytes.length > 1000 && bytes.length < 25 * 1024 * 1024);
       assert.equal(createHash("sha256").update(bytes).digest("hex"), f.sha256);
       assert.ok(f.src.includes(f.sha256.slice(0, 12)));
+      if ('phase' in f && f.sourceIndex != null) {
+        assert.ok(m.sources[f.sourceIndex], 'Every frame references its actual source');
+        if (f.sourceTime != null) assert.ok(f.sourceTime >= 0);
+      }
     }
     if (m.video) assert.equal(createHash('sha256').update(fs.readFileSync(publicDir+m.video.poster)).digest('hex'),m.video.posterSha256);
     for (const s of m.sources) {
@@ -60,6 +65,29 @@ test("all released demonstrations are reviewed exact IDs with local immutable an
     exerciseMedia,
   );
   assert.deepEqual(videoSizes,Object.fromEntries(Object.values(exerciseMedia).filter(m=>m.video).map(m=>[m.video!.src,m.video!.bytes])));
+});
+test("image and video filters send exact ID sets before server pagination", () => {
+  assert.equal(mediaIds('all'), undefined);
+  assert.deepEqual(mediaIds('images'), demonstratedIds.filter(id=>mediaFor(id)!.images.length>0));
+  assert.deepEqual(mediaIds('video'), demonstratedIds.filter(id=>!!mediaFor(id)!.video));
+  assert.ok(mediaIds('images')!.includes('motion:squat'));
+  assert.ok(!mediaIds('video')!.includes('motion:squat'));
+  assert.ok(mediaIds('video')!.includes('exdb:0025'));
+});
+test("reviewed video breakdowns preserve chronological phases and provenance", () => {
+  for (const row of approved.videos) {
+    for (const id of row.exerciseIds) {
+      const m=mediaFor(id)!;
+      assert.equal(m.images.length,row.frames.length);
+      assert.deepEqual(m.images.map(f=>f.sourceTime),row.frames.map(f=>f.time));
+      assert.deepEqual(m.images.map(f=>f.phase),row.frames.map(f=>f.phase));
+      m.images.forEach((f,i)=>{
+        assert.ok(f.sourceTime!>=row.start && f.sourceTime!<row.end);
+        if(i) assert.ok(f.sourceTime!>m.images[i-1].sourceTime!);
+        assert.equal(m.sources[f.sourceIndex!].sourceSha256![0],row.source.sourceSha256);
+      });
+    }
+  }
 });
 test("misleading variants and custom movements never inherit demonstration media", () => {
   for (const id of [

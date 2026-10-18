@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "reviewedAt": "2026-10-18",
   "entries": {
     "motion:squat": {
@@ -9,13 +9,15 @@
           "src": "/exercise-media/bodyweight_squat-0.f12ef1ce0ea9.webp",
           "sha256": "f12ef1ce0ea9ed857708a8ead0600e0c98e2cea6e97cc82a6c28e2f0f7a91ae1",
           "bytes": 28194,
-          "phase": "分解 1"
+          "phase": "分解 1",
+          "sourceIndex": 0
         },
         {
           "src": "/exercise-media/bodyweight_squat-1.671fe7aecc5b.webp",
           "sha256": "671fe7aecc5be93d9db465e076b1a2f8a23960c82d9116bf71e17876632a66d0",
           "bytes": 31678,
-          "phase": "分解 2"
+          "phase": "分解 2",
+          "sourceIndex": 0
         }
       ],
       "sources": [
@@ -41,13 +43,15 @@
           "src": "/exercise-media/pushups-0.199e9e981894.webp",
           "sha256": "199e9e98189453188da653fff0ba3fee3536eac0cf93043c7750771e75c8657d",
           "bytes": 55638,
-          "phase": "分解 1"
+          "phase": "分解 1",
+          "sourceIndex": 0
         },
         {
           "src": "/exercise-media/pushups-1.798bdcff0bce.webp",
           "sha256": "798bdcff0bcee42bb659c407db0a4a3b4f04e96d1d7c467f8fbd74cff7e2907f",
           "bytes": 54712,
-          "phase": "分解 2"
+          "phase": "分解 2",
+          "sourceIndex": 0
         }
       ],
       "sources": [
@@ -73,13 +77,15 @@
           "src": "/exercise-media/dumbbell_bicep_curl-0.2b061f86cb19.webp",
           "sha256": "2b061f86cb19ed4b9df15cd203c6e20559f8d56c15b899824868fdd6a2beff53",
           "bytes": 41376,
-          "phase": "分解 1"
+          "phase": "分解 1",
+          "sourceIndex": 0
         },
         {
           "src": "/exercise-media/dumbbell_bicep_curl-1.95c6b7eee4a2.webp",
           "sha256": "95c6b7eee4a2997fb2a92a6316a7edb223bc120c7b03493de6ab17e34e036856",
           "bytes": 41186,
-          "phase": "分解 2"
+          "phase": "分解 2",
+          "sourceIndex": 0
         }
       ],
       "sources": [
@@ -105,13 +111,15 @@
           "src": "/exercise-media/dumbbell_bicep_curl-0.2b061f86cb19.webp",
           "sha256": "2b061f86cb19ed4b9df15cd203c6e20559f8d56c15b899824868fdd6a2beff53",
           "bytes": 41376,
-          "phase": "分解 1"
+          "phase": "分解 1",
+          "sourceIndex": 0
         },
         {
           "src": "/exercise-media/dumbbell_bicep_curl-1.95c6b7eee4a2.webp",
           "sha256": "95c6b7eee4a2997fb2a92a6316a7edb223bc120c7b03493de6ab17e34e036856",
           "bytes": 41186,
-          "phase": "分解 2"
+          "phase": "分解 2",
+          "sourceIndex": 0
         }
       ],
       "sources": [
@@ -134,16 +142,28 @@
       "note": "站姿双臂侧平举，抬至肩高后缓慢放回。实拍示范用于理解动作过程，负重按自身能力选择。",
       "images": [
         {
-          "src": "/exercise-media/side_lateral_raise-0.44594909513e.webp",
-          "sha256": "44594909513e74af6bb65dbdcab1b753386970299441d6cdbd4fa82383aba52d",
-          "bytes": 41670,
-          "phase": "分解 1"
+          "src": "/exercise-media/wger-6-phase-0.3c897420d1d5.webp",
+          "sha256": "3c897420d1d543790be3ee03ab34a883578446201efb21bae71559b9f6ec7040",
+          "bytes": 74882,
+          "phase": "手臂垂下",
+          "sourceTime": 6,
+          "sourceIndex": 1
         },
         {
-          "src": "/exercise-media/side_lateral_raise-1.5866cecb708f.webp",
-          "sha256": "5866cecb708fff223eef3da989992e519f14f7611b9c300fad6b6c812e500a75",
-          "bytes": 41076,
-          "phase": "分解 2"
+          "src": "/exercise-media/wger-6-phase-1.0f5bc1d254c1.webp",
+          "sha256": "0f5bc1d254c1b40537f186163a324575c6a125c23b2a5d5b061f8498e31c28a4",
+          "bytes": 71700,
+          "phase": "侧举至肩高",
+          "sourceTime": 6.8,
+          "sourceIndex": 1
+        },
+        {
+          "src": "/exercise-media/wger-6-phase-2.d07aef247a24.webp",
+          "sha256": "d07aef247a24016e1f4fe5a5cb5375d50324468a87bd0fadeb337e3714dc59fc",
+          "bytes": 75016,
+          "phase": "控制放回",
+          "sourceTime": 7.6,
+          "sourceIndex": 1
         }
       ],
       "sources": [
@@ -170,7 +190,7 @@
           "sourceSha256": [
             "41c47c5efd245d0dfbcd25e4c1e6a4f46f2093281871df3503278ea9e5444d7f"
           ],
-          "changes": "仅保留原片 6–11.2 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面；无空间裁切。衍生视频及封面沿用 CC BY-SA 4.0。"
+          "changes": "仅保留原片 6–11.2 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面及按原片时间标注的分解帧；无空间裁切。衍生视频、封面及分解帧沿用 CC BY-SA 4.0。"
         }
       ],
       "video": {
@@ -186,16 +206,28 @@
       "note": "坐姿双臂肩推，保持躯干稳定，控制回落。实拍示范用于理解动作过程，负重按自身能力选择。",
       "images": [
         {
-          "src": "/exercise-media/dumbbell_shoulder_press-0.23857b2522cf.webp",
-          "sha256": "23857b2522cf330bcad4235373050a2243357d32d443e23ff636952bc0a9b591",
-          "bytes": 51252,
-          "phase": "分解 1"
+          "src": "/exercise-media/wger-12-phase-0.2a8d84e9585e.webp",
+          "sha256": "2a8d84e9585e2022264ce7ff1c672e9ffc715364627347c373a58530a280dc60",
+          "bytes": 74994,
+          "phase": "肩部起始位",
+          "sourceTime": 3,
+          "sourceIndex": 1
         },
         {
-          "src": "/exercise-media/dumbbell_shoulder_press-1.ff408c11f097.webp",
-          "sha256": "ff408c11f097edcdb45724ded03106028cde68787063fd2f506d013c803d6a50",
-          "bytes": 51214,
-          "phase": "分解 2"
+          "src": "/exercise-media/wger-12-phase-1.00a8f0f4af1e.webp",
+          "sha256": "00a8f0f4af1e340a8baffcbdf3437520eccd882b7494f2c05721252305481ce2",
+          "bytes": 71576,
+          "phase": "向上推起",
+          "sourceTime": 4,
+          "sourceIndex": 1
+        },
+        {
+          "src": "/exercise-media/wger-12-phase-2.c99866f76cda.webp",
+          "sha256": "c99866f76cda6afcb58abfa897e23f2faa48a6968a0f6bc95542085c4f030e26",
+          "bytes": 74848,
+          "phase": "控制回落",
+          "sourceTime": 5,
+          "sourceIndex": 1
         }
       ],
       "sources": [
@@ -222,7 +254,7 @@
           "sourceSha256": [
             "0151a7cd43894d60c1fe1ffb34f4f4b709fc17aa6a5913c7edea4a14c9113985"
           ],
-          "changes": "仅保留原片 2–16 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面；无空间裁切。衍生视频及封面沿用 CC BY-SA 4.0。"
+          "changes": "仅保留原片 2–16 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面及按原片时间标注的分解帧；无空间裁切。衍生视频、封面及分解帧沿用 CC BY-SA 4.0。"
         }
       ],
       "video": {
@@ -241,13 +273,15 @@
           "src": "/exercise-media/bent_over_two-dumbbell_row-0.2ffebeb31fd0.webp",
           "sha256": "2ffebeb31fd0793faf5e309f3623e1d9710dc8579b8b9a14cf6de66e7f61a9a6",
           "bytes": 52328,
-          "phase": "分解 1"
+          "phase": "分解 1",
+          "sourceIndex": 0
         },
         {
           "src": "/exercise-media/bent_over_two-dumbbell_row-1.0c0a60dccc8b.webp",
           "sha256": "0c0a60dccc8bd6ed5f066e51851dc2f040662a8ec2111c74caff0907b5eaf5bd",
           "bytes": 52562,
-          "phase": "分解 2"
+          "phase": "分解 2",
+          "sourceIndex": 0
         }
       ],
       "sources": [
@@ -267,19 +301,31 @@
       ]
     },
     "exdb:0025": {
-      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "note": "平板杠铃卧推，双手握距略宽于肩，保持支撑稳定。实拍示范用于理解动作过程，负重按自身能力选择。",
       "images": [
         {
-          "src": "/exercise-media/barbell_bench_press_-_medium_grip-0.9ad5e6129baa.webp",
-          "sha256": "9ad5e6129baaa6483bd56365b0d8930a4448b96ba244f814f4f457aa942b97fa",
-          "bytes": 57946,
-          "phase": "分解 1"
+          "src": "/exercise-media/wger-22-phase-0.f09816035f85.webp",
+          "sha256": "f09816035f853daa775e7c947932f271de93e067ee57dea5304ad937480b66de",
+          "bytes": 24258,
+          "phase": "屈肘下降",
+          "sourceTime": 4,
+          "sourceIndex": 1
         },
         {
-          "src": "/exercise-media/barbell_bench_press_-_medium_grip-1.f0f66c51b370.webp",
-          "sha256": "f0f66c51b3708910d8775ea5be75b52d7fd43e64316d1912e989682d2c790fb0",
-          "bytes": 56054,
-          "phase": "分解 2"
+          "src": "/exercise-media/wger-22-phase-1.95600f4c49f3.webp",
+          "sha256": "95600f4c49f352de3ca9ce5974fbf34cdafab03ae2797eec3c728caddc937d6b",
+          "bytes": 25706,
+          "phase": "向上推起",
+          "sourceTime": 6,
+          "sourceIndex": 1
+        },
+        {
+          "src": "/exercise-media/wger-22-phase-2.51046e9d51ed.webp",
+          "sha256": "51046e9d51ed6eb2650e69c596025ba8359331d3c799d57abca50d7d19e1c6bc",
+          "bytes": 27164,
+          "phase": "控制回落",
+          "sourceTime": 8,
+          "sourceIndex": 1
         }
       ],
       "sources": [
@@ -295,23 +341,55 @@
             "5056475ae5def865dbe52882d30d2730142de2b03231bda304f82fd0b088f608"
           ],
           "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
-        }
-      ]
-    },
-    "exdb:0031": {
-      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
-      "images": [
-        {
-          "src": "/exercise-media/barbell_curl-0.2e3eba56a08d.webp",
-          "sha256": "2e3eba56a08d0fcc5c312563d8256442e333447f267ea1e4c26098d8781191f6",
-          "bytes": 40858,
-          "phase": "分解 1"
         },
         {
-          "src": "/exercise-media/barbell_curl-1.98d03ea2ae82.webp",
-          "sha256": "98d03ea2ae82e1af8c30fe440c32a845c4603a3ce36d1485b0e32f83c389729a",
-          "bytes": 42846,
-          "phase": "分解 2"
+          "name": "wger / video 22",
+          "author": "Goulart",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "url": "https://wger.de/media/exercise-video/73/255b3509-e454-48a6-bf66-c7ca482be21a.MOV",
+          "version": "video:22; retrieved 2026-10-18; sha256:d731f05f7eed78571d9f622fe99223b4139de190d029c1c82b48d13d9454017b",
+          "sourceSha256": [
+            "d731f05f7eed78571d9f622fe99223b4139de190d029c1c82b48d13d9454017b"
+          ],
+          "changes": "仅保留原片 4–12 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面及按原片时间标注的分解帧；无空间裁切。衍生视频、封面及分解帧沿用 CC BY-SA 4.0。"
+        }
+      ],
+      "video": {
+        "src": "/exercise-media/wger-22.d45397402698.mp4",
+        "sha256": "d45397402698969d1acda779a69e0775aa8f830579b837464792b5b60b84abff",
+        "bytes": 531472,
+        "poster": "/exercise-media/wger-22-poster.ec2071b6d517.webp",
+        "posterSha256": "ec2071b6d517fa9d76527d46544bcf9575dd2eb0a213fecde52546283b4e92aa",
+        "aspectRatio": 1.8181818181818181
+      }
+    },
+    "exdb:0031": {
+      "note": "站姿双臂直杠弯举，掌心向前，控制抬起和放回。实拍示范用于理解动作过程，负重按自身能力选择。",
+      "images": [
+        {
+          "src": "/exercise-media/wger-49-phase-0.b506936951c4.webp",
+          "sha256": "b506936951c43540dee47422aad13094512363d5b4197d70fe746babf573162d",
+          "bytes": 56252,
+          "phase": "伸臂起始位",
+          "sourceTime": 2,
+          "sourceIndex": 1
+        },
+        {
+          "src": "/exercise-media/wger-49-phase-1.36141a01712b.webp",
+          "sha256": "36141a01712b40d06521086864882945cc841ad0f7c1e39d128cc783c26b6937",
+          "bytes": 49148,
+          "phase": "双臂弯举",
+          "sourceTime": 3,
+          "sourceIndex": 1
+        },
+        {
+          "src": "/exercise-media/wger-49-phase-2.a4a27efb450d.webp",
+          "sha256": "a4a27efb450d9c11787702a53664682a54ecac26c6c78c0de4be525dc0edac0c",
+          "bytes": 51514,
+          "phase": "控制放回",
+          "sourceTime": 4,
+          "sourceIndex": 1
         }
       ],
       "sources": [
@@ -327,8 +405,28 @@
             "27474187c68680520d3c6dbd3a452bb11f1e77b5474d9143517f43d02f5d8c0e"
           ],
           "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。"
+        },
+        {
+          "name": "wger / video 49",
+          "author": "Goulart",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "url": "https://wger.de/media/exercise-video/91/483f4bff-e108-41f1-8e7b-0caf24952552.MOV",
+          "version": "video:49; retrieved 2026-10-18; sha256:2b75ac783df5a9557e280385f6b1181227c613f4ee1a5427a8a3477736b14a49",
+          "sourceSha256": [
+            "2b75ac783df5a9557e280385f6b1181227c613f4ee1a5427a8a3477736b14a49"
+          ],
+          "changes": "仅保留原片 2–10.5 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面及按原片时间标注的分解帧；无空间裁切。衍生视频、封面及分解帧沿用 CC BY-SA 4.0。"
         }
-      ]
+      ],
+      "video": {
+        "src": "/exercise-media/wger-49.af90a610cc78.mp4",
+        "sha256": "af90a610cc78f48f6933469d567a2c4ac8330abdf46a1f8417c8af93d5d950e0",
+        "bytes": 1903481,
+        "poster": "/exercise-media/wger-49-poster.d4526b327aaf.webp",
+        "posterSha256": "d4526b327aaf96bc819353cb6f662a6090effacd20485ccba738559ccf7c588c",
+        "aspectRatio": 1.7777777777777777
+      }
     },
     "exdb:0032": {
       "note": "实拍双帧分解，按顺序查看；不是连续动画。",
@@ -337,13 +435,15 @@
           "src": "/exercise-media/barbell_deadlift-0.66a5064631ff.webp",
           "sha256": "66a5064631ffd47cf86911f55f12e1a425777bf823633c586f5ac62289e20b13",
           "bytes": 54024,
-          "phase": "分解 1"
+          "phase": "分解 1",
+          "sourceIndex": 0
         },
         {
           "src": "/exercise-media/barbell_deadlift-1.ff64b7c4989f.webp",
           "sha256": "ff64b7c4989ff56dc9a575f982b3cd0910ea65844b9ec6043da7ef4d802361ff",
           "bytes": 50208,
-          "phase": "分解 2"
+          "phase": "分解 2",
+          "sourceIndex": 0
         }
       ],
       "sources": [
@@ -369,13 +469,15 @@
           "src": "/exercise-media/romanian_deadlift-0.168f6eba8af5.webp",
           "sha256": "168f6eba8af5f22556c0e5a9e19337d6ae310914dd9148b3782684286dc1c497",
           "bytes": 43436,
-          "phase": "分解 1"
+          "phase": "分解 1",
+          "sourceIndex": 0
         },
         {
           "src": "/exercise-media/romanian_deadlift-1.6e2874fc5c32.webp",
           "sha256": "6e2874fc5c321260ef576bac69dc6a4595f374f8009161c71b24412c98e8dce3",
           "bytes": 41066,
-          "phase": "分解 2"
+          "phase": "分解 2",
+          "sourceIndex": 0
         }
       ],
       "sources": [
@@ -398,16 +500,28 @@
       "note": "平板凳双哑铃卧推，控制下降，避免哑铃相撞。实拍示范用于理解动作过程，负重按自身能力选择。",
       "images": [
         {
-          "src": "/exercise-media/dumbbell_bench_press-0.c2a97058bdf7.webp",
-          "sha256": "c2a97058bdf790ea152f0500b8e99f847e8728963e0f493bab0fc0ef9dce9a3e",
-          "bytes": 47094,
-          "phase": "分解 1"
+          "src": "/exercise-media/wger-17-phase-0.ff8d13920eb8.webp",
+          "sha256": "ff8d13920eb8b12afb287d60b81c1ad158af297659185f512076da736d41a27d",
+          "bytes": 59342,
+          "phase": "屈肘下降",
+          "sourceTime": 0.1,
+          "sourceIndex": 1
         },
         {
-          "src": "/exercise-media/dumbbell_bench_press-1.6eed2ed56863.webp",
-          "sha256": "6eed2ed56863c4494cac297f3c4d7e8408967ffb902da5422800c982f8ab6b8f",
-          "bytes": 47938,
-          "phase": "分解 2"
+          "src": "/exercise-media/wger-17-phase-1.e64f7ed086d7.webp",
+          "sha256": "e64f7ed086d77e6df14a153378326a356611f316ca34cd1185a3970ec6bcdced",
+          "bytes": 55582,
+          "phase": "向上推起",
+          "sourceTime": 1,
+          "sourceIndex": 1
+        },
+        {
+          "src": "/exercise-media/wger-17-phase-2.e15d2dc4fbeb.webp",
+          "sha256": "e15d2dc4fbeb02ea41de1ed0cdfddc54f95e5d7fe0edafbb04e03c7e32fa9e62",
+          "bytes": 55592,
+          "phase": "控制回落",
+          "sourceTime": 2,
+          "sourceIndex": 1
         }
       ],
       "sources": [
@@ -434,7 +548,7 @@
           "sourceSha256": [
             "d96fa783d10b476965e926a2c88f4b6d69da5f9e91cd7656fbafadb001981afa"
           ],
-          "changes": "仅保留原片 0–14 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面；无空间裁切。衍生视频及封面沿用 CC BY-SA 4.0。"
+          "changes": "仅保留原片 0–14 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面及按原片时间标注的分解帧；无空间裁切。衍生视频、封面及分解帧沿用 CC BY-SA 4.0。"
         }
       ],
       "video": {
@@ -450,16 +564,28 @@
       "note": "正握引体向上，控制上拉与下放，不用摆动借力。实拍示范用于理解动作过程，负重按自身能力选择。",
       "images": [
         {
-          "src": "/exercise-media/pullups-0.9e86f5076f44.webp",
-          "sha256": "9e86f5076f4424a42102e2c63876c825d6a5bea86971668fbf0c217e442e8b5e",
-          "bytes": 27356,
-          "phase": "分解 1"
+          "src": "/exercise-media/wger-71-phase-0.8bf98c95c1cf.webp",
+          "sha256": "8bf98c95c1cffb94a571a6aa7bae22302aad32198155008b6975b2291f20e236",
+          "bytes": 70400,
+          "phase": "悬垂起始位",
+          "sourceTime": 0.1,
+          "sourceIndex": 1
         },
         {
-          "src": "/exercise-media/pullups-1.b90c0476293d.webp",
-          "sha256": "b90c0476293d56c1de37efd3ffd7f15a9f168c6a69a1d87563315e7db845df57",
-          "bytes": 25906,
-          "phase": "分解 2"
+          "src": "/exercise-media/wger-71-phase-1.8bbc514fbcb4.webp",
+          "sha256": "8bbc514fbcb4d9254298226f344d8dca04b6b4c3feafab880105207893a71f20",
+          "bytes": 75722,
+          "phase": "向上拉起",
+          "sourceTime": 1,
+          "sourceIndex": 1
+        },
+        {
+          "src": "/exercise-media/wger-71-phase-2.b1fb781b1f14.webp",
+          "sha256": "b1fb781b1f14eeb6ee358a7279277fcfd92c41c80e00a7b09a5a5eec49adf3a9",
+          "bytes": 72288,
+          "phase": "控制下放",
+          "sourceTime": 2,
+          "sourceIndex": 1
         }
       ],
       "sources": [
@@ -486,7 +612,7 @@
           "sourceSha256": [
             "4c459f322f506eb7bd0b51e7efd81aaf6bd1e10fc0569e182a4815dee325f1b8"
           ],
-          "changes": "仅保留原片 0–10 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面；无空间裁切。衍生视频及封面沿用 CC BY-SA 4.0。"
+          "changes": "仅保留原片 0–10 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面及按原片时间标注的分解帧；无空间裁切。衍生视频、封面及分解帧沿用 CC BY-SA 4.0。"
         }
       ],
       "video": {
@@ -505,13 +631,15 @@
           "src": "/exercise-media/barbell_full_squat-0.dec3f9a757db.webp",
           "sha256": "dec3f9a757db0e74a6aeedd5d7f9d94fa4818d4ea2d9384353e7fba522432d08",
           "bytes": 56106,
-          "phase": "分解 1"
+          "phase": "分解 1",
+          "sourceIndex": 0
         },
         {
           "src": "/exercise-media/barbell_full_squat-1.6f0b8c7ee184.webp",
           "sha256": "6f0b8c7ee184b286ade301014bc0970a09009c1b0a132e74e073d52eefa595c0",
           "bytes": 55986,
-          "phase": "分解 2"
+          "phase": "分解 2",
+          "sourceIndex": 0
         }
       ],
       "sources": [
@@ -537,13 +665,15 @@
           "src": "/exercise-media/close-grip_barbell_bench_press-0.76c510eb6c49.webp",
           "sha256": "76c510eb6c4994eb78d81ffd1f7fe2ea754d3267856e4127f32a08f33d8ac719",
           "bytes": 64532,
-          "phase": "分解 1"
+          "phase": "分解 1",
+          "sourceIndex": 0
         },
         {
           "src": "/exercise-media/close-grip_barbell_bench_press-1.b3423899e991.webp",
           "sha256": "b3423899e991916e804f814228b484aff5b1e68efd27088b10d22967c7a3eca5",
           "bytes": 68322,
-          "phase": "分解 2"
+          "phase": "分解 2",
+          "sourceIndex": 0
         }
       ],
       "sources": [
@@ -569,13 +699,15 @@
           "src": "/exercise-media/bent_over_barbell_row-0.935bcd6d6de4.webp",
           "sha256": "935bcd6d6de424aa35d88c02e8749f648bc7d50ddc80e5826f6f777f47953c90",
           "bytes": 44334,
-          "phase": "分解 1"
+          "phase": "分解 1",
+          "sourceIndex": 0
         },
         {
           "src": "/exercise-media/bent_over_barbell_row-1.635f59e1fc3f.webp",
           "sha256": "635f59e1fc3fdc2607641093a44ee9851f90107c6ceaf417d043c7210212d7c2",
           "bytes": 47882,
-          "phase": "分解 2"
+          "phase": "分解 2",
+          "sourceIndex": 0
         }
       ],
       "sources": [

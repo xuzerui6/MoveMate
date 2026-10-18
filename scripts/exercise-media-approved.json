@@ -181,7 +181,23 @@
         "sourceSha256": "41c47c5efd245d0dfbcd25e4c1e6a4f46f2093281871df3503278ea9e5444d7f",
         "file": "wger-6.mp4",
         "sourceFile": "wger-6.mov"
-      }
+      },
+      "note": "站姿双臂侧平举，抬至肩高后缓慢放回。",
+      "frames": [
+        {
+          "time": 6,
+          "phase": "手臂垂下"
+        },
+        {
+          "time": 6.8,
+          "phase": "侧举至肩高"
+        },
+        {
+          "time": 7.6,
+          "phase": "控制放回"
+        }
+      ],
+      "subjectOrigin": "来源未明确说明；不依据外貌判断，不计入亚洲人物核验数量。"
     },
     {
       "id": 12,
@@ -216,7 +232,23 @@
         "sourceSha256": "0151a7cd43894d60c1fe1ffb34f4f4b709fc17aa6a5913c7edea4a14c9113985",
         "file": "wger-12.mp4",
         "sourceFile": "wger-12.mov"
-      }
+      },
+      "note": "坐姿双臂肩推，保持躯干稳定，控制回落。",
+      "frames": [
+        {
+          "time": 3,
+          "phase": "肩部起始位"
+        },
+        {
+          "time": 4,
+          "phase": "向上推起"
+        },
+        {
+          "time": 5,
+          "phase": "控制回落"
+        }
+      ],
+      "subjectOrigin": "来源未明确说明；不依据外貌判断，不计入亚洲人物核验数量。"
     },
     {
       "id": 17,
@@ -251,7 +283,23 @@
         "sourceSha256": "d96fa783d10b476965e926a2c88f4b6d69da5f9e91cd7656fbafadb001981afa",
         "file": "wger-17.mp4",
         "sourceFile": "wger-17.mov"
-      }
+      },
+      "note": "平板凳双哑铃卧推，控制下降，避免哑铃相撞。",
+      "frames": [
+        {
+          "time": 0.1,
+          "phase": "屈肘下降"
+        },
+        {
+          "time": 1,
+          "phase": "向上推起"
+        },
+        {
+          "time": 2,
+          "phase": "控制回落"
+        }
+      ],
+      "subjectOrigin": "来源未明确说明；不依据外貌判断，不计入亚洲人物核验数量。"
     },
     {
       "id": 71,
@@ -286,7 +334,122 @@
         "sourceSha256": "4c459f322f506eb7bd0b51e7efd81aaf6bd1e10fc0569e182a4815dee325f1b8",
         "file": "wger-71.mp4",
         "sourceFile": "wger-71.mov"
-      }
+      },
+      "note": "正握引体向上，控制上拉与下放，不用摆动借力。",
+      "frames": [
+        {
+          "time": 0.1,
+          "phase": "悬垂起始位"
+        },
+        {
+          "time": 1,
+          "phase": "向上拉起"
+        },
+        {
+          "time": 2,
+          "phase": "控制下放"
+        }
+      ],
+      "subjectOrigin": "来源未明确说明；不依据外貌判断，不计入亚洲人物核验数量。"
+    },
+    {
+      "id": 22,
+      "exerciseIds": [
+        "exdb:0025"
+      ],
+      "start": 4,
+      "end": 12,
+      "review": "逐阶段人工查看；平板杠铃卧推，双手握距略宽于肩，保持支撑稳定。不用于窄握、EZ 杠或哑铃变式。",
+      "source": {
+        "id": 22,
+        "uuid": "255b3509-e454-48a6-bf66-c7ca482be21a",
+        "exercise": 73,
+        "exercise_uuid": "3717d144-7815-4a97-9a56-956fb889c996",
+        "video": "https://wger.de/media/exercise-video/73/255b3509-e454-48a6-bf66-c7ca482be21a.MOV",
+        "is_main": false,
+        "size": 1422312,
+        "duration": "20.78",
+        "width": 640,
+        "height": 352,
+        "codec": "h264",
+        "codec_long": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "license": 2,
+        "license_title": "",
+        "license_object_url": "",
+        "license_author": "Goulart",
+        "license_author_url": "",
+        "license_derivative_source_url": "",
+        "author_history": [
+          "Goulart"
+        ],
+        "sourceSha256": "d731f05f7eed78571d9f622fe99223b4139de190d029c1c82b48d13d9454017b"
+      },
+      "note": "平板杠铃卧推，双手握距略宽于肩，保持支撑稳定。",
+      "frames": [
+        {
+          "time": 4,
+          "phase": "屈肘下降"
+        },
+        {
+          "time": 6,
+          "phase": "向上推起"
+        },
+        {
+          "time": 8,
+          "phase": "控制回落"
+        }
+      ],
+      "subjectOrigin": "来源未明确说明；不依据外貌判断，不计入亚洲人物核验数量。"
+    },
+    {
+      "id": 49,
+      "exerciseIds": [
+        "exdb:0031"
+      ],
+      "start": 2,
+      "end": 10.5,
+      "review": "逐阶段人工查看；站姿双臂直杠弯举，掌心向前，控制抬起和放回。不用于窄握、EZ 杠或哑铃变式。",
+      "source": {
+        "id": 49,
+        "uuid": "483f4bff-e108-41f1-8e7b-0caf24952552",
+        "exercise": 91,
+        "exercise_uuid": "7b99a081-6b1a-4aa5-b86a-5a935d083a35",
+        "video": "https://wger.de/media/exercise-video/91/483f4bff-e108-41f1-8e7b-0caf24952552.MOV",
+        "is_main": false,
+        "size": 22680665,
+        "duration": "12.34",
+        "width": 1920,
+        "height": 1080,
+        "codec": "hevc",
+        "codec_long": "H.265 / HEVC (High Efficiency Video Coding)",
+        "license": 2,
+        "license_title": "",
+        "license_object_url": "",
+        "license_author": "Goulart",
+        "license_author_url": "",
+        "license_derivative_source_url": "",
+        "author_history": [
+          "Goulart"
+        ],
+        "sourceSha256": "2b75ac783df5a9557e280385f6b1181227c613f4ee1a5427a8a3477736b14a49",
+        "sourceFile": "wger-49.mov"
+      },
+      "note": "站姿双臂直杠弯举，掌心向前，控制抬起和放回。",
+      "frames": [
+        {
+          "time": 2,
+          "phase": "伸臂起始位"
+        },
+        {
+          "time": 3,
+          "phase": "双臂弯举"
+        },
+        {
+          "time": 4,
+          "phase": "控制放回"
+        }
+      ],
+      "subjectOrigin": "来源未明确说明；不依据外貌判断，不计入亚洲人物核验数量。"
     }
   ],
   "rejected": [
@@ -309,6 +472,25 @@
     {
       "source": "Crossover_Reverse_Lunge",
       "reason": "交叉后撤，不匹配普通交替后撤弓步。"
+    },
+    {
+      "source": "https://www.pexels.com/video/a-man-doing-dumbbell-curls-6547801/",
+      "subjectOrigin": "来源描述标注 Asian man",
+      "reason": "交替弯举不匹配现有双臂同时摄像头形式；且尚未确认素材可随公开源码仓库独立分发，不发布。"
+    },
+    {
+      "source": "https://www.pexels.com/video/woman-working-out-at-the-gym-4861142/",
+      "subjectOrigin": "来源描述标注 Asian woman",
+      "reason": "椭圆机与本轮优先动作不匹配，不用泛健身画面顶替。"
+    },
+    {
+      "source": "https://www.dvidshub.net/video/692857/reverse-lunge",
+      "reason": "画面为杠铃负重后撤弓步，不匹配徒手交替后撤弓步。"
+    },
+    {
+      "source": "https://www.dvidshub.net/video/558574/high-knees",
+      "reason": "向前移动且关键阶段取景不完整，不匹配原地交替高抬腿。"
     }
-  ]
+  ],
+  "batch": 2
 }

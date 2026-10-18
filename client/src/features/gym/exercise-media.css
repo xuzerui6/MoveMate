@@ -141,6 +141,25 @@
 .media-note {
   color: #5c6d62;
 }
+.media-frame-caption {
+  margin: 0;
+  padding: 0 16px 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #52695b;
+  overflow-wrap: anywhere;
+}
+.media-frame-caption a { color: #00753b; text-decoration: underline; }
+.gym-library > .gym-inline-actions > label:has(select) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.gym-library > .gym-inline-actions select {
+  width: auto;
+  min-height: 44px;
+}
 .media-attribution {
   padding: 0 16px 16px;
   overflow-wrap: anywhere;

@@ -237,6 +237,9 @@ function Viewer({
       media?.video ? "video" : media?.images.length ? "stills" : "muscles",
     ),
     [frame, setFrame] = useState(0);
+  const currentFrame = media?.images[frame];
+  const frameSource = currentFrame?.sourceIndex == null
+    ? undefined : media?.sources[currentFrame.sourceIndex];
   return (
     <>
       <div
@@ -295,12 +298,12 @@ function Viewer({
         {tab === "video" && media?.video && (
           <Video media={media} suspended={suspended} />
         )}
-        {tab === "stills" && media && (
+        {tab === "stills" && media && currentFrame && (
           <>
             <div className="exercise-media-stage">
               <Still
-                src={media.images[frame].src}
-                alt={`${exercise.nameZh} · ${media.images[frame].phase || "动作分解"}`}
+                src={currentFrame.src}
+                alt={`${exercise.nameZh} · ${currentFrame.phase || "动作分解"}`}
               />
             </div>
             <div className="media-controls">
@@ -320,6 +323,15 @@ function Viewer({
                   : "动作分解图片"}
               </small>
             </div>
+            <p className="media-frame-caption" aria-live="polite">
+              {frame + 1} / {media.images.length} · {currentFrame.phase || "动作分解"}
+              {currentFrame.sourceTime != null && (
+                <span> · 原片 {currentFrame.sourceTime} 秒</span>
+              )}
+              {frameSource && (
+                <span> · 来源：<a href={frameSource.url} target="_blank" rel="noreferrer">{frameSource.name}</a></span>
+              )}
+            </p>
           </>
         )}
         {tab === "muscles" && <ExerciseMuscles exercise={exercise} />}
@@ -341,7 +353,7 @@ function Viewer({
             <summary>素材来源与许可</summary>
             {media.sources.map((s, i) => (
               <p key={i}>
-                {s.name} · {s.author} ·{" "}
+                <a href={s.url} target="_blank" rel="noreferrer">{s.name}</a> · {s.author} ·{" "}
                 <a href={s.licenseUrl} target="_blank" rel="noreferrer">
                   {s.license}
                 </a>

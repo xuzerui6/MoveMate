@@ -5,6 +5,8 @@ export type MediaFile = {
   sha256: string;
   phase?: string;
   aspectRatio?: number;
+  sourceIndex?: number;
+  sourceTime?: number;
 };
 export type MediaSource = {
   name: string;
@@ -24,6 +26,11 @@ export type ExerciseMedia = {
 };
 export const exerciseMedia = catalogue.entries as Record<string, ExerciseMedia>;
 export const demonstratedIds = Object.keys(exerciseMedia);
+export type MediaFilter = "all" | "images" | "video";
+export function mediaIds(filter: MediaFilter): string[] | undefined {
+  return filter === "all" ? undefined : demonstratedIds.filter(id =>
+    filter === "images" ? exerciseMedia[id].images.length > 0 : !!exerciseMedia[id].video);
+}
 // An ID allowlist keeps custom/imported movements and similar variants separate.
 export function mediaFor(id: string | undefined) {
   return id ? exerciseMedia[id] : undefined;

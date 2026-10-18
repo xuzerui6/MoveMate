@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { label, request, useGymQuery, getErrorMessage } from "./api";
 import { CameraCapability } from "./CameraCapability";
 import { ExerciseMediaPanel, ExerciseThumb } from "./ExerciseMedia";
-import { demonstratedIds, mediaFor } from "./media";
+import { mediaIds, mediaFor, type MediaFilter } from "./media";
 export function ExerciseLibrary({
   onPick,
 }: {
@@ -20,7 +20,7 @@ export function ExerciseLibrary({
     [category, setCategory] = useState(""),
     [favorite, setFavorite] = useState(false),
     [cameraOnly, setCameraOnly] = useState(false),
-    [withDemo, setWithDemo] = useState(false),
+    [demoFilter, setDemoFilter] = useState<MediaFilter>("all"),
     [owned, setOwned] = useState(false),
     [archived, setArchived] = useState(false),
     [role, setRole] = useState("primary"),
@@ -52,7 +52,7 @@ export function ExerciseLibrary({
     cursor: String(cursor),
     ...(favorite ? { favorite: "1" } : {}),
     ...(cameraOnly ? { camera: "1" } : {}),
-    ...(withDemo ? { ids: demonstratedIds.join(",") || "__no_demo__" } : {}),
+    ...(demoFilter !== "all" ? { ids: mediaIds(demoFilter)!.join(",") || "__no_demo__" } : {}),
   });
   const result = useGymQuery("/exercises?" + params);
   useEffect(() => {
@@ -108,15 +108,18 @@ export function ExerciseLibrary({
       </div>
       <div className="gym-inline-actions">
         <label>
-          <input
-            type="checkbox"
-            checked={withDemo}
+          动作示范
+          <select
+            value={demoFilter}
             onChange={(e) => {
-              setWithDemo(e.target.checked);
+              setDemoFilter(e.target.value as MediaFilter);
               setCursor(0);
             }}
-          />
-          有示范
+          >
+            <option value="all">全部动作</option>
+            <option value="images">有图片</option>
+            <option value="video">有视频</option>
+          </select>
         </label>
         <label>
           <input
@@ -429,7 +432,7 @@ export function ExerciseLibrary({
         </article>
       )}
       <div className="gym-exercise-list">
-        {items.map((ex) => (
+        {(cursor === 0 && (result.loading || result.error) ? [] : items).map((ex) => (
           <article key={ex.id}>
             <button
               className="gym-exercise-name"
