@@ -1,6 +1,10 @@
 import InstallApp from "./InstallApp";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../stores/authStore";
+import { CachedDataNotice } from "./CachedDataNotice";
+import { SnapshotEditor, sameContent, changedFields } from "./editingState";
+import { readDraft, writeDraft, removeDraft, draftWriteWarning } from "./draftStorage";
 import { Header } from "../motion/components/Header";
 import {
   useGymQuery,
@@ -16,36 +20,64 @@ export function TrainingSettings() {
     [failed, setFailed] = useState(false),
     [busy, setBusy] = useState(false),
     navigate = useNavigate();
-  const v = q.data,
-    change = (key: string, value: any) => q.setData({ ...v, [key]: value });
+  const uid = useAuthStore(s => s.user?.id), draftKey = "gym:draft:"+uid+":settings";
+  const token=useRef(localStorage.getItem('token')).current;
+  const editor = useRef<SnapshotEditor<any> | null>(null), base = useRef<any>(null), alive = useRef(true);
+  const [v, setValue] = useState<any>(null), [storageWarning,setStorageWarning] = useState(""), [invalidDraft,setInvalidDraft] = useState(false);
+  useEffect(() => {alive.current=true;return () => {alive.current=false;};},[]);
+  const readOnly = q.loading || !!q.error || !q.data || !!q.data.__offline;
+  useEffect(() => {
+    if (!q.data || editor.current?.busy || editor.current?.dirty || editor.current?.uncertain) return;
+    const {__offline,...server} = q.data;
+    base.current=server;
+    const draft=readDraft<any>(draftKey, value => !!value && ['kg','lb'].includes(value.unit) && typeof value.timeZone==='string' && Array.isArray(value.equipment) && value.equipment.every((s:any)=>typeof s==='string') && ['off','rpe','rir'].includes(value.effort));
+    editor.current=new SnapshotEditor(draft.state==='valid'?draft.value:server,draft.state==='valid');setValue(editor.current.value);
+    if(draft.state==='valid')setMessage("已恢复未保存设置草稿");
+    if(draft.state==='invalid'){setInvalidDraft(true);setStorageWarning("本机设置草稿损坏，当前显示已读取的设置。");}
+    if(draft.state==='unavailable')setStorageWarning("本机草稿无法读取，仍可编辑并联网保存。");
+  },[q.data]);
+  const persist = () => {
+    const ok=editor.current!.dirty?writeDraft(draftKey,editor.current!.value):removeDraft(draftKey);
+    setStorageWarning(ok?'':editor.current!.dirty?draftWriteWarning:'设置已保存，但本机草稿暂时无法清理。');
+    if(ok)setInvalidDraft(false);
+  };
+  const change = (key: string, value: any) => {
+    if(!editor.current)return;
+    setValue(editor.current.edit(p => {p[key]=value}));persist();setFailed(false);
+    setMessage(editor.current.busy?'正在保存提交版本，当前还有未保存修改':'未保存');
+  };
+  const save = async () => {
+    const session=editor.current;if(!session || session.busy || readOnly)return;
+    setBusy(true);setFailed(false);setMessage('正在保存…');
+    let confirmed:any;
+    try{
+      await session.save(async value => confirmed=await request('PUT','/training-settings',changedFields(base.current,value),token),
+        async()=>confirmed=await request('GET','/training-settings',undefined,token),
+        (server,submitted)=>sameContent(Object.fromEntries(Object.keys(changedFields(base.current,submitted)).map(k=>[k,server[k]])),changedFields(base.current,submitted)),
+        (current,server,submitted)=>({...server,...changedFields(submitted,current)}));
+      if(!alive.current || useAuthStore.getState().user?.id!==uid)return;
+      base.current=confirmed;setValue(session.value);persist();setMessage(session.dirty?'提交版本已保存，当前还有新修改':'全部已保存');
+    }catch(e){if(alive.current){setFailed(true);setMessage(getErrorMessage(e)+(session.uncertain?'；保存结果待核对，草稿已保留':''));}}
+    finally{if(alive.current)setBusy(false);}
+  };
   return (
     <div className="page gym-page">
       <Header title="训练设置" back={() => navigate("/train/plans")} />
-      {(q.error || message) && (
+      {q.error && <div className="gym-error" role="alert">设置读取失败：{q.error}<button disabled={q.loading || busy} onClick={q.reload}>重试读取设置</button></div>}
+      <CachedDataNotice data={q.data} reload={q.reload} busy={q.loading || busy}/>
+      {storageWarning && <div className="gym-cache-notice" role="status"><p>{storageWarning}</p>{invalidDraft && <button disabled={busy} onClick={()=>{if(removeDraft(draftKey)){setInvalidDraft(false);setStorageWarning('');}else setStorageWarning('本机草稿暂时无法清理，仍可编辑并联网保存。');}}>放弃损坏设置草稿</button>}</div>}
+      {message && (
         <p
           role="status"
-          className={q.error || failed ? "gym-error" : "gym-success"}
+          className={failed ? "gym-error" : "gym-edit-status"}
         >
-          {q.error || message}
+          {message}
         </p>
       )}
       {v ? (
         <form
           className="gym-form"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            setBusy(true);
-            setFailed(false);
-            try {
-              q.setData(await request("PUT", "/training-settings", v));
-              setMessage("设置已保存");
-            } catch (e) {
-              setFailed(true);
-              setMessage(getErrorMessage(e));
-            } finally {
-              setBusy(false);
-            }
-          }}
+          onSubmit={e => {e.preventDefault();void save();}}
         >
           <div className="gym-two">
             <label>
@@ -117,13 +149,11 @@ export function TrainingSettings() {
               <option value="rir">RIR</option>
             </select>
           </label>
-          <button className="primary" disabled={busy}>
-            {busy ? "正在保存…" : "保存个人设置"}
+          <button className="primary" disabled={busy || readOnly}>
+            {busy ? "正在保存…" : editor.current?.uncertain ? "核对并重试保存设置" : "保存个人设置"}
           </button>
         </form>
-      ) : (
-        <p>正在读取设置…</p>
-      )}
+      ) : q.loading ? <p role="status">正在读取设置…</p> : <p className="gym-muted">设置尚未读取成功，请重试；已有设置不会被清空。</p>}
       <InstallApp />
     </div>
   );
@@ -136,8 +166,10 @@ export default function Schedule() {
   const q = useGymQuery(
     "/training-schedule?days=7" + (from ? "&from=" + from : ""),
   );
+  const readOnly=q.loading || !!q.error || !q.data || !!q.data.__offline;
+  const lock=useRef(false);
   const change = async (entry: any, kind: string, targetDate?: string) => {
-    setBusy(true);
+    if(readOnly || lock.current)return;lock.current=true;setBusy(true);
     try {
       const old = q.data.exceptions.find(
         (x: any) =>
@@ -158,7 +190,7 @@ export default function Schedule() {
     } catch (e) {
       setError(getErrorMessage(e));
     } finally {
-      setBusy(false);
+      lock.current=false;setBusy(false);
     }
   };
   return (
@@ -186,6 +218,8 @@ export default function Schedule() {
           <button onClick={q.reload}>重试</button>
         </div>
       )}
+      <CachedDataNotice data={q.data} reload={q.reload} busy={q.loading || busy}/>
+      {q.loading && <p role="status">正在读取本周安排…</p>}
       {q.data && !q.data.entries.length && (
         <p className="gym-empty">
           这一周没有安排，可在计划编辑器设置每周训练日。
@@ -207,10 +241,10 @@ export default function Schedule() {
           </p>
           <div className="gym-inline-actions">
             <button
-              disabled={busy}
+              disabled={busy || readOnly}
               className="primary"
               onClick={async () => {
-                setBusy(true);
+                if(readOnly || lock.current)return;lock.current=true;setBusy(true);
                 try {
                   const w = await beginWorkout({
                     planId: entry.plan.id,
@@ -219,7 +253,7 @@ export default function Schedule() {
                   navigate("/train/workout/" + w.id);
                 } catch (e) {
                   setError(getErrorMessage(e));
-                  setBusy(false);
+                  lock.current=false;setBusy(false);
                 }
               }}
             >
@@ -227,7 +261,7 @@ export default function Schedule() {
             </button>
             {!entry.exceptionId && (
               <button
-                disabled={busy}
+                disabled={busy || readOnly}
                 onClick={() => void change(entry, "skip")}
               >
                 跳过本次安排
@@ -254,7 +288,7 @@ export default function Schedule() {
                   defaultValue={entry.date}
                 />
               </label>
-              <button disabled={busy}>确认单次调课</button>
+              <button disabled={busy || readOnly}>确认单次调课</button>
             </form>
           )}
         </article>
@@ -270,9 +304,9 @@ export default function Schedule() {
                 {x.kind === "skip" ? "已跳过" : x.target_date}
               </span>
               <button
-                disabled={busy}
+                disabled={busy || readOnly}
                 onClick={async () => {
-                  setBusy(true);
+                  if(readOnly || lock.current)return;lock.current=true;setBusy(true);
                   try {
                     await request("PUT", "/training-schedule", {
                       planId: x.plan_id,
@@ -285,7 +319,7 @@ export default function Schedule() {
                   } catch (e) {
                     setError(getErrorMessage(e));
                   } finally {
-                    setBusy(false);
+                    lock.current=false;setBusy(false);
                   }
                 }}
               >

@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthStore } from "../../stores/authStore";
 import Dialog from "../../components/Dialog";
 import { Header } from "../motion/components/Header";
+import { CachedDataNotice } from "./CachedDataNotice";
+import { SnapshotEditor, planSaveConfirmed } from "./editingState";
+import { readDraft, writeDraft, removeDraft, validPlanDraft, draftWriteWarning } from "./draftStorage";
+import { repUnit } from "./trainingPresentation";
 import { WeightInput } from "./WeightInput";
 import { ExerciseLibrary } from "./Library";
 import { CameraCapability } from "./CameraCapability";
@@ -18,6 +22,10 @@ const emptySet = () => ({
   superset: "",
 });
 export default function PlanEditor() {
+  const {planId} = useParams(), uid = useAuthStore(s => s.user?.id);
+  return <PlanEditorForm key={String(uid)+":"+planId}/>;
+}
+function PlanEditorForm() {
   const { planId } = useParams(),
     navigate = useNavigate(),
     query = useGymQuery("/training-plans"),
@@ -30,30 +38,49 @@ export default function PlanEditor() {
     [busy, setBusy] = useState(false),
     [remove, setRemove] = useState(false),
     [proposal, setProposal] = useState<any>(null);
+  const uid = useAuthStore(s => s.user?.id), draftKey = "gym:draft:" + uid + ":" + planId;
+  const token=useRef(localStorage.getItem('token')).current;
+  const editor = useRef<SnapshotEditor<any> | null>(null), alive = useRef(true), writeLock = useRef(false);
+  const [storageWarning, setStorageWarning] = useState(""), [invalidDraft, setInvalidDraft] = useState(false),
+    [more, setMore] = useState(false), [serverReview, setServerReview] = useState<any>(null);
+  useEffect(() => {alive.current=true; return () => {alive.current=false;};}, []);
+  const currentAccount = () => alive.current && useAuthStore.getState().user?.id === uid;
+  const initialize = (value: any, dirty = false) => {
+    editor.current = new SnapshotEditor(value, dirty);setPlan(editor.current.value);setDay(0);setProposal(null);
+  };
   useEffect(() => {
-    if (!plan && query.data) {
-      const p = query.data.items.find((p: any) => p.id === planId);
-      if (p) {
-        let draft: any = null;
-        try {
-          draft = JSON.parse(
-            localStorage.getItem(
-              "gym:draft:" + useAuthStore.getState().user?.id + ":" + planId,
-            ) || "null",
-          );
-        } catch {}
-        if (draft?.id === p.id && draft.version === p.version) {
-          setPlan(draft);
-          setMessage("已恢复当前账号的未保存草稿");
-        } else {
-          setPlan(structuredClone(p));
-          if (draft) setError("服务器计划已更新，旧草稿未覆盖服务器内容。");
-        }
-      } else setError("计划不存在或无权访问");
+    if (editor.current || !query.data) return;
+    const p = query.data.items.find((p: any) => p.id === planId);
+    if (!p) {setError("计划不存在或无权访问");return;}
+    const draft = readDraft<any>(draftKey, validPlanDraft);
+    if (draft.state === "valid" && draft.value.id === p.id && draft.value.version === p.version) {
+      initialize(draft.value, true);setMessage("已恢复当前账号的未保存草稿");
+    } else {
+      initialize(p);
+      if (draft.state === "valid") setStorageWarning("服务器计划已更新，旧草稿已保留，未覆盖服务器内容。");
+      if (draft.state === "invalid") {setInvalidDraft(true);setStorageWarning("本机草稿损坏或格式不兼容，当前显示服务器版本。");}
+      if (draft.state === "unavailable") setStorageWarning("本机草稿无法读取，当前显示服务器版本；编辑仍可联网保存。");
     }
   }, [query.data, planId]);
-  const draftKey =
-    "gym:draft:" + useAuthStore((s) => s.user?.id) + ":" + planId;
+  const persist = (dirty: boolean) => {
+    const ok = dirty ? writeDraft(draftKey, editor.current!.value) : removeDraft(draftKey);
+    setStorageWarning(ok ? "" : dirty ? draftWriteWarning : "服务器已保存，但本机草稿清理失败；请勿把旧草稿当作最新状态。");
+    if (ok) setInvalidDraft(false);
+  };
+  const readServer = async () => {
+    const data = await request("GET", "/training-plans", undefined, token);
+    if (data.__offline) throw Error("当前只能读取缓存，请联网核对服务器版本");
+    const value = data.items.find((p: any) => p.id === planId);
+    if (!value) throw Error("计划不存在或无权访问");
+    return value;
+  };
+  const inspectServer = async () => {
+    if (writeLock.current) return;
+    writeLock.current=true;setBusy(true);
+    try {const value=await readServer();if(currentAccount()){setServerReview(value);setMore(false);}}
+    catch(e){if(currentAccount())setError(getErrorMessage(e));}
+    finally{writeLock.current=false;if(currentAccount())setBusy(false);}
+  };
   const ids =
     plan?.routines
       .flatMap((r: any) => r.exercises.map((e: any) => e.exerciseId))
@@ -64,29 +91,52 @@ export default function PlanEditor() {
   const map = Object.fromEntries(
     (names.data?.items || []).map((e: any) => [e.id, e]),
   );
+  const readOnly = query.loading || !!query.error || !query.data || !!query.data.__offline;
   const edit = (change: (p: any) => void) => {
-    setPlan((old: any) => {
-      const p = structuredClone(old);
-      change(p);
-      localStorage.setItem(draftKey, JSON.stringify(p));
-      return p;
-    });
-    setMessage("");
+    if (!editor.current) return;
+    setPlan(editor.current.edit(change));persist(true);
+    setMessage(editor.current.busy ? "正在保存提交版本，当前还有未保存修改" : "未保存");
   };
   const save = async (next = plan) => {
-    setBusy(true);
-    setError("");
-    try {
-      const p = await request("PUT", "/training-plans/" + planId, next);
-      setPlan(p);
-      localStorage.removeItem(draftKey);
-      setMessage("已保存到当前账号");
-      setProposal(null);
-    } catch (e) {
-      setError(getErrorMessage(e));
-    } finally {
-      setBusy(false);
+    if (writeLock.current || !editor.current || readOnly) return;
+    const session = editor.current;
+    if (next !== plan) {
+      if (session.dirty || session.uncertain) {setError("请先保存或核对当前编辑，再重新获取进阶建议。");return;}
+      session.edit(p => Object.assign(p, structuredClone(next)));setPlan(session.value);persist(true);
     }
+    writeLock.current=true;setBusy(true);setError("");setMessage("正在保存…");
+    try {
+      await session.save(value => request("PUT", "/training-plans/" + planId, value, token), readServer,
+        planSaveConfirmed, (local, server) => ({...local,id:server.id,version:server.version}),
+        (server, submitted) => server.version !== submitted.version);
+      if (!currentAccount()) return;
+      setPlan(session.value);persist(session.dirty);
+      setMessage(session.dirty ? "提交版本已保存，当前还有新修改" : "全部已保存");setProposal(null);
+    } catch (e) {
+      if(currentAccount()){setError(getErrorMessage(e));setMessage(session.uncertain ? "保存结果待核对，本机编辑已保留" : "保存失败，本机编辑已保留");}
+    } finally {writeLock.current=false;if(currentAccount())setBusy(false);}
+  };
+  const sharePlan = () => {
+            const copy = structuredClone(plan);
+            copy.routines.forEach((r: any) =>
+              r.exercises.forEach((e: any) =>
+                e.sets.forEach((s: any) => (s.loadKg = 0)),
+              ),
+            );
+            download(
+              plan.name + ".json",
+              JSON.stringify(
+                {
+                  format: "movemate-plan",
+                  plan: copy,
+                  customExercises: Object.values(map).filter((e: any) =>
+                    e.id.startsWith("user:"),
+                  ),
+                },
+                null,
+                2,
+              ),
+            );
   };
   if (!plan)
     return (
@@ -116,6 +166,19 @@ export default function PlanEditor() {
       <p className="gym-muted">
         计划修改影响下次训练；正在进行的训练保留开始时的安排。
       </p>
+      <CachedDataNotice data={query.data} reload={query.reload} busy={query.loading || busy}/>
+      {storageWarning && <div className="gym-cache-notice" role="status"><p>{storageWarning}</p>{invalidDraft && <button disabled={busy} onClick={() => {if(removeDraft(draftKey)){setInvalidDraft(false);setStorageWarning("");}else setStorageWarning("本机草稿暂时无法清理，仍可继续编辑并联网保存。");}}>放弃损坏草稿</button>}</div>}
+      <p className="gym-edit-status" role="status">{message || "当前为服务器版本"}</p>
+      {error && (
+        <div className="gym-error" role="alert">
+          {error}
+          <button disabled={busy} onClick={() => void inspectServer()}
+          >
+            核对服务器版本（保留草稿）
+          </button>
+        </div>
+      )}
+
       <div className="gym-form">
         <label>
           计划名称
@@ -348,7 +411,7 @@ export default function PlanEditor() {
                   </select>
                 </label>
                 {[
-                  ["reps", "目标次数／对", 1, 500],
+                  ["reps", s.seconds > 0 ? "次数目标（计时组不使用）" : repUnit(map[entry.exerciseId]) === "对" ? "目标配对数（对）" : "目标次数（次）", 1, 500],
 
                   ["seconds", "计时目标秒（0为次数）", 0, 7200],
                   ["restSec", "组后休息秒", 0, 900],
@@ -495,7 +558,7 @@ export default function PlanEditor() {
         </div>
         <button
           className="secondary"
-          disabled={busy}
+          disabled={busy || readOnly || !!editor.current?.dirty}
           onClick={async () => {
             setError("");
             try {
@@ -531,7 +594,7 @@ export default function PlanEditor() {
                 onClick={() =>
                   void save({ ...proposal.plan, version: plan.version })
                 }
-                disabled={busy}
+                disabled={busy || readOnly || !!editor.current?.dirty}
               >
                 确认应用并保存建议
               </button>
@@ -539,74 +602,28 @@ export default function PlanEditor() {
           </div>
         )}
       </details>
-      {error && (
-        <div className="gym-error" role="alert">
-          {error}
-          <button
-            onClick={() => {
-              setPlan(null);
-              query.reload();
-              setError("");
-            }}
-          >
-            重新读取服务器版本
-          </button>
-        </div>
-      )}
-      {message && (
-        <p className="gym-success" role="status">
-          {message}
-        </p>
-      )}
-      <div className="gym-save-bar">
+      <div className="gym-save-bar gym-editor-save-bar"><button className="primary" disabled={busy || readOnly} onClick={() => void save()}>{busy ? "正在保存…" : editor.current?.uncertain ? "核对并重试保存" : "保存计划"}</button><button className="secondary gym-editor-more-toggle" disabled={busy} onClick={() => setMore(true)}>更多</button><div className="gym-editor-secondary-actions">
         <button
           className="text-btn"
-          onClick={() => {
-            localStorage.removeItem(draftKey);
-            setPlan(null);
-            setError("");
-            query.reload();
-          }}
+          disabled={busy} onClick={() => void inspectServer()}
         >
           放弃本机草稿，读取服务器
         </button>
-        <button className="primary" disabled={busy} onClick={() => void save()}>
-          {busy ? "正在保存…" : "保存计划"}
-        </button>
         <button
           className="secondary"
-          onClick={() => {
-            const copy = structuredClone(plan);
-            copy.routines.forEach((r: any) =>
-              r.exercises.forEach((e: any) =>
-                e.sets.forEach((s: any) => (s.loadKg = 0)),
-              ),
-            );
-            download(
-              plan.name + ".json",
-              JSON.stringify(
-                {
-                  format: "movemate-plan",
-                  plan: copy,
-                  customExercises: Object.values(map).filter((e: any) =>
-                    e.id.startsWith("user:"),
-                  ),
-                },
-                null,
-                2,
-              ),
-            );
-          }}
+          onClick={sharePlan}
         >
           分享计划文件
         </button>
         <button className="secondary" onClick={() => window.print()}>
           打印／存为 PDF
         </button>
-        <button className="text-btn" onClick={() => setRemove(true)}>
+        <button className="text-btn" disabled={busy || readOnly} onClick={() => setRemove(true)}>
           删除计划
         </button>
-      </div>
+      </div></div>
+      {more && <Dialog title="计划操作" onClose={() => setMore(false)}><div className="gym-page gym-plan-menu"><button disabled={busy} onClick={() => void inspectServer()}>放弃本机草稿，读取服务器</button><button disabled={busy} onClick={() => {sharePlan();setMore(false);}}>分享计划文件</button><button disabled={busy} onClick={() => {setMore(false);setTimeout(() => window.print(),0);}}>打印／存为 PDF</button><button disabled={busy || readOnly} onClick={() => {setMore(false);setRemove(true);}}>删除计划</button></div></Dialog>}
+      {serverReview && <Dialog title="核对服务器版本" dismissible={!busy} onClose={() => setServerReview(null)}><p>服务器计划：{serverReview.name} · 版本 {serverReview.version}。本机编辑仍保留；使用服务器版本会放弃当前本机修改。</p><div className="dialog-actions"><button className="btn btn--secondary" onClick={() => setServerReview(null)}>保留本机编辑</button><button className="btn btn--primary" disabled={busy} onClick={() => {initialize(serverReview);persist(false);setServerReview(null);setError("");setMessage("已读取服务器版本");query.reload();}}>使用服务器版本，放弃本机编辑</button></div></Dialog>}
       <div className="gym-print-document">
         <h1>{plan.name}</h1>
         {plan.routines.map((r: any) => (
@@ -618,7 +635,7 @@ export default function PlanEditor() {
                 {e.sets.map((s: any, j: number) => (
                   <p key={j}>
                     第 {j + 1} 组 · {s.kind} ·{" "}
-                    {s.seconds ? s.seconds + " 秒" : s.reps + " 次／对"} ·{" "}
+                    {s.seconds ? s.seconds + " 秒" : s.reps + " " + repUnit(map[e.exerciseId])} ·{" "}
                     {s.loadKg} kg · 休息 {s.restSec} 秒{" "}
                     {s.superset ? "· 超级组 " + s.superset : ""}
                   </p>
@@ -646,21 +663,20 @@ export default function PlanEditor() {
         </Dialog>
       )}
       {remove && (
-        <Dialog title="删除这个计划？" onClose={() => setRemove(false)}>
+        <Dialog title="删除这个计划？" dismissible={!busy} onClose={() => setRemove(false)}>
           <p>仅删除计划，已完成训练与历史记录保留。</p>
           <button
             className="primary"
-            disabled={busy}
+            disabled={busy || readOnly}
             onClick={async () => {
-              setBusy(true);
+              if(writeLock.current) return;writeLock.current=true;setBusy(true);
               try {
-                await request("DELETE", "/training-plans/" + planId);
+                await request("DELETE", "/training-plans/" + planId, undefined, token);
                 navigate("/train/plans");
               } catch (e) {
                 setError(getErrorMessage(e));
                 setRemove(false);
-                setBusy(false);
-              }
+              } finally {writeLock.current=false;if(currentAccount())setBusy(false);}
             }}
           >
             确认删除

@@ -1,6 +1,7 @@
 import { useAuthStore } from "../../stores/authStore";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { readDraft, writeDraft, removeDraft, validPlanDraft, draftWriteWarning } from "./draftStorage";
 import { askCoach, probeCoach } from "../motion/lib/coachClient";
 import { useGymQuery, request, getErrorMessage } from "./api";
 export default function PlanDraft() {
@@ -10,18 +11,14 @@ export default function PlanDraft() {
   const q = useGymQuery("/training-plans"),
     [template, setTemplate] = useState("full"),
     [goal, setGoal] = useState("建立规律，每周三天"),
-    [draft, setDraft] = useState(() => {
-      try {
-        const raw = localStorage.getItem(draftKey) || "";
-        return JSON.parse(raw)?.routines ? raw : "";
-      } catch {
-        return "";
-      }
-    }),
+    [restored] = useState(() => readDraft<any>(draftKey, validPlanDraft)),
+    [draft, setDraft] = useState(() => restored.state==='valid'?JSON.stringify(restored.value):''),
     [source, setSource] = useState(""),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     navigate = useNavigate();
+  const [storageWarning,setStorageWarning] = useState(restored.state==='invalid'?'本机计划草稿损坏或格式不兼容，未自动载入。':restored.state==='unavailable'?'本机计划草稿无法读取，仍可生成和编辑新草稿。':'');
+  const [invalidDraft,setInvalidDraft]=useState(restored.state==='invalid');
   const parsed = draft ? JSON.parse(draft) : null;
   const ids = [
     ...new Set(
@@ -41,13 +38,12 @@ export default function PlanDraft() {
     });
   useEffect(() => {
     if (draft && useAuthStore.getState().user?.id === uid)
-      try {
-        localStorage.setItem(draftKey, draft);
-      } catch {}
+      setStorageWarning(writeDraft(draftKey,JSON.parse(draft))?'':draftWriteWarning);
   }, [draft, draftKey, uid]);
   return (
     <details className="gym-form">
       <summary>生成可编辑的计划草稿</summary>
+      {storageWarning && <div className="gym-cache-notice" role="status"><p>{storageWarning}</p>{invalidDraft && <button disabled={busy} onClick={()=>{if(removeDraft(draftKey)){setInvalidDraft(false);setStorageWarning('');}else setStorageWarning('本机草稿暂时无法清理，仍可生成新草稿。');}}>放弃损坏计划草稿</button>}</div>}
       <p className="gym-muted">
         草稿不会自动保存或开始训练；目标、动作和重量须本人确认。
       </p>
@@ -344,7 +340,7 @@ export default function PlanDraft() {
                   JSON.parse(draft),
                   token,
                 );
-                localStorage.removeItem(draftKey);
+                removeDraft(draftKey);
                 navigate("/train/plans/" + p.id + "/edit");
               } catch (e) {
                 setError(getErrorMessage(e));

@@ -30,7 +30,7 @@ export function StoreProvider({children}:{children:React.ReactNode}) {
   const apply=useCallback((data:any)=>{
     if(!alive.current) return;
     const next=adapt(data);stateRef.current=next;setState(next);const receivedAt=Date.now();setSessions((data.sessions||[]).map((row:SportSession)=>({...row,receivedAt})));setLoaded(true);
-    localStorage.setItem('motion-buddy:account:'+userId,JSON.stringify({totalXp:next.totalXp,avatarGender:next.avatarGender,activeOutfit:next.activeOutfit}));
+    try{localStorage.setItem('motion-buddy:account:'+userId,JSON.stringify({totalXp:next.totalXp,avatarGender:next.avatarGender,activeOutfit:next.activeOutfit}));}catch{/* A full local cache must not invalidate confirmed server growth. */}
   },[userId]);
   const refresh=useCallback(async()=>{
     if(!alive.current)return;
