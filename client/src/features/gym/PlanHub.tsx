@@ -4,6 +4,8 @@ import { useGymQuery, request, getErrorMessage, beginWorkout } from "./api";
 import { Header } from "../motion/components/Header";
 import { Icon } from "../motion/components/Icons";
 import PlanDraft from "./PlanDraft";
+import { todayPlanState } from "./trainingPresentation";
+import { CachedDataNotice } from "./CachedDataNotice";
 export function PlanEntry() {
   const query = useGymQuery("/training-plans"),
     navigate = useNavigate(),
@@ -11,8 +13,11 @@ export function PlanEntry() {
     [error, setError] = useState("");
   const schedule=useGymQuery("/training-schedule?days=1");
   const today=schedule.data?.entries||[];
+  const availability = todayPlanState(query, schedule);
+  const cached = !!(query.data?.__offline || schedule.data?.__offline);
   const begin = async (p: any, r: any) => {
     setBusy(true);
+    setError("");
     try {
       const w = await beginWorkout({ planId: p.id, routineId: r.id });
       navigate("/train/workout/" + w.id);
@@ -29,15 +34,24 @@ export function PlanEntry() {
           管理计划 <Icon name="arrow" size={16} />
         </Link>
       </div>
-      {(query.error || error) && (
-        <div className="gym-error">
-          {query.error || error}
-          <button onClick={query.reload}>重新读取</button>
+      {query.error && (
+        <div className="gym-error" role="alert">
+          计划列表读取失败：{query.error}
+          <button onClick={query.reload}>重试计划列表</button>
         </div>
       )}
-      {query.loading ? (
-        <p>正在读取计划…</p>
-      ) : today.length ? (
+      {schedule.error && <div className="gym-error" role="alert">
+        今日安排读取失败：{schedule.error}
+        <button onClick={schedule.reload}>重试今日安排</button>
+      </div>}
+      {error && <p className="gym-error" role="alert">{error}</p>}
+      <CachedDataNotice data={query.data} label="计划列表" reload={query.reload} busy={query.loading}/>
+      <CachedDataNotice data={schedule.data} label="今日安排" reload={schedule.reload} busy={schedule.loading}/>
+      {availability === "loading" ? (
+        <p role="status">正在确认今日计划与日程…</p>
+      ) : availability === "error" ? (
+        <p className="gym-muted">今日安排尚未确认，请重试读取；也可以先查看计划或整理自由训练草稿。</p>
+      ) : availability === "scheduled" ? (
         today.map(({ plan, routine }: any) => (
           <article className="gym-today" key={plan.id + routine.id}>
             <span className="gym-eyebrow">
@@ -54,7 +68,7 @@ export function PlanEntry() {
             </p>
             <button
               className="primary"
-              disabled={busy}
+              disabled={busy || cached}
               onClick={() => void begin(plan, routine)}
             >
               {busy ? "正在准备…" : "开始计划训练"}
@@ -65,13 +79,13 @@ export function PlanEntry() {
       ) : (
         <article className="gym-today">
           <h3>
-            {query.data?.items.length
+            {availability === "rest"
               ? "今天休息，也可以自由安排"
               : "从一个适合你的计划开始"}
           </h3>
           <p>安排动作，逐组记录，看看每一次进步。</p>
           <Link className="primary" to="/train/plans">
-            {query.data?.items.length ? "选择训练日" : "选择训练模板"}
+            {availability === "rest" ? "选择训练日" : "选择训练模板"}
             <Icon name="arrow" />
           </Link>
         </article>
@@ -132,9 +146,10 @@ export default function PlanHub() {
         </div>
       )}
       <h3>我的计划</h3>
+      <CachedDataNotice data={query.data} reload={query.reload} busy={query.loading}/>
       {query.loading ? (
         <p>正在读取…</p>
-      ) : !query.data?.items.length ? (
+      ) : query.error ? <p className="gym-muted">计划未加载成功，请重试；现有计划不会因此被清空。</p> : !query.data?.items.length ? (
         <p className="gym-empty">还没有计划，从下面的模板创建一份。</p>
       ) : (
         query.data.items.map((p: any) => (
@@ -150,7 +165,7 @@ export default function PlanHub() {
                   <button
                     key={r.id}
                     className="secondary"
-                    disabled={busy}
+                    disabled={busy || !!query.data?.__offline}
                     onClick={async () => {
                       setBusy(true);
                       try {
@@ -184,7 +199,7 @@ export default function PlanHub() {
       </p>
       <div className="gym-template-grid">
         {query.data?.templates.map((t: any) => (
-          <button key={t.key} disabled={busy} onClick={() => void create(t)}>
+          <button key={t.key} disabled={busy || !!query.data?.__offline} onClick={() => void create(t)}>
             <Icon name="dumbbell" />
             <b>{t.name}</b>
             <small>{t.routines.length} 个训练日 · 可自由编辑</small>

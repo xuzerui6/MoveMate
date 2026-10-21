@@ -22,6 +22,8 @@ import Dialog from "../../components/Dialog";
 import {ExerciseDemo} from './ExerciseMedia';
 import { WeightInput } from "./WeightInput";
 import { displayWeight } from "./trainingMath";
+import { repUnit, setTargetLabel } from "./trainingPresentation";
+import { CachedDataNotice } from "./CachedDataNotice";
 import { PlateCalculator } from "./AnalysisExtras";
 import {
   useWorkoutPreferences,
@@ -62,6 +64,7 @@ export default function PlanWorkout() {
     [voiceOn, setVoiceOn] = useState(false),
     [consent, setConsent] = useState(false),
     [finishDialog, setFinishDialog] = useState(false),
+    [finishAttempted, setFinishAttempted] = useState(false),
     [expanded, setExpanded] = useState(false),
     [fit, setFit] = useState<"contain" | "cover">("contain");
   const alive = useRef(true),
@@ -70,6 +73,7 @@ export default function PlanWorkout() {
     loadedId = useRef(""),
     lastSynced = useRef(0),
     controlLock = useRef(false);
+  const finishSnapshot = useRef<{values: any; setId: string | undefined} | null>(null);
   const [tick, setTick] = useState(Date.now());
   const [recoveryKey, setRecoveryKey] = useState(0);
   useEffect(() => {
@@ -181,8 +185,8 @@ export default function PlanWorkout() {
     camera = !!current && current.inputMode === "camera",
     working = row?.phase === "working",
     finished = row?.phase === "finished";
-  const pose = usePose(camera && working && !busy && !blocked && !offline),
-    seconds = useSessionClock(row?.session, busy || blocked || offline);
+  const pose = usePose(camera && working && !busy && !blocked && !offline && !finishAttempted),
+    seconds = useSessionClock(row?.session, busy || blocked || offline || finishAttempted);
   const type: PlanRecognitionType = current?.exercise.planCamera?.profile || current?.exercise.cameraType || "squat";
   const capability = current?.exercise.planCamera;
   const canRecognize = !!(capability || current?.exercise.cameraType) && !current?.targetSeconds && current?.side === "both";
@@ -194,7 +198,7 @@ export default function PlanWorkout() {
     type,
     pose.landmarks,
     camera && pose.status === "ready",
-    !working || busy || blocked || offline,
+    !working || busy || blocked || offline || finishAttempted,
     pose.videoRef.current?.videoWidth && pose.videoRef.current.videoHeight
       ? pose.videoRef.current.videoWidth / pose.videoRef.current.videoHeight
       : 1,
@@ -246,7 +250,7 @@ export default function PlanWorkout() {
     }
     setError("");
     try {
-      return await sync.current.run(action, values);
+      return await (action === "finish" ? sync.current.finish(values) : sync.current.run(action, values));
     } catch (e: any) {
       if (
         (!e?.response?.status || e.response.status >= 500) &&
@@ -330,6 +334,7 @@ export default function PlanWorkout() {
       !working ||
       busy ||
       blocked ||
+      finishAttempted ||
       metrics.reps <= lastSynced.current
     )
       return;
@@ -338,14 +343,14 @@ export default function PlanWorkout() {
       void run("progress", snapshot.current, false).catch(() => {});
     }, 400);
     return () => clearTimeout(id);
-  }, [camera, working, busy, blocked, metrics.reps]);
+  }, [camera, working, busy, blocked, metrics.reps, finishAttempted]);
   useEffect(() => {
-    if (!working || busy || blocked || offline) return;
+    if (!working || busy || blocked || offline || finishAttempted) return;
     const timer = setInterval(() => {
       void run("heartbeat", {}, false).catch(() => {});
     }, 15000);
     return () => clearInterval(timer);
-  }, [working, busy, blocked, offline]);
+  }, [working, busy, blocked, offline, finishAttempted]);
   useEffect(() => {
     const off = () => {
       markNetworkLoss();
@@ -387,13 +392,14 @@ export default function PlanWorkout() {
       working &&
       !busy &&
       !blocked &&
+      !finishAttempted &&
       metrics.reps >= current?.targetReps &&
       automatic.current !== current.id
     ) {
       automatic.current = current.id;
       act("complete", snapshot.current);
     }
-  }, [camera, working, busy, blocked, metrics.reps, current?.id]);
+  }, [camera, working, busy, blocked, metrics.reps, current?.id, finishAttempted]);
   useEffect(() => {
     if (camera && working && pose.status === "error" && !busy) {
       void run("pause", snapshot.current).catch(() => {});
@@ -545,7 +551,8 @@ export default function PlanWorkout() {
           离线只读 · 已停止识别与计时显示，未确认操作已保留，联网后核对再继续。
         </p>
       )}
-      {error && (
+      <CachedDataNotice data={row} reload={() => void recover()} busy={busy}/>
+      {error && !finishDialog && (
         <div className="gym-error" role="alert">
           {error}
         </div>
@@ -566,7 +573,7 @@ export default function PlanWorkout() {
       {finished ? (
         <>
           <section className="gym-result">
-            <span className="eyebrow">服务器已确认保存</span>
+            <span className="eyebrow">{row.__offline ? "本机缓存 · 尚未核对最新状态" : "服务器已确认保存"}</span>
             <h2>{row.name}</h2>
             <strong>
               {row.session
@@ -622,9 +629,7 @@ export default function PlanWorkout() {
                 <>
                   <p>
                     目标{" "}
-                    {current.targetSeconds
-                      ? formatTime(current.targetSeconds)
-                      : `${current.targetReps} ${type === "high_knees" && current.exercise.cameraType ? "对" : "次"}`}{" "}
+                    {setTargetLabel(current)}{" "}
                     ·{" "}
                     {displayWeight(
                       current.targetLoadKg ?? current.loadKg,
@@ -646,7 +651,7 @@ export default function PlanWorkout() {
                   <p className="gym-muted">
                     上回：
                     {row.previous?.[current.exercise.id]
-                      ? `${row.previous[current.exercise.id].reps} 次 × ${displayWeight(row.previous[current.exercise.id].loadKg, options.prefs?.unit)} ${options.prefs?.unit || "kg"}`
+                      ? `${row.previous[current.exercise.id].reps} ${repUnit(current.exercise)} × ${displayWeight(row.previous[current.exercise.id].loadKg, options.prefs?.unit)} ${options.prefs?.unit || "kg"}`
                       : "尚无记录"}
                   </p>
                 </>
@@ -1015,9 +1020,8 @@ export default function PlanWorkout() {
         {row.sets.map((s: any, i: number) => (
           <div className="gym-list-row" key={s.id}>
             <span>
-              {i + 1}. {s.exercise.nameZh} · {s.targetReps}{" "}
-              {s.exercise.cameraType === "high_knees" ? "对" : "次"} /{" "}
-              {s.loadKg}kg
+              {i + 1}. {s.exercise.nameZh} · {setTargetLabel(s)} /{" "}
+              {displayWeight(s.loadKg, options.prefs?.unit)} {options.prefs?.unit || "kg"}
             </span>
             <b>
               {
@@ -1038,21 +1042,33 @@ export default function PlanWorkout() {
       {finishDialog && (
         <Dialog
           title="结束本次计划训练？"
-          onClose={() => setFinishDialog(false)}
+          dismissible={!busy}
+          onClose={() => {setFinishDialog(false);setFinishAttempted(false);finishSnapshot.current=null;}}
         >
           <p>
             以服务端有效运动时长结算，休息不计 XP。未开始的组不会记录为完成。
           </p>
+          {error && <p className="gym-error" role="alert">{error}</p>}
+          {offline && <p role="status">当前离线，请联网后读取状态并重试；本次统计已保留。</p>}
           <button
-            className="primary"
-            disabled={busy}
+            className="primary workout-finish-action"
+            disabled={busy || offline}
             onClick={() => {
-              void run("finish", snapshot.current)
-                .then(() => setFinishDialog(false))
-                .catch(() => setFinishDialog(false));
+              if (controlLock.current) return;
+              if (finishSnapshot.current && finishSnapshot.current.setId !== current?.id && !finished) {
+                setError("当前组已发生变化，请关闭确认框检查最新训练，再确认结束。");return;
+              }
+              finishSnapshot.current ||= {values: structuredClone(snapshot.current), setId: current?.id};
+              setFinishAttempted(true);
+              void run("finish", finishSnapshot.current.values)
+                .then((confirmed) => {
+                  if (confirmed?.phase !== "finished") return;
+                  setFinishDialog(false);setFinishAttempted(false);finishSnapshot.current=null;
+                })
+                .catch(() => {});
             }}
           >
-            确认结束并保存
+            {busy ? "正在核对并保存…" : finishAttempted ? "读取状态并重试结束" : "确认结束并保存"}
           </button>
         </Dialog>
       )}

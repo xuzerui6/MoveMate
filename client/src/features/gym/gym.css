@@ -823,3 +823,12 @@
 .gym-year-calendar{display:grid;grid-template-rows:repeat(7,12px);grid-auto-flow:column;grid-auto-columns:12px;gap:3px;overflow-x:auto;padding:8px 0}.gym-year-calendar span{background:#edf1ee;border-radius:2px}.gym-year-calendar [data-level="1"]{background:#adf3ce}.gym-year-calendar [data-level="2"]{background:#3bdc88}.gym-year-calendar [data-level="3"]{background:#008a49}.gym-table-scroll{max-width:100%;overflow-x:auto}.gym-table-scroll table{width:100%;border-collapse:collapse;min-width:520px}.gym-table-scroll th,.gym-table-scroll td{padding:12px 10px;border-bottom:1px solid #e5ebe7;text-align:left;white-space:nowrap}.gym-trend-bars{height:150px;display:flex;gap:6px;align-items:flex-end;padding-bottom:25px}.gym-trend-bars>div{height:100%;flex:1;display:flex;justify-content:flex-end;flex-direction:column;position:relative;min-width:8px}.gym-trend-bars span{display:block;background:#00c96b;border-radius:4px 4px 0 0}.gym-trend-bars small{position:absolute;bottom:-25px;font-size:12px;white-space:nowrap;max-width:100%;overflow:hidden}
 
 .gym-line-chart{width:100%;height:150px;background:#f7faf8;border-radius:12px}
+
+.gym-cache-notice{margin:12px 0;padding:12px 16px;border:1px solid var(--border,#dce5df);border-radius:12px;background:var(--surface,#f7faf8);overflow-wrap:anywhere}
+.gym-cache-notice p{margin:0 0 8px}
+.gym-cache-notice button,.gym-favorite-error button{min-height:44px}
+.gym-exercise-list article{flex-wrap:wrap}
+.gym-exercise-list .gym-exercise-name{min-width:0}
+.gym-favorite-error{flex:0 0 100%;color:var(--error,#ad3434);font-size:14px;overflow-wrap:anywhere}
+.gym-favorite-error button{margin:6px 0 0;display:block;padding:8px 12px;border:1px solid currentColor;border-radius:10px;background:transparent;color:inherit}
+.ui-dialog .workout-finish-action{display:flex;align-items:center;justify-content:center;width:100%;min-height:52px;margin-top:16px;padding:12px 18px;font:inherit;font-weight:750;color:#fff;background:var(--color-primary,#008a40);border:1px solid var(--color-primary,#008a40);border-radius:16px;white-space:normal;line-height:1.5}

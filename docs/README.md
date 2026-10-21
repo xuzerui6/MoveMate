@@ -29,6 +29,7 @@
 
 这些文件记录特定日期、版本及环境，不表示所有浏览器、真人动作或外设均已通过。
 
+- [产品体检与体验修复](product-experience-fixes.md)（2026-10-20，训练结束、日程、单位、收藏及失败恢复）
 - [计划训练验收](plan-training-acceptance.md)
 - [训练流程验收](training-acceptance.md)
 - [四动作验收](../CAMERA_TRAINING_ACCEPTANCE.md)

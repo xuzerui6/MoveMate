@@ -33,7 +33,7 @@ export async function request(
       writeCache(uid!, path, response.data);
     return response.data;
   } catch (error: any) {
-    if (cacheable && !error?.response) {
+    if (cacheable && !error?.response && useAuthStore.getState().user?.id === uid && localStorage.getItem("token") === token) {
       const cached = readCache(uid!, path);
       if (cached)
         return Object.assign(structuredClone(cached.data), { __offline: true });
@@ -65,7 +65,7 @@ export async function beginWorkout(values: any) {
       undefined,
       token,
     ).catch(() => null);
-    if (found) {
+    if (found && !found.__offline) {
       localStorage.removeItem(key);
       return found;
     }

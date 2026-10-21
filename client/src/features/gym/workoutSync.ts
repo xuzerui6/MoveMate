@@ -60,6 +60,37 @@ export class WorkoutSync {
     this.tail = job.catch(() => {});
     return job;
   }
+  /** Finishing is confirmed only by a server response, including a lost-response recovery. */
+  finish(values: any = {}) {
+    const frozen = structuredClone(values);
+    const job = this.tail.then(async () => {
+      const pending = this.pending.get();
+      if (pending) {
+        const latest = await this.reconcile();
+        if (latest.phase === "finished") return latest;
+        // A prior complete/skip can move the cursor. Never apply its old snapshot
+        // to the next set merely because the user pressed retry.
+        throw new Error("上一项操作已核对，请检查当前组后再确认结束");
+      }
+      if (this.row.__offline) throw new Error("当前为缓存记录，请联网核对后结束");
+      if (this.row.phase === "finished") return this.row;
+      const body = {
+        ...frozen, action: "finish", operationId: crypto.randomUUID(),
+        version: this.row.version, setId: this.row.sets[this.row.cursor]?.id,
+      };
+      this.pending.set(body);
+      const latest = await this.transmit(body);
+      if (latest.phase !== "finished") throw new Error("服务端尚未确认结束，请核对训练状态");
+      return latest;
+    }).catch(error => {
+      // A definitive rejection can itself read back a finish committed by
+      // another page. That fresh server state is still a confirmed finish.
+      if (this.row.phase === "finished" && !this.row.__offline) return this.row;
+      throw error;
+    });
+    this.tail = job.catch(() => {});
+    return job;
+  }
   private async transmit(body: any) {
     try {
       const row = await this.send(body);
@@ -79,14 +110,20 @@ export class WorkoutSync {
       throw error;
     }
   }
-  recover() {
-    const job = this.tail.then(async () => {
+  private async reconcile() {
       const latest = await this.read();
+      if (latest.__offline) throw new Error("当前只能读取缓存，请联网后再核对服务端");
       this.row = latest;
       this.accept(latest);
+      if (latest.phase === "finished") {
+        this.pending.set(null);
+        return latest;
+      }
       const body = this.pending.get();
       return body ? this.transmit(body) : latest;
-    });
+  }
+  recover() {
+    const job = this.tail.then(() => this.reconcile());
     this.tail = job.catch(() => {});
     return job;
   }

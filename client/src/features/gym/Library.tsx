@@ -6,11 +6,15 @@ import { label, request, useGymQuery, getErrorMessage } from "./api";
 import { CameraCapability } from "./CameraCapability";
 import { ExerciseMediaPanel, ExerciseThumb } from "./ExerciseMedia";
 import { mediaIds, mediaFor, type MediaFilter } from "./media";
+import { useAuthStore } from "../../stores/authStore";
+import { CachedDataNotice } from "./CachedDataNotice";
+import { FavoriteRequests, mergeExercisePage } from "./libraryState";
 export function ExerciseLibrary({
   onPick,
 }: {
   onPick?: (exercise: any) => void;
 }) {
+  const uid = useAuthStore(s => s.user?.id);
   const [query, setQuery] = useState(""),
     [search, setSearch] = useState(""),
     [muscle, setMuscle] = useState(
@@ -29,7 +33,17 @@ export function ExerciseLibrary({
     [items, setItems] = useState<any[]>([]),
     [selected, setSelected] = useState<any>(null),
     [creating, setCreating] = useState(false),
-    [error, setError] = useState("");
+    [error, setError] = useState(""),
+    [total, setTotal] = useState(0),
+    [next, setNext] = useState<number | null>(null),
+    [readOnly, setReadOnly] = useState(false),
+    [facets, setFacets] = useState<{muscles: string[]; equipment: string[]}>({muscles: [], equipment: []}),
+    [favoritePending, setFavoritePending] = useState<Set<string>>(new Set()),
+    [favoriteErrors, setFavoriteErrors] = useState<Record<string, {message: string; enabled: boolean}>>({});
+  const favorites = useRef(new Map<string, boolean>()), favoriteRequests = useRef(new FavoriteRequests()), mounted = useRef(true);
+  const favoriteFilter = useRef(favorite);favoriteFilter.current=favorite;
+  useEffect(() => {mounted.current=true; return () => {mounted.current=false;};}, []);
+  useEffect(() => {favorites.current.clear();setFavoritePending(new Set());setFavoriteErrors({});setFacets({muscles: [], equipment: []});}, [uid]);
   useEffect(() => {
     const id = setTimeout(() => {
       setSearch(query);
@@ -55,24 +69,45 @@ export function ExerciseLibrary({
     ...(demoFilter !== "all" ? { ids: mediaIds(demoFilter)!.join(",") || "__no_demo__" } : {}),
   });
   const result = useGymQuery("/exercises?" + params);
+  const filters = new URLSearchParams(params); filters.delete("cursor");
+  const filterKey = String(uid) + ":" + filters.toString();
+  useEffect(() => {setItems([]);setSelected(null);setEditing(null);setError("");setTotal(0);setNext(null);setReadOnly(false);}, [filterKey]);
   useEffect(() => {
-    if (result.data)
-      setItems((previous) =>
-        cursor
-          ? Array.from(
-              new Map(
-                [...previous, ...result.data.items].map((e) => [e.id, e]),
-              ).values(),
-            )
-          : result.data.items,
-      );
+    if (result.data) {
+      setFacets({muscles: result.data.muscles || [], equipment: result.data.equipment || []});
+      setItems(previous => mergeExercisePage(previous, result.data.items, cursor !== 0, favorites.current)
+        .filter(e => !favoriteFilter.current || e.favorite));
+      setTotal(result.data.total);setNext(result.data.next ?? null);setReadOnly(!!result.data.__offline);
+    }
   }, [result.data]);
+  const changeFavorite = async (ex: any, enabled = !ex.favorite) => {
+    if (readOnly || result.loading) return;
+    const token = localStorage.getItem("token");
+    const currentAccount = () => mounted.current && useAuthStore.getState().user?.id === uid && localStorage.getItem("token") === token;
+    await favoriteRequests.current.run(`${uid}:${ex.id}`, async () => {
+      setFavoritePending(v => new Set(v).add(ex.id));
+      setFavoriteErrors(v => {const next={...v};delete next[ex.id];return next;});
+      try {
+        await request("PUT", "/exercises/" + encodeURIComponent(ex.id) + "/favorite", {enabled}, token);
+        if (!currentAccount()) return;
+        favorites.current.set(ex.id, enabled);
+        setItems(v => v.map(e => e.id===ex.id ? {...e, favorite:enabled} : e).filter(e => !favoriteFilter.current || e.favorite));
+        setSelected((v: any) => v?.id===ex.id ? {...v, favorite:enabled} : v);
+        if (favoriteFilter.current && !enabled) setTotal(v => Math.max(0,v-1));
+      } catch (e) {
+        if (currentAccount()) setFavoriteErrors(v => ({...v,[ex.id]:{message:getErrorMessage(e),enabled}}));
+      } finally {
+        if (currentAccount()) setFavoritePending(v => {const next=new Set(v);next.delete(ex.id);return next;});
+      }
+    });
+  };
   const filter = (setter: (s: string) => void) => (value: string) => {
     setter(value);
     setCursor(0);
   };
   const saveCustom = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (readOnly) return;
     const form = new FormData(event.currentTarget);
     try {
       const ex = await request("POST", "/exercises", {
@@ -102,7 +137,7 @@ export function ExerciseLibrary({
             placeholder="名称、器械或动作关键词"
           />
         </label>
-        <button className="secondary" onClick={() => setCreating(!creating)}>
+        <button className="secondary" disabled={readOnly} onClick={() => setCreating(!creating)}>
           自定义动作
         </button>
       </div>
@@ -181,7 +216,7 @@ export function ExerciseLibrary({
               onChange={(e) => filter(setMuscle)(e.target.value)}
             >
               <option value="">全部肌群</option>
-              {result.data?.muscles.map((v: string) => (
+              {facets.muscles.map((v: string) => (
                 <option key={v} value={v}>
                   {label(v)}
                 </option>
@@ -195,7 +230,7 @@ export function ExerciseLibrary({
               onChange={(e) => filter(setEquipment)(e.target.value)}
             >
               <option value="">全部器械</option>
-              {result.data?.equipment.map((v: string) => (
+              {facets.equipment.map((v: string) => (
                 <option key={v} value={v}>
                   {label(v)}
                 </option>
@@ -229,12 +264,14 @@ export function ExerciseLibrary({
           </label>
         </div>
       </details>
-      {(result.error || error) && (
+      <CachedDataNotice data={result.data || (readOnly ? {__offline:true} : null)} reload={result.reload} busy={result.loading}/>
+      {result.error && cursor === 0 && (
         <div className="gym-error" role="alert">
-          {result.error || error}
-          <button onClick={result.reload}>重试</button>
+          动作未加载成功：{result.error}
+          <button onClick={result.reload}>重试读取动作</button>
         </div>
       )}
+      {error && <div className="gym-error" role="alert">{error}<button onClick={() => setError("")}>关闭提示</button></div>}
       {creating && (
         <form className="gym-form" onSubmit={saveCustom}>
           <h3>创建自己的动作</h3>
@@ -277,13 +314,14 @@ export function ExerciseLibrary({
             动作步骤（每行一步）
             <textarea name="steps" required rows={4} />
           </label>
-          <button className="primary">保存动作</button>
+          <button className="primary" disabled={readOnly}>保存动作</button>
         </form>
       )}
       <p className="gym-muted">
         {result.loading
-          ? "正在读取动作…"
-          : `${result.data?.total || 0} 个匹配动作 · 按标识选择摄像头动作，新动作识别为试用`}
+          ? cursor ? `正在加载更多 · 已显示 ${items.length} 个动作` : "正在读取动作…"
+          : result.error && cursor === 0 ? "动作数量尚未读取，请重试。"
+          : `${total} 个匹配动作 · 按标识选择摄像头动作，新动作识别为试用`}
       </p>
       {selected && (
         <article className="gym-exercise-detail" ref={detail}>
@@ -291,6 +329,9 @@ export function ExerciseLibrary({
             收起详情
           </button>
           <h3>{selected.nameZh}</h3>
+          <button className="secondary" aria-pressed={!!selected.favorite} disabled={readOnly || result.loading || favoritePending.has(selected.id)} onClick={() => void changeFavorite(selected)}>
+            {favoritePending.has(selected.id) ? "正在保存收藏…" : selected.favorite ? "取消收藏" : "收藏动作"}
+          </button>
           <p className="gym-muted">
             {selected.name} · {label(selected.equipment)} ·{" "}
             {label(selected.bodyPart)}
@@ -306,10 +347,11 @@ export function ExerciseLibrary({
           </p>
           {selected.id.startsWith("user:") && (
             <div className="gym-inline-actions">
-              <button onClick={() => setEditing(structuredClone(selected))}>
+              <button disabled={readOnly} onClick={() => setEditing(structuredClone(selected))}>
                 编辑自定义动作
               </button>
               <button
+                disabled={readOnly}
                 onClick={async () => {
                   try {
                     await request(
@@ -333,6 +375,7 @@ export function ExerciseLibrary({
               className="gym-form"
               onSubmit={async (e) => {
                 e.preventDefault();
+                if (readOnly) return;
                 try {
                   const next = await request(
                     "PUT",
@@ -409,7 +452,7 @@ export function ExerciseLibrary({
                   }
                 />
               </label>
-              <button className="primary">保存修改</button>
+              <button className="primary" disabled={readOnly}>保存修改</button>
               <button type="button" onClick={() => setEditing(null)}>
                 取消
               </button>
@@ -468,15 +511,9 @@ export function ExerciseLibrary({
                 ex.favorite ? "取消收藏" + ex.nameZh : "收藏" + ex.nameZh
               }
               aria-pressed={ex.favorite}
-              onClick={() => {
-                void request(
-                  "PUT",
-                  "/exercises/" + encodeURIComponent(ex.id) + "/favorite",
-                  { enabled: !ex.favorite },
-                )
-                  .then(() => result.reload())
-                  .catch((e) => setError(getErrorMessage(e)));
-              }}
+              aria-busy={favoritePending.has(ex.id)}
+              disabled={readOnly || result.loading || favoritePending.has(ex.id)}
+              onClick={() => void changeFavorite(ex)}
             >
               <Icon name="heart" weight={ex.favorite ? "fill" : "regular"} />
             </button>
@@ -485,17 +522,25 @@ export function ExerciseLibrary({
                 加入
               </button>
             )}
+            {favoriteErrors[ex.id] && <div className="gym-favorite-error" role="alert">
+              收藏未保存：{favoriteErrors[ex.id].message}
+              <button disabled={readOnly || favoritePending.has(ex.id)} onClick={() => void changeFavorite(ex, favoriteErrors[ex.id].enabled)}>重试收藏操作</button>
+            </div>}
           </article>
         ))}
       </div>
-      {!result.loading && !items.length && (
+      {!result.loading && !result.error && !items.length && (
         <p className="gym-empty">没有匹配动作，试试更少的筛选条件。</p>
       )}
-      {result.data?.next != null && (
+      {result.error && cursor > 0 && <div className="gym-error" role="alert">
+        加载更多失败，已显示的动作和筛选已保留：{result.error}
+        <button disabled={result.loading} onClick={result.reload}>重试加载更多</button>
+      </div>}
+      {next != null && !(result.error && cursor > 0) && (
         <button
           className="secondary gym-load-more"
           disabled={result.loading}
-          onClick={() => setCursor(result.data.next)}
+          onClick={() => setCursor(next!)}
         >
           加载更多
         </button>

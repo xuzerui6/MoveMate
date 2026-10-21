@@ -8,6 +8,7 @@ import { WeightInput } from "./WeightInput";
 import { canonicalWeight, displayWeight } from "./trainingMath";
 import FullTransfer from "./FullTransfer";
 import { AnalysisExtras } from "./AnalysisExtras";
+import { CachedDataNotice } from "./CachedDataNotice";
 import {
   request,
   useGymQuery,
@@ -24,7 +25,7 @@ function Status({ query }: { query: ReturnType<typeof useGymQuery> }) {
     </div>
   ) : query.loading && !query.data ? (
     <p>正在读取…</p>
-  ) : null;
+  ) : <CachedDataNotice data={query.data} reload={query.reload} busy={query.loading}/>;
 }
 function Page({
   title,
