@@ -42,6 +42,7 @@ export function ExerciseLibrary({
     [favoriteErrors, setFavoriteErrors] = useState<Record<string, {message: string; enabled: boolean}>>({});
   const favorites = useRef(new Map<string, boolean>()), favoriteRequests = useRef(new FavoriteRequests()), mounted = useRef(true);
   const favoriteFilter = useRef(favorite);favoriteFilter.current=favorite;
+  const searching=query!==search;
   useEffect(() => {mounted.current=true; return () => {mounted.current=false;};}, []);
   useEffect(() => {favorites.current.clear();setFavoritePending(new Set());setFavoriteErrors({});setFacets({muscles: [], equipment: []});}, [uid]);
   useEffect(() => {
@@ -81,7 +82,7 @@ export function ExerciseLibrary({
     }
   }, [result.data]);
   const changeFavorite = async (ex: any, enabled = !ex.favorite) => {
-    if (readOnly || result.loading) return;
+    if (readOnly || result.loading || searching) return;
     const token = localStorage.getItem("token");
     const currentAccount = () => mounted.current && useAuthStore.getState().user?.id === uid && localStorage.getItem("token") === token;
     await favoriteRequests.current.run(`${uid}:${ex.id}`, async () => {
@@ -318,7 +319,7 @@ export function ExerciseLibrary({
         </form>
       )}
       <p className="gym-muted">
-        {result.loading
+        {result.loading || searching
           ? cursor ? `正在加载更多 · 已显示 ${items.length} 个动作` : "正在读取动作…"
           : result.error && cursor === 0 ? "动作数量尚未读取，请重试。"
           : `${total} 个匹配动作 · 按标识选择摄像头动作，新动作识别为试用`}
@@ -468,7 +469,7 @@ export function ExerciseLibrary({
           <p>从舒适负重开始；不适时停止。</p>
           <CameraCapability exercise={selected} />
           {onPick && (
-            <button className="primary" onClick={() => onPick(selected)}>
+            <button className="primary" disabled={searching || result.loading} onClick={() => onPick(selected)}>
               加入这个动作
             </button>
           )}
@@ -479,6 +480,7 @@ export function ExerciseLibrary({
           <article key={ex.id}>
             <button
               className="gym-exercise-name"
+              disabled={searching || result.loading}
               onClick={() => setSelected(ex)}
             >
               <ExerciseThumb exercise={ex} />
@@ -512,13 +514,13 @@ export function ExerciseLibrary({
               }
               aria-pressed={ex.favorite}
               aria-busy={favoritePending.has(ex.id)}
-              disabled={readOnly || result.loading || favoritePending.has(ex.id)}
+              disabled={readOnly || searching || result.loading || favoritePending.has(ex.id)}
               onClick={() => void changeFavorite(ex)}
             >
               <Icon name="heart" weight={ex.favorite ? "fill" : "regular"} />
             </button>
             {onPick && (
-              <button className="secondary" onClick={() => onPick(ex)}>
+              <button className="secondary" disabled={searching || result.loading} onClick={() => onPick(ex)}>
                 加入
               </button>
             )}

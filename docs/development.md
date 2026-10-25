@@ -44,7 +44,7 @@ export MOVEMATE_MEDIA_DIR="$HOME/movemate-licensed-media"
 
 也可在被忽略的 `server/data/media-config.json` 保存 `MOVEMATE_MEDIA_DIR` 的绝对路径，环境变量优先。外部目录必须在仓库之外，文件名、大小、SHA-256 必须匹配[发布清单](../client/public/exercise-media/attribution.json)。缺文件、校验失败或误提交站内专用文件时停止构建。不要从其他动作复制文件来凑校验，不要将此目录上传 GitHub。
 
-原片 SHA、采用片段、分解帧时间和处理方式见[素材审核清单](../scripts/exercise-media-approved.json)与[第三批说明](exercise-media-batch3.md)。生成工具是维护者使用的 Python／Pillow／FFmpeg 脚本，不属于普通启动必需依赖。
+原片 SHA、采用片段、分解帧时间和处理方式见[素材审核清单](../scripts/exercise-media-approved.json)与[第四批说明](exercise-media-batch4.md)。生成工具是维护者使用的 Python／Pillow／FFmpeg 脚本，不属于普通启动必需依赖；按 ID 增量生成可使用 `--only`，正常网页构建不需要重新生成素材。
 
 ## 本机演示
 

@@ -1,5 +1,5 @@
 {
-  "reviewedAt": "2026-10-18",
+  "reviewedAt": "2026-10-25",
   "freeVersion": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
   "stills": [
     {
@@ -273,6 +273,201 @@
       "note": "上斜凳双哑铃卧推；不是平板或单臂变式。实拍双帧图片，不是连续动画。",
       "distribution": "repository",
       "subjectOrigin": "来源未明确说明，不依据外貌判断。"
+    },
+    {
+      "exerciseId": "exdb:0042",
+      "expectedName": "barbell front squat",
+      "sourceId": "Front_Squat_Clean_Grip",
+      "sourceSha256": [
+        "995a2c4f6618a56e0db30a1dc69a39e7b25484400221490ead8200a75bbe1d74",
+        "a9c7a229406192d03d0aebb5a44da993cdc2b2f24a88121da4d7396c8b4cd775"
+      ],
+      "phases": [
+        "肩前托杠站立",
+        "屈髋屈膝下蹲"
+      ],
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "review": "2026-10-25：核对器械、身体支撑与动作形式，原图等比例保留；人物背景未由来源明确标注。"
+    },
+    {
+      "exerciseId": "exdb:1409",
+      "expectedName": "barbell glute bridge",
+      "sourceId": "Barbell_Glute_Bridge",
+      "sourceSha256": [
+        "d1df1bd592523e68881b59a9f7530227401ecf641be8510ca2560b0c30d96b85",
+        "c6028b123f187e350d30bbfaab48f0a41f2c928557424504ca49d31eec6fd8ee"
+      ],
+      "phases": [
+        "仰卧落髋",
+        "收臀抬髋"
+      ],
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "review": "2026-10-25：核对器械、身体支撑与动作形式，原图等比例保留；人物背景未由来源明确标注。"
+    },
+    {
+      "exerciseId": "exdb:0336",
+      "expectedName": "dumbbell lunge",
+      "sourceId": "Dumbbell_Lunges",
+      "sourceSha256": [
+        "ab3d56b0b44e82d189dfd88de2838220445cb245fae8a0f1586daa67355604d4",
+        "138a08303cb955b1f4867cf6eaeab1664c32079dcbd7fac871eccf7d9597d671"
+      ],
+      "phases": [
+        "前跨支撑",
+        "屈膝下沉"
+      ],
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "review": "2026-10-25：核对器械、身体支撑与动作形式，原图等比例保留；人物背景未由来源明确标注。"
+    },
+    {
+      "exerciseId": "exdb:3013",
+      "expectedName": "low glute bridge on floor",
+      "sourceId": "Butt_Lift_Bridge",
+      "sourceSha256": [
+        "f74f6813fc43cd5f60e6779ec182049a2ddb3ed9dc5777389dd4ab1880392d5c",
+        "3eacd0851b56e3e1ea29a0a73c596b0d10e4bc746dd64afaed50d7255eae0819"
+      ],
+      "phases": [
+        "仰卧准备",
+        "双脚支撑抬髋"
+      ],
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "review": "2026-10-25：核对器械、身体支撑与动作形式，原图等比例保留；人物背景未由来源明确标注。"
+    },
+    {
+      "exerciseId": "exdb:0047",
+      "expectedName": "barbell incline bench press",
+      "sourceId": "Barbell_Incline_Bench_Press_-_Medium_Grip",
+      "sourceSha256": [
+        "4a306bb94d93afc0356252001b24e9f7defc13ab85e3c55fc3dbcb678247ffb9",
+        "f803aa1a085cbeea3ab1d11865ab239c243f6f2ccb3e90aad91cce50f349909d"
+      ],
+      "phases": [
+        "推起稳定",
+        "控制下放"
+      ],
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "review": "2026-10-25：核对器械、身体支撑与动作形式，原图等比例保留；人物背景未由来源明确标注。"
+    },
+    {
+      "exerciseId": "exdb:0308",
+      "expectedName": "dumbbell fly",
+      "sourceId": "Dumbbell_Flyes",
+      "sourceSha256": [
+        "215bef04ad13e1629033f6d7333aeb6c66e9174b8fd13ece559e22aa351448f4",
+        "009abc57d77c47eb29fb8f92aeb170d4005d1e9ded5f619dd6ba8fb912d1af8b"
+      ],
+      "phases": [
+        "胸前合拢",
+        "向两侧打开"
+      ],
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "review": "2026-10-25：核对器械、身体支撑与动作形式，原图等比例保留；人物背景未由来源明确标注。"
+    },
+    {
+      "exerciseId": "exdb:0333",
+      "expectedName": "dumbbell kickback",
+      "sourceId": "Standing_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+      "sourceSha256": [
+        "7f2785e59c8b17357dfa94a2f5907ecf28142429a725df8c24f4c55556122c2a",
+        "4a1611e40ace12bc39d59e74a7e86f8b476681e1b91e281e279cd43e90953ec2"
+      ],
+      "phases": [
+        "屈肘准备",
+        "双臂伸肘"
+      ],
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "review": "2026-10-25：核对器械、身体支撑与动作形式，原图等比例保留；人物背景未由来源明确标注。"
+    },
+    {
+      "exerciseId": "exdb:1326",
+      "expectedName": "chin-up",
+      "sourceId": "Chin-Up",
+      "sourceSha256": [
+        "efab20da5a0916eeef22e6fbc58040c688d1e63120681455f4c72c3a20faf6a0",
+        "b31bd59a44e6c7dfceca64e4232871327b9249d6fda9143149f1d35782fc97a3"
+      ],
+      "phases": [
+        "反手悬垂",
+        "屈肘上拉"
+      ],
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "review": "2026-10-25：核对器械、身体支撑与动作形式，原图等比例保留；人物背景未由来源明确标注。"
+    },
+    {
+      "exerciseId": "exdb:2330",
+      "expectedName": "cable lat pulldown full range of motion",
+      "sourceId": "Wide-Grip_Lat_Pulldown",
+      "sourceSha256": [
+        "929bc29751c35d0a624840b24501e74dc59438d351e66cc017e7ee8682fb3346",
+        "781952e629e8a4cff549df94ee6b1da7e32c7cd507382d47e8566718c07807dd"
+      ],
+      "phases": [
+        "长杆正握准备",
+        "下拉至上胸"
+      ],
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "review": "2026-10-25：核对器械、身体支撑与动作形式，原图等比例保留；人物背景未由来源明确标注。"
+    },
+    {
+      "exerciseId": "exdb:0406",
+      "expectedName": "dumbbell shrug",
+      "sourceId": "Dumbbell_Shrug",
+      "sourceSha256": [
+        "c3ab8024bdb710e8d4798f03ce15b5eba02e2e670797d61a09dc9b3e2f7c817b",
+        "5ca8b29dd52214250c26ebfddab5bf25b5d0af3c0eede92d46e02e32684dc824"
+      ],
+      "phases": [
+        "站立垂肩",
+        "双肩上提"
+      ],
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "review": "2026-10-25：核对器械、身体支撑与动作形式，原图等比例保留；人物背景未由来源明确标注。"
+    },
+    {
+      "exerciseId": "exdb:0274",
+      "expectedName": "crunch floor",
+      "sourceId": "Crunches",
+      "sourceSha256": [
+        "8b424d42b3196b9b6fdd70c86db60ba6fdae7a337710e8c01c278a6ea5c4220a",
+        "84df8957fcc20c051475a2d28fedb0c1a3b3e63b00913ae4acec1ed0dc150d22"
+      ],
+      "phases": [
+        "仰卧准备",
+        "肩部卷离地面"
+      ],
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "review": "2026-10-25：核对器械、身体支撑与动作形式，原图等比例保留；人物背景未由来源明确标注。"
+    },
+    {
+      "exerciseId": "exdb:0630",
+      "expectedName": "mountain climber",
+      "sourceId": "Mountain_Climbers",
+      "sourceSha256": [
+        "6e718481714ab64cd04d1ce7b00e3bb37e428370aaa6cea4820a605f1ff0c3c0",
+        "c1b5473de6d58555b58f3b10f7593231f9ad4c82696bff87e467eb767b24b5f8"
+      ],
+      "phases": [
+        "一侧收膝",
+        "换侧收膝"
+      ],
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "review": "2026-10-25：核对器械、身体支撑与动作形式，原图等比例保留；人物背景未由来源明确标注。"
+    },
+    {
+      "exerciseId": "exdb:0620",
+      "expectedName": "lying leg raise flat bench",
+      "sourceId": "Flat_Bench_Lying_Leg_Raise",
+      "sourceSha256": [
+        "87691104bd0accc790d4928d0cd7e5fb06d131c20918b2dcb7aa0e64244870f0",
+        "9bebcd1c5d9095a66b173a135b93bba266f0a18b939b44a30b9fb514ae7c6a29"
+      ],
+      "phases": [
+        "伸腿下放",
+        "双腿上举"
+      ],
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "review": "2026-10-25：核对器械、身体支撑与动作形式，原图等比例保留；人物背景未由来源明确标注。"
     }
   ],
   "videos": [
@@ -762,6 +957,88 @@
         ],
         "distribution": "site-only",
         "changes": "采用原片 0–12.5 秒，移除音轨，等比例 H.264 转码，提取封面及按原片时间标注的阶段帧；无空间裁切。仅作为站内训练说明的一部分部署，不向源码仓库分发原片或衍生文件；不表示人物为产品背书。"
+      }
+    },
+    {
+      "key": "site-pexels-4158861",
+      "sourceFile": "pexels-4158861.mp4",
+      "exerciseIds": [
+        "motion:squat"
+      ],
+      "expectedNames": {
+        "motion:squat": "squat"
+      },
+      "attachToExisting": true,
+      "start": 0,
+      "end": 2.16,
+      "frames": [
+        {
+          "time": 0.04,
+          "phase": "站立准备"
+        },
+        {
+          "time": 0.96,
+          "phase": "屈髋屈膝下蹲"
+        },
+        {
+          "time": 2.04,
+          "phase": "回到站立"
+        }
+      ],
+      "note": "真人实拍连续动作示范与同源分解帧。非专业教学认证，先按自身能力控制动作。",
+      "source": {
+        "name": "Pexels / video 4158861",
+        "author": "Michelangelo Buonarroti",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/",
+        "url": "https://www.pexels.com/video/a-couple-doing-squats-4158861/",
+        "version": "video:4158861; reviewed 2026-10-25; sha256:956728fe7974054310bcb1d2c99c6027eca042afbece9be21f966d4904c7309a",
+        "sourceSha256": [
+          "956728fe7974054310bcb1d2c99c6027eca042afbece9be21f966d4904c7309a"
+        ],
+        "distribution": "site-only",
+        "changes": "仅采用原片 0–2.16 秒完整动作周期，去除音轨，等比例压缩为 H.264，提取同源阶段帧；不裁切、不改绘、不推断人物背景。仅作为动伴动作说明与训练工具的一部分部署，不单独分发、不随公开源码再授权。"
+      }
+    },
+    {
+      "key": "site-pexels-4742661",
+      "sourceFile": "pexels-4742661.mp4",
+      "exerciseIds": [
+        "motion:push_up"
+      ],
+      "expectedNames": {
+        "motion:push_up": "push_up"
+      },
+      "attachToExisting": true,
+      "start": 0,
+      "end": 7.8,
+      "frames": [
+        {
+          "time": 0.1,
+          "phase": "伸臂支撑"
+        },
+        {
+          "time": 4.8,
+          "phase": "屈肘下降"
+        },
+        {
+          "time": 7.2,
+          "phase": "推起回位"
+        }
+      ],
+      "note": "真人实拍连续动作示范与同源分解帧。非专业教学认证，先按自身能力控制动作。",
+      "source": {
+        "name": "Pexels / video 4742661",
+        "author": "Ketut Subiyanto",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/",
+        "url": "https://www.pexels.com/video/man-doing-a-push-up-at-the-gym-4742661/",
+        "version": "video:4742661; reviewed 2026-10-25; sha256:5ad1cb16e8aa720043e6e69d4ff868dd5d46d8d1ae0e320199a30782ef1583e1",
+        "sourceSha256": [
+          "5ad1cb16e8aa720043e6e69d4ff868dd5d46d8d1ae0e320199a30782ef1583e1"
+        ],
+        "distribution": "site-only",
+        "changes": "仅采用原片 0–7.8 秒完整动作周期，去除音轨，等比例压缩为 H.264，提取同源阶段帧；不裁切、不改绘、不推断人物背景。仅作为动伴动作说明与训练工具的一部分部署，不单独分发、不随公开源码再授权。"
       }
     }
   ]

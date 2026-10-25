@@ -19,7 +19,8 @@
 | [第二阶段训练能力](training-stage2.md) | 自由训练、排课、分析、进阶及数据恢复 |
 | [计划内摄像头](plan-camera.md) | 支持形式、试用动作、计数与评分 |
 | [计数修复记录](training-counting-fix.md) | 识别诊断、状态机与实拍边界 |
-| [第三批动作示范](exercise-media-batch3.md) | 当前覆盖、素材许可、外部目录及部署 |
+| [第四批动作示范](exercise-media-batch4.md) | 当前覆盖、20 项审核结果、中文资料、素材许可及部署 |
+| [第三批动作示范](exercise-media-batch3.md) | 上一批素材与外部目录配置 |
 | [全库覆盖 CSV](exercise-media-coverage.csv) / [缺失 CSV](exercise-media-missing.csv) | 按动作 ID 查询图片、视频及摄像头能力 |
 | [统一语音](shared-voice.md) | 设备池、学习演示限制、配置与验证 |
 | [Cloudflare 部署](cloudflare-deployment.md) | 生产／预览、密钥、迁移、备份与回滚 |
@@ -37,6 +38,7 @@
 - [四动作验收](../CAMERA_TRAINING_ACCEPTANCE.md)
 - [页面与交互验收](../UI_ACCEPTANCE.md)
 - [Cloudflare 迁移验收](cloudflare-acceptance.md)
+- [第四批媒体验收](exercise-media-batch4.md#验收)
 - [第三批媒体验收](exercise-media-batch3.md#验收)
 
 ## 历史资料

@@ -26,3 +26,10 @@
 - Pexels video 3048952（fauxels）、5025964（olia danilevich）、8456719（Mikhail Nilov）采用 [Pexels License](https://www.pexels.com/license/) 与 [使用条款](https://www.pexels.com/terms-of-service/)。其许可不是 Unlicense 或 CC，不能按本站源码许可再授权。
 - 上述三段视频、封面和同源阶段图仅集成于网站动作说明；原片及衍生文件保存在项目外，由构建校验后部署，不在公开源码仓库分发，不提供独立素材下载入口。采用片段、修改说明、作者及来源链接保留于公开 attribution 清单。人物出现不表示其为本产品背书。
 - 已核验亚洲人物但形式不符的候选未采用；实际新增亚洲人物素材数量为 0，不凭外貌推定。完整结果见 `docs/exercise-media-batch3.md`。
+
+## 第四批动作示范（2026-10-25）
+
+- 新增 13 项双帧图片采用相同固定提交的 free-exercise-db / Unlicense，原图等比例压缩，不裁切、不改绘人物；原文件与发布 SHA-256、阶段及匹配说明保留于审核清单。
+- 新增 Pexels video 4158861（Michelangelo Buonarroti）、4742661（Ketut Subiyanto），继续遵循 Pexels License 与使用条款。两段视频、封面和六张同源分解帧只随网站部署，不在公开源码仓库分发，不按源码许可再授权，不暗示人物背书。
+- 原有图片与视频均保留，新增帧按其真实来源索引归属；旧 Unlicense 图片不会被重标为 Pexels 素材。
+- 新采用素材未由来源明确标注亚洲人物，统计为 0，不从外貌推断。20 项逐动作结果及未采用原因见 `docs/exercise-media-batch4.md`。

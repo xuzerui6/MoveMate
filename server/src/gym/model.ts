@@ -164,6 +164,8 @@ export const exercises: Exercise[] = [
           (zhTerms as Record<string, string>)[word.toLowerCase()] || word,
       ),
     aliases: [
+      ...(e.aliases || []),
+      ...(e.nameZh ? [e.nameZh] : []),
       e.name,
       chineseName(e.name),
       e.target,

@@ -29,7 +29,10 @@ const verificationEntries = Object.fromEntries(Object.entries(exerciseMedia).map
 test(repositoryScope
   ? "public CI verifies all demonstration metadata and repository media bytes (site-only binaries excluded)"
   : "all released demonstrations are reviewed exact IDs with local immutable and verified bytes", () => {
-  const reviewed = [...approved.stills, ...approved.siteVideos.flatMap(row => row.exerciseIds.map(exerciseId => ({exerciseId, expectedName: row.expectedNames[exerciseId as keyof typeof row.expectedNames]})))];
+  const candidates = [...approved.stills, ...approved.siteVideos.flatMap(row => row.exerciseIds.map(exerciseId => ({exerciseId, expectedName: row.expectedNames[exerciseId as keyof typeof row.expectedNames]})))];
+  const byId=new Map<string,typeof candidates[number]>();
+  for(const row of candidates){if(byId.has(row.exerciseId))assert.equal(byId.get(row.exerciseId)!.expectedName,row.expectedName);byId.set(row.exerciseId,row);}
+  const reviewed=[...byId.values()];
   assert.equal(demonstratedIds.length, reviewed.length);
   const verified = new Map(verifyExerciseMedia({manifest: {entries: verificationEntries}}).map(f => [f.src, f]));
   assert.ok(
@@ -67,7 +70,7 @@ test(repositoryScope
       }
     }
     if (m.video && (!repositoryScope || m.video.distribution !== 'site-only')) assert.equal(createHash('sha256').update(verified.get(m.video.poster)!.bytes).digest('hex'),m.video.posterSha256);
-    for (const s of m.sources) {
+    for (const [sourceIndex,s] of m.sources.entries()) {
       assert.ok(
         s.author && s.url && s.version && s.changes && s.sourceSha256?.length,
       );
@@ -75,7 +78,7 @@ test(repositoryScope
       if (s.license === 'Pexels License') {
         assert.equal(s.distribution, 'site-only');
         assert.equal(m.video?.distribution, 'site-only');
-        assert.ok(m.images.every(f => f.distribution === 'site-only'));
+        assert.ok(m.images.filter(f => (f.sourceIndex??0)===sourceIndex).every(f => f.distribution === 'site-only'));
       }
       assert.ok(!s.url.includes("openGym"));
     }
@@ -93,19 +96,21 @@ test("image and video filters send exact ID sets before server pagination", () =
   assert.deepEqual(mediaIds('images'), demonstratedIds.filter(id=>mediaFor(id)!.images.length>0));
   assert.deepEqual(mediaIds('video'), demonstratedIds.filter(id=>!!mediaFor(id)!.video));
   assert.ok(mediaIds('images')!.includes('motion:squat'));
-  assert.ok(!mediaIds('video')!.includes('motion:squat'));
+  assert.ok(mediaIds('video')!.includes('motion:squat'));
   assert.ok(mediaIds('video')!.includes('exdb:0025'));
 });
 test("reviewed video breakdowns preserve chronological phases and provenance", () => {
   for (const row of [...approved.videos, ...approved.siteVideos]) {
     for (const id of row.exerciseIds) {
       const m=mediaFor(id)!;
-      assert.equal(m.images.length,row.frames.length);
-      assert.deepEqual(m.images.map(f=>f.sourceTime),row.frames.map(f=>f.time));
-      assert.deepEqual(m.images.map(f=>f.phase),row.frames.map(f=>f.phase));
-      m.images.forEach((f,i)=>{
+      const hash=Array.isArray(row.source.sourceSha256)?row.source.sourceSha256[0]:row.source.sourceSha256;
+      const frames=m.images.filter(f=>m.sources[f.sourceIndex??0].sourceSha256?.[0]===hash);
+      assert.equal(frames.length,row.frames.length);
+      assert.deepEqual(frames.map(f=>f.sourceTime),row.frames.map(f=>f.time));
+      assert.deepEqual(frames.map(f=>f.phase),row.frames.map(f=>f.phase));
+      frames.forEach((f,i)=>{
         assert.ok(f.sourceTime!>=row.start && f.sourceTime!<row.end);
-        if(i) assert.ok(f.sourceTime!>m.images[i-1].sourceTime!);
+        if(i) assert.ok(f.sourceTime!>frames[i-1].sourceTime!);
         assert.equal(m.sources[f.sourceIndex!].sourceSha256![0],Array.isArray(row.source.sourceSha256) ? row.source.sourceSha256[0] : row.source.sourceSha256);
       });
     }
@@ -114,7 +119,7 @@ test("reviewed video breakdowns preserve chronological phases and provenance", (
 test("misleading variants and custom movements never inherit demonstration media", () => {
   for (const id of [
     "user:0334",
-    "exdb:0333",
+    "exdb:0354",
     "exdb:1373",
   ])
     assert.equal(mediaFor(id), undefined);

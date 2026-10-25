@@ -1,10 +1,37 @@
 {
   "version": 3,
-  "reviewedAt": "2026-10-18",
+  "reviewedAt": "2026-10-25",
   "entries": {
     "motion:squat": {
-      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "note": "真人实拍连续动作示范与同源分解帧。非专业教学认证，先按自身能力控制动作。 原有已审核分解图继续保留。",
       "images": [
+        {
+          "src": "/exercise-media/site-pexels-4158861-phase-0.dd70fe2d6245.webp",
+          "sha256": "dd70fe2d6245d10b814321f86b9a9fbaa777d893ad8691eace9335949a8ec4b5",
+          "bytes": 59176,
+          "distribution": "site-only",
+          "phase": "站立准备",
+          "sourceTime": 0.04,
+          "sourceIndex": 1
+        },
+        {
+          "src": "/exercise-media/site-pexels-4158861-phase-1.3f4263da2a27.webp",
+          "sha256": "3f4263da2a27dd985c1eb11887b90f6e27785825d35803efe2a39d9bbc3665f6",
+          "bytes": 55140,
+          "distribution": "site-only",
+          "phase": "屈髋屈膝下蹲",
+          "sourceTime": 0.96,
+          "sourceIndex": 1
+        },
+        {
+          "src": "/exercise-media/site-pexels-4158861-phase-2.6fc8672b9ae2.webp",
+          "sha256": "6fc8672b9ae2215ceececdf65d6a5b00c2358c38f40ab07edc10503f9ad7024d",
+          "bytes": 58886,
+          "distribution": "site-only",
+          "phase": "回到站立",
+          "sourceTime": 2.04,
+          "sourceIndex": 1
+        },
         {
           "src": "/exercise-media/bodyweight_squat-0.f12ef1ce0ea9.webp",
           "sha256": "f12ef1ce0ea9ed857708a8ead0600e0c98e2cea6e97cc82a6c28e2f0f7a91ae1",
@@ -36,12 +63,61 @@
           ],
           "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
+        },
+        {
+          "name": "Pexels / video 4158861",
+          "author": "Michelangelo Buonarroti",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "url": "https://www.pexels.com/video/a-couple-doing-squats-4158861/",
+          "version": "video:4158861; reviewed 2026-10-25; sha256:956728fe7974054310bcb1d2c99c6027eca042afbece9be21f966d4904c7309a",
+          "sourceSha256": [
+            "956728fe7974054310bcb1d2c99c6027eca042afbece9be21f966d4904c7309a"
+          ],
+          "distribution": "site-only",
+          "changes": "仅采用原片 0–2.16 秒完整动作周期，去除音轨，等比例压缩为 H.264，提取同源阶段帧；不裁切、不改绘、不推断人物背景。仅作为动伴动作说明与训练工具的一部分部署，不单独分发、不随公开源码再授权。"
         }
-      ]
+      ],
+      "video": {
+        "src": "/exercise-media/site-pexels-4158861.748f4fb31efe.mp4",
+        "sha256": "748f4fb31efe53054eb7d76da9e0393e8ce4f6590751e335a128c64f8b3d0a58",
+        "bytes": 110867,
+        "distribution": "site-only",
+        "poster": "/exercise-media/site-pexels-4158861-poster.170592103bd2.webp",
+        "posterSha256": "170592103bd218a855160d133a998ca13d2ec65d03dd69515f9470d730f308e9",
+        "aspectRatio": 0.5611111111111111
+      }
     },
     "motion:push_up": {
-      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "note": "真人实拍连续动作示范与同源分解帧。非专业教学认证，先按自身能力控制动作。 原有已审核分解图继续保留。",
       "images": [
+        {
+          "src": "/exercise-media/site-pexels-4742661-phase-0.df131f5648f7.webp",
+          "sha256": "df131f5648f76c82472188951e4a3793bc2bfb56ecab0ca1efebf42b0746c11f",
+          "bytes": 45628,
+          "distribution": "site-only",
+          "phase": "伸臂支撑",
+          "sourceTime": 0.1,
+          "sourceIndex": 1
+        },
+        {
+          "src": "/exercise-media/site-pexels-4742661-phase-1.c937c318f6d4.webp",
+          "sha256": "c937c318f6d4e8f57ae174a75eeb49cc82a5d56b1c7e274994397c26d8d559e3",
+          "bytes": 47440,
+          "distribution": "site-only",
+          "phase": "屈肘下降",
+          "sourceTime": 4.8,
+          "sourceIndex": 1
+        },
+        {
+          "src": "/exercise-media/site-pexels-4742661-phase-2.7ce1d0e60c5f.webp",
+          "sha256": "7ce1d0e60c5f58aee15f0865f13338f891081150725c5ca77115a489ed42e300",
+          "bytes": 45866,
+          "distribution": "site-only",
+          "phase": "推起回位",
+          "sourceTime": 7.2,
+          "sourceIndex": 1
+        },
         {
           "src": "/exercise-media/pushups-0.199e9e981894.webp",
           "sha256": "199e9e98189453188da653fff0ba3fee3536eac0cf93043c7750771e75c8657d",
@@ -73,8 +149,30 @@
           ],
           "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
+        },
+        {
+          "name": "Pexels / video 4742661",
+          "author": "Ketut Subiyanto",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "url": "https://www.pexels.com/video/man-doing-a-push-up-at-the-gym-4742661/",
+          "version": "video:4742661; reviewed 2026-10-25; sha256:5ad1cb16e8aa720043e6e69d4ff868dd5d46d8d1ae0e320199a30782ef1583e1",
+          "sourceSha256": [
+            "5ad1cb16e8aa720043e6e69d4ff868dd5d46d8d1ae0e320199a30782ef1583e1"
+          ],
+          "distribution": "site-only",
+          "changes": "仅采用原片 0–7.8 秒完整动作周期，去除音轨，等比例压缩为 H.264，提取同源阶段帧；不裁切、不改绘、不推断人物背景。仅作为动伴动作说明与训练工具的一部分部署，不单独分发、不随公开源码再授权。"
         }
-      ]
+      ],
+      "video": {
+        "src": "/exercise-media/site-pexels-4742661.0096657d86ac.mp4",
+        "sha256": "0096657d86ac2ab0d08b816bb1d28aba50499824827f9a8a5405a573f0a77b1d",
+        "bytes": 638344,
+        "distribution": "site-only",
+        "poster": "/exercise-media/site-pexels-4742661-poster.366f30d1a333.webp",
+        "posterSha256": "366f30d1a33342376493b0f1170e29e61a56e583740b568359458816f19189ef",
+        "aspectRatio": 1.7777777777777777
+      }
     },
     "exdb:0294": {
       "note": "实拍双帧分解，按顺序查看；不是连续动画。",
@@ -1268,6 +1366,487 @@
           ],
           "distribution": "site-only",
           "changes": "采用原片 0–12.5 秒，移除音轨，等比例 H.264 转码，提取封面及按原片时间标注的阶段帧；无空间裁切。仅作为站内训练说明的一部分部署，不向源码仓库分发原片或衍生文件；不表示人物为产品背书。"
+        }
+      ]
+    },
+    "exdb:0042": {
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/front_squat_clean_grip-0.edf8604fbe65.webp",
+          "sha256": "edf8604fbe6550024351639104138fd74b5f0dc83c86524b236acdafab94f974",
+          "bytes": 31030,
+          "distribution": "repository",
+          "phase": "肩前托杠站立",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/front_squat_clean_grip-1.e0c6e341e977.webp",
+          "sha256": "e0c6e341e97715dd555b4f7dfebee4bd6da95f7ae0add906219aa47cc410cf71",
+          "bytes": 29822,
+          "distribution": "repository",
+          "phase": "屈髋屈膝下蹲",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Front_Squat_Clean_Grip",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Front_Squat_Clean_Grip",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "995a2c4f6618a56e0db30a1dc69a39e7b25484400221490ead8200a75bbe1d74",
+            "a9c7a229406192d03d0aebb5a44da993cdc2b2f24a88121da4d7396c8b4cd775"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1409": {
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/barbell_glute_bridge-0.9f298f51700b.webp",
+          "sha256": "9f298f51700b341a3215bc80841fc6c5401e9fd722c87621c5f2e6d7edaf4f1d",
+          "bytes": 38084,
+          "distribution": "repository",
+          "phase": "仰卧落髋",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/barbell_glute_bridge-1.373de144a959.webp",
+          "sha256": "373de144a959b45504ab21de2fffcf8386a7389620550c70436d1afeb492166f",
+          "bytes": 35900,
+          "distribution": "repository",
+          "phase": "收臀抬髋",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Barbell_Glute_Bridge",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Barbell_Glute_Bridge",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "d1df1bd592523e68881b59a9f7530227401ecf641be8510ca2560b0c30d96b85",
+            "c6028b123f187e350d30bbfaab48f0a41f2c928557424504ca49d31eec6fd8ee"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0336": {
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/dumbbell_lunges-0.babaf79cd40b.webp",
+          "sha256": "babaf79cd40bebd2746aee12466e0f406ac44030260f97e58242ffadfee918e6",
+          "bytes": 40714,
+          "distribution": "repository",
+          "phase": "前跨支撑",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/dumbbell_lunges-1.ede4f0e1a67a.webp",
+          "sha256": "ede4f0e1a67af38f4fed64fb4c991ffec137702b29c295282877207f407c1a3b",
+          "bytes": 49130,
+          "distribution": "repository",
+          "phase": "屈膝下沉",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Lunges",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Dumbbell_Lunges",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "ab3d56b0b44e82d189dfd88de2838220445cb245fae8a0f1586daa67355604d4",
+            "138a08303cb955b1f4867cf6eaeab1664c32079dcbd7fac871eccf7d9597d671"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:3013": {
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/butt_lift_bridge-0.6ac46d4aacc2.webp",
+          "sha256": "6ac46d4aacc220c4c85579ac9ea247e8c20452b4c2fc4a670e745f8b1b4f210c",
+          "bytes": 47584,
+          "distribution": "repository",
+          "phase": "仰卧准备",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/butt_lift_bridge-1.541cb73274ee.webp",
+          "sha256": "541cb73274ee17949101dd13868e8a9f6ab14dc965b13005e88fa77067a420c9",
+          "bytes": 49252,
+          "distribution": "repository",
+          "phase": "双脚支撑抬髋",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Butt_Lift_Bridge",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Butt_Lift_Bridge",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "f74f6813fc43cd5f60e6779ec182049a2ddb3ed9dc5777389dd4ab1880392d5c",
+            "3eacd0851b56e3e1ea29a0a73c596b0d10e4bc746dd64afaed50d7255eae0819"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0047": {
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/barbell_incline_bench_press_-_medium_grip-0.d995ee05f35f.webp",
+          "sha256": "d995ee05f35f695556ba0033f0f21850e645441cd7658813f08bd10c90725ca2",
+          "bytes": 54690,
+          "distribution": "repository",
+          "phase": "推起稳定",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/barbell_incline_bench_press_-_medium_grip-1.f12e0035462f.webp",
+          "sha256": "f12e0035462fc94fbbf57e04d060fe0ec7d1366fc129b44ef3d4ad8feb7b2301",
+          "bytes": 54058,
+          "distribution": "repository",
+          "phase": "控制下放",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Barbell_Incline_Bench_Press_-_Medium_Grip",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Barbell_Incline_Bench_Press_-_Medium_Grip",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "4a306bb94d93afc0356252001b24e9f7defc13ab85e3c55fc3dbcb678247ffb9",
+            "f803aa1a085cbeea3ab1d11865ab239c243f6f2ccb3e90aad91cce50f349909d"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0308": {
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/dumbbell_flyes-0.fc564d24e802.webp",
+          "sha256": "fc564d24e80262ce3b0b04302ed09931c403ababd4d75fc1fb7c8e5f584ac067",
+          "bytes": 48788,
+          "distribution": "repository",
+          "phase": "胸前合拢",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/dumbbell_flyes-1.5158f144d602.webp",
+          "sha256": "5158f144d60213df8cb85241dcf50e909298ace4426771014749cb44838a89f5",
+          "bytes": 48986,
+          "distribution": "repository",
+          "phase": "向两侧打开",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Flyes",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Dumbbell_Flyes",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "215bef04ad13e1629033f6d7333aeb6c66e9174b8fd13ece559e22aa351448f4",
+            "009abc57d77c47eb29fb8f92aeb170d4005d1e9ded5f619dd6ba8fb912d1af8b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0333": {
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/standing_bent-over_two-arm_dumbbell_triceps_extension-0.8e67a0607569.webp",
+          "sha256": "8e67a06075699054d743330f35dbaa6b4beaabbdede97d4cf8f445192bc76277",
+          "bytes": 41738,
+          "distribution": "repository",
+          "phase": "屈肘准备",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/standing_bent-over_two-arm_dumbbell_triceps_extension-1.d9051d59edc2.webp",
+          "sha256": "d9051d59edc24afbad0fe8f5a337e6931f43654e719909bab48a22c07c11a9e0",
+          "bytes": 43200,
+          "distribution": "repository",
+          "phase": "双臂伸肘",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "7f2785e59c8b17357dfa94a2f5907ecf28142429a725df8c24f4c55556122c2a",
+            "4a1611e40ace12bc39d59e74a7e86f8b476681e1b91e281e279cd43e90953ec2"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1326": {
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/chin-up-0.bfe9f52f92d9.webp",
+          "sha256": "bfe9f52f92d9263c07aff632f2ad56349d523c8e36925e949d6bacd88ebddabc",
+          "bytes": 28122,
+          "distribution": "repository",
+          "phase": "反手悬垂",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/chin-up-1.84dcbd0c9381.webp",
+          "sha256": "84dcbd0c938173e044d0e6d28c14819cd32ab8921e888b382681568b3d4b82ef",
+          "bytes": 28230,
+          "distribution": "repository",
+          "phase": "屈肘上拉",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Chin-Up",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Chin-Up",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "efab20da5a0916eeef22e6fbc58040c688d1e63120681455f4c72c3a20faf6a0",
+            "b31bd59a44e6c7dfceca64e4232871327b9249d6fda9143149f1d35782fc97a3"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:2330": {
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/wide-grip_lat_pulldown-0.dad00a54ae22.webp",
+          "sha256": "dad00a54ae226ba3452d03dffbfa079316ba2c665601b6862e0e1402dfcff856",
+          "bytes": 58456,
+          "distribution": "repository",
+          "phase": "长杆正握准备",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/wide-grip_lat_pulldown-1.f543cf103f05.webp",
+          "sha256": "f543cf103f05fffde881ec94b7d4ceb70db2486b0999a07a75e4f5c224dd4b5f",
+          "bytes": 58592,
+          "distribution": "repository",
+          "phase": "下拉至上胸",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Wide-Grip_Lat_Pulldown",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Wide-Grip_Lat_Pulldown",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "929bc29751c35d0a624840b24501e74dc59438d351e66cc017e7ee8682fb3346",
+            "781952e629e8a4cff549df94ee6b1da7e32c7cd507382d47e8566718c07807dd"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0406": {
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/dumbbell_shrug-0.31444a20a7bb.webp",
+          "sha256": "31444a20a7bbbe3c1713540b74ce96cfe1282fb0836d437ffe0a5fbe213dae37",
+          "bytes": 35672,
+          "distribution": "repository",
+          "phase": "站立垂肩",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/dumbbell_shrug-1.413e9487f796.webp",
+          "sha256": "413e9487f7965bf85e7676cd7815fd2e7b79ab3f006ada3031d4277f8507bcf3",
+          "bytes": 36498,
+          "distribution": "repository",
+          "phase": "双肩上提",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Shrug",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Dumbbell_Shrug",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "c3ab8024bdb710e8d4798f03ce15b5eba02e2e670797d61a09dc9b3e2f7c817b",
+            "5ca8b29dd52214250c26ebfddab5bf25b5d0af3c0eede92d46e02e32684dc824"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0274": {
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/crunches-0.ffff503b47cb.webp",
+          "sha256": "ffff503b47cbeb35044e0329491ef69f79b63b39eeb2828949b73fa2e92b5838",
+          "bytes": 64002,
+          "distribution": "repository",
+          "phase": "仰卧准备",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/crunches-1.9bbcd23e87f9.webp",
+          "sha256": "9bbcd23e87f9db79e420ca25ef3ec8be8038e5fec87c899a3fb19d550038a763",
+          "bytes": 63148,
+          "distribution": "repository",
+          "phase": "肩部卷离地面",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Crunches",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Crunches",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "8b424d42b3196b9b6fdd70c86db60ba6fdae7a337710e8c01c278a6ea5c4220a",
+            "84df8957fcc20c051475a2d28fedb0c1a3b3e63b00913ae4acec1ed0dc150d22"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0630": {
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/mountain_climbers-0.af1f4f9a3cda.webp",
+          "sha256": "af1f4f9a3cdaff8882b82519130b3b6a1db3aca6e6f554d0855907061d8f6abf",
+          "bytes": 24230,
+          "distribution": "repository",
+          "phase": "一侧收膝",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/mountain_climbers-1.330b8aac84fa.webp",
+          "sha256": "330b8aac84fad5bca1fcb2da91574a3f439d4f84ebaab28b2bf5749ac5331bac",
+          "bytes": 23688,
+          "distribution": "repository",
+          "phase": "换侧收膝",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Mountain_Climbers",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Mountain_Climbers",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "6e718481714ab64cd04d1ce7b00e3bb37e428370aaa6cea4820a605f1ff0c3c0",
+            "c1b5473de6d58555b58f3b10f7593231f9ad4c82696bff87e467eb767b24b5f8"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0620": {
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/flat_bench_lying_leg_raise-0.ca571cf91755.webp",
+          "sha256": "ca571cf917552a408c2d221543bdbd87333796950dff43e0321b51211b81047b",
+          "bytes": 47614,
+          "distribution": "repository",
+          "phase": "伸腿下放",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/flat_bench_lying_leg_raise-1.6e29426ef13d.webp",
+          "sha256": "6e29426ef13db54f229ad44b5ba44d24f83ae79f944ccaa9441425efb431df24",
+          "bytes": 48820,
+          "distribution": "repository",
+          "phase": "双腿上举",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Flat_Bench_Lying_Leg_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Flat_Bench_Lying_Leg_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "87691104bd0accc790d4928d0cd7e5fb06d131c20918b2dcb7aa0e64244870f0",
+            "9bebcd1c5d9095a66b173a135b93bba266f0a18b939b44a30b9fb514ae7c6a29"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
         }
       ]
     }
