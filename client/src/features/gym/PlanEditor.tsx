@@ -4,8 +4,10 @@ import { useAuthStore } from "../../stores/authStore";
 import Dialog from "../../components/Dialog";
 import { Header } from "../motion/components/Header";
 import { CachedDataNotice } from "./CachedDataNotice";
-import { SnapshotEditor, planSaveConfirmed } from "./editingState";
-import { readDraft, writeDraft, removeDraft, validPlanDraft, draftWriteWarning } from "./draftStorage";
+import { PlanComparison } from "./PlanComparison";
+import { recoveryDraft, readRecoveryDraft, archivedDrafts, archiveDraft, forgetDraft, type RecoveryDraft } from "./recoveryDrafts";
+import { SnapshotEditor, planSaveConfirmed, sameContent } from "./editingState";
+import { writeDraft, removeDraft, validPlanDraft, draftWriteWarning } from "./draftStorage";
 import { repUnit } from "./trainingPresentation";
 import { WeightInput } from "./WeightInput";
 import { ExerciseLibrary } from "./Library";
@@ -40,32 +42,65 @@ function PlanEditorForm() {
     [proposal, setProposal] = useState<any>(null);
   const uid = useAuthStore(s => s.user?.id), draftKey = "gym:draft:" + uid + ":" + planId;
   const token=useRef(localStorage.getItem('token')).current;
+  const unreadActive=useRef(false), baseline=useRef<any>(null), protectedDraft=useRef<RecoveryDraft|null>(null), restoredArchive=useRef<RecoveryDraft|null>(null);
+  const [conflictDrafts,setConflictDrafts]=useState<RecoveryDraft[]>([]);
   const editor = useRef<SnapshotEditor<any> | null>(null), alive = useRef(true), writeLock = useRef(false);
   const [storageWarning, setStorageWarning] = useState(""), [invalidDraft, setInvalidDraft] = useState(false),
     [more, setMore] = useState(false), [serverReview, setServerReview] = useState<any>(null);
   useEffect(() => {alive.current=true; return () => {alive.current=false;};}, []);
   const currentAccount = () => alive.current && useAuthStore.getState().user?.id === uid;
   const initialize = (value: any, dirty = false) => {
-    editor.current = new SnapshotEditor(value, dirty);setPlan(editor.current.value);setDay(0);setProposal(null);
+    baseline.current=structuredClone(value);editor.current = new SnapshotEditor(value, dirty);setPlan(editor.current.value);setDay(0);setProposal(null);
   };
   useEffect(() => {
     if (editor.current || !query.data) return;
     const p = query.data.items.find((p: any) => p.id === planId);
     if (!p) {setError("计划不存在或无权访问");return;}
-    const draft = readDraft<any>(draftKey, validPlanDraft);
-    if (draft.state === "valid" && draft.value.id === p.id && draft.value.version === p.version) {
-      initialize(draft.value, true);setMessage("已恢复当前账号的未保存草稿");
+    const saved=archivedDrafts(draftKey,validPlanDraft);
+    const old=saved.value || [];
+    setConflictDrafts(old);
+    if(saved.state==='invalid'||saved.state==='unavailable')setStorageWarning("冲突草稿存档暂时无法读取，未清除任何内容。");
+    const draft = readRecoveryDraft(draftKey,validPlanDraft);
+    if (draft.state === "valid" && draft.value!.value.id === p.id && draft.value!.value.version === p.version) {
+      initialize(draft.value!.value, true);baseline.current=draft.value!.base || structuredClone(p);setMessage("已恢复当前账号的未保存草稿");
     } else {
       initialize(p);
-      if (draft.state === "valid") setStorageWarning("服务器计划已更新，旧草稿已保留，未覆盖服务器内容。");
-      if (draft.state === "invalid") {setInvalidDraft(true);setStorageWarning("本机草稿损坏或格式不兼容，当前显示服务器版本。");}
-      if (draft.state === "unavailable") setStorageWarning("本机草稿无法读取，当前显示服务器版本；编辑仍可联网保存。");
+      if (draft.state === "valid") {
+        const record=draft.value!;
+        if(!archiveDraft(draftKey,record,validPlanDraft))protectedDraft.current=record;
+        setConflictDrafts(old.some(v=>sameContent(v,record))?old:[...old,record]);
+        setStorageWarning("服务器计划已更新，原草稿已单独保留，请查看对照后选择恢复方式。");
+      }
+      if (draft.state === "invalid") {unreadActive.current=true;setInvalidDraft(true);setStorageWarning("本机草稿损坏或格式不兼容，当前显示服务器版本；原内容保留至明确放弃。");}
+      if (draft.state === "unavailable") {unreadActive.current=true;setStorageWarning("本机草稿无法读取，当前编辑仅保留在内存；不会覆盖无法读取的原稿。");}
     }
   }, [query.data, planId]);
   const persist = (dirty: boolean) => {
-    const ok = dirty ? writeDraft(draftKey, editor.current!.value) : removeDraft(draftKey);
+    if(unreadActive.current){
+      const original=readRecoveryDraft(draftKey,validPlanDraft);
+      if(original.state==='unavailable'||original.state==='invalid'){setStorageWarning("原草稿仍无法读取，已保护原内容；新编辑仅在内存中，请勿刷新。");return;}
+      if(original.value)protectedDraft.current=original.value;
+      unreadActive.current=false;
+    }
+    if(protectedDraft.current){
+      if(!archiveDraft(draftKey,protectedDraft.current,validPlanDraft)) {setStorageWarning("原草稿尚未能单独备份，已保护原稿不被覆盖；新编辑仅在内存中，请勿刷新或关闭。");return;}
+      protectedDraft.current=null;
+    }
+    const ok = dirty ? writeDraft(draftKey, recoveryDraft(baseline.current,editor.current!.value)) : removeDraft(draftKey);
     setStorageWarning(ok ? "" : dirty ? draftWriteWarning : "服务器已保存，但本机草稿清理失败；请勿把旧草稿当作最新状态。");
     if (ok) setInvalidDraft(false);
+  };
+  const releaseArchive = (record:RecoveryDraft) => {
+    if(forgetDraft(draftKey,record,validPlanDraft))setConflictDrafts(v=>v.filter(x=>!sameContent(x,record)));
+    else setStorageWarning("服务器状态已确认，但冲突草稿暂时无法清理，已继续保留。");
+  };
+  const preserveCurrent = (replacement:any) => {
+    if(!editor.current?.dirty || sameContent(editor.current.value,replacement))return true;
+    const record=recoveryDraft(baseline.current,editor.current.value);
+    if(!archiveDraft(draftKey,record,validPlanDraft)){
+      setStorageWarning("当前编辑尚未能单独备份，已保留在内存；请先保存当前编辑，再恢复另一份草稿。");return false;
+    }
+    setConflictDrafts(v=>v.some(d=>sameContent(d,record))?v:[...v,record]);return true;
   };
   const readServer = async () => {
     const data = await request("GET", "/training-plans", undefined, token);
@@ -74,10 +109,10 @@ function PlanEditorForm() {
     if (!value) throw Error("计划不存在或无权访问");
     return value;
   };
-  const inspectServer = async () => {
+  const inspectServer = async (record?:RecoveryDraft) => {
     if (writeLock.current) return;
     writeLock.current=true;setBusy(true);
-    try {const value=await readServer();if(currentAccount()){setServerReview(value);setMore(false);}}
+    try {const value=await readServer();if(currentAccount()){setServerReview({server:value,local:record?.value || structuredClone(editor.current!.value),record});setMore(false);}}
     catch(e){if(currentAccount())setError(getErrorMessage(e));}
     finally{writeLock.current=false;if(currentAccount())setBusy(false);}
   };
@@ -85,8 +120,10 @@ function PlanEditorForm() {
     plan?.routines
       .flatMap((r: any) => r.exercises.map((e: any) => e.exerciseId))
       .join(",") || "";
+  const archivedIds=conflictDrafts.flatMap(d=>d.value.routines.flatMap((r:any)=>r.exercises.map((e:any)=>e.exerciseId))).join(',');
+  const reviewedIds=serverReview?.server.routines.flatMap((r:any)=>r.exercises.map((e:any)=>e.exerciseId)).join(',') || '';
   const names = useGymQuery(
-    "/exercises?limit=500&ids=" + encodeURIComponent(ids),
+    "/exercises?limit=500&ids=" + encodeURIComponent([ids,archivedIds,reviewedIds].filter(Boolean).join(',')),
   );
   const map = Object.fromEntries(
     (names.data?.items || []).map((e: any) => [e.id, e]),
@@ -97,21 +134,23 @@ function PlanEditorForm() {
     setPlan(editor.current.edit(change));persist(true);
     setMessage(editor.current.busy ? "正在保存提交版本，当前还有未保存修改" : "未保存");
   };
-  const save = async (next = plan) => {
-    if (writeLock.current || !editor.current || readOnly) return;
+  const save = async (next?:any, reviewed=false) => {
+    if (writeLock.current || !editor.current || (readOnly && !reviewed)) return;
     const session = editor.current;
-    if (next !== plan) {
+    if (next && next !== session.value) {
       if (session.dirty || session.uncertain) {setError("请先保存或核对当前编辑，再重新获取进阶建议。");return;}
       session.edit(p => Object.assign(p, structuredClone(next)));setPlan(session.value);persist(true);
     }
     writeLock.current=true;setBusy(true);setError("");setMessage("正在保存…");
+    let confirmed:any;
     try {
-      await session.save(value => request("PUT", "/training-plans/" + planId, value, token), readServer,
+      await session.save(async value => confirmed=await request("PUT", "/training-plans/" + planId, value, token), async()=>confirmed=await readServer(),
         planSaveConfirmed, (local, server) => ({...local,id:server.id,version:server.version}),
         (server, submitted) => server.version !== submitted.version);
       if (!currentAccount()) return;
-      setPlan(session.value);persist(session.dirty);
-      setMessage(session.dirty ? "提交版本已保存，当前还有新修改" : "全部已保存");setProposal(null);
+      baseline.current=confirmed;setPlan(session.value);persist(session.dirty);
+      if(restoredArchive.current){releaseArchive(restoredArchive.current);restoredArchive.current=null;}
+      setMessage(session.dirty ? "提交版本已保存，当前还有新修改" : "全部已保存");setProposal(null);return true;
     } catch (e) {
       if(currentAccount()){setError(getErrorMessage(e));setMessage(session.uncertain ? "保存结果待核对，本机编辑已保留" : "保存失败，本机编辑已保留");}
     } finally {writeLock.current=false;if(currentAccount())setBusy(false);}
@@ -167,7 +206,8 @@ function PlanEditorForm() {
         计划修改影响下次训练；正在进行的训练保留开始时的安排。
       </p>
       <CachedDataNotice data={query.data} reload={query.reload} busy={query.loading || busy}/>
-      {storageWarning && <div className="gym-cache-notice" role="status"><p>{storageWarning}</p>{invalidDraft && <button disabled={busy} onClick={() => {if(removeDraft(draftKey)){setInvalidDraft(false);setStorageWarning("");}else setStorageWarning("本机草稿暂时无法清理，仍可继续编辑并联网保存。");}}>放弃损坏草稿</button>}</div>}
+      {storageWarning && <div className="gym-cache-notice" role="status"><p>{storageWarning}</p>{invalidDraft && <button disabled={busy} onClick={() => {if(removeDraft(draftKey)){unreadActive.current=false;setInvalidDraft(false);setStorageWarning("");}else setStorageWarning("本机草稿暂时无法清理，仍可继续编辑并联网保存。");}}>放弃损坏草稿</button>}</div>}
+      {!!conflictDrafts.length && <section className="gym-cache-notice" aria-label="保留的冲突草稿"><h3>保留的冲突草稿</h3>{conflictDrafts.map((d,i)=><div key={i}><span>{d.value.name} · 原版本 {d.value.version}</span><button className="secondary" disabled={busy} onClick={()=>void inspectServer(d)}>查看草稿对照 {i+1}</button></div>)}</section>}
       <p className="gym-edit-status" role="status">{message || "当前为服务器版本"}</p>
       {error && (
         <div className="gym-error" role="alert">
@@ -623,7 +663,21 @@ function PlanEditorForm() {
         </button>
       </div></div>
       {more && <Dialog title="计划操作" onClose={() => setMore(false)}><div className="gym-page gym-plan-menu"><button disabled={busy} onClick={() => void inspectServer()}>放弃本机草稿，读取服务器</button><button disabled={busy} onClick={() => {sharePlan();setMore(false);}}>分享计划文件</button><button disabled={busy} onClick={() => {setMore(false);setTimeout(() => window.print(),0);}}>打印／存为 PDF</button><button disabled={busy || readOnly} onClick={() => {setMore(false);setRemove(true);}}>删除计划</button></div></Dialog>}
-      {serverReview && <Dialog title="核对服务器版本" dismissible={!busy} onClose={() => setServerReview(null)}><p>服务器计划：{serverReview.name} · 版本 {serverReview.version}。本机编辑仍保留；使用服务器版本会放弃当前本机修改。</p><div className="dialog-actions"><button className="btn btn--secondary" onClick={() => setServerReview(null)}>保留本机编辑</button><button className="btn btn--primary" disabled={busy} onClick={() => {initialize(serverReview);persist(false);setServerReview(null);setError("");setMessage("已读取服务器版本");query.reload();}}>使用服务器版本，放弃本机编辑</button></div></Dialog>}
+      {serverReview && <Dialog title="核对服务器版本" dismissible={!busy} onClose={() => setServerReview(null)}>
+        <p>两份内容均已保留。只有明确确认后才会替换；保存仍检查服务器版本。</p>
+        <PlanComparison local={serverReview.local} server={serverReview.server} names={map}/>
+        <div className="dialog-actions"><button className="btn btn--secondary" disabled={busy} onClick={() => setServerReview(null)}>保留本机编辑</button>
+        <button className="btn btn--secondary" disabled={busy} onClick={() => {const review=serverReview;if(review.record && !preserveCurrent(review.local))return;initialize(review.server);persist(false);if(review.record)releaseArchive(review.record);setServerReview(null);setError("");setMessage("已读取服务器版本");query.reload();}}>使用服务器版本，放弃这份草稿</button>
+        <button className="btn btn--primary" disabled={busy} onClick={async()=>{
+          const review=serverReview;
+          if(!preserveCurrent(review.local))return;
+          // Preserve the chosen original before changing the active editor.
+          if(review.record && !archiveDraft(draftKey,review.record,validPlanDraft))protectedDraft.current=review.record;
+          initialize({...structuredClone(review.local),id:review.server.id,version:review.server.version},true);
+          baseline.current=review.server;restoredArchive.current=review.record || null;persist(true);setServerReview(null);
+          await save(undefined,true);
+        }}>确认将本机草稿保存为新版本</button></div>
+      </Dialog>}
       <div className="gym-print-document">
         <h1>{plan.name}</h1>
         {plan.routines.map((r: any) => (

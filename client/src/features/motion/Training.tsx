@@ -10,7 +10,7 @@ import type { WorkoutSession } from './types'
 const Workout = lazy(() => import('./pages/Workout').then(m => ({ default: m.Workout })))
 const Summary = lazy(() => import('./pages/Summary').then(m => ({ default: m.Summary })))
 export default function Training() {
-  const { finishWorkout, sessions } = useStore(), navigate = useNavigate()
+  const { finishWorkout, sessions, source, loading, refresh } = useStore(), navigate = useNavigate()
   const [mode, setMode] = useState<'select'|'workout'|'summary'>('select')
   const [choice, setChoice] = useState<'plan'|'camera'|'timer'>('plan')
   const [exercise, setExercise] = useState<CameraExerciseType>('squat'), [sport, setSport] = useState('running')
@@ -23,6 +23,7 @@ export default function Training() {
     setMode('summary')
   }
   const restore = () => { if (active && isCameraExercise(active.sportType)) setExercise(active.sportType); setMode('workout') }
+  if(source!=='server' && mode==='select')return <div className="page training-page training-entry"><h2>今天，怎么动？</h2><div className="gym-cache-notice" role="status"><p>{source==='cache'?'当前只能读取缓存，未确认最新运动状态。':'运动状态尚未读取，暂不能开始独立摄像头训练或个人计时。'}</p><button className="secondary" disabled={loading} onClick={()=>void refresh()}>{loading?'正在核对…':'重试运动状态'}</button></div><p>可以先查看动作库、整理计划；计划训练会通过自己的服务器接口核对。</p><nav className="gym-links"><Link to="/train/library">查看动作库</Link><Link to="/train/plans">管理计划</Link><Link to="/train/settings">训练设置</Link></nav></div>;
   return <Suspense fallback={<div className="motion-loading">正在载入训练…</div>}>
     {mode === 'workout' ? <Workout key={exercise} exerciseType={exercise} back={() => setMode('select')} finish={finish} existing={active && !active.gameId && active.source !== 'timer' ? active : undefined}/> : mode === 'summary' && result ? <Summary result={result} avatar={() => navigate('/avatar')} home={() => { setMode('select'); setResult(null) }}/> : <div className="page training-page training-entry">
       <span className="eyebrow">每次运动，都算数</span><h2>今天，怎么动？</h2><p className="muted">跟着动作练，或记录自己的运动。</p>

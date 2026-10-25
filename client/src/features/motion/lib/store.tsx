@@ -8,7 +8,7 @@ import { SessionQueue, reconcileMutation } from './sessionRuntime';
 import type { AppState, Slot, WorkoutSession } from '../types';
 export type SportSession = { id:string; workoutId?:string; gameId:number|null; sportType:string; source:string; status:string; effectiveSeconds:number; reps:number; xpEarned:number; settled:boolean; startTime:string; endTime:string|null; metrics:any; receivedAt?:number };
 type Store = {
-  state:AppState; sessions:SportSession[]; loading:boolean; loaded:boolean; error:string; refresh:()=>Promise<void>;
+  state:AppState; sessions:SportSession[]; loading:boolean; loaded:boolean; source:'server'|'cache'|'unavailable'; error:string; refresh:()=>Promise<void>;
   startSession:(sportType:string,source:string,gameId?:number)=>Promise<SportSession>;
   lookupSession:(id:string)=>Promise<SportSession|undefined>;
   act:(id:string,action:string,data?:any)=>Promise<SportSession>;
@@ -25,6 +25,7 @@ const adapt=(data:any):AppState=>{
 export function StoreProvider({children}:{children:React.ReactNode}) {
   const userId=useAuthStore(s=>s.user?.id);
   const [state,setState]=useState(initialState),[sessions,setSessions]=useState<SportSession[]>([]),[loading,setLoading]=useState(true),[loaded,setLoaded]=useState(false),[error,setError]=useState('');
+  const [source,setSource]=useState<'server'|'cache'|'unavailable'>('unavailable');
   const alive=useRef(true),requestId=useRef(0),lastWrite=useRef(0);
   const stateRef=useRef(state);stateRef.current=state;
   const apply=useCallback((data:any)=>{
@@ -36,11 +37,11 @@ export function StoreProvider({children}:{children:React.ReactNode}) {
     if(!alive.current)return;
     const current=++requestId.current,requestToken=localStorage.getItem("token");
     setLoading(true);
-    try {const res:any=await client.get('/training/state');if(alive.current&&current===requestId.current&&localStorage.getItem("token")===requestToken&&useAuthStore.getState().user?.id===userId){apply(res.data);if(userId!=null)writeCache(userId,'/training/state',res.data);setError('');}}
-    catch(err){if(alive.current&&current===requestId.current){const cached=userId!=null&&!(err as any)?.response?readCache(userId,'/training/state'):null;if(cached){apply(cached.data);setError('当前显示本人只读缓存，联网后核对训练状态');}else setError(getErrorMessage(err));}}
+    try {const res:any=await client.get('/training/state');if(alive.current&&current===requestId.current&&localStorage.getItem("token")===requestToken&&useAuthStore.getState().user?.id===userId){apply(res.data);setSource('server');if(userId!=null)writeCache(userId,'/training/state',res.data);setError('');}}
+    catch(err){if(alive.current&&current===requestId.current){const cached=userId!=null&&!(err as any)?.response?readCache(userId,'/training/state'):null;if(cached){apply(cached.data);setSource('cache');setError('当前显示本人只读缓存，联网后核对训练状态');}else {setSource('unavailable');setError(getErrorMessage(err));}}}
     finally{if(alive.current&&current===requestId.current)setLoading(false);}
   },[apply]);
-  useEffect(()=>{alive.current=true;void refresh();const listener=()=>{if(Date.now()-lastWrite.current>1500)void refresh();};const online=()=>void refresh();const visibility=()=>{if(document.visibilityState==='visible')void refresh();};window.addEventListener('motion:refresh',listener);window.addEventListener('online',online);document.addEventListener('visibilitychange',visibility);return()=>{alive.current=false;window.removeEventListener('motion:refresh',listener);window.removeEventListener('online',online);document.removeEventListener('visibilitychange',visibility);localStorage.removeItem('motion-buddy:account:'+userId);};},[refresh,userId]);
+  useEffect(()=>{alive.current=true;void refresh();const listener=()=>{if(Date.now()-lastWrite.current>1500)void refresh();};const online=()=>void refresh();const visibility=()=>{if(document.visibilityState==='visible')void refresh();};window.addEventListener('motion:refresh',listener);window.addEventListener('online',online);document.addEventListener('visibilitychange',visibility);return()=>{alive.current=false;window.removeEventListener('motion:refresh',listener);window.removeEventListener('online',online);document.removeEventListener('visibilitychange',visibility);try{localStorage.removeItem('motion-buddy:account:'+userId);}catch{}};},[refresh,userId]);
   const acceptRow=(raw:SportSession)=>{
     const row={...raw,receivedAt:Date.now()};
     if(alive.current){requestId.current++;setLoading(false);setSessions(current=>[row,...current.filter(item=>item.id!==row.id)]);}
@@ -94,7 +95,7 @@ export function StoreProvider({children}:{children:React.ReactNode}) {
       unlockedOutfits:growth?Object.keys(growth.unlockedOutfits).filter(id=>growth.unlockedOutfits[id]&&!(before.unlockedOutfits as any)[id]) as any:[]};
   };
   const avatar=async(data:any)=>{if(!alive.current || useAuthStore.getState().user?.id!==userId)return false;try{const res:any=await client.patch('/training/avatar',data);if(!alive.current)return false;apply(res.data);setError('');return true;}catch(err){if(alive.current)setError(getErrorMessage(err));return false;}};
-  return <Context.Provider value={{state,sessions,loading,loaded,error,refresh,startSession,lookupSession,act,finishWorkout,equip:(slot,id)=>avatar({equipped:{[slot]:id}}),setAvatarGender:avatarGender=>avatar({avatarGender}),setActiveOutfit:activeOutfit=>avatar({activeOutfit,seenOutfits:[activeOutfit]}),markOutfitsSeen:(seenOutfits=state.newlyUnlockedOutfits)=>avatar({seenOutfits})}}>
+  return <Context.Provider value={{state,sessions,loading,loaded,source,error,refresh,startSession,lookupSession,act,finishWorkout,equip:(slot,id)=>avatar({equipped:{[slot]:id}}),setAvatarGender:avatarGender=>avatar({avatarGender}),setActiveOutfit:activeOutfit=>avatar({activeOutfit,seenOutfits:[activeOutfit]}),markOutfitsSeen:(seenOutfits=state.newlyUnlockedOutfits)=>avatar({seenOutfits})}}>
     {children}
   </Context.Provider>;
 }

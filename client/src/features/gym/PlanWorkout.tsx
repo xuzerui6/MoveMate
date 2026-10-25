@@ -23,6 +23,7 @@ import {ExerciseDemo} from './ExerciseMedia';
 import { WeightInput } from "./WeightInput";
 import { displayWeight } from "./trainingMath";
 import { repUnit, setTargetLabel } from "./trainingPresentation";
+import { getWorkoutRecoveryStorage, checkpointUpdate } from "./workoutRecoveryStorage";
 import { CachedDataNotice } from "./CachedDataNotice";
 import { PlateCalculator } from "./AnalysisExtras";
 import {
@@ -40,17 +41,13 @@ export default function PlanWorkout() {
     uid = useAuthStore((s) => s.user?.id),
     store = useStore();
   const token = useRef(localStorage.getItem("token")).current,
-    key = `gym:pending:${uid}:${workoutId}`,
-    networkKey = key + ":network";
+    key = `gym:pending:${uid}:${workoutId}`;
+  const recovery = useMemo(() => getWorkoutRecoveryStorage(uid!,workoutId!),[uid,workoutId]);
+  const [storageWarning,setStorageWarning] = useState(recovery.warning);
+  useEffect(() => {setStorageWarning(recovery.warning);return recovery.subscribe(()=>setStorageWarning(recovery.warning));},[recovery]);
   const markNetworkLoss = () => {
-    if (
-      useAuthStore.getState().user?.id === uid &&
-      localStorage.getItem("token") === token
-    )
-      localStorage.setItem(
-        networkKey,
-        String(latest.current?.version || sync.current?.row?.version || 0),
-      );
+    if (useAuthStore.getState().user?.id === uid)
+      recovery.setNetwork(latest.current?.version || sync.current?.row?.version || 0);
   };
   const [row, setRow] = useState<any>(null),
     [error, setError] = useState(""),
@@ -113,9 +110,9 @@ export default function PlanWorkout() {
             token,
           ),
         async () => {
-          const pending = JSON.parse(localStorage.getItem(key) || "null");
+          const pending = recovery.pending;
           const force =
-            !!localStorage.getItem(networkKey) || !!pending?.offline;
+            !!recovery.network || recovery.unknown || !!recovery.checkpoint || !!pending?.offline;
           const next = await request(
             "GET",
             "/workout-sessions/" +
@@ -123,7 +120,7 @@ export default function PlanWorkout() {
               (force
                 ? "?recover=offline&version=" +
                   (pending?.version ||
-                    Number(localStorage.getItem(networkKey)) ||
+                    recovery.network ||
                     raw.version) +
                   (pending?.operationId
                     ? "&operationId=" + encodeURIComponent(pending.operationId)
@@ -136,41 +133,40 @@ export default function PlanWorkout() {
             throw new Error("当前只能读取缓存，请联网后再核对服务端");
           if (force) {
             const replay = reconcileNetworkRecovery(pending, next);
-            if (replay) localStorage.setItem(key, JSON.stringify(replay));
-            else localStorage.removeItem(key);
+            if (replay) recovery.setPending(replay);
+            else recovery.setPending(null);
           }
-          if (force || !pending) localStorage.removeItem(networkKey);
+          if (force || !pending) recovery.setNetwork(0);
+          recovery.acknowledgeRead();
           return next;
         },
         {
-          get: () => JSON.parse(localStorage.getItem(key) || "null"),
+          get: () => recovery.getPending(),
           set: (v) => {
-            v
-              ? localStorage.setItem(key, JSON.stringify(v))
-              : localStorage.removeItem(key);
-            if (alive.current && !v) setBlocked(false);
+            recovery.setPending(v);
+            if (alive.current && !v && !recovery.unknown) setBlocked(false);
           },
         },
         accept,
       );
       setBlocked(
-        !!localStorage.getItem(key) ||
-          !!localStorage.getItem(networkKey) ||
+        !!recovery.blocked ||
+          !!recovery.network ||
           !!raw.__offline,
       );
       if (
         raw.phase === "working" &&
         raw.sets[raw.cursor]?.inputMode === "camera" &&
-        !localStorage.getItem(key) &&
+        !recovery.blocked &&
         !raw.__offline &&
-        !localStorage.getItem(networkKey)
+        !recovery.network
       ) {
         await sync.current.run("pause", { reps: raw.sets[raw.cursor].reps });
       }
     } catch (e) {
       if (alive.current) {
         setError(getErrorMessage(e));
-        setBlocked(!!localStorage.getItem(key));
+        setBlocked(!!recovery.blocked);
       }
     }
   };
@@ -254,12 +250,12 @@ export default function PlanWorkout() {
     } catch (e: any) {
       if (
         (!e?.response?.status || e.response.status >= 500) &&
-        localStorage.getItem(key)
+        recovery.pending
       )
         markNetworkLoss();
       if (alive.current) {
         setError(getErrorMessage(e));
-        setBlocked(e?.response?.status === 409 || !!localStorage.getItem(key));
+        setBlocked(e?.response?.status === 409 || !!recovery.blocked);
       }
       throw e;
     } finally {
@@ -289,12 +285,12 @@ export default function PlanWorkout() {
     } catch (e: any) {
       if (
         (!e?.response?.status || e.response.status >= 500) &&
-        localStorage.getItem(key)
+        recovery.pending
       )
         markNetworkLoss();
       pose.stop();
       setError(getErrorMessage(e));
-      setBlocked(e?.response?.status === 409 || !!localStorage.getItem(key));
+      setBlocked(e?.response?.status === 409 || !!recovery.blocked);
     } finally {
       controlLock.current = false;
       setBusy(false);
@@ -309,7 +305,10 @@ export default function PlanWorkout() {
     setBusy(true);
     setError("");
     try {
-      const latest = await sync.current.recover();
+      let latest = await sync.current.recover();
+      const extra=checkpointUpdate(recovery.checkpoint,latest);
+      if(extra)latest=await sync.current.run('pause',extra);
+      recovery.setCheckpoint(null);
       if (
         latest.phase === "working" &&
         latest.sets[latest.cursor]?.inputMode === "camera" &&
@@ -353,24 +352,15 @@ export default function PlanWorkout() {
   }, [working, busy, blocked, offline, finishAttempted]);
   useEffect(() => {
     const off = () => {
-      markNetworkLoss();
-      setOffline(true);
-      setBlocked(true);
-      setVoiceOn(false);
-      if (latest.current?.phase === "working") {
-        const pending = JSON.parse(localStorage.getItem(key) || "null");
-        if (!pending)
-          localStorage.setItem(
-            key,
-            JSON.stringify({
-              ...snapshot.current,
-              action: "pause",
-              offline: true,
-              operationId: crypto.randomUUID(),
-              version: latest.current.version,
-              setId: latest.current.sets[latest.current.cursor]?.id,
-            }),
-          );
+      const frozen=structuredClone(snapshot.current);
+      setOffline(true);setBlocked(true);setVoiceOn(false);
+      // Freeze recognition before touching fallible browser storage.
+      pose.stop();markNetworkLoss();
+      if(latest.current?.phase==='working' && latest.current.sets[latest.current.cursor]?.inputMode==='camera')
+        recovery.setCheckpoint({setId:latest.current.sets[latest.current.cursor].id,values:frozen});
+      if (latest.current?.phase === "working" && !recovery.pending && !recovery.unknown) {
+        recovery.setPending({...frozen,action:"pause",offline:true,
+          operationId:crypto.randomUUID(),version:latest.current.version,setId:latest.current.sets[latest.current.cursor]?.id});
       }
     };
     const on = () => {
@@ -436,7 +426,7 @@ export default function PlanWorkout() {
   }, [finished]);
   const flush = () => {
     const w = latest.current;
-    if (!w || w.phase !== "working" || localStorage.getItem(key)) return;
+    if (!w || w.phase !== "working" || recovery.blocked) return;
     const body = {
       ...snapshot.current,
       action: "pause",
@@ -444,7 +434,7 @@ export default function PlanWorkout() {
       version: w.version,
       setId: w.sets[w.cursor]?.id,
     };
-    localStorage.setItem(key, JSON.stringify(body));
+    recovery.setPending(body);
     void fetch("/api/v1/workout-sessions/" + workoutId + "/actions", {
       method: "POST",
       headers: {
@@ -455,8 +445,8 @@ export default function PlanWorkout() {
       keepalive: true,
     })
       .then((r) => {
-        if (r.ok && localStorage.getItem(key) === JSON.stringify(body))
-          localStorage.removeItem(key);
+        if (r.ok && recovery.pending?.operationId === body.operationId)
+          recovery.setPending(null);
         else if (!r.ok && r.status >= 500) markNetworkLoss();
       })
       .catch(() => markNetworkLoss());
@@ -551,6 +541,7 @@ export default function PlanWorkout() {
           离线只读 · 已停止识别与计时显示，未确认操作已保留，联网后核对再继续。
         </p>
       )}
+      {storageWarning && <p className="gym-cache-notice" role="status">{storageWarning}</p>}
       <CachedDataNotice data={row} reload={() => void recover()} busy={busy}/>
       {error && !finishDialog && (
         <div className="gym-error" role="alert">
@@ -568,6 +559,7 @@ export default function PlanWorkout() {
           >
             读取并恢复同步
           </button>
+          {recovery.checkpoint && <button disabled={busy} onClick={()=>{recovery.setCheckpoint(null);void recover();}}>放弃未上传快照，使用服务器记录</button>}
         </div>
       )}
       {finished ? (

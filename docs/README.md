@@ -29,6 +29,7 @@
 
 这些文件记录特定日期、版本及环境，不表示所有浏览器、真人动作或外设均已通过。
 
+- [稳定性与恢复第三批](recovery-reliability-stage3.md)（2026-10-25，草稿基线与冲突、加载隔离、断网与存储异常）
 - [产品体检与体验修复](product-experience-fixes.md)（2026-10-20，训练结束、日程、单位、收藏及失败恢复）
 - [计划编辑可靠性与手机操作](plan-editor-reliability.md)（2026-10-21，保存快照、草稿异常、设置与周日程缓存）
 - [计划训练验收](plan-training-acceptance.md)

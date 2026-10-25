@@ -838,6 +838,13 @@
 .gym-page .gym-editor-save-bar .text-btn{width:auto}
 .gym-edit-status{color:#52625a;min-height:24px;overflow-wrap:anywhere}
 .gym-plan-menu{display:grid;gap:12px}
+.gym-draft-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0}
+.gym-draft-comparison section{min-width:0;padding:12px;border:1px solid #dce5df;border-radius:12px;overflow-wrap:anywhere}
+.gym-draft-comparison p{margin:8px 0;font-size:14px}
+.gym-draft-field{display:flex!important;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #dce5df;min-height:44px;overflow-wrap:anywhere}
+.gym-draft-field input{width:20px!important;min-height:20px!important;flex:0 0 20px}
+.gym-draft-field small{display:block;margin-top:8px}
+@media(max-width:699px){.gym-draft-comparison{grid-template-columns:1fr}}
 .gym-editor input,.gym-editor select{scroll-margin-top:24px;scroll-margin-bottom:190px}
 @media(max-width:699px){
   .gym-editor{padding-bottom:100px}

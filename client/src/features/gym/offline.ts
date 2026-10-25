@@ -1,3 +1,4 @@
+import {clearWorkoutRecoveryStorage} from './workoutRecoveryStorage';
 const prefix = "gym:read:v1:";
 export function readCache(uid: string | number, path: string) {
   try {
@@ -18,7 +19,8 @@ export function writeCache(uid: string | number, path: string, data: any) {
   }
 }
 export function clearAccountCache(uid: string | number) {
-  for (const key of Object.keys(localStorage))
+  clearWorkoutRecoveryStorage(uid);
+  try { for (const key of Object.keys(localStorage))
     if (
       key.startsWith(prefix + uid + ":") ||
       key.startsWith("gym:pending:" + uid + ":") ||
@@ -26,7 +28,7 @@ export function clearAccountCache(uid: string | number) {
       key.startsWith("gym:start:" + uid + ":") ||
       key === "gym:free:" + uid
     )
-      localStorage.removeItem(key);
+      localStorage.removeItem(key); } catch { /* Memory recovery is still cleared when browser storage is blocked. */ }
   if (typeof indexedDB !== "undefined")
     void transferDraft("delete", String(uid)).catch(() => {});
 }

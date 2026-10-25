@@ -40,17 +40,17 @@ function MotionAvatar(){const navigate=useNavigate();return <MotionView><Avatar 
 function Pages(){return <BrowserRouter><ErrorBoundary><AvatarPreview/><Suspense fallback={<div className="motion-loading">正在加载…</div>}><Routes>
   <Route path="/login" element={<Login/>}/>
   <Route path="/" element={<ProtectedRoute><Layout/></ProtectedRoute>}>
-    <Route index element={<MotionHome/>}/><Route path="train" element={<MotionView><Training/></MotionView>}/>
-    <Route path="train/schedule" element={<MotionView><TrainingSchedule/></MotionView>}/><Route path="train/settings" element={<MotionView><TrainingSettings/></MotionView>}/>
-    <Route path="train/free" element={<MotionView><FreeWorkout/></MotionView>}/>
-    <Route path="train/plans" element={<MotionView><PlanHub/></MotionView>}/>
-    <Route path="train/plans/:planId/edit" element={<MotionView><PlanEditor/></MotionView>}/>
-    <Route path="train/workout/:workoutId" element={<MotionView><PlanWorkout/></MotionView>}/>
-    <Route path="train/library" element={<MotionView><ExerciseLibrary/></MotionView>}/>
-    <Route path="train/stats" element={<MotionView><Analytics/></MotionView>}/>
-    <Route path="train/body" element={<MotionView><BodyRecords/></MotionView>}/>
-    <Route path="train/records" element={<MotionView><WorkoutRecords/></MotionView>}/>
-    <Route path="train/data" element={<MotionView><DataManagement/></MotionView>}/>
+    <Route index element={<MotionHome/>}/><Route path="train" element={<div className="motion-view"><Training/></div>}/>
+    <Route path="train/schedule" element={<div className="motion-view"><TrainingSchedule/></div>}/><Route path="train/settings" element={<div className="motion-view"><TrainingSettings/></div>}/>
+    <Route path="train/free" element={<div className="motion-view"><FreeWorkout/></div>}/>
+    <Route path="train/plans" element={<div className="motion-view"><PlanHub/></div>}/>
+    <Route path="train/plans/:planId/edit" element={<div className="motion-view"><PlanEditor/></div>}/>
+    <Route path="train/workout/:workoutId" element={<div className="motion-view"><PlanWorkout/></div>}/>
+    <Route path="train/library" element={<div className="motion-view"><ExerciseLibrary/></div>}/>
+    <Route path="train/stats" element={<div className="motion-view"><Analytics/></div>}/>
+    <Route path="train/body" element={<div className="motion-view"><BodyRecords/></div>}/>
+    <Route path="train/records" element={<div className="motion-view"><WorkoutRecords/></div>}/>
+    <Route path="train/data" element={<div className="motion-view"><DataManagement/></div>}/>
     <Route path="groups" element={<Lobby/>}/><Route path="create" element={<CreateGame/>}/><Route path="game/:id" element={<GameDetail/>}/>
     <Route path="notifications" element={<Notifications/>}/><Route path="profile" element={<Profile/>}/>
     <Route path="leaderboard" element={<Leaderboard/>}/><Route path="history" element={<MotionView><History/></MotionView>}/>
