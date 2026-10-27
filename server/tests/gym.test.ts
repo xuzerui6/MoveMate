@@ -85,6 +85,9 @@ async function age(w: any, seconds: number) {
 test("catalog is text-only, filters IDs, camera capability is restricted and custom exercises stay private", async () => {
   assert.equal(chineseName("throw down"), "throw down");
   assert.equal(chineseName("dumbbell bent over row"), "哑铃 俯身划船");
+  assert.equal(chineseName("dumbbell bent-over row"),"哑铃 俯身划船");
+  assert.equal(chineseName("lever side-lying raise"),"lever 侧卧 raise");
+  assert.equal(chineseName("ez barbell palms-up curl"),"曲杠 掌心向上 弯举");
   const a = await gym.library(owner, {
     ids: "motion:squat,motion:push_up",
     limit: 500,
@@ -136,6 +139,8 @@ test("reviewed media filters intersect search, equipment, favorites and legacy I
   const precise=await gym.library(owner,{q:'back lever'});
   assert.equal(precise.total,1,'Search must not concatenate target back + equipment lever across fields');
   assert.equal(precise.items[0].name,'back lever');
+  assert.ok((await gym.library(owner,{q:'jumping jack'})).items.some((e:any)=>e.id==='motion:jumping_jack'));
+  assert.ok((await gym.library(owner,{q:'pushup'})).items.some((e:any)=>e.id==='motion:push_up'));
 });
 
 test("templates and optimistic plan editing reject conflicting or inaccessible exercise data", async () => {

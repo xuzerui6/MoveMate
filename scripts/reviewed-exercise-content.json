@@ -138,22 +138,8 @@
       "reviewReason": "已对照固定来源的双帧实拍与动作说明核对器械、支撑和阶段；非专业动作认证。"
     },
     "exdb:1371": {
-      "nameZh": "杠铃坐姿台阶提踵（独立条目）",
-      "aliases": [
-        "杠铃坐姿台阶提踵（独立条目）",
-        "barbell seated calf raise"
-      ],
-      "instructions": [
-        "坐在凳上，前脚掌置于稳定垫块，杠铃垫好软垫放于大腿靠近膝上方。",
-        "保持膝盖弯曲，抬起双脚脚跟。",
-        "缓慢降低回位；此 ID 与同名条目保持独立，来源未说明额外变式。"
-      ],
-      "form": "坐凳，前脚掌垫高；与 exdb:0088 同名但保留原 ID",
-      "cues": [
-        "两条来源说明未能确认实质差异，不合并训练记录"
-      ],
       "reviewStatus": "needs_review",
-      "reviewReason": "与 exdb:0088 同名且说明相近，缺少能区分变式的原始资料；保留 ID，未采用候选图片，不计完整审核覆盖。"
+      "reviewReason": "候选已对照：与 exdb:0088 同名，无法确认独立变式，保留 ID 不采用共用图。 当前不发布此候选，不计完整覆盖。"
     },
     "exdb:0095": {
       "nameZh": "杠铃耸肩",
@@ -1697,7 +1683,8 @@
         "保持落地轻柔，留出手臂上举与双脚展开空间。"
       ],
       "reviewStatus": "checked",
-      "reviewReason": "原有动作与已审核媒体逐项核对，独立计数和 XP 规则不变。"
+      "reviewReason": "原有动作与已审核媒体逐项核对，独立计数和 XP 规则不变。",
+      "category": "cardio"
     },
     "motion:high_knees": {
       "nameZh": "高抬腿",
@@ -1715,7 +1702,8 @@
         "不以身体后仰代替抬膝；保持落地平稳。"
       ],
       "reviewStatus": "checked",
-      "reviewReason": "原有动作与已审核媒体逐项核对，独立计数和 XP 规则不变。"
+      "reviewReason": "原有动作与已审核媒体逐项核对，独立计数和 XP 规则不变。",
+      "category": "cardio"
     },
     "motion:push_up": {
       "nameZh": "俯卧撑",
@@ -1908,6 +1896,1886 @@
       ],
       "reviewStatus": "checked",
       "reviewReason": "显式原创三阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。"
+    },
+    "exdb:0033": {
+      "nameZh": "下斜杠铃卧推",
+      "aliases": [
+        "barbell decline bench press",
+        "杠铃 下斜 卧推",
+        "pectorals",
+        "barbell",
+        "杠铃卧推",
+        "下斜杠铃卧推"
+      ],
+      "instructions": [
+        "在下斜卧凳上躺稳，固定好双脚并握住杠铃。",
+        "出杠后将杠铃稳定在胸部上方。",
+        "屈肘控制下放至胸部附近，再沿稳定路径推回。"
+      ],
+      "form": "下斜凳仰卧、双脚可靠固定、正握直杠",
+      "cues": [
+        "肩背保持贴凳，不用落杠撞胸或弹起；设好保护"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0080": {
+      "nameZh": "正握杠铃弯举",
+      "aliases": [
+        "barbell reverse curl",
+        "杠铃 反向 弯举",
+        "biceps",
+        "barbell",
+        "杠铃弯举",
+        "正握杠铃弯举"
+      ],
+      "instructions": [
+        "双脚站稳，正握杠铃垂于大腿前。",
+        "保持上臂靠近体侧，屈肘举起杠铃。",
+        "在可控高度停住，缓慢伸肘放回。"
+      ],
+      "form": "站姿双手正握直杠，掌心朝下，双臂同时屈肘",
+      "cues": [
+        "手腕保持稳定，不把正握改为掌心向上，不挺腰借力"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0081": {
+      "nameZh": "正握杠铃牧师凳弯举",
+      "aliases": [
+        "barbell reverse preacher curl",
+        "杠铃 反向 牧师凳弯举",
+        "biceps",
+        "barbell",
+        "杠铃弯举",
+        "正握杠铃牧师凳弯举"
+      ],
+      "instructions": [
+        "调整弯举垫，坐稳后把上臂放在垫上。",
+        "正握直杠，保持手腕稳定并屈肘举起。",
+        "控制伸肘回到起始位置，保持上臂贴垫。"
+      ],
+      "form": "坐姿、上臂靠弯举垫、掌心朝下握直杠",
+      "cues": [
+        "上臂不要离垫，回落时不强行过伸肘部"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0106": {
+      "nameZh": "站姿窄握杠铃弯举",
+      "aliases": [
+        "barbell standing close grip curl",
+        "杠铃 站姿 窄握 弯举",
+        "biceps",
+        "barbell",
+        "杠铃弯举",
+        "站姿窄握杠铃弯举"
+      ],
+      "instructions": [
+        "站稳，双手反握杠铃，握距窄于普通肩宽握法。",
+        "上臂靠近体侧，屈肘将杠铃抬向肩部。",
+        "在可控位置停住，再缓慢放回。"
+      ],
+      "form": "站姿、反手窄握直杠、双臂同时弯举",
+      "cues": [
+        "握距以手腕能自然保持为限，不强挤双手或摆动躯干"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0107": {
+      "nameZh": "杠铃站姿过顶前举",
+      "aliases": [
+        "barbell standing front raise over head",
+        "杠铃 站姿 前平举 over head",
+        "delts",
+        "barbell",
+        "杠铃站姿过顶前举"
+      ],
+      "instructions": [
+        "双脚站稳，正握杠铃垂于大腿前方。",
+        "保持肘部自然伸展，从身体前方缓慢抬举。",
+        "在肩部可控的过顶位置停住，再沿原路径缓慢下放。"
+      ],
+      "form": "站姿正握直杠，从大腿前沿前方抬举至头顶上方",
+      "cues": [
+        "保持躯干稳定，肩部活动范围不足时不强行抬高或挺腰代偿"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0109": {
+      "nameZh": "站姿杠铃过顶臂屈伸",
+      "aliases": [
+        "barbell standing overhead triceps extension",
+        "杠铃 站姿 overhead 三头伸展",
+        "triceps",
+        "barbell",
+        "站姿杠铃过顶臂屈伸"
+      ],
+      "instructions": [
+        "站稳后将杠铃稳定举至头顶上方。",
+        "保持上臂基本不动，屈肘把杠铃控制放到脑后。",
+        "伸肘把杠铃举回过顶位置，保持动作受控。"
+      ],
+      "form": "站姿、双手正握直杠、上臂靠近头侧",
+      "cues": [
+        "上臂保持稳定，不用大幅摆肩或挺腰把杠甩起"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0113": {
+      "nameZh": "站姿宽握杠铃弯举",
+      "aliases": [
+        "barbell standing wide-grip curl",
+        "杠铃 站姿 wide-grip 弯举",
+        "biceps",
+        "barbell",
+        "杠铃弯举",
+        "站姿宽握杠铃弯举"
+      ],
+      "instructions": [
+        "双脚站稳，双手反握直杠，采用宽于肩部的握距。",
+        "保持躯干和上臂稳定，屈肘抬起杠铃。",
+        "控制伸肘下放到原位，不让杠铃突然坠落。"
+      ],
+      "form": "站姿、掌心向前反握直杠，握距宽于肩",
+      "cues": [
+        "不要为了加宽握距扭曲手腕，上臂不向前摆动借力"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0115": {
+      "nameZh": "杠铃直腿早安式",
+      "aliases": [
+        "barbell stiff leg good morning",
+        "杠铃 stiff leg good morning",
+        "glutes",
+        "barbell",
+        "杠铃直腿早安式"
+      ],
+      "instructions": [
+        "双脚站稳，将杠铃稳定放在上背部。",
+        "保持膝部自然微屈，向后移髋并前倾躯干。",
+        "在背部稳定、腿后侧可控的范围停住，再伸髋站起。"
+      ],
+      "form": "上背部背杠、双脚地面支撑，膝盖自然微屈、屈髋为主",
+      "cues": [
+        "膝盖不反向锁死，不以弓腰追求躯干水平；先设置保护"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0120": {
+      "nameZh": "杠铃直立划船",
+      "aliases": [
+        "barbell upright row",
+        "杠铃 直立划船",
+        "delts",
+        "barbell",
+        "杠铃划船",
+        "杠铃直立划船"
+      ],
+      "instructions": [
+        "双脚踩稳，正握杠铃垂于身体前方。",
+        "屈肘并向两侧上提，保持杠铃靠近身体。",
+        "在肩部舒适的高度停住，再缓慢放回。"
+      ],
+      "form": "站姿正握直杠，杠沿身体前方上移",
+      "cues": [
+        "肘部引导但不强拉到下巴，不耸肩或甩杠追求幅度"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0162": {
+      "nameZh": "站姿单臂绳索前平举",
+      "aliases": [
+        "cable front raise",
+        "绳索 前平举",
+        "delts",
+        "cable",
+        "站姿单臂绳索前平举"
+      ],
+      "instructions": [
+        "调整低位滑轮，一手正握拉手，站稳并保持拉索有张力。",
+        "保持肘部自然微屈，将手臂从身体前方抬向肩部高度。",
+        "缓慢下放回起始位置，完成后按安排换侧。"
+      ],
+      "form": "低位单拉手、单臂正握、站姿从身前抬起",
+      "cues": [
+        "保持躯干不后仰，不把动作改为向侧面抬举"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0206": {
+      "nameZh": "站姿正握绳索弯举",
+      "aliases": [
+        "cable reverse curl",
+        "绳索 反向 弯举",
+        "biceps",
+        "cable",
+        "绳索弯举",
+        "站姿正握绳索弯举"
+      ],
+      "instructions": [
+        "面对低位滑轮，正握直杆，双脚站稳。",
+        "保持上臂靠近躯干，屈肘将直杆拉起。",
+        "缓慢伸肘回放，手腕和躯干保持稳定。"
+      ],
+      "form": "低位滑轮直杆、掌心朝下正握、双臂同时屈肘",
+      "cues": [
+        "本条目是正握反向弯举，不沿用来源误写的反手握法"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0220": {
+      "nameZh": "站姿绳索耸肩",
+      "aliases": [
+        "cable shrug",
+        "绳索 耸肩",
+        "traps",
+        "cable",
+        "站姿绳索耸肩"
+      ],
+      "instructions": [
+        "站稳，双手正握低位绳索直杆，让手臂自然垂下。",
+        "保持肘部基本伸展，将双肩向上抬起。",
+        "短暂停留，再受控放松肩部回位。"
+      ],
+      "form": "面对低位滑轮、双手正握直杆于身前",
+      "cues": [
+        "双肩上下移动，不绕肩或弯肘提拉杆件"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0230": {
+      "nameZh": "站姿绳索斜向上拉",
+      "aliases": [
+        "cable standing lift",
+        "绳索 站姿 lift",
+        "abs",
+        "cable",
+        "站姿绳索斜向上拉"
+      ],
+      "instructions": [
+        "站在低位绳索一侧，双手握住拉手置于腰部附近。",
+        "在躯干稳定的前提下，沿斜线把拉手带向对侧肩部上方。",
+        "控制沿原路径回放，完成后换侧。"
+      ],
+      "form": "低位滑轮、双手握拉手，从一侧腰部斜向对侧肩上方",
+      "cues": [
+        "转体和手臂协调移动，不猛拧腰或用惯性甩起"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0245": {
+      "nameZh": "反握高位下拉",
+      "aliases": [
+        "cable underhand pulldown",
+        "绳索 underhand 下拉",
+        "lats",
+        "cable",
+        "绳索下拉",
+        "反握高位下拉"
+      ],
+      "instructions": [
+        "坐稳，双手反握高位下拉杆，掌心朝向自己。",
+        "收紧躯干并向下收肘，将杆拉向胸前。",
+        "在可控位置停住，再缓慢伸臂回放。"
+      ],
+      "form": "坐姿、双手反握长杆、向胸前下拉",
+      "cues": [
+        "不改成颈后下拉，不用大幅后仰或摆动躯干借力"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0246": {
+      "nameZh": "站姿绳索直立划船",
+      "aliases": [
+        "cable upright row",
+        "绳索 直立划船",
+        "delts",
+        "cable",
+        "绳索划船",
+        "站姿绳索直立划船"
+      ],
+      "instructions": [
+        "面对低位滑轮，双手正握直杆并站稳。",
+        "保持杆件靠近身体，屈肘向两侧上提。",
+        "在可控高度停住，缓慢放回垂臂位置。"
+      ],
+      "form": "低位滑轮直杆、站姿双手正握、沿体前上提",
+      "cues": [
+        "保持躯干稳定，肩部舒适范围内上提，不强拉至下巴"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:2137": {
+      "nameZh": "坐姿哑铃阿诺德推举",
+      "aliases": [
+        "dumbbell arnold press",
+        "哑铃 arnold press",
+        "delts",
+        "dumbbell",
+        "坐姿哑铃阿诺德推举"
+      ],
+      "instructions": [
+        "坐稳并靠好背部，双手持哑铃于肩前，掌心朝向自己。",
+        "推举时自然转动前臂，使掌心逐渐朝前。",
+        "在可控高度停住，再缓慢下降并转回起始握法。"
+      ],
+      "form": "有靠背坐姿、双哑铃同时推举，掌心由朝向自己转至朝前",
+      "cues": [
+        "旋转与推举同时受控，避免强扭手腕或以拱腰代偿"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0301": {
+      "nameZh": "下斜哑铃卧推",
+      "aliases": [
+        "dumbbell decline bench press",
+        "哑铃 下斜 卧推",
+        "pectorals",
+        "dumbbell",
+        "哑铃卧推",
+        "下斜哑铃卧推"
+      ],
+      "instructions": [
+        "躺稳于下斜卧凳，固定双脚，将双哑铃置于胸部上方。",
+        "屈肘控制下放至胸部两侧。",
+        "在肩部可控范围停住，再平稳推回。"
+      ],
+      "form": "下斜凳仰卧、双脚固定、双手各持一只哑铃",
+      "cues": [
+        "肩背保持贴凳，不碰撞哑铃或用下放反弹借力"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0350": {
+      "nameZh": "平凳仰卧双哑铃弯举",
+      "aliases": [
+        "dumbbell lying supine curl",
+        "哑铃 仰卧 supine 弯举",
+        "biceps",
+        "dumbbell",
+        "哑铃弯举",
+        "平凳仰卧双哑铃弯举"
+      ],
+      "instructions": [
+        "沿平凳仰卧并踩稳双脚，每手持一只哑铃，让手臂受控垂于凳侧。",
+        "保持上臂位置稳定，屈肘把哑铃抬向肩部。",
+        "缓慢放回垂臂位置，不让重量突然牵拉手臂。"
+      ],
+      "form": "沿平凳仰卧、双脚踩地，上臂在身体两侧下垂",
+      "cues": [
+        "上臂基本固定，不用抬肩代替屈肘，不强行过伸肘部"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0351": {
+      "nameZh": "平凳双哑铃仰卧臂屈伸",
+      "aliases": [
+        "dumbbell lying triceps extension",
+        "哑铃 仰卧 三头伸展",
+        "triceps",
+        "dumbbell",
+        "平凳双哑铃仰卧臂屈伸"
+      ],
+      "instructions": [
+        "仰卧在平凳上，双脚踩稳，双手中立握哑铃举至胸前上方。",
+        "保持上臂基本不动，屈肘将哑铃放向额头两侧。",
+        "伸肘推回原位，动作全程受控。"
+      ],
+      "form": "沿平凳仰卧、双脚踩地、双手中立握哑铃",
+      "cues": [
+        "上臂保持稳定，哑铃向额侧受控下放，避免撞头"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0401": {
+      "nameZh": "坐姿哑铃掌心向上腕弯举",
+      "aliases": [
+        "dumbbell seated palms up wrist curl",
+        "哑铃 坐姿 palms up wrist 弯举",
+        "forearms",
+        "dumbbell",
+        "哑铃弯举",
+        "坐姿哑铃掌心向上腕弯举"
+      ],
+      "instructions": [
+        "坐稳，每手反握一只哑铃，把前臂放在大腿上。",
+        "保持前臂静止，仅屈腕把哑铃抬起。",
+        "缓慢伸腕回到起始位置，保持握持稳定。"
+      ],
+      "form": "坐姿、前臂支在大腿、掌心朝上，手腕悬于膝前",
+      "cues": [
+        "前臂不抬起借力，不让哑铃滑出手掌"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:1740": {
+      "nameZh": "站姿单臂哑铃俯身臂屈伸",
+      "aliases": [
+        "dumbbell standing bent over one arm triceps extension",
+        "哑铃 站姿 bent over 单臂 三头伸展",
+        "triceps",
+        "dumbbell",
+        "站姿单臂哑铃俯身臂屈伸"
+      ],
+      "instructions": [
+        "双脚站稳，屈髋俯身，一手持哑铃并把上臂靠近躯干。",
+        "保持上臂不动，伸肘把哑铃带向身体后方。",
+        "缓慢屈肘回位，完成后换侧。"
+      ],
+      "form": "双脚站姿支撑、屈髋俯身、一手持铃，另一手可轻扶大腿",
+      "cues": [
+        "不是单膝撑凳形式；固定上臂，不转腰或甩铃"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0424": {
+      "nameZh": "站姿单臂中立握哑铃肩推",
+      "aliases": [
+        "dumbbell standing one arm palm in press",
+        "哑铃 站姿 单臂 palm in press",
+        "delts",
+        "dumbbell",
+        "站姿单臂中立握哑铃肩推"
+      ],
+      "instructions": [
+        "单手中立握哑铃于肩旁，双脚站稳。",
+        "保持躯干稳定，向上推举哑铃。",
+        "在可控高度停住，再缓慢下放至肩侧，按安排换臂。"
+      ],
+      "form": "站姿、单臂持铃、掌心朝内，从肩旁向上推举",
+      "cues": [
+        "保持中立握法，不侧弯躯干或用腿部蹬伸借力"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0427": {
+      "nameZh": "站姿双哑铃中立握肩推",
+      "aliases": [
+        "dumbbell standing palms in press",
+        "哑铃 站姿 palms in press",
+        "delts",
+        "dumbbell",
+        "站姿双哑铃中立握肩推"
+      ],
+      "instructions": [
+        "双手中立握哑铃于肩旁，双脚站稳。",
+        "保持躯干稳定，双臂同时向上推举。",
+        "缓慢下放回肩侧位置，保持两侧动作协调。"
+      ],
+      "form": "站姿、双手掌心相对、双臂同时向上推举",
+      "cues": [
+        "保持掌心相对，不拱腰或借助腿部弹起"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0429": {
+      "nameZh": "站姿正握双哑铃弯举",
+      "aliases": [
+        "dumbbell standing reverse curl",
+        "哑铃 站姿 反向 弯举",
+        "biceps",
+        "dumbbell",
+        "哑铃弯举",
+        "站姿正握双哑铃弯举"
+      ],
+      "instructions": [
+        "站稳，双手正握哑铃于体前，掌心朝向大腿。",
+        "保持上臂靠近体侧，屈肘举起哑铃。",
+        "缓慢伸肘回位，避免摆动身体借力。"
+      ],
+      "form": "站姿、掌心朝下正握双哑铃、双臂同时屈肘",
+      "cues": [
+        "不要转成掌心向上的常规弯举；保持手腕稳定"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0471": {
+      "nameZh": "墙辅助倒立俯卧撑",
+      "aliases": [
+        "handstand push-up",
+        "handstand 俯卧撑",
+        "triceps",
+        "body weight",
+        "墙辅助倒立俯卧撑"
+      ],
+      "instructions": [
+        "在防滑地面和稳定墙面旁建立受控的墙辅助倒立支撑。",
+        "保持躯干稳定，屈肘缓慢降低头部。",
+        "在能控制的位置停住，再推地伸肘回到支撑位。"
+      ],
+      "form": "双手地面支撑、双脚靠墙的倒立推起形式",
+      "cues": [
+        "需先具备稳定的墙辅助倒立支撑能力；不要将头部撞向地面或踢墙借力"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:1297": {
+      "nameZh": "胸前合掌等长挤压",
+      "aliases": [
+        "isometric chest squeeze",
+        "pectorals",
+        "body weight",
+        "胸前合掌等长挤压"
+      ],
+      "instructions": [
+        "站稳，双手在胸前合掌，肘部保持自然状态。",
+        "在姿势稳定的前提下，让双掌互相施压并保持。",
+        "缓慢释放压力、放松双臂；保持时间按个人训练安排选择。"
+      ],
+      "form": "站姿、双掌在胸前合拢，保持挤压力；静态保持",
+      "cues": [
+        "保持呼吸自然，不以耸肩或含胸代替发力；不是重复屈伸动作"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。",
+      "category": "timed"
+    },
+    "exdb:0541": {
+      "nameZh": "站姿单臂壶铃划船",
+      "aliases": [
+        "kettlebell one arm row",
+        "kettlebell 单臂 划船",
+        "upper back",
+        "kettlebell",
+        "kettlebell划船",
+        "站姿单臂壶铃划船"
+      ],
+      "instructions": [
+        "双脚站稳，屈髋俯身，一手持壶铃自然垂下。",
+        "保持躯干稳定，屈肘把壶铃拉向躯干侧方。",
+        "缓慢伸臂回位，按安排换侧。"
+      ],
+      "form": "双脚站姿支撑、屈髋俯身、一手持铃，另一手可轻扶大腿",
+      "cues": [
+        "保持背部与髋部稳定，不把身体转起或耸肩拉铃"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0552": {
+      "nameZh": "站姿双壶铃翻举",
+      "aliases": [
+        "kettlebell two arm clean",
+        "kettlebell 双臂 clean",
+        "delts",
+        "kettlebell",
+        "站姿双壶铃翻举"
+      ],
+      "instructions": [
+        "站稳，双手各持一个壶铃，屈髋让壶铃处于身体前下方。",
+        "协调伸髋伸膝，把壶铃带向肩部并受控转入前臂架位。",
+        "站稳后控制壶铃回到低位，过程中不猛扭手腕。"
+      ],
+      "form": "站姿、双手各持一个壶铃，由低位翻至双侧肩前架位",
+      "cues": [
+        "图片只展示起始和肩前关键位置，不代表连续技巧认证；避免壶铃撞击前臂"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:0553": {
+      "nameZh": "站姿双壶铃严格肩推",
+      "aliases": [
+        "kettlebell two arm military press",
+        "kettlebell 双臂 military press",
+        "delts",
+        "kettlebell",
+        "站姿双壶铃严格肩推"
+      ],
+      "instructions": [
+        "双脚站稳，将两只壶铃稳定放于肩前架位。",
+        "保持躯干和腿部稳定，双臂同时向上推举。",
+        "在可控位置停住，再缓慢下放至肩前。"
+      ],
+      "form": "站姿、双手各持一个壶铃，从肩前架位同时推举",
+      "cues": [
+        "保持双腿基本稳定，不改成借腿蹬伸的推举或挺举"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:1345": {
+      "nameZh": "站姿双壶铃俯身划船",
+      "aliases": [
+        "kettlebell two arm row",
+        "kettlebell 双臂 划船",
+        "upper back",
+        "kettlebell",
+        "kettlebell划船",
+        "站姿双壶铃俯身划船"
+      ],
+      "instructions": [
+        "双脚站稳，屈髋俯身，每手持一只壶铃自然垂下。",
+        "保持躯干稳定，双肘沿体侧向后拉起壶铃。",
+        "缓慢伸臂回位，双侧动作协调进行。"
+      ],
+      "form": "双脚站姿支撑、屈髋俯身，双臂同时持壶铃划船",
+      "cues": [
+        "保持俯身角度，不抬胸甩起壶铃，不改为交替划船"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:1403": {
+      "nameZh": "颈部侧屈拉伸",
+      "aliases": [
+        "neck side stretch",
+        "neck side 拉伸",
+        "levator scapulae",
+        "body weight",
+        "颈部侧屈拉伸"
+      ],
+      "instructions": [
+        "站直或坐直，放松双肩。",
+        "让头部缓慢向一侧倾斜，保持上身不跟随侧倒。",
+        "在舒适范围轻柔保持，再慢慢回正并按安排换侧。"
+      ],
+      "form": "站姿或坐姿，上身稳定，一侧轻柔侧屈；静态保持",
+      "cues": [
+        "可用一手轻扶头侧，但不强拉、压头或耸肩追求幅度"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。",
+      "category": "timed"
+    },
+    "exdb:0662": {
+      "nameZh": "标准俯卧撑（动作库）",
+      "aliases": [
+        "push-up",
+        "俯卧撑",
+        "pectorals",
+        "body weight",
+        "标准俯卧撑（动作库）"
+      ],
+      "instructions": [
+        "双手撑地，双脚向后支撑，保持肩、髋和踝接近一线。",
+        "屈肘控制下降，不塌腰或用头部够地。",
+        "推地伸肘回到支撑位，躯干同步移动。"
+      ],
+      "form": "地面双手与双脚支撑的标准俯卧撑；保留独立动作库 ID",
+      "cues": [
+        "与独立 AI 训练的动作属于同一形态，但此 ID 不自行获得摄像头权限"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已按固定版本实拍和文字逐项核对支撑、器械、握法及关键阶段；非专业教学认证。"
+    },
+    "exdb:1368": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源坐姿，候选只拍站姿脚踝局部，支撑不匹配。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0020": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：说明为单脚平衡，候选为双脚站板。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0970": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源描述脚踩弹力带，候选膝部带位与支撑细节不能可靠确认。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0045": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：颈部下杠的特殊卧推，尚缺适用条件与保护细节的可靠核验。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0050": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源说明是过顶推举，候选表现为上斜肩胛前伸。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0098": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源描述双侧深蹲，候选显示侧向重心移动。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1259": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源站姿自行拉伸，图片为同伴辅助坐姿。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0137": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源为撑凳臂屈伸，图片为前臂撑地起身。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0870": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源为仰卧屈膝卷腹，图片为俯卧支撑抬臀。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0168": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源面向绳索机，图片侧身；滑轮、运动方向需另行核对。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0172": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源站姿下压，图片为上斜凳直臂下拉。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0173": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源站姿，图片为上斜凳臂屈伸。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0174": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：图片中握把与转体路径受遮挡，尚未核清绳索方向。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0873": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：说明用手握绳索，图片拉力施加于脚踝。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0219": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源站姿，图片为坐姿肩推。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0247": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：前臂支撑和坐站方式不一致。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1548": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源脚跟踩地，候选腿部抬起，拉伸位置说明也需修订。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1271": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：文字为交叉手臂前推，图片为双手持长杆后摆。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0258": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选两帧不足以核对完整绕钟移动与手部支撑。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0260": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源仅为普通卷腹说明，候选含手脚同时收拢。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0267": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源手臂伸直过顶，候选手臂屈曲，不能确认长臂卷腹。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0295": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：翻举为复杂爆发动作，图片不能核对接铃与落铃阶段。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0328": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源为完整肩推，图片为上斜肩胛前伸。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0345": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：俯卧凳支撑角度尚未明确，不冒充平凳单臂后束抬举。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0347": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：文字含屈肘弯举，图片为前臂旋前，动作说明矛盾。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0348": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：俯卧凳支撑角度尚未明确，不冒充平凳双臂后束抬举。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0349": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：文字为仰卧弯举，图片为侧卧前臂旋后。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0363": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：图片两帧起止相反且肘部外展高度明显，尚需核对动作幅度。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0374": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源写掌心朝下，图片握法需进一步核对，不冒充旋后弯举。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0376": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源为侧平举，图片为屈肘提拉。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0400": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源要求另一腿前伸，图片为两脚均置于台阶附近。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:2133": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选采用大直径握把器械，不能确认是否为普通哑铃负重。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0459": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源仰卧打腿，图片为俯卧凳上打腿。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:3194": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源手臂承托表述不清，图片为肩前无手托杠，需先修正文字。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:3193": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：臀腿器械支点与屈膝、伸髋过程未完全核对。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1511": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源为站姿拉伸，图片为仰卧拉伸。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0472": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源要求直腿，候选明显屈膝。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0473": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源动作顶点描述水平，图片抬脚至杠前，说明待核。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0492": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源手垫高，候选脚垫高，且两帧不足以验证深度跳。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1564": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源站姿，图片为仰卧绳带拉伸。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0500": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源仰卧摆腿，图片为低位俯卧撑横移。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0507": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：起始手臂姿态与来源过顶伸臂描述不完全一致。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0508": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源未说明 Janda 形式的固定/辅助方式，不能以普通起坐图片定稿。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0523": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源双臂同时，图片为单臂。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0532": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：绕腿八字传铃仅有中间两帧，完整手递手路径尚待核验。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0535": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：图片缺少接铃关键阶段，不能证明完整翻举周期。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0546": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源坐凳双铃，图片为地面坐姿单铃。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0548": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：仅有深蹲与拉高两帧，尚缺连贯爆发提拉核验。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0550": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：双壶铃 thruster 图片缺少过顶阶段，不能以起落蹲照冒充。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0551": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：土耳其起身复杂多阶段，候选仅展示其中两个阶段。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0554": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：过顶风车需核对足部角度与髋折叠方向，当前文字不足。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0558": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：摆动双力臂图片缺少过杠支撑阶段。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1420": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：负重跪姿跳蹲图片缺少落地与完整过程，暂不采用。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1352": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源写仰卧，图片为俯卧伸背。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1302": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：接球方式、前后脚转换与来源表述矛盾，尚待核对。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0628": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：器械分类为徒手，但文字与图片使用弹力带。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0631": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：图片缺少过杠支撑，来源说明亦缺少完整过杠步骤。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1355": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源直臂撑墙，图片为屈肘靠墙。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0638": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：名称单臂，来源另一手握腕辅助，图片可能为双手辅助方式，尚待核。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0641": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源说明没有负重，候选为负重过顶起坐。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1388": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：绳带方向与腓骨肌拉伸方向尚待核对，不能凭名称采用。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1306": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：两帧无法明确确认双手离地阶段。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1389": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：绳带方向与胫后肌拉伸方向尚待核对。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0648": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：力量翻举缺少过渡与接杠关键阶段，来源细节仍需审核。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0664": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：图片没有侧平板阶段，不能当作完整组合动作。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0680": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：攀绳足部锁绳与下降方式不明确，需连续素材确认。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1585": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源为前跨拉伸，图片为俯身直腿形式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0687": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源徒手，候选持配重片，不能直接当徒手形式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1358": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源涉及抬腿与固定手抓握，图片未表达相同步骤。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0725": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源描述交替移手，图片为单手持续支撑，单臂形式未核清。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0768": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源持杆稳定表述含糊，图片疑为杠铃背负，需要重新核对。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0776": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：文字将抓举拉误写为完整抓举接杠，暂不采用。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0777": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源一只手持哑铃，图片为双手各持铃，动作变式不清。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0786": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源描述分腿挺举，名称却为下蹲挺举，不能自动配图。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0794": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源双臂侧展，图片为一臂过顶拉伸。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1364": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：骨盆前后倾方向文字存在矛盾，须先重新核对。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0806": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源悬吊带与图片吊环相近但手腕支撑方式不同，暂不认定同一形式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0807": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源单杠悬垂卷腹，图片为脚托悬吊俯卧收膝。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0809": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源脚向前，图片后脚悬吊，方向矛盾。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:2459": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：轮胎翻举两帧缺少推过与落胎阶段，复杂动作尚待核验。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1365": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源过顶伸臂，图片为胸前伸臂，方向不同。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0830": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：文字没有说明腿部负重与第二凳支撑，候选额外条件未核实。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0851": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源是普通蹲，图片为膝主导负重西西蹲，形式矛盾。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0852": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选站在高台上，来源未说明支撑条件，暂不采用。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1367": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：名称颈后引体，来源却写下巴过杠，动作方向存在矛盾。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0858": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源平地冲刺跑，图片为悬垂抬膝。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1428": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源手臂向前伸，候选手臂下垂，手腕环绕动作难从两帧核实。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1316": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选使用曲杠，当前器械条目是杠铃，缺少可证明曲杠就是本变式的独立资料。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0037": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：未能确认宽握直杆和下斜支撑的对应细节，不仅依据名称采用。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0068": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源要求抬腿前伸的单腿深蹲，候选为后脚搭凳分腿蹲。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1412": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源坐姿，候选双膝跪地并将前臂放在凳上，支撑形式不同。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0089": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选为曲杠，且未确认窄握与当前直杠条目的对应形式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0094": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源写杠铃置于胸前，候选是杠铃放在上背部转体。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1372": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选使用台阶垫高，当前文字未说明该支撑条件；不自动增加变式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0114": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选顶端包含额外抬膝，原文只描述普通踏上平台，尚缺一致形式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0157": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源面向绳索机，候选为背向绳索机的胯下绳索动作。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0176": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：面朝方向、绳柄/直杆和躯干支撑均与来源不一致。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1636": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源为单个直杆高位弯举，候选是双侧高位双拉手弯举。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0284": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选同伴坐在背上增加负重，当前条目为徒手扶物提踵。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0285": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源起始掌心向前，候选有中立握与旋腕交替，未确认是否同一变式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1731": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选握铃数量和握法与每手一只的来源说明不明确，且与另一近同名 ID 无法区分。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0296": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：与 exdb:1731 近同名且说明相近，未确认握铃数量及独立变式，不自动合并。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0306": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选下肢和下斜凳固定方式被取景裁去，无法核对完整支撑。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0310": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源为身前抬至肩高，候选为单臂交替且高于肩部，尚不能认定同一形式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0318": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源描述双侧弯举，候选明确为左右交替；不以交替图片代替。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0391": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源起始掌心朝前，候选起始为中立握，未核对是否包含旋腕变式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0393": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源要求上臂放在大腿，候选双臂向两侧展开且不支于大腿。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1741": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：与现有 exdb:0333 说明同类形式，缺少可区分条目的原始资料；暂不重复记作新覆盖。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0417": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选使用前脚掌垫高，原说明没有台阶条件；不直接添加支撑变式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0422": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源只说明另一手扶凳，候选工作臂也放在凳垫上，支持方式未对应。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1680": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：与 exdb:0422 近同名且支撑说明不明确，无法确认独立形式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0430": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源为单手持铃过顶伸肘，候选是双手托一只哑铃。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0431": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选在台阶上含抬膝动作，原文描述另一脚跟上站稳，阶段不完全一致。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0433": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源沿凳全背支撑，候选横向肩背撑凳且腰髋悬空。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0466": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：握法和胸骨触杠所需体位无法从当前普通引体说明核实。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0484": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源为脚踩地臀桥，候选为双脚悬空的反向卷腹。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0490": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源名称窄握却写略宽于肩，且候选握固定杠而非掌撑平台，需先核清形式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0494": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源未明确反握方式，候选为反握固定杠支撑，不能直接当掌撑凳面变式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0517": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源左右脚和持铃臂指向的文字矛盾，复杂风车形式尚未核清。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0520": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选只展示一侧推起，未核实完整左右交替及回位阶段。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0522": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选只展示一侧拉起，尚缺明确左右交替过程核对。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0526": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：名称为交替双壶铃翻举，来源过程没有交替配对，图片也不能确认完整过渡。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0527": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：两帧都在肩前与预蹲阶段，缺少挺举过顶关键位置。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0528": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：两帧缺少推举过顶位置，不能只凭预蹲判断完整蹬腿推举。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0529": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：两帧缺少抓举过顶位置，不能以站立和低位准备冒充抓举示范。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0530": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：名称双壶铃，来源只说明一个壶铃，候选却有一高一低两只，器械数量矛盾。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0537": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：组合动作来源混写成一次上摆，候选缺少挺举过顶阶段。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1298": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源屈膝双脚踩地，候选双腿伸直，支撑姿势不一致。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0538": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选缺少过顶接铃阶段，无法核对二次屈膝接铃。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0539": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：名称含侧向推举，来源却是普通垂直肩推，候选有侧倾，需核对变式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0540": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：两帧只有肩前与预蹲，没有过顶位置，缺少完整关键阶段。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0542": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：候选只有站立与低位准备，没有单臂抓举的过顶关键位置。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0545": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源双手撑壶铃，候选一手撑地、一手撑铃，属于不同支撑形式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0570": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源坐姿凳边收腿，候选是仰卧凳面屈腿卷臀。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0609": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源为站姿拉绳，候选是身体后倾攀绳，不是相同过程。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0678": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：名称 Rocky 引体通常涉及前后位置，当前来源只有普通引体过程，未核清组合。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0720": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源没有侧向移动步骤，图片只显示一侧上拉，不能确认左右横移形式。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:0759": {
+      "reviewStatus": "needs_review",
+      "reviewReason": "候选已对照：来源为站姿向上提杆，候选是上斜凳仰卧肩胛前伸。 当前不发布此候选，不计完整覆盖。"
+    },
+    "exdb:1512": {
+      "nameZh": "四点支撑股四头肌拉伸",
+      "aliases": [
+        "四点支撑股四头肌拉伸"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：来源同时说腿向后伸直又保持膝弯曲，且未说明如何形成股四头肌拉伸；不能确定腿部摆位。"
+    },
+    "exdb:3293": {
+      "nameZh": "弓箭手引体向上",
+      "aliases": [
+        "弓箭手引体向上"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：需要独立确认横向移动、伸直侧手的位置与下巴相对杠的位置；现有文字不足以核对完整左右阶段。"
+    },
+    "exdb:3294": {
+      "nameZh": "弓箭手俯卧撑",
+      "aliases": [
+        "弓箭手俯卧撑"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：来源让一臂伸向侧面且与地面平行，未说明该手是否着地支撑；不能据此画成标准弓箭手俯卧撑。"
+    },
+    "exdb:2355": {
+      "nameZh": "臂吊带屈膝举腿",
+      "aliases": [
+        "臂吊带屈膝举腿"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称包含臂吊带，步骤却是双手直臂悬杠；支撑方式矛盾，不能套用普通悬垂举腿图。"
+    },
+    "exdb:2333": {
+      "nameZh": "臂吊带直腿举腿",
+      "aliases": [
+        "臂吊带直腿举腿"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称包含臂吊带，步骤却是双手直臂悬杠；支撑点不同，不能采用普通悬垂直腿举腿示范。"
+    },
+    "exdb:3214": {
+      "nameZh": "张臂环绕触脚",
+      "aliases": [
+        "张臂环绕触脚"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称是环绕触脚，文字却要求抬起后侧腿，可能对应单腿髋铰链；运动轨迹和支撑腿尚不能确认。"
+    },
+    "exdb:3220": {
+      "nameZh": "分腿跳跃",
+      "aliases": [
+        "分腿跳跃"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：来源要求起始即与肩同宽，空中分腿、落地仍与肩同宽，未给出明确合拢阶段；不能冒充完整开合跳。"
+    },
+    "exdb:3672": {
+      "nameZh": "前后踏步",
+      "aliases": [
+        "前后踏步"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称是前后踏步，步骤却描述左右交替前弓步；下沉幅度和回位方式尚缺独立资料。"
+    },
+    "exdb:3297": {
+      "nameZh": "后水平",
+      "aliases": [
+        "后水平"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：来源先收膝再把腿抬至水平，未说明肩部转入背向支撑的过程，可能与前水平混淆；不发布示意图。"
+    },
+    "exdb:1405": {
+      "nameZh": "背部与胸部拉伸",
+      "aliases": [
+        "背部与胸部拉伸"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称、主练背阔肌与交叉手臂向前上方抬起的步骤对应关系不明确；缺少肩部和手掌朝向的可靠对照。"
+    },
+    "exdb:1473": {
+      "nameZh": "向后跳",
+      "aliases": [
+        "向后跳"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字确认双脚同时向后跳与屈膝落地；尚缺能清楚表达空间位移和落地的完整示范，不用原地跳图替代。"
+    },
+    "exdb:3360": {
+      "nameZh": "熊爬",
+      "aliases": [
+        "熊爬"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字确认膝离地、对侧手脚交替前移；需专门核对连续左右支撑阶段，现有三帧重复模板不能表达行进过程。"
+    },
+    "exdb:0129": {
+      "nameZh": "屈膝凳上臂屈伸",
+      "aliases": [
+        "屈膝凳上臂屈伸"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称为屈膝，第二步却要求身前双腿伸直、脚跟着地；膝关节姿势与名称矛盾。"
+    },
+    "exdb:1399": {
+      "nameZh": "地面凳式臂屈伸",
+      "aliases": [
+        "地面凳式臂屈伸"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称带地面，步骤要求坐长凳并滑离凳边；支撑高度不明确，不能与凳上版本互换。"
+    },
+    "exdb:0130": {
+      "nameZh": "凳上髋伸展",
+      "aliases": [
+        "凳上髋伸展"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：步骤先坐凳并背靠同一凳，再从凳上抬髋；肩部、手和髋的实际支撑关系无法确定。"
+    },
+    "exdb:3019": {
+      "nameZh": "凳辅助引体向上",
+      "aliases": [
+        "凳辅助引体向上"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称带凳，文字却在胸高横杆下直身拉起，随后要求下巴过杆；像反向划船与垂直引体混写。"
+    },
+    "exdb:3639": {
+      "nameZh": "仰卧屈膝摆腿",
+      "aliases": [
+        "仰卧屈膝摆腿"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字确认双膝并拢左右下放；尚需核对肩部固定、髋部旋转及左右阶段图，暂不把单侧图片当全周期。"
+    },
+    "exdb:1770": {
+      "nameZh": "自重腿阻力集中弯举",
+      "aliases": [
+        "自重腿阻力集中弯举"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：器械为徒手、名称是腿提供阻力，但步骤全程握哑铃坐姿集中弯举；阻力来源矛盾。"
+    },
+    "exdb:0139": {
+      "nameZh": "窄握反手引体向上",
+      "aliases": [
+        "窄握反手引体向上"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称要求窄握，步骤却写与肩同宽；握距边界缺少独立示范，不能默认等同普通反手引体。"
+    },
+    "exdb:3543": {
+      "nameZh": "自重落地跳深蹲",
+      "aliases": [
+        "自重落地跳深蹲"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称包含下落跳，步骤没有起始高台或下落过程，反而在空中并脚；不能确定实际变式。"
+    },
+    "exdb:3544": {
+      "nameZh": "自重上斜侧平板支撑",
+      "aliases": [
+        "自重上斜侧平板支撑"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称带上斜，步骤却是前臂着地、双腿叠放的普通侧平板；缺少高处支撑说明。"
+    },
+    "exdb:1771": {
+      "nameZh": "跪姿自重臂屈伸",
+      "aliases": [
+        "跪姿自重臂屈伸"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称为跪姿，步骤随后要求双腿伸直、脚趾和手支撑；不能确认是否从跪姿切换到标准俯卧撑。"
+    },
+    "exdb:1769": {
+      "nameZh": "侧卧自重弯举",
+      "aliases": [
+        "侧卧自重弯举"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：步骤未说明另一只手、腿或身体如何提供阻力；仅空手屈肘无法确定命名所指变式。"
+    },
+    "exdb:3168": {
+      "nameZh": "自重深蹲划船",
+      "aliases": [
+        "自重深蹲划船"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字指定固定物或悬挂训练器，但未给锚点高度、躯干倾斜和脚的位置；需要独立核对承重点。"
+    },
+    "exdb:3167": {
+      "nameZh": "毛巾自重深蹲划船",
+      "aliases": [
+        "毛巾自重深蹲划船"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字只说双手持毛巾并向胸拉，没有固定锚点或对抗阻力；不发布成悬挂划船图。"
+    },
+    "exdb:3156": {
+      "nameZh": "站姿窄握单臂自重划船",
+      "aliases": [
+        "站姿窄握单臂自重划船"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：器械为自重，步骤却握哑铃俯身划船；名称、阻力和躯干姿势矛盾。"
+    },
+    "exdb:3158": {
+      "nameZh": "站姿窄握自重划船",
+      "aliases": [
+        "站姿窄握自重划船"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字要求俯身握杆并将杆拉向身体，未说明固定杆、悬挂锚点或外部负重；不能确定自重形式。"
+    },
+    "exdb:3162": {
+      "nameZh": "站姿单臂自重划船",
+      "aliases": [
+        "站姿单臂自重划船"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：器械为自重，步骤却单手握哑铃俯身拉起；不能与负重单臂划船混用。"
+    },
+    "exdb:3161": {
+      "nameZh": "毛巾站姿单臂自重划船",
+      "aliases": [
+        "毛巾站姿单臂自重划船"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：仅说明一手握毛巾拉向胸部，未说明另一端固定位置和身体支撑；示范待独立核对。"
+    },
+    "exdb:3166": {
+      "nameZh": "站姿自重划船",
+      "aliases": [
+        "站姿自重划船"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：步骤只说握杆把杆拉向身体，没有固定锚点、身体后倾或阻力来源，不能确定是自重还是负重划船。"
+    },
+    "exdb:3165": {
+      "nameZh": "毛巾站姿自重划船",
+      "aliases": [
+        "毛巾站姿自重划船"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：双手持毛巾俯身拉向胸部，缺少固定端或自我对抗说明，无法核对阻力和运动轨迹。"
+    },
+    "exdb:3204": {
+      "nameZh": "双臂过顶仰卧起坐",
+      "aliases": [
+        "双臂过顶仰卧起坐"
+      ],
+      "instructions": [
+        "仰卧在地面，膝盖弯曲，双脚平放，双臂伸向头顶方向。",
+        "保持手臂伸展，收紧腹部，缓慢抬起躯干至坐起位置。",
+        "在顶部短暂停顿，双脚继续着地。",
+        "有控制地下放躯干，回到仰卧准备位置。"
+      ],
+      "form": "地面仰卧屈膝，双脚保持着地；双臂保持过顶伸展，躯干由仰卧坐起再下放。",
+      "cues": [
+        "不用甩臂或猛拉头颈带动起身；下放过程保持控制。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已逐项核对固定版本名称和步骤，并对照原创起始、关键、回位示意；不是实拍或专业教学认证。"
+    },
+    "exdb:3212": {
+      "nameZh": "站姿俯身触脚",
+      "aliases": [
+        "站姿俯身触脚"
+      ],
+      "instructions": [
+        "双脚分开站稳，手臂放松，膝盖保持轻微弯曲。",
+        "从髋部向前俯身，双手缓慢向脚趾方向伸下。",
+        "在舒适、可控制的位置停顿，不要求必须碰到脚趾。",
+        "缓慢回到站立，避免突然弹起或反复抖动。"
+      ],
+      "form": "徒手双脚站稳，膝盖可微屈；髋部前折，双手向脚趾方向下伸后回站立。",
+      "cues": [
+        "不要为了触地用力下压或反弹；以自身可控幅度为准。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已逐项核对固定版本名称和步骤，并对照原创起始、关键、回位示意；不是实拍或专业教学认证。"
+    },
+    "exdb:0002": {
+      "nameZh": "站姿45°侧屈",
+      "aliases": [
+        "站姿45°侧屈"
+      ],
+      "instructions": [
+        "双脚分开站稳，双臂自然垂在身体两侧。",
+        "保持骨盆稳定，将躯干缓慢向一侧侧屈，同侧手沿腿侧下移。",
+        "到可控制的幅度后停顿，再缓慢回到直立。",
+        "完成一侧后换另一侧，动作过程保持双脚着地。"
+      ],
+      "form": "徒手站姿、双脚着地、双臂自然下垂；躯干向一侧侧屈后回正，两侧分别练习。",
+      "cues": [
+        "侧向弯曲，不用转体或前屈代替；不强求达到固定角度。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已逐项核对固定版本名称和步骤，并对照原创起始、关键、回位示意；不是实拍或专业教学认证。"
+    },
+    "exdb:0140": {
+      "nameZh": "肩宽正握引体向上",
+      "aliases": [
+        "肩宽正握引体向上"
+      ],
+      "instructions": [
+        "双手约肩宽正握固定横杆，掌心背向自己，双脚离地。",
+        "收紧躯干，屈肘将胸部向横杆方向拉近。",
+        "在可控制的最高位置短暂停顿，避免甩腿借力。",
+        "缓慢下放至手臂伸展的准备位置，再开始下一次。"
+      ],
+      "form": "双手约肩宽正握固定横杆，双脚离地；屈肘上拉，下放至手臂伸展。",
+      "cues": [
+        "本条目按原步骤保留正握形式，不与反手窄握条目合并。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "已逐项核对固定版本名称和步骤，并对照原创起始、关键、回位示意；不是实拍或专业教学认证。"
+    },
+    "exdb:1374": {
+      "nameZh": "跳下后单腿稳定",
+      "aliases": [
+        "跳下后单腿稳定"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称是从高处跳下，步骤却从地面跳上箱子；方向相反，不能配同一示范。"
+    },
+    "exdb:2466": {
+      "nameZh": "交叉提膝登山跑",
+      "aliases": [
+        "交叉提膝登山跑"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字确认高平板、膝向对侧肘移动；需要独立展示左右交叉和回位，不能用同侧登山跑或臀桥图代替。"
+    },
+    "exdb:1160": {
+      "nameZh": "波比跳（含俯卧撑）",
+      "aliases": [
+        "波比跳（含俯卧撑）"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：来源明确包含下蹲、后跳支撑、俯卧撑、收腿和向上跳；完整多阶段示范尚未核对，不采用删去俯卧撑的简化版。"
+    },
+    "exdb:1494": {
+      "nameZh": "坐姿蝴蝶式",
+      "aliases": [
+        "坐姿蝴蝶式"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：来源确认坐姿脚底相对、双膝向外的静态保持；须避免来源中手压膝盖的强制下压表述，图解和完整修订尚待核对。"
+    },
+    "exdb:1407": {
+      "nameZh": "扶墙弓步小腿拉伸",
+      "aliases": [
+        "扶墙弓步小腿拉伸"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字为后腿伸直、脚跟着地、前膝弯曲；与 exdb:1377 文字近同，缺乏差异证据，ID 保持独立，不自动合并。"
+    },
+    "exdb:1377": {
+      "nameZh": "扶墙小腿拉伸",
+      "aliases": [
+        "扶墙小腿拉伸"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字为后腿伸直、脚跟着地、前膝弯曲；与 exdb:1407 文字近同，差异尚不能确认，不能按新变式计覆盖。"
+    },
+    "exdb:2963": {
+      "nameZh": "肘撑直腿举腿",
+      "aliases": [
+        "肘撑直腿举腿"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称是肘撑举腿架，步骤说坐在椅子上后抬腿；需确认是否座位支撑或前臂悬空支撑，不能与普通坐姿举腿互换。"
+    },
+    "exdb:0251": {
+      "nameZh": "双杠臂屈伸（胸部侧重）",
+      "aliases": [
+        "双杠臂屈伸（胸部侧重）"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字要求降至肩低于肘，但未明确适合的躯干前倾和可控深度；需要核对支撑与胸部侧重形式后再发布图解。"
+    },
+    "exdb:1430": {
+      "nameZh": "组合架双杠臂屈伸",
+      "aliases": [
+        "组合架双杠臂屈伸"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称指定引体组合架，步骤称倾斜杆且未给实际器械支点；需核对组合架扶手、交叉脚与下降幅度。"
+    },
+    "exdb:2462": {
+      "nameZh": "单横杆臂屈伸",
+      "aliases": [
+        "单横杆臂屈伸"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称是单根直杠，步骤却要求抓双杠；身体与杠的相对位置完全不同，不能直接采用双杠示范。"
+    },
+    "exdb:3216": {
+      "nameZh": "触胸俯卧撑",
+      "aliases": [
+        "触胸俯卧撑"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：来源要求下降时一手拍胸，未说明推起腾空还是单臂持续支撑；时序和承重点存疑。"
+    },
+    "exdb:0253": {
+      "nameZh": "窄距中立握引体向上",
+      "aliases": [
+        "窄距中立握引体向上"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称是平行中立握，步骤却写手掌朝向自己；握法矛盾，不能配反手或正握图。"
+    },
+    "exdb:0257": {
+      "nameZh": "屈膝绕环",
+      "aliases": [
+        "屈膝绕环"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：来源要求抬脚跟后旋转双膝，但没有说明踝、髋及足部承重关系；不据此制作通用绕膝教学图。"
+    },
+    "exdb:1273": {
+      "nameZh": "击掌俯卧撑",
+      "aliases": [
+        "击掌俯卧撑"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：来源明确双手推离地面后击掌，但没有说明落手阶段；需完整实拍或明确的腾空、落手图，普通俯卧撑图片不适用。"
+    },
+    "exdb:1327": {
+      "nameZh": "窄握反手引体向上",
+      "aliases": [
+        "窄握反手引体向上"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称是窄握，步骤写双手与肩同宽；与 exdb:0139 近同但未确认握距差异，不合并。"
+    },
+    "exdb:0259": {
+      "nameZh": "窄距俯卧撑",
+      "aliases": [
+        "窄距俯卧撑"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：来源同时说双手并拢、在肩正下方，实际手距有歧义；需要确认是窄握还是钻石手型后再配图。"
+    },
+    "exdb:2398": {
+      "nameZh": "跪姿窄距俯卧撑",
+      "aliases": [
+        "跪姿窄距俯卧撑"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称窄距，步骤只写肩宽；缺少与普通跪姿俯卧撑的手距区别，不按名称套窄距图。"
+    },
+    "exdb:1468": {
+      "nameZh": "蟹式对侧触脚",
+      "aliases": [
+        "蟹式对侧触脚"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字确认手撑身后、抬臀后对侧手触脚；尚需核对三点支撑与左右转换，不用仰卧触脚图替代。"
+    },
+    "exdb:3016": {
+      "nameZh": "屈膝卷起",
+      "aliases": [
+        "屈膝卷起"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：步骤与 exdb:0001 的四分之三仰卧起坐近同，均称卷至45°；缺少能区分条目的依据，不自动复用该实拍。"
+    },
+    "exdb:3769": {
+      "nameZh": "交叉后撤屈膝蹲",
+      "aliases": [
+        "交叉后撤屈膝蹲"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字确认向斜后方交叉迈步、前脚发力回站立；需独立核对交叉方向与左右阶段，不使用直线后撤弓步图。"
+    },
+    "exdb:0282": {
+      "nameZh": "下斜仰卧起坐",
+      "aliases": [
+        "下斜仰卧起坐"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称明确下斜，文字只称倾斜凳并固定双脚，未说明头低脚高的方向；需核对实际凳角与固定点。"
+    },
+    "exdb:0283": {
+      "nameZh": "钻石俯卧撑",
+      "aliases": [
+        "钻石俯卧撑"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字确认拇指食指形成菱形、躯干保持一线；尚缺清楚展示手型与下降的专门示范，普通俯卧撑不算覆盖。"
+    },
+    "exdb:1275": {
+      "nameZh": "下落俯卧撑",
+      "aliases": [
+        "下落俯卧撑"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字变成下降后膝盖落地再推起，缺少名称所指的下落来源和落手方式；不能确定其是否是变式或错误步骤。"
+    },
+    "exdb:1167": {
+      "nameZh": "动态胸部伸展",
+      "aliases": [
+        "动态胸部伸展"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称是动态，步骤却要求交叉双臂后保持10—30秒，运动轨迹也与常见开胸伸展不同；不当作动态胸部示范发布。"
+    },
+    "exdb:3287": {
+      "nameZh": "肘部臂屈伸",
+      "aliases": [
+        "肘部臂屈伸"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称是 elbow dips，步骤却整段描述脚跟着地的凳上臂屈伸；未确认是否同一动作，不套凳上照片。"
+    },
+    "exdb:1772": {
+      "nameZh": "肘撑抬背",
+      "aliases": [
+        "肘撑抬背"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称肘撑反向推起、目标上背，步骤却是俯卧用手掌推起；面朝方向、支撑部位和动作矛盾。"
+    },
+    "exdb:3292": {
+      "nameZh": "升降式自重训练",
+      "aliases": [
+        "升降式自重训练"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称 elevator 无法确定具体形式，步骤只是徒手站姿前屈髋铰链；不能据此等同罗马尼亚硬拉或倒立动作。"
+    },
+    "exdb:3303": {
+      "nameZh": "人体旗帜",
+      "aliases": [
+        "人体旗帜"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字说明竖杆支撑、身体水平，但没有区分上下手的推拉方向和入位过程；复杂支撑需独立审查，不发布简化通用图。"
+    },
+    "exdb:0456": {
+      "nameZh": "屈膝收腿仰卧起坐",
+      "aliases": [
+        "屈膝收腿仰卧起坐"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：步骤确认卷起同时双膝向胸收；需要区分脚落地回位与悬空收腿形式，尚缺完整阶段图。"
+    },
+    "exdb:0457": {
+      "nameZh": "直臂收腿仰卧起坐",
+      "aliases": [
+        "直臂收腿仰卧起坐"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：来源从直腿、手臂过顶到手向脚趾，可能对应V字起坐，但没有明确膝是否持续伸直；暂不借用直腿V字图。"
+    },
+    "exdb:1472": {
+      "nameZh": "向前跳",
+      "aliases": [
+        "向前跳"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：来源为屈膝摆臂后双脚前跳，落地立即下一跳；需要展示空间位移和落地，不采用原地蹲跳或单腿跳图。"
+    },
+    "exdb:3470": {
+      "nameZh": "徒手前弓步",
+      "aliases": [
+        "徒手前弓步"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字确认向前迈步、前脚推回后换腿；不同于后撤弓步，现有后撤实拍不能覆盖本条目。"
+    },
+    "exdb:2429": {
+      "nameZh": "蛙式卷腹",
+      "aliases": [
+        "蛙式卷腹"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称蛙式，步骤却双脚平放、普通屈膝卷腹，没有膝外展或脚底相对；腿形与名称未对应。"
+    },
+    "exdb:3301": {
+      "nameZh": "蛙式平衡支撑",
+      "aliases": [
+        "蛙式平衡支撑"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：步骤从普通俯卧撑下降再抬脚收膝，没有说明膝与肘的支撑或独立平衡位置；复杂支撑不能据此画图。"
+    },
+    "exdb:3296": {
+      "nameZh": "前水平保持",
+      "aliases": [
+        "前水平保持"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字确认横杆正握、直体水平保持；需独立核对肩、髋与杆的空间关系，不与后水平混用，现有来源未提供可靠图。"
+    },
+    "exdb:3295": {
+      "nameZh": "前水平重复上举",
+      "aliases": [
+        "前水平重复上举"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称是重复动作，文字主段却要求水平保持10—20秒；静态与动态形式未明确，不能先定计数阶段。"
+    },
+    "exdb:0464": {
+      "nameZh": "高平板转体",
+      "aliases": [
+        "高平板转体"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字确认高平板转为单臂向上，需核对脚部转动与承重手位置；左右阶段图尚待核对，普通平板图不算覆盖。"
+    },
+    "exdb:3315": {
+      "nameZh": "马尔特支撑",
+      "aliases": [
+        "马尔特支撑"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称指高难度水平支撑，步骤却双脚着地站姿前倾后站起，缺少环或地面双手承重；内容不可信，不发布示范。"
+    },
+    "exdb:3299": {
+      "nameZh": "水平直臂支撑",
+      "aliases": [
+        "水平直臂支撑"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：来源描述双手承重、双脚离地的直臂水平支撑；高难度承重、肩位与起落需独立审核，不能以俯卧撑图代替。"
+    },
+    "exdb:3327": {
+      "nameZh": "水平支撑俯卧撑",
+      "aliases": [
+        "水平支撑俯卧撑"
+      ],
+      "reviewStatus": "needs_review",
+      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：步骤描述下降时才抬脚前倾，未确认起止是否都维持悬空直体；与标准 planche push-up 的区别待核对。"
     }
   },
   "note": "只有明确按 ID 核对的内容进入 entries；静态检查通过不等于人工审核或专业教学认证。"

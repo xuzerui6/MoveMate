@@ -1248,6 +1248,774 @@
         "sourceDescription": "对照来源文字；差异说明保留在中文资料。"
       },
       "note": "真人双帧分解；仅展示标注阶段，不是连续视频或完整周期证明。 地面仰卧，双腿屈曲悬空，肩胛卷离地面。"
+    },
+    {
+      "exerciseId": "exdb:0033",
+      "expectedName": "barbell decline bench press",
+      "sourceId": "Decline_Barbell_Bench_Press",
+      "sourceSha256": [
+        "3ab81fce71c90d2f7787eebe198a667816ecd791ac7982c6729359c2fe61db19",
+        "b6fcac67f252e3e360d9b3dec9d7ebdde3f05c3e1e0316de4a1b959722738d2c"
+      ],
+      "imageOrder": [
+        1,
+        0
+      ],
+      "phases": [
+        "伸臂准备",
+        "屈肘下放"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "下斜凳仰卧、双脚可靠固定、正握直杠",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 下斜凳仰卧、双脚可靠固定、正握直杠。"
+    },
+    {
+      "exerciseId": "exdb:0080",
+      "expectedName": "barbell reverse curl",
+      "sourceId": "Reverse_Barbell_Curl",
+      "sourceSha256": [
+        "6ffb82c647f8792d5bf53610c8810018768bf8502a40d0c7f38078e9e10e9423",
+        "964522e8c943e0a248afccf9792dc16df581847e82583c5436733effde2e3469"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "伸臂准备",
+        "正握弯举"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "站姿双手正握直杠，掌心朝下，双臂同时屈肘",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 站姿双手正握直杠，掌心朝下，双臂同时屈肘。"
+    },
+    {
+      "exerciseId": "exdb:0081",
+      "expectedName": "barbell reverse preacher curl",
+      "sourceId": "Reverse_Barbell_Preacher_Curls",
+      "sourceSha256": [
+        "77cd04c1c6bea53c0ca93f810df645641d98c660032f643f90dc8acb156b73b3",
+        "28d9204ec5636e5088e17b2c96a409672ad69f99bb1605b431733468a9bd8d10"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "伸臂准备",
+        "屈肘上举"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "坐姿、上臂靠弯举垫、掌心朝下握直杠",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 坐姿、上臂靠弯举垫、掌心朝下握直杠。"
+    },
+    {
+      "exerciseId": "exdb:0106",
+      "expectedName": "barbell standing close grip curl",
+      "sourceId": "Close-Grip_Standing_Barbell_Curl",
+      "sourceSha256": [
+        "a3ec3359a1de66524450c75e11d3c75f4ba6b03e3f0cfb6f71c266c79cf718b9",
+        "753f1c4be0cbca3e9e9f26d5738dc8279e2573fa57e5a2bc219c32e90f4fe0ec"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "窄握准备",
+        "屈肘弯举"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "站姿、反手窄握直杠、双臂同时弯举",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 站姿、反手窄握直杠、双臂同时弯举。"
+    },
+    {
+      "exerciseId": "exdb:0107",
+      "expectedName": "barbell standing front raise over head",
+      "sourceId": "Standing_Front_Barbell_Raise_Over_Head",
+      "sourceSha256": [
+        "032551f28c915919e0b07bf055f0df1c4ab06cd6969f92ff39e03dbd4ab16bbf",
+        "8b79b299a463e529f7fc058b090d890a7dd0e9d196d28403c29707b976295f74"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "大腿前准备",
+        "前举至过顶"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "站姿正握直杠，从大腿前沿前方抬举至头顶上方",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 站姿正握直杠，从大腿前沿前方抬举至头顶上方。"
+    },
+    {
+      "exerciseId": "exdb:0109",
+      "expectedName": "barbell standing overhead triceps extension",
+      "sourceId": "Standing_Overhead_Barbell_Triceps_Extension",
+      "sourceSha256": [
+        "b79a7ef7c40ce842e700ba0433ec9d068531ee36fcb8bb2603c980947082a173",
+        "a3c2c7182bb59ae1908bbc49d51157693353d410926da3d6f401994729253193"
+      ],
+      "imageOrder": [
+        1,
+        0
+      ],
+      "phases": [
+        "过顶准备",
+        "屈肘下放"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "站姿、双手正握直杠、上臂靠近头侧",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 站姿、双手正握直杠、上臂靠近头侧。"
+    },
+    {
+      "exerciseId": "exdb:0113",
+      "expectedName": "barbell standing wide-grip curl",
+      "sourceId": "Wide-Grip_Standing_Barbell_Curl",
+      "sourceSha256": [
+        "695efb4f21e59eec9d99e20a4ec262c8c19f0e46ce2e18bed757c3a432d151f4",
+        "0600e3c0dbd9d5418c7610d88710cdb4e1fd7b33425e3cbd4d9f40f21f4dea32"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "宽握准备",
+        "屈肘上举"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "站姿、掌心向前反握直杠，握距宽于肩",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 站姿、掌心向前反握直杠，握距宽于肩。"
+    },
+    {
+      "exerciseId": "exdb:0115",
+      "expectedName": "barbell stiff leg good morning",
+      "sourceId": "Stiff_Leg_Barbell_Good_Morning",
+      "sourceSha256": [
+        "ea1951f0639b544d09ee4dc8e0123552c627aaac68b3194c5171444b91dd1ed7",
+        "9edb1bb895fa9f85a62c748ee8f3808a9e384ce9e57c402bb1fd57ae972028e1"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "站立背杠",
+        "屈髋前倾"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "上背部背杠、双脚地面支撑，膝盖自然微屈、屈髋为主",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 上背部背杠、双脚地面支撑，膝盖自然微屈、屈髋为主。"
+    },
+    {
+      "exerciseId": "exdb:0120",
+      "expectedName": "barbell upright row",
+      "sourceId": "Upright_Barbell_Row",
+      "sourceSha256": [
+        "7fcef07cc8cc51e8788a26b69e8ad9c17524c0149207485d664116034710751b",
+        "357c45246057e372b55a381b5e2ddc882df53aa1d3215c479362e8ac6903ccad"
+      ],
+      "imageOrder": [
+        1,
+        0
+      ],
+      "phases": [
+        "站姿垂臂",
+        "屈肘上提"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "站姿正握直杠，杠沿身体前方上移",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 站姿正握直杠，杠沿身体前方上移。"
+    },
+    {
+      "exerciseId": "exdb:0162",
+      "expectedName": "cable front raise",
+      "sourceId": "Front_Cable_Raise",
+      "sourceSha256": [
+        "e76c418fb9de5eb3fe37d2f8aed68ebfc41dd54360dd85da04d5a967335cff8a",
+        "69a7ae4bc2b49e21319292400e6196986926a999dd4a95f2c02cf3ddab3223cf"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "体前垂臂",
+        "单臂前举"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "低位单拉手、单臂正握、站姿从身前抬起",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 低位单拉手、单臂正握、站姿从身前抬起。"
+    },
+    {
+      "exerciseId": "exdb:0206",
+      "expectedName": "cable reverse curl",
+      "sourceId": "Reverse_Cable_Curl",
+      "sourceSha256": [
+        "eba56e68cdfaabe17883b171cf511fb3255ec944581d4c553f79c1ff4f968b75",
+        "7099852e30169fd20f2393aceb3f8e203b6bc70029cf580d0df84edf6e9e7458"
+      ],
+      "imageOrder": [
+        1,
+        0
+      ],
+      "phases": [
+        "正握伸臂",
+        "屈肘拉起"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "低位滑轮直杆、掌心朝下正握、双臂同时屈肘",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 低位滑轮直杆、掌心朝下正握、双臂同时屈肘。"
+    },
+    {
+      "exerciseId": "exdb:0220",
+      "expectedName": "cable shrug",
+      "sourceId": "Cable_Shrugs",
+      "sourceSha256": [
+        "cb797bc91377f566c78e09e46cf8080659963423c08e583fc8ce542028435147",
+        "9e5763c0571ff6db0b56d710d6e85801028acadc52eeb6c54f6b50e782484ebc"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "肩部放松",
+        "上提双肩"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "面对低位滑轮、双手正握直杆于身前",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 面对低位滑轮、双手正握直杆于身前。"
+    },
+    {
+      "exerciseId": "exdb:0230",
+      "expectedName": "cable standing lift",
+      "sourceId": "Standing_Cable_Lift",
+      "sourceSha256": [
+        "3512f0bb5b6bc56b9909bf0cfc8d831b93abcf12e67f689310fe37c26d3b4727",
+        "817a52226b267c34a9fdc702947511515118044a263a45c7ac2685da86ab3356"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "低位准备",
+        "斜向上拉"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "低位滑轮、双手握拉手，从一侧腰部斜向对侧肩上方",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 低位滑轮、双手握拉手，从一侧腰部斜向对侧肩上方。"
+    },
+    {
+      "exerciseId": "exdb:0245",
+      "expectedName": "cable underhand pulldown",
+      "sourceId": "Underhand_Cable_Pulldowns",
+      "sourceSha256": [
+        "9cf650a2a4bbe33dfdb82c6928a6d50d2c033987dd639e001d89c6f2c00a832b",
+        "9e4ce83781e80d48986fe03e7012b6b21ba8c8c189288d63d370e298d11e4b26"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "伸臂准备",
+        "反握下拉"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "坐姿、双手反握长杆、向胸前下拉",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 坐姿、双手反握长杆、向胸前下拉。"
+    },
+    {
+      "exerciseId": "exdb:0246",
+      "expectedName": "cable upright row",
+      "sourceId": "Upright_Cable_Row",
+      "sourceSha256": [
+        "52bc0312cebdf6c5a5715f3f0a85c2c852ba707b6dad4aa468f36919fe2350ea",
+        "9662294ef4729debb227c3311c7c2aaad18f1eb2d7250e1d1aff16ea68a023db"
+      ],
+      "imageOrder": [
+        1,
+        0
+      ],
+      "phases": [
+        "垂臂准备",
+        "屈肘上提"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "低位滑轮直杆、站姿双手正握、沿体前上提",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 低位滑轮直杆、站姿双手正握、沿体前上提。"
+    },
+    {
+      "exerciseId": "exdb:2137",
+      "expectedName": "dumbbell arnold press",
+      "sourceId": "Arnold_Dumbbell_Press",
+      "sourceSha256": [
+        "44d9a18abcc9f21038e82b574e9ef600b302c80806e284ea16642410670ad568",
+        "9a59d4eb25dbaf14ff5c5a193a890ff9c976c386cc5605dcabd5b9243da35ff4"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "掌心向内准备",
+        "旋转推起"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "有靠背坐姿、双哑铃同时推举，掌心由朝向自己转至朝前",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 有靠背坐姿、双哑铃同时推举，掌心由朝向自己转至朝前。"
+    },
+    {
+      "exerciseId": "exdb:0301",
+      "expectedName": "dumbbell decline bench press",
+      "sourceId": "Decline_Dumbbell_Bench_Press",
+      "sourceSha256": [
+        "83223795ce827088c1aebbebb5bb61b45c370c362af5f61a068bc54ca123c786",
+        "5b58e2173ecc01fcb2044867779897522f30372c96d1d579d962d3ccd13526c0"
+      ],
+      "imageOrder": [
+        1,
+        0
+      ],
+      "phases": [
+        "伸臂准备",
+        "屈肘下降"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "下斜凳仰卧、双脚固定、双手各持一只哑铃",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 下斜凳仰卧、双脚固定、双手各持一只哑铃。"
+    },
+    {
+      "exerciseId": "exdb:0350",
+      "expectedName": "dumbbell lying supine curl",
+      "sourceId": "Lying_Supine_Dumbbell_Curl",
+      "sourceSha256": [
+        "a80a08bb738ed7ed9ac94193d122644d5d02bc95688427e0abccc48de1019cb3",
+        "71eee4ecb67a5114ab1fc62fbe54390a0b8d1c3cb14ba27fb37c53d6a3047219"
+      ],
+      "imageOrder": [
+        1,
+        0
+      ],
+      "phases": [
+        "垂臂准备",
+        "仰卧弯举"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "沿平凳仰卧、双脚踩地，上臂在身体两侧下垂",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 沿平凳仰卧、双脚踩地，上臂在身体两侧下垂。"
+    },
+    {
+      "exerciseId": "exdb:0351",
+      "expectedName": "dumbbell lying triceps extension",
+      "sourceId": "Lying_Dumbbell_Tricep_Extension",
+      "sourceSha256": [
+        "a5ec7e38e794e88a7fef0355f6ade5a5c3b545eee56af6510c9482fe00e1e69e",
+        "52dce4a85c0ab148348c8830e105c5ab8195a46a69a9f1fd042aee6ee60d9189"
+      ],
+      "imageOrder": [
+        1,
+        0
+      ],
+      "phases": [
+        "伸臂准备",
+        "屈肘下放"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "沿平凳仰卧、双脚踩地、双手中立握哑铃",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 沿平凳仰卧、双脚踩地、双手中立握哑铃。"
+    },
+    {
+      "exerciseId": "exdb:0401",
+      "expectedName": "dumbbell seated palms up wrist curl",
+      "sourceId": "Seated_Dumbbell_Palms-Up_Wrist_Curl",
+      "sourceSha256": [
+        "0366c1e8d88c385f84e2948fb60acf67ea4d16792ea8d05f0dacb60b65964bb3",
+        "2eac39b0386e12b06cf229591cc680df2d61dacac03545db2280665cd0703304"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "手腕下放",
+        "屈腕抬起"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "坐姿、前臂支在大腿、掌心朝上，手腕悬于膝前",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 坐姿、前臂支在大腿、掌心朝上，手腕悬于膝前。"
+    },
+    {
+      "exerciseId": "exdb:1740",
+      "expectedName": "dumbbell standing bent over one arm triceps extension",
+      "sourceId": "Standing_Bent-Over_One-Arm_Dumbbell_Triceps_Extension",
+      "sourceSha256": [
+        "89a10995e88e8b579de4c7b63d621a09910c52a94a3d2a72487bfe0c4310aee9",
+        "544bbfccb721a8740e2c5d8089ec5637fd628b6e29178502f1ae60a913a3104a"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "屈肘准备",
+        "伸肘后举"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "双脚站姿支撑、屈髋俯身、一手持铃，另一手可轻扶大腿",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 双脚站姿支撑、屈髋俯身、一手持铃，另一手可轻扶大腿。"
+    },
+    {
+      "exerciseId": "exdb:0424",
+      "expectedName": "dumbbell standing one arm palm in press",
+      "sourceId": "Standing_Palm-In_One-Arm_Dumbbell_Press",
+      "sourceSha256": [
+        "b4d37f48598c4dfd3a4e05b0044c5a7f8650e4d237aa7d953cde76eafa7eb7bc",
+        "6e41b42189bdf00981728f35648daa56fe54008d042cd762cffc90517dd02482"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "肩侧准备",
+        "单臂推起"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "站姿、单臂持铃、掌心朝内，从肩旁向上推举",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 站姿、单臂持铃、掌心朝内，从肩旁向上推举。"
+    },
+    {
+      "exerciseId": "exdb:0427",
+      "expectedName": "dumbbell standing palms in press",
+      "sourceId": "Standing_Palms-In_Dumbbell_Press",
+      "sourceSha256": [
+        "b4d16ed8338406eb6edf21983a6b3bfa5beb2058c476cd888d113dce62a76638",
+        "ad3de8646aeef2ff8b0be2333c9d50ddd7aabe54e2e312cecb884e9086cc6ab1"
+      ],
+      "imageOrder": [
+        1,
+        0
+      ],
+      "phases": [
+        "肩侧准备",
+        "双臂推起"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "站姿、双手掌心相对、双臂同时向上推举",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 站姿、双手掌心相对、双臂同时向上推举。"
+    },
+    {
+      "exerciseId": "exdb:0429",
+      "expectedName": "dumbbell standing reverse curl",
+      "sourceId": "Standing_Dumbbell_Reverse_Curl",
+      "sourceSha256": [
+        "a5c18d9e4798a46cfbe5918f306aba7ff99361512a545558e2df84b115ae35ca",
+        "80d241366c305dd9aeffa748133713d489bf9400279915aa76c7d9854288ed8a"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "正握垂臂",
+        "屈肘上举"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "站姿、掌心朝下正握双哑铃、双臂同时屈肘",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 站姿、掌心朝下正握双哑铃、双臂同时屈肘。"
+    },
+    {
+      "exerciseId": "exdb:0471",
+      "expectedName": "handstand push-up",
+      "sourceId": "Handstand_Push-Ups",
+      "sourceSha256": [
+        "e9478e898da2f7c1c8ba05c41439c8c8c236c4e26f432511e3854c3cc682face",
+        "5699e612c0e58c250c1d803a8c5bb8b59f689612bda739dba44a207612b112c9"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "倒立支撑",
+        "屈肘下降"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "双手地面支撑、双脚靠墙的倒立推起形式",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 双手地面支撑、双脚靠墙的倒立推起形式。"
+    },
+    {
+      "exerciseId": "exdb:1297",
+      "expectedName": "isometric chest squeeze",
+      "sourceId": "Isometric_Chest_Squeezes",
+      "sourceSha256": [
+        "eb1d4f7792985075038b2be8e3532d508d6c92b52970317894919f6d5df639d2",
+        "2f98f90d8eff53b950a166ca7d93b9523a0625a8bf30ecbde33011ec49f80f59"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "合掌准备",
+        "等长挤压保持"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "站姿、双掌在胸前合拢，保持挤压力；静态保持",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 站姿、双掌在胸前合拢，保持挤压力；静态保持。"
+    },
+    {
+      "exerciseId": "exdb:0541",
+      "expectedName": "kettlebell one arm row",
+      "sourceId": "One-Arm_Kettlebell_Row",
+      "sourceSha256": [
+        "f8e515fbbcf9f5448375e58c2a5965ac2d12b63ff1ecb9b38ffb36a3b79c73d9",
+        "06e08b663af1a04a5b73b8500c72fed4abfd3c6a62b6b9951d0e3ec7839191c3"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "垂臂准备",
+        "单臂划船"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "双脚站姿支撑、屈髋俯身、一手持铃，另一手可轻扶大腿",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 双脚站姿支撑、屈髋俯身、一手持铃，另一手可轻扶大腿。"
+    },
+    {
+      "exerciseId": "exdb:0552",
+      "expectedName": "kettlebell two arm clean",
+      "sourceId": "Two-Arm_Kettlebell_Clean",
+      "sourceSha256": [
+        "3308765957cc340fb20cd514153e45c48f4bd438b3edda1e037f353a99f13591",
+        "d0ebd741cb4fee6d7142c7fcb004bdc6c5b12bd6089d452838ccb4650e2c8fd8"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "低位准备",
+        "肩前架位"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "站姿、双手各持一个壶铃，由低位翻至双侧肩前架位",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 站姿、双手各持一个壶铃，由低位翻至双侧肩前架位。"
+    },
+    {
+      "exerciseId": "exdb:0553",
+      "expectedName": "kettlebell two arm military press",
+      "sourceId": "Two-Arm_Kettlebell_Military_Press",
+      "sourceSha256": [
+        "b3b7586c4ec1ca80cce155b2c49fb9302b6d5d5b4f1862d4be475ed0fa1798c6",
+        "f1e0cd13dff0481fd66257c88b4da98ac60318f9bfe78d3bc4fb00e5d4569611"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "肩前准备",
+        "双臂推举"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "站姿、双手各持一个壶铃，从肩前架位同时推举",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 站姿、双手各持一个壶铃，从肩前架位同时推举。"
+    },
+    {
+      "exerciseId": "exdb:1345",
+      "expectedName": "kettlebell two arm row",
+      "sourceId": "Two-Arm_Kettlebell_Row",
+      "sourceSha256": [
+        "c94a3cdbac45ddcad089a782f734bc689fc346cb13b8532e41f9feb720ddf0e4",
+        "a3f55f1745f2e21dd2993d0734a675c230f64c59fbd347e144ce7c393596a233"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "俯身垂臂",
+        "双侧拉起"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "双脚站姿支撑、屈髋俯身，双臂同时持壶铃划船",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 双脚站姿支撑、屈髋俯身，双臂同时持壶铃划船。"
+    },
+    {
+      "exerciseId": "exdb:1403",
+      "expectedName": "neck side stretch",
+      "sourceId": "Side_Neck_Stretch",
+      "sourceSha256": [
+        "ec5bf6c453477f7ffd188aaa2a5d6431361df34c0c45ae92821d7b3615fb012c",
+        "ee993ca0d49be6a1338c9b52423e6f7b241985ec0fa8ea3511c79248eb0f19b6"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "直立准备",
+        "侧屈保持"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "站姿或坐姿，上身稳定，一侧轻柔侧屈；静态保持",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 站姿或坐姿，上身稳定，一侧轻柔侧屈；静态保持。"
+    },
+    {
+      "exerciseId": "exdb:0662",
+      "expectedName": "push-up",
+      "sourceId": "Pushups",
+      "sourceSha256": [
+        "8e6757ae0dc1d50a30f0ea67cdb330994947716a106451860cf7362bcd15f9f4",
+        "e835d50facea325828d7a3700185a0d8ba9f908db3f033334f81a6f85f774f27"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "伸臂支撑",
+        "屈肘下降"
+      ],
+      "review": {
+        "batch": "full-library-wordorder",
+        "form": "地面双手与双脚支撑的标准俯卧撑；保留独立动作库 ID",
+        "visual": "逐项查看双帧，并对照原始器械、姿势、支撑与握法；没有依据名称直接发布。",
+        "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
+      },
+      "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 地面双手与双脚支撑的标准俯卧撑；保留独立动作库 ID。"
     }
   ],
   "videos": [

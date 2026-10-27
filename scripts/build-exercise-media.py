@@ -37,16 +37,19 @@ for row in approved['stills']:
  if only and row['exerciseId'] not in only:continue
  if only and row['exerciseId'] in entries:continue
  id=row['exerciseId'];source=row['sourceId'];images=[]
- for i,expected in enumerate(row['sourceSha256']):
+ order=row.get('imageOrder',list(range(len(row['sourceSha256']))))
+ assert sorted(order)==list(range(len(row['sourceSha256']))), 'Photo phase order must use each reviewed source once'
+ for display_index,i in enumerate(order):
+  expected=row['sourceSha256'][i]
   p=stage/'candidates'/f'{source}-{i}.jpg'
   assert sha(p)==expected,f'Unreviewed source bytes: {p}'
-  images.append({**photo(p,source.lower()+f'-{i}'),'phase':row.get('phases',[f'分解 {n+1}' for n in range(len(row['sourceSha256']))])[i],'sourceIndex':0})
+  images.append({**photo(p,source.lower()+f'-{i}'),'phase':row.get('phases',[f'分解 {n+1}' for n in range(len(row['sourceSha256']))])[display_index],'sourceIndex':0})
  entries[id]={'note':row.get('note','实拍双帧分解，按顺序查看；不是连续动画。'),'images':images,'sources':[{
   'name':'free-exercise-db / '+source,'author':'free-exercise-db contributors（原图未单独署名）',
   'license':'Unlicense','licenseUrl':'/exercise-media/UNLICENSE.txt',
   'url':f'https://github.com/yuhonas/free-exercise-db/tree/{approved["freeVersion"]}/exercises/{source}',
   'version':approved['freeVersion'],'sourceSha256':row['sourceSha256'],
-  'changes':'按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。',
+  'changes':'按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。'+(' 按明确审核的源图索引排列动作阶段；未镜像制造另一侧动作。' if row.get('imageOrder') else ''),
  'distribution':'repository',
  }]}
 for row in approved['videos']:

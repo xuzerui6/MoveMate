@@ -1,7 +1,7 @@
 {
   "reviewedAt": "2026-10-27",
-  "total": 127,
-  "adopted": 39,
+  "total": 210,
+  "adopted": 71,
   "entries": [
     {
       "exerciseId": "exdb:0001",
@@ -1145,6 +1145,836 @@
       "decision": "rejected_or_pending",
       "reason": "来源手臂向前伸，候选手臂下垂，手腕环绕动作难从两帧核实。",
       "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1316",
+      "name": "barbell bent arm pullover",
+      "candidateSourceId": "Bent-Arm_Barbell_Pullover",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选使用曲杠，当前器械条目是杠铃，缺少可证明曲杠就是本变式的独立资料。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0033",
+      "name": "barbell decline bench press",
+      "candidateSourceId": "Decline_Barbell_Bench_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "下斜凳仰卧、双脚可靠固定、正握直杠",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0037",
+      "name": "barbell decline wide-grip pullover",
+      "candidateSourceId": "Wide-Grip_Decline_Barbell_Pullover",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "未能确认宽握直杆和下斜支撑的对应细节，不仅依据名称采用。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0068",
+      "name": "barbell one leg squat",
+      "candidateSourceId": "One_Leg_Barbell_Squat",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源要求抬腿前伸的单腿深蹲，候选为后脚搭凳分腿蹲。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:1412",
+      "name": "barbell palms up wrist curl over a bench",
+      "candidateSourceId": "Palms-Up_Barbell_Wrist_Curl_Over_A_Bench",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源坐姿，候选双膝跪地并将前臂放在凳上，支撑形式不同。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0080",
+      "name": "barbell reverse curl",
+      "candidateSourceId": "Reverse_Barbell_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿双手正握直杠，掌心朝下，双臂同时屈肘",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0081",
+      "name": "barbell reverse preacher curl",
+      "candidateSourceId": "Reverse_Barbell_Preacher_Curls",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "坐姿、上臂靠弯举垫、掌心朝下握直杠",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0089",
+      "name": "barbell seated close-grip concentration curl",
+      "candidateSourceId": "Seated_Close-Grip_Concentration_Barbell_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选为曲杠，且未确认窄握与当前直杠条目的对应形式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0094",
+      "name": "barbell seated twist",
+      "candidateSourceId": "Seated_Barbell_Twist",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源写杠铃置于胸前，候选是杠铃放在上背部转体。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:1372",
+      "name": "barbell standing calf raise",
+      "candidateSourceId": "Standing_Barbell_Calf_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选使用台阶垫高，当前文字未说明该支撑条件；不自动增加变式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0106",
+      "name": "barbell standing close grip curl",
+      "candidateSourceId": "Close-Grip_Standing_Barbell_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿、反手窄握直杠、双臂同时弯举",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0107",
+      "name": "barbell standing front raise over head",
+      "candidateSourceId": "Standing_Front_Barbell_Raise_Over_Head",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿正握直杠，从大腿前沿前方抬举至头顶上方",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0109",
+      "name": "barbell standing overhead triceps extension",
+      "candidateSourceId": "Standing_Overhead_Barbell_Triceps_Extension",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿、双手正握直杠、上臂靠近头侧",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0113",
+      "name": "barbell standing wide-grip curl",
+      "candidateSourceId": "Wide-Grip_Standing_Barbell_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿、掌心向前反握直杠，握距宽于肩",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0114",
+      "name": "barbell step-up",
+      "candidateSourceId": "Barbell_Step_Ups",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选顶端包含额外抬膝，原文只描述普通踏上平台，尚缺一致形式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0115",
+      "name": "barbell stiff leg good morning",
+      "candidateSourceId": "Stiff_Leg_Barbell_Good_Morning",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "上背部背杠、双脚地面支撑，膝盖自然微屈、屈髋为主",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0120",
+      "name": "barbell upright row",
+      "candidateSourceId": "Upright_Barbell_Row",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿正握直杠，杠沿身体前方上移",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0157",
+      "name": "cable deadlift",
+      "candidateSourceId": "Cable_Deadlifts",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源面向绳索机，候选为背向绳索机的胯下绳索动作。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0162",
+      "name": "cable front raise",
+      "candidateSourceId": "Front_Cable_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "低位单拉手、单臂正握、站姿从身前抬起",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0176",
+      "name": "cable kneeling triceps extension",
+      "candidateSourceId": "Kneeling_Cable_Triceps_Extension",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "面朝方向、绳柄/直杆和躯干支撑均与来源不一致。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:1636",
+      "name": "cable overhead curl",
+      "candidateSourceId": "Overhead_Cable_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源为单个直杆高位弯举，候选是双侧高位双拉手弯举。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0206",
+      "name": "cable reverse curl",
+      "candidateSourceId": "Reverse_Cable_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "低位滑轮直杆、掌心朝下正握、双臂同时屈肘",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0220",
+      "name": "cable shrug",
+      "candidateSourceId": "Cable_Shrugs",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "面对低位滑轮、双手正握直杆于身前",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0230",
+      "name": "cable standing lift",
+      "candidateSourceId": "Standing_Cable_Lift",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "低位滑轮、双手握拉手，从一侧腰部斜向对侧肩上方",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0245",
+      "name": "cable underhand pulldown",
+      "candidateSourceId": "Underhand_Cable_Pulldowns",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "坐姿、双手反握长杆、向胸前下拉",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0246",
+      "name": "cable upright row",
+      "candidateSourceId": "Upright_Cable_Row",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "低位滑轮直杆、站姿双手正握、沿体前上提",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0284",
+      "name": "donkey calf raise",
+      "candidateSourceId": "Donkey_Calf_Raises",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选同伴坐在背上增加负重，当前条目为徒手扶物提踵。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0285",
+      "name": "dumbbell alternate biceps curl",
+      "candidateSourceId": "Dumbbell_Alternate_Bicep_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源起始掌心向前，候选有中立握与旋腕交替，未确认是否同一变式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:2137",
+      "name": "dumbbell arnold press",
+      "candidateSourceId": "Arnold_Dumbbell_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "有靠背坐姿、双哑铃同时推举，掌心由朝向自己转至朝前",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:1731",
+      "name": "dumbbell close grip press",
+      "candidateSourceId": "Close-Grip_Dumbbell_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选握铃数量和握法与每手一只的来源说明不明确，且与另一近同名 ID 无法区分。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0296",
+      "name": "dumbbell close-grip press",
+      "candidateSourceId": "Close-Grip_Dumbbell_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "与 exdb:1731 近同名且说明相近，未确认握铃数量及独立变式，不自动合并。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0301",
+      "name": "dumbbell decline bench press",
+      "candidateSourceId": "Decline_Dumbbell_Bench_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "下斜凳仰卧、双脚固定、双手各持一只哑铃",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0306",
+      "name": "dumbbell decline triceps extension",
+      "candidateSourceId": "Decline_Dumbbell_Triceps_Extension",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选下肢和下斜凳固定方式被取景裁去，无法核对完整支撑。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0310",
+      "name": "dumbbell front raise",
+      "candidateSourceId": "Front_Dumbbell_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源为身前抬至肩高，候选为单臂交替且高于肩部，尚不能认定同一形式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0318",
+      "name": "dumbbell incline curl",
+      "candidateSourceId": "Incline_Dumbbell_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源描述双侧弯举，候选明确为左右交替；不以交替图片代替。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0350",
+      "name": "dumbbell lying supine curl",
+      "candidateSourceId": "Lying_Supine_Dumbbell_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "沿平凳仰卧、双脚踩地，上臂在身体两侧下垂",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0351",
+      "name": "dumbbell lying triceps extension",
+      "candidateSourceId": "Lying_Dumbbell_Tricep_Extension",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "沿平凳仰卧、双脚踩地、双手中立握哑铃",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0391",
+      "name": "dumbbell seated curl",
+      "candidateSourceId": "Seated_Dumbbell_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源起始掌心朝前，候选起始为中立握，未核对是否包含旋腕变式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0393",
+      "name": "dumbbell seated inner biceps curl",
+      "candidateSourceId": "Seated_Dumbbell_Inner_Biceps_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源要求上臂放在大腿，候选双臂向两侧展开且不支于大腿。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0401",
+      "name": "dumbbell seated palms up wrist curl",
+      "candidateSourceId": "Seated_Dumbbell_Palms-Up_Wrist_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "坐姿、前臂支在大腿、掌心朝上，手腕悬于膝前",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:1740",
+      "name": "dumbbell standing bent over one arm triceps extension",
+      "candidateSourceId": "Standing_Bent-Over_One-Arm_Dumbbell_Triceps_Extension",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "双脚站姿支撑、屈髋俯身、一手持铃，另一手可轻扶大腿",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:1741",
+      "name": "dumbbell standing bent over two arm triceps extension",
+      "candidateSourceId": "Standing_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "与现有 exdb:0333 说明同类形式，缺少可区分条目的原始资料；暂不重复记作新覆盖。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0417",
+      "name": "dumbbell standing calf raise",
+      "candidateSourceId": "Standing_Dumbbell_Calf_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选使用前脚掌垫高，原说明没有台阶条件；不直接添加支撑变式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0422",
+      "name": "dumbbell standing one arm curl (over incline bench)",
+      "candidateSourceId": "Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源只说明另一手扶凳，候选工作臂也放在凳垫上，支持方式未对应。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:1680",
+      "name": "dumbbell standing one arm curl over incline bench",
+      "candidateSourceId": "Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "与 exdb:0422 近同名且支撑说明不明确，无法确认独立形式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0424",
+      "name": "dumbbell standing one arm palm in press",
+      "candidateSourceId": "Standing_Palm-In_One-Arm_Dumbbell_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿、单臂持铃、掌心朝内，从肩旁向上推举",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0427",
+      "name": "dumbbell standing palms in press",
+      "candidateSourceId": "Standing_Palms-In_Dumbbell_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿、双手掌心相对、双臂同时向上推举",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0429",
+      "name": "dumbbell standing reverse curl",
+      "candidateSourceId": "Standing_Dumbbell_Reverse_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿、掌心朝下正握双哑铃、双臂同时屈肘",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0430",
+      "name": "dumbbell standing triceps extension",
+      "candidateSourceId": "Standing_Dumbbell_Triceps_Extension",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源为单手持铃过顶伸肘，候选是双手托一只哑铃。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0431",
+      "name": "dumbbell step-up",
+      "candidateSourceId": "Dumbbell_Step_Ups",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选在台阶上含抬膝动作，原文描述另一脚跟上站稳，阶段不完全一致。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0433",
+      "name": "dumbbell straight arm pullover",
+      "candidateSourceId": "Straight-Arm_Dumbbell_Pullover",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源沿凳全背支撑，候选横向肩背撑凳且腰髋悬空。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0466",
+      "name": "gironda sternum chin",
+      "candidateSourceId": "Gironda_Sternum_Chins",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "握法和胸骨触杠所需体位无法从当前普通引体说明核实。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0471",
+      "name": "handstand push-up",
+      "candidateSourceId": "Handstand_Push-Ups",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "双手地面支撑、双脚靠墙的倒立推起形式",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0484",
+      "name": "hip raise (bent knee)",
+      "candidateSourceId": "Bent-Knee_Hip_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源为脚踩地臀桥，候选为双脚悬空的反向卷腹。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0490",
+      "name": "incline close-grip push-up",
+      "candidateSourceId": "Incline_Push-Up_Close-Grip",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源名称窄握却写略宽于肩，且候选握固定杠而非掌撑平台，需先核清形式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0494",
+      "name": "incline reverse grip push-up",
+      "candidateSourceId": "Incline_Push-Up_Reverse_Grip",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源未明确反握方式，候选为反握固定杠支撑，不能直接当掌撑凳面变式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:1297",
+      "name": "isometric chest squeeze",
+      "candidateSourceId": "Isometric_Chest_Squeezes",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿、双掌在胸前合拢，保持挤压力；静态保持",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0517",
+      "name": "kettlebell advanced windmill",
+      "candidateSourceId": "Advanced_Kettlebell_Windmill",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源左右脚和持铃臂指向的文字矛盾，复杂风车形式尚未核清。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0520",
+      "name": "kettlebell alternating press",
+      "candidateSourceId": "Alternating_Kettlebell_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选只展示一侧推起，未核实完整左右交替及回位阶段。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0522",
+      "name": "kettlebell alternating row",
+      "candidateSourceId": "Alternating_Kettlebell_Row",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选只展示一侧拉起，尚缺明确左右交替过程核对。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0526",
+      "name": "kettlebell double alternating hang clean",
+      "candidateSourceId": "Double_Kettlebell_Alternating_Hang_Clean",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "名称为交替双壶铃翻举，来源过程没有交替配对，图片也不能确认完整过渡。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0527",
+      "name": "kettlebell double jerk",
+      "candidateSourceId": "Double_Kettlebell_Jerk",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "两帧都在肩前与预蹲阶段，缺少挺举过顶关键位置。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0528",
+      "name": "kettlebell double push press",
+      "candidateSourceId": "Double_Kettlebell_Push_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "两帧缺少推举过顶位置，不能只凭预蹲判断完整蹬腿推举。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0529",
+      "name": "kettlebell double snatch",
+      "candidateSourceId": "Double_Kettlebell_Snatch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "两帧缺少抓举过顶位置，不能以站立和低位准备冒充抓举示范。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0530",
+      "name": "kettlebell double windmill",
+      "candidateSourceId": "Double_Kettlebell_Windmill",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "名称双壶铃，来源只说明一个壶铃，候选却有一高一低两只，器械数量矛盾。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0537",
+      "name": "kettlebell one arm clean and jerk",
+      "candidateSourceId": "One-Arm_Kettlebell_Clean_and_Jerk",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "组合动作来源混写成一次上摆，候选缺少挺举过顶阶段。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:1298",
+      "name": "kettlebell one arm floor press",
+      "candidateSourceId": "One-Arm_Kettlebell_Floor_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源屈膝双脚踩地，候选双腿伸直，支撑姿势不一致。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0538",
+      "name": "kettlebell one arm jerk",
+      "candidateSourceId": "One-Arm_Kettlebell_Jerk",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选缺少过顶接铃阶段，无法核对二次屈膝接铃。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0539",
+      "name": "kettlebell one arm military press to the side",
+      "candidateSourceId": "One-Arm_Kettlebell_Military_Press_To_The_Side",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "名称含侧向推举，来源却是普通垂直肩推，候选有侧倾，需核对变式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0540",
+      "name": "kettlebell one arm push press",
+      "candidateSourceId": "One-Arm_Kettlebell_Push_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "两帧只有肩前与预蹲，没有过顶位置，缺少完整关键阶段。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0541",
+      "name": "kettlebell one arm row",
+      "candidateSourceId": "One-Arm_Kettlebell_Row",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "双脚站姿支撑、屈髋俯身、一手持铃，另一手可轻扶大腿",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0542",
+      "name": "kettlebell one arm snatch",
+      "candidateSourceId": "One-Arm_Kettlebell_Snatch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选只有站立与低位准备，没有单臂抓举的过顶关键位置。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0545",
+      "name": "kettlebell plyo push-up",
+      "candidateSourceId": "Plyo_Kettlebell_Pushups",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源双手撑壶铃，候选一手撑地、一手撑铃，属于不同支撑形式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0552",
+      "name": "kettlebell two arm clean",
+      "candidateSourceId": "Two-Arm_Kettlebell_Clean",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿、双手各持一个壶铃，由低位翻至双侧肩前架位",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0553",
+      "name": "kettlebell two arm military press",
+      "candidateSourceId": "Two-Arm_Kettlebell_Military_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿、双手各持一个壶铃，从肩前架位同时推举",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:1345",
+      "name": "kettlebell two arm row",
+      "candidateSourceId": "Two-Arm_Kettlebell_Row",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "双脚站姿支撑、屈髋俯身，双臂同时持壶铃划船",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0570",
+      "name": "leg pull in flat bench",
+      "candidateSourceId": "Flat_Bench_Leg_Pull-In",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源坐姿凳边收腿，候选是仰卧凳面屈腿卷臀。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0609",
+      "name": "london bridge",
+      "candidateSourceId": "London_Bridges",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源为站姿拉绳，候选是身体后倾攀绳，不是相同过程。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:1403",
+      "name": "neck side stretch",
+      "candidateSourceId": "Side_Neck_Stretch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿或坐姿，上身稳定，一侧轻柔侧屈；静态保持",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0662",
+      "name": "push-up",
+      "candidateSourceId": "Pushups",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "地面双手与双脚支撑的标准俯卧撑；保留独立动作库 ID",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0678",
+      "name": "rocky pull-up pulldown",
+      "candidateSourceId": "Rocky_Pull-Ups_Pulldowns",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "名称 Rocky 引体通常涉及前后位置，当前来源只有普通引体过程，未核清组合。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0720",
+      "name": "side-to-side chin",
+      "candidateSourceId": "Side_To_Side_Chins",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源没有侧向移动步骤，图片只显示一侧上拉，不能确认左右横移形式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+    },
+    {
+      "exerciseId": "exdb:0759",
+      "name": "smith incline shoulder raises",
+      "candidateSourceId": "Smith_Incline_Shoulder_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源为站姿向上提杆，候选是上斜凳仰卧肩胛前伸。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
     }
   ]
 }

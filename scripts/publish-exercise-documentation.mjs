@@ -13,9 +13,10 @@ for(const row of rows){
   if(output[row.id])throw Error('Duplicate source ID: '+row.id);
   const explicit=curation.entries[row.id];
   if(explicit){
-    if(!explicit.form||!explicit.cues?.length||!explicit.reviewReason||explicit.instructions.length<3||explicit.instructions.length>5)throw Error('Incomplete reviewed content: '+row.id);
+    if(!['checked','needs_review'].includes(explicit.reviewStatus)||!explicit.reviewReason)throw Error('Missing explicit editorial decision: '+row.id);
+    if(explicit.reviewStatus==='checked'&&(!explicit.form||!explicit.cues?.length||!explicit.instructions||explicit.instructions.length<3||explicit.instructions.length>5))throw Error('Incomplete reviewed content: '+row.id);
     if(explicit.reviewStatus==='checked'&&!media[row.id])throw Error('Checked content must have reviewed matching media: '+row.id);
-    output[row.id]=explicit;
+    output[row.id]={cues:[],form:'',...explicit,reviewStage:'editorial'};
   }else{
     const issues=[];
     if(/\bv\.?\s*\d|version/i.test(row.name))issues.push('原文版本后缀尚缺可区分该变式的独立来源');
@@ -26,10 +27,10 @@ for(const row of rows){
     if(/stretch|hold|plank/i.test(row.name))issues.push('需核对静态保持与动态过程，不制作虚构重复动作图');
     issues.push('尚未逐项完成文字与图像的人工对照，不计入完整覆盖');
     // Pending entries retain source wording instead of inventing specific advice.
-    output[row.id]={reviewStatus:'needs_review',reviewReason:issues.join('；')+'。',cues:[],form:''};
+    output[row.id]={reviewStatus:'needs_review',reviewReason:issues.join('；')+'。',cues:[],form:'',reviewStage:'structural'};
   }
   const record=output[row.id],m=media[row.id];
-  ledger.push({id:row.id,originalName:row.name,status:record.reviewStatus,reason:record.reviewReason,text:{status:record.reviewStatus==='checked'?'source_compared':'source_only',source:row.id.startsWith('exdb:')?'exercises-dataset':'MoveMate original',revision:row.id.startsWith('exdb:')?'7455efae41b330c265e7cd4b78dfa848e7ce5ebd':'original',license:row.id.startsWith('exdb:')?'MIT':'项目原创文字',sourceRecordSha256:createHash('sha256').update(JSON.stringify(row)).digest('hex'),steps:(record.instructions||row.instructions).length},photo:!!m&&m.kind!=='illustration'&&!!m.images.length,illustration:m?.kind==='illustration',video:!!m?.video,complete:record.reviewStatus==='checked'&&!!m?.images.length,sources:m?.sources||[]});
+  ledger.push({id:row.id,originalName:row.name,status:record.reviewStatus,reviewStage:record.reviewStage,reason:record.reviewReason,text:{status:record.reviewStatus==='checked'?'source_compared':explicit?'reviewed_with_issues':'source_only',source:row.id.startsWith('exdb:')?'exercises-dataset':'MoveMate original',revision:row.id.startsWith('exdb:')?'7455efae41b330c265e7cd4b78dfa848e7ce5ebd':'original',license:row.id.startsWith('exdb:')?'MIT':'项目原创文字',sourceRecordSha256:createHash('sha256').update(JSON.stringify(row)).digest('hex'),steps:(record.instructions||row.instructions).length},photo:!!m&&m.kind!=='illustration'&&!!m.images.length,illustration:m?.kind==='illustration',video:!!m?.video,complete:record.reviewStatus==='checked'&&!!m?.images.length,sources:m?.sources||[]});
 }
 for(const id of Object.keys(curation.entries))if(!output[id])throw Error('Unknown reviewed ID: '+id);
 for(const id of Object.keys(media))if(!output[id])throw Error('Unknown media ID: '+id);

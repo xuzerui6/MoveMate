@@ -8,8 +8,10 @@ import {exercises} from '../../server/src/gym/model';
 import {documented} from '../../server/src/gym/documentation';
 import ledger from '../../docs/exercise-audit-ledger.json';
 import diagrams from '../../scripts/exercise-illustrations.json';
+import approved from '../../scripts/exercise-media-approved.json';
 import {exerciseMedia,mediaFor} from '../src/features/gym/mediaCatalogue';
-import {mediaIndex} from '../src/features/gym/media';
+import {mediaIndex,muscleRegions} from '../src/features/gym/media';
+import musclePaths from '../src/features/gym/muscle-paths.json';
 import {reviewedMediaIds} from '../../server/src/gym/media-filter';
 import {verifyMediaMetadata} from '../../scripts/media-metadata.mjs';
 import {loadMedia} from '../src/features/gym/mediaLoader';
@@ -33,6 +35,30 @@ test('every official ID has an honest separate documentation decision; custom ID
   assert.equal(exercises.find(e=>e.id==='exdb:1371')!.reviewStatus,'needs_review');
   assert.equal(mediaFor('exdb:1371'),undefined);
   assert.equal(exercises.find(e=>e.id==='exdb:0475')!.category,'strength','Straight leg raises are repetitions, not a static hang');
+  for(const id of ['exdb:1297','exdb:1403'])assert.equal(exercises.find(e=>e.id===id)!.category,'timed','Static holds must not be described as repetition cycles');
+  assert.equal(exercises.find(e=>e.id==='exdb:0484')!.reviewStage,'editorial');
+  assert.ok(exercises.find(e=>e.id==='exdb:0484')!.reviewReason!.includes('脚踩地臀桥'));
+});
+
+test('photo order uses each approved source once and labels actual phases without inventing mirrored sides',()=>{
+  for(const row of approved.stills as any[]){
+    if(!row.imageOrder)continue;
+    assert.deepEqual([...row.imageOrder].sort(),row.sourceSha256.map((_:any,i:number)=>i));
+    const media=mediaFor(row.exerciseId)!;
+    assert.deepEqual(media.images.map(f=>f.phase),row.phases);
+    assert.ok(media.sources[0].changes.includes('未镜像'));
+    for(let i=0;i<media.images.length;i++)assert.ok(media.images[i].src.includes(row.sourceId.toLowerCase()+'-'+row.imageOrder[i]+'.'));
+  }
+});
+
+test('exact muscle aliases highlight existing shapes, while missing outlines never borrow another muscle',()=>{
+  assert.deepEqual(muscleRegions('quads'),muscleRegions('quadriceps'));
+  assert.deepEqual(muscleRegions('deltoids'),muscleRegions('delts'));
+  assert.deepEqual(muscleRegions('trapezius'),muscleRegions('traps'));
+  assert.deepEqual(muscleRegions('latissimus dorsi'),[]);
+  assert.deepEqual(muscleRegions('levator scapulae'),[]);
+  const known=new Set([...musclePaths.front,...musclePaths.back].map(p=>p.muscle));
+  for(const e of exercises)for(const target of [e.target,...e.secondaryMuscles])for(const region of muscleRegions(target))assert.ok(known.has(region),target+' -> '+region);
 });
 
 test('media filtering remains complete beyond 500 entries and composes before paging',()=>{

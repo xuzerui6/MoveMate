@@ -181,6 +181,7 @@ function Still({ src, alt }: { src: string; alt: string }) {
 export function ExerciseMuscles({ exercise }: { exercise: any }) {
   const primary = muscleRegions(exercise?.target),
     secondary = (exercise?.secondaryMuscles || []).flatMap(muscleRegions);
+  const unoutlined=[exercise?.target,...(exercise?.secondaryMuscles||[])].filter((t:string)=>t&&!muscleRegions(t).length);
   return (
     <div className="exercise-muscles">
       <div className="exercise-muscle-pair">
@@ -223,6 +224,7 @@ export function ExerciseMuscles({ exercise }: { exercise: any }) {
       <small>
         肌群位置示意；未标注的区域不推断。非动作示范或身体恢复评估。图形来自 <a href="/licenses/MuscleMap-MIT.txt" target="_blank" rel="noreferrer">MuscleMap · MIT</a>。
       </small>
+      {!!unoutlined.length&&<small>图中暂无独立轮廓：{[...new Set(unoutlined)].map(t=>label(String(t))).join('、')}。未着色不表示没有参与。</small>}
     </div>
   );
 }
@@ -235,7 +237,7 @@ function Viewer({
 }) {
   const state=useExerciseMedia(exercise.id);
   if(state.loading)return <p className="media-pending" role="status">正在读取此动作的示范资料…</p>;
-  if(state.error)return <div className="media-error" role="status">{state.error}<button type="button" onClick={state.retry}>重试示范资料</button></div>;
+  if(state.error)return <><div className="media-error" role="status">{state.error}<button type="button" onClick={state.retry}>重试示范资料</button></div><LoadedViewer key={exercise.id} exercise={exercise} suspended={suspended}/></>;
   return <LoadedViewer key={exercise.id} exercise={exercise} suspended={suspended} media={state.media||undefined}/>;
 }
 function LoadedViewer({exercise,suspended=false,media}:{exercise:any;suspended?:boolean;media?:Media}){
@@ -347,7 +349,7 @@ function LoadedViewer({exercise,suspended=false,media}:{exercise:any;suspended?:
       </div>
       {!media && (
         <p className="media-pending">
-          示范待补 · 肌群图只表示部位；下方来源步骤尚待核对，不用相近动作替代。
+          {mediaSummaryFor(exercise.id)?'示范暂不可用 · 可继续查看肌群、适用形式与文字，或重试读取示范资料。':'示范待补 · 肌群图只表示部位；下方来源步骤尚待核对，不用相近动作替代。'}
         </p>
       )}
       {suspended && (

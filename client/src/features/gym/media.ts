@@ -44,23 +44,33 @@ const muscleGroups: Record<string, string[]> = {
   chest: ["upperChest", "lowerChest", "chest"],
   biceps: ["biceps"],
   triceps: ["triceps"],
-  forearms: ["forearm", "forearms"],
+  forearms: ["forearm"],
   delts: ["frontDeltoid", "rearDeltoid", "deltoids"],
   shoulders: ["frontDeltoid", "rearDeltoid", "deltoids"],
   traps: ["upperTrapezius", "trapezius"],
-  lats: ["lats"],
+  // This source diagram has no independent latissimus outline. Do not paint
+  // another back muscle as a substitute merely to make the map look complete.
+  lats: [],
   "upper back": ["upperBack"],
   "lower back": ["lowerBack"],
   abs: ["upperAbs", "lowerAbs", "abs"],
   obliques: ["obliques"],
   quadriceps: ["innerQuad", "outerQuad", "quadriceps"],
   hamstrings: ["hamstring"],
-  glutes: ["gluteal", "glutes"],
+  glutes: ["gluteal"],
   calves: ["calves"],
   adductors: ["adductors"],
   "hip flexors": ["hipFlexors"],
   "tibialis anterior": ["tibialis"],
+  "rear deltoids": ["rearDeltoid"],
+  "lower abs": ["lowerAbs"],
+  "upper chest": ["upperChest"],
+  rhomboids: ["rhomboids"],
+  "rotator cuff": ["rotatorCuff"],
+  "serratus anterior": ["serratus"],
+  serratus_anterior: ["serratus"],
 };
+const muscleAliases:Record<string,string>={quads:'quadriceps',deltoids:'delts',trapezius:'traps',abdominals:'abs','latissimus dorsi':'lats'};
 export function muscleRegions(target: string) {
-  return muscleGroups[target] || [];
+  return muscleGroups[muscleAliases[target]||target] || [];
 }

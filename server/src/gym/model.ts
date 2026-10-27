@@ -25,6 +25,7 @@ export type Exercise = {
   form?: string;
   reviewStatus?: 'checked'|'needs_review';
   reviewReason?: string;
+  reviewStage?: 'editorial'|'structural';
 };
 const core = [
   [
@@ -131,7 +132,7 @@ const names: Record<string, string> = {
   "one arm": "单臂",
   "two arm": "双臂",
   "single leg": "单腿",
-  lying: "仰卧",
+  lying: "卧姿",
   reverse: "反向",
   "wide grip": "宽握",
   "close grip": "窄握",
@@ -143,15 +144,55 @@ const names: Record<string, string> = {
   "underhand grip": "反握",
   "overhand grip": "正握",
   "neutral grip": "中立握",
+  "one leg": "单腿",
+  "two leg": "双腿",
+  "bent over": "俯身",
+  "palms up": "掌心向上",
+  "palms down": "掌心向下",
+  "palms in": "掌心相对",
+  "palm in": "掌心向内",
+  "v bar": "V 型拉杆",
+  "ez barbell": "曲杠",
+  "e z barbell": "曲杠",
+  "leverage machine": "固定器械",
+  "smith machine": "史密斯机",
+  "on exercise ball": "健身球辅助",
+  "on stability ball": "健身球辅助",
+  "on bosu ball": "波速球辅助",
+  "over incline bench": "斜凳支撑",
+  "over a bench": "凳面支撑",
+  "with arm blaster": "臂托辅助",
+  "with leg raised": "抬腿",
+  "cross body": "跨体",
+  "between legs": "两腿间",
+  "wide stance": "宽站距",
+  "narrow stance": "窄站距",
+  bodyweight: "徒手",
 };
-export function chineseName(name: string) {
-  const phrases = Object.keys(names)
+const phrases = Object.keys(names)
     .sort((a, b) => b.length - a.length)
     .map((phrase) => phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
-  return name.replace(
-    new RegExp("\\b(?:" + phrases.join("|") + ")\\b", "gi"),
+const namePattern=new RegExp("\\b(?:" + phrases.join("|") + ")\\b", "gi");
+export function chineseName(name: string) {
+  return name.replace(/([a-z])-+(?=[a-z])/gi,'$1 ').replace(/в°/g,'°').replace(
+    namePattern,
     (match) => names[match.toLowerCase()],
   );
+}
+function sourceDisplayName(e:any){
+  if(e.nameZh)return e.nameZh;
+  let translated=chineseName(e.name).replace(/[a-z]+/gi,(word:string)=>(zhTerms as Record<string,string>)[word.toLowerCase()]||word);
+  const instructions=Array.isArray(e.instructions)?e.instructions.join(' '):String(e.instructions||'');
+  // Translate the explicitly stated support orientation. This only improves
+  // wording; it never verifies an exercise, grants camera access or draws media.
+  if(translated.includes('卧姿')){
+    if(/仰卧|俯卧|侧卧/.test(translated))translated=translated.replace('卧姿','');
+    else{
+      const pose=/侧躺|侧卧/.test(instructions)?'侧卧':/脸朝下|面朝下|胸部朝下|俯卧/.test(instructions)?'俯卧':/平躺|面朝上|脸朝上|仰卧/.test(instructions)?'仰卧':'';
+      if(pose)translated=translated.replace('卧姿',pose);
+    }
+  }
+  return translated.replace(/卧姿\s*(仰卧|俯卧|侧卧)/g,'$1');
 }
 export const exercises: Exercise[] = [
   ...core.map(([id, nameZh, bodyPart, target, instruction]) => ({
@@ -169,13 +210,7 @@ export const exercises: Exercise[] = [
   ...(catalogue as any[]).map((e) => ({
     ...e,
     planCamera: planCameraFor(e.id),
-    nameZh:
-      e.nameZh ||
-      chineseName(e.name).replace(
-        /[a-z]+/gi,
-        (word: string) =>
-          (zhTerms as Record<string, string>)[word.toLowerCase()] || word,
-      ),
+    nameZh: sourceDisplayName(e),
     aliases: [
       ...(e.aliases || []),
       ...(e.nameZh ? [e.nameZh] : []),
