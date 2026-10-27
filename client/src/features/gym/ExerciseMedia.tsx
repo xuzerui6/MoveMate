@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import Dialog from "../../components/Dialog";
 import paths from "./muscle-paths.json";
 import { label } from "./api";
-import { mediaFor, muscleRegions, type ExerciseMedia as Media } from "./media";
+import { mediaSummaryFor, muscleRegions, type ExerciseMedia as Media } from "./media";
+import {useExerciseMedia} from './mediaLoader';
 import { demoPlayback } from "./mediaPlayback";
 import "./exercise-media.css";
 
@@ -232,7 +233,13 @@ function Viewer({
   exercise: any;
   suspended?: boolean;
 }) {
-  const media = mediaFor(exercise.id),
+  const state=useExerciseMedia(exercise.id);
+  if(state.loading)return <p className="media-pending" role="status">正在读取此动作的示范资料…</p>;
+  if(state.error)return <div className="media-error" role="status">{state.error}<button type="button" onClick={state.retry}>重试示范资料</button></div>;
+  return <LoadedViewer key={exercise.id} exercise={exercise} suspended={suspended} media={state.media||undefined}/>;
+}
+function LoadedViewer({exercise,suspended=false,media}:{exercise:any;suspended?:boolean;media?:Media}){
+  const
     [tab, setTab] = useState<"video" | "stills" | "muscles">(
       media?.video ? "video" : media?.images.length ? "stills" : "muscles",
     ),
@@ -242,6 +249,8 @@ function Viewer({
     ? undefined : media?.sources[currentFrame.sourceIndex];
   return (
     <>
+      {exercise.reviewStatus==='needs_review'&&<p className="media-pending" role="note"><strong>资料待核对</strong> · {exercise.reviewReason}</p>}
+      {exercise.form&&<p className="media-note"><strong>适用形式：</strong>{exercise.form}</p>}
       <div
         className="media-tabs"
         role="tablist"
@@ -338,7 +347,7 @@ function Viewer({
       </div>
       {!media && (
         <p className="media-pending">
-          示范待补 · 暂时可查看肌群与文字步骤，不用相近动作替代。
+          示范待补 · 肌群图只表示部位；下方来源步骤尚待核对，不用相近动作替代。
         </p>
       )}
       {suspended && (
@@ -348,6 +357,7 @@ function Viewer({
       )}
       {media && (
         <>
+          {media.kind==='illustration'&&<p className="media-note" role="note">原创动作示意，非真人实拍、非专业教学认证。请结合文字核对器械与支撑方式。</p>}
           <p className="media-note">{media.note}</p>
           <details className="media-attribution">
             <summary>素材来源与许可</summary>
@@ -373,6 +383,7 @@ function Viewer({
           </details>
         </>
       )}
+      {!!exercise.cues?.length&&<div className="media-note"><strong>主要注意点</strong><ul>{exercise.cues.map((cue:string,i:number)=><li key={i}>{cue}</li>)}</ul></div>}
     </>
   );
 }
@@ -438,7 +449,7 @@ export function ExerciseDemo({
       onToggle={(e) => setOpen(e.currentTarget.open)}
     >
       <summary>
-        查看动作示范{mediaFor(exercise.id) ? " · 站内图文" : " · 示范待补"}
+        查看动作示范{mediaSummaryFor(exercise.id) ? " · 站内图文" : " · 资料待核对"}
       </summary>
       {open && (
         <ExerciseMediaPanel
@@ -451,8 +462,8 @@ export function ExerciseDemo({
   );
 }
 export function ExerciseThumb({ exercise }: { exercise: any }) {
-  const m = mediaFor(exercise.id),
-    src = m?.images[0]?.src || m?.video?.poster,
+  const m = mediaSummaryFor(exercise.id),
+    src = m?.thumb,
     [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [src]);
   return (

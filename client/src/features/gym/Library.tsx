@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { label, request, useGymQuery, getErrorMessage } from "./api";
 import { CameraCapability } from "./CameraCapability";
 import { ExerciseMediaPanel, ExerciseThumb } from "./ExerciseMedia";
-import { mediaIds, mediaFor, type MediaFilter } from "./media";
+import { mediaSummaryFor, type MediaFilter } from "./media";
 import { useAuthStore } from "../../stores/authStore";
 import { CachedDataNotice } from "./CachedDataNotice";
 import { FavoriteRequests, mergeExercisePage } from "./libraryState";
@@ -67,7 +67,7 @@ export function ExerciseLibrary({
     cursor: String(cursor),
     ...(favorite ? { favorite: "1" } : {}),
     ...(cameraOnly ? { camera: "1" } : {}),
-    ...(demoFilter !== "all" ? { ids: mediaIds(demoFilter)!.join(",") || "__no_demo__" } : {}),
+    ...(demoFilter !== "all" ? {media:demoFilter} : {}),
   });
   const result = useGymQuery("/exercises?" + params);
   const filters = new URLSearchParams(params); filters.delete("cursor");
@@ -460,13 +460,13 @@ export function ExerciseLibrary({
             </form>
           )}
           <ExerciseMediaPanel key={selected.id} exercise={selected} />
-          <h4>动作步骤与要点</h4>
+          <h4>{selected.reviewStatus==='needs_review'?'来源步骤（待核对）':'动作步骤'}</h4>
           <ol>
             {selected.instructions.map((s: string, i: number) => (
               <li key={i}>{s}</li>
             ))}
           </ol>
-          <p>从舒适负重开始；不适时停止。</p>
+          <p>不适时停止；示范及文字不代表专业教学认证。</p>
           <CameraCapability exercise={selected} />
           {onPick && (
             <button className="primary" disabled={searching || result.loading} onClick={() => onPick(selected)}>
@@ -496,13 +496,13 @@ export function ExerciseLibrary({
                   {ex.archived ? " · 已归档" : ""}
                 </small>
                 <span className="exercise-media-badges">
-                  {mediaFor(ex.id)?.images.length ? <span>图片</span> : null}
-                  {mediaFor(ex.id)?.video && <span>动态</span>}
+                  {mediaSummaryFor(ex.id)?.images ? <span>{mediaSummaryFor(ex.id)?.kind==='illustration'?'原创图解':'真人图片'}</span> : null}
+                  {mediaSummaryFor(ex.id)?.video && <span>连续视频</span>}
                   {(ex.planCamera || ex.cameraType) && (
                     <span>摄像头{ex.planCamera ? "试用" : ""}</span>
                   )}
-                  {!mediaFor(ex.id) && (
-                    <span className="pending">示范待补</span>
+                  {!mediaSummaryFor(ex.id) && (
+                    <span className="pending">{ex.reviewStatus==='needs_review'?'资料待核对':'示范待补'}</span>
                   )}
                 </span>
               </span>

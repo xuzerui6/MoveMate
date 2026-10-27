@@ -2,6 +2,7 @@ import { z } from "zod";
 import catalogue from "./catalog.json";
 import zhTerms from "./zh-terms.json";
 import { planCameraFor } from "./camera";
+import { documented } from './documentation';
 export const cameraKeys = [
   "squat",
   "jumping_jack",
@@ -20,6 +21,10 @@ export type Exercise = {
   category: string;
   cameraType?: (typeof cameraKeys)[number];
   planCamera?: ReturnType<typeof planCameraFor>;
+  cues?: string[];
+  form?: string;
+  reviewStatus?: 'checked'|'needs_review';
+  reviewReason?: string;
 };
 const core = [
   [
@@ -130,6 +135,14 @@ const names: Record<string, string> = {
   reverse: "反向",
   "wide grip": "宽握",
   "close grip": "窄握",
+  "back lever": "后水平支撑",
+  "front lever": "前水平支撑",
+  "side lying": "侧卧",
+  "side-lying": "侧卧",
+  "reverse grip": "反握",
+  "underhand grip": "反握",
+  "overhand grip": "正握",
+  "neutral grip": "中立握",
 };
 export function chineseName(name: string) {
   const phrases = Object.keys(names)
@@ -200,7 +213,7 @@ export const exercises: Exercise[] = [
       : [String(e.instructions)],
   })),
   { id: "movemate:reverse_lunge", name: "alternating reverse lunge", nameZh: "交替后撤弓步", bodyPart: "upper legs", equipment: "body weight", target: "quadriceps", secondaryMuscles: ["glutes", "hamstrings"], category: "strength", instructions: ["双脚并立，保持身体直立。", "一侧向后撤步并屈膝下沉，保持前脚支撑。", "返回并脚站立，再换另一侧；每侧完成计一次。"], planCamera: planCameraFor("movemate:reverse_lunge") },
-];
+].map(documented);
 export const setSchema = z.object({
   kind: z.enum(["warmup", "work", "drop", "rest_pause"]).default("work"),
   reps: z.number().int().min(1).max(500).default(10),

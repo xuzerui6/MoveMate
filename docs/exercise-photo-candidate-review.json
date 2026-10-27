@@ -1,0 +1,1150 @@
+{
+  "reviewedAt": "2026-10-27",
+  "total": 127,
+  "adopted": 39,
+  "entries": [
+    {
+      "exerciseId": "exdb:0001",
+      "name": "3/4 sit-up",
+      "candidateSourceId": "3_4_Sit-Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "地面屈膝，双脚踩稳，躯干仅卷起至中间位置",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0003",
+      "name": "air bike",
+      "candidateSourceId": "Air_Bike",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "地面仰卧，双腿悬空，左右交替转体",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0006",
+      "name": "alternate heel touchers",
+      "candidateSourceId": "Alternate_Heel_Touchers",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "地面仰卧屈膝，双脚踩地，双手交替触同侧脚跟",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1368",
+      "name": "ankle circles",
+      "candidateSourceId": "Ankle_Circles",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源坐姿，候选只拍站姿脚踝局部，支撑不匹配。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0020",
+      "name": "balance board",
+      "candidateSourceId": "Balance_Board",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "说明为单脚平衡，候选为双脚站板。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0970",
+      "name": "band assisted pull-up",
+      "candidateSourceId": "Band_Assisted_Pull-Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源描述脚踩弹力带，候选膝部带位与支撑细节不能可靠确认。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0045",
+      "name": "barbell guillotine bench press",
+      "candidateSourceId": "Barbell_Guillotine_Bench_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "颈部下杠的特殊卧推，尚缺适用条件与保护细节的可靠核验。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0046",
+      "name": "barbell hack squat",
+      "candidateSourceId": "Barbell_Hack_Squat",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "双手正握杠铃于腿后，双脚地面支撑",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0050",
+      "name": "barbell incline shoulder raise",
+      "candidateSourceId": "Barbell_Incline_Shoulder_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源说明是过顶推举，候选表现为上斜肩胛前伸。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0054",
+      "name": "barbell lunge",
+      "candidateSourceId": "Barbell_Lunge",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "杠铃置于上背部，从站立向前跨步",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0076",
+      "name": "barbell rear delt row",
+      "candidateSourceId": "Barbell_Rear_Delt_Row",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "双脚地面支撑，屈髋俯身，正握宽于肩",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0088",
+      "name": "barbell seated calf raise",
+      "candidateSourceId": "Barbell_Seated_Calf_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "坐凳，双脚前掌置于垫块，杠铃压于大腿上方",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1371",
+      "name": "barbell seated calf raise",
+      "candidateSourceId": "Barbell_Seated_Calf_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "与 exdb:0088 同名，无法确认独立变式，保留 ID 不采用共用图。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0095",
+      "name": "barbell shrug",
+      "candidateSourceId": "Barbell_Shrug",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿正握杠铃，双臂自然垂于身体前方",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0098",
+      "name": "barbell side split squat",
+      "candidateSourceId": "Barbell_Side_Split_Squat",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源描述双侧深蹲，候选显示侧向重心移动。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0128",
+      "name": "battling ropes",
+      "candidateSourceId": "Battling_Ropes",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "双脚地面支撑，每手握绳一端，交替上下摆动",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1259",
+      "name": "behind head chest stretch",
+      "candidateSourceId": "Behind_Head_Chest_Stretch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源站姿自行拉伸，图片为同伴辅助坐姿。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0137",
+      "name": "body-up",
+      "candidateSourceId": "Body-Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源为撑凳臂屈伸，图片为前臂撑地起身。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0138",
+      "name": "bottoms-up",
+      "candidateSourceId": "Bottoms_Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "地面仰卧，手臂体侧，屈膝后将骨盆卷离地面",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0870",
+      "name": "butt-ups",
+      "candidateSourceId": "Butt-Ups",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源为仰卧屈膝卷腹，图片为俯卧支撑抬臀。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0168",
+      "name": "cable hip adduction",
+      "candidateSourceId": "Cable_Hip_Adduction",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源面向绳索机，图片侧身；滑轮、运动方向需另行核对。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0172",
+      "name": "cable incline pushdown",
+      "candidateSourceId": "Cable_Incline_Pushdown",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源站姿下压，图片为上斜凳直臂下拉。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0173",
+      "name": "cable incline triceps extension",
+      "candidateSourceId": "Cable_Incline_Triceps_Extension",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源站姿，图片为上斜凳臂屈伸。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0174",
+      "name": "cable judo flip",
+      "candidateSourceId": "Cable_Judo_Flip",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "图片中握把与转体路径受遮挡，尚未核清绳索方向。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0195",
+      "name": "cable preacher curl",
+      "candidateSourceId": "Cable_Preacher_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "坐姿，上臂贴弯举垫，反握低位绳索直杆",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0873",
+      "name": "cable reverse crunch",
+      "candidateSourceId": "Cable_Reverse_Crunch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "说明用手握绳索，图片拉力施加于脚踝。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0212",
+      "name": "cable seated crunch",
+      "candidateSourceId": "Cable_Seated_Crunch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "坐凳，双脚踩地，高位绳索置于头侧",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0219",
+      "name": "cable shoulder press",
+      "candidateSourceId": "Cable_Shoulder_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源站姿，图片为坐姿肩推。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0247",
+      "name": "cable wrist curl",
+      "candidateSourceId": "Cable_Wrist_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "前臂支撑和坐站方式不一致。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1548",
+      "name": "chair leg extended stretch",
+      "candidateSourceId": "Chair_Leg_Extended_Stretch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源脚跟踩地，候选腿部抬起，拉伸位置说明也需修订。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1271",
+      "name": "chest and front of shoulder stretch",
+      "candidateSourceId": "Chest_And_Front_Of_Shoulder_Stretch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "文字为交叉手臂前推，图片为双手持长杆后摆。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0258",
+      "name": "clock push-up",
+      "candidateSourceId": "Clock_Push-Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选两帧不足以核对完整绕钟移动与手部支撑。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0260",
+      "name": "cocoons",
+      "candidateSourceId": "Cocoons",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源仅为普通卷腹说明，候选含手脚同时收拢。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0262",
+      "name": "cross body crunch",
+      "candidateSourceId": "Cross-Body_Crunch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "地面仰卧屈膝，躯干交替向对侧膝卷起",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0267",
+      "name": "crunch (hands overhead)",
+      "candidateSourceId": "Crunch_-_Hands_Overhead",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源手臂伸直过顶，候选手臂屈曲，不能确认长臂卷腹。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0276",
+      "name": "dead bug",
+      "candidateSourceId": "Dead_Bug",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "地面仰卧，髋膝屈曲，交替伸展对侧手脚",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0277",
+      "name": "decline crunch",
+      "candidateSourceId": "Decline_Crunch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "下斜凳仰卧，双脚可靠固定",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0279",
+      "name": "decline push-up",
+      "candidateSourceId": "Decline_Push-Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "双手地面支撑，双脚放稳定平台",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0295",
+      "name": "dumbbell clean",
+      "candidateSourceId": "Dumbbell_Clean",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "翻举为复杂爆发动作，图片不能核对接铃与落铃阶段。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0327",
+      "name": "dumbbell incline row",
+      "candidateSourceId": "Dumbbell_Incline_Row",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "胸部贴上斜凳，双脚支撑，双臂同时划船",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0328",
+      "name": "dumbbell incline shoulder raise",
+      "candidateSourceId": "Dumbbell_Incline_Shoulder_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源为完整肩推，图片为上斜肩胛前伸。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0345",
+      "name": "dumbbell lying one arm rear lateral raise",
+      "candidateSourceId": "Dumbbell_Lying_One-Arm_Rear_Lateral_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "俯卧凳支撑角度尚未明确，不冒充平凳单臂后束抬举。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0347",
+      "name": "dumbbell lying pronation",
+      "candidateSourceId": "Dumbbell_Lying_Pronation",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "文字含屈肘弯举，图片为前臂旋前，动作说明矛盾。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0348",
+      "name": "dumbbell lying rear lateral raise",
+      "candidateSourceId": "Dumbbell_Lying_Rear_Lateral_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "俯卧凳支撑角度尚未明确，不冒充平凳双臂后束抬举。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0349",
+      "name": "dumbbell lying supination",
+      "candidateSourceId": "Dumbbell_Lying_Supination",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "文字为仰卧弯举，图片为侧卧前臂旋后。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0361",
+      "name": "dumbbell one arm shoulder press",
+      "candidateSourceId": "Dumbbell_One-Arm_Shoulder_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿，一侧手持哑铃于肩上方，另一臂自然垂下",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0363",
+      "name": "dumbbell one arm upright row",
+      "candidateSourceId": "Dumbbell_One-Arm_Upright_Row",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "图片两帧起止相反且肘部外展高度明显，尚需核对动作幅度。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0374",
+      "name": "dumbbell prone incline curl",
+      "candidateSourceId": "Dumbbell_Prone_Incline_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源写掌心朝下，图片握法需进一步核对，不冒充旋后弯举。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0376",
+      "name": "dumbbell raise",
+      "candidateSourceId": "Dumbbell_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源为侧平举，图片为屈肘提拉。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0381",
+      "name": "dumbbell rear lunge",
+      "candidateSourceId": "Dumbbell_Rear_Lunge",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "双手持哑铃垂于体侧，交替向后撤步",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0400",
+      "name": "dumbbell seated one leg calf raise",
+      "candidateSourceId": "Dumbbell_Seated_One-Leg_Calf_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源要求另一腿前伸，图片为两脚均置于台阶附近。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0407",
+      "name": "dumbbell side bend",
+      "candidateSourceId": "Dumbbell_Side_Bend",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿，单手持哑铃垂于体侧，躯干小幅侧屈",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0413",
+      "name": "dumbbell squat",
+      "candidateSourceId": "Dumbbell_Squat",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "双手持哑铃垂于体侧，双脚地面支撑",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0443",
+      "name": "elbow-to-knee",
+      "candidateSourceId": "Elbow_to_Knee",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "地面仰卧，抬膝靠近对侧肘，交替完成",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:2133",
+      "name": "farmers walk",
+      "candidateSourceId": "Farmers_Walk",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选采用大直径握把器械，不能确认是否为普通哑铃负重。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0455",
+      "name": "finger curls",
+      "candidateSourceId": "Finger_Curls",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "坐姿，前臂支于大腿，掌心朝上持杠",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0459",
+      "name": "flutter kicks",
+      "candidateSourceId": "Flutter_Kicks",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源仰卧打腿，图片为俯卧凳上打腿。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:3194",
+      "name": "frankenstein squat",
+      "candidateSourceId": "Frankenstein_Squat",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源手臂承托表述不清，图片为肩前无手托杠，需先修正文字。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:3193",
+      "name": "glute-ham raise",
+      "candidateSourceId": "Glute_Ham_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "臀腿器械支点与屈膝、伸髋过程未完全核对。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1511",
+      "name": "hamstring stretch",
+      "candidateSourceId": "Hamstring_Stretch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源为站姿拉伸，图片为仰卧拉伸。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0472",
+      "name": "hanging leg raise",
+      "candidateSourceId": "Hanging_Leg_Raise",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源要求直腿，候选明显屈膝。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0473",
+      "name": "hanging pike",
+      "candidateSourceId": "Hanging_Pike",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源动作顶点描述水平，图片抬脚至杠前，说明待核。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1471",
+      "name": "inchworm",
+      "candidateSourceId": "Inchworm",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "从站立俯身到高位平板支撑，双手前后移动",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0492",
+      "name": "incline push up depth jump",
+      "candidateSourceId": "Incline_Push-Up_Depth_Jump",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源手垫高，候选脚垫高，且两帧不足以验证深度跳。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0493",
+      "name": "incline push-up",
+      "candidateSourceId": "Incline_Push-Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "双手支撑于稳定平台，双脚在地面",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1564",
+      "name": "intermediate hip flexor and quad stretch",
+      "candidateSourceId": "Intermediate_Hip_Flexor_and_Quad_Stretch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源站姿，图片为仰卧绳带拉伸。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0499",
+      "name": "inverted row",
+      "candidateSourceId": "Inverted_Row",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "正握固定低杠，脚跟地面支撑，身体后倾",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0498",
+      "name": "inverted row with straps",
+      "candidateSourceId": "Inverted_Row_with_Straps",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "双手握悬吊带，脚跟地面支撑，身体后倾",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0500",
+      "name": "isometric wipers",
+      "candidateSourceId": "Isometric_Wipers",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源仰卧摆腿，图片为低位俯卧撑横移。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0507",
+      "name": "jackknife sit-up",
+      "candidateSourceId": "Jackknife_Sit-Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "起始手臂姿态与来源过顶伸臂描述不完全一致。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0508",
+      "name": "janda sit-up",
+      "candidateSourceId": "Janda_Sit-Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源未说明 Janda 形式的固定/辅助方式，不能以普通起坐图片定稿。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0523",
+      "name": "kettlebell arnold press",
+      "candidateSourceId": "Kettlebell_Arnold_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源双臂同时，图片为单臂。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0532",
+      "name": "kettlebell figure 8",
+      "candidateSourceId": "Kettlebell_Figure_8",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "绕腿八字传铃仅有中间两帧，完整手递手路径尚待核验。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0535",
+      "name": "kettlebell hang clean",
+      "candidateSourceId": "Kettlebell_Hang_Clean",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "图片缺少接铃关键阶段，不能证明完整翻举周期。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0544",
+      "name": "kettlebell pistol squat",
+      "candidateSourceId": "Kettlebell_Pistol_Squat",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "双手在胸前持壶铃，单脚支撑，另一腿前伸",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0546",
+      "name": "kettlebell seated press",
+      "candidateSourceId": "Kettlebell_Seated_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源坐凳双铃，图片为地面坐姿单铃。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0547",
+      "name": "kettlebell seesaw press",
+      "candidateSourceId": "Kettlebell_Seesaw_Press",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站姿，每手一个壶铃，一侧推起另一侧回位",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0548",
+      "name": "kettlebell sumo high pull",
+      "candidateSourceId": "Kettlebell_Sumo_High_Pull",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "仅有深蹲与拉高两帧，尚缺连贯爆发提拉核验。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0550",
+      "name": "kettlebell thruster",
+      "candidateSourceId": "Kettlebell_Thruster",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "双壶铃 thruster 图片缺少过顶阶段，不能以起落蹲照冒充。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0551",
+      "name": "kettlebell turkish get up (squat style)",
+      "candidateSourceId": "Kettlebell_Turkish_Get-Up_Squat_style",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "土耳其起身复杂多阶段，候选仅展示其中两个阶段。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0554",
+      "name": "kettlebell windmill",
+      "candidateSourceId": "Kettlebell_Windmill",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "过顶风车需核对足部角度与髋折叠方向，当前文字不足。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0558",
+      "name": "kipping muscle up",
+      "candidateSourceId": "Kipping_Muscle_Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "摆动双力臂图片缺少过杠支撑阶段。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1420",
+      "name": "kneeling jump squat",
+      "candidateSourceId": "Kneeling_Jump_Squat",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "负重跪姿跳蹲图片缺少落地与完整过程，暂不采用。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1576",
+      "name": "leg up hamstring stretch",
+      "candidateSourceId": "Leg-Up_Hamstring_Stretch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "仰卧，一侧髋屈曲，以手扶大腿逐渐伸膝",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1352",
+      "name": "lower back curl",
+      "candidateSourceId": "Lower_Back_Curl",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源写仰卧，图片为俯卧伸背。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1302",
+      "name": "medicine ball chest pass",
+      "candidateSourceId": "Medicine_Ball_Chest_Pass",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "接球方式、前后脚转换与来源表述矛盾，尚待核对。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0628",
+      "name": "monster walk",
+      "candidateSourceId": "Monster_Walk",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "器械分类为徒手，但文字与图片使用弹力带。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0631",
+      "name": "muscle up",
+      "candidateSourceId": "Muscle_Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "图片缺少过杠支撑，来源说明亦缺少完整过杠步骤。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1355",
+      "name": "one arm against wall",
+      "candidateSourceId": "One_Arm_Against_Wall",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源直臂撑墙，图片为屈肘靠墙。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0638",
+      "name": "one arm chin-up",
+      "candidateSourceId": "One_Arm_Chin-Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "名称单臂，来源另一手握腕辅助，图片可能为双手辅助方式，尚待核。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0641",
+      "name": "otis up",
+      "candidateSourceId": "Otis-Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源说明没有负重，候选为负重过顶起坐。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1422",
+      "name": "pelvic tilt into bridge",
+      "candidateSourceId": "Pelvic_Tilt_Into_Bridge",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "地面屈膝踩稳，先后倾骨盆再抬髋",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1388",
+      "name": "peroneals stretch",
+      "candidateSourceId": "Peroneals_Stretch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "绳带方向与腓骨肌拉伸方向尚待核对，不能凭名称采用。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1306",
+      "name": "plyo push up",
+      "candidateSourceId": "Plyo_Push-up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "两帧无法明确确认双手离地阶段。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1389",
+      "name": "posterior tibialis stretch",
+      "candidateSourceId": "Posterior_Tibialis_Stretch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "绳带方向与胫后肌拉伸方向尚待核对。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0648",
+      "name": "power clean",
+      "candidateSourceId": "Power_Clean",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "力量翻举缺少过渡与接杠关键阶段，来源细节仍需审核。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0664",
+      "name": "push-up to side plank",
+      "candidateSourceId": "Push_Up_to_Side_Plank",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "图片没有侧平板阶段，不能当作完整组合动作。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0872",
+      "name": "reverse crunch",
+      "candidateSourceId": "Reverse_Crunch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "地面仰卧屈膝，双臂体侧，骨盆受控卷离地面",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0677",
+      "name": "ring dips",
+      "candidateSourceId": "Ring_Dips",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "双手握吊环撑起身体，双脚离地",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0680",
+      "name": "rope climb",
+      "candidateSourceId": "Rope_Climb",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "攀绳足部锁绳与下降方式不明确，需连续素材确认。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1585",
+      "name": "runners stretch",
+      "candidateSourceId": "Runners_Stretch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源为前跨拉伸，图片为俯身直腿形式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0687",
+      "name": "russian twist",
+      "candidateSourceId": "Russian_Twist",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源徒手，候选持配重片，不能直接当徒手形式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0688",
+      "name": "scapular pull-up",
+      "candidateSourceId": "Scapular_Pull-Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "正握单杠悬垂，保持肘部基本伸展，仅做肩胛控制",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1358",
+      "name": "side lying floor stretch",
+      "candidateSourceId": "Side-Lying_Floor_Stretch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源涉及抬腿与固定手抓握，图片未表达相同步骤。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0725",
+      "name": "single arm push-up",
+      "candidateSourceId": "Single-Arm_Push-Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源描述交替移手，图片为单手持续支撑，单臂形式未核清。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0768",
+      "name": "smith single leg split squat",
+      "candidateSourceId": "Smith_Single-Leg_Split_Squat",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源持杆稳定表述含糊，图片疑为杠铃背负，需要重新核对。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0776",
+      "name": "snatch pull",
+      "candidateSourceId": "Snatch_Pull",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "文字将抓举拉误写为完整抓举接杠，暂不采用。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0777",
+      "name": "spell caster",
+      "candidateSourceId": "Spell_Caster",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源一只手持哑铃，图片为双手各持铃，动作变式不清。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:2368",
+      "name": "split squats",
+      "candidateSourceId": "Split_Squats",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "前后分腿站稳，双脚位置固定，垂直下沉",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0786",
+      "name": "squat jerk",
+      "candidateSourceId": "Squat_Jerk",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源描述分腿挺举，名称却为下蹲挺举，不能自动配图。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0794",
+      "name": "standing lateral stretch",
+      "candidateSourceId": "Standing_Lateral_Stretch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源双臂侧展，图片为一臂过顶拉伸。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1364",
+      "name": "standing pelvic tilt",
+      "candidateSourceId": "Standing_Pelvic_Tilt",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "骨盆前后倾方向文字存在矛盾，须先重新核对。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0806",
+      "name": "suspended push-up",
+      "candidateSourceId": "Suspended_Push-Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源悬吊带与图片吊环相近但手腕支撑方式不同，暂不认定同一形式。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0807",
+      "name": "suspended reverse crunch",
+      "candidateSourceId": "Suspended_Reverse_Crunch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源单杠悬垂卷腹，图片为脚托悬吊俯卧收膝。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0808",
+      "name": "suspended row",
+      "candidateSourceId": "Suspended_Row",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "双手中立握吊环或悬吊手柄，脚跟地面支撑",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0809",
+      "name": "suspended split squat",
+      "candidateSourceId": "Suspended_Split_Squat",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源脚向前，图片后脚悬吊，方向矛盾。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:2459",
+      "name": "tire flip",
+      "candidateSourceId": "Tire_Flip",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "轮胎翻举两帧缺少推过与落胎阶段，复杂动作尚待核验。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0811",
+      "name": "trap bar deadlift",
+      "candidateSourceId": "Trap_Bar_Deadlift",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站在六角杠内部，双手中立握两侧把手",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0817",
+      "name": "triceps stretch",
+      "candidateSourceId": "Triceps_Stretch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "站立或坐直，一侧屈肘举过头，另一手轻扶肘部",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0871",
+      "name": "tuck crunch",
+      "candidateSourceId": "Tuck_Crunch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "adopted",
+      "reason": "地面仰卧，双腿屈曲悬空，肩胛卷离地面",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1365",
+      "name": "upper back stretch",
+      "candidateSourceId": "Upper_Back_Stretch",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源过顶伸臂，图片为胸前伸臂，方向不同。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0830",
+      "name": "weighted bench dip",
+      "candidateSourceId": "Weighted_Bench_Dip",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "文字没有说明腿部负重与第二凳支撑，候选额外条件未核实。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0851",
+      "name": "weighted sissy squat",
+      "candidateSourceId": "Weighted_Sissy_Squat",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源是普通蹲，图片为膝主导负重西西蹲，形式矛盾。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0852",
+      "name": "weighted squat",
+      "candidateSourceId": "Weighted_Squat",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "候选站在高台上，来源未说明支撑条件，暂不采用。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1367",
+      "name": "wide grip rear pull-up",
+      "candidateSourceId": "Wide-Grip_Rear_Pull-Up",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "名称颈后引体，来源却写下巴过杠，动作方向存在矛盾。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:0858",
+      "name": "wind sprints",
+      "candidateSourceId": "Wind_Sprints",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源平地冲刺跑，图片为悬垂抬膝。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    },
+    {
+      "exerciseId": "exdb:1428",
+      "name": "wrist circles",
+      "candidateSourceId": "Wrist_Circles",
+      "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+      "decision": "rejected_or_pending",
+      "reason": "来源手臂向前伸，候选手臂下垂，手腕环绕动作难从两帧核实。",
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+    }
+  ]
+}

@@ -3,6 +3,7 @@ import { resolve, relative, dirname, isAbsolute } from 'node:path';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { verifyMediaMetadata } from './media-metadata.mjs';
 
 const repo = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -33,6 +34,7 @@ export function mediaFiles(entries) {
 export function verifyExerciseMedia(options = {}) {
   const root = resolve(options.root || repo);
   const manifest = options.manifest || JSON.parse(readFileSync(resolve(root, 'client/src/features/gym/exercise-media.json'), 'utf8'));
+  if(!options.manifest)verifyMediaMetadata(root,manifest);
   const publicDir = resolve(root, 'client/public');
   const files = mediaFiles(manifest.entries);
   const needsPrivate = files.some(f => f.distribution === 'site-only');

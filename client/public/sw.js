@@ -1,11 +1,12 @@
 const CACHE='movemate-static-v2';
 const STATIC=/^\/(?:assets\/|models\/|wasm\/|vision\/|fonts\/)/;
 const MEDIA_IMAGE=/^\/exercise-media\/[^/]+\.[a-f0-9]{12}\.(?:webp|jpg|png)$/;
+const MEDIA_DETAIL=/^\/exercise-media\/details\/[a-z0-9_-]+\.[a-f0-9]{12}\.json$/;
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(['/','/manifest.webmanifest','/app-icon.svg']))));
 // Updates activate on the next navigation, keeping an ongoing training page intact.
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('movemate-static-')&&k!==CACHE).map(k=>caches.delete(k))))));
 self.addEventListener('fetch',event=>{
  const req=event.request,url=new URL(req.url);if(req.method!=='GET'||req.headers.has('range')||url.origin!==self.location.origin||url.pathname.startsWith('/api/')||url.pathname.startsWith('/uploads/'))return;
  if(req.mode==='navigate')event.respondWith(fetch(req).then(response=>{if(response.ok){const saved=response.clone();event.waitUntil(caches.open(CACHE).then(c=>c.put('/',saved)));}return response;}).catch(()=>caches.match('/')));
- else if(STATIC.test(url.pathname)||MEDIA_IMAGE.test(url.pathname)||['/manifest.webmanifest','/app-icon.svg'].includes(url.pathname))event.respondWith(caches.match(req).then(cached=>cached||fetch(req).then(response=>{if(response.status===200){const saved=response.clone();event.waitUntil(caches.open(CACHE).then(c=>c.put(req,saved)));}return response;})));
+ else if(STATIC.test(url.pathname)||MEDIA_IMAGE.test(url.pathname)||MEDIA_DETAIL.test(url.pathname)||['/manifest.webmanifest','/app-icon.svg'].includes(url.pathname))event.respondWith(caches.match(req).then(cached=>cached||fetch(req).then(response=>{if(response.status===200){const saved=response.clone();event.waitUntil(caches.open(CACHE).then(c=>c.put(req,saved)));}return response;})));
 });

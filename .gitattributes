@@ -1,0 +1,7 @@
+# Immutable metadata and vector-source hashes must survive Windows checkouts.
+client/public/exercise-media/details/*.json text eol=lf
+assets/exercise-illustrations/*.svg text eol=lf
+server/src/gym/reviewed-content.json text eol=lf
+docs/exercise-audit-ledger.json text eol=lf
+scripts/reviewed-exercise-content.json text eol=lf
+*.webp binary

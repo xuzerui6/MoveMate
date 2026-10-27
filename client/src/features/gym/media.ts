@@ -1,4 +1,4 @@
-import catalogue from "./exercise-media.json";
+import index from './exercise-media-index.json';
 export type MediaFile = {
   bytes:number;
   src: string;
@@ -21,21 +21,23 @@ export type MediaSource = {
   distribution?: "repository" | "site-only";
 };
 export type ExerciseMedia = {
+  kind?: 'photo'|'illustration';
   note: string;
   images: MediaFile[];
   video?: MediaFile & { poster: string;posterSha256:string };
   sources: MediaSource[];
 };
-export const exerciseMedia = catalogue.entries as Record<string, ExerciseMedia>;
-export const demonstratedIds = Object.keys(exerciseMedia);
+export type MediaSummary={thumb:string;kind:'photo'|'illustration';images:number;video:boolean;detail:string};
+export const mediaIndex=index as Record<string,MediaSummary>;
+export const demonstratedIds = Object.keys(mediaIndex);
 export type MediaFilter = "all" | "images" | "video";
 export function mediaIds(filter: MediaFilter): string[] | undefined {
   return filter === "all" ? undefined : demonstratedIds.filter(id =>
-    filter === "images" ? exerciseMedia[id].images.length > 0 : !!exerciseMedia[id].video);
+    filter === "images" ? mediaIndex[id].images > 0 : mediaIndex[id].video);
 }
 // An ID allowlist keeps custom/imported movements and similar variants separate.
-export function mediaFor(id: string | undefined) {
-  return id ? exerciseMedia[id] : undefined;
+export function mediaSummaryFor(id: string | undefined) {
+  return id ? mediaIndex[id] : undefined;
 }
 const muscleGroups: Record<string, string[]> = {
   pectorals: ["upperChest", "lowerChest", "chest"],

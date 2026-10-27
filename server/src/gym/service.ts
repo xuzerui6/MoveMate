@@ -1,4 +1,5 @@
 import { randomUUID, createHash } from "node:crypto";
+import {reviewedMediaIds} from './media-filter';
 import { z } from "zod";
 import { refreshOnline, onlineCutoff } from "./online";
 import { snapshotCameraProfile } from "./camera";
@@ -60,6 +61,8 @@ export async function allExercises(uid: number): Promise<Exercise[]> {
   ];
 }
 export async function library(uid: number, query: any) {
+  if(query.media!=null&&!['images','video'].includes(query.media))throw new ValidationError('示范筛选无效');
+  const mediaIds=reviewedMediaIds(query.media);
   const prefs = await settings(uid);
   const list = await allExercises(uid),
     favorite = new Set(
@@ -87,12 +90,10 @@ export async function library(uid: number, query: any) {
         e.equipment === "body weight" ||
         prefs.equipment.includes(e.equipment)) &&
       (!wanted || wanted.has(e.id)) &&
+      (!mediaIds || mediaIds.has(e.id)) &&
       (!q ||
         [e.name, e.nameZh, ...((e as any).aliases || []), ...e.instructions]
-          .join(" ")
-          .toLowerCase()
-          .replace(/\s/g, "")
-          .includes(q)) &&
+          .some(field=>String(field).toLowerCase().replace(/\s/g, "").includes(q))) &&
       (!query.muscle ||
         e.bodyPart === query.muscle ||
         e.target === query.muscle ||

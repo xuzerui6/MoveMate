@@ -111,6 +111,33 @@ test("catalog is text-only, filters IDs, camera capability is restricted and cus
   assert.equal((await gym.library(owner, { favorite: "1" })).total, 1);
   await assert.rejects(gym.favorite(other, custom.id, true));
 });
+test("reviewed media filters intersect search, equipment, favorites and legacy IDs before complete pagination", async () => {
+  const index = require("../src/gym/media-index.json");
+  const expected = Object.keys(index).filter(id => index[id].images > 0);
+  const ids: string[] = [];
+  let cursor: number | null = 0;
+  while (cursor !== null) {
+    const page = await gym.library(owner, { media: "images", cursor, limit: 13 });
+    assert.equal(page.total, expected.length);
+    ids.push(...page.items.map((e: any) => e.id)); cursor = page.next;
+  }
+  assert.equal(new Set(ids).size, expected.length);
+  assert.deepEqual(new Set(ids),new Set(expected));
+  const both = await gym.library(owner, { media: "images", equipment: "dumbbell", q: "弯举" });
+  assert.ok(both.total > 0);assert.ok(both.items.every((e: any) => e.equipment === "dumbbell" && expected.includes(e.id)));
+  const legacy = await gym.library(owner, { media: "images", ids: "motion:squat,user:unknown,exdb:1760" });
+  assert.deepEqual(new Set(legacy.items.map((e: any) => e.id)),new Set(["motion:squat","exdb:1760"]));
+  await gym.favorite(owner, "exdb:1760", true);
+  assert.ok((await gym.library(owner, { media: "images", favorite: "1" })).items.some((e: any)=>e.id==="exdb:1760"));
+  await gym.favorite(owner, "exdb:1760", false);
+  const videos = await gym.library(owner, {media: "video", limit: 50});
+  assert.equal(videos.total,Object.values(index).filter((m: any)=>m.video).length);
+  await assert.rejects(gym.library(owner, { media: "invented" }), /筛选无效/);
+  const precise=await gym.library(owner,{q:'back lever'});
+  assert.equal(precise.total,1,'Search must not concatenate target back + equipment lever across fields');
+  assert.equal(precise.items[0].name,'back lever');
+});
+
 test("templates and optimistic plan editing reject conflicting or inaccessible exercise data", async () => {
   assert.equal(templates().length, 4);
   const p = await plan();
