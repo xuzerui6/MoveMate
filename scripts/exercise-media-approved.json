@@ -2016,6 +2016,183 @@
         "sourceDescription": "中文说明独立整理，明确手法和支持限制。"
       },
       "note": "真人静态双帧分解，只展示标注位置，不是连续视频或完整运动周期证明。 地面双手与双脚支撑的标准俯卧撑；保留独立动作库 ID。"
+    },
+    {
+      "exerciseId": "exdb:0674",
+      "expectedName": "reverse grip pull-up",
+      "sourceId": "Chin-Up",
+      "sourceSha256": [
+        "efab20da5a0916eeef22e6fbc58040c688d1e63120681455f4c72c3a20faf6a0",
+        "b31bd59a44e6c7dfceca64e4232871327b9249d6fda9143149f1d35782fc97a3"
+      ],
+      "phases": [
+        "反手悬垂",
+        "屈肘上拉"
+      ],
+      "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
+      "review": "2026-10-27：逐帧核对肩宽反握、掌心朝向自己、直臂悬垂与屈肘上拉，符合 exdb:0674 完整来源步骤；与 exdb:1326 各自保留ID，明确复用既有相同标准形式，不新增照片文件。"
+    },
+    {
+      "exerciseId": "exdb:0050",
+      "expectedName": "barbell incline shoulder raise",
+      "sourceId": "Barbell_Incline_Shoulder_Raise",
+      "sourceSha256": [
+        "b670bd0abe6ae4c0f540cd50023d42d0890d92aa3cf8bc9c1a35dafd3f0594f7",
+        "382235d9309fed58b483b176d39d9468592e8a069e365bc7491b2b3bd7dbe937"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "肩胛放回准备",
+        "肩胛小幅推起"
+      ],
+      "note": "真人双帧，展示肩胛小幅前伸；不是屈肘肩推或连续视频。",
+      "review": "2026-10-27：独立英文说明、照片与原来源交叉核对后，修正原来源明显错误；按照片实际器械、支撑、手位和阶段发布，保留出处。"
+    },
+    {
+      "exerciseId": "exdb:0098",
+      "expectedName": "barbell side split squat",
+      "sourceId": "Barbell_Side_Split_Squat",
+      "sourceSha256": [
+        "5927a80ddb679917b01034b9d95e6c64a576ac26c251acbd5b7be5704bd25acb",
+        "94cad02113c56202b5a8c20383918a34c938846bcffbdb951fc26f8dab4f990d"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "宽站距背杠准备",
+        "侧向下蹲（示意一侧）"
+      ],
+      "note": "真人双帧示意一侧侧向下蹲，换侧按文字进行；未镜像制造另一侧，不是连续视频。",
+      "review": "2026-10-27：独立英文说明、照片与原来源交叉核对后，修正原来源明显错误；按照片实际器械、支撑、手位和阶段发布，保留出处。"
+    },
+    {
+      "exerciseId": "exdb:0137",
+      "expectedName": "body-up",
+      "sourceId": "Body-Up",
+      "sourceSha256": [
+        "db2055f454cdc34f42e6b631f8e8faf481aa10679d311f34b278cb9d0b23814c",
+        "6febfe27923d30aa46eaf52352ac7eab0a74c5816cf63a6b6e4d0d0e16533c0c"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "前臂支撑准备",
+        "伸肘推至掌撑"
+      ],
+      "note": "局部真人双帧：肘部与手掌转换清楚，下肢不在原始画面内；不是完整全身姿态示范或连续视频。",
+      "review": "2026-10-27：独立英文说明、照片与原来源交叉核对后，修正原来源明显错误；按照片实际器械、支撑、手位和阶段发布，保留出处。"
+    },
+    {
+      "exerciseId": "exdb:0870",
+      "expectedName": "butt-ups",
+      "sourceId": "Butt-Ups",
+      "sourceSha256": [
+        "2928424bb720b1fa84f4780f809380049ea6696734120a68f19cf114cb38c67a",
+        "62f434300989d3b6078508acd10eb553c9ac51ce94f844376ec5d48ee6e5231c"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "前臂平板准备",
+        "收腹向上抬臀"
+      ],
+      "note": "真人双帧展示前臂平板抬臀，不是仰卧起坐或连续动画。",
+      "review": "2026-10-27：独立英文说明、照片与原来源交叉核对后，修正原来源明显错误；按照片实际器械、支撑、手位和阶段发布，保留出处。"
+    },
+    {
+      "exerciseId": "exdb:0173",
+      "expectedName": "cable incline triceps extension",
+      "sourceId": "Cable_Incline_Triceps_Extension",
+      "sourceSha256": [
+        "9516042fca9f3c561300749d618de6978968e0f45ba6254a431346b4cb9b8f06",
+        "b900dcc53ac5c166f5838df874e771fc4d4208d3e949a1d7cdb51b63b04f24e7"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "上斜凳屈肘准备",
+        "伸肘推出"
+      ],
+      "note": "真人双帧，上斜凳背部支撑、高位拉索、直杆窄握；不是站姿肩推或连续视频。",
+      "review": "2026-10-27：独立英文说明、照片与原来源交叉核对后，修正原来源明显错误；按照片实际器械、支撑、手位和阶段发布，保留出处。"
+    },
+    {
+      "exerciseId": "exdb:0873",
+      "expectedName": "cable reverse crunch",
+      "sourceId": "Cable_Reverse_Crunch",
+      "sourceSha256": [
+        "aab4acdfa674e64ed1afa20b52144027f4d21b17b5e4046bf93a1f370b75f503",
+        "ae72e00d23dac27299704b5410003c4c090cd9444d3db445d3a6ce7ee9271da4"
+      ],
+      "imageOrder": [
+        1,
+        0
+      ],
+      "phases": [
+        "屈膝准备",
+        "卷起骨盆"
+      ],
+      "note": "真人双帧按准备、卷髋重排；本站明确采用原图双手身侧支撑形式，未镜像或改绘人物。",
+      "review": "2026-10-27：独立英文说明、照片与原来源交叉核对后，修正原来源明显错误；按照片实际器械、支撑、手位和阶段发布，保留出处。"
+    },
+    {
+      "exerciseId": "exdb:0328",
+      "expectedName": "dumbbell incline shoulder raise",
+      "sourceId": "Dumbbell_Incline_Shoulder_Raise",
+      "sourceSha256": [
+        "23da366cd029f5ffe9bffc6dd2a1e7028a4cb7ea8110145b709643af42ef60f2",
+        "098c982c613ddbed9a4794e189a0a8496ee9c117b7bba86658d438a2bb49c993"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "肩胛放回准备",
+        "肩胛小幅推起"
+      ],
+      "note": "上半身局部真人双帧，展示肩胛小幅前伸；原始画面下肢局部出画，不是连续视频。",
+      "review": "2026-10-27：独立英文说明、照片与原来源交叉核对后，修正原来源明显错误；按照片实际器械、支撑、手位和阶段发布，保留出处。"
+    },
+    {
+      "exerciseId": "exdb:0285",
+      "expectedName": "dumbbell alternate biceps curl",
+      "sourceId": "Dumbbell_Alternate_Bicep_Curl",
+      "sourceSha256": [
+        "c5ba13ac557289b65f31ce8508b498c4455ab7b8d34f034de469c8c6e02a2838",
+        "c66302e68c51b5c9d3f8a8c198b58697c590ad61b0fa14c1153e7ecd6e79eb53"
+      ],
+      "imageOrder": [
+        0,
+        1
+      ],
+      "phases": [
+        "一侧弯举（全身）",
+        "换侧弯举（全身）"
+      ],
+      "note": "真人站姿双帧，分别展示两侧屈肘；不是连续动画。",
+      "review": "2026-10-27：对照独立英文说明确认起始掌心向体侧、弯举时旋腕、左右交替；原来源起始握法已修订，完整站姿和两侧均可见。"
+    },
+    {
+      "exerciseId": "exdb:0853",
+      "expectedName": "weighted standing curl",
+      "sourceId": "Dumbbell_Bicep_Curl",
+      "sourceSha256": [
+        "fad8458c2f70c39e1abb0a9554bba280da5abf9f8dc2d76f7c0be44ffdbfc99b",
+        "ec2c3a539aa80ea911a85e00ca9fb74502407e8ef0d8a4526e3b076a5a52b30a"
+      ],
+      "review": "2026-10-27 逐项对照原文全部四步、固定版英文Dumbbell_Bicep_Curl及现有两张全身实拍：同为双哑铃站姿同时旋后屈肘，明确共享同一标准形式媒体而保留ID。"
     }
   ],
   "videos": [
@@ -2051,7 +2228,8 @@
         ],
         "sourceSha256": "41c47c5efd245d0dfbcd25e4c1e6a4f46f2093281871df3503278ea9e5444d7f",
         "file": "wger-6.mp4",
-        "sourceFile": "wger-6.mov"
+        "sourceFile": "wger-6.mov",
+        "retrievedAt": "2026-10-18"
       },
       "note": "站姿双臂侧平举，抬至肩高后缓慢放回。",
       "frames": [
@@ -2102,7 +2280,8 @@
         ],
         "sourceSha256": "0151a7cd43894d60c1fe1ffb34f4f4b709fc17aa6a5913c7edea4a14c9113985",
         "file": "wger-12.mp4",
-        "sourceFile": "wger-12.mov"
+        "sourceFile": "wger-12.mov",
+        "retrievedAt": "2026-10-18"
       },
       "note": "坐姿双臂肩推，保持躯干稳定，控制回落。",
       "frames": [
@@ -2153,7 +2332,8 @@
         ],
         "sourceSha256": "d96fa783d10b476965e926a2c88f4b6d69da5f9e91cd7656fbafadb001981afa",
         "file": "wger-17.mp4",
-        "sourceFile": "wger-17.mov"
+        "sourceFile": "wger-17.mov",
+        "retrievedAt": "2026-10-18"
       },
       "note": "平板凳双哑铃卧推，控制下降，避免哑铃相撞。",
       "frames": [
@@ -2175,11 +2355,12 @@
     {
       "id": 71,
       "exerciseIds": [
-        "exdb:0652"
+        "exdb:0652",
+        "exdb:1429"
       ],
       "start": 0,
       "end": 10,
-      "review": "正握双臂引体向上，不用于反握、对握、辅助或单臂变式。",
+      "review": "正握双臂引体向上，不用于反握、对握、辅助或单臂变式。 2026-10-27 逐秒复查完整原片及站内0—10秒片段；旧0.1/1/2秒并非完整起落，分解帧校正为1/3.5/5.5秒，原视频字节保留。实际双手宽于肩、正握，可用于明确宽握条目。",
       "source": {
         "id": 71,
         "uuid": "83067ffe-ccb9-4e22-8507-5131b211ce74",
@@ -2204,24 +2385,29 @@
         ],
         "sourceSha256": "4c459f322f506eb7bd0b51e7efd81aaf6bd1e10fc0569e182a4815dee325f1b8",
         "file": "wger-71.mp4",
-        "sourceFile": "wger-71.mov"
+        "sourceFile": "wger-71.mov",
+        "retrievedAt": "2026-10-18"
       },
       "note": "正握引体向上，控制上拉与下放，不用摆动借力。",
       "frames": [
         {
-          "time": 0.1,
-          "phase": "悬垂起始位"
-        },
-        {
           "time": 1,
-          "phase": "向上拉起"
+          "phase": "直臂悬垂准备"
         },
         {
-          "time": 2,
-          "phase": "控制下放"
+          "time": 3.5,
+          "phase": "屈肘上拉至高位"
+        },
+        {
+          "time": 5.5,
+          "phase": "控制下放回悬垂"
         }
       ],
-      "subjectOrigin": "来源未明确说明；不依据外貌判断，不计入亚洲人物核验数量。"
+      "subjectOrigin": "来源未明确说明；不依据外貌判断，不计入亚洲人物核验数量。",
+      "expectedNames": {
+        "exdb:0652": "pull-up",
+        "exdb:1429": "wide grip pull-up"
+      }
     },
     {
       "id": 22,
@@ -2253,7 +2439,8 @@
         "author_history": [
           "Goulart"
         ],
-        "sourceSha256": "d731f05f7eed78571d9f622fe99223b4139de190d029c1c82b48d13d9454017b"
+        "sourceSha256": "d731f05f7eed78571d9f622fe99223b4139de190d029c1c82b48d13d9454017b",
+        "retrievedAt": "2026-10-18"
       },
       "note": "平板杠铃卧推，双手握距略宽于肩，保持支撑稳定。",
       "frames": [
@@ -2303,7 +2490,8 @@
           "Goulart"
         ],
         "sourceSha256": "2b75ac783df5a9557e280385f6b1181227c613f4ee1a5427a8a3477736b14a49",
-        "sourceFile": "wger-49.mov"
+        "sourceFile": "wger-49.mov",
+        "retrievedAt": "2026-10-18"
       },
       "note": "站姿双臂直杠弯举，掌心向前，控制抬起和放回。",
       "frames": [
@@ -2374,10 +2562,12 @@
       "key": "site-pexels-3048952",
       "sourceFile": "pexels-3048952.mp4",
       "exerciseIds": [
-        "motion:jumping_jack"
+        "motion:jumping_jack",
+        "exdb:3224"
       ],
       "expectedNames": {
-        "motion:jumping_jack": "jumping_jack"
+        "motion:jumping_jack": "jumping_jack",
+        "exdb:3224": "jack jump (male)"
       },
       "start": 0,
       "end": 8.6,
@@ -2395,7 +2585,7 @@
           "phase": "回到合拢"
         }
       ],
-      "review": "正面全身、原地双脚开合与双手上举；完整合拢、展开、回位周期。逐阶段检查主体、器械及完整周期；不是专业教学认证。",
+      "review": "正面全身、原地双脚开合与双手上举；完整合拢、展开、回位周期。逐阶段检查主体、器械及完整周期；不是专业教学认证。 exdb:3224 的双脚合拢、跳开并双臂上举、回合完整步骤与现有三阶段实拍逐帧相符；性别后缀不改变动作形式，ID保持独立，不授予摄像头识别。",
       "subjectOrigin": "来源未明确标注亚洲人物；不按外貌、姓名或拍摄地点推断。",
       "note": "正面全身、原地双脚开合与双手上举；完整合拢、展开、回位周期。真人实拍，分解帧来自同一视频；手动播放，默认静音。",
       "source": {
@@ -2587,6 +2777,50 @@
         ],
         "distribution": "site-only",
         "changes": "仅采用原片 0–7.8 秒完整动作周期，去除音轨，等比例压缩为 H.264，提取同源阶段帧；不裁切、不改绘、不推断人物背景。仅作为动伴动作说明与训练工具的一部分部署，不单独分发、不随公开源码再授权。"
+      }
+    },
+    {
+      "key": "site-pexels-6547801",
+      "sourceFile": "pexels-6547801.mp4",
+      "exerciseIds": [
+        "exdb:0285"
+      ],
+      "expectedNames": {
+        "exdb:0285": "dumbbell alternate biceps curl"
+      },
+      "attachToExisting": true,
+      "start": 0,
+      "end": 9.8,
+      "frames": [
+        {
+          "time": 0.8,
+          "phase": "一侧屈肘（局部）"
+        },
+        {
+          "time": 1.8,
+          "phase": "控制下放（局部）"
+        },
+        {
+          "time": 2.8,
+          "phase": "另一侧弯举（局部）"
+        }
+      ],
+      "review": "2026-10-27逐时段查看0—9.8秒，肩、肘、手腕和髋部显示站姿左右交替弯举；原视频取景主要为上肢，保留全身Unlicense双帧作为姿态补充。不称作全身实拍或专业教学认证。",
+      "subjectOrigin": "Pexels 当前来源描述明确包含 Asian man（2026-10-27查看）；仅依据来源说明，不依据外貌或其他人物的相似性推断。",
+      "note": "站姿交替哑铃弯举连续实拍。视频主要拍上肢，完整站姿请结合附加全身分解图；两个来源的人物身份不作比对，均不表示为产品背书。",
+      "source": {
+        "name": "Pexels / video 6547801",
+        "author": "Andres Ayrton",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/",
+        "termsUrl": "https://www.pexels.com/terms-of-service/",
+        "url": "https://www.pexels.com/video/a-man-doing-dumbbell-curls-6547801/",
+        "version": "video:6547801; reviewed 2026-10-27; sha256:cc4dff551db316994b88fa1192f0e8d8eac8ecdeb8cd1d9dfe27a3ce33aeb1ea",
+        "sourceSha256": [
+          "cc4dff551db316994b88fa1192f0e8d8eac8ecdeb8cd1d9dfe27a3ce33aeb1ea"
+        ],
+        "distribution": "site-only",
+        "changes": "采用原片0—9.8秒，去音轨、等比例H.264压缩，提取原片0.8/1.8/2.8秒局部分解帧；不裁切、改绘或推断人物身份。仅用于本站中文动作指导、计划与训练工具的组合展示，不作为独立素材分发；原片及衍生文件不随源码仓库公开。"
       }
     }
   ]

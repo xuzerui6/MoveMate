@@ -20,6 +20,7 @@ import {
 } from "./workoutSync";
 import Dialog from "../../components/Dialog";
 import {ExerciseDemo} from './ExerciseMedia';
+import { isUnreviewedOfficialExercise, workoutGuideInstruction } from './exerciseGuidance';
 import { WeightInput } from "./WeightInput";
 import { displayWeight } from "./trainingMath";
 import { repUnit, setTargetLabel } from "./trainingPresentation";
@@ -488,7 +489,7 @@ export default function PlanWorkout() {
           Math.ceil((Date.parse(row?.restUntil || "") - tick) / 1000),
         ) || 0,
       phase: row?.phase || "ready",
-      instruction: (capability?.instruction || current?.exercise.instructions.join(" ") || "") + (camera ? " 当前使用摄像头记组，评分仅供训练反馈。" : ""),
+      instruction: workoutGuideInstruction(current?.exercise,capability?.instruction) + (camera ? " 当前使用摄像头记组，评分仅供训练反馈。" : ""),
     },
   };
   const voice = useXiaozhiCoach({
@@ -706,7 +707,8 @@ export default function PlanWorkout() {
               )}
               {current && (
                 <details className="gym-instructions">
-                  <summary>动作步骤与注意事项</summary>
+                  <summary>{isUnreviewedOfficialExercise(current.exercise)?'本次记录的来源步骤（待核对）':'动作步骤与注意事项'}</summary>
+                  {isUnreviewedOfficialExercise(current.exercise)&&<p className="media-pending" role="note">本次记录保留开始时的来源说明，内容尚待核对。请先在动作库核对当前资料，不将下面原始文字视为已确认的跟练指导。</p>}
                   <ol>
                     {current.exercise.instructions.map(
                       (t: string, i: number) => (

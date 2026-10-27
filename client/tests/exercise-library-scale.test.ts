@@ -21,7 +21,9 @@ test('every official ID has an honest separate documentation decision; custom ID
   execFileSync(process.execPath,[path.join(root,'scripts/publish-exercise-documentation.mjs'),'--check']);
   assert.equal(exercises.length,1329);assert.equal(ledger.total,1329);
   assert.deepEqual(new Set(exercises.map(e=>e.id)),new Set(ledger.entries.map(e=>e.id)));
+  assert.ok(ledger.entries.every(e=>e.reviewStage==='editorial'),'Every current official ID was individually source-compared; structural placeholders do not count');
   for(const e of exercises){
+    assert.ok(e.nameZh&&e.aliases?.includes(e.name),e.id+' must retain a Chinese title and its original searchable name');
     assert.ok(e.reviewReason,e.id);
     if(e.reviewStatus==='checked'){
       assert.ok(e.instructions.length>=3&&e.instructions.length<=5,e.id);
@@ -40,14 +42,31 @@ test('every official ID has an honest separate documentation decision; custom ID
   assert.ok(exercises.find(e=>e.id==='exdb:0484')!.reviewReason!.includes('脚踩地臀桥'));
 });
 
+test('alternating illustrations show both sides and mark only the moving side',()=>{
+  for(const id of ['exdb:0388','exdb:0414','exdb:0415']){
+    const recipe=diagrams.entries[id] as {phasePoseIndices:number[];poseArrows:number[][][]};
+    assert.deepEqual(recipe.phasePoseIndices,[0,1,0,2,0]);
+    assert.equal(recipe.poseArrows[1].length,1);assert.equal(recipe.poseArrows[2].length,1);
+    for(const stage of [1,3]){
+      const svg=fs.readFileSync(path.join(root,'assets/exercise-illustrations',id.replace(':','-')+'-'+stage+'.svg'),'utf8');
+      assert.equal((svg.match(/marker-end=/g)||[]).length,1);
+    }
+    assert.equal(mediaFor(id)?.video,undefined,'Five still frames must never be presented as a continuous video');
+    assert.equal(exercises.find(e=>e.id===id)!.planCamera,undefined);
+  }
+});
+
 test('photo order uses each approved source once and labels actual phases without inventing mirrored sides',()=>{
   for(const row of approved.stills as any[]){
     if(!row.imageOrder)continue;
     assert.deepEqual([...row.imageOrder].sort(),row.sourceSha256.map((_:any,i:number)=>i));
     const media=mediaFor(row.exerciseId)!;
-    assert.deepEqual(media.images.map(f=>f.phase),row.phases);
-    assert.ok(media.sources[0].changes.includes('未镜像'));
-    for(let i=0;i<media.images.length;i++)assert.ok(media.images[i].src.includes(row.sourceId.toLowerCase()+'-'+row.imageOrder[i]+'.'));
+    const sourceIndex=media.sources.findIndex(s=>s.name==='free-exercise-db / '+row.sourceId);
+    assert.ok(sourceIndex>=0);
+    const photos=media.images.filter(f=>f.sourceIndex===sourceIndex);
+    assert.deepEqual(photos.map(f=>f.phase),row.phases);
+    assert.ok(media.sources[sourceIndex].changes.includes('未镜像'));
+    for(let i=0;i<photos.length;i++)assert.ok(photos[i].src.includes(row.sourceId.toLowerCase()+'-'+row.imageOrder[i]+'.'));
   }
 });
 
@@ -104,9 +123,12 @@ test('lazy media failures retry, overlapping reads deduplicate, and a mismatched
 test('original diagrams have explicit poses, original SVG hashes, a separate media kind and no fake video',()=>{
   for(const [id,recipe]of Object.entries(diagrams.entries)){
     const m=exerciseMedia[id];assert.equal(m.kind,'illustration');assert.equal(m.video,undefined);
-    assert.equal(m.images.length,3);assert.equal(recipe.poses.length,2);
+    assert.equal(m.images.length,recipe.phases.length);
+    const sequence=(recipe as {phasePoseIndices?:number[]}).phasePoseIndices||[0,1,0];
+    assert.equal(sequence.length,recipe.phases.length);
+    assert.ok(sequence.every(n=>Number.isInteger(n)&&n>=0&&n<recipe.poses.length));
     assert.deepEqual(m.images.map(i=>i.phase),recipe.phases);
-    for(let i=0;i<3;i++){
+    for(let i=0;i<m.images.length;i++){
       const svg=fs.readFileSync(path.join(root,'assets/exercise-illustrations',id.replace(':','-')+'-'+i+'.svg'));
       assert.equal(createHash('sha256').update(svg).digest('hex'),m.sources[0].sourceSha256![i]);
       assert.ok(!svg.toString().includes('<image'),'No borrowed or embedded media');
@@ -115,4 +137,47 @@ test('original diagrams have explicit poses, original SVG hashes, a separate med
     }
     assert.equal(m.sources[0].license,'MIT');
   }
+});
+
+test('an explicitly matched shared demonstration never grants another ID camera or source ownership',()=>{
+  const example=exercises.find(e=>e.id==='exdb:3224')!;
+  assert.equal(example.cameraType,undefined);assert.equal(example.planCamera,undefined);
+  const existing=mediaFor('motion:jumping_jack')!,matched=mediaFor(example.id)!;
+  assert.deepEqual(matched.video,existing.video);
+  assert.deepEqual(matched.sources,existing.sources);
+  assert.ok(matched.images.every(f=>f.distribution==='site-only'));
+  const paired=diagrams.entries['exdb:3636'];
+  assert.deepEqual(paired.phasePoseIndices,[0,1,0,2,0]);
+  assert.equal(new Set(paired.phases).size,5);
+  assert.notDeepEqual(paired.poses[1].legs,paired.poses[2].legs);
+});
+
+test('corrected pull-up phases cover the actual ascent and return without changing the released video',()=>{
+  const m=mediaFor('exdb:0652')!;
+  assert.deepEqual(m.images.map(f=>f.sourceTime),[1,3.5,5.5]);
+  assert.equal(m.video!.sha256,'28f8dad6ffdb8c63c2bc93062a00f505e4ce6dfd60e8fd55afc347cf4b409263');
+  assert.deepEqual(mediaFor('exdb:1429')!.video,m.video);
+  assert.equal(exercises.find(e=>e.id==='exdb:1429')!.planCamera,undefined);
+  for(const image of m.images)assert.equal(m.sources[image.sourceIndex!].license,'CC BY-SA 4.0');
+  for(const id of ['exdb:0643','exdb:0669']){
+    assert.equal(exercises.find(e=>e.id===id)!.category,'timed');
+    const relax=fs.readFileSync(path.join(root,'assets/exercise-illustrations',id.replace(':','-')+'-2.svg'),'utf8');
+    assert.ok(!relax.includes('marker-end='),'Resting poses must not keep a movement arrow');
+  }
+});
+
+test('independent references correct specific source errors, retain licenses and leave unresolved anatomy unapproved',()=>{
+  for(const id of ['exdb:0050','exdb:0098','exdb:0137','exdb:0870','exdb:0173','exdb:0873','exdb:0328']){
+    const exercise=exercises.find(e=>e.id===id)!;
+    assert.equal(exercise.reviewStatus,'checked');assert.ok(mediaFor(id)?.images.length);
+    const entry=ledger.entries.find(e=>e.id===id)!;
+    const sources=(entry.text as {editorialSources?:{license:string;sourceRecordSha256:string}[]}).editorialSources!;
+    assert.equal(sources.length,1);assert.equal(sources[0].license,'Unlicense');
+    assert.match(sources[0].sourceRecordSha256,/^[a-f0-9]{64}$/);
+    assert.ok(!('textSources' in exercise),'Full reference records belong in the audit, not every API row');
+  }
+  assert.ok(exercises.find(e=>e.id==='exdb:0137')!.instructions.some(s=>s.includes('前臂')));
+  assert.ok(!exercises.find(e=>e.id==='exdb:0870')!.instructions.join('').includes('仰卧'));
+  assert.ok(exercises.find(e=>e.id==='exdb:0873')!.instructions.some(s=>s.includes('踝带')));
+  for(const id of ['exdb:0347','exdb:0349'])assert.equal(exercises.find(e=>e.id===id)!.reviewStatus,'needs_review');
 });

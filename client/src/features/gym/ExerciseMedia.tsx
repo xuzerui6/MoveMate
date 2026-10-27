@@ -5,6 +5,7 @@ import { label } from "./api";
 import { mediaSummaryFor, muscleRegions, type ExerciseMedia as Media } from "./media";
 import {useExerciseMedia} from './mediaLoader';
 import { demoPlayback } from "./mediaPlayback";
+import { isUnreviewedOfficialExercise } from './exerciseGuidance';
 import "./exercise-media.css";
 
 // Only demonstration players register here; camera streams are never touched.
@@ -184,6 +185,7 @@ export function ExerciseMuscles({ exercise }: { exercise: any }) {
   const unoutlined=[exercise?.target,...(exercise?.secondaryMuscles||[])].filter((t:string)=>t&&!muscleRegions(t).length);
   return (
     <div className="exercise-muscles">
+      {isUnreviewedOfficialExercise(exercise)&&<p className="media-note" role="note">以下肌群为来源分类，尚待核对；不代表已确认的训练效果。</p>}
       <div className="exercise-muscle-pair">
         {(["front", "back"] as const).map((side) => (
           <svg
@@ -252,6 +254,7 @@ function LoadedViewer({exercise,suspended=false,media}:{exercise:any;suspended?:
   return (
     <>
       {exercise.reviewStatus==='needs_review'&&<p className="media-pending" role="note"><strong>资料待核对</strong> · {exercise.reviewReason}</p>}
+      {media&&isUnreviewedOfficialExercise(exercise)&&<p className="media-note" role="note">示范按当前动作库提供，请对照本次实际动作。旧记录中的说明不会自动改写。</p>}
       {exercise.form&&<p className="media-note"><strong>适用形式：</strong>{exercise.form}</p>}
       <div
         className="media-tabs"

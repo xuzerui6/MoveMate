@@ -5,6 +5,8 @@ import {resolve} from 'node:path';
 import {createHash} from 'node:crypto';
 const root=resolve(import.meta.dirname,'..'),read=p=>JSON.parse(readFileSync(resolve(root,p),'utf8'));
 const catalogue=read('server/src/gym/catalog.json'),curation=read('scripts/reviewed-exercise-content.json'),media=read('client/src/features/gym/exercise-media.json').entries;
+const textReferences=read('scripts/exercise-text-references.json');
+function canonical(value){return Array.isArray(value)?value.map(canonical):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(key=>[key,canonical(value[key])])):value;}
 const core=[['squat','徒手深蹲'],['jumping_jack','开合跳'],['high_knees','高抬腿'],['push_up','俯卧撑']].map(([id,nameZh])=>({id:'motion:'+id,name:id,nameZh,equipment:'body weight',instructions:[]}));
 const rows=[...core,...catalogue,{id:'movemate:reverse_lunge',name:'alternating reverse lunge',nameZh:'交替后撤弓步',equipment:'body weight',instructions:[]}];
 const duplicates=new Map();for(const row of rows){const ids=duplicates.get(row.name)||[];ids.push(row.id);duplicates.set(row.name,ids);}
@@ -16,7 +18,12 @@ for(const row of rows){
     if(!['checked','needs_review'].includes(explicit.reviewStatus)||!explicit.reviewReason)throw Error('Missing explicit editorial decision: '+row.id);
     if(explicit.reviewStatus==='checked'&&(!explicit.form||!explicit.cues?.length||!explicit.instructions||explicit.instructions.length<3||explicit.instructions.length>5))throw Error('Incomplete reviewed content: '+row.id);
     if(explicit.reviewStatus==='checked'&&!media[row.id])throw Error('Checked content must have reviewed matching media: '+row.id);
-    output[row.id]={cues:[],form:'',...explicit,reviewStage:'editorial'};
+    const {textSources,...fields}=explicit;
+    for(const source of textSources||[]){
+      const reference=textReferences.records[source.record];
+      if(!reference||reference.id!==source.record||source.revision!==textReferences.revision||source.license!==textReferences.license||source.url!==textReferences.source||createHash('sha256').update(JSON.stringify(canonical(reference))).digest('hex')!==source.sourceRecordSha256)throw Error('Invalid independent text reference: '+row.id);
+    }
+    output[row.id]={cues:[],form:'',...fields,reviewStage:'editorial'};
   }else{
     const issues=[];
     if(/\bv\.?\s*\d|version/i.test(row.name))issues.push('原文版本后缀尚缺可区分该变式的独立来源');
@@ -31,6 +38,7 @@ for(const row of rows){
   }
   const record=output[row.id],m=media[row.id];
   ledger.push({id:row.id,originalName:row.name,status:record.reviewStatus,reviewStage:record.reviewStage,reason:record.reviewReason,text:{status:record.reviewStatus==='checked'?'source_compared':explicit?'reviewed_with_issues':'source_only',source:row.id.startsWith('exdb:')?'exercises-dataset':'MoveMate original',revision:row.id.startsWith('exdb:')?'7455efae41b330c265e7cd4b78dfa848e7ce5ebd':'original',license:row.id.startsWith('exdb:')?'MIT':'项目原创文字',sourceRecordSha256:createHash('sha256').update(JSON.stringify(row)).digest('hex'),steps:(record.instructions||row.instructions).length},photo:!!m&&m.kind!=='illustration'&&!!m.images.length,illustration:m?.kind==='illustration',video:!!m?.video,complete:record.reviewStatus==='checked'&&!!m?.images.length,sources:m?.sources||[]});
+  if(explicit?.textSources?.length)ledger.at(-1).text.editorialSources=explicit.textSources;
 }
 for(const id of Object.keys(curation.entries))if(!output[id])throw Error('Unknown reviewed ID: '+id);
 for(const id of Object.keys(media))if(!output[id])throw Error('Unknown media ID: '+id);

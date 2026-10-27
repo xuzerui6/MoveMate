@@ -82,7 +82,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源说明是过顶推举，候选表现为上斜肩胛前伸。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-27",
+        "reference": {
+          "name": "free-exercise-db / Barbell_Incline_Shoulder_Raise",
+          "record": "Barbell_Incline_Shoulder_Raise",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "19ba8319e4e1971ca6aff92493292cf54daaf743967f58117d2246c6a994d1c5"
+        },
+        "reason": "上斜凳背部支撑、双脚落地、双手正握杠铃；手臂保持伸展，以肩胛小幅前伸推高杠铃，不是肩推。"
+      }
     },
     {
       "exerciseId": "exdb:0054",
@@ -136,7 +149,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源描述双侧深蹲，候选显示侧向重心移动。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-27",
+        "reference": {
+          "name": "free-exercise-db / Barbell_Side_Split_Squat",
+          "record": "Barbell_Side_Split_Squat",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "ab6575335396a4ac31d082fa5840b252889bd83408569e759aeb8e45b2360cf5"
+        },
+        "reason": "上背背杠、宽站距，重心向一侧移并屈该侧髋膝，另一腿保持较伸展；双帧只展示一侧，完成后换侧。"
+      }
     },
     {
       "exerciseId": "exdb:0128",
@@ -163,7 +189,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源为撑凳臂屈伸，图片为前臂撑地起身。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-27",
+        "reference": {
+          "name": "free-exercise-db / Body-Up",
+          "record": "Body-Up",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "873a83d37e37f31ec90284f258a119e34095dbfbc593f555f9bb9a8c2731a61d"
+        },
+        "reason": "前臂与脚尖支撑，双掌压地后双臂伸肘推起，再回到前臂支撑；不是凳上臂屈伸。"
+      }
     },
     {
       "exerciseId": "exdb:0138",
@@ -181,7 +220,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源为仰卧屈膝卷腹，图片为俯卧支撑抬臀。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-27",
+        "reference": {
+          "name": "free-exercise-db / Butt-Ups",
+          "record": "Butt-Ups",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "d08c8aab7cbfe9cf91280f0e2c375469273d88d31a4910623b1b841b71a9c50f"
+        },
+        "reason": "前臂及脚尖支撑，向上抬臀后回到低位支撑；不是仰卧收腿卷腹。"
+      }
     },
     {
       "exerciseId": "exdb:0168",
@@ -208,7 +260,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源站姿，图片为上斜凳臂屈伸。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-27",
+        "reference": {
+          "name": "free-exercise-db / Cable_Incline_Triceps_Extension",
+          "record": "Cable_Incline_Triceps_Extension",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "f1f9276d6756b180f50594ab362141d94c49dae940f6df8f6ff50a74468ed85b"
+        },
+        "reason": "背靠上斜凳、双脚落地、背向高滑轮，双手窄握直杆，以伸肘为主推出；不是站姿低位过顶形式。"
+      }
     },
     {
       "exerciseId": "exdb:0174",
@@ -235,7 +300,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "说明用手握绳索，图片拉力施加于脚踝。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-27",
+        "reference": {
+          "name": "free-exercise-db / Cable_Reverse_Crunch",
+          "record": "Cable_Reverse_Crunch",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "99890abf9f42cb4c841e501a7cb54a94671d1fd79442e92772506bf93f78aba0"
+        },
+        "reason": "脚踝连接低位拉索，面朝上仰卧，双手身侧稳住躯干，屈膝卷起骨盆后控制放回。"
+      }
     },
     {
       "exerciseId": "exdb:0212",
@@ -370,7 +448,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源为完整肩推，图片为上斜肩胛前伸。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-27",
+        "reference": {
+          "name": "free-exercise-db / Dumbbell_Incline_Shoulder_Raise",
+          "record": "Dumbbell_Incline_Shoulder_Raise",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "66876507029b6a3e99169411e5818893c447855e513228db1affc8a43206d6bb"
+        },
+        "reason": "上斜凳背部支撑、双手各持哑铃于上方，保持肘部伸展，以肩胛小幅前伸推高；不是完整肩推。"
+      }
     },
     {
       "exerciseId": "exdb:0345",
@@ -1424,7 +1515,20 @@
       "decision": "rejected_or_pending",
       "reason": "来源起始掌心向前，候选有中立握与旋腕交替，未确认是否同一变式。",
       "personBackground": "来源未明确说明，不推断亚洲或其他背景",
-      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-27",
+        "reference": {
+          "name": "free-exercise-db / Dumbbell_Alternate_Bicep_Curl",
+          "record": "Dumbbell_Alternate_Bicep_Curl",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "581aa1700cbad5ae701406df04fb0abe4fa4196da6a2a62de24cbcc54e574bcc"
+        },
+        "reason": "站姿、双手各持一只哑铃、左右交替，弯举时由掌心朝体侧转向前上方；不是双臂同时或全程锤式握法。"
+      }
     },
     {
       "exerciseId": "exdb:2137",
@@ -1976,5 +2080,8 @@
       "personBackground": "来源未明确说明，不推断亚洲或其他背景",
       "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
     }
-  ]
+  ],
+  "resolvedAdoptions": 8,
+  "currentAdopted": 79,
+  "currentPending": 131
 }

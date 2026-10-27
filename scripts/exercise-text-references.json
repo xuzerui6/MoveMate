@@ -1,0 +1,342 @@
+{
+  "version": 1,
+  "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+  "license": "Unlicense",
+  "source": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+  "licenseUrl": "https://github.com/yuhonas/free-exercise-db/blob/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/LICENSE.md",
+  "records": {
+    "Barbell_Incline_Shoulder_Raise": {
+      "name": "Barbell Incline Shoulder Raise",
+      "force": "push",
+      "level": "beginner",
+      "mechanic": "compound",
+      "equipment": "barbell",
+      "primaryMuscles": [
+        "shoulders"
+      ],
+      "secondaryMuscles": [
+        "chest"
+      ],
+      "instructions": [
+        "Lie back on an Incline Bench. Using a medium width grip (a grip that is slightly wider than shoulder width), lift the bar from the rack and hold it straight over you with your arms straight. This will be your starting position.",
+        "While keeping the arms straight, lift the bar by protracting your shoulder blades, raising the shoulders from the bench as you breathe out.",
+        "Bring back the bar to the starting position as you breathe in.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "category": "strength",
+      "images": [
+        "Barbell_Incline_Shoulder_Raise/0.jpg",
+        "Barbell_Incline_Shoulder_Raise/1.jpg"
+      ],
+      "id": "Barbell_Incline_Shoulder_Raise"
+    },
+    "Barbell_Side_Split_Squat": {
+      "name": "Barbell Side Split Squat",
+      "force": "push",
+      "level": "beginner",
+      "mechanic": "compound",
+      "equipment": "barbell",
+      "primaryMuscles": [
+        "quadriceps"
+      ],
+      "secondaryMuscles": [
+        "calves",
+        "hamstrings",
+        "lower back"
+      ],
+      "instructions": [
+        "Stand up straight while holding a barbell placed on the back of your shoulders (slightly below the neck). Your feet should be placed wide apart with the foot of the lead leg angled out to the side. This will be your starting position.",
+        "Lower your body towards the side of your angled foot by bending the knee and hip of your lead leg and while keeping the opposite leg only slightly bent. Breathe in as you lower your body.",
+        "Return to the starting position by extending the hip and knee of the lead leg. Breathe out as you perform this movement.",
+        "After performing the recommended amount of reps, repeat the movement with the opposite leg."
+      ],
+      "category": "strength",
+      "images": [
+        "Barbell_Side_Split_Squat/0.jpg",
+        "Barbell_Side_Split_Squat/1.jpg"
+      ],
+      "id": "Barbell_Side_Split_Squat"
+    },
+    "Body-Up": {
+      "name": "Body-Up",
+      "force": "push",
+      "level": "intermediate",
+      "mechanic": "isolation",
+      "equipment": "body only",
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [
+        "abdominals",
+        "forearms"
+      ],
+      "instructions": [
+        "Assume a plank position on the ground. You should be supporting your bodyweight on your toes and forearms, keeping your torso straight. Your forearms should be shoulder-width apart. This will be your starting position.",
+        "Pressing your palms firmly into the ground, extend through the elbows to raise your body from the ground. Keep your torso rigid as you perform the movement.",
+        "Slowly lower your forearms back to the ground by allowing the elbows to flex.",
+        "Repeat."
+      ],
+      "category": "strength",
+      "images": [
+        "Body-Up/0.jpg",
+        "Body-Up/1.jpg"
+      ],
+      "id": "Body-Up"
+    },
+    "Butt-Ups": {
+      "name": "Butt-Ups",
+      "force": "pull",
+      "level": "beginner",
+      "mechanic": "compound",
+      "equipment": "body only",
+      "primaryMuscles": [
+        "abdominals"
+      ],
+      "secondaryMuscles": [],
+      "instructions": [
+        "Begin a pushup position but with your elbows on the ground and resting on your forearms. Your arms should be bent at a 90 degree angle.",
+        "Arch your back slightly out rather than keeping your back completely straight.",
+        "Raise your glutes toward the ceiling, squeezing your abs tightly to close the distance between your ribcage and hips. The end result will be that you'll end up in a high bridge position. Exhale as you perform this portion of the movement.",
+        "Lower back down slowly to your starting position as you breathe in. Tip: Don't let your back sag downwards.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "category": "strength",
+      "images": [
+        "Butt-Ups/0.jpg",
+        "Butt-Ups/1.jpg"
+      ],
+      "id": "Butt-Ups"
+    },
+    "Cable_Incline_Triceps_Extension": {
+      "name": "Cable Incline Triceps Extension",
+      "force": "push",
+      "level": "beginner",
+      "mechanic": "isolation",
+      "equipment": "cable",
+      "primaryMuscles": [
+        "triceps"
+      ],
+      "secondaryMuscles": [],
+      "instructions": [
+        "Lie on incline an bench facing away from a high pulley machine that has a straight bar attachment on it.",
+        "Grasp the straight bar attachment overhead with a pronated (overhand; palms down) narrow grip (less than shoulder width) and keep your elbows tucked in to your sides. Your upper arms should create around a 25 degree angle when measured from the floor.",
+        "Keeping the upper arms stationary, extend the arms as you flex the triceps. Breathe out during this portion of the movement and hold the contraction for a second.",
+        "Slowly go back to the starting position.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "category": "strength",
+      "images": [
+        "Cable_Incline_Triceps_Extension/0.jpg",
+        "Cable_Incline_Triceps_Extension/1.jpg"
+      ],
+      "id": "Cable_Incline_Triceps_Extension"
+    },
+    "Cable_Reverse_Crunch": {
+      "name": "Cable Reverse Crunch",
+      "force": "pull",
+      "level": "beginner",
+      "mechanic": "isolation",
+      "equipment": "cable",
+      "primaryMuscles": [
+        "abdominals"
+      ],
+      "secondaryMuscles": [],
+      "instructions": [
+        "Connect an ankle strap attachment to a low pulley cable and position a mat on the floor in front of it.",
+        "Sit down with your feet toward the pulley and attach the cable to your ankles.",
+        "Lie down, elevate your legs and bend your knees at a 90-degree angle. Your legs and the cable should be aligned. If not, adjust the pulley up or down until they are.",
+        "With your hands behind your head, bring your knees inward to your torso and elevate your hips off the floor.",
+        "Pause for a moment and in a slow and controlled manner drop your hips and bring your legs back to the starting 90-degree angle. You should still have tension on your abs in the resting position.",
+        "Repeat the same movement to failure."
+      ],
+      "category": "strength",
+      "images": [
+        "Cable_Reverse_Crunch/0.jpg",
+        "Cable_Reverse_Crunch/1.jpg"
+      ],
+      "id": "Cable_Reverse_Crunch"
+    },
+    "Dumbbell_Incline_Shoulder_Raise": {
+      "name": "Dumbbell Incline Shoulder Raise",
+      "force": "push",
+      "level": "beginner",
+      "mechanic": "isolation",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "shoulders"
+      ],
+      "secondaryMuscles": [
+        "triceps"
+      ],
+      "instructions": [
+        "Sit on an Incline Bench while holding a dumbbell on each hand on top of your thighs.",
+        "Lift your legs up to kick the weights to your shoulders and lean back. Position the dumbbells above your shoulders with your arms extended. The arms should be perpendicular to the floor with your palms facing forward and knuckles pointing towards the ceiling. This will be your starting position.",
+        "While keeping the arms straight and locked, lift the dumbbells by raising the shoulders from the bench as you breathe out.",
+        "Bring back the dumbbells to the starting position as you breathe in.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "category": "strength",
+      "images": [
+        "Dumbbell_Incline_Shoulder_Raise/0.jpg",
+        "Dumbbell_Incline_Shoulder_Raise/1.jpg"
+      ],
+      "id": "Dumbbell_Incline_Shoulder_Raise"
+    },
+    "Cable_Incline_Pushdown": {
+      "name": "Cable Incline Pushdown",
+      "force": "pull",
+      "level": "beginner",
+      "mechanic": "isolation",
+      "equipment": "cable",
+      "primaryMuscles": [
+        "lats"
+      ],
+      "secondaryMuscles": [],
+      "instructions": [
+        "Lie on incline an bench facing away from a high pulley machine that has a straight bar attachment on it.",
+        "Grasp the straight bar attachment overhead with a pronated (overhand; palms down) shoulder width grip and extend your arms in front of you. The bar should be around 2 inches away from your upper thighs. This will be your starting position.",
+        "Keeping the upper arms stationary, lift your arms back in a semi circle until the bar is straight over your head. Breathe in during this portion of the movement.",
+        "Slowly go back to the starting position using your lats and hold the contraction once you reach the starting position. Breathe out during the execution of this movement.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "category": "strength",
+      "images": [
+        "Cable_Incline_Pushdown/0.jpg",
+        "Cable_Incline_Pushdown/1.jpg"
+      ],
+      "id": "Cable_Incline_Pushdown"
+    },
+    "Dumbbell_Lying_Pronation": {
+      "name": "Dumbbell Lying Pronation",
+      "force": "pull",
+      "level": "intermediate",
+      "mechanic": "isolation",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "forearms"
+      ],
+      "secondaryMuscles": [],
+      "instructions": [
+        "Lie on a flat bench face down with one arm holding a dumbbell and the other hand on top of the bench folded so that you can rest your head on it.",
+        "Bend the elbows of the arm holding the dumbbell so that it creates a 90-degree angle between the upper arm and the forearm.",
+        "Now raise the upper arm so that the forearm is perpendicular to the floor and the upper arm is perpendicular to your torso. Tip: The upper arm should be parallel to the floor and also creating a 90-degree angle with your torso. This will be your starting position.",
+        "As you breathe out, externally rotate your forearm so that the dumbbell is lifted forward as you maintain the 90 degree angle bend between the upper arms and the forearm. You will continue this external rotation until the forearm is parallel to the floor. At this point you will hold the contraction for a second.",
+        "As you breathe in, slowly go back to the starting position.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "category": "strength",
+      "images": [
+        "Dumbbell_Lying_Pronation/0.jpg",
+        "Dumbbell_Lying_Pronation/1.jpg"
+      ],
+      "id": "Dumbbell_Lying_Pronation"
+    },
+    "Dumbbell_Lying_Supination": {
+      "name": "Dumbbell Lying Supination",
+      "force": "pull",
+      "level": "intermediate",
+      "mechanic": "isolation",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "forearms"
+      ],
+      "secondaryMuscles": [],
+      "instructions": [
+        "Lie sideways on a flat bench with one arm holding a dumbbell and the other hand on top of the bench folded so that you can rest your head on it.",
+        "Bend the elbows of the arm holding the dumbbell so that it creates a 90-degree angle between the upper arm and the forearm.",
+        "Now raise the upper arm so that the forearm is parallel to the floor and perpendicular to your torso (Tip: So the forearm will be directly in front of you). The upper arm will be stationary by your torso and should be parallel to the floor (aligned with your torso at all times). This will be your starting position.",
+        "As you breathe out, externally rotate your forearm so that the dumbbell is lifted up in a semicircle motion as you maintain the 90 degree angle bend between the upper arms and the forearm. You will continue this external rotation until the forearm is perpendicular to the floor and the torso pointing towards the ceiling. At this point you will hold the contraction for a second.",
+        "As you breathe in, slowly go back to the starting position.",
+        "Repeat for the recommended amount of repetitions and then switch to the other arm."
+      ],
+      "category": "strength",
+      "images": [
+        "Dumbbell_Lying_Supination/0.jpg",
+        "Dumbbell_Lying_Supination/1.jpg"
+      ],
+      "id": "Dumbbell_Lying_Supination"
+    },
+    "Smith_Incline_Shoulder_Raise": {
+      "name": "Smith Incline Shoulder Raise",
+      "force": "push",
+      "level": "beginner",
+      "mechanic": "isolation",
+      "equipment": "barbell",
+      "primaryMuscles": [
+        "shoulders"
+      ],
+      "secondaryMuscles": [
+        "chest"
+      ],
+      "instructions": [
+        "Place an incline bench underneath the smith machine. Place the barbell at a height that you can reach when lying down and your arms are almost fully extended. Once the weight you need is selected, lie down on the incline bench and make sure your shoulders are aligned right under the barbell.",
+        "Using a shoulder width pronated (palms forward) grip, lift the bar from the rack and hold it straight over you with a slight bend at the elbows. This will be your starting position.",
+        "As you breathe out, lift the bar up until your arms are fully extended. Note: The contraction should be felt around the shoulders.",
+        "After a second pause, bring the bar back down to the starting position as you breathe in.",
+        "Repeat the movement for the prescribed amount of repetitions.",
+        "When you are done, place the bar back in the rack."
+      ],
+      "category": "strength",
+      "images": [
+        "Smith_Incline_Shoulder_Raise/0.jpg",
+        "Smith_Incline_Shoulder_Raise/1.jpg"
+      ],
+      "id": "Smith_Incline_Shoulder_Raise"
+    },
+    "Snatch_Pull": {
+      "name": "Snatch Pull",
+      "force": "pull",
+      "level": "intermediate",
+      "mechanic": "compound",
+      "equipment": "barbell",
+      "primaryMuscles": [
+        "hamstrings"
+      ],
+      "secondaryMuscles": [
+        "calves",
+        "glutes",
+        "lower back",
+        "quadriceps",
+        "traps"
+      ],
+      "instructions": [
+        "With a barbell on the floor close to the shins, take a wide snatch grip. Lower your hips with the weight focused on the heels, back straight, head facing forward, chest up, with your shoulders just in front of the bar. This will be your starting position.",
+        "Begin the first pull by driving through the heels, extending your knees. Your back angle should stay the same, and your arms should remain straight. Move the weight with control as you continue to above the knees.",
+        "Next comes the second pull, the main source of acceleration for the pull. As the bar approaches the mid-thigh position, begin extending through the hips. In a jumping motion, accelerate by extending the hips, knees, and ankles, using speed to move the bar upward.",
+        "There should be no need to actively pull through the arms to accelerate the weight; at the end of the second pull, the body should be fully extended, leaning slightly back. Full extension should be violent and abrupt, and ensure that you do not prolong the extension for longer than necessary."
+      ],
+      "category": "strength",
+      "images": [
+        "Snatch_Pull/0.jpg",
+        "Snatch_Pull/1.jpg"
+      ],
+      "id": "Snatch_Pull"
+    },
+    "Dumbbell_Alternate_Bicep_Curl": {
+      "name": "Dumbbell Alternate Bicep Curl",
+      "force": "pull",
+      "level": "beginner",
+      "mechanic": "isolation",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "biceps"
+      ],
+      "secondaryMuscles": [
+        "forearms"
+      ],
+      "instructions": [
+        "Stand (torso upright) with a dumbbell in each hand held at arms length. The elbows should be close to the torso and the palms of your hand should be facing your thighs.",
+        "While holding the upper arm stationary, curl the right weight as you rotate the palm of the hands until they are facing forward. At this point continue contracting the biceps as you breathe out until your biceps is fully contracted and the dumbbells are at shoulder level. Hold the contracted position for a second as you squeeze the biceps. Tip: Only the forearms should move.",
+        "Slowly begin to bring the dumbbell back to the starting position as your breathe in. Tip: Remember to twist the palms back to the starting position (facing your thighs) as you come down.",
+        "Repeat the movement with the left hand. This equals one repetition.",
+        "Continue alternating in this manner for the recommended amount of repetitions."
+      ],
+      "category": "strength",
+      "images": [
+        "Dumbbell_Alternate_Bicep_Curl/0.jpg",
+        "Dumbbell_Alternate_Bicep_Curl/1.jpg"
+      ],
+      "id": "Dumbbell_Alternate_Bicep_Curl"
+    }
+  }
+}

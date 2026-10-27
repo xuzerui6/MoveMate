@@ -8,12 +8,14 @@ from PIL import Image, ImageOps
 import imageio_ffmpeg
 
 ROOT=pathlib.Path(__file__).resolve().parent.parent
-args=argparse.ArgumentParser();args.add_argument('--staging',required=True);args.add_argument('--only',help='Comma-separated reviewed exercise IDs; preserve all other published entries byte-for-byte')
+args=argparse.ArgumentParser();args.add_argument('--staging',required=True);args.add_argument('--only',help='Comma-separated reviewed exercise IDs; preserve all other published entries byte-for-byte');args.add_argument('--frames-only',action='store_true',help='Re-extract approved CC video phases without changing the released video bytes; requires --only')
 options=args.parse_args();stage=pathlib.Path(options.staging)
 only=set(options.only.split(',')) if options.only else None
 approved=json.loads((ROOT/'scripts/exercise-media-approved.json').read_text(encoding='utf8'))
 known={r['exerciseId'] for r in approved['stills']}|{eid for r in approved['videos']+approved.get('siteVideos',[]) for eid in r['exerciseIds']}
 assert not only or only<=known, 'Unknown or unreviewed --only exercise IDs'
+cc_ids={eid for row in approved['videos'] for eid in row['exerciseIds']}
+assert not options.frames_only or only and only<=cc_ids, '--frames-only requires explicit CC video IDs'
 dest=ROOT/'client/public/exercise-media';dest.mkdir(parents=True,exist_ok=True)
 local_config=ROOT/'server/data/media-config.json'
 media_dir=os.environ.get('MOVEMATE_MEDIA_DIR') or (json.loads(local_config.read_text(encoding='utf8')).get('MOVEMATE_MEDIA_DIR') if local_config.exists() else None)
@@ -34,6 +36,7 @@ def photo(p,name,distribution='repository'):
  output=stage/(name+'.webp');im.save(output,'WEBP',quality=84,method=6)
  return asset(output,name,'webp',distribution)
 for row in approved['stills']:
+ if options.frames_only:continue
  if only and row['exerciseId'] not in only:continue
  if only and row['exerciseId'] in entries:continue
  id=row['exerciseId'];source=row['sourceId'];images=[]
@@ -57,11 +60,20 @@ for row in approved['videos']:
  v=row['source'];id=v['id'];p=stage/'candidates'/v.get('sourceFile',f'wger-{id}.mov')
  assert v['license']==2 and v['license_author'] and sha(p)==v['sourceSha256']
  output=stage/f'approved-wger-{id}.mp4';poster=stage/f'approved-wger-{id}.png'
- subprocess.run([ff,'-v','error','-ss',str(row['start']),'-i',str(p),'-t',str(row['end']-row['start']),'-an','-vf','scale=trunc(iw*min(1\\,720/ih)/2)*2:trunc(ih*min(1\\,720/ih)/2)*2','-c:v','libx264','-preset','fast','-crf','25','-pix_fmt','yuv420p','-movflags','+faststart','-y',str(output)],check=True)
- subprocess.run([ff,'-v','error','-ss','0.1','-i',str(output),'-frames:v','1','-y',str(poster)],check=True)
- poster_file=photo(poster,f'wger-{id}-poster')
- video={**asset(output,f'wger-{id}','mp4'),'poster':poster_file['src'],'posterSha256':poster_file['sha256'],'aspectRatio':Image.open(poster).width/Image.open(poster).height}
- source={'name':f'wger / video {id}','author':v['license_author'],'license':'CC BY-SA 4.0','licenseUrl':'https://creativecommons.org/licenses/by-sa/4.0/','url':v['video'],'version':f'video:{id}; retrieved {approved["reviewedAt"]}; sha256:{v["sourceSha256"]}', 'sourceSha256':[v['sourceSha256']],'changes':f'仅保留原片 {row["start"]}–{row["end"]} 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面及按原片时间标注的分解帧；无空间裁切。衍生视频、封面及分解帧沿用 CC BY-SA 4.0。'}
+ if options.frames_only:
+  targets=[eid for eid in row['exerciseIds'] if eid in only]
+  existing=[entries.get(eid,{}) for eid in targets]
+  assert all(e.get('video') and any(s.get('sourceSha256')==[v['sourceSha256']] for s in e['sources']) for e in existing), 'Cannot update phases without the same reviewed video source'
+  video=existing[0]['video']
+  assert all(e['video']==video for e in existing), 'Target IDs must use the same released clip'
+  released=ROOT/'client/public'/video['src'].lstrip('/')
+  assert video['distribution']=='repository' and sha(released)==video['sha256'], 'Released clip bytes must still verify'
+ else:
+  subprocess.run([ff,'-v','error','-ss',str(row['start']),'-i',str(p),'-t',str(row['end']-row['start']),'-an','-vf','scale=trunc(iw*min(1\\,720/ih)/2)*2:trunc(ih*min(1\\,720/ih)/2)*2','-c:v','libx264','-preset','fast','-crf','25','-pix_fmt','yuv420p','-movflags','+faststart','-y',str(output)],check=True)
+  subprocess.run([ff,'-v','error','-ss','0.1','-i',str(output),'-frames:v','1','-y',str(poster)],check=True)
+  poster_file=photo(poster,f'wger-{id}-poster')
+  video={**asset(output,f'wger-{id}','mp4'),'poster':poster_file['src'],'posterSha256':poster_file['sha256'],'aspectRatio':Image.open(poster).width/Image.open(poster).height}
+ source={'name':f'wger / video {id}','author':v['license_author'],'license':'CC BY-SA 4.0','licenseUrl':'https://creativecommons.org/licenses/by-sa/4.0/','url':v['video'],'version':f'video:{id}; retrieved {v.get("retrievedAt",approved["reviewedAt"])}; sha256:{v["sourceSha256"]}', 'sourceSha256':[v['sourceSha256']],'changes':f'仅保留原片 {row["start"]}–{row["end"]} 秒，去掉音轨，按原比例转为 H.264/MP4，提取封面及按原片时间标注的分解帧；无空间裁切。衍生视频、封面及分解帧沿用 CC BY-SA 4.0。'}
  frames=[]
  for i,f in enumerate(row.get('frames',[])):
   assert row['start'] <= f['time'] < row['end'], 'Frame outside reviewed clip'
@@ -71,9 +83,11 @@ for row in approved['videos']:
  for eid in row['exerciseIds']:
   if only and eid not in only:continue
   if eid not in entries:entries[eid]={'images':[],'sources':[]}
-  entries[eid]['video']=video;entries[eid]['sources'].append(source)
+  entries[eid]['video']=video
+  if source not in entries[eid]['sources']:entries[eid]['sources'].append(source)
+  source_index=entries[eid]['sources'].index(source)
   if frames:
-   entries[eid]['images']=[{**f,'sourceIndex':len(entries[eid]['sources'])-1} for f in frames]
+   entries[eid]['images']=[{**f,'sourceIndex':source_index} for f in frames]
   entries[eid]['note']=row['note']+'实拍示范用于理解动作过程，负重按自身能力选择。'
 for row in approved.get('siteVideos',[]):
  if only and not only.intersection(row['exerciseIds']):continue

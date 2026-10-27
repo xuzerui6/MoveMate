@@ -29,7 +29,8 @@ for eid,row in config['entries'].items():
         output=io.BytesIO();image.save(output,'WEBP',quality=90,method=6)
         data=output.getvalue();h=sha(data);name=f'original-{stem}.{h[:12]}.webp';(public/name).write_bytes(data)
         images.append({'src':'/exercise-media/'+name,'bytes':len(data),'sha256':h,'phase':phase,'sourceIndex':0,'distribution':'repository'})
-    manifest['entries'][eid]={'kind':'illustration','note':row['form']+' 原创静态三阶段示意，不是连续视频。','images':images,'sources':[{'name':'MoveMate 原创人体动作示意 / '+eid,'author':'MoveMate contributors','license':'MIT','licenseUrl':'/exercise-media/ORIGINAL-MIT.txt','url':'https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations','version':'original-1','sourceSha256':hashes,'changes':'按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。','distribution':'repository'}]}
+    stages='三阶段' if len(row['phases'])==3 else '分阶段'
+    manifest['entries'][eid]={'kind':'illustration','note':row['form']+' 原创静态'+stages+'示意，不是连续视频。','images':images,'sources':[{'name':'MoveMate 原创人体动作示意 / '+eid,'author':'MoveMate contributors','license':'MIT','licenseUrl':'/exercise-media/ORIGINAL-MIT.txt','url':'https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations','version':'original-1','sourceSha256':hashes,'changes':'按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。','distribution':'repository'}]}
 (public/'ORIGINAL-MIT.txt').write_bytes((ROOT/'assets/exercise-illustrations/LICENSE.txt').read_bytes())
 for f in [ROOT/'client/src/features/gym/exercise-media.json',public/'attribution.json']:
     f.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
