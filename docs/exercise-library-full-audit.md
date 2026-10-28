@@ -144,3 +144,16 @@ node --import ./server/node_modules/tsx/dist/loader.mjs scripts/report-exercise-
 正式产物本机扫描1,072文件、94,794,320字节，最大单文件9,574,032字节；Wrangler扫描1,079文件、Worker gzip723.58KiB、启动87ms并接受免费预览发布。[当前官方容量说明](https://developers.cloudflare.com/workers/platform/limits/)核对日期2026-10-27。没有新增付费资源或数据库迁移。
 
 Git暂存逐文件检查通过：440个当前媒体文件的校验与分发方式有效，受限原片及衍生二进制未进入仓库；没有把未引用的新增制作草稿混入发布。公开仓库测试不依赖受限二进制。
+
+
+## 174 项正式发布复核（2026-10-28）
+
+源码提交 `5ef1f21` 已同步 GitHub main。正式 Worker 版本 `276d6810-2ecb-459f-8cc3-d11db4bc28f2` 已100%生效；前一版本为 `341e45a9-7a59-48f7-aad9-679e416f1f03`。回退时只切换代码版本，保留当前数据库。
+
+部署命令的代码上传成功，但重复配置自定义域名时网络请求失败，命令因此退出1。没有据此宣称完全成功：随后只读查询Cloudflare当前部署、两个域名绑定，并在正式域名检查新版入口/完整媒体清单；确认dongban.xyz及www.dongban.xyz仍绑定movemate的production，www返回308到主站。无需更改DNS或重复提交域名配置。
+
+正式地址的正常登录、全部1,329官方ID分页与中文审核信息、174图片ID分页、14视频ID筛选及器械/主练肌群/摄像头交集全部通过；20个详情/关键帧核对、404及新旧视频Range206通过。真实浏览器390/768/1440px无横向溢出、无应用运行异常、查看示范未请求设备。没有创建线上训练、奖励或修改个人计划。
+
+本机继续在 http://localhost:3001 运行相同源码。正式与本机产物分别构建；完整媒体校验440文件通过，受限素材只在部署产物中。截图及验收脚本保存在项目外：C:/Users/16013/.codex/visualizations/2026/10/27/full-library/ 。手机/电脑截图为production-library-390.png、production-library-768.png、production-library-1440.png；五阶段及静态图样本为phase-view-*-390/768/1440.png，新视频为new-curl-media-*.png。
+
+云端检查使用已有代理与HTTP/1.1；此次验证不代表无代理链路问题已解决。真人摄像头动作质量、BLE、真人有声未重新验收。全库仍有1,155项未完成图文核验，不能把本次全量来源对照及发布说成全库素材齐备。
