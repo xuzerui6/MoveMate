@@ -34,16 +34,17 @@ test('every official ID has an honest separate documentation decision; custom ID
   assert.equal(documented({...source,id:'user:1760',reviewStatus:undefined}).reviewStatus,'needs_review');
   assert.ok(!mediaFor('user:1760'));
   assert.ok(exercises.some(e=>e.id==='exdb:0088'));assert.ok(exercises.some(e=>e.id==='exdb:1371'));
-  assert.equal(exercises.find(e=>e.id==='exdb:1371')!.reviewStatus,'needs_review');
-  assert.equal(mediaFor('exdb:1371'),undefined);
+  assert.equal(exercises.find(e=>e.id==='exdb:1371')!.reviewStatus,'checked');
+  assert.deepEqual(mediaFor('exdb:1371')!.images,mediaFor('exdb:0088')!.images,'Individually verified same forms retain both IDs without fabricating another shoot');
   assert.equal(exercises.find(e=>e.id==='exdb:0475')!.category,'strength','Straight leg raises are repetitions, not a static hang');
   for(const id of ['exdb:1297','exdb:1403'])assert.equal(exercises.find(e=>e.id===id)!.category,'timed','Static holds must not be described as repetition cycles');
   assert.equal(exercises.find(e=>e.id==='exdb:0484')!.reviewStage,'editorial');
-  assert.ok(exercises.find(e=>e.id==='exdb:0484')!.reviewReason!.includes('脚踩地臀桥'));
+  assert.ok(exercises.find(e=>e.id==='exdb:0484')!.form!.includes('双脚悬空'));
+  assert.ok(exercises.find(e=>e.id==='exdb:0484')!.instructions.some(s=>s.includes('骨盆')));
 });
 
 test('alternating illustrations show both sides and mark only the moving side',()=>{
-  for(const id of ['exdb:0388','exdb:0414','exdb:0415']){
+  for(const id of ['exdb:0388','exdb:0414','exdb:0415','exdb:0387','exdb:1648','exdb:1730','exdb:1739']){
     const recipe=diagrams.entries[id] as {phasePoseIndices:number[];poseArrows:number[][][]};
     assert.deepEqual(recipe.phasePoseIndices,[0,1,0,2,0]);
     assert.equal(recipe.poseArrows[1].length,1);assert.equal(recipe.poseArrows[2].length,1);
@@ -167,7 +168,7 @@ test('corrected pull-up phases cover the actual ascent and return without changi
 });
 
 test('independent references correct specific source errors, retain licenses and leave unresolved anatomy unapproved',()=>{
-  for(const id of ['exdb:0050','exdb:0098','exdb:0137','exdb:0870','exdb:0173','exdb:0873','exdb:0328']){
+  for(const id of ['exdb:0050','exdb:0098','exdb:0137','exdb:0870','exdb:0173','exdb:0873','exdb:0328','exdb:0260','exdb:0484','exdb:0500','exdb:3194','exdb:0118','exdb:0436']){
     const exercise=exercises.find(e=>e.id===id)!;
     assert.equal(exercise.reviewStatus,'checked');assert.ok(mediaFor(id)?.images.length);
     const entry=ledger.entries.find(e=>e.id===id)!;
@@ -180,4 +181,10 @@ test('independent references correct specific source errors, retain licenses and
   assert.ok(!exercises.find(e=>e.id==='exdb:0870')!.instructions.join('').includes('仰卧'));
   assert.ok(exercises.find(e=>e.id==='exdb:0873')!.instructions.some(s=>s.includes('踝带')));
   for(const id of ['exdb:0347','exdb:0349'])assert.equal(exercises.find(e=>e.id===id)!.reviewStatus,'needs_review');
+  assert.equal(exercises.find(e=>e.id==='exdb:0500')!.category,'strength');
+  assert.ok(exercises.find(e=>e.id==='exdb:0500')!.form!.includes('掌撑'));
+  assert.ok(exercises.find(e=>e.id==='exdb:0436')!.form!.includes('平凳仰卧'));
+  assert.equal(mediaFor('exdb:0332')!.kind,'illustration','The squat-and-raise photo must not replace this source’s standing lateral raise');
+  assert.equal(mediaFor('exdb:0433')!.kind,'illustration','Cross-bench shoulder support must not replace this source’s full-length bench support');
+  assert.equal(diagrams.entries['exdb:0660'].props.filter(p=>typeof p==='object'&&p.type==='dumbbell').length,2,'Two separate dumbbells must not be replaced by the upright single-dumbbell photo');
 });

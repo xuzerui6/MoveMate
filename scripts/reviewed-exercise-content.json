@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewedAt": "2026-10-27",
+  "reviewedAt": "2026-10-29",
   "entries": {
     "exdb:0001": {
       "nameZh": "四分之三仰卧起坐",
@@ -138,12 +138,23 @@
       "reviewReason": "已对照固定来源的双帧实拍与动作说明核对器械、支撑和阶段；非专业动作认证。"
     },
     "exdb:1371": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：与 exdb:0088 同名，无法确认独立变式，保留 ID 不采用共用图。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "杠铃坐姿提踵（条目1371）",
+      "nameZh": "坐姿杠铃台阶提踵",
       "aliases": [
-        "杠铃坐姿提踵（条目1371）"
-      ]
+        "杠铃坐姿提踵（条目1371）",
+        "坐姿杠铃台阶提踵",
+        "barbell seated calf raise"
+      ],
+      "instructions": [
+        "坐在凳上，前脚掌置于稳定垫块，杠铃垫好软垫放于大腿靠近膝上方。",
+        "双手扶稳杠铃，保持坐姿，抬起脚跟。",
+        "在可控高度停住，再缓慢降低脚跟。"
+      ],
+      "form": "坐凳，双脚前掌置于垫块，杠铃压于大腿上方",
+      "cues": [
+        "用手稳住杠铃并加软垫；本条目不是平地提踵"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照本条原始步骤、支撑、器械和握法，与已核对 exdb:0088 的明确形式一致；保留ID，共用素材，不冒充新增独立视频或不同变式。非专业教学认证。"
     },
     "exdb:0095": {
       "nameZh": "杠铃耸肩",
@@ -2746,12 +2757,34 @@
       "reviewReason": "原来源步骤存在明显形式错误；已交叉核对固定版本 free-exercise-db 的独立英文说明和实际双帧，按明确支撑、器械与阶段修订。不是按名称相似自动配图，非专业教学认证。"
     },
     "exdb:0168": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源面向绳索机，图片侧身；滑轮、运动方向需另行核对。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "绳索髋内收",
+      "nameZh": "站姿绳索髋内收",
       "aliases": [
-        "绳索髋内收"
-      ]
+        "绳索髋内收",
+        "站姿绳索髋内收",
+        "Cable Hip Adduction"
+      ],
+      "form": "侧对低滑轮，靠近滑轮的一侧脚踝连接踝带，向站立腿前方内收；不是髋外展。",
+      "instructions": [
+        "侧对低位滑轮站稳，将靠近滑轮的脚踝连接踝带。",
+        "另一腿支撑身体，手可扶稳机架，工作腿稍向外展开。",
+        "保持躯干稳定，将工作腿向内带过支撑腿前方。",
+        "控制回到外侧准备位置，完成后换侧。"
+      ],
+      "cues": [
+        "由髋部带腿内收，不转身或甩腿；检查踝带固定。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Cable_Hip_Adduction",
+          "record": "Cable_Hip_Adduction",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "72e39303451e3899dad7d9182c1db44dfa8f9cbb7a4f935a329957693b294437"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。真人局部双帧，原图顶部少量出画；髋、踝带、脚部和拉索方向可见。 非专业教学认证。"
     },
     "exdb:0172": {
       "reviewStatus": "needs_review",
@@ -2878,12 +2911,34 @@
       ]
     },
     "exdb:0260": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源仅为普通卷腹说明，候选含手脚同时收拢。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "茧式收腹",
+      "nameZh": "仰卧收膝抱腿卷腹",
       "aliases": [
-        "茧式收腹"
-      ]
+        "茧式收腹",
+        "仰卧收膝抱腿卷腹",
+        "Cocoons"
+      ],
+      "form": "仰卧、双腿伸展、双臂过顶准备；同时收膝和卷起躯干，不是脚踩地的普通卷腹。",
+      "instructions": [
+        "仰卧在垫上，双腿自然伸展，双臂沿头顶方向伸展。",
+        "收腹卷起肩背，同时屈髋屈膝，把双膝带向胸前。",
+        "双手随躯干向前靠近小腿，控制骨盆卷起。",
+        "缓慢伸展手脚并放回躯干，回到准备位。"
+      ],
+      "cues": [
+        "手脚收拢协调进行，不甩腿或猛拉头颈。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Cocoons",
+          "record": "Cocoons",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "c67c20a87800ac7473c61b44f31b488a17cf1e3cf8ac4b9e8bca7b3de6add7d3"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0267": {
       "reviewStatus": "needs_review",
@@ -2983,28 +3038,84 @@
       ]
     },
     "exdb:0363": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：图片两帧起止相反且肘部外展高度明显，尚需核对动作幅度。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "哑铃单臂直立划船",
+      "nameZh": "站姿单哑铃直立提拉",
       "aliases": [
-        "哑铃单臂直立划船"
-      ]
+        "哑铃单臂直立划船",
+        "站姿单哑铃直立提拉",
+        "Dumbbell One-Arm Upright Row"
+      ],
+      "form": "站姿一手正握哑铃于体前，以肘部引导沿体前上提。",
+      "instructions": [
+        "站稳，一手持铃置于大腿前，掌心朝向身体。",
+        "保持躯干稳定，以肘部引导哑铃沿体前上提。",
+        "在肩部舒适且能控制的高度停顿。",
+        "沿原路缓慢放回，完成后换臂。"
+      ],
+      "cues": [
+        "不耸肩猛拉，不要求强行达到下巴高度。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Dumbbell_One-Arm_Upright_Row",
+          "record": "Dumbbell_One-Arm_Upright_Row",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "b8d9483545620a9ff7b875a475d82ed21bd2ccd3e2be223180f900bd61c5ec5f"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0374": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源写掌心朝下，图片握法需进一步核对，不冒充旋后弯举。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "哑铃上斜俯卧弯举",
+      "nameZh": "上斜凳俯卧双哑铃弯举",
       "aliases": [
-        "哑铃上斜俯卧弯举"
-      ]
+        "哑铃上斜俯卧弯举",
+        "上斜凳俯卧双哑铃弯举",
+        "Dumbbell Prone Incline Curl"
+      ],
+      "form": "胸腹贴靠上斜凳，双臂向下悬垂，掌心朝前同时屈肘。",
+      "instructions": [
+        "胸腹贴靠上斜凳，双脚踩稳，每手握一只哑铃。",
+        "双臂自然下垂，掌心朝前，保持上臂稳定。",
+        "同时屈肘把两只哑铃举起。",
+        "缓慢下放至准备位置，躯干保持贴凳。"
+      ],
+      "cues": [
+        "原说明“掌心朝下”已与独立英文及实拍交叉修正；不摆动上臂。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Prone_Incline_Curl",
+          "record": "Dumbbell_Prone_Incline_Curl",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "681d37f465ffd382034dec833ae1f0ba5f883d2785da60452566670e9b81bed4"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0376": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源为侧平举，图片为屈肘提拉。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "哑铃上举（形式待核对）",
+      "nameZh": "站姿双哑铃侧平举",
       "aliases": [
-        "哑铃上举（形式待核对）"
-      ]
+        "哑铃上举（形式待核对）",
+        "站姿双哑铃侧平举",
+        "dumbbell raise"
+      ],
+      "instructions": [
+        "双脚分开与肩同宽站立，双手各握一个哑铃，手掌朝向身体。",
+        "保持背部挺直并启动核心肌群。",
+        "将手臂向两侧抬起，直到与地板平行，保持肘部稍微弯曲。",
+        "在顶部暂停片刻，然后慢慢将手臂放回起始位置。"
+      ],
+      "form": "站姿、双手持哑铃、双臂同时向两侧抬起",
+      "cues": [
+        "不耸肩或甩铃，肘部保持自然微屈"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照本条原始步骤、支撑、器械和握法，与已核对 exdb:0334 的明确形式一致；保留ID，共用素材，不冒充新增独立视频或不同变式。非专业教学认证。"
     },
     "exdb:0400": {
       "reviewStatus": "needs_review",
@@ -3031,12 +3142,34 @@
       ]
     },
     "exdb:3194": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源手臂承托表述不清，图片为肩前无手托杠，需先修正文字。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "弗兰肯斯坦前蹲",
+      "nameZh": "直臂前伸杠铃前蹲",
       "aliases": [
-        "弗兰肯斯坦前蹲"
-      ]
+        "弗兰肯斯坦前蹲",
+        "直臂前伸杠铃前蹲",
+        "Frankenstein Squat"
+      ],
+      "form": "直杠由肩前支撑，双臂前伸不握杠；在力量架内下蹲，不是双手把杠悬举在体前。",
+      "instructions": [
+        "在力量架内把直杠稳定放在肩前支撑区，双脚站稳。",
+        "双臂向前伸展，依靠肩前承托稳住杠铃。",
+        "保持躯干稳定，屈髋屈膝下蹲至可控深度。",
+        "双脚推地站起，保持杠铃不向前滚动。"
+      ],
+      "cues": [
+        "先确认肩前承托稳定；不把杠压在颈部，不照搬图片负重。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Frankenstein_Squat",
+          "record": "Frankenstein_Squat",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "ee905be61f7e7c697dd214ae9b9adea58678fe665e10bd665463dae5a5658b8f"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:3193": {
       "reviewStatus": "needs_review",
@@ -3087,12 +3220,35 @@
       ]
     },
     "exdb:0500": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源仰卧摆腿，图片为低位俯卧撑横移。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "等长雨刷式支撑",
+      "nameZh": "低位俯卧撑左右横移",
       "aliases": [
-        "等长雨刷式支撑"
-      ]
+        "等长雨刷式支撑",
+        "低位俯卧撑左右横移",
+        "Isometric Wipers"
+      ],
+      "form": "宽手距掌撑地面，在低位向左右移重；不是仰卧左右摆腿。",
+      "instructions": [
+        "双掌较宽撑地，脚尖支撑，躯干保持稳定。",
+        "屈肘降低身体，在可控低位向一侧手掌移重。",
+        "控制回到中间，再向另一侧移重。",
+        "保持身体不塌腰，完成后伸肘回到支撑位。"
+      ],
+      "cues": [
+        "横移与屈肘受控，不把摆髋当成肩部横移。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Isometric_Wipers",
+          "record": "Isometric_Wipers",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "389b8a3e8c0455955367d4af63072c202356349eedc9440da723e2e154e70748"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。双帧仅展示低位两侧位置，准备和回位见文字；未把静态照片当成连续周期。 非专业教学认证。",
+      "category": "strength"
     },
     "exdb:0507": {
       "reviewStatus": "needs_review",
@@ -3135,12 +3291,24 @@
       ]
     },
     "exdb:0546": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源坐凳双铃，图片为地面坐姿单铃。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "壶铃坐姿推举",
+      "nameZh": "壶铃坐姿双臂肩推",
       "aliases": [
-        "壶铃坐姿推举"
-      ]
+        "壶铃坐姿推举",
+        "壶铃坐姿双臂肩推",
+        "kettlebell seated press"
+      ],
+      "instructions": [
+        "坐在稳定平凳上，双脚踩地，每手握一只壶铃至肩侧。",
+        "保持躯干稳定，双臂同时向上推起。",
+        "在能控制的位置短暂停顿。",
+        "缓慢把双铃放回肩侧准备位。"
+      ],
+      "form": "坐稳平凳，双脚着地，每手一只壶铃在肩侧，双臂同时向上推起。 本条完整来源步骤与 1438 的明确标准形式一致；保留各自 ID。",
+      "cues": [
+        "图示壶铃形状与双侧支撑，不把手填重量当作摄像头测得负重。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。"
     },
     "exdb:0548": {
       "reviewStatus": "needs_review",
@@ -3191,12 +3359,35 @@
       ]
     },
     "exdb:1352": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源写仰卧，图片为俯卧伸背。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "下背卷伸",
+      "nameZh": "俯卧上身抬起",
       "aliases": [
-        "下背卷伸"
-      ]
+        "下背卷伸",
+        "俯卧上身抬起",
+        "Lower Back Curl"
+      ],
+      "form": "俯卧地面、双臂沿体侧，胸部小幅离地后回落；不是仰卧卷腹。",
+      "instructions": [
+        "俯卧在垫上，双腿自然伸展，双臂沿身体两侧放置。",
+        "保持颈部与躯干自然衔接，缓慢抬起胸部。",
+        "在能控制的位置短暂停顿，双手不推地借力。",
+        "缓慢把上身放回垫面。"
+      ],
+      "cues": [
+        "采用能控制的小幅度，不抬头折颈或强行过伸腰部。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Lower_Back_Curl",
+          "record": "Lower_Back_Curl",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "1c1d4ac4e2d51a2a7ca2e0da65fd24f61939483680ad1b4d25f995f061d94199"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。",
+      "category": "strength"
     },
     "exdb:1302": {
       "reviewStatus": "needs_review",
@@ -3327,12 +3518,34 @@
       ]
     },
     "exdb:0768": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源持杆稳定表述含糊，图片疑为杠铃背负，需要重新核对。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "史密斯单腿分腿蹲",
+      "nameZh": "史密斯后脚抬高分腿蹲",
       "aliases": [
-        "史密斯单腿分腿蹲"
-      ]
+        "史密斯单腿分腿蹲",
+        "史密斯后脚抬高分腿蹲",
+        "Smith Single-Leg Split Squat"
+      ],
+      "form": "史密斯杠由上背承托，后脚搭在身后平凳，前脚支撑下蹲。",
+      "instructions": [
+        "调整史密斯杠和凳子位置，将杠稳定放在上背支撑区。",
+        "前脚踩稳地面，后脚搭在身后凳面上。",
+        "保持重心稳定，屈前腿髋膝下降。",
+        "以前腿推地回到准备高度，完成后换侧。"
+      ],
+      "cues": [
+        "不是手扶史密斯杆的徒手蹲；后脚和导轨位置应先稳定。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Smith_Single-Leg_Split_Squat",
+          "record": "Smith_Single-Leg_Split_Squat",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "325270fcd4ea63735bd86494a9ba0a0e01c435208fe89fdeb3bccb06700815e2"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0776": {
       "reviewStatus": "needs_review",
@@ -3369,12 +3582,25 @@
       ]
     },
     "exdb:0794": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源双臂侧展，图片为一臂过顶拉伸。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "站姿体侧拉伸",
+      "nameZh": "双臂侧展站姿侧屈拉伸",
       "aliases": [
-        "站姿体侧拉伸"
-      ]
+        "站姿体侧拉伸",
+        "双臂侧展站姿侧屈拉伸",
+        "standing lateral stretch"
+      ],
+      "instructions": [
+        "双脚站稳，双臂向两侧伸展至肩高附近。",
+        "保持双脚支撑，躯干缓慢向一侧侧屈。",
+        "在舒适范围自然呼吸并保持，不弹震。",
+        "回正，放松后换另一侧。"
+      ],
+      "form": "双脚着地，双臂侧展至肩高，躯干向一侧侧屈保持后回正；不是单臂头后拉伸。",
+      "cues": [
+        "不转动或折腰追求更深幅度；本图仅示意一侧，换侧见文字。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。",
+      "category": "timed"
     },
     "exdb:1364": {
       "reviewStatus": "needs_review",
@@ -3417,12 +3643,35 @@
       ]
     },
     "exdb:1365": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源过顶伸臂，图片为胸前伸臂，方向不同。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "上背拉伸",
+      "nameZh": "站姿双手前伸上背拉伸",
       "aliases": [
-        "上背拉伸"
-      ]
+        "上背拉伸",
+        "站姿双手前伸上背拉伸",
+        "Upper Back Stretch"
+      ],
+      "form": "站姿双手在胸前合握，肩部向前展开，手向前伸；不把过顶伸臂或夹背当成本动作。",
+      "instructions": [
+        "站稳，双手在胸前合握，双臂向前伸展。",
+        "轻轻让肩部向前展开，感受上背部的牵伸。",
+        "自然呼吸，在舒适范围保持。",
+        "放松双臂并恢复自然站姿。"
+      ],
+      "cues": [
+        "不反向夹紧肩胛，不弹震或强拉头颈。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Upper_Back_Stretch",
+          "record": "Upper_Back_Stretch",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "9a30b3b8369c95d8da8ce8777ef5b8384e6a2be86695bb46936fd0420b010a05"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。静态拉伸双帧：准备与保持，不是计次动画。 非专业教学认证。",
+      "category": "timed"
     },
     "exdb:0830": {
       "reviewStatus": "needs_review",
@@ -3457,12 +3706,34 @@
       ]
     },
     "exdb:0858": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源平地冲刺跑，图片为悬垂抬膝。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "风式冲刺（原称Wind Sprints）",
+      "nameZh": "悬垂交替抬膝",
       "aliases": [
-        "风式冲刺（原称Wind Sprints）"
-      ]
+        "风式冲刺（原称Wind Sprints）",
+        "悬垂交替抬膝",
+        "Wind Sprints"
+      ],
+      "form": "正握悬垂，左右交替屈膝上提；是来源名 Wind Sprints 对应的悬垂形式，不是平地冲刺。",
+      "instructions": [
+        "双手正握固定横杆，身体稳定悬垂。",
+        "屈髋屈膝抬起一侧腿，另一腿自然向下。",
+        "控制放下后换另一侧抬膝。",
+        "持续交替，避免靠摆荡身体抬腿。"
+      ],
+      "cues": [
+        "左右分别完成，不用摆荡代替主动抬膝。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Wind_Sprints",
+          "record": "Wind_Sprints",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "d491ba6ecb01a4ba2e3bea09e2f906123c6090519962d9e8de5ecfdd40f935a5"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。双帧分别展示左右抬膝，未镜像制造另一侧；不是连续视频。 非专业教学认证。"
     },
     "exdb:1428": {
       "reviewStatus": "needs_review",
@@ -3521,12 +3792,24 @@
       ]
     },
     "exdb:1372": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：候选使用台阶垫高，当前文字未说明该支撑条件；不自动增加变式。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "杠铃站姿提踵",
+      "nameZh": "平地杠铃双脚提踵",
       "aliases": [
-        "杠铃站姿提踵"
-      ]
+        "杠铃站姿提踵",
+        "平地杠铃双脚提踵",
+        "barbell standing calf raise"
+      ],
+      "instructions": [
+        "在力量架附近将直杠稳定放在上背，双脚平地站稳。",
+        "保持躯干稳定，双脚前脚掌压地，抬起脚跟。",
+        "在能控制的位置短暂停顿。",
+        "缓慢放回脚跟，不弹震。"
+      ],
+      "form": "平地双脚同时提踵、直杠由上背承托；不站台阶。",
+      "cues": [
+        "本条采用平地双脚形式，不把脚跟放到台阶下方。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。"
     },
     "exdb:0114": {
       "reviewStatus": "needs_review",
@@ -3622,76 +3905,224 @@
       ]
     },
     "exdb:0310": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源为身前抬至肩高，候选为单臂交替且高于肩部，尚不能认定同一形式。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "哑铃前平举",
+      "nameZh": "双哑铃站姿前平举",
       "aliases": [
-        "哑铃前平举"
-      ]
+        "哑铃前平举",
+        "双哑铃站姿前平举",
+        "dumbbell front raise"
+      ],
+      "instructions": [
+        "双脚站稳，每手握一个哑铃，放在大腿前。",
+        "保持躯干稳定，双臂同时向身体前方抬起。",
+        "在能控制的肩高附近停顿，不耸肩甩动。",
+        "缓慢放回准备位。"
+      ],
+      "form": "双手各持一个哑铃，站姿双臂同时向身体前方抬至肩高；本条来源明确使用双哑铃，不含杠铃片替代。 与 0834 是同一明确形式，保留独立ID。",
+      "cues": [
+        "这是同时双臂前举，不自动改为交替上举或侧平举。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。"
     },
     "exdb:0318": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源描述双侧弯举，候选明确为左右交替；不以交替图片代替。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "哑铃上斜弯举（条目0318）",
+      "nameZh": "上斜凳双哑铃反握弯举",
       "aliases": [
-        "哑铃上斜弯举（条目0318）"
-      ]
+        "哑铃上斜弯举（条目0318）",
+        "上斜凳双哑铃反握弯举",
+        "dumbbell incline curl"
+      ],
+      "instructions": [
+        "背靠上斜凳躺稳，双脚踩地，每手持一只哑铃。",
+        "让手臂自然下垂，掌心朝前，上臂保持稳定。",
+        "双侧同时屈肘，把哑铃举向肩部。",
+        "控制下放，肩背继续贴凳。"
+      ],
+      "form": "背靠上斜凳、双脚踩地、双手掌心朝前，同时屈肘；不是交替或俯卧托臂形式。 与 0315 是同一明确形式，保留独立ID。",
+      "cues": [
+        "上臂不压在凳垫上，不用摆肩或后仰代替屈肘。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。"
     },
     "exdb:0391": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源起始掌心朝前，候选起始为中立握，未核对是否包含旋腕变式。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "哑铃坐姿弯举（条目0391）",
+      "nameZh": "哑铃坐姿二头弯举",
       "aliases": [
-        "哑铃坐姿弯举（条目0391）"
-      ]
+        "哑铃坐姿弯举（条目0391）",
+        "哑铃坐姿二头弯举",
+        "dumbbell seated curl"
+      ],
+      "instructions": [
+        "坐稳平凳，双脚踩地，每手一铃，掌心朝前。",
+        "保持上臂靠近身体，双臂同时屈肘举向肩部。",
+        "在能控制的位置停顿，不后仰借力。",
+        "缓慢放回准备位。"
+      ],
+      "form": "坐稳平凳、双脚着地、双手各持一铃掌心朝前，双臂同时屈伸肘。 本条完整来源步骤与 1677 的明确标准形式一致；保留各自 ID。",
+      "cues": [
+        "坐姿凳面承重，双脚持续着地；手填负重不来自摄像头测量。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。"
     },
     "exdb:0393": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源要求上臂放在大腿，候选双臂向两侧展开且不支于大腿。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "哑铃坐姿内侧弯举",
+      "nameZh": "坐姿双哑铃外开弯举",
       "aliases": [
-        "哑铃坐姿内侧弯举"
-      ]
+        "哑铃坐姿内侧弯举",
+        "坐姿双哑铃外开弯举",
+        "Seated Dumbbell Inner Biceps Curl"
+      ],
+      "form": "坐稳凳面，双上臂自然靠近体侧，前臂向外上方弯举；不是上臂压大腿的集中弯举。",
+      "instructions": [
+        "坐稳平凳，双脚踩地，双手持铃自然下垂。",
+        "保持上臂靠近体侧，将前臂向外、向上弯举。",
+        "随着上举让掌心转向上方，在可控位置停顿。",
+        "控制放回，恢复中立握准备位置。"
+      ],
+      "cues": [
+        "上臂不放在大腿上，也不抬肩把整个手臂甩起。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Seated_Dumbbell_Inner_Biceps_Curl",
+          "record": "Seated_Dumbbell_Inner_Biceps_Curl",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "79821cb06036cc067b278aa4e520687a6ea67674213e6247c2ab9e61f5d78e51"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:1741": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：与现有 exdb:0333 说明同类形式，缺少可区分条目的原始资料；暂不重复记作新覆盖。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "哑铃站姿俯身双臂臂屈伸",
+      "nameZh": "站姿双哑铃俯身臂屈伸",
       "aliases": [
-        "哑铃站姿俯身双臂臂屈伸"
-      ]
+        "哑铃站姿俯身双臂臂屈伸",
+        "站姿双哑铃俯身臂屈伸",
+        "Standing Bent-Over Two-Arm Dumbbell Triceps Extension"
+      ],
+      "form": "屈髋俯身，双脚支撑、双臂同时后伸；与已核对0333形式一致，保留本ID。",
+      "instructions": [
+        "双手各持一只哑铃，屈髋俯身并微屈膝，保持躯干稳定。",
+        "上臂贴近躯干，屈肘让前臂自然朝下。",
+        "保持上臂基本不动，双侧同时向后伸肘。",
+        "缓慢屈肘放回，不摆动身体借力。"
+      ],
+      "cues": [
+        "上臂固定在体侧，不把肩部后摆当成伸肘。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Standing_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+          "record": "Standing_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "9249526cff8dd1e4de3e738b7956c5db772c0e2d4ab997d2448938e3350853e9"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0417": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：候选使用前脚掌垫高，原说明没有台阶条件；不直接添加支撑变式。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "哑铃站姿提踵",
+      "nameZh": "平地双哑铃双脚提踵",
       "aliases": [
-        "哑铃站姿提踵"
-      ]
+        "哑铃站姿提踵",
+        "平地双哑铃双脚提踵",
+        "dumbbell standing calf raise"
+      ],
+      "instructions": [
+        "双手各持一只哑铃，双脚在平地站稳。",
+        "保持手臂自然下垂，双脚前脚掌压地，抬起脚跟。",
+        "保持平衡并短暂停顿。",
+        "缓慢放回脚跟。"
+      ],
+      "form": "平地双脚同时提踵，双手各持一铃在体侧；不踩垫高台阶。",
+      "cues": [
+        "不靠屈膝弹跳抬起身体。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。"
     },
     "exdb:0422": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源只说明另一手扶凳，候选工作臂也放在凳垫上，支持方式未对应。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "哑铃站姿单臂上斜凳弯举（条目0422）",
+      "nameZh": "站姿上斜凳托臂单臂弯举",
       "aliases": [
-        "哑铃站姿单臂上斜凳弯举（条目0422）"
-      ]
+        "哑铃站姿单臂上斜凳弯举（条目0422）",
+        "站姿上斜凳托臂单臂弯举",
+        "Standing One-Arm Dumbbell Curl Over Incline Bench"
+      ],
+      "form": "站姿，工作侧上臂贴住上斜凳垫，另一手扶凳；单手反握哑铃。",
+      "instructions": [
+        "站在上斜凳后方，把工作侧上臂贴在凳垫上，另一手扶稳凳边。",
+        "掌心朝前持一只哑铃，手臂沿凳垫方向自然下伸。",
+        "保持上臂贴垫，屈肘把哑铃举向肩部。",
+        "缓慢伸肘回位，完成后换臂。"
+      ],
+      "cues": [
+        "工作上臂也由凳垫支撑，不是只有另一手扶凳的悬空弯举。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench",
+          "record": "Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "e45f0c4c2531f53bba93ba14a8611ed764934fe4331b52a0e086039c7a2d04a5"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:1680": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：与 exdb:0422 近同名且支撑说明不明确，无法确认独立形式。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "哑铃站姿单臂上斜凳弯举（条目1680）",
+      "nameZh": "站姿上斜凳托臂单臂弯举",
       "aliases": [
-        "哑铃站姿单臂上斜凳弯举（条目1680）"
-      ]
+        "哑铃站姿单臂上斜凳弯举（条目1680）",
+        "站姿上斜凳托臂单臂弯举",
+        "Standing One-Arm Dumbbell Curl Over Incline Bench"
+      ],
+      "form": "站姿，工作侧上臂贴住上斜凳垫，另一手扶凳；单手反握哑铃。",
+      "instructions": [
+        "站在上斜凳后方，把工作侧上臂贴在凳垫上，另一手扶稳凳边。",
+        "掌心朝前持一只哑铃，手臂沿凳垫方向自然下伸。",
+        "保持上臂贴垫，屈肘把哑铃举向肩部。",
+        "缓慢伸肘回位，完成后换臂。"
+      ],
+      "cues": [
+        "工作上臂也由凳垫支撑，不是只有另一手扶凳的悬空弯举。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench",
+          "record": "Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "e45f0c4c2531f53bba93ba14a8611ed764934fe4331b52a0e086039c7a2d04a5"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0430": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源为单手持铃过顶伸肘，候选是双手托一只哑铃。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "哑铃站姿臂屈伸",
+      "nameZh": "站姿单哑铃过顶臂屈伸",
       "aliases": [
-        "哑铃站姿臂屈伸"
-      ]
+        "哑铃站姿臂屈伸",
+        "站姿单哑铃过顶臂屈伸",
+        "dumbbell standing triceps extension"
+      ],
+      "instructions": [
+        "站稳，一手握住一只哑铃并稳定在头顶上方。",
+        "保持工作侧上臂靠近头部，缓慢屈肘把哑铃放到头后。",
+        "在可控位置停顿，避免肘部突然外散。",
+        "伸肘回到上方，完成后换侧。"
+      ],
+      "form": "站姿单手持一只哑铃，工作侧上臂保持头侧，屈肘下放脑后再伸肘。",
+      "cues": [
+        "本条是单手一铃；不以双手托一铃图片代替。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。"
     },
     "exdb:0431": {
       "reviewStatus": "needs_review",
@@ -3702,12 +4133,24 @@
       ]
     },
     "exdb:0433": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源沿凳全背支撑，候选横向肩背撑凳且腰髋悬空。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "哑铃直臂上拉",
+      "nameZh": "沿凳仰卧直臂哑铃上拉",
       "aliases": [
-        "哑铃直臂上拉"
-      ]
+        "哑铃直臂上拉",
+        "沿凳仰卧直臂哑铃上拉",
+        "dumbbell straight arm pullover"
+      ],
+      "instructions": [
+        "头和躯干沿平凳躺稳，双脚踩地，双手握住一只哑铃。",
+        "手臂在胸上方自然伸展，不锁死肘部。",
+        "保持臂长基本不变，将哑铃沿弧线向头后下放。",
+        "在肩部舒适范围控制停顿，再沿弧线拉回。"
+      ],
+      "form": "头和整个躯干沿平凳支撑、双脚踩地，双手握一只哑铃，以近伸直手臂完成上拉；不是横凳肩背支撑。",
+      "cues": [
+        "躯干持续由整张凳面支撑，不改成横卧凳的悬髋形式。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。"
     },
     "exdb:0466": {
       "reviewStatus": "needs_review",
@@ -3718,12 +4161,34 @@
       ]
     },
     "exdb:0484": {
-      "reviewStatus": "needs_review",
-      "reviewReason": "候选已对照：来源为脚踩地臀桥，候选为双脚悬空的反向卷腹。 当前不发布此候选，不计完整覆盖。",
-      "nameZh": "屈膝举髋",
+      "nameZh": "仰卧屈膝卷髋",
       "aliases": [
-        "屈膝举髋"
-      ]
+        "屈膝举髋",
+        "仰卧屈膝卷髋",
+        "Bent-Knee Hip Raise"
+      ],
+      "form": "仰卧、双脚悬空屈膝，以收腹卷起骨盆；不是脚踩地臀桥。",
+      "instructions": [
+        "仰卧垫上，双手放在身侧，屈膝并把双脚抬离地面。",
+        "收腹把膝盖带向胸部，骨盆缓慢卷离垫面。",
+        "在可控位置停顿，不把重量甩向颈部。",
+        "控制放回骨盆和腿部，保持屈膝准备姿势。"
+      ],
+      "cues": [
+        "双脚不踩地推髋；不靠抛腿产生惯性。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Bent-Knee_Hip_Raise",
+          "record": "Bent-Knee_Hip_Raise",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "d3e3afbe1941fe1e4fe221b8b99f3e333892efa67976e48d3cb41db540dced7e"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0490": {
       "reviewStatus": "needs_review",
@@ -4056,12 +4521,24 @@
       "reviewReason": "逐项对照固定版本名称、器械和完整步骤：器械为徒手、名称是腿提供阻力，但步骤全程握哑铃坐姿集中弯举；阻力来源矛盾。"
     },
     "exdb:0139": {
-      "nameZh": "窄握反手引体向上",
+      "nameZh": "肩宽反握引体向上",
       "aliases": [
-        "窄握反手引体向上"
+        "窄握反手引体向上",
+        "肩宽反握引体向上",
+        "biceps narrow pull-ups"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称要求窄握，步骤却写与肩同宽；握距边界缺少独立示范，不能默认等同普通反手引体。"
+      "instructions": [
+        "双手反握单杠，掌心朝向自己，握距接近肩宽。",
+        "先稳定身体，再向下收肘，将身体向上拉起。",
+        "在能控制的高度停住，不伸头去够杆。",
+        "缓慢下降至可控悬垂，避免摆腿借力；本条目不是正握引体。"
+      ],
+      "form": "双手反握单杠悬垂、掌心朝向自己",
+      "cues": [
+        "躯干稳定，不甩腿或伸头去够杆"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照本条原始步骤、支撑、器械和握法，与已核对 exdb:1326 的明确形式一致；保留ID，共用素材，不冒充新增独立视频或不同变式。非专业教学认证。"
     },
     "exdb:3543": {
       "nameZh": "自重落地跳深蹲",
@@ -4266,18 +4743,61 @@
     "exdb:1407": {
       "nameZh": "扶墙弓步小腿拉伸",
       "aliases": [
-        "扶墙弓步小腿拉伸"
+        "扶墙弓步小腿拉伸",
+        "Calf Stretch Hands Against Wall"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字为后腿伸直、脚跟着地、前膝弯曲；与 exdb:1377 文字近同，缺乏差异证据，ID 保持独立，不自动合并。"
+      "form": "面向墙面，前腿屈膝、后腿伸展，后脚跟贴地；两张照片为同一保持位的不同取景，不是两次动态动作。",
+      "instructions": [
+        "面向墙壁，双手扶墙，双脚前后分开。",
+        "前腿屈膝，后腿自然伸展，后脚跟尽量保持贴地。",
+        "缓慢向前移重，在舒适范围保持并自然呼吸。",
+        "放松回位后换腿。"
+      ],
+      "cues": [
+        "不抬起后脚跟追求更深幅度，不弹震。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Calf_Stretch_Hands_Against_Wall",
+          "record": "Calf_Stretch_Hands_Against_Wall",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "9558a9533aca35889ca6c5d143a24aec8e9445206709459c25b4083d2ae7e771"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。两帧为同一静态拉伸的不同视角；不是连续动作或左右各一次的证明。 非专业教学认证。"
     },
     "exdb:1377": {
-      "nameZh": "扶墙小腿拉伸",
+      "nameZh": "扶墙弓步小腿拉伸",
       "aliases": [
-        "扶墙小腿拉伸"
+        "扶墙小腿拉伸",
+        "扶墙弓步小腿拉伸",
+        "Calf Stretch Hands Against Wall"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字为后腿伸直、脚跟着地、前膝弯曲；与 exdb:1407 文字近同，差异尚不能确认，不能按新变式计覆盖。"
+      "form": "面向墙面，前腿屈膝、后腿伸展，后脚跟贴地；两张照片为同一保持位的不同取景，不是两次动态动作。",
+      "instructions": [
+        "面向墙壁，双手扶墙，双脚前后分开。",
+        "前腿屈膝，后腿自然伸展，后脚跟尽量保持贴地。",
+        "缓慢向前移重，在舒适范围保持并自然呼吸。",
+        "放松回位后换腿。"
+      ],
+      "cues": [
+        "不抬起后脚跟追求更深幅度，不弹震。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Calf_Stretch_Hands_Against_Wall",
+          "record": "Calf_Stretch_Hands_Against_Wall",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "9558a9533aca35889ca6c5d143a24aec8e9445206709459c25b4083d2ae7e771"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。两帧为同一静态拉伸的不同视角；不是连续动作或左右各一次的证明。 非专业教学认证。"
     },
     "exdb:2963": {
       "nameZh": "肘撑直腿举腿",
@@ -4344,12 +4864,24 @@
       "reviewReason": "逐项对照固定版本名称、器械和完整步骤：来源明确双手推离地面后击掌，但没有说明落手阶段；需完整实拍或明确的腾空、落手图，普通俯卧撑图片不适用。"
     },
     "exdb:1327": {
-      "nameZh": "窄握反手引体向上",
+      "nameZh": "肩宽反握引体向上（窄握条目）",
       "aliases": [
-        "窄握反手引体向上"
+        "窄握反手引体向上",
+        "肩宽反握引体向上（窄握条目）",
+        "close grip chin-up"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称是窄握，步骤写双手与肩同宽；与 exdb:0139 近同但未确认握距差异，不合并。"
+      "instructions": [
+        "双手反握单杠，掌心朝向自己，握距接近肩宽。",
+        "先稳定身体，再向下收肘，将身体向上拉起。",
+        "在能控制的高度停住，不伸头去够杆。",
+        "缓慢下降至可控悬垂，避免摆腿借力；本条目不是正握引体。"
+      ],
+      "form": "双手反握单杠悬垂、掌心朝向自己",
+      "cues": [
+        "躯干稳定，不甩腿或伸头去够杆"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照本条原始步骤、支撑、器械和握法，与已核对 exdb:1326 的明确形式一致；保留ID，共用素材，不冒充新增独立视频或不同变式。非专业教学认证。"
     },
     "exdb:0259": {
       "nameZh": "窄距俯卧撑",
@@ -4416,12 +4948,34 @@
       "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字变成下降后膝盖落地再推起，缺少名称所指的下落来源和落手方式；不能确定其是否是变式或错误步骤。"
     },
     "exdb:1167": {
-      "nameZh": "动态胸部伸展",
+      "nameZh": "站姿动态展胸",
       "aliases": [
-        "动态胸部伸展"
+        "动态胸部伸展",
+        "站姿动态展胸",
+        "Dynamic Chest Stretch"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称是动态，步骤却要求交叉双臂后保持10—30秒，运动轨迹也与常见开胸伸展不同；不当作动态胸部示范发布。"
+      "form": "站姿双臂胸前伸展，向两侧打开后合回；是动态活动，不是保持不动的静态拉伸。",
+      "instructions": [
+        "站稳，双臂向胸前伸展。",
+        "在肩部舒适范围向两侧打开双臂。",
+        "控制合回胸前，保持躯干稳定。",
+        "以平稳节奏重复，不追求最大后摆幅度。"
+      ],
+      "cues": [
+        "不快速弹震或强行后拉肩部。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Dynamic_Chest_Stretch",
+          "record": "Dynamic_Chest_Stretch",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "71446e6a29c4e209d38ce98bedb57cc02a1d4b93d5557c692ac70f077498d68d"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:3287": {
       "nameZh": "肘部臂屈伸",
@@ -5606,12 +6160,24 @@
       "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字同时说一脚站平台、该脚向后滑到平台上，未说明哪只脚在固定地面、哪只脚滑动；支撑矛盾。"
     },
     "exdb:1759": {
-      "nameZh": "手枪式单腿蹲",
+      "nameZh": "徒手手枪式单腿深蹲",
       "aliases": [
-        "手枪式单腿蹲"
+        "手枪式单腿蹲",
+        "徒手手枪式单腿深蹲",
+        "single leg squat (pistol) male"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：名称明确 pistol，但步骤仅下到大腿水平或舒适深度，没有确认完整深蹲底部；不把较浅的单腿蹲图冒充完整手枪蹲。"
+      "instructions": [
+        "站稳，双臂向前伸展，将一条腿向前抬离地面。",
+        "屈支撑侧髋膝，缓慢下蹲。",
+        "保持抬起脚离地，在可控制深度停顿。",
+        "支撑脚推地站起，完成后换侧。"
+      ],
+      "form": "双臂向前伸，一腿向前保持离地，另一腿支撑下蹲并站起；本图示意左腿支撑，随后换侧。",
+      "cues": [
+        "不强求固定蹲深；不把抬起的脚踩地帮助起身。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：源说明与显式原创配置逐项对照，已对照本地渲染逐帧检查。原创静态示意，非真人实拍或专业教学认证。"
     },
     "exdb:1489": {
       "nameZh": "西斯深蹲",
@@ -5792,10 +6358,31 @@
     "exdb:3223": {
       "nameZh": "星形跳",
       "aliases": [
-        "星形跳"
+        "星形跳",
+        "Star Jump"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字要求空中四肢展开成星形，落地是否先收拢未明确；与落地展开再合拢的开合跳不同，不能复用开合跳视频。"
+      "form": "从小幅下蹲跳起，腾空时双臂双腿向外展开，落地前收回。",
+      "instructions": [
+        "站稳，双臂靠近身体，屈髋屈膝作起跳准备。",
+        "双脚蹬地起跳，腾空时向外展开双臂和双腿。",
+        "落地前收回四肢，双脚落地并屈膝缓冲。",
+        "站稳后再开始下一次。"
+      ],
+      "cues": [
+        "保持落地区域空出；不是单纯站立开合跳。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Star_Jump",
+          "record": "Star_Jump",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "ac50bd55049284349ecc29a659c4b1b8212dcb4e925fedeb16180aff83a0d676"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。真人双帧：起跳准备与腾空星形；落地过程按文字说明，不冒充连续视频。 非专业教学认证。"
     },
     "exdb:3314": {
       "nameZh": "分腿马尔特支撑",
@@ -6483,12 +7070,24 @@
       "reviewReason": "逐项对照固定版本名称、器械和完整步骤：步骤同时写向前伸腿、脚尖放在身后凳上，前后位置矛盾；带子绕踝的作用也不明确。"
     },
     "exdb:0988": {
-      "nameZh": "弹力带站姿单臂低位划船",
+      "nameZh": "弹力带站姿单臂划船",
       "aliases": [
-        "弹力带站姿单臂低位划船"
+        "弹力带站姿单臂低位划船",
+        "弹力带站姿单臂划船",
+        "band one arm standing low row"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：腰高锚点、轻俯身、单手中立握拉向腰的步骤可读；仍需与实际低位锚点高度及手部路线核对后配图。"
+      "instructions": [
+        "把弹力带固定在腰部高度的稳固锚点，面向锚点站稳。",
+        "一手中立握带，微屈膝屈髋，工作臂向前伸展。",
+        "保持躯干稳定，屈肘把手带向腰部。",
+        "控制伸臂回位，完成后换侧。"
+      ],
+      "form": "面向腰部高度锚点，双脚支撑、微屈髋，一手中立握拉向腰部；图示一侧。",
+      "cues": [
+        "不扭腰甩动，锚点采用本条明确的腰部高度，不改成头顶下拉。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：源说明与显式原创配置逐项对照，已对照本地渲染逐帧检查。原创静态示意，非真人实拍或专业教学认证。"
     },
     "exdb:0989": {
       "nameZh": "弹力带单臂转体推胸",
@@ -6509,10 +7108,21 @@
     "exdb:0991": {
       "nameZh": "弹力带胯下拉",
       "aliases": [
-        "弹力带胯下拉"
+        "弹力带胯下拉",
+        "band pull through"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：低位后方锚点和髋铰链明确，但没有说明双手从胯下握带的关键接触，未采用常规硬拉图片。"
+      "instructions": [
+        "将弹力带固定在稳固低锚点，背向锚点，双手在双腿之间握住带子。",
+        "向前站出适当距离，保持带子有张力。",
+        "膝微屈，以髋部为中心向后折叠，躯干前倾。",
+        "伸髋站回，不后仰顶腰。"
+      ],
+      "form": "背向地面低锚点，双手在双腿之间握住弹力带，屈髋后移再站起。",
+      "cues": [
+        "双手从胯下持带，锚点在身后；不是脚踩弹力带硬拉。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：源说明与显式原创配置逐项对照，已对照本地渲染逐帧检查。原创静态示意，非真人实拍或专业教学认证。"
     },
     "exdb:0992": {
       "nameZh": "弹力带上推仰卧起坐",
@@ -6643,12 +7253,24 @@
       "reviewReason": "逐项对照固定版本名称、器械和完整步骤：文字带绕大腿却手握带向下，无法解释下端固定；与1009/1010不能按近同名字合并。"
     },
     "exdb:1010": {
-      "nameZh": "弹力带直腿硬拉",
+      "nameZh": "脚踩弹力带直腿硬拉",
       "aliases": [
-        "弹力带直腿硬拉"
+        "弹力带直腿硬拉",
+        "脚踩弹力带直腿硬拉",
+        "band straight leg deadlift"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：正文同时要求膝微屈和双腿伸直，脚上带路也不清楚；需核对具体支撑与可控终点。"
+      "instructions": [
+        "双脚踩稳弹力带，双手握住两端，膝部自然微屈。",
+        "保持背部稳定，将髋向后移，双手沿腿前下放。",
+        "在腿后侧牵伸且能控制的范围停顿。",
+        "伸髋站回，双脚持续踩住带子。"
+      ],
+      "form": "双脚踩住长弹力带，双手持端，膝自然微屈但基本不变，以髋后移俯身后伸髋；不锁死膝盖。",
+      "cues": [
+        "不把带子松套在脚踝当锚点；不锁死膝或弓腰下探。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：源说明与显式原创配置逐项对照，已对照本地渲染逐帧检查。原创静态示意，非真人实拍或专业教学认证。"
     },
     "exdb:1012": {
       "nameZh": "弹力带转体肩推",
@@ -6667,12 +7289,24 @@
       "reviewReason": "逐项对照固定版本名称、器械和完整步骤：双脚踩带并手握端的文字明确，但版本2与标准版的区别没有独立证明，保留ID与版本标记。"
     },
     "exdb:1013": {
-      "nameZh": "弹力带反手下拉",
+      "nameZh": "高位弹力带反握下拉",
       "aliases": [
-        "弹力带反手下拉"
+        "弹力带反手下拉",
+        "高位弹力带反握下拉",
+        "band underhand pulldown"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本名称、器械和完整步骤：高锚点、站姿反手下拉可读，但与3116固定背部版文字近同，仍需独立握距与支撑核对。"
+      "instructions": [
+        "把弹力带固定在稳固高锚点，面向锚点站稳。",
+        "双手反握带子，掌心朝向自己，双臂向上伸展。",
+        "保持躯干稳定，屈肘把带子拉向胸前。",
+        "控制回到上伸位置。"
+      ],
+      "form": "面向高锚点站立，双手反握弹力带，手臂上伸后屈肘拉向胸部。",
+      "cues": [
+        "本条是反握下拉，不是向上推举；高锚点持续固定。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：源说明与显式原创配置逐项对照，已对照本地渲染逐帧检查。原创静态示意，非真人实拍或专业教学认证。"
     },
     "exdb:1014": {
       "nameZh": "弹力带两头起",
@@ -7181,12 +7815,34 @@
       "reviewReason": "逐项对照固定版本完整步骤、支撑和器械：双手撑球窄距形式明确，但球的接触稳定与手距需要对应示范；不采用双脚撑球的变式。"
     },
     "exdb:0640": {
-      "nameZh": "药球单臂砸地",
+      "nameZh": "单臂药球砸地",
       "aliases": [
-        "药球单臂砸地"
+        "药球单臂砸地",
+        "单臂药球砸地",
+        "One-Arm Medicine Ball Slam"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤、支撑和器械：单臂举球砸地并接弹跳可读，但球的单手抓持、反弹属性与接球阶段需独立核验。"
+      "form": "前后站姿，一手持适合砸地的药球，经头顶向体前地面投下。",
+      "instructions": [
+        "确认前方落点空出，前后站稳，一手持药球。",
+        "持球臂向头顶举起，保持身体稳定。",
+        "屈髋并带动肩臂，将球投向体前地面。",
+        "待球稳定后取回再准备，不盲目追接反弹。"
+      ],
+      "cues": [
+        "使用适合砸地的药球，避开脚部和他人；不是单臂肩推。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / One-Arm_Medicine_Ball_Slam",
+          "record": "One-Arm_Medicine_Ball_Slam",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "6cb8ed33166df5283dfc18074c931660fbbc80814fec0df65175016007edfb66"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:1707": {
       "nameZh": "健身球俯卧转体",
@@ -7437,12 +8093,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：地面提拉、前架接杠、过顶推的组合可辨，但前架时文字称迅速降至肩部且掌心向上，复杂接杠需专门核对。"
     },
     "exdb:0029": {
-      "nameZh": "杠铃翻举握法前蹲",
+      "nameZh": "举重式握法杠铃前蹲",
       "aliases": [
-        "杠铃翻举握法前蹲"
+        "杠铃翻举握法前蹲",
+        "举重式握法杠铃前蹲",
+        "Front Squat (Clean Grip)"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：前架支撑清楚，但原文把膝不能过脚尖作为统一要求，且未细述翻举握法手肘；不直接沿用该限制。"
+      "form": "肩前承托直杠，手指辅助固定、肘向前抬起，双脚支撑下蹲。",
+      "instructions": [
+        "在力量架内把杠置于肩前，采用举重式握法辅助稳杠。",
+        "双脚站稳，肘部朝前抬起，保持躯干稳定。",
+        "屈髋屈膝下蹲，膝部跟随脚尖方向，深度以可控为准。",
+        "双脚推地站起，保持肩前承托。"
+      ],
+      "cues": [
+        "不把杠压在颈部；不强求固定蹲深或膝盖不得过脚尖。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Front_Squat_Clean_Grip",
+          "record": "Front_Squat_Clean_Grip",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "d746e42a629bb8169f0b2da89815a4a59ccb068e1818312fa714ba93a801bd17"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0034": {
       "nameZh": "杠铃下斜屈臂上拉",
@@ -7477,12 +8155,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：下斜双脚固定、宽握推胸明确；握距只写略宽于肩，需准确示范区分普通握距而非随意套用平凳图。"
     },
     "exdb:0038": {
-      "nameZh": "杠铃拖拉弯举",
+      "nameZh": "杠铃贴身拖曳弯举",
       "aliases": [
-        "杠铃拖拉弯举"
+        "杠铃拖拉弯举",
+        "杠铃贴身拖曳弯举",
+        "Drag Curl"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：标题拖拉，正文要求上臂静止并在身前弯举，缺少肘向后移动与贴身杠路，不能用普通弯举代替。"
+      "form": "站姿反握直杠，弯举时肘部向后移，杠沿躯干上行；不同于固定肘位置的常规弯举。",
+      "instructions": [
+        "站稳，双手反握直杠置于大腿前。",
+        "屈肘并让肘部向后移，使杠铃沿身体向上移动。",
+        "保持躯干稳定，不耸肩或后仰。",
+        "沿贴身路径缓慢下放。"
+      ],
+      "cues": [
+        "原说明“上臂全程不动”已修正；拖曳弯举允许肘部后移。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Drag_Curl",
+          "record": "Drag_Curl",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "ae2ed498fbab38cff11d4c689246804a356d44afe37cfe2f85f86f986df4f56a"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。原图下肢部分出画；双帧主要展示躯干、肘部后移与杠铃路径。 非专业教学认证。"
     },
     "exdb:1370": {
       "nameZh": "杠铃平地提踵",
@@ -7565,12 +8265,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：45度凳俯卧胸托正握拉明确，但凳架与杠铃活动空间需要图像核对，不用站姿俯身划船代替。"
     },
     "exdb:0051": {
-      "nameZh": "杠铃杰斐逊深蹲",
+      "nameZh": "杰斐逊跨杠深蹲",
       "aliases": [
-        "杠铃杰斐逊深蹲"
+        "杠铃杰斐逊深蹲",
+        "杰斐逊跨杠深蹲",
+        "Jefferson Squats"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：正文把杠放腰前再分腿，没有明确跨杠和双手分别位于身前身后，关键形式缺失。"
+      "form": "双腿跨在杠铃两侧，双手分别在身前身后持同一根杠，手臂自然下垂。",
+      "instructions": [
+        "将直杠放在地面，跨在杠铃两侧站稳。",
+        "屈髋屈膝，用一手在身前、一手在身后握住杠铃。",
+        "保持躯干稳定、手臂自然伸展，伸髋伸膝站起。",
+        "控制下蹲并放回，不在负重过程中交叉换脚。"
+      ],
+      "cues": [
+        "与普通背杠分腿蹲不同；杠从双腿之间通过，双手不是都在身体前面。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Jefferson_Squats",
+          "record": "Jefferson_Squats",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "a7075f6b2b8f6162b0120bd172165d30454697314218aa5a04d5b1966bcad08a"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0052": {
       "nameZh": "杠铃JM推",
@@ -7613,12 +8335,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：平凳双脚着地、上臂固定降至脑后明确；仍需对应头后终点与握位的示范，不采用额前版充数。"
     },
     "exdb:0055": {
-      "nameZh": "杠铃仰卧窄握推",
+      "nameZh": "平板杠铃肩宽握卧推",
       "aliases": [
-        "杠铃仰卧窄握推"
+        "杠铃仰卧窄握推",
+        "平板杠铃肩宽握卧推",
+        "barbell lying close-grip press"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：平凳肩宽握、杠至胸前、肘靠身明确，但与已有窄握条目区别没有独立说明，保留ID待核对。"
+      "instructions": [
+        "沿平凳躺稳，双脚踩地，双手约肩宽正握直杠。",
+        "将杠稳定在胸部上方。",
+        "屈肘控制向胸前下降，肘部不要大幅外展。",
+        "保持支撑稳定，伸肘推回上方。"
+      ],
+      "form": "沿平凳仰卧、双脚踩地、双手约肩宽握直杠，屈肘向胸部下降再推起；不是仰卧臂屈伸。",
+      "cues": [
+        "不靠胸部反弹，也不改成向前额下放的臂屈伸。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：源说明与显式原创配置逐项对照，已对照本地渲染逐帧检查。原创静态示意，非真人实拍或专业教学认证。"
     },
     "exdb:0056": {
       "nameZh": "杠铃仰卧窄握臂屈伸",
@@ -7631,10 +8365,21 @@
     "exdb:0057": {
       "nameZh": "杠铃仰卧臂屈伸",
       "aliases": [
-        "杠铃仰卧臂屈伸"
+        "杠铃仰卧臂屈伸",
+        "barbell lying extension"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：平凳正握下降至前额清楚，但与0060几乎同文；不自动合并，需核对原始变式与专用示范。"
+      "instructions": [
+        "平躺在平板卧凳上，双脚踩稳，双手正握直杠。",
+        "将杠置于胸部上方，保持上臂位置稳定。",
+        "屈肘把杠控制下降至前额附近，再伸肘回到起始位。",
+        "不要快速落杠或用肩部大幅摆动，伸肘和回落都保持可控。"
+      ],
+      "form": "沿平凳仰卧、双脚踩地、双手正握直杠；上臂保持稳定，杠向前额附近下降。 本条完整来源步骤与 0061 的明确标准形式一致；保留各自 ID。",
+      "cues": [
+        "上臂保持稳定，不让杠突然下落；本图是前额附近下放，不是头后变式。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。"
     },
     "exdb:0058": {
       "nameZh": "杠铃仰卧髋部上举",
@@ -7653,20 +8398,53 @@
       "reviewReason": "逐项对照固定版本完整步骤：名称 lying，正文却坐姿牧师凳，且中途又称哑铃；体位与器械不一致。"
     },
     "exdb:0060": {
-      "nameZh": "杠铃仰卧额前臂屈伸",
+      "nameZh": "杠铃仰卧臂屈伸",
       "aliases": [
-        "杠铃仰卧额前臂屈伸"
+        "杠铃仰卧额前臂屈伸",
+        "杠铃仰卧臂屈伸",
+        "barbell lying triceps extension skull crusher"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：正握平凳额前路径明确，需与0057的同名近同说明及现有正确图逐项对照，保留ID。"
+      "instructions": [
+        "平躺在平板卧凳上，双脚踩稳，双手正握直杠。",
+        "将杠置于胸部上方，保持上臂位置稳定。",
+        "屈肘把杠控制下降至前额附近，再伸肘回到起始位。",
+        "不要快速落杠或用肩部大幅摆动，伸肘和回落都保持可控。"
+      ],
+      "form": "沿平凳仰卧、双脚踩地、双手正握直杠；上臂保持稳定，杠向前额附近下降。 本条完整来源步骤与 0061 的明确标准形式一致；保留各自 ID。",
+      "cues": [
+        "上臂保持稳定，不让杠突然下落；本图是前额附近下放，不是头后变式。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。"
     },
     "exdb:0063": {
       "nameZh": "杠铃窄站距深蹲",
       "aliases": [
-        "杠铃窄站距深蹲"
+        "杠铃窄站距深蹲",
+        "Narrow Stance Squats"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：标题窄站距，正文却肩宽站立；不按标题自行缩窄脚距配图。"
+      "form": "直杠上背承托、双脚窄于肩部；不是普通肩宽站距。",
+      "instructions": [
+        "在力量架内将杠稳定放在上背支撑区。",
+        "采用窄于肩部的站距，双脚保持稳定。",
+        "保持躯干稳定，屈髋屈膝下降至可控深度。",
+        "推地回到站立位置。"
+      ],
+      "cues": [
+        "站距以稳定和舒适为准，不强行夹膝或追求固定深度。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Narrow_Stance_Squats",
+          "record": "Narrow_Stance_Squats",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "3a7e003ea087cf0cc47041265d17a6b167b9642bfd5931679c6763c02f7b3268"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0064": {
       "nameZh": "杠铃单臂俯身划船",
@@ -7685,12 +8463,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：仰卧单手掌心向上推杠，长杠单手平衡与握点未说明，不能套单手哑铃图。"
     },
     "exdb:0066": {
-      "nameZh": "杠铃单臂体侧硬拉",
+      "nameZh": "杠铃单侧手提硬拉",
       "aliases": [
-        "杠铃单臂体侧硬拉"
+        "杠铃单臂体侧硬拉",
+        "杠铃单侧手提硬拉",
+        "One-Arm Side Deadlift"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：单手持杠在腿外侧下放明确，但具体横杠方向和起落点未核验，不用双手正面硬拉替代。"
+      "form": "一根直杠沿身体一侧放置，单手握杠中部，屈髋屈膝起落。",
+      "instructions": [
+        "站在杠铃中段一侧，屈髋屈膝握住杆的中部。",
+        "保持身体不向负重侧倾斜，手臂自然伸展。",
+        "伸髋伸膝站起，杠铃始终在身体一侧。",
+        "控制放回，完成后换侧。"
+      ],
+      "cues": [
+        "保持杠两端平衡，不用侧屈或耸肩提拉代替腿髋发力。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / One-Arm_Side_Deadlift",
+          "record": "One-Arm_Side_Deadlift",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "88e7f583f3cb215c066573f636ceed545eae0b536adc7a132d3f850ea65a3940"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0067": {
       "nameZh": "杠铃单臂抓举",
@@ -7717,12 +8517,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：正文只拉到上腹再下放，没有每次落地停稳这一关键特征，不用连续悬垂划船图替代。"
     },
     "exdb:1751": {
-      "nameZh": "杠铃架上限位推",
+      "nameZh": "力量架限位杠铃卧推",
       "aliases": [
-        "杠铃架上限位推"
+        "杠铃架上限位推",
+        "力量架限位杠铃卧推",
+        "Pin Presses"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：正文面向胸高杠站立，却从胸部正上方卧推，缺凳面和限位杆高度，体位与支撑不清。"
+      "form": "仰卧在力量架内平凳上，杠从安全销支撑位推起，回销暂停；不是站姿推举。",
+      "instructions": [
+        "把平凳放在力量架内，安全销设在本次卧推范围的下限。",
+        "仰卧躺稳、双脚踩地，握住由安全销承托的杠铃。",
+        "稳定伸肘把杠铃推起。",
+        "控制放回安全销，停稳后再开始下一次。"
+      ],
+      "cues": [
+        "销位先调整并固定；不在杠铃碰撞或弹起时立刻推下一次。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Pin_Presses",
+          "record": "Pin_Presses",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "bf5fa7cb2c537b86d67bb255502475067d906b5383bffdcf18dcac3d830cb77f"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0070": {
       "nameZh": "杠铃牧师凳弯举",
@@ -7815,10 +8637,31 @@
     "exdb:0118": {
       "nameZh": "杠铃反握俯身划船",
       "aliases": [
-        "杠铃反握俯身划船"
+        "杠铃反握俯身划船",
+        "Reverse Grip Bent-Over Rows"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：标题反握，正文却正手掌心向下，握法矛盾。"
+      "form": "站姿屈髋俯身、膝微屈，掌心向前反握直杠，拉向躯干。",
+      "instructions": [
+        "双手反握直杠，双脚站稳，微屈膝并屈髋俯身。",
+        "保持背部稳定，让双臂自然下垂。",
+        "肘部贴近身体向后拉，将杠铃带向躯干。",
+        "控制伸肘放回，保持躯干角度。"
+      ],
+      "cues": [
+        "原说明掌心朝下已修正；反握时不弯手腕或用腰部猛甩。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Reverse_Grip_Bent-Over_Rows",
+          "record": "Reverse_Grip_Bent-Over_Rows",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "01004744cc2c291c184b8c8424d215bf2c241abc8ecfe0a0207f9a9aeff44fa7"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:1256": {
       "nameZh": "杠铃下斜反握卧推",
@@ -7903,10 +8746,21 @@
     "exdb:0090": {
       "nameZh": "杠铃坐姿早安式",
       "aliases": [
-        "杠铃坐姿早安式"
+        "杠铃坐姿早安式",
+        "barbell seated good morning"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：坐凳背负杠向前屈髋可读，但原文降躯干到地面、靠脚跟推回不够明确，需凳面接触和终点核验。"
+      "instructions": [
+        "在稳定平凳上坐稳，双脚踩地，直杠放在上背支撑区。",
+        "保持背部稳定，以髋部为中心缓慢前倾。",
+        "在能控制的范围停顿，不向下甩动躯干。",
+        "伸髋恢复坐姿直立，臀部不离凳。"
+      ],
+      "form": "平凳坐姿、双脚踩地，上背托杠，以髋部折叠向前倾再回正；不站起。",
+      "cues": [
+        "不是坐下再站起的深蹲；不追求躯干触地。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。"
     },
     "exdb:0091": {
       "nameZh": "杠铃坐姿过顶推举",
@@ -8085,12 +8939,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：正文同时要求脚和髋为轴又保持下身稳定，杠位在胸前未明确支撑，需核对实际旋转范围。"
     },
     "exdb:1629": {
-      "nameZh": "杠铃站姿宽握弯举",
+      "nameZh": "站姿宽握杠铃弯举",
       "aliases": [
-        "杠铃站姿宽握弯举"
+        "杠铃站姿宽握弯举",
+        "站姿宽握杠铃弯举",
+        "Wide-Grip Standing Barbell Curl"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：反握宽于肩、上臂固定清楚，但示范必须准确展示宽握，不能仅复用普通肩宽弯举图片。"
+      "form": "站姿反握直杠、握距宽于肩部，与已核对0113同一明确形式。",
+      "instructions": [
+        "站稳，双手反握直杠，握距宽于肩部。",
+        "保持躯干与上臂稳定，屈肘上举杠铃。",
+        "在可控位置停顿，不扭曲手腕。",
+        "缓慢伸肘下放，不向前甩臂。"
+      ],
+      "cues": [
+        "宽握仍以手腕舒适为准，不后仰借力。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Wide-Grip_Standing_Barbell_Curl",
+          "record": "Wide-Grip_Standing_Barbell_Curl",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "24d1efe6d9a63d31ca6bef1854a8a1f6c9a23309c77bfdbf2e3feeddd66f4fe0"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:1457": {
       "nameZh": "杠铃站姿宽握肩推",
@@ -8111,10 +8987,21 @@
     "exdb:0117": {
       "nameZh": "杠铃相扑硬拉",
       "aliases": [
-        "杠铃相扑硬拉"
+        "杠铃相扑硬拉",
+        "barbell sumo deadlift"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：宽站距脚外转、地面起杠明确，但手在双膝内侧未写出，需对应握位和腿位完整图。"
+      "instructions": [
+        "双脚宽于肩部站稳，杠铃位于脚中部前方。",
+        "屈髋屈膝，双手正握杠铃，握位在双腿内侧。",
+        "保持背部稳定，双脚推地，伸髋伸膝站起。",
+        "控制屈髋屈膝，把杠放回地面。"
+      ],
+      "form": "双脚宽站距、脚尖略外转，双手正握直杠且握位在双腿内侧；杠铃从地面起落。",
+      "cues": [
+        "手臂自然伸展，不用屈肘拉杠或向后过伸腰部。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。"
     },
     "exdb:3305": {
       "nameZh": "杠铃蹲举",
@@ -8189,12 +9076,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：正文没有0126的指尖滚动，但版本2没有独立来源证明，保持ID并核对腕部细节。"
     },
     "exdb:0127": {
-      "nameZh": "杠铃泽奇深蹲",
+      "nameZh": "泽奇肘窝杠铃深蹲",
       "aliases": [
-        "杠铃泽奇深蹲"
+        "杠铃泽奇深蹲",
+        "泽奇肘窝杠铃深蹲",
+        "Zercher Squats"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：肘窝托杠的文字与1545全蹲近同，需确认握手/握杠和完整幅度区别，不能自动合并。"
+      "form": "直杠托在双侧肘窝，双手合握稳定，双脚着地下蹲。",
+      "instructions": [
+        "在力量架内把杠设在便于肘窝承托的高度。",
+        "双侧肘窝托稳杠铃，双手合握，站稳后离架。",
+        "保持杠贴近身体，屈髋屈膝下蹲。",
+        "双脚推地站起，保持躯干和杠铃稳定。"
+      ],
+      "cues": [
+        "杠由肘窝承托，不靠手腕悬提；不用前倾甩杠回站。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Zercher_Squats",
+          "record": "Zercher_Squats",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "1b4f0235211c12b209c9300a40809f0b28f00efd28d0720a926a78d3fd848dfe"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0248": {
       "nameZh": "弯曲杠俯卧划船",
@@ -8485,12 +9394,23 @@
       "reviewReason": "逐项对照固定版本完整步骤：前平举肩高明确，但未有滑轮高度/身后或身前位置；与0164需分别核对。"
     },
     "exdb:0164": {
-      "nameZh": "绳索肩前平举",
+      "nameZh": "站姿单臂绳索前平举",
       "aliases": [
-        "绳索肩前平举"
+        "绳索肩前平举",
+        "站姿单臂绳索前平举",
+        "cable front shoulder raise"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：正文前举清楚但缺滑轮方位，不能仅按名称与0161合并。"
+      "instructions": [
+        "调整低位滑轮，一手正握拉手，站稳并保持拉索有张力。",
+        "保持肘部自然微屈，将手臂从身体前方抬向肩部高度。",
+        "缓慢下放回起始位置，完成后按安排换侧。"
+      ],
+      "form": "低位单拉手、单臂正握、站姿从身前抬起",
+      "cues": [
+        "保持躯干不后仰，不把动作改为向侧面抬举"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照本条原始步骤、支撑、器械和握法，与已核对 exdb:0162 的明确形式一致；保留ID，共用素材，不冒充新增独立视频或不同变式。非专业教学认证。"
     },
     "exdb:0165": {
       "nameZh": "绳索绳柄锤式弯举",
@@ -8533,12 +9453,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：坐凳前倾而非俯卧胸托，45度凳如何接触身体未明确，不能用胸托版配图。"
     },
     "exdb:0171": {
-      "nameZh": "绳索上斜飞鸟",
+      "nameZh": "上斜凳绳索飞鸟",
       "aliases": [
-        "绳索上斜飞鸟"
+        "绳索上斜飞鸟",
+        "上斜凳绳索飞鸟",
+        "Incline Cable Flye"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：低滑轮、背靠上斜垫、双手弧线合拢明确，仍需凳角和双侧索路核验图。"
+      "form": "背靠上斜凳、双脚踩地，两侧低滑轮手柄沿弧线合拢。",
+      "instructions": [
+        "上斜凳放在两侧低滑轮之间，背部贴稳凳垫，双脚踩地。",
+        "双手各握手柄，肘部微屈，两臂向侧方展开。",
+        "保持肘角基本稳定，让双手沿弧线向上方合拢。",
+        "控制沿原弧线展开，保持躯干贴凳。"
+      ],
+      "cues": [
+        "不是屈肘卧推；不把手臂强行拉到身体后方。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Incline_Cable_Flye",
+          "record": "Incline_Cable_Flye",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "b699861ca2f7b5ff5a3437a7de4de44dd759591d0587886a7431ff925e38248f"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0170": {
       "nameZh": "健身球绳索上斜飞鸟",
@@ -8837,12 +9779,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：高索直杆、肘贴身，却要求向大腿弯举，屈肘方向与二头弯举冲突。"
     },
     "exdb:0201": {
-      "nameZh": "绳索直杆下压",
+      "nameZh": "站姿直杆绳索下压",
       "aliases": [
-        "绳索直杆下压"
+        "绳索直杆下压",
+        "站姿直杆绳索下压",
+        "Triceps Pushdown"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：高滑轮正握、上臂贴身伸肘下压明确，需专门展示肘固定与直杆索路，暂缺准确图。"
+      "form": "面向高滑轮，双手正握短直杆，上臂贴体侧，伸肘向下。",
+      "instructions": [
+        "将短直杆连接高滑轮，面向机器站稳，双手正握直杆。",
+        "上臂靠近体侧，屈肘建立准备姿势。",
+        "保持上臂稳定，伸肘将直杆压至大腿前。",
+        "控制屈肘回位，不让配重突然回落。"
+      ],
+      "cues": [
+        "不靠俯身和整个肩臂下压来代替伸肘。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Triceps_Pushdown",
+          "record": "Triceps_Pushdown",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "43e2dd54c26ee8db3c3c7818ed34c204c47c5aab6e7ed5a863d27694515f8531"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0199": {
       "nameZh": "绳索直臂下压（版本2）",
@@ -8853,12 +9817,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：全程直臂拉到大腿可读，但版本2区别缺失，不能与肘屈伸下压混用。"
     },
     "exdb:0200": {
-      "nameZh": "绳索绳柄下压",
+      "nameZh": "站姿绳柄绳索下压",
       "aliases": [
-        "绳索绳柄下压"
+        "绳索绳柄下压",
+        "站姿绳柄绳索下压",
+        "Triceps Pushdown - Rope Attachment"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：高滑轮中立握绳柄、肘贴身伸肘清楚；专门图需表现绳两端与回位，不采用V柄图。"
+      "form": "高滑轮绳柄、双手掌心相对，上臂贴近身体两侧。",
+      "instructions": [
+        "绳柄连接高滑轮，面向机器站稳，双手掌心相对握绳。",
+        "上臂靠近体侧，保持躯干稳定。",
+        "伸肘将绳柄压至身体两侧，末端可自然分开。",
+        "控制屈肘回到准备位。"
+      ],
+      "cues": [
+        "不把肩膀向下甩动当作肘部伸展。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Triceps_Pushdown_-_Rope_Attachment",
+          "record": "Triceps_Pushdown_-_Rope_Attachment",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "c81b0c2e45eac91bc08b5535cabfa7e01e83e47223a053f8a883610a27b2c8cf"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0202": {
       "nameZh": "绳索D柄后束划船",
@@ -8925,12 +9911,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：低滑轮坐凳、前臂托腿、腕悬空清楚，需要近景表现腕伸幅度和手柄。"
     },
     "exdb:0207": {
-      "nameZh": "绳索反握下压",
+      "nameZh": "站姿反握直杆下压",
       "aliases": [
-        "绳索反握下压"
+        "绳索反握下压",
+        "站姿反握直杆下压",
+        "Reverse Grip Triceps Pushdown"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：高滑轮直杆掌心向上伸肘清楚；需准确反握、上臂固定的专门图核验。"
+      "form": "面向高滑轮，双手掌心向上反握直杆，以伸肘下压。",
+      "instructions": [
+        "将短直杆连接高滑轮，面向机器站稳。",
+        "双手掌心向上反握直杆，上臂贴体侧，屈肘准备。",
+        "保持手腕和上臂稳定，伸肘把杆压下。",
+        "缓慢屈肘回位。"
+      ],
+      "cues": [
+        "反握与正握下压分开；不屈伸手腕借力。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Reverse_Grip_Triceps_Pushdown",
+          "record": "Reverse_Grip_Triceps_Pushdown",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "3f3e7eb728e0deaf403c309430ca49eca92c046cb02e907a0b9d6533b1342127"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0208": {
       "nameZh": "绳索反握直背坐姿高位划船",
@@ -9277,20 +10285,64 @@
       "reviewReason": "逐项对照固定版本完整步骤：双臂完全伸直在身前交叉可读，但无滑轮高低，不能等同轻屈肘胸高飞鸟。"
     },
     "exdb:0238": {
-      "nameZh": "绳索直杆直臂下拉",
+      "nameZh": "站姿直杆直臂下拉",
       "aliases": [
-        "绳索直杆直臂下拉"
+        "绳索直杆直臂下拉",
+        "站姿直杆直臂下拉",
+        "Straight-Arm Pulldown"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：高索正握直杆、上臂不屈肘拉大腿明确，仍需准确肩关节弧线和索路图。"
+      "form": "面向高滑轮，双手正握杆、躯干稍前倾，保持肘角基本稳定向大腿下拉。",
+      "instructions": [
+        "面向高滑轮站稳，双手正握杆，向后退至手臂可向前伸展。",
+        "屈髋稍前倾，保持躯干和微屈的肘角稳定。",
+        "以肩部运动将杆沿弧线拉到大腿前。",
+        "控制回到前上方准备位置。"
+      ],
+      "cues": [
+        "不反复屈肘做成三头肌下压。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Straight-Arm_Pulldown",
+          "record": "Straight-Arm_Pulldown",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "ad75eaf9bd9f88d47c1d64fb3ba05d667f8f122be7e1f38a9300c4cbfa876f5d"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0237": {
-      "nameZh": "绳索绳柄直臂下拉",
+      "nameZh": "站姿绳柄直臂下拉",
       "aliases": [
-        "绳索绳柄直臂下拉"
+        "绳索绳柄直臂下拉",
+        "站姿绳柄直臂下拉",
+        "Rope Straight-Arm Pulldown"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：高索绳柄保持肘微屈、肩伸拉大腿明确；握柄和双端路径需专门示范，不用直杆版。"
+      "form": "面向高滑轮、双手持绳柄、躯干稍前倾，手臂向大腿方向下拉。",
+      "instructions": [
+        "绳柄连接高滑轮，面向机器握稳绳柄并站稳。",
+        "屈髋稍前倾，手臂向前上方伸展，肘部微屈。",
+        "保持肘角稳定，将绳柄带向大腿两侧。",
+        "控制回到准备位置。"
+      ],
+      "cues": [
+        "不弯腰甩绳，不屈肘下压代替肩部下拉。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Rope_Straight-Arm_Pulldown",
+          "record": "Rope_Straight-Arm_Pulldown",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "94f809cb50a1fcd12dbce8ff1797fd62a392ba2df877fcb84e428104be48b4a0"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。真人上半身局部双帧，原片下肢出画；不把局部画面宣称为完整全身示范。 非专业教学认证。"
     },
     "exdb:0239": {
       "nameZh": "绳索直背坐姿划船",
@@ -10957,12 +12009,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：双上臂托垫、旋后交替清楚，需对应左右阶段和凳面支撑的专用图。"
     },
     "exdb:1648": {
-      "nameZh": "哑铃坐姿交替锤式弯举",
+      "nameZh": "坐姿交替哑铃锤式弯举",
       "aliases": [
-        "哑铃坐姿交替锤式弯举"
+        "哑铃坐姿交替锤式弯举",
+        "坐姿交替哑铃锤式弯举",
+        "dumbbell alternate seated hammer curl"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：坐凳中立握左右交替明确，仍需肘固定与凳/脚支撑分解图，不用站姿同时版。"
+      "instructions": [
+        "坐稳平凳，双脚踩地，双手掌心相对持铃。",
+        "保持一侧上臂稳定，屈肘把该侧铃举向肩部。",
+        "缓慢放回后换另一侧。",
+        "保持中立握法，两侧交替完成。"
+      ],
+      "form": "坐稳平凳、双脚踩地，双手中立握持铃，一侧屈肘放回后换侧。",
+      "cues": [
+        "手腕不旋成正握或反握，不摆动上臂。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。"
     },
     "exdb:0286": {
       "nameZh": "哑铃交替体侧推举",
@@ -11013,12 +12077,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：标题坐姿，正文向后倾到胸侧推，未确定背垫角度和坐/卧终点。"
     },
     "exdb:0291": {
-      "nameZh": "哑铃箱式深蹲",
+      "nameZh": "双哑铃触凳深蹲",
       "aliases": [
-        "哑铃箱式深蹲"
+        "哑铃箱式深蹲",
+        "双哑铃触凳深蹲",
+        "Dumbbell Squat To A Bench"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：正文把哑铃放地面后不再握起，实际徒手坐凳起身，负重位置缺失。"
+      "form": "双手各持一只哑铃于体侧，身后平凳，臀部轻触凳面后站起。",
+      "instructions": [
+        "背对平凳站稳，双手各持一只哑铃，手臂自然下垂。",
+        "屈髋屈膝慢慢下蹲，保持躯干稳定。",
+        "臀部轻触凳面，不向后跌坐或完全松劲。",
+        "双脚推地站起，保持哑铃在体侧。"
+      ],
+      "cues": [
+        "原说明遗漏持铃步骤已补齐；凳子应稳定，不用坐下反弹起身。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Squat_To_A_Bench",
+          "record": "Dumbbell_Squat_To_A_Bench",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "b43f744c7bfed97ed9d18552ebb8c3ad08dbbd2dbf184da7b0f23c3d9143bf03"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:1651": {
       "nameZh": "哑铃弯举弓步保龄球式",
@@ -11053,12 +12139,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：全文普通站姿双臂弯举，没有支撑板佩戴或接触。"
     },
     "exdb:1654": {
-      "nameZh": "哑铃掌心向下弯举",
+      "nameZh": "站姿正握双哑铃弯举",
       "aliases": [
-        "哑铃掌心向下弯举"
+        "哑铃掌心向下弯举",
+        "站姿正握双哑铃弯举",
+        "Standing Dumbbell Reverse Curl"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：旋前双臂屈肘明确，但与0429站姿反向弯举是否同一形式需要逐图核对，保留ID。"
+      "form": "站姿、掌心朝下正握双哑铃，双臂同时屈肘；分别保留原ID。",
+      "instructions": [
+        "站稳，双手正握哑铃于体前，掌心朝向大腿。",
+        "保持上臂靠近体侧，双臂同时屈肘举起哑铃。",
+        "在可控位置停顿，保持手腕稳定。",
+        "缓慢伸肘回位，不摆动躯干。"
+      ],
+      "cues": [
+        "不转成掌心向上的普通弯举。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Standing_Dumbbell_Reverse_Curl",
+          "record": "Standing_Dumbbell_Reverse_Curl",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "da57e84882401e0d96d6b034fb83e1c77ed9fd7e8d06c0e1e13a788a71085061"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:1655": {
       "nameZh": "哑铃弯举深蹲",
@@ -11085,12 +12193,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：蹲撑、俯卧撑、收腿、翻至肩和过顶推的多阶段清楚，需要完整连续周期及哑铃地面支撑图。"
     },
     "exdb:0297": {
-      "nameZh": "哑铃坐姿集中弯举",
+      "nameZh": "坐姿单哑铃集中弯举",
       "aliases": [
-        "哑铃坐姿集中弯举"
+        "哑铃坐姿集中弯举",
+        "坐姿单哑铃集中弯举",
+        "Concentration Curls"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：单肘托大腿内侧、旋后屈肘明确，需要凳面和肘接触及单侧阶段图。"
+      "form": "坐姿双脚踩地，工作侧上臂内侧靠在同侧大腿内侧，单手反握弯举。",
+      "instructions": [
+        "坐在凳边，双腿分开，双脚踩地。",
+        "一手反握哑铃，将该侧上臂靠在同侧大腿内侧。",
+        "保持上臂支撑不变，屈肘举起哑铃。",
+        "控制伸肘放回，完成后换臂。"
+      ],
+      "cues": [
+        "不以肩部抬起或躯干侧倾带动哑铃。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Concentration_Curls",
+          "record": "Concentration_Curls",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "cf1fc7a34c893d0643a8182bdf20e34ee6a78c736e637b979bfdb50cd42c725e"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:3635": {
       "nameZh": "哑铃对侧前弓步",
@@ -11101,12 +12231,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：标题contralateral，正文每手一铃普通双侧持重，缺对侧单手持重特征。"
     },
     "exdb:0298": {
-      "nameZh": "哑铃跨身锤式弯举",
+      "nameZh": "站姿交叉锤式弯举",
       "aliases": [
-        "哑铃跨身锤式弯举"
+        "哑铃跨身锤式弯举",
+        "站姿交叉锤式弯举",
+        "Cross Body Hammer Curl"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：中立握屈肘至对肩明确，但单双手同时/交替未写清，需单侧跨身轨迹图。"
+      "form": "站姿双手各持一铃、掌心向内，交替向对侧肩部弯举。",
+      "instructions": [
+        "站稳，双手各持一铃，掌心朝向身体。",
+        "保持一侧上臂稳定，将该侧哑铃弯举向对侧肩部。",
+        "沿原路控制放回，不转动躯干。",
+        "换另一侧进行，交替完成。"
+      ],
+      "cues": [
+        "保持锤式握法，不旋腕做成普通弯举。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Cross_Body_Hammer_Curl",
+          "record": "Cross_Body_Hammer_Curl",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "2ec3f25afd5b47e7d537224216920678546044cbebfbe012a6d43547fc3b44ec"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。双帧展示左右各自的弯举位置；不假称包含完整回落周期。 非专业教学认证。"
     },
     "exdb:1657": {
       "nameZh": "哑铃跨身锤式弯举（版本2）",
@@ -11133,12 +12285,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：与0299近同、缺肘90度外旋阶段，版本2没有独立依据。"
     },
     "exdb:0300": {
-      "nameZh": "哑铃硬拉",
+      "nameZh": "双哑铃硬拉",
       "aliases": [
-        "哑铃硬拉"
+        "哑铃硬拉",
+        "双哑铃硬拉",
+        "dumbbell deadlift"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：双手体侧持铃、屈髋膝下放再起身明确，需要准确双侧铃位与地面起落分解图。"
+      "instructions": [
+        "双脚站稳，双手各持一只哑铃于腿前。",
+        "屈髋并屈膝，控制哑铃向下靠近地面。",
+        "保持躯干稳定，双脚推地。",
+        "伸髋伸膝站起，哑铃保持靠近身体。"
+      ],
+      "form": "双手各一铃在腿前，屈髋并明显屈膝下降，再伸髋伸膝站起。",
+      "cues": [
+        "不圆背甩铃；以能控制的范围起落。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。"
     },
     "exdb:0302": {
       "nameZh": "哑铃下斜飞鸟",
@@ -11237,12 +12401,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：标题full can，正文没有明确拇指向上及肩胛平面角，不能用普通侧平举图证明。"
     },
     "exdb:1659": {
-      "nameZh": "健身球哑铃锤式弯举",
+      "nameZh": "健身球坐姿双哑铃锤式弯举",
       "aliases": [
-        "健身球哑铃锤式弯举"
+        "健身球哑铃锤式弯举",
+        "健身球坐姿双哑铃锤式弯举",
+        "dumbbell hammer curl on exercise ball"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：坐球双铃中立握屈肘明确，仍缺球面/双脚支撑和垂臂回位的图像核验。"
+      "instructions": [
+        "坐稳健身球，双脚踩地并分开以保持稳定。",
+        "双手各持一铃，掌心相对，手臂自然下垂。",
+        "保持球和上臂稳定，同时屈肘弯举。",
+        "控制放回，不让球滚动带动身体。"
+      ],
+      "form": "坐在健身球上、双脚踩地、双手各持一铃，掌心相对同时屈肘。",
+      "cues": [
+        "球会滚动，先保持稳定；图中为健身球承重，不是平凳。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。"
     },
     "exdb:0312": {
       "nameZh": "哑铃锤式弯举（版本2）",
@@ -11277,12 +12453,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：上斜靠背交替推可辨，但凳角未明确，需左右肩支撑及交替终点图。"
     },
     "exdb:0315": {
-      "nameZh": "哑铃上斜弯举",
+      "nameZh": "上斜凳双哑铃反握弯举",
       "aliases": [
-        "哑铃上斜弯举"
+        "哑铃上斜弯举",
+        "上斜凳双哑铃反握弯举",
+        "dumbbell incline biceps curl"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：上斜背靠双臂旋后屈肘明确，需凳角和垂臂肩后位置核验，不用直坐版。"
+      "instructions": [
+        "背靠上斜凳躺稳，双脚踩地，每手持一只哑铃。",
+        "让手臂自然下垂，掌心朝前，上臂保持稳定。",
+        "双侧同时屈肘，把哑铃举向肩部。",
+        "控制下放，肩背继续贴凳。"
+      ],
+      "form": "背靠上斜凳、双脚踩地、双手掌心朝前，同时屈肘；不是交替或俯卧托臂形式。",
+      "cues": [
+        "上臂不压在凳垫上，不用摆肩或后仰代替屈肘。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。"
     },
     "exdb:0316": {
       "nameZh": "哑铃上斜 Breeding（名称待核对）",
@@ -11317,12 +12505,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：正文同时坐球和上背靠45度凳，支撑组合不自洽，不能以单一凳版图替代。"
     },
     "exdb:0320": {
-      "nameZh": "哑铃上斜锤式弯举",
+      "nameZh": "上斜凳双哑铃锤式弯举",
       "aliases": [
-        "哑铃上斜锤式弯举"
+        "哑铃上斜锤式弯举",
+        "上斜凳双哑铃锤式弯举",
+        "Incline Hammer Curls"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：背靠上斜凳中立握屈肘明确，仍需凳角、垂臂与握铃方向图。"
+      "form": "背靠上斜凳、双脚踩地，双手掌心相对，同时屈肘弯举。",
+      "instructions": [
+        "背靠上斜凳坐稳，双脚踩地，双手持铃自然下垂。",
+        "保持掌心相对、上臂稳定，同时屈肘上举。",
+        "在可控位置停顿，肩部保持贴稳。",
+        "缓慢放回，避免摆臂。"
+      ],
+      "cues": [
+        "全程保持锤式握法，不向前耸肩借力。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Incline_Hammer_Curls",
+          "record": "Incline_Hammer_Curls",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "193aec9ff9e8d1164ecdcae2d924174b3600e532c6cb5dc78b548d2db2adda38"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:0321": {
       "nameZh": "哑铃上斜锤式卧推",
@@ -11341,12 +12551,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：头颈上背托球、中立握可读，但标题上斜与实际躯干角度未确认，不能套水平球推图。"
     },
     "exdb:0322": {
-      "nameZh": "哑铃上斜内侧弯举",
+      "nameZh": "上斜凳双哑铃外开弯举",
       "aliases": [
-        "哑铃上斜内侧弯举"
+        "哑铃上斜内侧弯举",
+        "上斜凳双哑铃外开弯举",
+        "Incline Inner Biceps Curl"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：正文先掌心相对又朝前、上臂放凳且肘下垂，内侧路径和背/胸支撑不清。"
+      "form": "背靠上斜凳、双脚踩地，掌心向外上方，双侧前臂向外上举。",
+      "instructions": [
+        "背靠上斜凳坐稳，双手持铃自然下垂。",
+        "让掌心朝向外前方，保持上臂靠近体侧。",
+        "两侧前臂向外、向上弯举。",
+        "缓慢沿原路径下放，背部保持贴凳。"
+      ],
+      "cues": [
+        "上臂不压在凳垫或大腿上，不用整个肩膀外摆代替屈肘。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Incline_Inner_Biceps_Curl",
+          "record": "Incline_Inner_Biceps_Curl",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "5eca136a1deedd40432c553b26ee0fca773fa470244e68879d2ef6796804d911"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:1279": {
       "nameZh": "哑铃上斜单臂飞鸟",
@@ -11485,12 +12717,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：俯身Y形展开可读，但正文坐凳且未胸托，上身角度和肩胛平面需核对。"
     },
     "exdb:0332": {
-      "nameZh": "哑铃铁十字",
+      "nameZh": "站姿双哑铃侧平举（Iron Cross条目）",
       "aliases": [
-        "哑铃铁十字"
+        "哑铃铁十字",
+        "站姿双哑铃侧平举（Iron Cross条目）",
+        "dumbbell iron cross"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：正文只有站姿侧举至T字再下放，是否铁十字静态支撑或深蹲组合未确认，不能套普通侧平举。"
+      "instructions": [
+        "双脚站稳，双手各持一只哑铃在体侧。",
+        "保持肘部微屈，双臂同时向侧方抬起。",
+        "抬至肩高附近且可控的位置，不耸肩。",
+        "缓慢放回体侧。"
+      ],
+      "form": "按本条完整原文：双脚平地站立，双手各持一铃，双臂同时向侧方抬起；不包含下蹲。",
+      "cues": [
+        "本条来源明确是站姿侧平举；不使用含下蹲的同名 Iron Cross 照片。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。"
     },
     "exdb:1734": {
       "nameZh": "健身球哑铃臂后伸",
@@ -11565,12 +12809,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：正文哑铃在下腹、仰卧脚平地屈膝拉向臀，无法解释负载路径，疑与俯卧夹铃腿弯举混淆。"
     },
     "exdb:0340": {
-      "nameZh": "哑铃仰卧锤式推举",
+      "nameZh": "平板双哑铃锤式卧推",
       "aliases": [
-        "哑铃仰卧锤式推举"
+        "哑铃仰卧锤式推举",
+        "平板双哑铃锤式卧推",
+        "dumbbell lying hammer press"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：平凳掌心相对推胸清楚，但脚支撑和肘路线需准确中立握媒体。"
+      "form": "沿平凳仰卧、双脚踩地、双手掌心相对，双臂同时推举。",
+      "instructions": [
+        "沿平凳躺稳，双脚踩地，双手各持一铃于胸部上方。",
+        "保持掌心相对，屈肘缓慢放至胸部两侧。",
+        "在可控位置停顿，保持肩部稳定。",
+        "伸肘把哑铃推回上方。"
+      ],
+      "cues": [
+        "全程中立握，不让哑铃向外翻落或互相碰撞。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Bench_Press_with_Neutral_Grip",
+          "record": "Dumbbell_Bench_Press_with_Neutral_Grip",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "efff4bbbdbf0cd67726c8bac2af0a0c269eed2481f2350fe5afc1acc84c01470"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照本条原始步骤、支撑、器械和握法，与已核对 exdb:0352 的明确形式一致；保留ID，共用素材，不冒充新增独立视频或不同变式。非专业教学认证。"
     },
     "exdb:2470": {
       "nameZh": "哑铃地板俯卧后束上举",
@@ -11661,12 +12927,23 @@
       "reviewReason": "逐项对照固定版本完整步骤：标题supination，正文旋掌后再屈肘弯举，是否纯旋后还是弯举变式未清楚。"
     },
     "exdb:1661": {
-      "nameZh": "哑铃仰卧二头弯举",
+      "nameZh": "平凳仰卧双哑铃二头弯举",
       "aliases": [
-        "哑铃仰卧二头弯举"
+        "哑铃仰卧二头弯举",
+        "平凳仰卧双哑铃二头弯举",
+        "dumbbell lying supine biceps curl"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：平凳旋后双臂弯举可读，但上臂放凳侧还是悬空、与0350图的姿态是否相同需对照。"
+      "instructions": [
+        "沿平凳仰卧并踩稳双脚，每手持一只哑铃，让手臂受控垂于凳侧。",
+        "保持上臂位置稳定，屈肘把哑铃抬向肩部。",
+        "缓慢放回垂臂位置，不让重量突然牵拉手臂。"
+      ],
+      "form": "沿平凳仰卧、双脚踩地，上臂在身体两侧下垂",
+      "cues": [
+        "上臂基本固定，不用抬肩代替屈肘，不强行过伸肘部"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照本条原始步骤、支撑、器械和握法，与已核对 exdb:0350 的明确形式一致；保留ID，共用素材，不冒充新增独立视频或不同变式。非专业教学认证。"
     },
     "exdb:1662": {
       "nameZh": "哑铃仰卧宽式弯举",
@@ -11677,12 +12954,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：标题wide，正文没有外展上臂或宽式路线，与1661近同，不能套普通图证明。"
     },
     "exdb:0352": {
-      "nameZh": "哑铃中立握平凳卧推",
+      "nameZh": "平板双哑铃中立握卧推",
       "aliases": [
-        "哑铃中立握平凳卧推"
+        "哑铃中立握平凳卧推",
+        "平板双哑铃中立握卧推",
+        "Dumbbell Bench Press with Neutral Grip"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：平凳掌心相对、肘靠身体推清楚，与0340锤式版近同但仍需逐图确认而非按同义词自动合并。"
+      "form": "沿平凳仰卧、双脚踩地、双手掌心相对，双臂同时推举。",
+      "instructions": [
+        "沿平凳躺稳，双脚踩地，双手各持一铃于胸部上方。",
+        "保持掌心相对，屈肘缓慢放至胸部两侧。",
+        "在可控位置停顿，保持肩部稳定。",
+        "伸肘把哑铃推回上方。"
+      ],
+      "cues": [
+        "全程中立握，不让哑铃向外翻落或互相碰撞。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Bench_Press_with_Neutral_Grip",
+          "record": "Dumbbell_Bench_Press_with_Neutral_Grip",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "efff4bbbdbf0cd67726c8bac2af0a0c269eed2481f2350fe5afc1acc84c01470"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:1285": {
       "nameZh": "哑铃平凳单臂飞鸟",
@@ -11757,12 +13056,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：45度背靠正握推明确，与1281近同，仍需明确单侧支撑和原ID对应图。"
     },
     "exdb:0354": {
-      "nameZh": "哑铃单臂后伸",
+      "nameZh": "站姿单哑铃俯身臂屈伸",
       "aliases": [
-        "哑铃单臂后伸"
+        "哑铃单臂后伸",
+        "站姿单哑铃俯身臂屈伸",
+        "dumbbell one arm kickback"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：站姿俯身、上臂靠身固定伸肘清楚，但手握方向与空手支撑需核验，不用双侧版。"
+      "instructions": [
+        "双脚站稳，微屈膝并屈髋俯身，一手握住哑铃。",
+        "工作侧上臂靠近躯干，屈肘让前臂向下。",
+        "保持上臂稳定，向后伸肘。",
+        "控制屈肘放回，完成后换侧。"
+      ],
+      "form": "双脚站立屈髋俯身，一手持铃、另一手可轻扶大腿，工作侧上臂靠近体侧。",
+      "cues": [
+        "不是单膝撑凳形式，不用整个肩臂后摆代替伸肘。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：源说明与显式原创配置逐项对照，已对照本地渲染逐帧检查。原创静态示意，非真人实拍或专业教学认证。"
     },
     "exdb:0355": {
       "nameZh": "哑铃单臂侧平举",
@@ -11783,12 +13094,24 @@
       "reviewReason": "已逐项核对原始完整步骤、原创各阶段及器械/支撑；中性线条图，非真人或专业教学认证。"
     },
     "exdb:0356": {
-      "nameZh": "哑铃支撑式单臂侧平举",
+      "nameZh": "扶墙单哑铃侧平举",
       "aliases": [
-        "哑铃支撑式单臂侧平举"
+        "哑铃支撑式单臂侧平举",
+        "扶墙单哑铃侧平举",
+        "dumbbell one arm lateral raise with support"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：空手扶凳或墙两个支撑选项，需选定具体形式并核对持铃侧，不同于无支撑版。"
+      "instructions": [
+        "侧对稳固墙面站稳，一手扶墙，另一手持一只哑铃。",
+        "持铃侧肘微屈，向侧方抬至肩高附近。",
+        "保持躯干稳定，在可控位置停顿。",
+        "缓慢放回，完成后换侧。"
+      ],
+      "form": "站姿一手持铃向侧方抬举，另一手持续扶稳墙面；图示一侧，完成后换侧。",
+      "cues": [
+        "扶墙手不松开，不靠侧倾躯干甩起哑铃。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。"
     },
     "exdb:1290": {
       "nameZh": "健身球哑铃单臂肩推",
@@ -11929,12 +13252,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：标题one arm，正文双手各铃同时弯举，没有单侧阶段。"
     },
     "exdb:0362": {
-      "nameZh": "哑铃坐凳单臂过顶臂屈伸",
+      "nameZh": "坐姿单哑铃过顶臂屈伸",
       "aliases": [
-        "哑铃坐凳单臂过顶臂屈伸"
+        "哑铃坐凳单臂过顶臂屈伸",
+        "坐姿单哑铃过顶臂屈伸",
+        "dumbbell one arm triceps extension (on bench)"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：坐凳、空手扶凳、单铃头后屈伸明确，需头后握柄和凳面支撑专用图。"
+      "instructions": [
+        "坐稳平凳，双脚踩地，一手扶稳凳面。",
+        "另一手把一只哑铃举至过顶，保持上臂在头侧。",
+        "缓慢屈肘将哑铃放到头后。",
+        "控制伸肘回位，完成后换侧。"
+      ],
+      "form": "坐稳平凳、双脚踩地，一手持铃过顶屈伸肘，另一手扶凳。",
+      "cues": [
+        "扶凳手持续稳定身体，不后仰或甩铃。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。"
     },
     "exdb:0364": {
       "nameZh": "哑铃单臂腕弯举",
@@ -12145,12 +13480,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：标题support head，全文无额头支撑物及接触，不能省略该特征。"
     },
     "exdb:0382": {
-      "nameZh": "哑铃掌心向下二头弯举",
+      "nameZh": "站姿正握双哑铃弯举",
       "aliases": [
-        "哑铃掌心向下二头弯举"
+        "哑铃掌心向下二头弯举",
+        "站姿正握双哑铃弯举",
+        "Standing Dumbbell Reverse Curl"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：旋前站姿双侧屈肘明确，与1654近同，需逐图确认而非自动合并。"
+      "form": "站姿、掌心朝下正握双哑铃，双臂同时屈肘；分别保留原ID。",
+      "instructions": [
+        "站稳，双手正握哑铃于体前，掌心朝向大腿。",
+        "保持上臂靠近体侧，双臂同时屈肘举起哑铃。",
+        "在可控位置停顿，保持手腕稳定。",
+        "缓慢伸肘回位，不摆动躯干。"
+      ],
+      "cues": [
+        "不转成掌心向上的普通弯举。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Standing_Dumbbell_Reverse_Curl",
+          "record": "Standing_Dumbbell_Reverse_Curl",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "da57e84882401e0d96d6b034fb83e1c77ed9fd7e8d06c0e1e13a788a71085061"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:1624": {
       "nameZh": "哑铃反握卧推",
@@ -12217,12 +13574,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：坐凳前臂托腿、腕悬空上伸明确，需腕关节近景和双铃握位图。"
     },
     "exdb:1459": {
-      "nameZh": "哑铃罗马尼亚硬拉",
+      "nameZh": "双哑铃罗马尼亚硬拉",
       "aliases": [
-        "哑铃罗马尼亚硬拉"
+        "哑铃罗马尼亚硬拉",
+        "双哑铃罗马尼亚硬拉",
+        "dumbbell romanian deadlift"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：站姿双铃髋铰链、膝微屈明确，需要髋后移、铃贴腿与下放终点的准确分解图。"
+      "instructions": [
+        "站稳，双手各持一铃在腿前，膝部微屈。",
+        "保持背部稳定，将髋部向后移，哑铃沿腿前下放。",
+        "在腿后侧牵伸且能控制的范围停顿。",
+        "伸髋站回，不后仰顶腰。"
+      ],
+      "form": "双手各一铃、膝微屈，髋部后移俯身，铃沿腿前下放后伸髋回位；不要求触地。",
+      "cues": [
+        "不圆背甩铃；以能控制的范围起落。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。"
     },
     "exdb:0386": {
       "nameZh": "哑铃旋腕反向飞鸟",
@@ -12241,12 +13610,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：全文普通坐姿正握肩推，没有Scott特定旋转/肘路，不能仅改标题配普通图。"
     },
     "exdb:0387": {
-      "nameZh": "哑铃坐姿交替前平举",
+      "nameZh": "坐姿双哑铃交替前平举",
       "aliases": [
-        "哑铃坐姿交替前平举"
+        "哑铃坐姿交替前平举",
+        "坐姿双哑铃交替前平举",
+        "dumbbell seated alternate front raise"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：坐凳双脚地面、左右前举至肩高明确，需准确前向轨迹和交替周期图。"
+      "instructions": [
+        "坐稳平凳，双脚踩地，双手各持一只哑铃。",
+        "一侧手臂向前抬至肩高，另一侧保持下垂。",
+        "控制放回该侧哑铃，再换另一侧前举。",
+        "两侧交替进行，保持躯干稳定。"
+      ],
+      "form": "坐稳平凳、双脚踩地，一侧前举放回后另一侧再前举。",
+      "cues": [
+        "每侧放回后再换侧；不摆动身体。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。"
     },
     "exdb:1676": {
       "nameZh": "健身球坐姿交替锤式弯举",
@@ -12283,12 +13664,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：正文中立握肩高交替推明确，与0388掌前版不同，需要明确握位与侧别。"
     },
     "exdb:0389": {
-      "nameZh": "哑铃坐凳过顶臂屈伸",
+      "nameZh": "坐姿双手托单哑铃过顶臂屈伸",
       "aliases": [
-        "哑铃坐凳过顶臂屈伸"
+        "哑铃坐凳过顶臂屈伸",
+        "坐姿双手托单哑铃过顶臂屈伸",
+        "dumbbell seated bench extension"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：双手一铃过顶降脑后明确，需一铃握头方式、凳脚支撑专用图。"
+      "instructions": [
+        "坐稳平凳，双脚踩地，双手共同握稳一只哑铃。",
+        "将铃稳定在上方，双侧上臂靠近头部。",
+        "保持上臂稳定，屈肘将铃放到头后。",
+        "缓慢伸肘回位。"
+      ],
+      "form": "坐稳平凳、双脚踩地，双手共同握一只哑铃，在头后屈伸双肘。 与 2188 是同一明确形式，保留独立ID。",
+      "cues": [
+        "双手共同持一铃，不是每手一铃的双哑铃形式。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。"
     },
     "exdb:2317": {
       "nameZh": "哑铃坐姿屈臂侧平举",
@@ -12309,12 +13702,24 @@
       "reviewReason": "已逐项核对原始完整步骤、原创各阶段及器械/支撑；中性线条图，非真人或专业教学认证。"
     },
     "exdb:1730": {
-      "nameZh": "哑铃坐姿俯身交替后伸",
+      "nameZh": "坐姿双哑铃交替俯身臂屈伸",
       "aliases": [
-        "哑铃坐姿俯身交替后伸"
+        "哑铃坐姿俯身交替后伸",
+        "坐姿双哑铃交替俯身臂屈伸",
+        "dumbbell seated bent over alternate kickback"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：坐凳前倾、单臂后伸再换侧可读，上臂起始位置及左右阶段需完整示范。"
+      "instructions": [
+        "坐稳平凳，双脚踩地，屈髋俯身，保持背部稳定。",
+        "双手各持一铃，上臂靠近躯干，屈肘准备。",
+        "一侧伸肘后控制放回，再换另一侧。",
+        "控制放回，避免甩动躯干。"
+      ],
+      "form": "坐稳平凳、双脚着地，屈髋俯身、上臂贴体侧，左右交替伸肘，每侧放回后换侧。",
+      "cues": [
+        "手臂围绕肘部伸展，不向后甩肩或抬头折颈。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：源说明与显式原创配置逐项对照，已对照本地渲染逐帧检查。原创静态示意，非真人实拍或专业教学认证。"
     },
     "exdb:1737": {
       "nameZh": "哑铃坐姿俯身臂屈伸",
@@ -12343,12 +13748,24 @@
       "reviewReason": "已逐项核对原始完整步骤、原创各阶段及器械/支撑；中性线条图，非真人或专业教学认证。"
     },
     "exdb:0390": {
-      "nameZh": "健身球坐姿哑铃二头弯举",
+      "nameZh": "健身球坐姿双哑铃弯举",
       "aliases": [
-        "健身球坐姿哑铃二头弯举"
+        "健身球坐姿哑铃二头弯举",
+        "健身球坐姿双哑铃弯举",
+        "dumbbell seated biceps curl (on stability ball)"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：坐球双臂掌前弯举明确，需球面与双脚稳定支撑、双铃位置图。"
+      "instructions": [
+        "坐稳健身球，双脚踩地并分开以保持稳定。",
+        "双手各持一铃，掌心朝前，手臂自然下垂。",
+        "保持球和上臂稳定，同时屈肘弯举。",
+        "控制放回，不让球滚动带动身体。"
+      ],
+      "form": "坐在健身球上、双脚踩地、双手各持一铃，掌心朝前同时屈肘。",
+      "cues": [
+        "球会滚动，先保持稳定；图中为健身球承重，不是平凳。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。"
     },
     "exdb:3547": {
       "nameZh": "哑铃坐姿弯举接肩推",
@@ -12367,12 +13784,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：哑铃放大腿、前脚掌垫高抬跟明确，需凳面、垫台和手压铃接触图。"
     },
     "exdb:0392": {
-      "nameZh": "哑铃坐姿前平举",
+      "nameZh": "坐姿双哑铃前平举",
       "aliases": [
-        "哑铃坐姿前平举"
+        "哑铃坐姿前平举",
+        "坐姿双哑铃前平举",
+        "dumbbell seated front raise"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：坐凳双铃掌向下前举肩高清楚，需要向前轨迹与凳脚支撑分解图。"
+      "instructions": [
+        "坐稳平凳，双脚踩地，双手各持一只哑铃。",
+        "保持躯干稳定，双臂同时向前抬起。",
+        "抬至肩高附近，在可控位置停顿。",
+        "缓慢放回，不向后仰起借力。"
+      ],
+      "form": "坐稳平凳、双脚踩地、双手各持一铃，双臂同时向身体前方抬至肩高。",
+      "cues": [
+        "不是向身体两侧侧举；手臂从身前上行。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。"
     },
     "exdb:1678": {
       "nameZh": "哑铃坐姿锤式弯举",
@@ -12393,20 +13822,44 @@
       "reviewReason": "已逐项核对原始完整步骤、原创各阶段及器械/支撑；中性线条图，非真人或专业教学认证。"
     },
     "exdb:0394": {
-      "nameZh": "哑铃坐姿臂后伸",
+      "nameZh": "坐姿双哑铃俯身臂屈伸",
       "aliases": [
-        "哑铃坐姿臂后伸"
+        "哑铃坐姿臂后伸",
+        "坐姿双哑铃俯身臂屈伸",
+        "dumbbell seated kickback"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：坐凳髋前倾、上臂贴身伸肘明确，需凳面与双铃后伸阶段图。"
+      "instructions": [
+        "坐稳平凳，双脚踩地，屈髋俯身，保持背部稳定。",
+        "双手各持一铃，上臂靠近躯干，屈肘准备。",
+        "保持上臂基本不动，向后伸肘。",
+        "控制放回，避免甩动躯干。"
+      ],
+      "form": "坐稳平凳、双脚着地，屈髋俯身、上臂贴体侧，双手各持一铃，同时向后伸肘。",
+      "cues": [
+        "手臂围绕肘部伸展，不向后甩肩或抬头折颈。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：源说明与显式原创配置逐项对照，已对照本地渲染逐帧检查。原创静态示意，非真人实拍或专业教学认证。"
     },
     "exdb:0396": {
-      "nameZh": "哑铃坐姿侧平举",
+      "nameZh": "坐姿双哑铃侧平举",
       "aliases": [
-        "哑铃坐姿侧平举"
+        "哑铃坐姿侧平举",
+        "坐姿双哑铃侧平举",
+        "dumbbell seated lateral raise"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：坐姿双铃轻屈肘侧举明确，但与0395同文，原ID变式需要独立核对。"
+      "instructions": [
+        "坐稳平凳，双脚踩地，双手各持一只哑铃。",
+        "保持背部稳定和肘部微屈，双臂同时向侧方抬起。",
+        "在肩高附近的可控位置停顿。",
+        "缓慢放回体侧。"
+      ],
+      "form": "坐稳平凳、双脚踩地、双手各持一铃，肘微屈，双臂同时向侧方抬起。",
+      "cues": [
+        "不要用甩动上身或耸肩代替侧向抬臂。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。"
     },
     "exdb:0395": {
       "nameZh": "哑铃坐姿侧平举（版本2）",
@@ -12433,12 +13886,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：标题leg raised，全文双脚平地没有抬腿阶段。"
     },
     "exdb:0398": {
-      "nameZh": "哑铃坐姿单臂后伸",
+      "nameZh": "坐姿单哑铃俯身臂屈伸",
       "aliases": [
-        "哑铃坐姿单臂后伸"
+        "哑铃坐姿单臂后伸",
+        "坐姿单哑铃俯身臂屈伸",
+        "dumbbell seated one arm kickback"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：坐凳前倾到近水平、单臂后伸可读，但上臂固定和另一手支撑需专门图。"
+      "instructions": [
+        "坐稳平凳，双脚踩地，屈髋俯身，保持背部稳定。",
+        "一手持铃，工作侧上臂靠近躯干，屈肘准备。",
+        "保持上臂基本不动，向后伸肘。",
+        "控制放回，避免甩动躯干。"
+      ],
+      "form": "坐稳平凳、双脚着地，屈髋俯身、上臂贴体侧，单手一铃，另一手轻扶大腿。",
+      "cues": [
+        "手臂围绕肘部伸展，不向后甩肩或抬头折颈。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：源说明与显式原创配置逐项对照，已对照本地渲染逐帧检查。原创静态示意，非真人实拍或专业教学认证。"
     },
     "exdb:0399": {
       "nameZh": "哑铃坐姿单臂旋转",
@@ -12497,12 +13962,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：正文起始掌心向内、随后肩高掌心朝前，与标题平行握全程保持冲突。"
     },
     "exdb:2188": {
-      "nameZh": "哑铃坐姿过顶臂屈伸（条目2188）",
+      "nameZh": "坐姿双手托单哑铃过顶臂屈伸",
       "aliases": [
-        "哑铃坐姿过顶臂屈伸（条目2188）"
+        "哑铃坐姿过顶臂屈伸（条目2188）",
+        "坐姿双手托单哑铃过顶臂屈伸",
+        "dumbbell seated triceps extension"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：双手握铃降脑后清楚，但铃数和与0389区别未说明，保留ID待核对。"
+      "instructions": [
+        "坐稳平凳，双脚踩地，双手共同握稳一只哑铃。",
+        "将铃稳定在上方，双侧上臂靠近头部。",
+        "保持上臂稳定，屈肘将铃放到头后。",
+        "缓慢伸肘回位。"
+      ],
+      "form": "坐稳平凳、双脚踩地，双手共同握一只哑铃，在头后屈伸双肘。",
+      "cues": [
+        "双手共同持一铃，不是每手一铃的双哑铃形式。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。"
     },
     "exdb:0408": {
       "nameZh": "哑铃侧卧单手上举",
@@ -12561,12 +14038,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：双铃体侧、后脚凳托、前腿下蹲明确，但后脚接触面及凳面高度需准确图，不用普通弓步。"
     },
     "exdb:0411": {
-      "nameZh": "哑铃单腿深蹲",
+      "nameZh": "双哑铃单腿深蹲",
       "aliases": [
-        "哑铃单腿深蹲"
+        "哑铃单腿深蹲",
+        "双哑铃单腿深蹲",
+        "dumbbell single leg squat"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：一腿前伸悬空、双铃下垂下蹲明确，需要悬腿、承重腿和铃体分解图。"
+      "instructions": [
+        "双手各持一只哑铃，将一腿向前伸出并保持离地。",
+        "保持躯干稳定，屈支撑腿髋膝缓慢下蹲。",
+        "在能控制的范围停顿。",
+        "支撑脚推地站起，完成后换侧。"
+      ],
+      "form": "双手各持一铃在体侧，一腿前伸保持离地，另一腿下蹲后站起；示意一侧，不增加摄像头识别能力。",
+      "cues": [
+        "双铃自然下垂，不甩铃借力或强求最大深度。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：源说明与显式原创配置逐项对照，已对照本地渲染逐帧检查。原创静态示意，非真人实拍或专业教学认证。"
     },
     "exdb:3560": {
       "nameZh": "哑铃站姿交替锤式弯举接推举",
@@ -12613,12 +14102,24 @@
       "reviewReason": "已逐项核对原始完整步骤、原创各阶段及器械/支撑；中性线条图，非真人或专业教学认证。"
     },
     "exdb:1739": {
-      "nameZh": "哑铃站姿交替后伸",
+      "nameZh": "站姿双哑铃交替俯身臂屈伸",
       "aliases": [
-        "哑铃站姿交替后伸"
+        "哑铃站姿交替后伸",
+        "站姿双哑铃交替俯身臂屈伸",
+        "dumbbell standing alternating tricep kickback"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：正文先双臂同时向后伸，再说另一臂交替，单双侧阶段矛盾。"
+      "instructions": [
+        "双脚站稳并微屈膝，屈髋俯身，保持背部稳定。",
+        "双手各持一铃，上臂靠近躯干，屈肘准备。",
+        "一侧伸肘后控制放回，再换另一侧。",
+        "控制放回，避免甩动躯干。"
+      ],
+      "form": "双脚站稳，屈髋俯身、上臂贴体侧，左右交替伸肘，每侧放回后换侧。",
+      "cues": [
+        "手臂围绕肘部伸展，不向后甩肩或抬头折颈。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：源说明与显式原创配置逐项对照，已对照本地渲染逐帧检查。原创静态示意，非真人实拍或专业教学认证。"
     },
     "exdb:2143": {
       "nameZh": "哑铃站姿环绕上举",
@@ -12637,12 +14138,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：单手中立握、空手扶腿可辨，但持铃上臂固定点、俯身程度及旋掌是否发生未明确。"
     },
     "exdb:0419": {
-      "nameZh": "哑铃站姿过顶前举",
+      "nameZh": "站姿双哑铃前举至过顶",
       "aliases": [
-        "哑铃站姿过顶前举"
+        "哑铃站姿过顶前举",
+        "站姿双哑铃前举至过顶",
+        "dumbbell standing front raise above head"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：双铃正握直臂经前方举过头顶明确，需要肩高与过顶中间阶段及可控终点图。"
+      "instructions": [
+        "站稳，双手各持一只哑铃置于腿前。",
+        "保持躯干稳定，双臂沿身前抬起至肩高。",
+        "在肩部舒适范围继续抬至头顶上方。",
+        "控制沿原路放回，不后仰顶腰。"
+      ],
+      "form": "站姿双手各持一铃，两臂经身前肩高继续抬至过顶；分阶段示意，不是只到肩高的前平举。",
+      "cues": [
+        "全程保持可控，不用腿部弹跳或腰部后仰代替肩部抬举。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。"
     },
     "exdb:2321": {
       "nameZh": "哑铃站姿内侧弯举（版本2）",
@@ -12653,12 +14166,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：正文普通旋后弯举没有内侧路线，版本2区别缺失。"
     },
     "exdb:0420": {
-      "nameZh": "哑铃站姿后伸",
+      "nameZh": "站姿双哑铃俯身臂屈伸",
       "aliases": [
-        "哑铃站姿后伸"
+        "哑铃站姿后伸",
+        "站姿双哑铃俯身臂屈伸",
+        "dumbbell standing kickback"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：双手持铃俯身伸肘明确，但上臂固定角度未写全，与其他后伸ID的形式需逐图核对。"
+      "instructions": [
+        "双手各持一只哑铃，屈髋俯身并微屈膝，保持背部稳定。",
+        "上臂贴近躯干，肘部弯曲，前臂自然朝下。",
+        "保持上臂基本不动，双侧同时伸肘向后推起哑铃。",
+        "控制屈肘回位；保持双脚支撑，不用摆动躯干借力。"
+      ],
+      "form": "站姿屈髋俯身、双脚支撑、双臂同时后伸",
+      "cues": [
+        "保持上臂贴近躯干，肘部受控，不甩铃"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照本条原始步骤、支撑、器械和握法，与已核对 exdb:0333 的明确形式一致；保留ID，共用素材，不冒充新增独立视频或不同变式。非专业教学认证。"
     },
     "exdb:0421": {
       "nameZh": "哑铃站姿单臂集中弯举",
@@ -12669,20 +14194,44 @@
       "reviewReason": "逐项对照固定版本完整步骤：空手扶大腿、单手旋后屈肘可读，但集中式上臂是否托腿或悬空未说明。"
     },
     "exdb:0423": {
-      "nameZh": "哑铃站姿单臂过顶臂屈伸",
+      "nameZh": "站姿单哑铃过顶臂屈伸",
       "aliases": [
-        "哑铃站姿单臂过顶臂屈伸"
+        "哑铃站姿单臂过顶臂屈伸",
+        "站姿单哑铃过顶臂屈伸",
+        "dumbbell standing one arm extension"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：单手过顶、上臂靠头、降脑后明确，仍需侧别、握柄与另一手支撑准确图。"
+      "instructions": [
+        "站稳，一手握住一只哑铃并稳定在头顶上方。",
+        "保持工作侧上臂靠近头部，缓慢屈肘把哑铃放到头后。",
+        "在可控位置停顿，避免肘部突然外散。",
+        "伸肘回到上方，完成后换侧。"
+      ],
+      "form": "站姿单手持一只哑铃，工作侧上臂保持头侧，屈肘下放脑后再伸肘。 与 0430 是同一明确形式，保留独立ID。",
+      "cues": [
+        "本条是单手一铃；不以双手托一铃图片代替。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。"
     },
     "exdb:0425": {
-      "nameZh": "哑铃站姿单臂掌心向下弯举",
+      "nameZh": "站姿单哑铃正握弯举",
       "aliases": [
-        "哑铃站姿单臂掌心向下弯举"
+        "哑铃站姿单臂掌心向下弯举",
+        "站姿单哑铃正握弯举",
+        "dumbbell standing one arm reverse curl"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：正握单臂固定上臂屈肘明确，需要单侧掌向近景与回位图。"
+      "instructions": [
+        "站稳，一手正握哑铃置于体侧，掌心朝下。",
+        "保持上臂靠近躯干，屈肘举起哑铃。",
+        "保持手腕稳定，在可控位置停顿。",
+        "缓慢伸肘回位，完成后换侧。"
+      ],
+      "form": "站姿单手持铃，掌心朝下正握，工作侧上臂固定在体侧；不是双侧或反握形式。",
+      "cues": [
+        "简化图不表现手指，正握方向以文字为准，不旋成掌心向上的普通弯举。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。"
     },
     "exdb:0426": {
       "nameZh": "哑铃站姿双臂过顶推举",
@@ -12775,12 +14324,34 @@
       "reviewReason": "逐项对照固定版本完整步骤：标题supported，全文自由双铃蹲，没有外部支撑或靠背。"
     },
     "exdb:0436": {
-      "nameZh": "哑铃泰特推",
+      "nameZh": "平板双哑铃泰特臂屈伸",
       "aliases": [
-        "哑铃泰特推"
+        "哑铃泰特推",
+        "平板双哑铃泰特臂屈伸",
+        "Tate Press"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：正文坐姿旋腕肩推，不是清晰仰卧Tate肘外展屈伸，体位与肘路不符。"
+      "form": "沿平凳仰卧，双肘向外，上臂稳定，哑铃向胸前内收屈肘后伸肘推回。",
+      "instructions": [
+        "沿平凳躺稳，双脚踩地，双手持铃于上方。",
+        "保持上臂稳定，让双肘向外，屈肘把哑铃向胸前内侧带下。",
+        "在可控位置停顿，不把哑铃重量压在胸部。",
+        "以伸肘动作把哑铃推回上方。"
+      ],
+      "cues": [
+        "原说明误写坐姿肩推已修正；不是旋腕阿诺德推举。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Tate_Press",
+          "record": "Tate_Press",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "a3f2bca4803ed526d2db43e6379fe8482b5dde777505dde8cc0cc8fd72e111f6"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。 非专业教学认证。"
     },
     "exdb:1742": {
       "nameZh": "哑铃鹤立式肱三头肌后伸",
@@ -12799,12 +14370,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：平凳下放时掌向自己、推起转离自己明确，需要旋腕和肘路径分阶段图，不用固定正握版。"
     },
     "exdb:0437": {
-      "nameZh": "哑铃直立划船",
+      "nameZh": "站姿双哑铃直立提拉",
       "aliases": [
-        "哑铃直立划船"
+        "哑铃直立划船",
+        "站姿双哑铃直立提拉",
+        "dumbbell upright row"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：站姿肘领先、双铃上拉明确，但原文统一至下巴终点需个人可控，不把极限幅度画成计数要求。"
+      "instructions": [
+        "双脚站稳，双手正握哑铃于大腿前。",
+        "以双肘引导，沿体前缓慢上提哑铃。",
+        "在肩部舒适且可控的高度停顿。",
+        "控制伸肘下放回体前。"
+      ],
+      "form": "双脚站稳、双手正握哑铃于体前，以双肘向外上方引导哑铃靠近躯干上提。",
+      "cues": [
+        "不强行提到下巴，不突然耸肩或后仰。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。"
     },
     "exdb:1765": {
       "nameZh": "哑铃直立划船（背面视角）",
@@ -12839,20 +14422,64 @@
       "reviewReason": "逐项对照固定版本完整步骤：全文普通坐姿肩推，没有W形外展/肘旋转路径。"
     },
     "exdb:0439": {
-      "nameZh": "哑铃佐特曼弯举",
+      "nameZh": "站姿佐特曼弯举",
       "aliases": [
-        "哑铃佐特曼弯举"
+        "哑铃佐特曼弯举",
+        "站姿佐特曼弯举",
+        "Zottman Curl"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：顶部旋掌离身、下放同时回转的流程可读但与经典旋前下放区分不明确，需完整旋掌示范核对。"
+      "form": "站姿双哑铃，掌心向上弯举，顶部转为掌心向下再放回。",
+      "instructions": [
+        "站稳，双手持铃在体侧，掌心朝内。",
+        "保持上臂稳定，屈肘时转为掌心向上。",
+        "顶部控制旋腕，转为掌心向下。",
+        "保持正握缓慢下放，接近体侧后转回中立握。"
+      ],
+      "cues": [
+        "先稳住再旋腕，不在快速摆动中扭手腕。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Zottman_Curl",
+          "record": "Zottman_Curl",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "de243b2aac01dee42f14c2a91ba7e8ab2556f2af5c411cc97aafaf1cc60704de"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。实拍双帧只展示准备与上举；顶部转掌及正握下放按文字完成，不宣称双帧覆盖全部旋腕阶段。 非专业教学认证。"
     },
     "exdb:2294": {
-      "nameZh": "哑铃佐特曼牧师弯举",
+      "nameZh": "牧师凳双哑铃佐特曼弯举",
       "aliases": [
-        "哑铃佐特曼牧师弯举"
+        "哑铃佐特曼牧师弯举",
+        "牧师凳双哑铃佐特曼弯举",
+        "Zottman Preacher Curl"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：顶部转掌下清楚，下放同时转回的时机不确定，托垫和旋前下放需专用图。"
+      "form": "双侧上臂由牧师凳垫支撑，旋后上举、顶部转掌、正握下放。",
+      "instructions": [
+        "坐稳牧师凳，把双侧上臂贴在垫面，双手持铃。",
+        "掌心向上屈肘弯举，保持上臂贴垫。",
+        "顶部控制转掌，使掌心向下。",
+        "正握缓慢下放，底部再转为掌心向上准备。"
+      ],
+      "cues": [
+        "凳垫持续托住上臂，不甩肩或突然锁死肘部。"
+      ],
+      "textSources": [
+        {
+          "name": "free-exercise-db / Zottman_Preacher_Curl",
+          "record": "Zottman_Preacher_Curl",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "5ecbfff5b7b5adae31f6ec95b20a0cdcf31e3be2c712b07cb02a7f6f8394910f"
+        }
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：逐项对照原文、固定版本独立英文和实际原始双帧；按本条明确的器械、支撑、握法与阶段修订，不依据名称自动配图。双帧展示托臂和上举位置；旋腕顺序依文字，不冒充连续旋腕示范。 非专业教学认证。"
     },
     "exdb:2189": {
       "nameZh": "双哑铃坐姿臂屈伸",
@@ -12903,12 +14530,24 @@
       "reviewReason": "逐项对照固定版本完整步骤：名称Hyght，正文普通平凳飞鸟，没有独特握法/角度证据，不以常规图代替专名变式。"
     },
     "exdb:0660": {
-      "nameZh": "双哑铃窄距俯卧撑",
+      "nameZh": "双哑铃窄距支撑俯卧撑",
       "aliases": [
-        "双哑铃窄距俯卧撑"
+        "双哑铃窄距俯卧撑",
+        "双哑铃窄距支撑俯卧撑",
+        "push-up close-grip off dumbbell"
       ],
-      "reviewStatus": "needs_review",
-      "reviewReason": "逐项对照固定版本完整步骤：手握双铃撑地、窄肘下降明确，但双手并拢与肩下位置说法需图核对，铃底稳定/握柄需明确。"
+      "instructions": [
+        "将两只不会滚动的哑铃稳固放在地上，双手分别握稳，采用窄距支撑。",
+        "双脚向后伸，保持躯干稳定。",
+        "屈肘控制下降，肘部靠近体侧。",
+        "双手压稳哑铃，伸肘推回。"
+      ],
+      "form": "地面两只稳固哑铃分别支撑双手、双脚着地，窄距屈肘下降后推起；侧面简化投影不表示实际握距。",
+      "cues": [
+        "先确认哑铃不滚动；本条不是双手共撑一只直立哑铃的形式。"
+      ],
+      "reviewStatus": "checked",
+      "reviewReason": "2026-10-29：源说明与显式原创配置逐项对照，已对照本地渲染逐帧检查。原创静态示意，非真人实拍或专业教学认证。"
     },
     "exdb:0727": {
       "nameZh": "单腿哑铃支撑提踵",

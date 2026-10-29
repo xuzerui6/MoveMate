@@ -115,10 +115,12 @@ test("reviewed video breakdowns preserve chronological phases and provenance", (
 test("misleading variants and custom movements never inherit demonstration media", () => {
   for (const id of [
     "user:0334",
-    "exdb:0354",
+    "exdb:0347",
   ])
     assert.equal(mediaFor(id), undefined);
   assert.equal(mediaFor(undefined), undefined);
+  assert.equal(mediaFor('exdb:0354')?.kind,'illustration');
+  assert.equal(mediaFor('exdb:0354')?.video,undefined,'An explicit single-arm drawing must not inherit the bilateral kickback video');
   assert.equal(
     mediaFor("exdb:0085")?.video,
     undefined,

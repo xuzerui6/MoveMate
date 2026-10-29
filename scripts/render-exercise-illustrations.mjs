@@ -16,6 +16,7 @@ for(const [id,row] of Object.entries(config.entries)){
       if(prop==='floor')svg+=line([[45,356],[375,356]],'#dce8e1',2);
       if(prop==='bench')svg+=line([[105,225],[348,225]],'#94aa9e',13)+line([[122,233],[122,348]],'#94aa9e',7)+line([[318,233],[318,348]],'#94aa9e',7);
       if(prop==='bar')svg+=line([[70,40],[240,40]],'#94aa9e',10);
+      if(typeof prop==='object'&&prop.type==='ball')svg+=`<circle cx="${prop.x}" cy="${prop.y}" r="${prop.radius}" fill="#eaf6ee" stroke="#94aa9e" stroke-width="5"/>`;
       if(typeof prop==='object'&&prop.type==='bosu')svg+=`<path d="M${prop.x-prop.radius} ${prop.y} Q${prop.x-prop.radius} ${prop.y+prop.depth} ${prop.x} ${prop.y+prop.depth} Q${prop.x+prop.radius} ${prop.y+prop.depth} ${prop.x+prop.radius} ${prop.y}Z" fill="#eaf6ee" stroke="#94aa9e" stroke-width="5"/>`;
     }
     // Far limbs first, drawn lighter for depth; the near limbs remain dark.
@@ -27,7 +28,7 @@ for(const [id,row] of Object.entries(config.entries)){
     // Explicit foreground loops keep a band around the thighs or feet visible;
     // each recipe still defines its actual route instead of inferring it by name.
     for(const prop of row.props)if(typeof prop==='object'&&prop.type==='rope'&&prop.foreground)svg+=`<path d="${prop.paths[n]}" fill="none" stroke="#008b43" stroke-width="3" stroke-linecap="round"/>`;
-    for(const prop of row.props)if(typeof prop==='object'&&!['support','rope','bosu'].includes(prop.type)){
+    for(const prop of row.props)if(typeof prop==='object'&&!['support','rope','bosu','ball'].includes(prop.type)){
       const [x,y]=prop.points[n];
       if(prop.type==='plate')svg+=`<ellipse cx="${x}" cy="${y}" rx="${prop.edgeOn?6:18}" ry="18" fill="#eaf6ee" stroke="#008b43" stroke-width="5"/><ellipse cx="${x}" cy="${y}" rx="${prop.edgeOn?2:5}" ry="5" fill="white" stroke="#008b43" stroke-width="2"/>`;
       if(prop.type==='kettlebell')svg+=`<ellipse cx="${x}" cy="${y+8}" rx="12" ry="13" fill="none" stroke="#008b43" stroke-width="5"/><circle cx="${x}" cy="${y+28}" r="18" fill="#eaf6ee" stroke="#008b43" stroke-width="5"/>`;

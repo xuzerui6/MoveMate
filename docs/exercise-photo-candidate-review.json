@@ -131,7 +131,12 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "与 exdb:0088 同名，无法确认独立变式，保留 ID 不采用共用图。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_exact_form_comparison",
+        "reviewedAt": "2026-10-29",
+        "reason": "2026-10-29：逐项对照本条原始步骤、支撑、器械和握法，与已核对 exdb:0088 的明确形式一致；保留ID，共用素材，不冒充新增独立视频或不同变式。非专业教学认证。"
+      }
     },
     {
       "exerciseId": "exdb:0095",
@@ -242,7 +247,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源面向绳索机，图片侧身；滑轮、运动方向需另行核对。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-29",
+        "reference": {
+          "name": "free-exercise-db / Cable_Hip_Adduction",
+          "record": "Cable_Hip_Adduction",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "72e39303451e3899dad7d9182c1db44dfa8f9cbb7a4f935a329957693b294437"
+        },
+        "reason": "侧对低滑轮，靠近滑轮的一侧脚踝连接踝带，向站立腿前方内收；不是髋外展。"
+      }
     },
     {
       "exerciseId": "exdb:0172",
@@ -376,7 +394,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源仅为普通卷腹说明，候选含手脚同时收拢。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-29",
+        "reference": {
+          "name": "free-exercise-db / Cocoons",
+          "record": "Cocoons",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "c67c20a87800ac7473c61b44f31b488a17cf1e3cf8ac4b9e8bca7b3de6add7d3"
+        },
+        "reason": "仰卧、双腿伸展、双臂过顶准备；同时收膝和卷起躯干，不是脚踩地的普通卷腹。"
+      }
     },
     {
       "exerciseId": "exdb:0262",
@@ -515,7 +546,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "图片两帧起止相反且肘部外展高度明显，尚需核对动作幅度。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-29",
+        "reference": {
+          "name": "free-exercise-db / Dumbbell_One-Arm_Upright_Row",
+          "record": "Dumbbell_One-Arm_Upright_Row",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "b8d9483545620a9ff7b875a475d82ed21bd2ccd3e2be223180f900bd61c5ec5f"
+        },
+        "reason": "站姿一手正握哑铃于体前，以肘部引导沿体前上提。"
+      }
     },
     {
       "exerciseId": "exdb:0374",
@@ -524,7 +568,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源写掌心朝下，图片握法需进一步核对，不冒充旋后弯举。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-29",
+        "reference": {
+          "name": "free-exercise-db / Dumbbell_Prone_Incline_Curl",
+          "record": "Dumbbell_Prone_Incline_Curl",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "681d37f465ffd382034dec833ae1f0ba5f883d2785da60452566670e9b81bed4"
+        },
+        "reason": "胸腹贴靠上斜凳，双臂向下悬垂，掌心朝前同时屈肘。"
+      }
     },
     {
       "exerciseId": "exdb:0376",
@@ -533,7 +590,12 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源为侧平举，图片为屈肘提拉。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_exact_form_comparison",
+        "reviewedAt": "2026-10-29",
+        "reason": "2026-10-29：逐项对照本条原始步骤、支撑、器械和握法，与已核对 exdb:0334 的明确形式一致；保留ID，共用素材，不冒充新增独立视频或不同变式。非专业教学认证。"
+      }
     },
     {
       "exerciseId": "exdb:0381",
@@ -614,7 +676,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源手臂承托表述不清，图片为肩前无手托杠，需先修正文字。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-29",
+        "reference": {
+          "name": "free-exercise-db / Frankenstein_Squat",
+          "record": "Frankenstein_Squat",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "ee905be61f7e7c697dd214ae9b9adea58678fe665e10bd665463dae5a5658b8f"
+        },
+        "reason": "直杠由肩前支撑，双臂前伸不握杠；在力量架内下蹲，不是双手把杠悬举在体前。"
+      }
     },
     {
       "exerciseId": "exdb:3193",
@@ -713,7 +788,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源仰卧摆腿，图片为低位俯卧撑横移。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-29",
+        "reference": {
+          "name": "free-exercise-db / Isometric_Wipers",
+          "record": "Isometric_Wipers",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "389b8a3e8c0455955367d4af63072c202356349eedc9440da723e2e154e70748"
+        },
+        "reason": "宽手距掌撑地面，在低位向左右移重；不是仰卧左右摆腿。"
+      }
     },
     {
       "exerciseId": "exdb:0507",
@@ -857,7 +945,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源写仰卧，图片为俯卧伸背。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-29",
+        "reference": {
+          "name": "free-exercise-db / Lower_Back_Curl",
+          "record": "Lower_Back_Curl",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "1c1d4ac4e2d51a2a7ca2e0da65fd24f61939483680ad1b4d25f995f061d94199"
+        },
+        "reason": "俯卧地面、双臂沿体侧，胸部小幅离地后回落；不是仰卧卷腹。"
+      }
     },
     {
       "exerciseId": "exdb:1302",
@@ -1046,7 +1147,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源持杆稳定表述含糊，图片疑为杠铃背负，需要重新核对。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-29",
+        "reference": {
+          "name": "free-exercise-db / Smith_Single-Leg_Split_Squat",
+          "record": "Smith_Single-Leg_Split_Squat",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "325270fcd4ea63735bd86494a9ba0a0e01c435208fe89fdeb3bccb06700815e2"
+        },
+        "reason": "史密斯杠由上背承托，后脚搭在身后平凳，前脚支撑下蹲。"
+      }
     },
     {
       "exerciseId": "exdb:0776",
@@ -1181,7 +1295,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源过顶伸臂，图片为胸前伸臂，方向不同。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-29",
+        "reference": {
+          "name": "free-exercise-db / Upper_Back_Stretch",
+          "record": "Upper_Back_Stretch",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "9a30b3b8369c95d8da8ce8777ef5b8384e6a2be86695bb46936fd0420b010a05"
+        },
+        "reason": "站姿双手在胸前合握，肩部向前展开，手向前伸；不把过顶伸臂或夹背当成本动作。"
+      }
     },
     {
       "exerciseId": "exdb:0830",
@@ -1226,7 +1353,20 @@
       "fixedRevision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
       "decision": "rejected_or_pending",
       "reason": "来源平地冲刺跑，图片为悬垂抬膝。",
-      "personBackground": "来源未明确说明，不推断亚洲或其他背景"
+      "personBackground": "来源未明确说明，不推断亚洲或其他背景",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-29",
+        "reference": {
+          "name": "free-exercise-db / Wind_Sprints",
+          "record": "Wind_Sprints",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "d491ba6ecb01a4ba2e3bea09e2f906123c6090519962d9e8de5ecfdd40f935a5"
+        },
+        "reason": "正握悬垂，左右交替屈膝上提；是来源名 Wind Sprints 对应的悬垂形式，不是平地冲刺。"
+      }
     },
     {
       "exerciseId": "exdb:1428",
@@ -1638,7 +1778,20 @@
       "decision": "rejected_or_pending",
       "reason": "来源要求上臂放在大腿，候选双臂向两侧展开且不支于大腿。",
       "personBackground": "来源未明确说明，不推断亚洲或其他背景",
-      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-29",
+        "reference": {
+          "name": "free-exercise-db / Seated_Dumbbell_Inner_Biceps_Curl",
+          "record": "Seated_Dumbbell_Inner_Biceps_Curl",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "79821cb06036cc067b278aa4e520687a6ea67674213e6247c2ab9e61f5d78e51"
+        },
+        "reason": "坐稳凳面，双上臂自然靠近体侧，前臂向外上方弯举；不是上臂压大腿的集中弯举。"
+      }
     },
     {
       "exerciseId": "exdb:0401",
@@ -1668,7 +1821,20 @@
       "decision": "rejected_or_pending",
       "reason": "与现有 exdb:0333 说明同类形式，缺少可区分条目的原始资料；暂不重复记作新覆盖。",
       "personBackground": "来源未明确说明，不推断亚洲或其他背景",
-      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-29",
+        "reference": {
+          "name": "free-exercise-db / Standing_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+          "record": "Standing_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "9249526cff8dd1e4de3e738b7956c5db772c0e2d4ab997d2448938e3350853e9"
+        },
+        "reason": "屈髋俯身，双脚支撑、双臂同时后伸；与已核对0333形式一致，保留本ID。"
+      }
     },
     {
       "exerciseId": "exdb:0417",
@@ -1688,7 +1854,20 @@
       "decision": "rejected_or_pending",
       "reason": "来源只说明另一手扶凳，候选工作臂也放在凳垫上，支持方式未对应。",
       "personBackground": "来源未明确说明，不推断亚洲或其他背景",
-      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-29",
+        "reference": {
+          "name": "free-exercise-db / Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench",
+          "record": "Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "e45f0c4c2531f53bba93ba14a8611ed764934fe4331b52a0e086039c7a2d04a5"
+        },
+        "reason": "站姿，工作侧上臂贴住上斜凳垫，另一手扶凳；单手反握哑铃。"
+      }
     },
     {
       "exerciseId": "exdb:1680",
@@ -1698,7 +1877,20 @@
       "decision": "rejected_or_pending",
       "reason": "与 exdb:0422 近同名且支撑说明不明确，无法确认独立形式。",
       "personBackground": "来源未明确说明，不推断亚洲或其他背景",
-      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-29",
+        "reference": {
+          "name": "free-exercise-db / Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench",
+          "record": "Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "e45f0c4c2531f53bba93ba14a8611ed764934fe4331b52a0e086039c7a2d04a5"
+        },
+        "reason": "站姿，工作侧上臂贴住上斜凳垫，另一手扶凳；单手反握哑铃。"
+      }
     },
     {
       "exerciseId": "exdb:0424",
@@ -1788,7 +1980,20 @@
       "decision": "rejected_or_pending",
       "reason": "来源为脚踩地臀桥，候选为双脚悬空的反向卷腹。",
       "personBackground": "来源未明确说明，不推断亚洲或其他背景",
-      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
+      "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体",
+      "resolution": {
+        "decision": "adopted_after_independent_text_correction",
+        "reviewedAt": "2026-10-29",
+        "reference": {
+          "name": "free-exercise-db / Bent-Knee_Hip_Raise",
+          "record": "Bent-Knee_Hip_Raise",
+          "revision": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "license": "Unlicense",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceRecordSha256": "d3e3afbe1941fe1e4fe221b8b99f3e333892efa67976e48d3cb41db540dced7e"
+        },
+        "reason": "仰卧、双脚悬空屈膝，以收腹卷起骨盆；不是脚踩地臀桥。"
+      }
     },
     {
       "exerciseId": "exdb:0490",
@@ -2081,7 +2286,7 @@
       "candidateMethod": "词序/词形仅用于产生候选，未直接启用媒体"
     }
   ],
-  "resolvedAdoptions": 8,
-  "currentAdopted": 79,
-  "currentPending": 131
+  "resolvedAdoptions": 25,
+  "currentAdopted": 96,
+  "currentPending": 114
 }
