@@ -3,6 +3,7 @@ import {reviewedMediaIds} from './media-filter';
 import { z } from "zod";
 import { refreshOnline, onlineCutoff } from "./online";
 import { snapshotCameraProfile } from "./camera";
+import {requireRecognitionVersion} from './recognition-version';
 import { editWorkout } from "./editing";
 import { settings, dateInZone, saveSettings } from "./preferences";
 import { pool, withTransaction, afterCommit } from "../db";
@@ -580,7 +581,7 @@ const actionSchema = z.object({
     })
     .optional(),
 });
-export async function actWorkout(uid: number, id: string, input: any) {
+export async function actWorkout(uid: number, id: string, input: any, recognitionVersion?:unknown) {
   return withTransaction(async () => {
     const data = actionSchema.parse(input),
       w = await owned("gym_workouts", id, uid),
@@ -617,6 +618,7 @@ export async function actWorkout(uid: number, id: string, input: any) {
         : null;
     if (data.setId && set?.id !== data.setId)
       throw new InvalidStateError("当前训练组已经改变");
+    if(set&&((data.action==='start'&&data.inputMode==='camera')||(set.inputMode==='camera'&&['resume','progress','complete','pause','finish','heartbeat'].includes(data.action))))requireRecognitionVersion(snapshotCameraProfile(set.exercise)||'',recognitionVersion);
     const parent = (
       await pool.query("SELECT * FROM sport_sessions WHERE id=$1", [
         w.sport_session_id,
@@ -666,10 +668,11 @@ export async function actWorkout(uid: number, id: string, input: any) {
             : data.score.count !== (data.reps ?? set.reps)) ||
           [data.score.total, data.score.depth, data.score.stability, data.score.trunk, data.score.symmetry].some((n) => n > data.score!.count * 100) ||
           ((data.score.leftReps !== undefined || data.score.rightReps !== undefined) &&
-            (snapshotCameraProfile(set.exercise) !== "reverse_lunge" ||
+            (!["reverse_lunge","standing_leg_curl"].includes(snapshotCameraProfile(set.exercise)||'') ||
               (data.score.leftReps || 0) + (data.score.rightReps || 0) !== (data.reps ?? set.reps))))
       )
         throw new ValidationError("识别评分与次数不一致");
+      if(mode==='camera'&&snapshotCameraProfile(set.exercise)==='standing_leg_curl'&&(data.reps??set.reps)>0){const score=data.score??set.score;if((score?.leftReps||0)+(score?.rightReps||0)!==(data.reps??set.reps))throw new ValidationError('左右次数与总次数不一致');}
       const reps =
         mode === "camera"
           ? Math.max(set.reps, data.reps ?? set.reps)

@@ -92,6 +92,23 @@ await test('Workers runtime migration and business regression', async t=>{
  }
  assert.equal((await call('/api/v1/sport-sessions',{method:'POST',token:tokens[0],body:{sportType:'invalid',source:'camera'}})).status,400);
  });
+ await t.test('six extended actions require protocol v2, preserve unscored side counts and settle once',async()=>{
+ const headers={'X-MoveMate-Recognition-Version':'2'};
+ for(const sportType of ['hammer_curl','front_raise','triceps_kickback','romanian_deadlift','glute_bridge','standing_leg_curl'])for(const source of ['camera','demo']){
+ assert.equal((await call('/api/v1/sport-sessions',{method:'POST',token:tokens[2],body:{sportType,source}})).status,409);
+ const created=await call('/api/v1/sport-sessions',{method:'POST',token:tokens[2],headers,body:{sportType,source}});
+ assert.equal(created.status,200,JSON.stringify(created.data));const id=created.data.data.id;
+ const scoreAccumulator={count:0,total:0,depth:0,stability:0,trunk:0,symmetry:0,...(sportType==='standing_leg_curl'?{leftReps:2,rightReps:1}:{})};
+ const body={reps:3,scoreAccumulator};
+ assert.equal((await call(`/api/v1/sport-sessions/${id}/pause`,{method:'POST',token:tokens[2],body})).status,409);
+ const paused=await call(`/api/v1/sport-sessions/${id}/pause`,{method:'POST',token:tokens[2],headers,body});
+ assert.equal(paused.status,200,JSON.stringify(paused.data));
+ if(sportType==='standing_leg_curl')assert.equal(paused.data.data.metrics.scoreAccumulator.leftReps,2);
+ const finished=await call(`/api/v1/sport-sessions/${id}/finish`,{method:'POST',token:tokens[2],headers,body});
+ assert.equal(finished.status,200,JSON.stringify(finished.data));assert.equal(finished.data.data.xpEarned,source==='camera'?6:0);
+ const retry=await call(`/api/v1/sport-sessions/${id}/finish`,{method:'POST',token:tokens[2],headers,body});assert.equal(retry.data.data.xpEarned,finished.data.data.xpEarned);
+ }
+ });
  await t.test('alarm retries preserve transitions, attendance and exactly-once group XP',async()=>{
  const namespace=await mf.getDurableObjectNamespace('BACKEND');const actor=namespace.get(namespace.idFromName('test'));
  const created=await call('/api/v1/games',{method:'POST',token:tokens[0],body:{sport_type:'basketball',title:'Alarm lifecycle',campus_id:1,venue_id:10,max_players:3,start_time:new Date(Date.now()+9*60000).toISOString()}});
@@ -180,7 +197,7 @@ await test('Workers runtime migration and business regression', async t=>{
  const exported=(await call('/api/v1/training-export',{token})).data.data;assert.equal(exported.workouts.filter(w=>w.imported).length,1);assert.ok(!JSON.stringify(exported).includes('password_hash'));
  });
  await t.test('six plan-only camera families persist scores and side counts without extending standalone reward types',async()=>{
-  const token=tokens[0];const catalog=await call('/api/v1/exercises?camera=1&limit=50',{token});assert.equal(catalog.data.data.total,11);
+  const token=tokens[0];const catalog=await call('/api/v1/exercises?camera=1&limit=50',{token});assert.equal(catalog.data.data.total,20);
   for(const id of ['exdb:0294','exdb:0334','exdb:0405','exdb:0293','movemate:reverse_lunge','exdb:1373']){
    let r=await call('/api/v1/workout-sessions',{method:'POST',token,body:{id:crypto.randomUUID(),free:{exercises:[{exerciseId:id,sets:[{reps:2}]}]}}});assert.equal(r.status,200,JSON.stringify(r.data));let w=r.data.data;
    const act=async(action,extra={})=>{r=await call('/api/v1/workout-sessions/'+w.id+'/actions',{method:'POST',token,body:{operationId:crypto.randomUUID(),version:w.version,setId:w.sets[w.cursor]?.id,action,...extra}});assert.equal(r.status,200,JSON.stringify(r.data));w=r.data.data;};

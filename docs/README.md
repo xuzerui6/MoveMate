@@ -18,6 +18,7 @@
 | [计划训练](plan-training.md) | 计划、组记录、结算及数据兼容 |
 | [第二阶段训练能力](training-stage2.md) | 自由训练、排课、分析、进阶及数据恢复 |
 | [计划内摄像头](plan-camera.md) | 支持形式、试用动作、计数与评分 |
+| [新增六种 AI 动作](recognition-six-actions.md) | 拍摄要求、动作映射、版本兼容、计数与验收边界 |
 | [计数修复记录](training-counting-fix.md) | 识别诊断、状态机与实拍边界 |
 | [第四批动作示范](exercise-media-batch4.md) | 当前覆盖、20 项审核结果、中文资料、素材许可及部署 |
 | [第三批动作示范](exercise-media-batch3.md) | 上一批素材与外部目录配置 |

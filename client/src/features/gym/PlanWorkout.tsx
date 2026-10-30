@@ -5,6 +5,7 @@ import { Header } from "../motion/components/Header";
 import { PoseCanvas } from "../motion/components/PoseCanvas";
 import { usePose } from "../motion/hooks/usePose";
 import { usePlanRecognition, type PlanRecognitionType } from "./usePlanRecognition";
+import { isRecognitionType } from '../motion/lib/recognition';
 import { PlanRecognitionStatus } from "./PlanRecognitionStatus";
 import { isNewPlanProfile } from "./planRecognition";
 import { exerciseInfo } from "../motion/lib/exercises";
@@ -182,11 +183,14 @@ export default function PlanWorkout() {
     camera = !!current && current.inputMode === "camera",
     working = row?.phase === "working",
     finished = row?.phase === "finished";
-  const pose = usePose(camera && working && !busy && !blocked && !offline && !finishAttempted),
+  const requestedType = current?.exercise.planCamera?.profile || current?.exercise.cameraType;
+  const supportedRecognition = !!requestedType && isRecognitionType(requestedType);
+  const pose = usePose(camera && supportedRecognition && working && !busy && !blocked && !offline && !finishAttempted),
     seconds = useSessionClock(row?.session, busy || blocked || offline || finishAttempted);
-  const type: PlanRecognitionType = current?.exercise.planCamera?.profile || current?.exercise.cameraType || "squat";
+  // A dormant tracker is required by the hook; unsupported snapshots never start a camera.
+  const type: PlanRecognitionType = supportedRecognition ? requestedType as PlanRecognitionType : "squat";
   const capability = current?.exercise.planCamera;
-  const canRecognize = !!(capability || current?.exercise.cameraType) && !current?.targetSeconds && current?.side === "both";
+  const canRecognize = supportedRecognition && !current?.targetSeconds && current?.side === "both";
   const restored = useMemo(
     () => restoredSetMetrics(current),
     [current?.id, recoveryKey],
@@ -194,7 +198,7 @@ export default function PlanWorkout() {
   const { metrics, diagnostics } = usePlanRecognition(
     type,
     pose.landmarks,
-    camera && pose.status === "ready",
+    camera && supportedRecognition && pose.status === "ready",
     !working || busy || blocked || offline || finishAttempted,
     pose.videoRef.current?.videoWidth && pose.videoRef.current.videoHeight
       ? pose.videoRef.current.videoWidth / pose.videoRef.current.videoHeight
@@ -440,6 +444,7 @@ export default function PlanWorkout() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-MoveMate-Recognition-Version": "2",
         Authorization: "Bearer " + token,
       },
       body: JSON.stringify(body),
@@ -698,6 +703,7 @@ export default function PlanWorkout() {
                   {capability && metrics.scoreAccumulator.count > 0 && <p className="gym-muted">{capability.axes.map((name:string,i:number)=>name+" "+metrics.formBreakdown[(["depth","stability","trunk","symmetry"] as const)[i]]).join(" · ")}（已评分 {metrics.scoreAccumulator.count} 次）</p>}
                   {type === "reverse_lunge" && <p>左侧 {metrics.scoreAccumulator.leftReps || 0} 次 · 右侧 {metrics.scoreAccumulator.rightReps || 0} 次 · 每侧完成计一次</p>}
                   <p>{metrics.poseFeedback.primaryIssue ? metrics.poseFeedback.message : ""}</p>
+                  {type==='standing_leg_curl'&&<p className="recognition-side-count">左侧 {metrics.scoreAccumulator.leftReps||0} 次 · 右侧 {metrics.scoreAccumulator.rightReps||0} 次 · 左右合计</p>}
                   <PlanRecognitionStatus
                     type={type}
                     diagnostics={diagnostics}
@@ -838,6 +844,7 @@ export default function PlanWorkout() {
                   />
                 </label>
               )}
+              {requestedType && !supportedRecognition && <p role="alert">当前页面不支持此动作识别，请刷新页面或切换手动记录。</p>}
               {current && <ExerciseDemo exercise={current.exercise} suspended={working || busy || finished}/>}
               {!working && canRecognize && (
                 <section className="gym-camera-preparation">

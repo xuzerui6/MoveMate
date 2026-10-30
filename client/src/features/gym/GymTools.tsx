@@ -518,7 +518,7 @@ export function WorkoutRecords() {
                             : "手动记录"}
                         </small>
                         {s.exercise.planCamera && s.score?.count > 0 && <small>{s.exercise.planCamera.axes.map((name:string,i:number)=>`${name} ${Math.round((s.score[["depth","stability","trunk","symmetry"][i]] || 0)/s.score.count)}`).join(" · ")}</small>}
-                        {s.inputMode === "camera" && s.exercise.planCamera?.profile === "reverse_lunge" && <small>左侧 {s.score?.leftReps || 0} 次 · 右侧 {s.score?.rightReps || 0} 次</small>}
+                        {s.inputMode === "camera" && ["reverse_lunge","standing_leg_curl"].includes(s.exercise.planCamera?.profile) && <small>左侧 {s.score?.leftReps || 0} 次 · 右侧 {s.score?.rightReps || 0} 次</small>}
                         {s.effort && (
                           <small>
                             本人填写 {s.effort.kind.toUpperCase()}：

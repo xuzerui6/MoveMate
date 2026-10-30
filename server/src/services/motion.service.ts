@@ -3,8 +3,10 @@ import {onlineCutoff} from '../gym/online';
 import { pool, withTransaction, afterCommit } from '../db';
 import { ForbiddenError, InvalidStateError, NotFoundError, ValidationError } from '../utils/errors';
 import { pushToUser, broadcastToGame } from '../websocket/notification.handler';
+import extended from '../gym/new-recognition.json';
+import {isExtendedRecognition,requireRecognitionVersion} from '../gym/recognition-version';
 
-export const CAMERA_TYPES = new Set(['squat','jumping_jack','high_knees','push_up']);
+export const CAMERA_TYPES = new Set(['squat','jumping_jack','high_knees','push_up',...Object.keys(extended)]);
 export const SPORT_RATES: Record<string, number> = { running: 3, swimming: 3, basketball: 2, badminton: 2, soccer: 2, volleyball: 2, tennis: 2, table_tennis: 2 };
 export function calculateXp(type: string, seconds: number, reps: number, source: string): number {
   if (source === 'demo') return 0;
@@ -35,8 +37,9 @@ async function ensureGame(row: Pick<SessionRow,'game_id'|'user_id'>) {
   if (!game?.checked_in_at) throw new ForbiddenError('请先签到后开始运动');
   if (game.status !== 'in_progress') throw new InvalidStateError('活动开始后才能计时');
 }
-export async function createSession(userId:number, data:{ id?:string; sportType:string; source:string; gameId?:number }) {
+export async function createSession(userId:number, data:{ id?:string; sportType:string; source:string; gameId?:number }, recognitionVersion?:unknown) {
   return withTransaction(async () => {
+    if(data.source!=='timer')requireRecognitionVersion(data.sportType,recognitionVersion);
     const id = data.id || randomUUID();
     const old = (await pool.query<SessionRow>('SELECT * FROM sport_sessions WHERE id=$1',[id])).rows[0];
     if (old) {
@@ -87,6 +90,7 @@ function cleanMetrics(data:any, previous:any={}) {
     const acc=data.scoreAccumulator;
     if (!acc || !Number.isInteger(acc.count) || acc.count<0 || acc.count>100000) throw new ValidationError('评分累计次数无效');
     out.scoreAccumulator={count:acc.count};
+    for(const key of ['leftReps','rightReps'])if(acc[key]!==undefined){if(!Number.isInteger(acc[key])||acc[key]<0||acc[key]>100000)throw new ValidationError('左右动作次数无效');out.scoreAccumulator[key]=acc[key];}
     for(const key of ['total','depth','stability','trunk','symmetry']) {
       const n=acc[key];
       if(typeof n!=='number'||!Number.isFinite(n)||n<0||n>acc.count*100)throw new ValidationError('评分累计值无效');
@@ -111,9 +115,10 @@ async function closeInterval(row:SessionRow, cutoff:number) {
   await pool.query('UPDATE sport_intervals SET ended_at=$2,effective_ms=$3 WHERE session_id=$1 AND ended_at IS NULL',
     [row.id,new Date(cutoff).toISOString(),row.active_since ? Math.max(0,cutoff-Date.parse(row.active_since)) : 0]);
 }
-export async function sessionAction(id:string,userId:number,action:'pause'|'resume'|'finish'|'progress',data:any={},fromPlan=false) {
+export async function sessionAction(id:string,userId:number,action:'pause'|'resume'|'finish'|'progress',data:any={},fromPlan=false,recognitionVersion?:unknown) {
   return withTransaction(async () => {
     let row = await owned(id,userId);
+    if(row.source!=='timer'&&(action==='resume'||action==='progress'||data.reps!=null||data.scoreAccumulator!=null))requireRecognitionVersion(row.sport_type,recognitionVersion);
     if(row.workout_id && !fromPlan)throw new InvalidStateError('请从计划训练页面操作本次运动');
     if (row.settled) { if (action === 'finish') return sessionView(row); throw new InvalidStateError('运动已结算'); }
     if (row.game_id) await ensureGame(row);
@@ -137,7 +142,10 @@ export async function sessionAction(id:string,userId:number,action:'pause'|'resu
       const oldMetrics=decode<any>(row.metrics,{});
       const stale=row.source!=='timer' && data.reps!=null && data.reps<row.reps;
       const cleaned=stale?oldMetrics:cleanMetrics(data,oldMetrics);
-      if(cleaned.scoreAccumulator && cleaned.scoreAccumulator.count!==reps)throw new ValidationError('评分累计次数与动作次数不一致');
+      if(cleaned.scoreAccumulator && (isExtendedRecognition(row.sport_type)?cleaned.scoreAccumulator.count>reps:cleaned.scoreAccumulator.count!==reps))throw new ValidationError('评分累计次数与动作次数不一致');
+      const acc=cleaned.scoreAccumulator;
+      if(row.sport_type==='standing_leg_curl'&&reps>0&&(!acc||(acc.leftReps||0)+(acc.rightReps||0)!==reps))throw new ValidationError('左右次数与总次数不一致');
+      if(row.sport_type!=='standing_leg_curl'&&(acc?.leftReps!==undefined||acc?.rightReps!==undefined))throw new ValidationError('该动作不支持左右计数');
       if(fromPlan && data.planSquatReps!=null)cleaned.planSquatReps=data.planSquatReps;
       const metrics=JSON.stringify(cleaned);
       if (action !== 'finish') row = (await pool.query<SessionRow>('UPDATE sport_sessions SET reps=$2,metrics=$3 WHERE id=$1 RETURNING *',[id,reps,metrics])).rows[0];

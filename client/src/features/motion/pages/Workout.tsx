@@ -12,6 +12,7 @@ import { useHeartRateMonitor } from '../hooks/useHeartRateMonitor'
 import { usePose } from '../hooks/usePose'
 import { useExerciseMetrics } from '../hooks/useExerciseMetrics'
 import { exerciseInfo, type CameraExerciseType } from '../lib/exercises'
+import {isNewExercise,NEW_EXERCISES} from '../lib/newExercises'
 import { useWorkoutSession } from '../hooks/useWorkoutSession'
 import { useSessionClock } from '../hooks/useSessionClock'
 import type { CameraFit } from '../lib/cameraFrame'
@@ -70,7 +71,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     alive.current = true
     const flush = (action = 'progress') => {
       if (!serverId.current || closing.current || !activeRef.current || !accountToken.current) return
-      void fetch('/api/v1/sport-sessions/' + serverId.current + '/' + action, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accountToken.current }, body: JSON.stringify(progress.current), keepalive: true }).catch(() => undefined)
+      void fetch('/api/v1/sport-sessions/' + serverId.current + '/' + action, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-MoveMate-Recognition-Version': '2', Authorization: 'Bearer ' + accountToken.current }, body: JSON.stringify(progress.current), keepalive: true }).catch(() => undefined)
     }
     const hide = () => flush()
     window.addEventListener('pagehide', hide)
@@ -229,19 +230,20 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   useEffect(() => {
     if (failure || poseFailed) document.querySelector('.training-workout .training-error')?.scrollIntoView({ block: 'center' })
   }, [failure, poseFailed])
-  const statusLabel = ending ? '正在确认结束' : pendingAction ? '状态待确认' : paused ? '已暂停' : simulatedPose ? '演示 · 不计 XP' : metrics.poseFeedback.calibrated ? '识别中' : '请站稳，准备校准'
+  const statusLabel = ending ? '正在确认结束' : pendingAction ? '状态待确认' : paused ? '已暂停' : simulatedPose ? '演示 · 不计 XP' : metrics.poseFeedback.calibrated ? '识别中' : '保持起始姿势，准备校准'
   const hint = ending ? '本组数据已冻结，正在确认保存结果。' : pendingAction ? '本地识别已停止，服务端状态待确认；时长以服务端为准。' : paused ? '休息不计时，继续后重新校准起始姿势。' : metrics.reps >= metrics.targetReps ? '目标已完成，可以结束并保存这一组。' : metrics.feedback
   return <div className={`page workout-page training-workout ${active ? 'live' : 'setup'}${cameraExpanded ? ' camera-expanded' : ''}`}>
     <Header title={exercise.name + '训练'} back={leave} action={active ? <span className={'training-status' + (paused ? ' paused' : '')}>{statusLabel}</span> : <span className="muted">目标 20 {exercise.unit}</span>}/>
     {!active && <section className="training-prep">
       <h2>{restored ? '继续上次训练' : '准备好，就开始'}</h2>
       <p className="prep-placement">{exercise.placement}</p><p>{exercise.instruction}</p>
-      <ExerciseDemo exercise={{id:'motion:'+exerciseType,nameZh:exercise.name,target:exerciseType==='push_up'?'pectorals':exerciseType==='jumping_jack'?'full body':'quadriceps',secondaryMuscles:[]}} suspended={preparing||busy}/>
+      <ExerciseDemo exercise={isNewExercise(exerciseType)?{id:NEW_EXERCISES[exerciseType].exerciseIds[0],nameZh:exercise.name,form:exercise.instruction}:{id:'motion:'+exerciseType,nameZh:exercise.name,target:exerciseType==='push_up'?'pectorals':exerciseType==='jumping_jack'?'full body':'quadriceps',secondaryMuscles:[]}} suspended={preparing||busy}/>
       {restored && <p className="restore-copy">已完成 {restored.reps} {exercise.unit} · 有效时长 {format(restored.effectiveSeconds)} · {restored.source === 'demo' ? '演示，不计 XP' : '真实动作训练'}</p>}
       {restored?.source !== 'demo' && <fieldset className="training-consent"><legend>选择视觉范围</legend>
         <label><input type="radio" name="vision" checked={visionConsent === false} disabled={busy} onChange={() => setVisionConsent(false)}/><span><b>仅本地分析</b><small>视频在浏览器中识别，不上传</small></span></label>
         <label><input type="radio" name="vision" checked={visionConsent === true} disabled={busy} onChange={() => setVisionConsent(true)}/><span><b>允许智能复核</b><small>每个完整动作最多上传一张关键帧，不保存图片</small></span></label>
       </fieldset>}
+      {isNewExercise(exerciseType)&&<p className="prep-privacy">新动作识别为试用。按所选标准形式练习；本站不能测量重量或可靠验证握法。</p>}
       <div className="prep-actions">
         {restored?.source !== 'demo' && <button className="primary" disabled={busy || ending || visionConsent === null} onClick={() => void begin(false)}><Icon name="camera"/>{busy ? simulatedPose ? '正在开始演示…' : creating ? restored ? '正在恢复训练…' : '正在开始训练…' : '摄像头与模型准备中…' : restored ? '开启摄像头并继续' : '开启摄像头并开始'}</button>}
         {restored?.source !== 'camera' && <button className="secondary" disabled={busy || ending} onClick={() => void begin(true)}><Icon name="play"/>{busy && simulatedPose ? '正在开始演示…' : restored ? '继续演示' : '体验演示 · 不计 XP'}</button>}
@@ -262,9 +264,10 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
         {active && !simulatedPose && cameraFit === 'cover' && <span className="training-camera-crop-note">画面已裁切 · 请确认全身可见</span>}
       </div>
       {active && <section className="training-live-info" aria-label="本组训练数据">
-        <div className="training-numbers"><div className="training-reps"><strong>{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}</span></div><div><strong>{format(seconds)}</strong><span>有效时长</span></div><div><strong>{metrics.reps ? metrics.formScore : '—'}</strong><span>动作评分</span></div></div>
+        <div className="training-numbers"><div className="training-reps"><strong>{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}</span></div><div><strong>{format(seconds)}</strong><span>有效时长</span></div><div><strong>{metrics.scoreAccumulator.count ? metrics.formScore : '—'}</strong><span>动作评分</span></div></div>
         <div className={'training-hint' + (paused ? ' paused' : '')} role="status"><Icon name={paused ? 'pause' : 'spark'}/><p>{hint}</p></div>
         <RecognitionStatus type={exerciseType} diagnostics={diagnostics} paused={paused || busy || ending} demo={simulatedPose}/>
+        {exerciseType==='standing_leg_curl'&&<p className="recognition-side-count">左侧 {metrics.scoreAccumulator.leftReps||0} 次 · 右侧 {metrics.scoreAccumulator.rightReps||0} 次 · 左右合计</p>}
         <div className="training-voice"><Icon name="mic" size={26}/><span><b>{voiceEnabled ? VOICE_LABEL[voice.state] : '语音陪练'}</b><small>{voiceEnabled ? voice.errorMessage || (voice.state === 'speaking' ? voice.reply : voice.transcript) || '连接后点击对话' : '语音指导你的动作节奏与要点'}</small></span>
           <button className="secondary" disabled={ending} onClick={!voiceEnabled ? toggleVoice : voice.state === 'idle' ? voice.wake : ['failed', 'fallback'].includes(voice.state) ? voice.retry : voice.inConversation ? voice.interrupt : toggleVoice}>{!voiceEnabled ? '开启' : voice.state === 'idle' ? '对话' : ['failed', 'fallback'].includes(voice.state) ? '重试' : voice.inConversation ? '打断' : '关闭'}</button>
         </div>

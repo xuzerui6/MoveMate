@@ -103,7 +103,7 @@ router.get(
 );
 router.post(
   "/workout-sessions/:id/actions",
-  wrap((r) => gym.actWorkout(r.user.id, r.params.id, r.body)),
+  wrap((r) => gym.actWorkout(r.user.id, r.params.id, r.body,r.get('X-MoveMate-Recognition-Version'))),
 );
 router.post(
   "/workout-sessions/:id/save-plan",

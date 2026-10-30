@@ -1,6 +1,6 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision'
 import type { FormBreakdown, PoseFeedback, PoseIssue, ScoreAccumulator, WorkoutMetrics, WorkoutPhase } from '../types'
-import { exerciseInfo, type CameraExerciseType } from './exercises'
+import { exerciseInfo, type BaseCameraExerciseType as CameraExerciseType } from './exercises'
 import { analyzeSquatFrame } from './squatMetrics'
 import { detectPoseIssues, medianLandmarks, POSE_ISSUE_COPY } from './poseFeedback'
 import { emptyCorrectionCounts, emptyFormBreakdown } from './sessionMigration'

@@ -1,6 +1,7 @@
 import type { CameraExerciseType } from '../lib/exercises'
 import type { RecognitionDiagnostics } from '../lib/exerciseMetrics'
 import './recognitionStatus.css'
+import {isNewExercise,NEW_EXERCISES} from '../lib/newExercises'
 
 const stages = {
   squat: {ready:'站立就绪',moving:'下蹲中',peak:'下蹲幅度确认',returning:'站起确认'},
@@ -11,7 +12,7 @@ const stages = {
 
 export function RecognitionStatus({type,diagnostics,paused=false,demo=false}:{type:CameraExerciseType;diagnostics:RecognitionDiagnostics;paused?:boolean;demo?:boolean}) {
   const {stage}=diagnostics
-  const label=paused?'已暂停':stage==='calibrating'?'起始姿势校准':stage==='tracking_lost'?'等待有效画面':stage==='complete'?'目标已完成':stages[type][stage]
+  const label=paused?'已暂停':stage==='calibrating'?'起始姿势校准':stage==='tracking_lost'?'等待有效画面':stage==='complete'?'目标已完成':isNewExercise(type)?NEW_EXERCISES[type].stages[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]:stages[type][stage]
   return <div className="recognition-status">
     <p className="recognition-stage">当前阶段：{label}{!paused&&type==='high_knees'&&<> · 本对：左侧{diagnostics.pairedSides.includes('left')?'已完成':'待完成'}／右侧{diagnostics.pairedSides.includes('right')?'已完成':'待完成'}</>}</p>
     <details className="recognition-diagnostics"><summary>识别诊断（仅本机）</summary>
