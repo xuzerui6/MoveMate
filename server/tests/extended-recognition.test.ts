@@ -39,7 +39,7 @@ test('standing side counts are validated independently from score count and surv
   await assert.rejects(motion.createSession(uid,{sportType:'unknown_camera',source:'camera'},2));
 });
 test('explicit nine library mappings, unchanged total IDs, no custom capability and plan time-only XP',async()=>{
-  const all=await gym.library(uid,{camera:'1',limit:50});assert.equal(all.total,30);
+  const all=await gym.library(uid,{camera:'1',limit:50});assert.equal(all.total,37);
   for(const [type,definition]of Object.entries(definitions))for(const id of definition.exerciseIds){
     const exercise=all.items.find((x:any)=>x.id===id);assert.equal(exercise.planCamera.profile,type);
     let w=await gym.startWorkout(uid,{id:randomUUID(),free:{exercises:[{exerciseId:id,sets:[{reps:3}]}]}});
@@ -59,7 +59,7 @@ for(const [profile,definition]of Object.entries(libraryDefinitions))test(`${prof
   await assert.rejects(motion.createSession(uid,{sportType:profile,source:'camera'},3));
   const item=(await gym.allExercises(uid)).find((e:any)=>e.id===exerciseId);assert.equal(item.planCamera.profile,profile);
   let w=await gym.startWorkout(uid,{id:randomUUID(),free:{exercises:[{exerciseId,sets:[{reps:2}]}]}});
-  const act=(action:string,extra:any={},protocol:any=3)=>gym.actWorkout(uid,w.id,{operationId:randomUUID(),version:w.version,action,setId:w.sets[w.cursor]?.id,...extra},protocol);
+  const act=(action:string,extra:any={},protocol:any=("recognitionVersion" in definition?definition.recognitionVersion:3))=>gym.actWorkout(uid,w.id,{operationId:randomUUID(),version:w.version,action,setId:w.sets[w.cursor]?.id,...extra},protocol);
   await assert.rejects(act('start',{inputMode:'camera'},2),/刷新/);
   await assert.rejects(gym.actWorkout(other,w.id,{operationId:randomUUID(),version:w.version,action:'start',inputMode:'camera'},3));
   w=await act('start',{inputMode:'camera'});w=await act('progress',{reps:2,score});w=await act('pause');
@@ -68,4 +68,10 @@ for(const [profile,definition]of Object.entries(libraryDefinitions))test(`${prof
   w=await act('complete',{reps:2,score});w=await act('finish');assert.equal(w.session.xpEarned,1);assert.equal(w.session.metrics.planSquatReps,0);assert.equal((await act('finish')).session.xpEarned,1);
   assert.equal((await pool.query('SELECT COUNT(*) n FROM xp_ledger WHERE session_id=$1',[w.session.id])).rows[0].n,1);
  }
+});
+
+test('all built-in template movements have recognition and shoulder press does not fall back to push-up',()=>{
+ const {templates,exercises}=require('../src/gym/model');
+ const all=templates();for(const t of all)for(const routine of t.routines)for(const entry of routine.exercises){const e=exercises.find((x:any)=>x.id===entry.exerciseId);assert.ok(e.cameraType||e.planCamera,`${t.key}: ${entry.exerciseId}`);}
+ const upper=all.find((t:any)=>t.key==='upper_lower').routines.find((r:any)=>r.id==='upper');assert.ok(upper.exercises.some((e:any)=>e.exerciseId==='exdb:0405'));assert.ok(!upper.exercises.some((e:any)=>e.exerciseId==='motion:push_up'));
 });

@@ -140,5 +140,104 @@
       "屈肘幅度确认，请伸肘",
       "头上伸肘确认"
     ]
+  },
+  "barbell_deadlift": {
+    "name": "传统杠铃硬拉",
+    "english": "BARBELL DEADLIFT",
+    "exerciseIds": [
+      "exdb:0032"
+    ],
+    "placement": "斜侧面全身，至少一侧肩、肘、腕、髋、膝和脚踝连续清晰，杠铃不可遮挡关节。",
+    "instruction": "先在屈髋屈膝、双臂伸直且手接近小腿的起始位保持两秒；伸髋伸膝站直，再控制返回起始位，完整往返计一次。",
+    "joints": "肩、肘、腕、髋、膝、脚踝",
+    "unit": "次",
+    "axes": [
+      "动作幅度",
+      "稳定控制",
+      "身体姿态",
+      "动作协调"
+    ],
+    "stages": [
+      "低位起始就绪",
+      "伸髋伸膝拉起中",
+      "站直确认，请控制放回",
+      "返回低位确认"
+    ],
+    "recognitionVersion": 4
+  },
+  "barbell_row": {
+    "name": "杠铃俯身划船",
+    "english": "BARBELL ROW",
+    "exerciseIds": [
+      "exdb:0027"
+    ],
+    "placement": "斜侧面，双肩、双肘、双手腕、髋和膝可见。",
+    "instruction": "保持俯身、双臂下垂两秒；将杠铃拉向躯干，再控制放回。",
+    "joints": "双肩、双肘、双手腕、双髋、双膝",
+    "unit": "次",
+    "axes": [
+      "动作幅度",
+      "稳定控制",
+      "身体姿态",
+      "动作协调"
+    ],
+    "stages": [
+      "俯身垂臂就绪",
+      "双肘向后拉起",
+      "拉起幅度确认，请放回",
+      "垂臂确认"
+    ],
+    "recognitionVersion": 4
+  },
+  "barbell_front_squat": {
+    "name": "杠铃前蹲",
+    "english": "BARBELL FRONT SQUAT",
+    "exerciseIds": [
+      "exdb:0029",
+      "exdb:0039",
+      "exdb:0042"
+    ],
+    "placement": "全身略侧面，肩、髋、膝和脚踝清楚，前架杠铃不能遮挡关节。",
+    "instruction": "杠铃在肩前，抬肘站稳两秒；完成下蹲并回到站立。自行确认前架和保护条件。",
+    "joints": "双肩、双髋、双膝、双脚踝",
+    "unit": "次",
+    "axes": [
+      "动作幅度",
+      "稳定控制",
+      "身体姿态",
+      "动作协调"
+    ],
+    "stages": [
+      "站立就绪",
+      "下蹲中",
+      "下蹲幅度确认，请站起",
+      "站起确认"
+    ],
+    "recognitionVersion": 4
+  },
+  "incline_bench_press": {
+    "name": "上斜卧推",
+    "english": "INCLINE BENCH PRESS",
+    "exerciseIds": [
+      "exdb:0047",
+      "exdb:0314"
+    ],
+    "placement": "侧面或斜侧面，全身和双手入镜，肩背贴上斜凳、双脚支撑；画面需能看清斜躺姿态。",
+    "instruction": "肩背贴凳，双臂在上胸上方伸展校准两秒；屈肘下放，再推回。不能验证凳子角度、重量或保护装置。",
+    "joints": "双肩、双肘、双手腕、双髋、双膝、双脚踝",
+    "unit": "次",
+    "axes": [
+      "动作幅度",
+      "稳定控制",
+      "身体姿态",
+      "动作协调"
+    ],
+    "stages": [
+      "斜躺伸臂就绪",
+      "屈肘下放中",
+      "下放幅度确认，请推起",
+      "推起确认"
+    ],
+    "recognitionVersion": 4
   }
 }

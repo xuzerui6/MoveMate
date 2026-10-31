@@ -17,7 +17,7 @@ const mean=(a:number,b:number)=>(a+b)/2;
 type Side='left'|'right';
 type Measurement={start:boolean;peak:boolean;amplitude:number;angle:number;confidence:number;scorable:boolean;posture:number;symmetry:number;controlPenalty:number;hint?:string;side?:Side;basis:string;motion:string;points:Point[];torso:number;tilt:number};
 const axes=['depth','stability','trunk','symmetry'] as const;
-type ExtendedType=NewExerciseType|'bench_press'|'reverse_fly'|'seated_triceps_extension';
+type ExtendedType=NewExerciseType|'bench_press'|'reverse_fly'|'seated_triceps_extension'|'barbell_deadlift'|'incline_bench_press';
 const definitions={...NEW_EXERCISES,...LIBRARY_RECOGNITION};
 const sideJoints=(s:Side)=>s==='left'?[11,23,25,27]:[12,24,26,28];
 
@@ -59,8 +59,13 @@ export class ExtendedExerciseTracker {
     return this.metrics;
   }
   private needed(raw:Point[]):number[]{
-    if(this.type==='bench_press'||this.type==='seated_triceps_extension')return [11,12,13,14,15,16,23,24,25,26,27,28];
+    if(this.type==='bench_press'||this.type==='incline_bench_press'||this.type==='seated_triceps_extension')return [11,12,13,14,15,16,23,24,25,26,27,28];
     if(this.type==='reverse_fly')return [11,12,13,14,15,16,23,24,25,26];
+    if(this.type==='barbell_deadlift'){
+      const joints=(s:Side)=>[...sideJoints(s),s==='left'?13:14,s==='left'?15:16];
+      if(!this.side){const confidence=(s:Side)=>Math.min(...joints(s).map(i=>raw[i]?.visibility||0));this.side=confidence('left')>=confidence('right')?'left':'right';}
+      return joints(this.side);
+    }
     if(this.type==='romanian_deadlift'||this.type==='glute_bridge'){
       if(!this.side){const confidence=(s:Side)=>Math.min(...sideJoints(s).map(i=>raw[i]?.visibility||0));this.side=confidence('left')>=confidence('right')?'left':'right';}
       return sideJoints(this.side);
@@ -78,8 +83,18 @@ export class ExtendedExerciseTracker {
     const elbows=[angle(a[11],a[13],a[15]),angle(a[12],a[14],a[16])];
     const knees=[angle(a[23],a[25],a[27]),angle(a[24],a[26],a[28])];
     let start=false,peak=false,amplitude=0,measured=0,posture=cap(100-Math.max(0,tilt-12)*2),symmetry=100,controlPenalty=0,side:Side|undefined=this.side||undefined,basis='',motion='',hint:string|undefined;
-    if(this.type==='bench_press'){
-      if(tilt<60)return '请平躺平凳并从斜侧面拍摄；坐姿推举不计入卧推';
+    if(this.type==='barbell_deadlift'){
+      const hinge=angle(a[11+o],a[23+o],a[25+o]),knee=knees[o],shin=Math.max(.04,dist(p[25+o],p[27+o]));
+      if(elbows[o]<150)return '请保持跟踪侧手臂伸直、手靠近小腿；弯举不计入硬拉';
+      if(this.baseline&&dist(p[27+o],this.baseline.points[27+o])>this.baseline.torso*.16)return '脚位或画面移动，请重新保持起始姿势校准';
+      start=hinge>=45&&hinge<=130&&knee>=75&&knee<=145&&p[15+o].y>=p[25+o].y+shin*.1&&p[15+o].y<=p[27+o].y+shin*.3;
+      peak=hinge>=160&&knee>=160&&p[15+o].y>p[23+o].y;
+      measured=hinge;amplitude=cap((Math.min(hinge,knee)-130)/45*100);posture=cap(100-Math.max(0,165-Math.min(hinge,knee))*2);symmetry=cap(100-Math.abs(knees[0]-knees[1])*1.5);
+      basis='低位屈髋屈膝＋手臂伸直＋站直后返回起始位';motion=`髋角 ${Math.round(hinge)}°，膝角 ${Math.round(knee)}°；需在手接近小腿的低位校准`;
+      if(!this.ready&&!start)hint='请回到屈髋屈膝、双臂伸直、手接近小腿的低位，保持两秒';
+    }else if(this.type==='bench_press'||this.type==='incline_bench_press'){
+      if(this.type==='bench_press'&&tilt<60)return '请平躺平凳并从斜侧面拍摄；坐姿推举不计入卧推';
+      if(this.type==='incline_bench_press'&&(tilt<30||tilt>60))return '请调整为侧面或斜侧面，让肩背贴凳的斜躺姿态清楚可见；平躺与直立推举不计入';
       if([0,1].some(i=>p[15+i].y>p[11+i].y-torso*.08))return '请让手腕、肘和肩清晰可见，双手保持在胸部上方';
       if(this.baseline&&[11,12,23,24,27,28].some(i=>dist(p[i],this.baseline!.points[i])>this.baseline!.torso*.18))return '支撑或画面移动，请稳定身体后重新校准';
       start=Math.min(...elbows)>=155;peak=Math.min(...elbows)>=55&&Math.max(...elbows)<=110;
@@ -150,7 +165,7 @@ export class ExtendedExerciseTracker {
       symmetry=cap(100-Math.max(0,165-knees[support])*3-(this.baseline?dist(p[27+support],this.baseline.points[27+support])/torso*120:0));
       if(!start&&hips<150)hint='请让大腿保持向下，脚跟向后抬起，向前抬膝不计入';
     }
-    const scorable=confidence>=.7&&[11,12,23,24,...(this.type==='romanian_deadlift'||this.type==='glute_bridge'?[25,26,27,28]:[])].every(i=>(points[i].visibility??0)>=.7);
+    const scorable=confidence>=.7&&[11,12,23,24,...(this.type==='romanian_deadlift'||this.type==='glute_bridge'||this.type==='barbell_deadlift'?[25,26,27,28]:[])].every(i=>(points[i].visibility??0)>=.7);
     return {start,peak,amplitude,angle:measured,confidence,scorable,posture,symmetry,controlPenalty,hint,side,basis,motion,points:p,torso,tilt};
   }
   update(raw:Point[]|null,now:number,aspect=1,world:Point[]|null=null):ExerciseMetrics{
@@ -169,7 +184,7 @@ export class ExtendedExerciseTracker {
     if(!this.ready){
       if(!f.start){this.calibration=null;this.baseline=null;}else{if(this.calibration===null)this.calibration=now;this.baseline=f;if(now-this.calibration>=2000)this.ready=true;}
       const progress=this.calibration===null?0:Math.min(1,(now-this.calibration)/2000);this.diagnostics={...this.diagnostics,stage:this.ready?'ready':'calibrating',calibrationProgress:progress};
-      const message=this.ready?'校准完成，可以开始完整动作':f.start?`保持起始姿势，校准 ${Math.round(progress*100)}%`:'请回到本动作起始姿势，保持两秒';
+      const message=this.ready?'校准完成，可以开始完整动作':f.start?`保持起始姿势，校准 ${Math.round(progress*100)}%`:f.hint||'请回到本动作起始姿势，保持两秒';
       this.metrics={...this.metrics,feedback:message,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:this.ready,confidence:f.confidence,message}};return this.metrics;
     }
     if(!f.start){
@@ -186,7 +201,7 @@ export class ExtendedExerciseTracker {
         if(this.metrics.reps<this.metrics.targetReps){
           const acc={...this.metrics.scoreAccumulator},duration=(now-(this.movingAt??now))/1000;
           if(this.type==='standing_leg_curl'){const key=this.peak.side==='left'?'leftReps':'rightReps';acc[key]=(acc[key]||0)+1;}
-          const breakdown={depth:this.peak.amplitude,stability:cap(100-Math.max(0,this.speed-260)*.08-Math.max(0,.6-duration)*70-this.controlPenalty),trunk:cap(this.peak.posture-(this.type==='romanian_deadlift'||this.type==='glute_bridge'?0:this.shift*1.5)),symmetry:this.peak.symmetry};
+          const breakdown={depth:this.peak.amplitude,stability:cap(100-Math.max(0,this.speed-260)*.08-Math.max(0,.6-duration)*70-this.controlPenalty),trunk:cap(this.peak.posture-(this.type==='romanian_deadlift'||this.type==='glute_bridge'||this.type==='barbell_deadlift'?0:this.shift*1.5)),symmetry:this.peak.symmetry};
           const score=Math.round(breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2+breakdown.symmetry*.2),scored=this.scoring&&f.scorable,issues:PoseIssue[]=[];
           if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(breakdown.symmetry<70)issues.push('poor_coordination');
           const counts={...this.metrics.correctionCounts};if(scored){acc.count++;acc.total+=score;axes.forEach(k=>acc[k]+=breakdown[k]);issues.forEach(k=>counts[k]++);}

@@ -13,7 +13,7 @@ const ids=['exdb:0294','exdb:0334','exdb:0405','exdb:0293','movemate:reverse_lun
 const action=(w:any,kind:string,extra:any={})=>gym.actWorkout(uid,w.id,{operationId:randomUUID(),version:w.version,setId:w.sets[w.cursor]?.id,action:kind,...extra});
 const begin=(exerciseId:string,sets:any[]=[{reps:3}])=>gym.startWorkout(uid,{id:randomUUID(),free:{exercises:[{exerciseId,sets}]}});
 test('camera filter exposes explicit standard IDs, never variants or user-supplied capability',async()=>{
- const all=await gym.library(uid,{camera:'1',limit:50});assert.equal(all.total,30);assert.ok(all.items.every((e:any)=>e.cameraType||e.planCamera));
+ const all=await gym.library(uid,{camera:'1',limit:50});assert.equal(all.total,37);assert.ok(all.items.every((e:any)=>e.cameraType||e.planCamera));
  for(const id of ids)assert.equal(all.items.find((e:any)=>e.id===id).planCamera.profile,planCameraFor(id).profile);
  for(const id of ['exdb:0285','exdb:0361','exdb:3470','exdb:1386'])assert.equal(planCameraFor(id),undefined);
  const custom=await gym.saveExercise(uid,{nameZh:'伪造摄像头动作',bodyPart:'chest',equipment:'body weight',target:'chest',instructions:['仅手动'],planCamera:{profile:'biceps_curl'},cameraType:'squat'});assert.equal((await gym.allExercises(uid)).find((e:any)=>e.id===custom.id).planCamera,undefined);

@@ -39,6 +39,18 @@ test('reverse fly rejects forward lifting, upright lateral raises and missing wo
 test('an unscorable bench-press repetition is preserved without inventing a score',()=>{
  const r=run('bench_press');r.feed('neutral',3200);r.feed('peak',1200,f=>f.landmarks.forEach(p=>p.visibility=.65));r.feed('neutral');assert.equal(r.tracker.metrics.reps,1);assert.equal(r.tracker.metrics.scoreAccumulator.count,0);assert.equal(r.tracker.metrics.lastRepScore,null);
 });
+test('conventional deadlift requires a low start, rejects stiff-knee hinges and moving feet',()=>{
+ const r=run('barbell_deadlift');r.feed('peak',3200);assert.equal(r.tracker.metrics.poseFeedback.calibrated,false);r.feed('neutral',3200);
+ r.feed('peak',1200,f=>f.landmarks.forEach(p=>p.x+=.08));r.feed('neutral',3200);assert.equal(r.tracker.metrics.reps,0);
+ const stiff=run('barbell_deadlift');stiff.feed('neutral',3200,f=>{for(const o of [0,1]){f.landmarks[23+o].x=.52+o*.06;f.landmarks[25+o].x=.52+o*.06;}});assert.equal(stiff.tracker.metrics.poseFeedback.calibrated,false);
+});
+test('a clear deadlift side counts without inventing a bilateral score',()=>{
+ const r=run('barbell_deadlift'),hide=(f:ReturnType<typeof libraryPose>)=>{for(const i of [12,14,16,24,26,28])f.landmarks[i].visibility=.1;};
+ r.feed('neutral',3200,hide);r.feed('peak',1200,hide);r.feed('neutral',1200,hide);assert.equal(r.tracker.metrics.reps,1);assert.equal(r.tracker.metrics.scoreAccumulator.count,0);
+});
+test('incline pressing rejects flat and upright camera postures',()=>{
+ for(const flat of [true,false]){const r=run('incline_bench_press');r.feed('neutral',3200);r.feed('peak',1200,f=>{for(const o of [0,1]){if(flat)f.landmarks[11+o].y=.5;else f.landmarks[11+o].x=f.landmarks[23+o].x;}});r.feed('neutral',3200);assert.equal(r.tracker.metrics.reps,0);}
+});
 test('seated overhead extension rejects chest-level curls and standing without seated support',()=>{
  const r=run('seated_triceps_extension');r.feed('neutral',3200);r.feed('peak',1200,f=>{for(const o of [0,1])f.landmarks[13+o].y=.5});r.feed('neutral',3200);assert.equal(r.tracker.metrics.reps,0);
  r.feed('peak',1200,f=>{for(const o of [0,1]){f.landmarks[25+o].x=f.landmarks[23+o].x;f.landmarks[25+o].y=.73;}});r.feed('neutral',3200);assert.equal(r.tracker.metrics.reps,0);

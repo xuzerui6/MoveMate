@@ -326,7 +326,7 @@ export function templates() {
     row = find("dumbbell bent over row", push),
     bench = find("barbell bench press", push),
     dead = find("barbell deadlift", squat),
-    press = find("dumbbell shoulder press", push);
+    press = find("dumbbell seated shoulder press", push);
   return [
     {
       key: "full",

@@ -20,6 +20,7 @@
 | [计划内摄像头](plan-camera.md) | 支持形式、试用动作、计数与评分 |
 | [新增六种 AI 动作](recognition-six-actions.md) | 拍摄要求、动作映射、版本兼容、计数与验收边界 |
 | [常用动作摄像头扩展](library-camera-common.md) | 动作库新增 10 个标准条目、协议 v3 与计划／自由训练验收 |
+| [训练模板摄像头补齐](template-camera-coverage.md) | 硬拉、杠铃划船／前蹲、上斜卧推，修正肩推模板引用与 v4 兼容 |
 | [计数修复记录](training-counting-fix.md) | 识别诊断、状态机与实拍边界 |
 | [第四批动作示范](exercise-media-batch4.md) | 当前覆盖、20 项审核结果、中文资料、素材许可及部署 |
 | [第三批动作示范](exercise-media-batch3.md) | 上一批素材与外部目录配置 |
