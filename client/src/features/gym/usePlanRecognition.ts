@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import { type ExerciseMetrics } from '../motion/lib/exerciseMetrics';
-import { type CameraExerciseType } from '../motion/lib/exercises';
-import { type NewPlanProfile } from './planRecognition';
-import {createRecognitionTracker} from '../motion/lib/recognition';
-export type PlanRecognitionType = CameraExerciseType | NewPlanProfile;
+import {createRecognitionTracker,type RecognitionType} from '../motion/lib/recognition';
+export type PlanRecognitionType = RecognitionType;
 export function usePlanRecognition(type:PlanRecognitionType,landmarks:NormalizedLandmark[]|null,active:boolean,paused:boolean,aspect:number,restored:Partial<ExerciseMetrics>,target:number,resetKey:string,world:NormalizedLandmark[]|null){
   const holder=useRef<{key:string;tracker:ReturnType<typeof createRecognitionTracker>}>();
   const key=type+':'+resetKey+':'+target;

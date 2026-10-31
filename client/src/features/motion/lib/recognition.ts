@@ -4,9 +4,15 @@ import {ExtendedExerciseTracker} from './extendedRecognition';
 import {PlanExerciseTracker,isNewPlanProfile,type NewPlanProfile} from '../../gym/planRecognition';
 import {isCameraExercise,type CameraExerciseType,type BaseCameraExerciseType} from './exercises';
 import {isNewExercise,type NewExerciseType} from './newExercises';
-export type RecognitionType=CameraExerciseType|NewPlanProfile;
-export const isRecognitionType=(type:string):type is RecognitionType=>isCameraExercise(type)||isNewPlanProfile(type);
+import {isLibraryRecognition,type LibraryRecognitionType} from '../../gym/libraryRecognition';
+export type RecognitionType=CameraExerciseType|NewPlanProfile|LibraryRecognitionType;
+export const isRecognitionType=(type:string):type is RecognitionType=>isCameraExercise(type)||isNewPlanProfile(type)||isLibraryRecognition(type);
 export function createRecognitionTracker(type:string,target=20,restored:Partial<ExerciseMetrics>={}){
+  if(isLibraryRecognition(type)){
+    if(type==='goblet_squat'||type==='barbell_back_squat')return new ExerciseTracker('squat',target,restored);
+    if(type==='barbell_curl')return new PlanExerciseTracker('biceps_curl',target,restored);
+    return new ExtendedExerciseTracker(type,target,restored);
+  }
   if(isNewExercise(type))return new ExtendedExerciseTracker(type,target,restored);
   if(isNewPlanProfile(type))return new PlanExerciseTracker(type,target,restored);
   if(isCameraExercise(type))return new ExerciseTracker(type as BaseCameraExerciseType,target,restored);

@@ -3,6 +3,7 @@ import type {ExerciseMetrics,RecognitionDiagnostics} from './exerciseMetrics';
 import {medianLandmarks,POSE_ISSUE_COPY} from './poseFeedback';
 import {emptyCorrectionCounts,emptyFormBreakdown} from './sessionMigration';
 import {NEW_EXERCISES,type NewExerciseType} from './newExercises';
+import {LIBRARY_RECOGNITION} from '../../gym/libraryRecognition';
 import type {PoseIssue} from '../types';
 
 const cap=(n:number)=>Math.max(0,Math.min(100,n));
@@ -16,9 +17,11 @@ const mean=(a:number,b:number)=>(a+b)/2;
 type Side='left'|'right';
 type Measurement={start:boolean;peak:boolean;amplitude:number;angle:number;confidence:number;scorable:boolean;posture:number;symmetry:number;controlPenalty:number;hint?:string;side?:Side;basis:string;motion:string;points:Point[];torso:number;tilt:number};
 const axes=['depth','stability','trunk','symmetry'] as const;
+type ExtendedType=NewExerciseType|'bench_press'|'reverse_fly'|'seated_triceps_extension';
+const definitions={...NEW_EXERCISES,...LIBRARY_RECOGNITION};
 const sideJoints=(s:Side)=>s==='left'?[11,23,25,27]:[12,24,26,28];
 
-/** Six new profiles only. Original four and original plan algorithms remain separate. */
+/** Extended profiles. Original four and original plan algorithms remain separate. */
 export class ExtendedExerciseTracker {
   metrics:ExerciseMetrics;
   diagnostics:RecognitionDiagnostics={fps:0,confidence:0,side:null,angle:null,stage:'calibrating',calibrationProgress:0,pairedSides:[],lastResetReason:null};
@@ -42,9 +45,9 @@ export class ExtendedExerciseTracker {
   private speed=0;
   private shift=0;
   private controlPenalty=0;
-  constructor(readonly type:NewExerciseType,targetReps=20,restored:Partial<ExerciseMetrics>={}){
+  constructor(readonly type:ExtendedType,targetReps=20,restored:Partial<ExerciseMetrics>={}){
     const acc={...emptyFormBreakdown(),count:0,total:0,...restored.scoreAccumulator};
-    this.metrics={...restored,reps:Math.max(0,restored.reps||0),targetReps,perfectReps:restored.perfectReps||0,formScore:acc.count?Math.round(acc.total/acc.count):0,phase:'standing',feedback:NEW_EXERCISES[type].placement,scoreAccumulator:acc,formBreakdown:emptyFormBreakdown(),correctionCounts:{...emptyCorrectionCounts(),...restored.correctionCounts},lastRepIssues:[],repeatedIssue:null,poseFeedback:{status:'uncertain',confidence:0,issues:[],primaryIssue:null,affectedJoints:[],calibrated:false,message:'保持起始姿势两秒，准备校准'}};
+    this.metrics={...restored,reps:Math.max(0,restored.reps||0),targetReps,perfectReps:restored.perfectReps||0,formScore:acc.count?Math.round(acc.total/acc.count):0,phase:'standing',feedback:definitions[type].placement,scoreAccumulator:acc,formBreakdown:emptyFormBreakdown(),correctionCounts:{...emptyCorrectionCounts(),...restored.correctionCounts},lastRepIssues:[],repeatedIssue:null,poseFeedback:{status:'uncertain',confidence:0,issues:[],primaryIssue:null,affectedJoints:[],calibrated:false,message:'保持起始姿势两秒，准备校准'}};
     this.updateAverage();
   }
   private updateAverage(){const a=this.metrics.scoreAccumulator,b=emptyFormBreakdown();for(const k of axes)b[k]=a.count?Math.round(a[k]/a.count):0;this.metrics.formBreakdown=b;}
@@ -56,6 +59,8 @@ export class ExtendedExerciseTracker {
     return this.metrics;
   }
   private needed(raw:Point[]):number[]{
+    if(this.type==='bench_press'||this.type==='seated_triceps_extension')return [11,12,13,14,15,16,23,24,25,26,27,28];
+    if(this.type==='reverse_fly')return [11,12,13,14,15,16,23,24,25,26];
     if(this.type==='romanian_deadlift'||this.type==='glute_bridge'){
       if(!this.side){const confidence=(s:Side)=>Math.min(...sideJoints(s).map(i=>raw[i]?.visibility||0));this.side=confidence('left')>=confidence('right')?'left':'right';}
       return sideJoints(this.side);
@@ -73,7 +78,31 @@ export class ExtendedExerciseTracker {
     const elbows=[angle(a[11],a[13],a[15]),angle(a[12],a[14],a[16])];
     const knees=[angle(a[23],a[25],a[27]),angle(a[24],a[26],a[28])];
     let start=false,peak=false,amplitude=0,measured=0,posture=cap(100-Math.max(0,tilt-12)*2),symmetry=100,controlPenalty=0,side:Side|undefined=this.side||undefined,basis='',motion='',hint:string|undefined;
-    if(this.type==='hammer_curl'){
+    if(this.type==='bench_press'){
+      if(tilt<60)return '请平躺平凳并从斜侧面拍摄；坐姿推举不计入卧推';
+      if([0,1].some(i=>p[15+i].y>p[11+i].y-torso*.08))return '请让手腕、肘和肩清晰可见，双手保持在胸部上方';
+      if(this.baseline&&[11,12,23,24,27,28].some(i=>dist(p[i],this.baseline!.points[i])>this.baseline!.torso*.18))return '支撑或画面移动，请稳定身体后重新校准';
+      start=Math.min(...elbows)>=155;peak=Math.min(...elbows)>=55&&Math.max(...elbows)<=110;
+      measured=mean(elbows[0],elbows[1]);amplitude=cap((175-Math.max(...elbows))/90*100);symmetry=cap(100-Math.abs(elbows[0]-elbows[1])*1.5);posture=this.baseline?cap(100-Math.abs(tilt-this.baseline.tilt)*3):100;
+      basis='平躺支撑＋双肘屈伸＋双手位于胸部上方';motion=`双肘 ${Math.round(elbows[0])}° / ${Math.round(elbows[1])}°；推起≥155°，下放≤110°`;
+    }else if(this.type==='seated_triceps_extension'){
+      const upper=[angle(a[13],a[11],a[23]),angle(a[14],a[12],a[24])],hips=[angle(a[11],a[23],a[25]),angle(a[12],a[24],a[26])];
+      if(tilt>30||hips.some(v=>v<60||v>130)||knees.some(v=>v<55||v>140))return '请坐稳、双脚支撑并调整为斜侧面，让坐姿和双臂清楚可见';
+      if(Math.min(...upper)<140)return '请保持双上臂在耳侧上方；胸前弯举不计入';
+      start=Math.min(...elbows)>=150;peak=Math.max(...elbows)<=95;
+      measured=mean(elbows[0],elbows[1]);amplitude=cap((170-Math.max(...elbows))/90*100);symmetry=cap(100-Math.abs(elbows[0]-elbows[1])*1.5);controlPenalty=Math.max(0,170-Math.min(...upper));
+      basis='屈膝坐姿＋上臂保持头上＋双肘屈伸';motion=`双肘 ${Math.round(elbows[0])}° / ${Math.round(elbows[1])}°；伸肘≥150°，屈肘≤95°`;
+    }else if(this.type==='reverse_fly'){
+      if(!validWorld)return '暂时无法确认双臂展开方向，请正面斜侧拍摄并让双臂入镜';
+      if(tilt<30||tilt>85)return '请屈髋俯身并保持稳定，直立侧平举不计入';
+      const lateral=norm(vector(a[12],a[11])),raised=[angle(a[13],a[11],a[23]),angle(a[14],a[12],a[24])];
+      const spread=[0,1].every(i=>{const v=vector(a[15+i],a[11+i]),n=Math.hypot(...v);return dot(v,lateral)*(i?1:-1)>n*.65;});
+      start=[0,1].every(i=>p[15+i].y>p[11+i].y+torso*.3&&Math.abs(dot(norm(vector(a[15+i],a[11+i])),lateral))<.35)&&Math.min(...elbows)>=140;
+      peak=Math.min(...raised)>=65&&Math.max(...raised)<=115&&Math.min(...elbows)>=140&&spread;
+      measured=mean(raised[0],raised[1]);amplitude=cap(Math.min(...raised)/90*100);symmetry=cap(100-Math.abs(raised[0]-raised[1])*1.5);posture=this.baseline?cap(100-Math.abs(tilt-this.baseline.tilt)*3):100;controlPenalty=Math.max(0,165-Math.min(...elbows));
+      basis='俯身姿态＋双臂向身体两侧打开＋肘部微屈';motion=`双臂展开 ${Math.round(raised[0])}° / ${Math.round(raised[1])}°；${spread?'侧向展开已确认':'尚未确认向两侧展开'}`;
+      if(!start&&!spread)hint='请向身体两侧打开双臂；向前抬臂不计入反向飞鸟';
+    }else if(this.type==='hammer_curl'){
       if(tilt>35)return '请直立站稳，保持双上臂在体侧';
       start=Math.min(...elbows)>=145;peak=Math.max(...elbows)<=80;measured=mean(elbows[0],elbows[1]);amplitude=cap((160-Math.max(...elbows))/95*100);symmetry=cap(100-Math.abs(elbows[0]-elbows[1])*1.5);basis='双肘屈伸；握法由本人按说明保持';motion=`双肘 ${Math.round(elbows[0])}° / ${Math.round(elbows[1])}°；弯举≤80°、放回≥145°`;
       controlPenalty=Math.max(0,Math.max(angle(a[13],a[11],a[23]),angle(a[14],a[12],a[24]))-15)*1.5;
@@ -166,7 +195,7 @@ export class ExtendedExerciseTracker {
       }
     }else this.returnAt=null;
     const stage=this.metrics.reps>=this.metrics.targetReps?'complete':this.peak?(f.start?'returning':'peak'):f.start?'ready':'moving';
-    const copy=NEW_EXERCISES[this.type].stages,message=stage==='complete'?'已完成本组目标':f.hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 幅度尚未确认':'');
+    const copy=definitions[this.type].stages,message=stage==='complete'?'已完成本组目标':f.hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 幅度尚未确认':'');
     const issue:PoseIssue|null=f.controlPenalty>30?'unstable_movement':f.posture<70?'body_alignment':f.symmetry<70?'poor_coordination':null;
     this.diagnostics={...this.diagnostics,stage};this.metrics={...this.metrics,phase:f.start?'standing':this.peak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?POSE_ISSUE_COPY[issue].joints:[],calibrated:true,message:f.hint|| (issue?POSE_ISSUE_COPY[issue].action:message)}};this.previous=f;return this.metrics;
   }

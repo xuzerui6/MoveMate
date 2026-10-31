@@ -8,7 +8,7 @@ import { usePlanRecognition, type PlanRecognitionType } from "./usePlanRecogniti
 import { isRecognitionType } from '../motion/lib/recognition';
 import { PlanRecognitionStatus } from "./PlanRecognitionStatus";
 import { isNewPlanProfile } from "./planRecognition";
-import { exerciseInfo } from "../motion/lib/exercises";
+import { exerciseInfo,isCameraExercise } from "../motion/lib/exercises";
 import { useXiaozhiCoach } from "../motion/hooks/useXiaozhiCoach";
 import { useSessionClock } from "../motion/hooks/useSessionClock";
 import { useStore } from "../motion/lib/store";
@@ -444,7 +444,7 @@ export default function PlanWorkout() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-MoveMate-Recognition-Version": "2",
+        "X-MoveMate-Recognition-Version": "3",
         Authorization: "Bearer " + token,
       },
       body: JSON.stringify(body),
@@ -469,7 +469,7 @@ export default function PlanWorkout() {
     };
   }, []);
   const voiceContext: WorkoutContext = {
-    exerciseType: camera && !isNewPlanProfile(type) ? type : "plan",
+    exerciseType: camera && isCameraExercise(type) ? type : "plan",
     countUnit: type === "high_knees" ? "对" : "次",
     reps: camera ? metrics.reps : current?.reps || 0,
     targetReps: current?.targetReps || 0,

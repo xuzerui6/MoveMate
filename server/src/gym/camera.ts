@@ -1,5 +1,7 @@
 /** Deliberate ID allowlist: names, imported data and custom exercises never grant recognition. */
-import extended from './new-recognition.json';
+import standalone from './new-recognition.json';
+import library from './library-recognition.json';
+const extended={...standalone,...library};
 const legacyProfiles = ["biceps_curl", "lateral_raise", "shoulder_press", "bent_over_row", "reverse_lunge", "calf_raise"] as const;
 export type NewPlanProfile = typeof legacyProfiles[number] | keyof typeof extended;
 export const planProfiles:readonly NewPlanProfile[] = [...legacyProfiles,...Object.keys(extended) as (keyof typeof extended)[]];

@@ -197,11 +197,20 @@ await test('Workers runtime migration and business regression', async t=>{
  const exported=(await call('/api/v1/training-export',{token})).data.data;assert.equal(exported.workouts.filter(w=>w.imported).length,1);assert.ok(!JSON.stringify(exported).includes('password_hash'));
  });
  await t.test('six plan-only camera families persist scores and side counts without extending standalone reward types',async()=>{
-  const token=tokens[0];const catalog=await call('/api/v1/exercises?camera=1&limit=50',{token});assert.equal(catalog.data.data.total,20);
+  const token=tokens[0];const catalog=await call('/api/v1/exercises?camera=1&limit=50',{token});assert.equal(catalog.data.data.total,30);
   for(const id of ['exdb:0294','exdb:0334','exdb:0405','exdb:0293','movemate:reverse_lunge','exdb:1373']){
    let r=await call('/api/v1/workout-sessions',{method:'POST',token,body:{id:crypto.randomUUID(),free:{exercises:[{exerciseId:id,sets:[{reps:2}]}]}}});assert.equal(r.status,200,JSON.stringify(r.data));let w=r.data.data;
    const act=async(action,extra={})=>{r=await call('/api/v1/workout-sessions/'+w.id+'/actions',{method:'POST',token,body:{operationId:crypto.randomUUID(),version:w.version,setId:w.sets[w.cursor]?.id,action,...extra}});assert.equal(r.status,200,JSON.stringify(r.data));w=r.data.data;};
    await act('start',{inputMode:'camera'});const score={count:1,total:90,depth:90,stability:90,trunk:90,symmetry:90,...(id==='movemate:reverse_lunge'?{leftReps:1,rightReps:1}:{})};await act('progress',{reps:2,score});await act('pause');r=await call('/api/v1/workout-sessions/'+w.id,{token});assert.deepEqual(r.data.data.sets[0].score,score);await act('complete',{reps:2,score});await act('finish');assert.equal(w.session.xpEarned,0);assert.equal(w.session.metrics.formScore,90);assert.equal(w.session.metrics.planSquatReps,0);
+  }
+ });
+ await t.test('common library camera profiles require v3 and keep one timer-only workout',async()=>{
+  const token=tokens[2],headers={'X-MoveMate-Recognition-Version':'3'};
+  for(const exerciseId of ['exdb:1760','exdb:0043','exdb:0031','exdb:0025','exdb:0378','exdb:2188']){
+   let r=await call('/api/v1/workout-sessions',{method:'POST',token,body:{id:crypto.randomUUID(),free:{exercises:[{exerciseId,sets:[{reps:2}]}]}}});assert.equal(r.status,200,JSON.stringify(r.data));let w=r.data.data;
+   const act=async(action,values={})=>{const result=await call('/api/v1/workout-sessions/'+w.id+'/actions',{method:'POST',token,headers,body:{action,operationId:crypto.randomUUID(),version:w.version,setId:w.sets[w.cursor]?.id,...values}});assert.equal(result.status,200,JSON.stringify(result.data));w=result.data.data;};
+   assert.equal((await call('/api/v1/workout-sessions/'+w.id+'/actions',{method:'POST',token,headers:{'X-MoveMate-Recognition-Version':'2'},body:{action:'start',inputMode:'camera',operationId:crypto.randomUUID(),version:w.version}})).status,409);
+   await act('start',{inputMode:'camera'});await act('progress',{reps:2,score:{count:0,total:0,depth:0,stability:0,trunk:0,symmetry:0}});await act('pause');assert.equal(w.sets[0].reps,2);await act('complete');await act('finish');assert.equal(w.session.xpEarned,0);assert.equal(w.session.metrics.planSquatReps,0);await act('finish');assert.equal(w.session.xpEarned,0);
   }
  });
  await t.test('free workout editing, schedule preferences and checkpoint imports persist in native transactions',async()=>{
