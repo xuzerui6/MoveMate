@@ -39,7 +39,7 @@ test('standing side counts are validated independently from score count and surv
   await assert.rejects(motion.createSession(uid,{sportType:'unknown_camera',source:'camera'},2));
 });
 test('explicit nine library mappings, unchanged total IDs, no custom capability and plan time-only XP',async()=>{
-  const all=await gym.library(uid,{camera:'1',limit:50});assert.equal(all.total,37);
+  const all=await gym.library(uid,{camera:'1',limit:50});assert.equal(all.total,43);
   for(const [type,definition]of Object.entries(definitions))for(const id of definition.exerciseIds){
     const exercise=all.items.find((x:any)=>x.id===id);assert.equal(exercise.planCamera.profile,type);
     let w=await gym.startWorkout(uid,{id:randomUUID(),free:{exercises:[{exerciseId:id,sets:[{reps:3}]}]}});

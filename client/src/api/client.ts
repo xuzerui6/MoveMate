@@ -9,7 +9,7 @@ const client = axios.create({
   timeout: Number(import.meta.env?.VITE_API_TIMEOUT_MS) || 10000,
   headers: {
     'Content-Type': 'application/json',
-    'X-MoveMate-Recognition-Version': '4',
+    'X-MoveMate-Recognition-Version': '5',
   },
 });
 

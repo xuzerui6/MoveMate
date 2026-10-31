@@ -17,7 +17,7 @@ const mean=(a:number,b:number)=>(a+b)/2;
 type Side='left'|'right';
 type Measurement={start:boolean;peak:boolean;amplitude:number;angle:number;confidence:number;scorable:boolean;posture:number;symmetry:number;controlPenalty:number;hint?:string;side?:Side;basis:string;motion:string;points:Point[];torso:number;tilt:number};
 const axes=['depth','stability','trunk','symmetry'] as const;
-type ExtendedType=NewExerciseType|'bench_press'|'reverse_fly'|'seated_triceps_extension'|'barbell_deadlift'|'incline_bench_press';
+type ExtendedType=NewExerciseType|'bench_press'|'reverse_fly'|'seated_triceps_extension'|'barbell_deadlift'|'incline_bench_press'|'seated_curl'|'seated_lateral_raise'|'lying_triceps_extension';
 const definitions={...NEW_EXERCISES,...LIBRARY_RECOGNITION};
 const sideJoints=(s:Side)=>s==='left'?[11,23,25,27]:[12,24,26,28];
 
@@ -59,6 +59,7 @@ export class ExtendedExerciseTracker {
     return this.metrics;
   }
   private needed(raw:Point[]):number[]{
+    if(this.type==='seated_curl'||this.type==='seated_lateral_raise'||this.type==='lying_triceps_extension')return [11,12,13,14,15,16,23,24,25,26,27,28];
     if(this.type==='bench_press'||this.type==='incline_bench_press'||this.type==='seated_triceps_extension')return [11,12,13,14,15,16,23,24,25,26,27,28];
     if(this.type==='reverse_fly')return [11,12,13,14,15,16,23,24,25,26];
     if(this.type==='barbell_deadlift'){
@@ -83,7 +84,32 @@ export class ExtendedExerciseTracker {
     const elbows=[angle(a[11],a[13],a[15]),angle(a[12],a[14],a[16])];
     const knees=[angle(a[23],a[25],a[27]),angle(a[24],a[26],a[28])];
     let start=false,peak=false,amplitude=0,measured=0,posture=cap(100-Math.max(0,tilt-12)*2),symmetry=100,controlPenalty=0,side:Side|undefined=this.side||undefined,basis='',motion='',hint:string|undefined;
-    if(this.type==='barbell_deadlift'){
+    if(this.type==='seated_curl'||this.type==='seated_lateral_raise'){
+      const hips=[angle(a[11],a[23],a[25]),angle(a[12],a[24],a[26])];
+      if(tilt>30||hips.some(v=>v<60||v>130)||knees.some(v=>v<55||v>140))return '请坐稳、双脚支撑并调整为斜侧面，让屈膝坐姿清楚可见；站姿不计入';
+      const raised=[angle(a[13],a[11],a[23]),angle(a[14],a[12],a[24])];
+      if(this.type==='seated_curl'){
+        if(Math.max(...raised)>45)return '请让上臂靠近体侧，避免抬肩或向前抬起上臂';
+        start=Math.min(...elbows)>=145;peak=Math.max(...elbows)<=80;measured=mean(elbows[0],elbows[1]);amplitude=cap((160-Math.max(...elbows))/95*100);symmetry=cap(100-Math.abs(elbows[0]-elbows[1])*1.5);controlPenalty=Math.max(0,Math.max(...raised)-15)*1.5;
+        basis='屈膝坐姿＋上臂靠近体侧＋双肘屈伸';motion=`双肘 ${Math.round(elbows[0])}° / ${Math.round(elbows[1])}°；伸臂≥145°，弯举≤80°`;
+      }else{
+        if(!validWorld)return '暂时无法确认侧举方向，请调整拍摄角度并让双臂清晰入镜';
+        const lateral=norm(vector(a[12],a[11])),spread=[0,1].every(i=>{const v=vector(a[15+i],a[11+i]);return dot(v,lateral)*(i?1:-1)>Math.hypot(...v)*.65;});
+        start=Math.max(...raised)<=25&&Math.min(...elbows)>=140;peak=Math.min(...raised)>=65&&Math.max(...raised)<=115&&Math.min(...elbows)>=140&&spread;
+        measured=mean(raised[0],raised[1]);amplitude=cap(Math.min(...raised)/90*100);symmetry=cap(100-Math.abs(raised[0]-raised[1])*1.5);controlPenalty=Math.max(0,165-Math.min(...elbows));
+        basis='屈膝坐姿＋双臂侧向展开＋肘部微屈';motion=`抬臂 ${Math.round(raised[0])}° / ${Math.round(raised[1])}°；${spread?'向两侧展开已确认':'尚未确认侧举方向，前举不计入'}`;
+        if(!start&&!spread)hint='请向身体两侧抬臂，向前抬臂不计入侧平举';
+      }
+    }else if(this.type==='lying_triceps_extension'){
+      if(tilt<60)return '请平躺平凳、双脚支撑；直立或坐姿伸肘不计入';
+      if(this.baseline&&[11,12,23,24,27,28].some(i=>dist(p[i],this.baseline!.points[i])>this.baseline!.torso*.18))return '身体支撑或画面移动，请稳定后重新校准';
+      const upper=[angle(a[13],a[11],a[23]),angle(a[14],a[12],a[24])];
+      if(upper.some(v=>v<60||v>120)||[0,1].some(i=>p[13+i].y>=p[11+i].y-torso*.15))return '请保持双上臂在胸部上方；卧推式移动上臂不计入臂屈伸';
+      const headward=[0,1].every(i=>{const v=vector(a[15+i],a[13+i]);return dot(v,norm(vector(a[11+i],a[23+i])))>Math.hypot(...v)*.3;});
+      start=Math.min(...elbows)>=150;peak=Math.max(...elbows)<=95&&headward;
+      measured=mean(elbows[0],elbows[1]);amplitude=cap((170-Math.max(...elbows))/90*100);symmetry=cap(100-Math.abs(elbows[0]-elbows[1])*1.5);posture=this.baseline?cap(100-Math.abs(tilt-this.baseline.tilt)*3):100;controlPenalty=Math.max(...upper.map(v=>Math.abs(v-90)));
+      basis='平躺支撑＋上臂保持胸上方＋屈肘向头部下放';motion=`双肘 ${Math.round(elbows[0])}° / ${Math.round(elbows[1])}°；${headward?'向头部下放已确认':'尚未确认向头部下放方向'}`;
+    }else if(this.type==='barbell_deadlift'){
       const hinge=angle(a[11+o],a[23+o],a[25+o]),knee=knees[o],shin=Math.max(.04,dist(p[25+o],p[27+o]));
       if(elbows[o]<150)return '请保持跟踪侧手臂伸直、手靠近小腿；弯举不计入硬拉';
       if(this.baseline&&dist(p[27+o],this.baseline.points[27+o])>this.baseline.torso*.16)return '脚位或画面移动，请重新保持起始姿势校准';

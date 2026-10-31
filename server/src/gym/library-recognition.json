@@ -239,5 +239,149 @@
       "推起确认"
     ],
     "recognitionVersion": 4
+  },
+  "seated_curl": {
+    "name": "坐姿双臂哑铃弯举",
+    "english": "SEATED CURL",
+    "exerciseIds": [
+      "exdb:0391"
+    ],
+    "placement": "正面略侧，坐姿、双肩肘腕髋膝脚踝清晰。",
+    "instruction": "坐稳、双脚踩地，双臂伸展保持两秒；双臂同时弯举，再控制放回。",
+    "joints": "双肩、双肘、双手腕、双髋、双膝、双脚踝",
+    "unit": "次",
+    "axes": [
+      "动作幅度",
+      "稳定控制",
+      "身体姿态",
+      "动作协调"
+    ],
+    "stages": [
+      "坐姿伸臂就绪",
+      "双臂弯举中",
+      "弯举确认，请放回",
+      "伸臂确认"
+    ],
+    "recognitionVersion": 5
+  },
+  "seated_lateral_raise": {
+    "name": "坐姿双臂哑铃侧平举",
+    "english": "SEATED LATERAL RAISE",
+    "exerciseIds": [
+      "exdb:0396"
+    ],
+    "placement": "正面略侧，坐姿及双臂侧举后仍在画面内，需要可靠三维肩肘腕方向。",
+    "instruction": "坐稳、双脚踩地，双臂在体侧下垂保持两秒；向两侧抬至近肩高，再控制放回。",
+    "joints": "双肩、双肘、双手腕、双髋、双膝、双脚踝",
+    "unit": "次",
+    "axes": [
+      "动作幅度",
+      "稳定控制",
+      "身体姿态",
+      "动作协调"
+    ],
+    "stages": [
+      "坐姿垂臂就绪",
+      "双臂向两侧抬起",
+      "侧举确认，请放回",
+      "垂臂确认"
+    ],
+    "recognitionVersion": 5
+  },
+  "lying_triceps_extension": {
+    "name": "平凳双哑铃仰卧臂屈伸",
+    "english": "LYING TRICEPS EXTENSION",
+    "exerciseIds": [
+      "exdb:0351"
+    ],
+    "placement": "斜侧面拍摄，平躺凳上，双肩肘腕髋脚踝入镜，双手靠近头部时不出画。",
+    "instruction": "平躺、双脚支撑，双臂在胸上方伸直校准两秒；保持上臂位置，屈肘向头部下放，再伸肘回位。",
+    "joints": "双肩、双肘、双手腕、双髋、双膝、双脚踝",
+    "unit": "次",
+    "axes": [
+      "动作幅度",
+      "稳定控制",
+      "身体姿态",
+      "动作协调"
+    ],
+    "stages": [
+      "仰卧伸臂就绪",
+      "屈肘向头部下放",
+      "屈肘确认，请伸肘",
+      "伸肘回位确认"
+    ],
+    "recognitionVersion": 5
+  },
+  "reverse_barbell_curl": {
+    "name": "站姿杠铃反握弯举",
+    "english": "REVERSE BARBELL CURL",
+    "exerciseIds": [
+      "exdb:0080"
+    ],
+    "placement": "正面略侧，双肩、双肘、双手腕和髋清晰。",
+    "instruction": "本人保持正手反握、掌心朝下；伸臂站稳两秒，双臂同时弯举并放回。摄像头不验证握法。",
+    "joints": "双肩、双肘、双手腕、双髋",
+    "unit": "次",
+    "axes": [
+      "动作幅度",
+      "稳定控制",
+      "身体姿态",
+      "动作协调"
+    ],
+    "stages": [
+      "伸臂就绪",
+      "反握弯举中",
+      "弯举确认，请放回",
+      "伸臂确认"
+    ],
+    "recognitionVersion": 5
+  },
+  "neutral_seated_press": {
+    "name": "中立握坐姿双哑铃肩推",
+    "english": "NEUTRAL SEATED PRESS",
+    "exerciseIds": [
+      "exdb:0404"
+    ],
+    "placement": "正面略侧，双肩肘腕髋可见，举过头顶的双手不能出画。",
+    "instruction": "坐稳，双手在肩高保持两秒；本人保持掌心相对，同时推起再放回。摄像头不验证握法。",
+    "joints": "双肩、双肘、双手腕、双髋",
+    "unit": "次",
+    "axes": [
+      "动作幅度",
+      "稳定控制",
+      "身体姿态",
+      "动作协调"
+    ],
+    "stages": [
+      "肩高就绪",
+      "双臂推起中",
+      "推起确认，请放回",
+      "肩高回位确认"
+    ],
+    "recognitionVersion": 5
+  },
+  "dumbbell_calf_raise": {
+    "name": "平地双脚哑铃提踵",
+    "english": "DUMBBELL CALF RAISE",
+    "exerciseIds": [
+      "exdb:0417"
+    ],
+    "placement": "斜侧全身，双脚跟、脚踝和前脚掌清晰。仅平地、双脚同时，不使用台阶。",
+    "instruction": "手持哑铃、双脚站稳，脚跟落地保持两秒；同时提踵，再缓慢落跟。重量由本人填写。",
+    "joints": "双肩、双髋、双膝、双脚踝、双脚跟、双前脚掌",
+    "unit": "次",
+    "axes": [
+      "动作幅度",
+      "稳定控制",
+      "身体姿态",
+      "动作协调"
+    ],
+    "stages": [
+      "双脚落跟就绪",
+      "双脚提踵中",
+      "提踵确认，请落跟",
+      "落跟确认"
+    ],
+    "recognitionVersion": 5
   }
 }

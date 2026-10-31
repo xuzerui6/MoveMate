@@ -39,6 +39,18 @@ test('reverse fly rejects forward lifting, upright lateral raises and missing wo
 test('an unscorable bench-press repetition is preserved without inventing a score',()=>{
  const r=run('bench_press');r.feed('neutral',3200);r.feed('peak',1200,f=>f.landmarks.forEach(p=>p.visibility=.65));r.feed('neutral');assert.equal(r.tracker.metrics.reps,1);assert.equal(r.tracker.metrics.scoreAccumulator.count,0);assert.equal(r.tracker.metrics.lastRepScore,null);
 });
+test('new seated profiles reject standing posture instead of treating it as sitting',()=>{
+ for(const type of ['seated_curl','seated_lateral_raise'] as const){const r=run(type);r.feed('neutral',3200,f=>{f.worldLandmarks=null;for(const o of [0,1]){f.landmarks[25+o].x=f.landmarks[23+o].x;f.landmarks[25+o].y=.73;f.landmarks[27+o].x=f.landmarks[23+o].x;}});assert.equal(r.tracker.metrics.poseFeedback.calibrated,false);assert.equal(r.tracker.metrics.reps,0);}
+});
+test('seated lateral raises reject front lifts and missing world direction',()=>{
+ const r=run('seated_lateral_raise');r.feed('neutral',3200);r.feed('peak',1200,f=>{for(const o of [0,1]){f.worldLandmarks![13+o].x=o?.2:-.2;f.worldLandmarks![15+o].x=o?.2:-.2;f.worldLandmarks![13+o].z=-.2;f.worldLandmarks![15+o].z=-.4;}});r.feed('neutral');assert.equal(r.tracker.metrics.reps,0);r.feed('peak',1200,f=>f.worldLandmarks=null);assert.match(r.tracker.metrics.feedback,/方向|角度/);assert.equal(r.tracker.metrics.reps,0);
+});
+test('lying triceps extension rejects bench-press arm movement and moving supports',()=>{
+ const r=run('lying_triceps_extension');r.feed('neutral',3200);r.feed('peak',1200,f=>{for(const o of [0,1])f.landmarks[13+o].y=.53;});r.feed('neutral',3200);assert.equal(r.tracker.metrics.reps,0);r.feed('peak',1200,f=>f.landmarks.forEach(p=>p.y+=.08));r.feed('neutral',3200);assert.equal(r.tracker.metrics.reps,0);
+});
+test('new seated and lying movements retain unscored complete reps without fabricated scores',()=>{
+ for(const type of ['seated_curl','seated_lateral_raise','lying_triceps_extension'] as const){const r=run(type);r.feed('neutral',3200);r.feed('peak',1200,f=>f.landmarks.forEach(p=>p.visibility=.65));r.feed('neutral');assert.equal(r.tracker.metrics.reps,1,type);assert.equal(r.tracker.metrics.scoreAccumulator.count,0);}
+});
 test('conventional deadlift requires a low start, rejects stiff-knee hinges and moving feet',()=>{
  const r=run('barbell_deadlift');r.feed('peak',3200);assert.equal(r.tracker.metrics.poseFeedback.calibrated,false);r.feed('neutral',3200);
  r.feed('peak',1200,f=>f.landmarks.forEach(p=>p.x+=.08));r.feed('neutral',3200);assert.equal(r.tracker.metrics.reps,0);

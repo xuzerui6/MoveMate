@@ -444,7 +444,7 @@ export default function PlanWorkout() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-MoveMate-Recognition-Version": "4",
+        "X-MoveMate-Recognition-Version": "5",
         Authorization: "Bearer " + token,
       },
       body: JSON.stringify(body),

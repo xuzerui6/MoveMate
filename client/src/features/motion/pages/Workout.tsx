@@ -71,7 +71,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     alive.current = true
     const flush = (action = 'progress') => {
       if (!serverId.current || closing.current || !activeRef.current || !accountToken.current) return
-      void fetch('/api/v1/sport-sessions/' + serverId.current + '/' + action, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-MoveMate-Recognition-Version': '4', Authorization: 'Bearer ' + accountToken.current }, body: JSON.stringify(progress.current), keepalive: true }).catch(() => undefined)
+      void fetch('/api/v1/sport-sessions/' + serverId.current + '/' + action, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-MoveMate-Recognition-Version': '5', Authorization: 'Bearer ' + accountToken.current }, body: JSON.stringify(progress.current), keepalive: true }).catch(() => undefined)
     }
     const hide = () => flush()
     window.addEventListener('pagehide', hide)
