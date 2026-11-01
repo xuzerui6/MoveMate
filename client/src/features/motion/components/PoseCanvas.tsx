@@ -4,7 +4,7 @@ import { cameraFrame, cameraPoint, type CameraFit } from '../lib/cameraFrame'
 
 const connections = [[11,12],[11,13],[13,15],[12,14],[14,16],[11,23],[12,24],[23,24],[23,25],[25,27],[24,26],[26,28]]
 
-export function PoseCanvas({ videoRef, landmarks, demo, phase, affectedJoints = [], fit = 'contain' }: { videoRef: React.RefObject<HTMLVideoElement>; landmarks: NormalizedLandmark[] | null; demo: boolean; phase: string; affectedJoints?: number[]; fit?: CameraFit }) {
+export function PoseCanvas({ videoRef, landmarks, demo, phase, affectedJoints = [], fit = 'contain', keepVideoRendering = false }: { videoRef: React.RefObject<HTMLVideoElement>; landmarks: NormalizedLandmark[] | null; demo: boolean; phase: string; affectedJoints?: number[]; fit?: CameraFit; keepVideoRendering?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [surface, setSurface] = useState({ width: 360, height: 410, dpr: 1, mobile: false })
   useEffect(() => {
@@ -52,5 +52,5 @@ export function PoseCanvas({ videoRef, landmarks, demo, phase, affectedJoints = 
     }
     draw()
   }, [landmarks, demo, phase, videoRef, affectedJoints, surface, fit])
-  return <><video ref={videoRef} className="hidden-video" muted playsInline/><canvas ref={canvasRef} width={360} height={410} className="pose-canvas"/></>
+  return <><video ref={videoRef} className={keepVideoRendering?"hidden-video pose-source-live":"hidden-video"} aria-hidden="true" tabIndex={-1} muted playsInline/><canvas ref={canvasRef} width={360} height={410} className="pose-canvas"/></>
 }

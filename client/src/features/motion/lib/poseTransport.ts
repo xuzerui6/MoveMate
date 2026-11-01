@@ -4,9 +4,14 @@ import models from './pose-models.json';
 export type PoseResult={landmarks:any;worldLandmarks:any};
 export type PoseTransport={mode:PoseMode;infer:(video:HTMLVideoElement,timestamp:number)=>Promise<PoseResult>;close:()=>void};
 export async function modelBytes(name:PoseModel,signal:AbortSignal){
- const item=models[name],response=await fetch(item.src,{signal});if(!response.ok)throw Error('模型文件读取失败');
- const bytes=await response.arrayBuffer();if(bytes.byteLength!==item.bytes)throw Error('模型大小校验失败');
- const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(n=>n.toString(16).padStart(2,'0')).join('');if(hash!==item.sha256)throw Error('模型完整性校验失败');return bytes;
+ const item=models[name],download=new AbortController(),cancel=()=>download.abort();signal.addEventListener('abort',cancel,{once:true});if(signal.aborted)cancel();
+ const timeout=setTimeout(cancel,20000);
+ try{
+  const response=await fetch(item.src,{signal:download.signal});if(!response.ok)throw Error(`${name==='full'?'Full':'Lite'} 模型文件读取失败（${response.status}）`);
+  const bytes=await response.arrayBuffer();if(bytes.byteLength!==item.bytes)throw Error('模型大小校验失败');
+  const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(n=>n.toString(16).padStart(2,'0')).join('');if(hash!==item.sha256)throw Error('模型完整性校验失败');return bytes;
+ }catch(e){if(download.signal.aborted&&!signal.aborted)throw Error('模型下载超时，请检查网络或使用 Lite 兼容模式');throw e;}
+ finally{clearTimeout(timeout);signal.removeEventListener('abort',cancel);}
 }
 async function workerTransport(bytes:ArrayBuffer,delegate:'GPU'|'CPU',signal:AbortSignal):Promise<PoseTransport>{
  if(typeof Worker==='undefined'||typeof createImageBitmap==='undefined'||(delegate==='GPU'&&typeof OffscreenCanvas==='undefined'))throw Error('浏览器不支持此 Worker 方式');
@@ -19,13 +24,13 @@ async function workerTransport(bytes:ArrayBuffer,delegate:'GPU'|'CPU',signal:Abo
  try{const copy=bytes.slice(0);await call({kind:'init',bytes:copy,delegate,wasm:new URL('/pose/wasm',location.origin).href},[copy]);}catch(e){close();throw e;}
  return {mode:delegate==='GPU'?'worker-gpu':'worker-cpu',close,infer:async(video,timestamp)=>{const image=await createImageBitmap(video);if(closed||signal.aborted){image.close();throw Error('推理已取消');}try{const result=await call({kind:'frame',image,timestamp},[image]);firstFrame=false;return result;}catch(e){image.close();throw e;}}};
 }
-export async function openPoseTransport(name:PoseModel,signal:AbortSignal,video?:HTMLVideoElement):Promise<PoseTransport>{
+export async function openPoseTransport(name:PoseModel,signal:AbortSignal,video?:HTMLVideoElement,options:{mainThread?:boolean}={}):Promise<PoseTransport>{
  if(name==='full'&&(typeof Worker==='undefined'||typeof createImageBitmap==='undefined'))throw Error('Full Worker 不可用，降级到 Lite');
  const bytes=await modelBytes(name,signal);
- for(const delegate of ['GPU','CPU'] as const){try{const candidate=await workerTransport(bytes,delegate,signal);try{if(video)await candidate.infer(video,performance.now());return candidate;}catch(e){candidate.close();throw e;}}catch(e){if(signal.aborted)throw e;}}
+ if(!options.mainThread)for(const delegate of ['GPU','CPU'] as const){try{const candidate=await workerTransport(bytes,delegate,signal);try{if(video)await candidate.infer(video,performance.now());return candidate;}catch(e){candidate.close();throw e;}}catch(e){if(signal.aborted)throw e;}}
  if(name==='full')throw Error('Full Worker 不可用，降级到 Lite');
  const {FilesetResolver,PoseLandmarker}=await import('@mediapipe/tasks-vision');const vision=await FilesetResolver.forVisionTasks('/pose/wasm');let model:PoseLandmarker|null=null,mode:PoseMode='main-gpu';
- for(const delegate of ['GPU','CPU'] as const){try{model=await PoseLandmarker.createFromOptions(vision,{runningMode:'VIDEO',numPoses:1,minPoseDetectionConfidence:.55,minPosePresenceConfidence:.55,minTrackingConfidence:.55,baseOptions:{modelAssetBuffer:new Uint8Array(bytes),delegate}});mode=delegate==='GPU'?'main-gpu':'main-cpu';break;}catch(e){if(signal.aborted)throw e;}}
+ for(const delegate of ['GPU','CPU'] as const){try{model=await PoseLandmarker.createFromOptions(vision,{runningMode:'VIDEO',numPoses:1,minPoseDetectionConfidence:.55,minPosePresenceConfidence:.55,minTrackingConfidence:.55,baseOptions:{modelAssetBuffer:new Uint8Array(bytes),delegate}});mode=delegate==='GPU'?'main-gpu':'main-cpu';if(signal.aborted)throw Error('推理已取消');if(video)model.detectForVideo(video,performance.now());break;}catch(e){model?.close();model=null;if(signal.aborted)throw e;}}
  if(!model)throw Error('Lite 模型初始化失败');const instance=model;let closed=false;
  const close=()=>{if(closed)return;closed=true;instance.close();signal.removeEventListener('abort',close);};signal.addEventListener('abort',close,{once:true});if(signal.aborted){close();throw Error('推理已取消');}
  return {mode,close,infer:async(video,timestamp)=>{if(closed)throw Error('推理已取消');const r=instance.detectForVideo(video,timestamp);return {landmarks:r.landmarks[0]||null,worldLandmarks:r.worldLandmarks[0]||null};}};

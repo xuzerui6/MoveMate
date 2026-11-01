@@ -663,6 +663,7 @@ export default function PlanWorkout() {
                 hidden={!camera && pose.status !== "loading"}
               >
                 <PoseCanvas
+                  keepVideoRendering={adaptive}
                   videoRef={pose.videoRef}
                   landmarks={pose.landmarks}
                   demo={false}

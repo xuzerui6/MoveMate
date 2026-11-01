@@ -164,12 +164,12 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   }, [active, simulatedPose, metrics.reps, metrics.lastRepIssues])
 
   const cancelPrepare = () => { attempt.current++; pose.stop(); setPreparing(false); setBusy(false); locked.current = false }
-  const begin = async (demo: boolean) => {
+  const begin = async (demo: boolean, forceLite = false) => {
     if (locked.current || (!demo && visionConsent === null)) return
     locked.current = true; const current = ++attempt.current
     setBusy(true); setFailure(''); setSimulatedPose(demo); setPreparing(!demo)
     try {
-      if (!demo && !await pose.start()) return
+      if (!demo && !await pose.start(forceLite)) return
       if (!alive.current || current !== attempt.current) return
       setCreating(true)
       const row = restored ? await act(restored.id, 'resume',{recognitionStrategy:adaptive&&!demo?'adaptive-v1':'legacy'}) : await startSession(exerciseType, demo ? 'demo' : 'camera',undefined,adaptive&&!demo?'adaptive-v1':'legacy')
@@ -261,7 +261,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     </section>}
     <div className="training-live-grid">
       <div className="camera-card training-camera" hidden={!active && !preparing}>
-        <PoseCanvas videoRef={pose.videoRef} landmarks={simulatedPose ? demoLandmarks : pose.landmarks} demo={simulatedPose} phase={metrics.phase} fit={cameraFit} affectedJoints={paused ? [] : metrics.poseFeedback.affectedJoints}/>
+        <PoseCanvas keepVideoRendering={adaptive} videoRef={pose.videoRef} landmarks={simulatedPose ? demoLandmarks : pose.landmarks} demo={simulatedPose} phase={metrics.phase} fit={cameraFit} affectedJoints={paused ? [] : metrics.poseFeedback.affectedJoints}/>
         {paused && <div className="camera-paused"><Icon name="pause" size={30}/><b>{ending ? '正在保存' : pendingAction ? '等待状态确认' : '已暂停'}</b><span>已完成 {metrics.reps} {exercise.unit}</span></div>}
         {preparing && <div className={'camera-paused'+(adaptive?' adaptive-calibration-hint':'')}><Icon name="camera"/><b>{adaptive?'保持起始姿势，准备校准':'正在准备摄像头与模型'}</b><span>{adaptive?pose.telemetry?.reason:'此时尚未开始新记录'}</span></div>}
         {active && <div className="training-camera-tools"><button ref={cameraExpandButton} type="button" aria-pressed={cameraExpanded} onClick={() => setCameraExpanded(value => !value)}><Icon name={cameraExpanded ? 'collapse' : 'expand'} size={18}/>{cameraExpanded ? '收起画面' : '放大画面'}</button>
@@ -286,8 +286,9 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
         </details>
       </section>}
     </div>
-    {poseFailed && <div className="training-error" role="alert"><b>{pose.status === 'denied' ? '摄像头权限未开启' : '摄像头或模型加载失败'}</b><p>{active ? '识别已停止，请检查设备后重试。' : '尚未创建新训练记录，请允许摄像头或重新加载模型。'}</p>{active && <button className="secondary" disabled={busy} onClick={() => void retryCamera()}>重试摄像头</button>}</div>}
+    {poseFailed && <div className="training-error" role="alert"><b>{pose.status === 'denied' ? '摄像头权限未开启' : pose.failurePhase==='calibration'?'起始姿势校准未完成':pose.failurePhase==='performance'?'识别性能未达要求':'摄像头或模型加载失败'}</b><p>{pose.errorReason.current || (active ? '识别已停止，请检查设备后重试。' : '尚未创建新训练记录，请允许摄像头或重新加载模型。')}</p>{!active&&<p>本次尚未开始计时，也未创建新的训练记录。</p>}{active && <button className="secondary" disabled={busy} onClick={() => void retryCamera()}>重试摄像头</button>}</div>}
     {active&&<PoseDiagnostics telemetry={pose.telemetry}/>}
+    {adaptive&&poseFailed&&!active&&<button className="secondary" disabled={busy||visionConsent===null} onClick={()=>void begin(false,true)}>使用 Lite 兼容模式重试</button>}
     {adaptive&&paused&&<button className="secondary" disabled={busy} onClick={()=>void pose.start(true)}>使用 Lite 重新准备</button>}
     {failure && <div className="training-error" role="alert"><p>{failure}</p>{ending ? <p>统计已保留，请重试结束，系统会先核对已保存记录。</p> : syncFailed && <button className="secondary" disabled={busy} onClick={() => void retrySync()}>重试同步</button>}</div>}
     {active && <div className="training-controls"><button className="secondary" disabled={busy || ending || poseFailed} onClick={() => void togglePause()}><Icon name={paused ? 'play' : 'pause'}/>{pendingAction ? '重试确认' : paused ? '继续' : '暂停'}</button><button className="primary" disabled={busy} onClick={() => void done()}><Icon name="stop" weight="fill"/>{busy && ending ? '正在保存…' : ending ? '重试结束' : '结束训练'}</button></div>}

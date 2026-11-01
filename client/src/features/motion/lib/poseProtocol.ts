@@ -2,7 +2,7 @@ import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
 export type PoseModel='lite'|'full';
 export type PoseMode='worker-gpu'|'worker-cpu'|'main-gpu'|'main-cpu';
 export type PoseFrame={runId:number;frameId:number;capturedAt:number;receivedAt:number;width:number;height:number;landmarks:Point[]|null;worldLandmarks:Point[]|null;model:PoseModel;mode:PoseMode};
-export type PoseTelemetry={model:PoseModel;mode:PoseMode;fps:number;latency:number;reason:string;preparing:boolean;lowPerformance:boolean};
+export type PoseTelemetry={model:PoseModel;mode:PoseMode|null;fps:number;latency:number;reason:string;preparing:boolean;lowPerformance:boolean};
 export class FrameOrder {
  private id=-1;private time=-1;
  constructor(readonly runId:number){}
