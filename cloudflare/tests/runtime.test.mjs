@@ -231,6 +231,18 @@ await test('Workers runtime migration and business regression', async t=>{
  await act('start',{inputMode:'camera'});await act('progress',{reps:2,score:{count:0,total:0,depth:0,stability:0,trunk:0,symmetry:0}});await act('pause');assert.equal(w.sets[0].reps,2);await act('complete');await act('finish');assert.equal(w.session.xpEarned,0);await act('finish');assert.equal(w.session.xpEarned,0);
  }
  });
+ await t.test('adaptive v6 strategy persists and rejects older writers in the native runtime',async()=>{
+ const token=tokens[2],headers={'X-MoveMate-Recognition-Version':'6'};
+ assert.equal((await call('/api/v1/sport-sessions',{method:'POST',token,headers:{'X-MoveMate-Recognition-Version':'5'},body:{sportType:'squat',source:'camera',recognitionStrategy:'adaptive-v1'}})).status,409);
+ let r=await call('/api/v1/sport-sessions',{method:'POST',token,headers,body:{sportType:'squat',source:'camera',recognitionStrategy:'adaptive-v1'}});assert.equal(r.status,200);const id=r.data.data.id;
+ assert.equal(r.data.data.metrics.recognitionStrategy,'adaptive-v1');
+ const score={count:0,total:0,depth:0,stability:0,trunk:0,symmetry:0};
+ assert.equal((await call('/api/v1/sport-sessions/'+id+'/progress',{method:'POST',token,headers:{'X-MoveMate-Recognition-Version':'5'},body:{reps:2,scoreAccumulator:score}})).status,409);
+ r=await call('/api/v1/sport-sessions/'+id+'/finish',{method:'POST',token,headers,body:{reps:2,scoreAccumulator:score}});assert.equal(r.status,200,JSON.stringify(r.data));assert.equal(r.data.data.xpEarned,4);assert.equal(r.data.data.metrics.scoreAccumulator.count,0);
+ const created=await call('/api/v1/workout-sessions',{method:'POST',token,headers,body:{id:crypto.randomUUID(),free:{exercises:[{exerciseId:'motion:squat',sets:[{reps:2}]}]}}});assert.equal(created.status,200);let w=created.data.data;
+ const act=async(action,extra={})=>{const r=await call('/api/v1/workout-sessions/'+w.id+'/actions',{method:'POST',token,headers,body:{action,version:w.version,operationId:crypto.randomUUID(),setId:w.sets[w.cursor]?.id,...extra}});assert.equal(r.status,200,JSON.stringify(r.data));w=r.data.data;};
+ await act('start',{inputMode:'camera',recognitionStrategy:'adaptive-v1'});await act('progress',{reps:2,score,notes:'no image data'});assert.equal(w.sets[0].recognitionStrategy,'adaptive-v1');await act('pause');await act('complete');await act('finish');assert.equal(w.session.xpEarned,0);
+ });
  await t.test('free workout editing, schedule preferences and checkpoint imports persist in native transactions',async()=>{
  const token=tokens[0];let r=await call('/api/v1/workout-sessions',{method:'POST',token,body:{id:crypto.randomUUID(),free:{exercises:[{exerciseId:'motion:squat',sets:[{reps:3}]}]}}});assert.equal(r.status,200,JSON.stringify(r.data));let w=r.data.data;
  const edit={operationId:crypto.randomUUID(),version:w.version,action:'edit',edit:{kind:'copy',targetId:w.sets[0].id}};

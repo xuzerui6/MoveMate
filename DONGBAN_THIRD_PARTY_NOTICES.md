@@ -33,3 +33,9 @@
 - 新增 Pexels video 4158861（Michelangelo Buonarroti）、4742661（Ketut Subiyanto），继续遵循 Pexels License 与使用条款。两段视频、封面和六张同源分解帧只随网站部署，不在公开源码仓库分发，不按源码许可再授权，不暗示人物背书。
 - 原有图片与视频均保留，新增帧按其真实来源索引归属；旧 Unlicense 图片不会被重标为 Pexels 素材。
 - 新采用素材未由来源明确标注亚洲人物，统计为 0，不从外貌推断。20 项逐动作结果及未采用原因见 `docs/exercise-media-batch4.md`。
+
+## MediaPipe Pose Landmarker 本地模型（2026-10-31）
+
+Lite 与 Full 均固定为 Google 官方 `float16/1` 模型，文件、来源 URL、字节数和 SHA-256 见 `client/src/features/motion/lib/pose-models.json`。模型及 WASM 随站点同源提供，构建不自动下载。Full 为未修改的官方模型，不代表本站计数准确率已获认证。
+
+模型采用 Apache License 2.0，Google MediaPipe 维护者的确认见 https://github.com/google-ai-edge/mediapipe/issues/6306 。许可全文随静态资源提供于 `/pose/LICENSE.txt`；模型说明见 https://developers.google.com/edge/mediapipe/solutions/vision/pose_landmarker 。保持现有锁定的 Tasks Vision SDK，不在本批自动升级。

@@ -75,3 +75,30 @@ test('all built-in template movements have recognition and shoulder press does n
  const all=templates();for(const t of all)for(const routine of t.routines)for(const entry of routine.exercises){const e=exercises.find((x:any)=>x.id===entry.exerciseId);assert.ok(e.cameraType||e.planCamera,`${t.key}: ${entry.exerciseId}`);}
  const upper=all.find((t:any)=>t.key==='upper_lower').routines.find((r:any)=>r.id==='upper');assert.ok(upper.exercises.some((e:any)=>e.exerciseId==='exdb:0405'));assert.ok(!upper.exercises.some((e:any)=>e.exerciseId==='motion:push_up'));
 });
+
+test('adaptive protocol is stored, cannot be downgraded by old pages, and unscored core repetitions settle once',async()=>{
+ await assert.rejects(motion.createSession(uid,{sportType:'squat',source:'camera',recognitionStrategy:'adaptive-v1'},5),/刷新/);
+ const data={id:randomUUID(),sportType:'squat',source:'camera',recognitionStrategy:'adaptive-v1'};const s=await motion.createSession(uid,data,6);assert.equal(s.metrics.recognitionStrategy,'adaptive-v1');assert.equal((await motion.createSession(uid,data,6)).id,s.id);
+ await assert.rejects(motion.createSession(uid,{...data,recognitionStrategy:'legacy'},6),/策略/);
+ await assert.rejects(motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:zero},false,5),/刷新/);
+ await motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:zero,recognitionStrategy:'adaptive-v1'},false,6);
+ await assert.rejects(motion.sessionAction(s.id,uid,'progress',{reps:2,recognitionStrategy:'legacy'},false,6),/策略/);
+ const paused=await motion.sessionAction(s.id,uid,'pause',{},false,6);assert.equal(paused.metrics.recognitionStrategy,'adaptive-v1');assert.equal(paused.reps,2);
+ await motion.sessionAction(s.id,uid,'resume',{},false,6);const done=await motion.sessionAction(s.id,uid,'finish',{},false,6);assert.equal(done.xpEarned,4);assert.equal((await motion.sessionAction(s.id,uid,'finish',{},false,6)).xpEarned,4);
+});
+test('adaptive plan strategy survives notes, refresh, pause and one timer settlement',async()=>{
+ let w=await gym.startWorkout(uid,{id:randomUUID(),free:{exercises:[{exerciseId:'motion:squat',sets:[{reps:3}]}]}});
+ const action=(name:string,extra:any={},protocol=6)=>gym.actWorkout(uid,w.id,{action:name,operationId:randomUUID(),version:w.version,setId:w.sets[w.cursor]?.id,...extra},protocol);
+ await assert.rejects(action('start',{inputMode:'camera',recognitionStrategy:'adaptive-v1'},5),/刷新/);
+ w=await action('start',{inputMode:'camera',recognitionStrategy:'adaptive-v1'});assert.equal(w.sets[0].recognitionStrategy,'adaptive-v1');
+ await assert.rejects(action('progress',{reps:2,score:zero},5),/刷新/);
+ w=await action('progress',{reps:2,score:zero,notes:'still local'});assert.equal(w.sets[0].recognitionStrategy,'adaptive-v1');w=await action('pause');assert.equal((await gym.workout(uid,w.id)).sets[0].recognitionStrategy,'adaptive-v1');assert.equal(w.sets[0].reps,2);
+ w=await action('complete',{reps:2,score:zero});w=await action('finish');assert.equal(w.session.xpEarned,0);assert.equal((await action('finish')).session.xpEarned,0);
+});
+
+test('historical sessions without a strategy remain legacy and cannot switch during progress',async()=>{
+ const s=await motion.createSession(uid,{sportType:'squat',source:'camera'},6);
+ await pool.query('UPDATE sport_sessions SET metrics=$2 WHERE id=$1',[s.id,'{}']);
+ await assert.rejects(motion.sessionAction(s.id,uid,'progress',{reps:0,recognitionStrategy:'adaptive-v1'},false,6),/策略/);
+ const done=await motion.sessionAction(s.id,uid,'finish',{},false,6);assert.equal(done.reps,0);assert.equal(done.xpEarned,0);
+});

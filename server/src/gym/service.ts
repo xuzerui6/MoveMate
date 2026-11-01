@@ -3,7 +3,7 @@ import {reviewedMediaIds} from './media-filter';
 import { z } from "zod";
 import { refreshOnline, onlineCutoff } from "./online";
 import { snapshotCameraProfile } from "./camera";
-import {requireRecognitionVersion} from './recognition-version';
+import {requireRecognitionVersion,requireStrategyVersion} from './recognition-version';
 import { editWorkout } from "./editing";
 import { settings, dateInZone, saveSettings } from "./preferences";
 import { pool, withTransaction, afterCommit } from "../db";
@@ -565,6 +565,7 @@ const actionSchema = z.object({
     .optional(),
   notes: z.string().max(500).optional(),
   inputMode: z.enum(["manual", "camera"]).optional(),
+  recognitionStrategy:z.enum(["legacy","adaptive-v1"]).optional(),
   reps: z.number().int().min(0).max(100000).optional(),
   loadKg: z.number().min(0).max(1000).optional(),
   seconds: z.number().int().min(0).max(7200).optional(),
@@ -619,11 +620,13 @@ export async function actWorkout(uid: number, id: string, input: any, recognitio
     if (data.setId && set?.id !== data.setId)
       throw new InvalidStateError("当前训练组已经改变");
     if(set&&((data.action==='start'&&data.inputMode==='camera')||(set.inputMode==='camera'&&['resume','progress','complete','pause','finish','heartbeat'].includes(data.action))))requireRecognitionVersion(snapshotCameraProfile(set.exercise)||'',recognitionVersion);
+    if(set){requireStrategyVersion(data.recognitionStrategy,recognitionVersion);if(set.inputMode==='camera')requireStrategyVersion(set.recognitionStrategy,recognitionVersion);if(set.inputMode==='camera'&&data.recognitionStrategy&&data.recognitionStrategy!==(set.recognitionStrategy||'legacy'))throw new InvalidStateError('本组识别策略已固定，请结束本组或切换手动');}
     const parent = (
       await pool.query("SELECT * FROM sport_sessions WHERE id=$1", [
         w.sport_session_id,
       ])
     ).rows[0];
+    if(set&&data.recognitionStrategy!==undefined)await pool.query('UPDATE gym_sets SET data=$2 WHERE id=$1',[set.id,JSON.stringify({...json(setRow.data),recognitionStrategy:data.recognitionStrategy})]);
     // Each pause closes only this set's open interval; completed and rest periods never accrue time.
     const seconds =
       parent.status === "running" && parent.active_since
@@ -649,6 +652,7 @@ export async function actWorkout(uid: number, id: string, input: any, recognitio
           set.id,
           JSON.stringify({
             ...json(setRow.data),
+            ...(data.recognitionStrategy!==undefined?{recognitionStrategy:data.recognitionStrategy}:{}),
             ...(data.effort !== undefined ? { effort: data.effort } : {}),
             ...(data.notes !== undefined ? { notes: data.notes } : {}),
           }),
@@ -663,7 +667,7 @@ export async function actWorkout(uid: number, id: string, input: any, recognitio
         data.score &&
         data.action !== "manual" &&
         (mode !== "camera" ||
-          (set.exercise.planCamera
+          ((set.exercise.planCamera||set.recognitionStrategy==='adaptive-v1'||data.recognitionStrategy==='adaptive-v1')
             ? data.score.count > (data.reps ?? set.reps)
             : data.score.count !== (data.reps ?? set.reps)) ||
           [data.score.total, data.score.depth, data.score.stability, data.score.trunk, data.score.symmetry].some((n) => n > data.score!.count * 100) ||

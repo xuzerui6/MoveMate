@@ -1,0 +1,20 @@
+{
+  "lite": {
+    "src": "/pose/pose_landmarker_lite.task",
+    "bytes": 5777746,
+    "sha256": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a",
+    "source": "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task",
+    "version": "float16/1",
+    "license": "Apache-2.0",
+    "licenseReference": "https://github.com/google-ai-edge/mediapipe/issues/6306"
+  },
+  "full": {
+    "src": "/pose/pose_landmarker_full.task",
+    "bytes": 9398198,
+    "sha256": "5134a3aad27a58b93da0088d431f366da362b44e3ccfbe3462b3827a839011b1",
+    "source": "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task",
+    "version": "float16/1",
+    "license": "Apache-2.0",
+    "licenseReference": "https://github.com/google-ai-edge/mediapipe/issues/6306"
+  }
+}

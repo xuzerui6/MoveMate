@@ -9,7 +9,7 @@ import type { AppState, Slot, WorkoutSession } from '../types';
 export type SportSession = { id:string; workoutId?:string; gameId:number|null; sportType:string; source:string; status:string; effectiveSeconds:number; reps:number; xpEarned:number; settled:boolean; startTime:string; endTime:string|null; metrics:any; receivedAt?:number };
 type Store = {
   state:AppState; sessions:SportSession[]; loading:boolean; loaded:boolean; source:'server'|'cache'|'unavailable'; error:string; refresh:()=>Promise<void>;
-  startSession:(sportType:string,source:string,gameId?:number)=>Promise<SportSession>;
+  startSession:(sportType:string,source:string,gameId?:number,recognitionStrategy?:string)=>Promise<SportSession>;
   lookupSession:(id:string)=>Promise<SportSession|undefined>;
   act:(id:string,action:string,data?:any)=>Promise<SportSession>;
   finishWorkout:(session:WorkoutSession)=>Promise<WorkoutSession>;
@@ -64,15 +64,15 @@ export function StoreProvider({children}:{children:React.ReactNode}) {
       ()=>lookupSession(id));
     }finally{lastWrite.current=Date.now();}
   });
-  const startSession=async(sportType:string,source:string,gameId?:number)=>{
+  const startSession=async(sportType:string,source:string,gameId?:number,recognitionStrategy?:string)=>{
     if(!alive.current || useAuthStore.getState().user?.id!==userId)throw new Error('账号已切换，请重新进入训练');
-    const key=JSON.stringify([sportType,source,gameId]);
+    const key=JSON.stringify([sportType,source,gameId,recognitionStrategy]);
     if(!pendingStart.current || pendingStart.current.key!==key)pendingStart.current={id:crypto.randomUUID(),key};
     const id=pendingStart.current.id;lastWrite.current=Date.now();
-    try {const res:any=await client.post('/sport-sessions',{id,sportType,source,gameId});pendingStart.current=null;return acceptRow(res.data);}
+    try {const res:any=await client.post('/sport-sessions',{id,sportType,source,gameId,recognitionStrategy});pendingStart.current=null;return acceptRow(res.data);}
     catch(error){
       const row=await lookupSession(id).catch(()=>undefined);
-      if(row && row.sportType===sportType && row.source===source){pendingStart.current=null;return row;}
+      if(row && row.sportType===sportType && row.source===source && (row.metrics?.recognitionStrategy||'legacy')===(recognitionStrategy||'legacy')){pendingStart.current=null;return row;}
       // A competing tab may own the active record. Recover it at the entry rather than create another.
       await refresh();throw error;
     }finally{lastWrite.current=Date.now();}

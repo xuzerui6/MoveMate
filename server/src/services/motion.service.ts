@@ -4,7 +4,7 @@ import { pool, withTransaction, afterCommit } from '../db';
 import { ForbiddenError, InvalidStateError, NotFoundError, ValidationError } from '../utils/errors';
 import { pushToUser, broadcastToGame } from '../websocket/notification.handler';
 import extended from '../gym/new-recognition.json';
-import {isExtendedRecognition,requireRecognitionVersion} from '../gym/recognition-version';
+import {isExtendedRecognition,requireRecognitionVersion,requireStrategyVersion} from '../gym/recognition-version';
 
 export const CAMERA_TYPES = new Set(['squat','jumping_jack','high_knees','push_up',...Object.keys(extended)]);
 export const SPORT_RATES: Record<string, number> = { running: 3, swimming: 3, basketball: 2, badminton: 2, soccer: 2, volleyball: 2, tennis: 2, table_tennis: 2 };
@@ -37,14 +37,18 @@ async function ensureGame(row: Pick<SessionRow,'game_id'|'user_id'>) {
   if (!game?.checked_in_at) throw new ForbiddenError('请先签到后开始运动');
   if (game.status !== 'in_progress') throw new InvalidStateError('活动开始后才能计时');
 }
-export async function createSession(userId:number, data:{ id?:string; sportType:string; source:string; gameId?:number }, recognitionVersion?:unknown) {
+export async function createSession(userId:number, data:{ id?:string; sportType:string; source:string; gameId?:number; recognitionStrategy?:string }, recognitionVersion?:unknown) {
   return withTransaction(async () => {
+    if(data.recognitionStrategy!=null&&!['legacy','adaptive-v1'].includes(data.recognitionStrategy))throw new ValidationError('识别策略无效');
+    if(data.recognitionStrategy==='adaptive-v1'&&data.source!=='camera')throw new ValidationError('新版识别仅适用于真实摄像头');
+    requireStrategyVersion(data.recognitionStrategy,recognitionVersion);
     if(data.source!=='timer')requireRecognitionVersion(data.sportType,recognitionVersion);
     const id = data.id || randomUUID();
     const old = (await pool.query<SessionRow>('SELECT * FROM sport_sessions WHERE id=$1',[id])).rows[0];
     if (old) {
       if (old.user_id !== userId) throw new ForbiddenError();
       if (old.source!==data.source || old.game_id!==(data.gameId||null) || (!data.gameId && old.sport_type!==data.sportType)) throw new InvalidStateError('运动记录的动作与来源不可更改');
+      if((decode<any>(old.metrics,{}).recognitionStrategy||'legacy')!==(data.recognitionStrategy||'legacy'))throw new InvalidStateError('运动记录的识别策略不可改变');
       return sessionView(old);
     }
     if ((await pool.query('SELECT id FROM sport_sessions WHERE user_id=$1 AND status IN (\'running\',\'paused\')',[userId])).rowCount) throw new InvalidStateError('你已有运动记录，请先结束或恢复');
@@ -58,7 +62,7 @@ export async function createSession(userId:number, data:{ id?:string; sportType:
     if (!['camera','timer','demo'].includes(data.source)) throw new ValidationError('运动来源无效');
     if (data.source !== 'timer' && !CAMERA_TYPES.has(sport)) throw new ValidationError('不支持该摄像头动作');
     const now = new Date().toISOString();
-    const row = (await pool.query<SessionRow>('INSERT INTO sport_sessions(id,user_id,game_id,sport_type,source,created_at,active_since) VALUES($1,$2,$3,$4,$5,$6,$6) RETURNING *',[id,userId,data.gameId || null,sport,data.source,now])).rows[0];
+    const row = (await pool.query<SessionRow>('INSERT INTO sport_sessions(id,user_id,game_id,sport_type,source,created_at,active_since,metrics) VALUES($1,$2,$3,$4,$5,$6,$6,$7) RETURNING *',[id,userId,data.gameId || null,sport,data.source,now,JSON.stringify({recognitionStrategy:data.recognitionStrategy||'legacy'})])).rows[0];
     await pool.query('INSERT INTO sport_intervals(session_id,started_at) VALUES($1,$2)',[id,now]);
     changed(row);
     return sessionView(row);
@@ -72,6 +76,7 @@ function changed(row: SessionRow) {
 }
 function cleanMetrics(data:any, previous:any={}) {
   const out:any = { ...previous };
+  if(data.recognitionStrategy!=null){if(!['legacy','adaptive-v1'].includes(data.recognitionStrategy))throw new ValidationError('识别策略无效');if((previous.recognitionStrategy||'legacy')!==data.recognitionStrategy)throw new InvalidStateError('本次运动识别策略不可改变');out.recognitionStrategy=data.recognitionStrategy;}
   for (const key of ['formScore','perfectReps','averageBpm','maxBpm','currentBpm','zone1Seconds','zone2Seconds','zone3Seconds','zone4Seconds','zone5Seconds','conversationTurnCount']) {
     const value = data?.[key];
     if (value === null) out[key]=null;
@@ -118,6 +123,7 @@ async function closeInterval(row:SessionRow, cutoff:number) {
 export async function sessionAction(id:string,userId:number,action:'pause'|'resume'|'finish'|'progress',data:any={},fromPlan=false,recognitionVersion?:unknown) {
   return withTransaction(async () => {
     let row = await owned(id,userId);
+    if(row.source==='camera'&&(action==='resume'||action==='progress'||data.reps!=null||data.scoreAccumulator!=null)){requireStrategyVersion(decode<any>(row.metrics,{}).recognitionStrategy,recognitionVersion);requireStrategyVersion(data.recognitionStrategy,recognitionVersion);}
     if(row.source!=='timer'&&(action==='resume'||action==='progress'||data.reps!=null||data.scoreAccumulator!=null))requireRecognitionVersion(row.sport_type,recognitionVersion);
     if(row.workout_id && !fromPlan)throw new InvalidStateError('请从计划训练页面操作本次运动');
     if (row.settled) { if (action === 'finish') return sessionView(row); throw new InvalidStateError('运动已结算'); }
@@ -142,7 +148,7 @@ export async function sessionAction(id:string,userId:number,action:'pause'|'resu
       const oldMetrics=decode<any>(row.metrics,{});
       const stale=row.source!=='timer' && data.reps!=null && data.reps<row.reps;
       const cleaned=stale?oldMetrics:cleanMetrics(data,oldMetrics);
-      if(cleaned.scoreAccumulator && (isExtendedRecognition(row.sport_type)?cleaned.scoreAccumulator.count>reps:cleaned.scoreAccumulator.count!==reps))throw new ValidationError('评分累计次数与动作次数不一致');
+      if(cleaned.scoreAccumulator && (isExtendedRecognition(row.sport_type)||cleaned.recognitionStrategy==='adaptive-v1'?cleaned.scoreAccumulator.count>reps:cleaned.scoreAccumulator.count!==reps))throw new ValidationError('评分累计次数与动作次数不一致');
       const acc=cleaned.scoreAccumulator;
       if(row.sport_type==='standing_leg_curl'&&reps>0&&(!acc||(acc.leftReps||0)+(acc.rightReps||0)!==reps))throw new ValidationError('左右次数与总次数不一致');
       if(row.sport_type!=='standing_leg_curl'&&(acc?.leftReps!==undefined||acc?.rightReps!==undefined))throw new ValidationError('该动作不支持左右计数');

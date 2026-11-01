@@ -20,6 +20,9 @@ import { useStore, type SportSession } from '../lib/store'
 import type { WorkoutContext, WorkoutSession, XiaozhiState } from '../types'
 import { ExerciseDemo } from '../../gym/ExerciseMedia'
 
+import {adaptiveEligible} from '../lib/adaptiveRecognition'
+import {RecognitionChoice,PoseDiagnostics} from '../components/PoseDiagnostics'
+
 const format = (seconds: number) => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
 const VOICE_LABEL: Record<XiaozhiState, string> = {
   off: '语音陪练', idle: '已连接 · 点击对话', activating: '正在准备语音', connecting: '正在连接…',
@@ -53,7 +56,8 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const [visionConsent, setVisionConsent] = useState<boolean | null>(null)
   const testSlotValue = new URLSearchParams(window.location.search).get('voiceTestSlot')
   const testSlot = testSlotValue ? Number(testSlotValue) : undefined
-  const pose = usePose(active && !simulatedPose && !paused && !busy && !ending)
+  const [adaptive,setAdaptive]=useState(existing?.metrics?.recognitionStrategy==='adaptive-v1')
+  const pose = usePose(active && !simulatedPose && !paused && !busy && !ending,{adaptive:adaptive&&!simulatedPose,type:exerciseType,key:exerciseType,target:20,restored:{...(sessions.find(s=>s.id===serverId.current)?.metrics||restored?.metrics),reps:sessions.find(s=>s.id===serverId.current)?.reps||restored?.reps||0}})
   const heartRate = useHeartRateMonitor(appState.age)
   const heartRef = useRef(heartRate); heartRef.current = heartRate
   useEffect(() => () => heartRef.current.disconnect(), [])
@@ -61,7 +65,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const seconds = useSessionClock(record, paused || busy || ending)
   const { metrics, diagnostics, demoLandmarks } = useExerciseMetrics(exerciseType, pose.landmarks, simulatedPose, active, paused || busy || ending,
     pose.videoRef.current?.videoWidth && pose.videoRef.current.videoHeight ? pose.videoRef.current.videoWidth / pose.videoRef.current.videoHeight : 1,
-    restored ? { ...restored.metrics, reps: restored.reps } : {},20,'standalone',pose.worldLandmarks)
+    restored ? { ...restored.metrics, reps: restored.reps } : {},20,'standalone',pose.worldLandmarks,pose.engine)
   const workout = useWorkoutSession(metrics, heartRate, active, paused || busy || ending, undefined, restored?.effectiveSeconds || 0, exerciseType, seconds, restored?.metrics)
   const session = workout.session
   const progress = useRef<Record<string, unknown>>({})
@@ -71,7 +75,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     alive.current = true
     const flush = (action = 'progress') => {
       if (!serverId.current || closing.current || !activeRef.current || !accountToken.current) return
-      void fetch('/api/v1/sport-sessions/' + serverId.current + '/' + action, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-MoveMate-Recognition-Version': '5', Authorization: 'Bearer ' + accountToken.current }, body: JSON.stringify(progress.current), keepalive: true }).catch(() => undefined)
+      void fetch('/api/v1/sport-sessions/' + serverId.current + '/' + action, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-MoveMate-Recognition-Version': '6', Authorization: 'Bearer ' + accountToken.current }, body: JSON.stringify(progress.current), keepalive: true }).catch(() => undefined)
     }
     const hide = () => flush()
     window.addEventListener('pagehide', hide)
@@ -86,7 +90,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   }), [exerciseType, exercise.unit, metrics, seconds, heartRate.connected, heartRate.signalInterrupted, heartRate.currentBpm, active, paused, busy, ending])
   const voice = useXiaozhiCoach({ enabled: active && voiceEnabled && !ending, context: voiceContext, videoRef: pose.videoRef, visionConsent: visionConsent === true, testSlot })
   const conversationCount = Number(restored?.metrics?.conversationTurnCount || 0) + voice.conversationTurnCount
-  progress.current = { ...session, ...metrics, conversationTurnCount: conversationCount }
+  progress.current = { ...session, ...metrics, conversationTurnCount: conversationCount,recognitionStrategy:adaptive&&!simulatedPose?'adaptive-v1':'legacy' }
   const voiceRef = useRef(voice)
   useEffect(() => { voiceRef.current = voice }, [voice])
   useEffect(() => { voice.sendWorkoutContext(voiceContext) }, [voiceContext])
@@ -168,7 +172,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
       if (!demo && !await pose.start()) return
       if (!alive.current || current !== attempt.current) return
       setCreating(true)
-      const row = restored ? await act(restored.id, 'resume') : await startSession(exerciseType, demo ? 'demo' : 'camera')
+      const row = restored ? await act(restored.id, 'resume',{recognitionStrategy:adaptive&&!demo?'adaptive-v1':'legacy'}) : await startSession(exerciseType, demo ? 'demo' : 'camera',undefined,adaptive&&!demo?'adaptive-v1':'legacy')
       if (!alive.current || current !== attempt.current) {
         if (accountToken.current) void fetch('/api/v1/sport-sessions/' + row.id + '/pause', { method: 'POST', headers: { Authorization: 'Bearer ' + accountToken.current, 'Content-Type': 'application/json' }, body: '{}', keepalive: true }).catch(() => undefined)
         return
@@ -183,6 +187,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     const action = leaveAfter ? 'pause' : pendingAction || (paused ? 'resume' : 'pause')
     locked.current = true; setBusy(true); setPaused(true); setFailure('')
     try {
+      if(action==='resume'&&adaptive&&!simulatedPose&&!await pose.start())throw new Error(pose.errorReason.current||'请重新校准后继续')
       const row = await act(serverId.current, action, progress.current)
       setPendingAction(null); setSyncFailed(false); setPaused(row.status !== 'running')
       if (leaveAfter) { closing.current = true; setVoiceEnabled(false); pose.stop(); back() }
@@ -212,7 +217,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     } : null
     const completed = frozenFinish.current || workout.finish() || recovered
     if (!completed) return
-    if (!frozenFinish.current) frozenFinish.current = structuredClone({ ...completed, id: serverId.current, source: simulatedPose ? 'demo' : 'camera', visionInsights: [], conversationTurnCount: active ? conversationCount : completed.conversationTurnCount })
+    if (!frozenFinish.current) frozenFinish.current = structuredClone({ ...completed, id: serverId.current, source: simulatedPose ? 'demo' : 'camera', recognitionStrategy:adaptive&&!simulatedPose?'adaptive-v1':'legacy', visionInsights: [], conversationTurnCount: active ? conversationCount : completed.conversationTurnCount })
     locked.current = true; closing.current = true; setEnding(true); setPaused(true); setBusy(true); setVoiceEnabled(false); setFailure(''); pose.stop(); heartRate.disconnect()
     try { await finish(frozenFinish.current) }
     catch (error) { if (alive.current) setFailure(getErrorMessage(error)) }
@@ -235,6 +240,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   return <div className={`page workout-page training-workout ${active ? 'live' : 'setup'}${cameraExpanded ? ' camera-expanded' : ''}`}>
     <Header title={exercise.name + '训练'} back={leave} action={active ? <span className={'training-status' + (paused ? ' paused' : '')}>{statusLabel}</span> : <span className="muted">目标 20 {exercise.unit}</span>}/>
     {!active && <section className="training-prep">
+      <RecognitionChoice adaptive={adaptive} eligible={adaptiveEligible(exerciseType)} disabled={busy||!!restored} onChange={setAdaptive}/><PoseDiagnostics telemetry={pose.telemetry}/>
       <h2>{restored ? '继续上次训练' : '准备好，就开始'}</h2>
       <p className="prep-placement">{exercise.placement}</p><p>{exercise.instruction}</p>
       <ExerciseDemo exercise={isNewExercise(exerciseType)?{id:NEW_EXERCISES[exerciseType].exerciseIds[0],nameZh:exercise.name,form:exercise.instruction}:{id:'motion:'+exerciseType,nameZh:exercise.name,target:exerciseType==='push_up'?'pectorals':exerciseType==='jumping_jack'?'full body':'quadriceps',secondaryMuscles:[]}} suspended={preparing||busy}/>
@@ -257,7 +263,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
       <div className="camera-card training-camera" hidden={!active && !preparing}>
         <PoseCanvas videoRef={pose.videoRef} landmarks={simulatedPose ? demoLandmarks : pose.landmarks} demo={simulatedPose} phase={metrics.phase} fit={cameraFit} affectedJoints={paused ? [] : metrics.poseFeedback.affectedJoints}/>
         {paused && <div className="camera-paused"><Icon name="pause" size={30}/><b>{ending ? '正在保存' : pendingAction ? '等待状态确认' : '已暂停'}</b><span>已完成 {metrics.reps} {exercise.unit}</span></div>}
-        {preparing && <div className="camera-paused"><Icon name="camera"/><b>正在准备摄像头与模型</b><span>此时尚未开始新记录</span></div>}
+        {preparing && <div className={'camera-paused'+(adaptive?' adaptive-calibration-hint':'')}><Icon name="camera"/><b>{adaptive?'保持起始姿势，准备校准':'正在准备摄像头与模型'}</b><span>{adaptive?pose.telemetry?.reason:'此时尚未开始新记录'}</span></div>}
         {active && <div className="training-camera-tools"><button ref={cameraExpandButton} type="button" aria-pressed={cameraExpanded} onClick={() => setCameraExpanded(value => !value)}><Icon name={cameraExpanded ? 'collapse' : 'expand'} size={18}/>{cameraExpanded ? '收起画面' : '放大画面'}</button>
           {!simulatedPose && <button type="button" aria-pressed={cameraFit === 'cover'} onClick={() => setCameraFit(value => value === 'contain' ? 'cover' : 'contain')}>{cameraFit === 'contain' ? '铺满画面' : '显示全身'}</button>}
         </div>}
@@ -281,6 +287,8 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
       </section>}
     </div>
     {poseFailed && <div className="training-error" role="alert"><b>{pose.status === 'denied' ? '摄像头权限未开启' : '摄像头或模型加载失败'}</b><p>{active ? '识别已停止，请检查设备后重试。' : '尚未创建新训练记录，请允许摄像头或重新加载模型。'}</p>{active && <button className="secondary" disabled={busy} onClick={() => void retryCamera()}>重试摄像头</button>}</div>}
+    {active&&<PoseDiagnostics telemetry={pose.telemetry}/>}
+    {adaptive&&paused&&<button className="secondary" disabled={busy} onClick={()=>void pose.start(true)}>使用 Lite 重新准备</button>}
     {failure && <div className="training-error" role="alert"><p>{failure}</p>{ending ? <p>统计已保留，请重试结束，系统会先核对已保存记录。</p> : syncFailed && <button className="secondary" disabled={busy} onClick={() => void retrySync()}>重试同步</button>}</div>}
     {active && <div className="training-controls"><button className="secondary" disabled={busy || ending || poseFailed} onClick={() => void togglePause()}><Icon name={paused ? 'play' : 'pause'}/>{pendingAction ? '重试确认' : paused ? '继续' : '暂停'}</button><button className="primary" disabled={busy} onClick={() => void done()}><Icon name="stop" weight="fill"/>{busy && ending ? '正在保存…' : ending ? '重试结束' : '结束训练'}</button></div>}
   </div>

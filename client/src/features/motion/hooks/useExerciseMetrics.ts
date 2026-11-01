@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision'
 import { type ExerciseMetrics } from '../lib/exerciseMetrics'
 import {createRecognitionTracker,recognitionDemonstration} from '../lib/recognition'
+import type {EngineSnapshot} from './useAdaptivePose'
 import type { CameraExerciseType } from '../lib/exercises'
 
-export function useExerciseMetrics(type:CameraExerciseType, landmarks:NormalizedLandmark[]|null, simulated:boolean, active:boolean, paused:boolean, aspect:number, restored:Partial<ExerciseMetrics>={}, targetReps=20, resetKey='standalone', worldLandmarks:NormalizedLandmark[]|null=null) {
+export function useExerciseMetrics(type:CameraExerciseType, landmarks:NormalizedLandmark[]|null, simulated:boolean, active:boolean, paused:boolean, aspect:number, restored:Partial<ExerciseMetrics>={}, targetReps=20, resetKey='standalone', worldLandmarks:NormalizedLandmark[]|null=null, override:EngineSnapshot|null=null) {
   const tracker=useRef<ReturnType<typeof createRecognitionTracker>>()
   const key=type+':'+resetKey+':'+targetReps,trackerKey=useRef('')
   if(!tracker.current||trackerKey.current!==key){tracker.current=createRecognitionTracker(type,targetReps,restored);trackerKey.current=key}
@@ -15,9 +16,9 @@ export function useExerciseMetrics(type:CameraExerciseType, landmarks:Normalized
   const [demoLandmarks,setDemoLandmarks]=useState<NormalizedLandmark[]|null>(null)
   useEffect(()=>{if(!active||paused)setMetrics({...tracker.current!.interrupt()})},[active,paused,key])
   useEffect(()=>{
-    if(!active||paused||simulated)return
+    if(!active||paused||simulated||override)return
     setMetrics({...tracker.current!.update(landmarks,performance.now(),aspect,worldLandmarks)})
-  },[active,paused,simulated,landmarks,worldLandmarks,aspect,key])
+  },[active,paused,simulated,landmarks,worldLandmarks,aspect,key,override])
   useEffect(()=>{
     if(!active||paused||!simulated)return
     const start=performance.now()
@@ -29,5 +30,5 @@ export function useExerciseMetrics(type:CameraExerciseType, landmarks:Normalized
     }
     tick();const interval=window.setInterval(tick,100);return()=>window.clearInterval(interval)
   },[active,paused,simulated,type,key])
-  return {metrics,diagnostics,demoLandmarks}
+  return {metrics:override&&!simulated?override.metrics:metrics,diagnostics:override&&!simulated?override.diagnostics:diagnostics,demoLandmarks}
 }

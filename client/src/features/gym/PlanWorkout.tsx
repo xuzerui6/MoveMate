@@ -5,6 +5,8 @@ import { Header } from "../motion/components/Header";
 import { PoseCanvas } from "../motion/components/PoseCanvas";
 import { usePose } from "../motion/hooks/usePose";
 import { usePlanRecognition, type PlanRecognitionType } from "./usePlanRecognition";
+import {adaptiveEligible} from '../motion/lib/adaptiveRecognition';
+import {RecognitionChoice,PoseDiagnostics} from '../motion/components/PoseDiagnostics';
 import { isRecognitionType } from '../motion/lib/recognition';
 import { PlanRecognitionStatus } from "./PlanRecognitionStatus";
 import { isNewPlanProfile } from "./planRecognition";
@@ -185,16 +187,13 @@ export default function PlanWorkout() {
     finished = row?.phase === "finished";
   const requestedType = current?.exercise.planCamera?.profile || current?.exercise.cameraType;
   const supportedRecognition = !!requestedType && isRecognitionType(requestedType);
-  const pose = usePose(camera && supportedRecognition && working && !busy && !blocked && !offline && !finishAttempted),
-    seconds = useSessionClock(row?.session, busy || blocked || offline || finishAttempted);
-  // A dormant tracker is required by the hook; unsupported snapshots never start a camera.
-  const type: PlanRecognitionType = supportedRecognition ? requestedType as PlanRecognitionType : "squat";
-  const capability = current?.exercise.planCamera;
-  const canRecognize = supportedRecognition && !current?.targetSeconds && current?.side === "both";
-  const restored = useMemo(
-    () => restoredSetMetrics(current),
-    [current?.id, recoveryKey],
-  );
+  const type:PlanRecognitionType=supportedRecognition?requestedType as PlanRecognitionType:'squat';
+  const capability=current?.exercise.planCamera;
+  const canRecognize=supportedRecognition&&!current?.targetSeconds&&current?.side==='both';
+  const restored=useMemo(()=>restoredSetMetrics(current),[current?.id,recoveryKey]);
+  const [adaptive,setAdaptive]=useState(false);
+  useEffect(()=>{setAdaptive(current?.recognitionStrategy==='adaptive-v1');},[current?.id]);
+  const pose=usePose(camera&&supportedRecognition&&working&&!busy&&!blocked&&!offline&&!finishAttempted,{adaptive:adaptive&&adaptiveEligible(type),type,key:current?.id||'none',target:current?.targetReps||20,restored:{...restored,reps:current?.reps||restored.reps}}),seconds=useSessionClock(row?.session,busy||blocked||offline||finishAttempted);
   const { metrics, diagnostics } = usePlanRecognition(
     type,
     pose.landmarks,
@@ -207,6 +206,7 @@ export default function PlanWorkout() {
     current?.targetReps || 20,
     (current?.id || "none") + ":" + recoveryKey,
     pose.worldLandmarks,
+    pose.engine,
   );
   const restSeconds =
     Math.max(0, Math.ceil((Date.parse(row?.restUntil || "") - tick) / 1000)) ||
@@ -214,7 +214,7 @@ export default function PlanWorkout() {
   const options = useWorkoutPreferences(!!row && !finished, restSeconds);
   const snapshot = useRef<any>({});
   snapshot.current = camera
-    ? { reps: metrics.reps, loadKg: weight, score: metrics.scoreAccumulator }
+    ? { reps: metrics.reps, loadKg: weight, score: metrics.scoreAccumulator,recognitionStrategy:adaptive?'adaptive-v1':'legacy' }
     : { reps: current?.targetSeconds ? 0 : manualReps, loadKg: weight };
   snapshot.current = {
     ...snapshot.current,
@@ -278,14 +278,14 @@ export default function PlanWorkout() {
     setBusy(true);
     setError("");
     try {
-      if (mode === "camera" && pose.status !== "ready" && !(await pose.start()))
+      if (mode === "camera" && (adaptive||pose.status !== "ready") && !(await pose.start()))
         throw new Error(
           pose.errorReason.current || "摄像头或模型未就绪。请允许摄像头后重试，或改为手动记录。",
         );
       if (!alive.current) return;
       await sync.current!.run(
         resume ? "resume" : "start",
-        resume ? {} : { inputMode: mode },
+        resume ? {recognitionStrategy:adaptive&&mode==='camera'?'adaptive-v1':current?.recognitionStrategy||'legacy'} : { inputMode: mode,recognitionStrategy:adaptive&&mode==='camera'?'adaptive-v1':'legacy' },
       );
     } catch (e: any) {
       if (
@@ -395,11 +395,15 @@ export default function PlanWorkout() {
       act("complete", snapshot.current);
     }
   }, [camera, working, busy, blocked, metrics.reps, current?.id, finishAttempted]);
+  const failedPosePause = useRef("");
   useEffect(() => {
-    if (camera && working && pose.status === "error" && !busy) {
-      void run("pause", snapshot.current).catch(() => {});
+    if (pose.status !== "error") { failedPosePause.current = ""; return; }
+    const key = `${current?.id}:${pose.errorReason.current}`;
+    if (camera && working && !busy && failedPosePause.current !== key) {
+      failedPosePause.current = key;
+      void run("pause", structuredClone(snapshot.current)).catch(() => {});
     }
-  }, [pose.status]);
+  }, [pose.status, camera, working, busy, current?.id]);
   const parentRecord = store.sessions.find((s) => s.id === row?.session?.id);
   useEffect(() => {
     if (
@@ -444,7 +448,7 @@ export default function PlanWorkout() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-MoveMate-Recognition-Version": "5",
+        "X-MoveMate-Recognition-Version": "6",
         Authorization: "Bearer " + token,
       },
       body: JSON.stringify(body),
@@ -666,9 +670,9 @@ export default function PlanWorkout() {
                   fit={fit}
                 />
                 {pose.status !== "ready" && (
-                  <p className="gym-camera-overlay">
+                  <p className={'gym-camera-overlay'+(adaptive?' adaptive-calibration-hint':'')}>
                     {pose.status === "loading"
-                      ? "正在准备摄像头与模型…"
+                      ? pose.telemetry?.reason||"正在准备摄像头与模型…"
                       : "摄像头自动计数 · 全身入镜"}
                   </p>
                 )}
@@ -844,10 +848,14 @@ export default function PlanWorkout() {
                   />
                 </label>
               )}
+              {working&&<PoseDiagnostics telemetry={pose.telemetry}/>}
+              {adaptive&&!working&&(camera||current?.status==='pending')&&<button className="secondary" disabled={busy} onClick={()=>void pose.start(true)}>使用 Lite 重新准备</button>}
+              {adaptive&&pose.status==='loading'&&<button className="secondary" onClick={()=>{pose.errorReason.current='已取消准备';pose.stop();}}>取消摄像头准备</button>}
               {requestedType && !supportedRecognition && <p role="alert">当前页面不支持此动作识别，请刷新页面或切换手动记录。</p>}
               {current && <ExerciseDemo exercise={current.exercise} suspended={working || busy || finished}/>}
               {!working && canRecognize && (
                 <section className="gym-camera-preparation">
+                  <RecognitionChoice adaptive={adaptive} eligible={adaptiveEligible(type)} disabled={busy||camera||current?.status!=='pending'} onChange={setAdaptive}/><PoseDiagnostics telemetry={pose.telemetry}/>
                   <strong>摄像头自动记组{capability ? " · 试用" : ""}</strong>
                   <p>本组目标 {current.targetReps} {type === "high_knees" ? "对" : "次"}，达到目标后自动进入休息。</p>
                   <p>{capability?.placement || exerciseInfo(type).placement}</p>

@@ -50,7 +50,8 @@ export class PlanExerciseTracker {
   private controlAt:number|null=null;
   private controlAngle=0;
   private issues=new Set<PoseIssue>();
-  constructor(readonly type:NewPlanProfile, targetReps=20, restored:Partial<ExerciseMetrics>={}) {
+  requiredIndices(raw:Point[]){return needed(this.type)}
+  constructor(readonly type:NewPlanProfile, targetReps=20, restored:Partial<ExerciseMetrics>={},readonly prefiltered=false) {
     const acc={...zero(),count:0,total:0,...restored.scoreAccumulator};
     this.metrics={...restored,reps:Math.max(0,restored.reps||0),targetReps,formScore:acc.count?Math.round(acc.total/acc.count):0,perfectReps:restored.perfectReps||0,feedback:'保持起始姿势两秒，准备校准',phase:'standing',scoreAccumulator:acc,formBreakdown:acc.count?average(acc):zero(),correctionCounts:{out_of_frame:0,insufficient_depth:0,knee_instability:0,excessive_trunk_lean:0,asymmetry:0,insufficient_range:0,unstable_movement:0,body_alignment:0,poor_coordination:0,...restored.correctionCounts},lastRepIssues:[],repeatedIssue:null,poseFeedback:{status:'uncertain',confidence:0,issues:[],primaryIssue:null,affectedJoints:[],calibrated:false,message:'等待起始姿势'}};
   }
@@ -103,11 +104,11 @@ export class PlanExerciseTracker {
     if(this.at!==null&&now-this.at>750)this.interrupt('画面中断，半程动作已丢弃');
     const indices=needed(this.type);
     if(indices.some(i=>(raw[i].visibility??0)<.25||raw[i].x<0||raw[i].x>1||raw[i].y<0||raw[i].y>1))return this.interrupt('所需关节离开画面或被遮挡，半程动作已丢弃');
-    this.frames=[...this.frames,raw].slice(-5);const points=medianLandmarks(this.frames)!;
+    this.frames=[...this.frames,raw].slice(-(this.prefiltered?1:5));const points=medianLandmarks(this.frames)!;
     if(indices.some(i=>(points[i].visibility??0)<.55))return this.interrupt('关键关节持续不清晰，请调整拍摄角度');
     // Use the same smoothed coordinate system for measurements, including world angles.
     // Image angles remain available when world landmarks cannot be trusted.
-    this.worldFrames=world?.length===raw.length&&world.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))?[...this.worldFrames,world].slice(-5):[];
+    this.worldFrames=world?.length===raw.length&&world.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))?[...this.worldFrames,world].slice(-(this.prefiltered?1:5)):[];
     const smoothedWorld=this.worldFrames.length&&indices.every(i=>(raw[i].visibility??0)>=.7)?medianLandmarks(this.worldFrames):null;
     const f=this.sample(points,aspect,smoothedWorld);
     if(!f)return this.interrupt(this.type==='calf_raise'?'请让双脚跟和前脚掌清晰可见，保持前脚掌原位和膝盖伸直':this.type==='reverse_lunge'?'请斜侧面拍摄，让脚尖方向及后撤脚位清晰可见':'请保持斜侧面俯身姿势，让双臂清晰可见');

@@ -45,7 +45,8 @@ export class ExtendedExerciseTracker {
   private speed=0;
   private shift=0;
   private controlPenalty=0;
-  constructor(readonly type:ExtendedType,targetReps=20,restored:Partial<ExerciseMetrics>={}){
+  requiredIndices(raw:Point[]){return this.needed(raw)}
+  constructor(readonly type:ExtendedType,targetReps=20,restored:Partial<ExerciseMetrics>={},readonly prefiltered=false){
     const acc={...emptyFormBreakdown(),count:0,total:0,...restored.scoreAccumulator};
     this.metrics={...restored,reps:Math.max(0,restored.reps||0),targetReps,perfectReps:restored.perfectReps||0,formScore:acc.count?Math.round(acc.total/acc.count):0,phase:'standing',feedback:definitions[type].placement,scoreAccumulator:acc,formBreakdown:emptyFormBreakdown(),correctionCounts:{...emptyCorrectionCounts(),...restored.correctionCounts},lastRepIssues:[],repeatedIssue:null,poseFeedback:{status:'uncertain',confidence:0,issues:[],primaryIssue:null,affectedJoints:[],calibrated:false,message:'保持起始姿势两秒，准备校准'}};
     this.updateAverage();
@@ -200,9 +201,9 @@ export class ExtendedExerciseTracker {
     if(this.last!==null&&now-this.last>750)this.interrupt('画面中断，半程动作已丢弃');
     const required=this.needed(raw);
     if(required.some(i=>(raw[i].visibility??0)<.25||raw[i].x<0||raw[i].x>1||raw[i].y<0||raw[i].y>1))return this.interrupt('必要关节离开画面或被遮挡，半程动作已丢弃');
-    this.frames=[...this.frames,raw].slice(-5);const smooth=medianLandmarks(this.frames)!;
+    this.frames=[...this.frames,raw].slice(-(this.prefiltered?1:5));const smooth=medianLandmarks(this.frames)!;
     if(required.some(i=>(smooth[i].visibility??0)<.55))return this.interrupt('必要关节持续不清晰，请调整角度');
-    this.worlds=world?.length===33&&world.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))?[...this.worlds,world].slice(-5):[];
+    this.worlds=world?.length===33&&world.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))?[...this.worlds,world].slice(-(this.prefiltered?1:5)):[];
     const f=this.measure(smooth,aspect,this.worlds.length?medianLandmarks(this.worlds):null,required);
     if(typeof f==='string')return this.interrupt(f);
     this.last=now;this.times=[...this.times,now].filter(t=>now-t<=2000);

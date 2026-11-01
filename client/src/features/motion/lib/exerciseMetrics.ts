@@ -139,7 +139,8 @@ export class ExerciseTracker {
   private armsAt:number|null=null
   private legsAt:number|null=null
   private motionAt:number|null=null
-  constructor(readonly type:CameraExerciseType, targetReps=20, restored:Partial<ExerciseMetrics>={}) {
+  requiredIndices(raw:NormalizedLandmark[]){return requiredJoints(this.type,raw,this.trackingSide)}
+  constructor(readonly type:CameraExerciseType, targetReps=20, restored:Partial<ExerciseMetrics>={},readonly prefiltered=false) {
     const reps=Math.max(0,restored.reps||0),breakdown={...emptyFormBreakdown(),...restored.formBreakdown}
     const acc=restored.scoreAccumulator || {count:reps,total:(restored.formScore||0)*reps,...Object.fromEntries(axes.map(k=>[k,breakdown[k]*reps]))} as ScoreAccumulator
     this.metrics={...restored,reps,targetReps,formScore:acc.count?Math.round(acc.total/acc.count):0,perfectReps:restored.perfectReps||0,feedback:exerciseInfo(type).placement,phase:'standing',scoreAccumulator:{...acc},formBreakdown:breakdown,correctionCounts:{...emptyCorrectionCounts(),...restored.correctionCounts},lastRepIssues:[],repeatedIssue:null,poseFeedback:this.feedback(null,false)}
@@ -169,8 +170,8 @@ export class ExerciseTracker {
     // (.25–.55) is filtered first; sustained uncertainty still fails the median.
     const required=requiredJoints(this.type,raw,this.trackingSide)
     if(required.some(i=>(raw[i].visibility??0)<.25 || raw[i].x<0 || raw[i].x>1 || raw[i].y<0 || raw[i].y>1))return this.interrupt(rejectedFrameReason(this.type,raw,this.trackingSide))
-    this.frames=[...this.frames,raw].slice(-5)
-    this.worldFrames=world&&world.length>=29&&world.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))?[...this.worldFrames,world].slice(-5):[]
+    this.frames=[...this.frames,raw].slice(-(this.prefiltered?1:5))
+    this.worldFrames=world&&world.length>=29&&world.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))?[...this.worldFrames,world].slice(-(this.prefiltered?1:5)):[]
     const smoothedWorld=this.worldFrames.length?medianLandmarks(this.worldFrames):null
     const points=medianLandmarks(this.frames),frame=points?analyzeExerciseFrame(this.type,points,aspect,this.trackingSide,smoothedWorld):null
     if(!frame)return this.interrupt(points?rejectedFrameReason(this.type,points,this.trackingSide):'正在等待完整人体关键点')
