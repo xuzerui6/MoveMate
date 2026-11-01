@@ -82,6 +82,11 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     return () => { alive.current = false; attempt.current++; window.removeEventListener('pagehide', hide); flush('pause') }
   }, [])
   useEffect(() => { document.querySelector('.motion-screen')?.scrollTo({ top: 0 }) }, [active])
+  useEffect(()=>{
+    if(!preparing||!adaptive||!window.matchMedia('(max-width: 699px)').matches)return;
+    const frame=requestAnimationFrame(()=>document.querySelector('.training-workout .training-camera')?.scrollIntoView({block:'start'}));
+    return()=>cancelAnimationFrame(frame);
+  },[preparing,adaptive])
   const voiceContext: WorkoutContext = useMemo(() => ({
     exerciseType, countUnit: exercise.unit, reps: metrics.reps, targetReps: metrics.targetReps, phase: metrics.phase,
     durationSeconds: seconds, bpm: heartRate.connected && !heartRate.signalInterrupted ? heartRate.currentBpm : null,
@@ -254,7 +259,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
         {restored?.source !== 'demo' && <button className="primary" disabled={busy || ending || visionConsent === null} onClick={() => void begin(false)}><Icon name="camera"/>{busy ? simulatedPose ? '正在开始演示…' : creating ? restored ? '正在恢复训练…' : '正在开始训练…' : '摄像头与模型准备中…' : restored ? '开启摄像头并继续' : '开启摄像头并开始'}</button>}
         {restored?.source !== 'camera' && <button className="secondary" disabled={busy || ending} onClick={() => void begin(true)}><Icon name="play"/>{busy && simulatedPose ? '正在开始演示…' : restored ? '继续演示' : '体验演示 · 不计 XP'}</button>}
         {restored && <button className="text-btn" disabled={busy} onClick={() => void done()}>{busy && ending ? '正在保存…' : ending ? '重试结束' : '结束并保存已有记录'}</button>}
-        {preparing && !creating && <button className="text-btn" onClick={cancelPrepare}>取消准备</button>}
+        {preparing && !creating && !adaptive && <button className="text-btn" onClick={cancelPrepare}>取消准备</button>}
       </div>
       <p className="prep-privacy">{restored?.source === 'demo' ? '演示不访问摄像头，不增加 XP。' : '摄像头就绪后才开始记录。'}语音陪练在训练中按需开启。</p>
       <details className="training-accessory"><summary><Icon name="heart"/>心率设备（可选）</summary><p>{heartRate.connected ? `${heartRate.deviceName} · ${heartRate.currentBpm || '等待'} BPM` : heartRate.errorMessage || '不连接设备也能正常训练。支持标准蓝牙心率带。'}</p><button className="secondary" disabled={heartRate.connected || ['connecting', 'unsupported'].includes(heartRate.status)} onClick={heartRate.connect}>{heartRate.status === 'unsupported' ? '请在 Chrome 或 Edge 连接' : heartRate.connected ? '已连接' : '连接心率带'}</button></details>
@@ -263,12 +268,13 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
       <div className="camera-card training-camera" hidden={!active && !preparing}>
         <PoseCanvas keepVideoRendering={adaptive} videoRef={pose.videoRef} landmarks={simulatedPose ? demoLandmarks : pose.landmarks} demo={simulatedPose} phase={metrics.phase} fit={cameraFit} affectedJoints={paused ? [] : metrics.poseFeedback.affectedJoints}/>
         {paused && <div className="camera-paused"><Icon name="pause" size={30}/><b>{ending ? '正在保存' : pendingAction ? '等待状态确认' : '已暂停'}</b><span>已完成 {metrics.reps} {exercise.unit}</span></div>}
-        {preparing && <div className={'camera-paused'+(adaptive?' adaptive-calibration-hint':'')}><Icon name="camera"/><b>{adaptive?'保持起始姿势，准备校准':'正在准备摄像头与模型'}</b><span>{adaptive?pose.telemetry?.reason:'此时尚未开始新记录'}</span></div>}
+        {preparing && !adaptive && <div className="camera-paused"><Icon name="camera"/><b>正在准备摄像头与模型</b><span>此时尚未开始新记录</span></div>}
         {active && <div className="training-camera-tools"><button ref={cameraExpandButton} type="button" aria-pressed={cameraExpanded} onClick={() => setCameraExpanded(value => !value)}><Icon name={cameraExpanded ? 'collapse' : 'expand'} size={18}/>{cameraExpanded ? '收起画面' : '放大画面'}</button>
           {!simulatedPose && <button type="button" aria-pressed={cameraFit === 'cover'} onClick={() => setCameraFit(value => value === 'contain' ? 'cover' : 'contain')}>{cameraFit === 'contain' ? '铺满画面' : '显示全身'}</button>}
         </div>}
         {active && !simulatedPose && cameraFit === 'cover' && <span className="training-camera-crop-note">画面已裁切 · 请确认全身可见</span>}
       </div>
+      {preparing&&adaptive&&<section className="training-calibration-guidance" role="status"><b>让动作所需关节完整入镜，再保持起始姿势</b><p>{pose.telemetry?.reason}</p>{!creating&&<button type="button" className="secondary" onClick={cancelPrepare}>取消准备</button>}</section>}
       {active && <section className="training-live-info" aria-label="本组训练数据">
         <div className="training-numbers"><div className="training-reps"><strong>{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}</span></div><div><strong>{format(seconds)}</strong><span>有效时长</span></div><div><strong>{metrics.scoreAccumulator.count ? metrics.formScore : '—'}</strong><span>动作评分</span></div></div>
         <div className={'training-hint' + (paused ? ' paused' : '')} role="status"><Icon name={paused ? 'pause' : 'spark'}/><p>{hint}</p></div>

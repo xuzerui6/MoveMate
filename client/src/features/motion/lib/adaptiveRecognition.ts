@@ -2,6 +2,7 @@ import {createRecognitionTracker} from './recognition';
 import {FrameOrder,TimeFilter,type PoseFrame} from './poseProtocol';
 import type {ExerciseMetrics} from './exerciseMetrics';
 import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
+import {framingFeedback} from './framingFeedback';
 import {analyzeSquatFrame} from './squatMetrics';
 export const adaptiveEligible=(type:string)=>['squat','jumping_jack','push_up','high_knees','biceps_curl','hammer_curl','barbell_curl','reverse_barbell_curl','seated_curl','shoulder_press','neutral_seated_press','bent_over_row','barbell_row','bench_press','incline_bench_press','barbell_deadlift','romanian_deadlift','goblet_squat','barbell_back_squat','barbell_front_squat'].includes(type);
 // Empty until real iPhone Safari / Windows Chrome comparisons pass. No automatic rollout.
@@ -27,7 +28,8 @@ export class AdaptiveRecognition {
   const raw=f.landmarks;
   if(!raw||raw.length!==33||raw.some(p=>!p||![p.x,p.y,p.visibility??0].every(Number.isFinite)))return this.reject('未检测到完整人体，请调整入镜范围');
   const needed=this.base.requiredIndices(raw);
-  if(needed.some(i=>raw[i].x<0||raw[i].x>1||raw[i].y<0||raw[i].y>1))return this.reject('必要关节出画，半程动作已丢弃');
+  const framing=framingFeedback(raw,needed);
+  if(framing){this.reject(framing.message);this.base.metrics.poseFeedback={...this.metrics.poseFeedback,affectedJoints:framing.affected};return this.metrics;}
   if(needed.some(i=>(raw[i].visibility??0)<.55)){
    this.weak??=f.capturedAt;if(f.capturedAt-this.weak>200)return this.reject('必要关节持续不清晰，半程动作已丢弃');
    this.base.metrics={...this.metrics,feedback:'关节暂时不清晰，已冻结计数',poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',message:'关节暂时不清晰，已冻结计数'}};return this.metrics;
