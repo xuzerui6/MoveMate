@@ -57,7 +57,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const testSlotValue = new URLSearchParams(window.location.search).get('voiceTestSlot')
   const testSlot = testSlotValue ? Number(testSlotValue) : undefined
   const [adaptive,setAdaptive]=useState(existing?.metrics?.recognitionStrategy==='adaptive-v1')
-  const pose = usePose(active && !simulatedPose && !paused && !busy && !ending,{adaptive:adaptive&&!simulatedPose,type:exerciseType,key:exerciseType,target:20,restored:{...(sessions.find(s=>s.id===serverId.current)?.metrics||restored?.metrics),reps:sessions.find(s=>s.id===serverId.current)?.reps||restored?.reps||0}})
+  const pose = usePose(active && !simulatedPose && !paused && !busy && !ending,{adaptive:adaptive&&!simulatedPose,warmWhenPaused:active&&paused&&!ending&&!pendingAction,type:exerciseType,key:exerciseType,target:20,restored:{...(sessions.find(s=>s.id===serverId.current)?.metrics||restored?.metrics),reps:sessions.find(s=>s.id===serverId.current)?.reps||restored?.reps||0}})
   const heartRate = useHeartRateMonitor(appState.age)
   const heartRef = useRef(heartRate); heartRef.current = heartRate
   useEffect(() => () => heartRef.current.disconnect(), [])
@@ -241,7 +241,8 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     if (failure || poseFailed) document.querySelector('.training-workout .training-error')?.scrollIntoView({ block: 'center' })
   }, [failure, poseFailed])
   const statusLabel = ending ? '正在确认结束' : pendingAction ? '状态待确认' : paused ? '已暂停' : simulatedPose ? '演示 · 不计 XP' : metrics.poseFeedback.calibrated ? '识别中' : '保持起始姿势，准备校准'
-  const hint = ending ? '本组数据已冻结，正在确认保存结果。' : pendingAction ? '本地识别已停止，服务端状态待确认；时长以服务端为准。' : paused ? '休息不计时，继续后重新校准起始姿势。' : metrics.reps >= metrics.targetReps ? '目标已完成，可以结束并保存这一组。' : metrics.feedback
+  const preparedToResume=pose.engine?.diagnostics.stage==='ready'&&pose.engine.metrics.poseFeedback.calibrated&&(pose.telemetry?.fps||0)>=8;
+  const hint = ending ? '本组数据已冻结，正在确认保存结果。' : pendingAction ? '本地识别已停止，服务端状态待确认；时长以服务端为准。' : paused ? adaptive?(preparedToResume?'休息不计时，起始姿势已准备好，可直接继续。':'休息不计时，回到起始姿势后会自动准备。'): '休息不计时，继续后重新校准起始姿势。' : metrics.reps >= metrics.targetReps ? '目标已完成，可以结束并保存这一组。' : metrics.feedback
   return <div className={`page workout-page training-workout ${active ? 'live' : 'setup'}${cameraExpanded ? ' camera-expanded' : ''}`}>
     <Header title={exercise.name + '训练'} back={leave} action={active ? <span className={'training-status' + (paused ? ' paused' : '')}>{statusLabel}</span> : <span className="muted">目标 20 {exercise.unit}</span>}/>
     {!active && <section className="training-prep">
@@ -267,7 +268,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     <div className="training-live-grid">
       <div className="camera-card training-camera" hidden={!active && !preparing}>
         <PoseCanvas keepVideoRendering={adaptive} videoRef={pose.videoRef} landmarks={simulatedPose ? demoLandmarks : pose.landmarks} demo={simulatedPose} phase={metrics.phase} fit={cameraFit} affectedJoints={paused ? [] : metrics.poseFeedback.affectedJoints}/>
-        {paused && <div className="camera-paused"><Icon name="pause" size={30}/><b>{ending ? '正在保存' : pendingAction ? '等待状态确认' : '已暂停'}</b><span>已完成 {metrics.reps} {exercise.unit}</span></div>}
+        {paused && <div className="camera-paused"><Icon name="pause" size={30}/><b>{ending ? '正在保存' : pendingAction ? '等待状态确认' : '已暂停'}</b><span>已完成 {metrics.reps} {exercise.unit}</span>{adaptive&&!ending&&!pendingAction&&<small>{preparedToResume?'起始姿势已准备好，可直接继续':'镜头开启时自动确认起始姿势；休息不计数、不计时'}</small>}</div>}
         {preparing && !adaptive && <div className="camera-paused"><Icon name="camera"/><b>正在准备摄像头与模型</b><span>此时尚未开始新记录</span></div>}
         {active && <div className="training-camera-tools"><button ref={cameraExpandButton} type="button" aria-pressed={cameraExpanded} onClick={() => setCameraExpanded(value => !value)}><Icon name={cameraExpanded ? 'collapse' : 'expand'} size={18}/>{cameraExpanded ? '收起画面' : '放大画面'}</button>
           {!simulatedPose && <button type="button" aria-pressed={cameraFit === 'cover'} onClick={() => setCameraFit(value => value === 'contain' ? 'cover' : 'contain')}>{cameraFit === 'contain' ? '铺满画面' : '显示全身'}</button>}

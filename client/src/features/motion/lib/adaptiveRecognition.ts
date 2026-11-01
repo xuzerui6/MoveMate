@@ -18,6 +18,12 @@ export class AdaptiveRecognition {
  get metrics(){return this.base.metrics;}
  get diagnostics(){return this.base.diagnostics;}
  get ready(){return this.prepared&&this.base.metrics.poseFeedback.calibrated;}
+ /** Reuse only a fully prepared neutral phase; never carry a paused partial cycle. */
+ continuePrepared(runId:number){
+  if(!this.ready||this.diagnostics.stage!=='ready')return false;
+  this.order=new FrameOrder(runId);this.image.reset();this.world.reset();return true;
+ }
+
  interrupt(reason='识别已暂停，继续前重新校准'){
   this.base.interrupt(reason);this.image.reset();this.world.reset();this.stable=[];this.previous=null;this.shape=null;this.source=null;this.weak=null;this.weakWorld=null;this.prepared=false;this.scoring=true;
  }

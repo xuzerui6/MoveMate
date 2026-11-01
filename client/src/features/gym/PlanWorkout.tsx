@@ -193,7 +193,7 @@ export default function PlanWorkout() {
   const restored=useMemo(()=>restoredSetMetrics(current),[current?.id,recoveryKey]);
   const [adaptive,setAdaptive]=useState(false);
   useEffect(()=>{setAdaptive(current?.recognitionStrategy==='adaptive-v1');},[current?.id]);
-  const pose=usePose(camera&&supportedRecognition&&working&&!busy&&!blocked&&!offline&&!finishAttempted,{adaptive:adaptive&&adaptiveEligible(type),type,key:current?.id||'none',target:current?.targetReps||20,restored:{...restored,reps:current?.reps||restored.reps}}),seconds=useSessionClock(row?.session,busy||blocked||offline||finishAttempted);
+  const pose=usePose(camera&&supportedRecognition&&working&&!busy&&!blocked&&!offline&&!finishAttempted,{adaptive:adaptive&&adaptiveEligible(type),warmWhenPaused:camera&&row?.phase==='paused'&&!blocked&&!offline&&!finishAttempted,type,key:current?.id||'none',target:current?.targetReps||20,restored:{...restored,reps:current?.reps||restored.reps}}),seconds=useSessionClock(row?.session,busy||blocked||offline||finishAttempted);
   const { metrics, diagnostics } = usePlanRecognition(
     type,
     pose.landmarks,
@@ -875,6 +875,7 @@ export default function PlanWorkout() {
                   允许语音陪练复核关键帧（可选，本站不保存图片）
                 </label>
               )}
+              {adaptive&&camera&&row.phase==='paused'&&<p className="gym-muted" role="status">{pose.engine?.diagnostics.stage==='ready'&&pose.engine.metrics.poseFeedback.calibrated&&(pose.telemetry?.fps||0)>=8?'起始姿势已准备好，可直接继续':'休息不计时，回到起始姿势后会自动准备。'}</p>}
               <div className="gym-main-actions">
                 {current && ["ready", "resting"].includes(row.phase) && (
                   <>
