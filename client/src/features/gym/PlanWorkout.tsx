@@ -697,7 +697,7 @@ export default function PlanWorkout() {
                     {type === "high_knees" ? "对" : "次"}
                   </strong>
                   <p>
-                    {!working ? "已暂停识别；继续后重新校准" : metrics.feedback}
+                    {!working ? (adaptive ? "已暂停识别" : "已暂停识别；继续后重新校准") : metrics.feedback}
                   </p>
                   <small>
                     {isNewPlanProfile(type) && <>本次评分 {metrics.lastRepScore == null ? "无法判断／待完成" : metrics.lastRepScore + " 分"} · </>}
@@ -875,7 +875,7 @@ export default function PlanWorkout() {
                   允许语音陪练复核关键帧（可选，本站不保存图片）
                 </label>
               )}
-              {adaptive&&camera&&row.phase==='paused'&&<p className="gym-muted" role="status">{pose.engine?.diagnostics.stage==='ready'&&pose.engine.metrics.poseFeedback.calibrated&&(pose.telemetry?.fps||0)>=8?'起始姿势已准备好，可直接继续':'休息不计时，回到起始姿势后会自动准备。'}</p>}
+              {adaptive&&camera&&row.phase==='paused'&&<p className="gym-muted" role="status">{pose.engine?.diagnostics.stage==='ready'&&pose.engine.metrics.poseFeedback.calibrated&&(pose.telemetry?.fps||0)>=8?'起始姿势已准备好，可直接继续':'休息不计时，继续后识别下一个完整动作。'}</p>}
               <div className="gym-main-actions">
                 {current && ["ready", "resting"].includes(row.phase) && (
                   <>

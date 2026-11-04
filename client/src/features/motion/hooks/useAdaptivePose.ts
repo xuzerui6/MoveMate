@@ -6,7 +6,7 @@ import {waitForVideoFrame} from '../lib/videoReady';
 import {openPoseTransport,type PoseTransport} from '../lib/poseTransport';
 import {fullIsFast,percentile95,type PoseFrame,type PoseModel,type PoseTelemetry} from '../lib/poseProtocol';
 import type {ExerciseMetrics,RecognitionDiagnostics} from '../lib/exerciseMetrics';
-export type PoseFailurePhase='camera'|'model'|'calibration'|'performance'|'inference';
+export type PoseFailurePhase='camera'|'model'|'framing'|'performance'|'inference';
 export type AdaptiveOptions={type:string;key:string;target:number;restored:Partial<ExerciseMetrics>;warmWhenPaused?:boolean};
 export type EngineSnapshot={metrics:ExerciseMetrics;diagnostics:RecognitionDiagnostics};
 type Video=HTMLVideoElement&{requestVideoFrameCallback?:(cb:(now:number,metadata:{mediaTime:number})=>void)=>number;cancelVideoFrameCallback?:(id:number)=>void};
@@ -20,7 +20,7 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
  const release=(r:Runtime)=>{r.runId=++serial.current;r.controller.abort();r.transport?.close();r.stream?.getTracks().forEach(t=>t.stop());if(r.timer)clearTimeout(r.timer);if(r.fallbackTimer)clearTimeout(r.fallbackTimer);r.finish?.(false);r.finish=null;const v=videoRef.current as Video|null;if(v){if(r.raf)cancelAnimationFrame(r.callback);else v.cancelVideoFrameCallback?.(r.callback);v.srcObject=null;}};
  const stop=useCallback(()=>{const r=runtime.current;if(r){release(r);runtime.current=null;}if(mounted.current){setStatus('idle');setFailurePhase(null);setState(s=>({...s,landmarks:null,worldLandmarks:null,frame:null}));}},[]);
  const performanceFailure=(r:Runtime)=>{setFailurePhase('performance');r.engine.interrupt('有效识别帧率过低，已冻结计数，请暂停后使用 Lite 或转手动');activeRef.current=false;errorReason.current='有效识别帧率低于 8 FPS，统计已冻结，请使用 Lite 重试或转手动';release(r);setStatus('error');publish(r,errorReason.current);};
- const calibrationDeadline=(r:Runtime)=>{if(r.timer)clearTimeout(r.timer);r.timer=setTimeout(()=>{
+ const frameDeadline=(r:Runtime)=>{if(r.timer)clearTimeout(r.timer);r.timer=setTimeout(()=>{
   if(runtime.current!==r||r.controller.signal.aborted)return;
   const now=performance.now();
   if(now-r.lastSubmitted>3000){
@@ -28,10 +28,10 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
    errorReason.current='摄像头没有持续提供新画面，请保持页面在前台并重新开启摄像头。';
   }else if(r.times.filter(time=>now-time<=1000).length<8){
    setFailurePhase('performance');
-   errorReason.current='识别帧率不足，请关闭占用设备的应用后重试，或使用手动记录。';
+   errorReason.current='识别未收到及时的画面结果，请关闭占用设备的应用后重试。';
   }else{
-   setFailurePhase('calibration');
-   errorReason.current='起始姿势未就绪。'+r.engine.metrics.feedback+'。请调整入镜后重试。';
+   setFailurePhase('framing');
+   errorReason.current=r.engine.metrics.feedback;
   }
   release(r);setStatus('error');publish(r,errorReason.current);
  },30000);};
@@ -51,12 +51,12 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
   r.times=[];
   r.latencies=[];
   r.probeTimes=[];
-  publish(r,'正在准备轻量识别，请保持起始姿势');
+  publish(r,'正在准备轻量识别');
   try{
    const transport=await openPoseTransport('lite',r.controller.signal,videoRef.current||undefined,{mainThread:true});
    if(runtime.current!==r||r.controller.signal.aborted){transport.close();return;}
    r.transport=transport;
-   calibrationDeadline(r);
+   frameDeadline(r);
   }catch(error){
    if(runtime.current!==r||r.controller.signal.aborted)return;
    setFailurePhase('model');
@@ -102,13 +102,25 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
     if(r.controller.signal.aborted||runtime.current!==r||runId!==r.runId)return;
     const receivedAt=performance.now(),f:PoseFrame={runId,frameId:id,capturedAt,receivedAt,width,height,...result,model:r.model,mode:r.transport!.mode};r.lastReceived=receivedAt;
     r.latencies=[...r.latencies,receivedAt-capturedAt].slice(-120);r.times=[...r.times,...(receivedAt-capturedAt<=250&&(!r.times.length||capturedAt>r.times[r.times.length-1])?[capturedAt]:[])].filter(t=>capturedAt-t<=2000);
-    if(r.probing){r.engine.update(f,false);r.probeTimes.push(capturedAt);if(capturedAt-r.probeTimes[0]>=2200){if(r.timer)clearTimeout(r.timer);r.timer=null;
+    if(r.probing){
+     r.probeTimes.push(capturedAt);
+     if(capturedAt-r.probeTimes[0]<2200){publish(r,'正在检查识别速度',f);return;}
      if(!fullIsFast(r.probeTimes,r.latencies)){void fallbackToLite(r);return;}
      r.probing=false;
-     calibrationDeadline(r);
-     if(r.engine.ready&&r.engine.diagnostics.stage==='ready'){r.preparing=false;if(r.timer)clearTimeout(r.timer);r.finish?.(true);r.finish=null;setStatus('ready');}
-    }publish(r,r.probing?'请保持起始姿势，正在准备识别':r.engine.metrics.feedback,r.model==='full'?f:undefined);return;}
-    if(r.preparing){r.engine.update(f,false);publish(r,r.engine.metrics.feedback,f);if(r.engine.ready&&r.engine.diagnostics.stage==='ready'){const elapsed=r.times[r.times.length-1]-r.times[0],fps=elapsed>0?(r.times.length-1)*1000/elapsed:0;if(fps<8){setFailurePhase('performance');errorReason.current='准备阶段有效帧率低于 8 FPS，请改善设备性能或使用旧版／手动记录';release(r);setStatus('error');publish(r,errorReason.current);return;}r.preparing=false;if(r.timer)clearTimeout(r.timer);r.finish?.(true);r.finish=null;setStatus('ready');}return;}
+     frameDeadline(r);
+    }
+    if(r.preparing){
+     if(receivedAt-capturedAt>250)return;
+     r.engine.update(f,false);
+     if(!r.engine.usableFrame){publish(r,r.engine.metrics.feedback,f);return;}
+     r.preparing=false;
+     if(r.timer)clearTimeout(r.timer);
+     r.finish?.(true);
+     r.finish=null;
+     setStatus('ready');
+     publish(r,r.engine.metrics.feedback,f);
+     return;
+    }
     if(r.passive&&!activeRef.current){r.engine.update(f,false);publish(r,r.engine.ready&&r.engine.diagnostics.stage==='ready'?'已暂停 · 起始姿势已准备好，可直接继续':'已暂停 · 自动准备：'+r.engine.metrics.feedback,f);return;}
     if(activeRef.current){r.engine.update(f);const elapsed=capturedAt-r.startedAt,fps=r.times.length>1?(r.times.length-1)*1000/(r.times[r.times.length-1]-r.times[0]):0;
      if(elapsed>2500&&fps<8)r.slowSince??=receivedAt;else r.slowSince=null;
@@ -131,20 +143,20 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
   const reuse=previous&&!previous.controller.signal.aborted&&previous.transport&&(!mainThread||previous.model==='lite'&&previous.transport.mode.startsWith('main'));let r:Runtime;
   if(reuse){r=previous!;r.runId=++serial.current;r.frameId=0;r.preparing=true;r.passive=false;r.probing=false;r.times=[];r.latencies=[];r.slowSince=null;r.startedAt=performance.now();r.key=opts.current.key;r.engine=new AdaptiveRecognition(opts.current.type,opts.current.target,saved,r.runId);r.finish?.(false);}
   else{if(previous)release(previous);const runId=++serial.current;r={controller:new AbortController(),transport:null,stream:null,runId,frameId:0,origin:null,lastMedia:-1,lastDecoded:-1,inFlight:false,callback:0,raf:true,forceRaf:false,appleCamera,playRetried:false,fallbackTimer:null,preparing:true,passive:false,probing:false,probeTimes:[],latencies:[],times:[],slowSince:null,startedAt:performance.now(),lastReceived:performance.now(),lastSubmitted:-Infinity,model:mainThread?'lite':'full',engine:new AdaptiveRecognition(opts.current.type,opts.current.target,saved,runId),key:opts.current.key,finish:null,timer:null};runtime.current=r;}
-  let phase:PoseFailurePhase='camera';errorReason.current='';setFailurePhase(null);setStatus('loading');publish(r,reuse?'请保持起始姿势':'正在准备摄像头');
+  let phase:PoseFailurePhase='camera';errorReason.current='';setFailurePhase(null);setStatus('loading');publish(r,reuse?'正在恢复识别':'正在准备摄像头');
   try{
    if(!reuse){
     const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:720},height:{ideal:960},aspectRatio:{ideal:3/4}},audio:false});
     if(r.controller.signal.aborted||!videoRef.current){stream.getTracks().forEach(t=>t.stop());return false;}r.stream=stream;videoRef.current.muted=true;videoRef.current.playsInline=true;videoRef.current.srcObject=stream;await videoRef.current.play();await waitForVideoFrame(videoRef.current,r.controller.signal);phase='model';
-    publish(r,'请保持起始姿势，正在准备识别');
-    try{r.transport=await openPoseTransport(r.model,r.controller.signal,videoRef.current||undefined,{mainThread});}catch(e){if(r.controller.signal.aborted)throw e;if(r.model==='lite')throw e;r.model='lite';publish(r,'正在准备轻量识别，请保持起始姿势');r.transport=await openPoseTransport('lite',r.controller.signal,videoRef.current||undefined,{mainThread:true});}
+    publish(r,'正在准备识别');
+    try{r.transport=await openPoseTransport(r.model,r.controller.signal,videoRef.current||undefined,{mainThread});}catch(e){if(r.controller.signal.aborted)throw e;if(r.model==='lite')throw e;r.model='lite';publish(r,'正在准备轻量识别');r.transport=await openPoseTransport('lite',r.controller.signal,videoRef.current||undefined,{mainThread:true});}
     if(r.controller.signal.aborted){r.transport.close();return false;}r.probing=r.model==='full';schedule(r);
    }
-   return await new Promise<boolean>(resolve=>{r.finish=resolve;if(!r.probing)calibrationDeadline(r);else r.timer=setTimeout(()=>void fallbackToLite(r),12000);});
+   return await new Promise<boolean>(resolve=>{r.finish=resolve;if(!r.probing)frameDeadline(r);else r.timer=setTimeout(()=>void fallbackToLite(r),12000);});
   }catch(e){if(r.controller.signal.aborted)return false;release(r);setFailurePhase(phase);errorReason.current=e instanceof DOMException&&e.name==='NotAllowedError'?'摄像头权限被拒绝，请允许后重试':e instanceof Error?e.message:'模型或摄像头准备失败';setStatus(e instanceof DOMException&&e.name==='NotAllowedError'?'denied':'error');publish(r,errorReason.current);return false;}
  },[status]);
  useEffect(()=>{const r=runtime.current;if(!r||r.preparing||r.controller.signal.aborted)return;if(!active){if(!opts.current.warmWhenPaused){r.passive=false;r.runId=++serial.current;r.engine.interrupt();publish(r,'识别已冻结，等待操作确认');return;}if(r.key!==opts.current.key){r.passive=false;r.engine.interrupt();return;}const saved=structuredClone(r.engine.metrics);r.runId=++serial.current;r.frameId=0;r.engine=new AdaptiveRecognition(opts.current.type,opts.current.target,saved,r.runId);r.passive=true;r.times=[];publish(r,'已暂停 · 回到起始姿势后自动准备，不计次数或时长');}else{r.passive=false;r.startedAt=performance.now();r.lastReceived=performance.now();r.times=[];r.slowSince=null;}},[active,options.warmWhenPaused]);
  useEffect(()=>{mounted.current=true;return()=>{mounted.current=false;const r=runtime.current;if(r)release(r);runtime.current=null;};},[]);
- useEffect(()=>{const hide=()=>{const r=runtime.current;if(document.hidden&&r&&!r.controller.signal.aborted){r.engine.interrupt('页面已转入后台，已冻结识别，请返回后重新校准');errorReason.current='页面已转入后台，已冻结识别，请重新校准后继续';release(r);setStatus('error');publish(r,errorReason.current);}};document.addEventListener('visibilitychange',hide);return()=>document.removeEventListener('visibilitychange',hide);},[]);
+ useEffect(()=>{const hide=()=>{const r=runtime.current;if(document.hidden&&r&&!r.controller.signal.aborted){r.engine.interrupt('页面已转入后台，已冻结识别，请返回后继续训练');errorReason.current='页面已转入后台，已冻结识别，请返回后继续训练';release(r);setStatus('error');publish(r,errorReason.current);}};document.addEventListener('visibilitychange',hide);return()=>document.removeEventListener('visibilitychange',hide);},[]);
  return {videoRef,errorReason,status,failurePhase,start,stop,landmarks:state.landmarks,worldLandmarks:state.worldLandmarks,frame:state.frame,telemetry:state.telemetry,engine:state.key===options.key?state.engine:null};
 }

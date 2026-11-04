@@ -140,7 +140,7 @@ export class ExerciseTracker {
   private legsAt:number|null=null
   private motionAt:number|null=null
   requiredIndices(raw:NormalizedLandmark[]){return requiredJoints(this.type,raw,this.trackingSide)}
-  constructor(readonly type:CameraExerciseType, targetReps=20, restored:Partial<ExerciseMetrics>={},readonly prefiltered=false) {
+  constructor(readonly type:CameraExerciseType, targetReps=20, restored:Partial<ExerciseMetrics>={},readonly prefiltered=false,readonly armOnStart=false) {
     const reps=Math.max(0,restored.reps||0),breakdown={...emptyFormBreakdown(),...restored.formBreakdown}
     const acc=restored.scoreAccumulator || {count:reps,total:(restored.formScore||0)*reps,...Object.fromEntries(axes.map(k=>[k,breakdown[k]*reps]))} as ScoreAccumulator
     this.metrics={...restored,reps,targetReps,formScore:acc.count?Math.round(acc.total/acc.count):0,perfectReps:restored.perfectReps||0,feedback:exerciseInfo(type).placement,phase:'standing',scoreAccumulator:{...acc},formBreakdown:breakdown,correctionCounts:{...emptyCorrectionCounts(),...restored.correctionCounts},lastRepIssues:[],repeatedIssue:null,poseFeedback:this.feedback(null,false)}
@@ -214,12 +214,14 @@ export class ExerciseTracker {
     }
     if(!this.calibrated) {
       if(!frame.start)this.calibrationAt=null
-      else if(this.calibrationAt===null)this.calibrationAt=now
-      else if(now-this.calibrationAt>=2000){this.calibrated=true;this.armed=true}
+      else {
+        this.calibrationAt ??= now
+        if(this.armOnStart||now-this.calibrationAt>=2000){this.calibrated=true;this.armed=true}
+      }
       const feedback=this.feedback(frame,this.calibrated)
-      const progress=this.calibrationAt===null?0:Math.min(1,(now-this.calibrationAt)/2000)
+      const progress=this.calibrated?1:this.calibrationAt===null?0:Math.min(1,(now-this.calibrationAt)/2000)
       this.diagnostics={...this.diagnostics,stage:this.calibrated?'ready':'calibrating',calibrationProgress:progress}
-      const message=this.calibrated?'校准完成，可以开始完整动作':frame.start?`${feedback.message}（${Math.round(progress*100)}%）`:this.type==='push_up'?'先保持伸臂支撑，再开始动作':'先回到自然站姿，再开始动作'
+      const message=this.calibrated?'已识别起始姿势，可以开始完整动作':frame.start?`${feedback.message}（${Math.round(progress*100)}%）`:this.type==='push_up'?'先保持伸臂支撑，再开始动作':'先回到自然站姿，再开始动作'
       this.metrics={...this.metrics,poseFeedback:feedback,feedback:message};return this.metrics
     }
     const feedback=this.feedback(frame,true)

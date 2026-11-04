@@ -46,7 +46,7 @@ export class ExtendedExerciseTracker {
   private shift=0;
   private controlPenalty=0;
   requiredIndices(raw:Point[]){return this.needed(raw)}
-  constructor(readonly type:ExtendedType,targetReps=20,restored:Partial<ExerciseMetrics>={},readonly prefiltered=false){
+  constructor(readonly type:ExtendedType,targetReps=20,restored:Partial<ExerciseMetrics>={},readonly prefiltered=false,readonly armOnStart=false){
     const acc={...emptyFormBreakdown(),count:0,total:0,...restored.scoreAccumulator};
     this.metrics={...restored,reps:Math.max(0,restored.reps||0),targetReps,perfectReps:restored.perfectReps||0,formScore:acc.count?Math.round(acc.total/acc.count):0,phase:'standing',feedback:definitions[type].placement,scoreAccumulator:acc,formBreakdown:emptyFormBreakdown(),correctionCounts:{...emptyCorrectionCounts(),...restored.correctionCounts},lastRepIssues:[],repeatedIssue:null,poseFeedback:{status:'uncertain',confidence:0,issues:[],primaryIssue:null,affectedJoints:[],calibrated:false,message:'保持起始姿势两秒，准备校准'}};
     this.updateAverage();
@@ -209,9 +209,9 @@ export class ExtendedExerciseTracker {
     this.last=now;this.times=[...this.times,now].filter(t=>now-t<=2000);
     this.diagnostics={...this.diagnostics,fps:this.times.length>1?Math.round((this.times.length-1)*1000/(now-this.times[0])):0,confidence:f.confidence,side:f.side||null,angle:f.angle,basis:f.basis,motion:f.motion};
     if(!this.ready){
-      if(!f.start){this.calibration=null;this.baseline=null;}else{if(this.calibration===null)this.calibration=now;this.baseline=f;if(now-this.calibration>=2000)this.ready=true;}
-      const progress=this.calibration===null?0:Math.min(1,(now-this.calibration)/2000);this.diagnostics={...this.diagnostics,stage:this.ready?'ready':'calibrating',calibrationProgress:progress};
-      const message=this.ready?'校准完成，可以开始完整动作':f.start?`保持起始姿势，校准 ${Math.round(progress*100)}%`:f.hint||'请回到本动作起始姿势，保持两秒';
+      if(!f.start){this.calibration=null;this.baseline=null;}else{if(this.calibration===null)this.calibration=now;this.baseline=f;if(this.armOnStart||now-this.calibration>=2000)this.ready=true;}
+      const progress=this.ready?1:this.calibration===null?0:Math.min(1,(now-this.calibration)/2000);this.diagnostics={...this.diagnostics,stage:this.ready?'ready':'calibrating',calibrationProgress:progress};
+      const message=this.ready?'已识别起始姿势，可以开始完整动作':f.start?`保持起始姿势，校准 ${Math.round(progress*100)}%`:f.hint||(this.armOnStart?'请回到本动作起始姿势':'请回到本动作起始姿势，保持两秒');
       this.metrics={...this.metrics,feedback:message,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:this.ready,confidence:f.confidence,message}};return this.metrics;
     }
     if(!f.start){

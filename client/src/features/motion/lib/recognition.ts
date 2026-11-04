@@ -7,18 +7,18 @@ import {isNewExercise,type NewExerciseType} from './newExercises';
 import {isLibraryRecognition,type LibraryRecognitionType} from '../../gym/libraryRecognition';
 export type RecognitionType=CameraExerciseType|NewPlanProfile|LibraryRecognitionType;
 export const isRecognitionType=(type:string):type is RecognitionType=>isCameraExercise(type)||isNewPlanProfile(type)||isLibraryRecognition(type);
-export function createRecognitionTracker(type:string,target=20,restored:Partial<ExerciseMetrics>={},prefiltered=false){
+export function createRecognitionTracker(type:string,target=20,restored:Partial<ExerciseMetrics>={},prefiltered=false,armOnStart=false){
   if(isLibraryRecognition(type)){
-    if(type==='goblet_squat'||type==='barbell_back_squat'||type==='barbell_front_squat')return new ExerciseTracker('squat',target,restored,prefiltered);
-    if(type==='barbell_curl'||type==='reverse_barbell_curl')return new PlanExerciseTracker('biceps_curl',target,restored,prefiltered);
-    if(type==='barbell_row')return new PlanExerciseTracker('bent_over_row',target,restored,prefiltered);
-    if(type==='neutral_seated_press')return new PlanExerciseTracker('shoulder_press',target,restored,prefiltered);
-    if(type==='dumbbell_calf_raise')return new PlanExerciseTracker('calf_raise',target,restored,prefiltered);
-    return new ExtendedExerciseTracker(type,target,restored,prefiltered);
+    if(type==='goblet_squat'||type==='barbell_back_squat'||type==='barbell_front_squat')return new ExerciseTracker('squat',target,restored,prefiltered,armOnStart);
+    if(type==='barbell_curl'||type==='reverse_barbell_curl')return new PlanExerciseTracker('biceps_curl',target,restored,prefiltered,armOnStart);
+    if(type==='barbell_row')return new PlanExerciseTracker('bent_over_row',target,restored,prefiltered,armOnStart);
+    if(type==='neutral_seated_press')return new PlanExerciseTracker('shoulder_press',target,restored,prefiltered,armOnStart);
+    if(type==='dumbbell_calf_raise')return new PlanExerciseTracker('calf_raise',target,restored,prefiltered,armOnStart);
+    return new ExtendedExerciseTracker(type,target,restored,prefiltered,armOnStart);
   }
-  if(isNewExercise(type))return new ExtendedExerciseTracker(type,target,restored,prefiltered);
-  if(isNewPlanProfile(type))return new PlanExerciseTracker(type,target,restored,prefiltered);
-  if(isCameraExercise(type))return new ExerciseTracker(type as BaseCameraExerciseType,target,restored,prefiltered);
+  if(isNewExercise(type))return new ExtendedExerciseTracker(type,target,restored,prefiltered,armOnStart);
+  if(isNewPlanProfile(type))return new PlanExerciseTracker(type,target,restored,prefiltered,armOnStart);
+  if(isCameraExercise(type))return new ExerciseTracker(type as BaseCameraExerciseType,target,restored,prefiltered,armOnStart);
   throw new Error('当前客户端不支持此动作，请刷新页面或切换手动记录');
 }
 /** Explicit synthetic sequences for demo and labelled replay, never real-camera evidence. */

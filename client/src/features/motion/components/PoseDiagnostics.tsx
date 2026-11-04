@@ -1,7 +1,7 @@
 import type {PoseTelemetry} from '../lib/poseProtocol';
 export function RecognitionChoice({adaptive,eligible,disabled,onChange}:{adaptive:boolean;eligible:boolean;disabled:boolean;onChange:(value:boolean)=>void}){
  if(!eligible)return null;
- return <label className="training-recognition-choice">识别策略<select aria-label="识别策略" value={adaptive?'adaptive':'legacy'} disabled={disabled} onChange={e=>onChange(e.target.value==='adaptive')}><option value="legacy">旧版 · 当前默认</option><option value="adaptive">新版自适应 · 对照测试</option></select><small>新版尚未完成真人对照，不代表准确度已提升。准备阶段包含模型测量与稳定校准，不计时。</small></label>;
+ return <label className="training-recognition-choice">识别策略<select aria-label="识别策略" value={adaptive?'adaptive':'legacy'} disabled={disabled} onChange={e=>onChange(e.target.value==='adaptive')}><option value="legacy">旧版 · 当前默认</option><option value="adaptive">新版自适应 · 对照测试</option></select><small>新版尚未完成真人对照，不代表准确度已提升。准备完成后立即识别，第一个完整动作开始计数。</small></label>;
 }
 const modes={'worker-gpu':'Worker GPU','worker-cpu':'Worker CPU','main-gpu':'主线程 GPU（降级）','main-cpu':'主线程 CPU（降级）'};
 export function PoseDiagnostics({telemetry}:{telemetry:PoseTelemetry|null}){

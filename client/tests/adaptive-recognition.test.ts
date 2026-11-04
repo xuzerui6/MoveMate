@@ -22,7 +22,7 @@ function replay(type:string,dt=1000/20,aspect=.75,restored:any={}){
 }
 for(const type of ['squat','jumping_jack','push_up','high_knees','biceps_curl','hammer_curl','seated_curl','shoulder_press','bent_over_row','bench_press','incline_bench_press','barbell_deadlift','romanian_deadlift'])test(`${type}: adaptive capture-time cycles and stable preparation retain statistics`,()=>{
  for(const aspect of [.75,16/9]){
-  const r=replay(type,50,aspect);r.feed('neutral',3200,false);assert.ok(r.tracker.ready,r.tracker.metrics.feedback);assert.equal(r.tracker.metrics.reps,0);
+  const r=replay(type,50,aspect);r.send(fixture(type),false);assert.ok(r.tracker.ready,r.tracker.metrics.feedback);assert.equal(r.tracker.metrics.reps,0);
   r.cycle();assert.equal(r.tracker.metrics.reps,1,r.tracker.metrics.feedback);
   r.tracker.interrupt();r.feed('neutral',3200,false);assert.equal(r.tracker.metrics.reps,1);r.cycle();assert.equal(r.tracker.metrics.reps,2,r.tracker.metrics.feedback);
  }
@@ -41,8 +41,8 @@ test('dimensions, coordinate-source changes and frame exit invalidate partial cy
  const r=replay('squat');r.feed('neutral',3200,false);r.feed('peak');r.send(fixture('squat','peak'),true,f=>{f.worldLandmarks=f.landmarks!.map(p=>({...p}));});assert.equal(r.tracker.metrics.reps,0);assert.equal(r.tracker.ready,false);
  r.feed('neutral',3200,false);r.send(fixture('squat'),true,f=>{f.landmarks![27].x=1.1});assert.equal(r.tracker.ready,false);assert.equal(r.tracker.metrics.reps,0);
 });
-test('unstable preparation cannot start or award repetitions',()=>{
- const r=replay('squat');for(let i=0;i<70;i++)r.send(fixture('squat'),false,f=>f.landmarks!.forEach(p=>p.x+=(i%2?.08:-.08)));assert.equal(r.tracker.ready,false);assert.equal(r.tracker.metrics.reps,0);
+test('unstable preparation cannot award repetitions',()=>{
+ const r=replay('squat');for(let i=0;i<70;i++)r.send(fixture('squat'),false,f=>f.landmarks!.forEach(p=>p.x+=(i%2?.08:-.08)));assert.equal(r.tracker.metrics.reps,0);
 });
 test('Full requires actual two-second throughput and bounded P95 delay',()=>{
  const fast=Array.from({length:70},(_,i)=>i*33.4);assert.ok(fullIsFast(fast,fast.map(()=>30)));assert.equal(fullIsFast([0,100], [10,10]),false);assert.equal(fullIsFast(fast,fast.map(()=>250)),false);assert.equal(fullIsFast(Array.from({length:24},(_,i)=>i*100),[20]),false);
@@ -67,4 +67,14 @@ test('a paused partial cycle cannot be reused as a prepared start',()=>{
 });
 test('completed movements during passive preparation never increase stored counts or scores',()=>{
  const r=replay('squat');r.feed('neutral',3200,false);for(let i=0;i<3;i++){r.feed('peak',1600,false);r.feed('neutral',3200,false);}assert.equal(r.tracker.metrics.reps,0);assert.equal(r.tracker.metrics.scoreAccumulator.count,0);
+});
+
+test('opening mid-squat does not count until the first complete cycle',()=>{
+ const r=replay('squat');
+ r.send(fixture('squat','peak'),false);
+ assert.equal(r.tracker.ready,false);
+ r.feed('neutral',1600);
+ assert.equal(r.tracker.metrics.reps,0);
+ r.cycle();
+ assert.equal(r.tracker.metrics.reps,1);
 });

@@ -8,5 +8,5 @@ export function framingFeedback(points:Point[],required:number[]){
  const bottom=affected.some(i=>points[i].y>1),top=affected.some(i=>points[i].y<0);
  const edge=bottom&&top?'上下边缘':bottom?'下沿':top?'上沿':'侧边';
  const action=bottom&&!top?'请后退一点，或把镜头稍向下调整，让脚部完整入镜':top&&!bottom?'请后退一点，或把镜头稍向上调整':'请后退一点，并把身体移到画面中央';
- return {affected,message:`${parts}出画（画面${edge}）。${action}，站稳后重新校准`};
+ return {affected,message:`${parts}出画（画面${edge}）。${action}，入镜后继续做完整动作`};
 }
