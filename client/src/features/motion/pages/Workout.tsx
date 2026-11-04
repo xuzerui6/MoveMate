@@ -237,6 +237,16 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const retryCamera = async () => { setFailure(''); await pose.start() }
   const toggleVoice = () => { if (!voiceEnabled) { voice.prepareAudio(); voice.retry() } setVoiceEnabled(!voiceEnabled) }
   const poseFailed = !simulatedPose && ['denied', 'error'].includes(pose.status)
+  const poseFailureTitles = {
+    camera: '摄像头未就绪',
+    model: '模型加载失败',
+    calibration: '起始姿势校准未完成',
+    performance: '识别性能未达要求',
+    inference: '动作识别中断',
+  }
+  const poseFailureTitle = pose.status === 'denied'
+    ? '摄像头权限未开启'
+    : pose.failurePhase ? poseFailureTitles[pose.failurePhase] : '摄像头或模型加载失败'
   useEffect(() => {
     if (failure || poseFailed) document.querySelector('.training-workout .training-error')?.scrollIntoView({ block: 'center' })
   }, [failure, poseFailed])
@@ -293,7 +303,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
         </details>
       </section>}
     </div>
-    {poseFailed && <div className="training-error" role="alert"><b>{pose.status === 'denied' ? '摄像头权限未开启' : pose.failurePhase==='calibration'?'起始姿势校准未完成':pose.failurePhase==='performance'?'识别性能未达要求':'摄像头或模型加载失败'}</b><p>{pose.errorReason.current || (active ? '识别已停止，请检查设备后重试。' : '尚未创建新训练记录，请允许摄像头或重新加载模型。')}</p>{!active&&<p>本次尚未开始计时，也未创建新的训练记录。</p>}{active && <button className="secondary" disabled={busy} onClick={() => void retryCamera()}>重试摄像头</button>}</div>}
+    {poseFailed && <div className="training-error" role="alert"><b>{poseFailureTitle}</b><p>{pose.errorReason.current || (active ? '识别已停止，请检查设备后重试。' : '尚未创建新训练记录，请允许摄像头或重新加载模型。')}</p>{!active&&<p>本次尚未开始计时，也未创建新的训练记录。</p>}{active && <button className="secondary" disabled={busy} onClick={() => void retryCamera()}>重试摄像头</button>}</div>}
     {active&&<PoseDiagnostics telemetry={pose.telemetry}/>}
     {adaptive&&poseFailed&&!active&&<button className="secondary" disabled={busy||visionConsent===null} onClick={()=>void begin(false,true)}>使用 Lite 兼容模式重试</button>}
     {adaptive&&paused&&<button className="secondary" disabled={busy} onClick={()=>void pose.start(true)}>使用 Lite 重新准备</button>}
