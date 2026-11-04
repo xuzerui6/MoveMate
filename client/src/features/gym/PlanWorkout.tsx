@@ -702,9 +702,10 @@ export default function PlanWorkout() {
                   <small>
                     {isNewPlanProfile(type) && <>本次评分 {metrics.lastRepScore == null ? "无法判断／待完成" : metrics.lastRepScore + " 分"} · </>}
                     {metrics.scoreAccumulator.count
-                      ? `识别均分 ${metrics.formScore}`
+                      ? `训练均分 ${metrics.formScore}`
                       : "尚无完整动作评分"}
                   </small>
+                  {adaptive&&type==='squat'&&metrics.reps>0&&metrics.lastRepScore===null&&<p className="gym-muted">本次无法评分</p>}
                   {capability && metrics.scoreAccumulator.count > 0 && <p className="gym-muted">{capability.axes.map((name:string,i:number)=>name+" "+metrics.formBreakdown[(["depth","stability","trunk","symmetry"] as const)[i]]).join(" · ")}（已评分 {metrics.scoreAccumulator.count} 次）</p>}
                   {type === "reverse_lunge" && <p>左侧 {metrics.scoreAccumulator.leftReps || 0} 次 · 右侧 {metrics.scoreAccumulator.rightReps || 0} 次 · 每侧完成计一次</p>}
                   <p>{metrics.poseFeedback.primaryIssue ? metrics.poseFeedback.message : ""}</p>

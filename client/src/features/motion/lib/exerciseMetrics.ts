@@ -1,7 +1,7 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision'
 import type { FormBreakdown, PoseFeedback, PoseIssue, ScoreAccumulator, WorkoutMetrics, WorkoutPhase } from '../types'
 import { exerciseInfo, type BaseCameraExerciseType as CameraExerciseType } from './exercises'
-import { analyzeSquatFrame } from './squatMetrics'
+import { analyzeSquatFrame, squatJoints, squatSideVisible } from './squatMetrics'
 import { detectPoseIssues, medianLandmarks, POSE_ISSUE_COPY } from './poseFeedback'
 import { emptyCorrectionCounts, emptyFormBreakdown } from './sessionMigration'
 
@@ -15,7 +15,7 @@ export interface ExerciseMetrics extends WorkoutMetrics {
 }
 type TrackingSide = 'left' | 'right'
 type SquatMotion = {hipHeight:number;shoulderHeight:number;legLength:number;torso:number;footX:number;footY:number}
-type Frame = { start: boolean; peak: boolean; side?: TrackingSide; trackingSide?: TrackingSide; angle?: number; angleSource?:'world'|'image'; squatMotion?:SquatMotion; jack?:{spread:number;raised:boolean;lowered:boolean}; confidence: number; scores: FormBreakdown; score: number; issues: PoseIssue[] }
+type Frame = { squatScorable?:boolean; start: boolean; peak: boolean; side?: TrackingSide; trackingSide?: TrackingSide; angle?: number; angleSource?:'world'|'image'; squatMotion?:SquatMotion; jack?:{spread:number;raised:boolean;lowered:boolean}; confidence: number; scores: FormBreakdown; score: number; issues: PoseIssue[] }
 export interface RecognitionDiagnostics {
   fps: number
   confidence: number
@@ -55,7 +55,7 @@ const angle = (a: NormalizedLandmark, b: NormalizedLandmark, c: NormalizedLandma
   if (n > 180) n = 360-n
   return n
 }
-const distance = (a: NormalizedLandmark, b: NormalizedLandmark) => Math.hypot(a.x-b.x,a.y-b.y)
+const distance = (a: Pick<NormalizedLandmark,'x'|'y'>, b: Pick<NormalizedLandmark,'x'|'y'>) => Math.hypot(a.x-b.x,a.y-b.y)
 const weights = (s: FormBreakdown) => Math.round(s.depth*.35+s.stability*.25+s.trunk*.2+s.symmetry*.2)
 const axes = ['depth','stability','trunk','symmetry'] as const
 const visible = (points: NormalizedLandmark[], indices: number[]) => indices.every(i => {
@@ -63,17 +63,27 @@ const visible = (points: NormalizedLandmark[], indices: number[]) => indices.eve
 })
 
 /** Thresholds are local heuristics, independently tunable after real-camera calibration. */
-export function analyzeExerciseFrame(type: CameraExerciseType, raw: NormalizedLandmark[], aspect = 1, trackingSide?: TrackingSide, world?:NormalizedLandmark[]|null): Frame | null {
+export function analyzeExerciseFrame(type: CameraExerciseType, raw: NormalizedLandmark[], aspect = 1, trackingSide?: TrackingSide, world?:NormalizedLandmark[]|null, squatSide?:TrackingSide): Frame | null {
   if (raw.length < 29 || !Number.isFinite(aspect) || aspect <= 0) return null
-  const required = requiredJoints(type,raw,trackingSide)
+  const required = squatSide ? [...squatJoints[squatSide]] : requiredJoints(type,raw,trackingSide)
   if(!visible(raw,required))return null
   if (type === 'squat') {
-    const s=analyzeSquatFrame(raw,aspect,world); if(!s)return null
-    const p=raw.map(v=>({...v,x:v.x*aspect})),footY=mean(p[27].y,p[28].y)
-    const motion={hipHeight:footY-mean(p[23].y,p[24].y),shoulderHeight:footY-mean(p[11].y,p[12].y),legLength:mean(distance(p[23],p[25])+distance(p[25],p[27]),distance(p[24],p[26])+distance(p[26],p[28])),torso:distance({...p[11],x:mean(p[11].x,p[12].x),y:mean(p[11].y,p[12].y)},{...p[23],x:mean(p[23].x,p[24].x),y:mean(p[23].y,p[24].y)}),footX:mean(p[27].x,p[28].x),footY}
+    const both = !squatSide || (squatSideVisible(raw,'left') && squatSideVisible(raw,'right'))
+    const s=analyzeSquatFrame(raw,aspect,world,both?undefined:squatSide)
+    if(!s)return null
+    const p=raw.map(v=>({...v,x:v.x*aspect}))
+    const offset=squatSide==='right'?1:0
+    const joint=(i:number)=>squatSide?p[i+offset]:{x:mean(p[i].x,p[i+1].x),y:mean(p[i].y,p[i+1].y)}
+    const shoulder=joint(11),hip=joint(23),foot=joint(27)
+    const leg=(i:number)=>distance(p[23+i],p[25+i])+distance(p[25+i],p[27+i])
+    const motion={hipHeight:foot.y-hip.y,shoulderHeight:foot.y-shoulder.y,legLength:squatSide?leg(offset):mean(leg(0),leg(1)),torso:distance(shoulder,hip),footX:foot.x,footY:foot.y}
+    const primary=squatSide?analyzeSquatFrame(raw,aspect,world,squatSide):s
+    if(!primary)return null
     const phase: WorkoutPhase = s.kneeAngle<=125?'bottom':s.kneeAngle>=150?'standing':'descending'
-    return { start:s.kneeAngle>=150,peak:s.kneeAngle<=125,angle:s.kneeAngle,angleSource:s.angleSource,squatMotion:motion,confidence:s.confidence,
-      scores:{depth:s.depthScore,stability:s.stabilityScore,trunk:s.trunkScore,symmetry:s.symmetryScore},score:s.formScore,issues:detectPoseIssues(s,phase,true).issues }
+    return {start:s.kneeAngle>=150&&primary.kneeAngle>=150,peak:s.kneeAngle<=125&&primary.kneeAngle<=125,angle:s.kneeAngle,angleSource:primary.angleSource,squatMotion:motion,confidence:s.confidence,
+      squatScorable:both&&s.confidence>=.7,
+      scores:{depth:s.depthScore,stability:s.stabilityScore,trunk:s.trunkScore,symmetry:s.symmetryScore},score:s.formScore,issues:both?detectPoseIssues(s,phase,true).issues:[]}
+
   }
   const p=raw.map(v=>({...v,x:v.x*aspect}))
   const confidence=Math.min(...required.map(i=>raw[i].visibility))
@@ -139,8 +149,19 @@ export class ExerciseTracker {
   private armsAt:number|null=null
   private legsAt:number|null=null
   private motionAt:number|null=null
-  requiredIndices(raw:NormalizedLandmark[]){return requiredJoints(this.type,raw,this.trackingSide)}
-  constructor(readonly type:CameraExerciseType, targetReps=20, restored:Partial<ExerciseMetrics>={},readonly prefiltered=false,readonly armOnStart=false) {
+  private squatSide?:TrackingSide
+  private squatCycle:{samples:number;invalid:boolean;totals:FormBreakdown;depth:number}|null=null
+  private chooseSquatSide(raw:NormalizedLandmark[]):TrackingSide {
+    if(this.squatSide)return this.squatSide
+    const left=squatSideVisible(raw,'left'),right=squatSideVisible(raw,'right')
+    if(!left&&right)return 'right'
+    if(left&&right&&sideConfidence(raw,[...squatJoints.right])>sideConfidence(raw,[...squatJoints.left]))return 'right'
+    return 'left'
+  }
+  requiredIndices(raw:NormalizedLandmark[]){
+    return this.adaptiveSquat ? [...squatJoints[this.chooseSquatSide(raw)]] : requiredJoints(this.type,raw,this.trackingSide)
+  }
+  constructor(readonly type:CameraExerciseType, targetReps=20, restored:Partial<ExerciseMetrics>={},readonly prefiltered=false,readonly armOnStart=false,readonly adaptiveSquat=type==='squat'&&armOnStart) {
     const reps=Math.max(0,restored.reps||0),breakdown={...emptyFormBreakdown(),...restored.formBreakdown}
     const acc=restored.scoreAccumulator || {count:reps,total:(restored.formScore||0)*reps,...Object.fromEntries(axes.map(k=>[k,breakdown[k]*reps]))} as ScoreAccumulator
     this.metrics={...restored,reps,targetReps,formScore:acc.count?Math.round(acc.total/acc.count):0,perfectReps:restored.perfectReps||0,feedback:exerciseInfo(type).placement,phase:'standing',scoreAccumulator:{...acc},formBreakdown:breakdown,correctionCounts:{...emptyCorrectionCounts(),...restored.correctionCounts},lastRepIssues:[],repeatedIssue:null,poseFeedback:this.feedback(null,false)}
@@ -152,7 +173,7 @@ export class ExerciseTracker {
   interrupt(reason = '训练暂停或已停止，继续后重新校准') {
     this.frames=[];this.calibrationAt=null;this.calibrated=false;this.armed=false;this.peakAt=null;this.peak=null;this.returnAt=null;this.pair.clear();this.issues.clear();this.consecutive={}
     this.trackingSide=undefined;this.lastFrameAt=null;this.frameTimes=[]
-    this.worldFrames=[];this.squatBaseline=null;this.jackBaseline=null;this.armsAt=null;this.legsAt=null;this.motionAt=null
+    this.worldFrames=[];this.squatSide=undefined;this.squatCycle=null;this.squatBaseline=null;this.jackBaseline=null;this.armsAt=null;this.legsAt=null;this.motionAt=null
     this.diagnostics={...this.diagnostics,fps:0,confidence:0,side:null,angle:null,stage:'tracking_lost',calibrationProgress:0,pairedSides:[],lastResetReason:reason}
     this.metrics={...this.metrics,phase:'standing',poseFeedback:{...this.feedback(null,false),message:reason},feedback:reason}
     return this.metrics
@@ -168,15 +189,16 @@ export class ExerciseTracker {
     this.diagnostics={...this.diagnostics,fps:elapsed>0?Math.round((this.frameTimes.length-1)*1000/elapsed):0}
     // Severe loss must never be concealed by old, smoothed poses. Marginal noise
     // (.25–.55) is filtered first; sustained uncertainty still fails the median.
-    const required=requiredJoints(this.type,raw,this.trackingSide)
+    const required=this.requiredIndices(raw)
     if(required.some(i=>(raw[i].visibility??0)<.25 || raw[i].x<0 || raw[i].x>1 || raw[i].y<0 || raw[i].y>1))return this.interrupt(rejectedFrameReason(this.type,raw,this.trackingSide))
     this.frames=[...this.frames,raw].slice(-(this.prefiltered?1:5))
     this.worldFrames=world&&world.length>=29&&world.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))?[...this.worldFrames,world].slice(-(this.prefiltered?1:5)):[]
     const smoothedWorld=this.worldFrames.length?medianLandmarks(this.worldFrames):null
-    const points=medianLandmarks(this.frames),frame=points?analyzeExerciseFrame(this.type,points,aspect,this.trackingSide,smoothedWorld):null
+    const points=medianLandmarks(this.frames),frame=points?analyzeExerciseFrame(this.type,points,aspect,this.trackingSide,smoothedWorld,this.adaptiveSquat?this.chooseSquatSide(raw):undefined):null
     if(!frame)return this.interrupt(points?rejectedFrameReason(this.type,points,this.trackingSide):'正在等待完整人体关键点')
+    if(this.adaptiveSquat&&!this.squatSide&&frame.start)this.squatSide=this.chooseSquatSide(raw)
     if(this.type==='push_up' && !this.trackingSide && frame.start)this.trackingSide=frame.trackingSide
-    this.diagnostics={...this.diagnostics,confidence:frame.confidence,side:this.trackingSide||frame.trackingSide||null,angle:frame.angle??null}
+    this.diagnostics={...this.diagnostics,confidence:frame.confidence,side:this.squatSide||this.trackingSide||frame.trackingSide||null,angle:frame.angle??null}
     if(this.type==='squat'&&frame.squatMotion){
       const m=frame.squatMotion
       if(!this.calibrated&&frame.start){
@@ -232,7 +254,17 @@ export class ExerciseTracker {
       if(now-this.peakAt>=(this.type==='jumping_jack'?60:150) && (!this.peak || frame.score>=this.peak.score))this.peak=frame
     } else this.peakAt=null
     if(this.armed && !frame.start)frame.issues.forEach(i=>this.issues.add(i))
+    if(this.adaptiveSquat&&(!frame.start||this.peak)){
+      const cycle=this.squatCycle??={samples:0,invalid:false,totals:emptyFormBreakdown(),depth:0}
+      if(!frame.squatScorable)cycle.invalid=true
+      else{
+        cycle.samples++
+        for(const key of axes)cycle.totals[key]+=frame.scores[key]
+        if(this.peak&&frame.peak)cycle.depth=Math.max(cycle.depth,frame.scores.depth)
+      }
+    }else if(this.adaptiveSquat)this.squatCycle=null
     let completedRep=false
+    let unscored=false
     if(this.peak && frame.start) {
       if(this.returnAt===null)this.returnAt=now
       if(now-this.returnAt>=(this.type==='jumping_jack'?60:150)) {
@@ -245,6 +277,22 @@ export class ExerciseTracker {
             completed={...l,scores,score:weights(scores)};this.pair.clear()
           } else completed=null
         }
+        if(completed&&this.adaptiveSquat&&this.metrics.reps<this.metrics.targetReps){
+          const cycle=this.squatCycle
+          if(!cycle||cycle.invalid||!cycle.samples){
+            this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:null,lastRepIssues:[],repeatedIssue:null}
+            completed=null
+            completedRep=true
+            unscored=true
+            this.issues.clear()
+          }else{
+            const scores={...cycle.totals}
+            for(const key of axes)scores[key]/=cycle.samples
+            scores.depth=cycle.depth
+            completed={...completed,scores,score:weights(scores)}
+          }
+          this.squatCycle=null
+        }
         if(completed && this.metrics.reps<this.metrics.targetReps) {
           const acc={...this.metrics.scoreAccumulator,count:this.metrics.scoreAccumulator.count+1,total:this.metrics.scoreAccumulator.total+completed.score}
           axes.forEach(k=>acc[k]+=completed.scores[k])
@@ -252,7 +300,7 @@ export class ExerciseTracker {
           const repIssues=[...new Set([...this.issues,...completed.issues])],counts={...this.metrics.correctionCounts}
           let repeated:PoseIssue|null=null
           for(const i of Object.keys(counts) as PoseIssue[]){if(repIssues.includes(i))counts[i]++;this.consecutive[i]=repIssues.includes(i)?(this.consecutive[i]||0)+1:0;if((this.consecutive[i]||0)>=2)repeated=i}
-          this.metrics={...this.metrics,reps:this.metrics.reps+1,formScore:Math.round(acc.total/acc.count),perfectReps:this.metrics.perfectReps+(completed.score>=90?1:0),scoreAccumulator:acc,formBreakdown:breakdown,correctionCounts:counts,lastRepIssues:repIssues,repeatedIssue:repeated}
+          this.metrics={...this.metrics,reps:this.metrics.reps+1,formScore:Math.round(acc.total/acc.count),perfectReps:this.metrics.perfectReps+(completed.score>=90?1:0),scoreAccumulator:acc,formBreakdown:breakdown,...(this.adaptiveSquat?{lastRepScore:completed.score}:{}),correctionCounts:counts,lastRepIssues:repIssues,repeatedIssue:repeated}
           completedRep=true
           this.issues.clear()
         }
@@ -270,7 +318,7 @@ export class ExerciseTracker {
       push_up: {ready:'伸臂支撑就绪，可以开始下降',moving:'继续屈肘，尚未达到计数幅度',peak:'已完成下降，请推起回到伸臂支撑',returning:'保持伸臂，正在确认本次动作'},
     }[this.type]
     const pairMessage=this.type==='high_knees'&&frame.start&&this.pair.size===1?`已完成${this.pair.has('left')?'左':'右'}侧，请完成${this.pair.has('left')?'右':'左'}侧后计一组`:null
-    const message=stage==='complete'?'已完成目标次数':completedRep?`已记录第 ${this.metrics.reps} ${exerciseInfo(this.type).unit}`:frame.peak&&!this.peak?(this.type==='jumping_jack'?'正在识别完整开合，保持自然节奏':'幅度已达到，正在确认动作，请保持平稳'):pairMessage||instructions[stage as keyof typeof instructions]
+    const message=stage==='complete'?'已完成目标次数':unscored?'本次已计数，双侧数据不足，无法评分':completedRep?`已记录第 ${this.metrics.reps} ${exerciseInfo(this.type).unit}`:frame.peak&&!this.peak?(this.type==='jumping_jack'?'正在识别完整开合，保持自然节奏':'幅度已达到，正在确认动作，请保持平稳'):pairMessage||instructions[stage as keyof typeof instructions]
     this.metrics={...this.metrics,phase,poseFeedback:feedback,feedback:message}
     return this.metrics
   }

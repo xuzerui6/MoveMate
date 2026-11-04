@@ -39,7 +39,7 @@ test('brief weak tracking freezes without clearing calibration; sustained loss d
 });
 test('dimensions, coordinate-source changes and frame exit invalidate partial cycles',()=>{
  const r=replay('squat');r.feed('neutral',3200,false);r.feed('peak');r.send(fixture('squat','peak'),true,f=>{f.worldLandmarks=f.landmarks!.map(p=>({...p}));});assert.equal(r.tracker.metrics.reps,0);assert.equal(r.tracker.ready,false);
- r.feed('neutral',3200,false);r.send(fixture('squat'),true,f=>{f.landmarks![27].x=1.1});assert.equal(r.tracker.ready,false);assert.equal(r.tracker.metrics.reps,0);
+ r.feed('neutral',3200,false);for(let i=0;i<6;i++)r.send(fixture('squat'),true,f=>{f.landmarks![27].x=1.1});assert.equal(r.tracker.ready,false);assert.equal(r.tracker.metrics.reps,0);
 });
 test('unstable preparation cannot award repetitions',()=>{
  const r=replay('squat');for(let i=0;i<70;i++)r.send(fixture('squat'),false,f=>f.landmarks!.forEach(p=>p.x+=(i%2?.08:-.08)));assert.equal(r.tracker.metrics.reps,0);
@@ -77,4 +77,58 @@ test('opening mid-squat does not count until the first complete cycle',()=>{
  assert.equal(r.tracker.metrics.reps,0);
  r.cycle();
  assert.equal(r.tracker.metrics.reps,1);
+});
+
+for(const offset of [0,1])test(`squat counts consecutive cycles with only side ${offset} visible and omits scores`,()=>{
+ const r=replay('squat');
+ const hideOther=(f:PoseFrame)=>{for(const i of [11,23,25,27])f.landmarks![i+1-offset].x=1.1;};
+ r.feed('neutral',200,false,hideOther);
+ for(let i=0;i<2;i++){r.feed('peak',1600,true,hideOther);r.feed('neutral',1600,true,hideOther);}
+ assert.equal(r.tracker.metrics.reps,2);
+ assert.equal(r.tracker.metrics.scoreAccumulator.count,0);
+ assert.equal(r.tracker.metrics.lastRepScore,null);
+});
+
+test('short occlusion of the tracked side freezes a squat and preserves its count',()=>{
+ const r=replay('squat');r.feed('neutral',200,false);r.feed('peak',1600);
+ r.send(fixture('squat','peak'),true,f=>{f.landmarks![27].x=1.1;});
+ assert.match(r.tracker.metrics.feedback,/冻结/);
+ r.feed('neutral',1600);
+ assert.equal(r.tracker.metrics.reps,1);
+ assert.equal(r.tracker.metrics.scoreAccumulator.count,0);
+});
+
+test('persistent loss of the tracked side cannot splice a half squat into a rep',()=>{
+ const r=replay('squat');r.feed('neutral',200,false);r.feed('peak',1600);
+ r.feed('peak',350,true,f=>{f.landmarks![27].x=1.1;});
+ r.feed('neutral',1600,true,f=>{f.landmarks![27].x=1.1;});
+ assert.equal(r.tracker.metrics.reps,0);
+});
+
+test('squat scoring accounts for trunk drift on the return despite a similar bottom pose',()=>{
+ const steady=replay('squat'),drifting=replay('squat');
+ for(const r of [steady,drifting]){r.feed('neutral',200,false);r.feed('peak',1600);}
+ steady.feed('neutral',1600);
+ let n=0;
+ drifting.feed('neutral',1600,true,f=>{
+  const drift=.13*Math.sin(Math.PI*Math.min(1,n++/12));
+  f.landmarks![11].x+=drift;f.landmarks![12].x+=drift;
+ });
+ assert.equal(steady.tracker.metrics.reps,1);
+ assert.equal(drifting.tracker.metrics.reps,1);
+ assert.equal(drifting.tracker.metrics.scoreAccumulator.count,1);
+ assert.ok(drifting.tracker.metrics.formBreakdown.trunk<steady.tracker.metrics.formBreakdown.trunk);
+ assert.ok(drifting.tracker.metrics.formScore<steady.tracker.metrics.formScore);
+});
+
+test('a squat continues on its tracked side if the other side disappears mid-cycle',()=>{
+ const r=replay('squat');
+ r.feed('neutral',200,false);
+ r.feed('peak',1600,true,f=>{f.landmarks![28].visibility=.2;});
+ r.feed('neutral',1600);
+ assert.equal(r.tracker.metrics.reps,1);
+ assert.equal(r.tracker.metrics.scoreAccumulator.count,0);
+ r.cycle();
+ assert.equal(r.tracker.metrics.reps,2);
+ assert.equal(r.tracker.metrics.scoreAccumulator.count,1);
 });

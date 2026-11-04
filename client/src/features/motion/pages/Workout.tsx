@@ -287,8 +287,9 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
       </div>
       {preparing&&adaptive&&<section className="training-calibration-guidance" role="status"><b>让动作所需关节完整入镜</b><p>{pose.telemetry?.reason}</p>{!creating&&<button type="button" className="secondary" onClick={cancelPrepare}>取消准备</button>}</section>}
       {active && <section className="training-live-info" aria-label="本组训练数据">
-        <div className="training-numbers"><div className="training-reps"><strong>{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}</span></div><div><strong>{format(seconds)}</strong><span>有效时长</span></div><div><strong>{metrics.scoreAccumulator.count ? metrics.formScore : '—'}</strong><span>动作评分</span></div></div>
+        <div className="training-numbers"><div className="training-reps"><strong>{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}</span></div><div><strong>{format(seconds)}</strong><span>有效时长</span></div><div><strong>{metrics.scoreAccumulator.count ? metrics.formScore : '—'}</strong><span>{adaptive&&exerciseType==='squat'?'训练均分':'动作评分'}</span></div></div>
         <div className={'training-hint' + (paused ? ' paused' : '')} role="status"><Icon name={paused ? 'pause' : 'spark'}/><p>{hint}</p></div>
+        {adaptive&&exerciseType==='squat'&&metrics.reps>0&&metrics.lastRepScore===null&&<p className="muted">本次无法评分</p>}
         <RecognitionStatus type={exerciseType} diagnostics={diagnostics} paused={paused || busy || ending} demo={simulatedPose}/>
         {exerciseType==='standing_leg_curl'&&<p className="recognition-side-count">左侧 {metrics.scoreAccumulator.leftReps||0} 次 · 右侧 {metrics.scoreAccumulator.rightReps||0} 次 · 左右合计</p>}
         <div className="training-voice"><Icon name="mic" size={26}/><span><b>{voiceEnabled ? VOICE_LABEL[voice.state] : '语音陪练'}</b><small>{voiceEnabled ? voice.errorMessage || (voice.state === 'speaking' ? voice.reply : voice.transcript) || '连接后点击对话' : '语音指导你的动作节奏与要点'}</small></span>

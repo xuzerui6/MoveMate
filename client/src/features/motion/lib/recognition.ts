@@ -9,7 +9,7 @@ export type RecognitionType=CameraExerciseType|NewPlanProfile|LibraryRecognition
 export const isRecognitionType=(type:string):type is RecognitionType=>isCameraExercise(type)||isNewPlanProfile(type)||isLibraryRecognition(type);
 export function createRecognitionTracker(type:string,target=20,restored:Partial<ExerciseMetrics>={},prefiltered=false,armOnStart=false){
   if(isLibraryRecognition(type)){
-    if(type==='goblet_squat'||type==='barbell_back_squat'||type==='barbell_front_squat')return new ExerciseTracker('squat',target,restored,prefiltered,armOnStart);
+    if(type==='goblet_squat'||type==='barbell_back_squat'||type==='barbell_front_squat')return new ExerciseTracker('squat',target,restored,prefiltered,armOnStart,false);
     if(type==='barbell_curl'||type==='reverse_barbell_curl')return new PlanExerciseTracker('biceps_curl',target,restored,prefiltered,armOnStart);
     if(type==='barbell_row')return new PlanExerciseTracker('bent_over_row',target,restored,prefiltered,armOnStart);
     if(type==='neutral_seated_press')return new PlanExerciseTracker('shoulder_press',target,restored,prefiltered,armOnStart);

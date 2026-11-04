@@ -14,7 +14,7 @@ test('upper and side edges provide appropriate guidance',()=>{
  const p=pose();p[11].y=-.05;assert.match(framingFeedback(p,[11])!.message,/上沿.*向上/);p[11].y=.3;p[11].x=1.1;assert.match(framingFeedback(p,[11])!.message,/侧边.*中央/);
 });
 test('adaptive preparation rejects out-of-frame ankles and highlights actual required joints',()=>{
- const engine=new AdaptiveRecognition('squat',20,{reps:2},1),p=pose();p[27].y=1.1;
+ const engine=new AdaptiveRecognition('squat',20,{reps:2},1),p=pose();p[27].y=1.1;p[28].visibility=.2;
  engine.update({runId:1,frameId:1,capturedAt:100,receivedAt:110,width:720,height:960,landmarks:p,worldLandmarks:null,model:'lite',mode:'main-gpu'},false);
  assert.equal(engine.ready,false);assert.equal(engine.metrics.reps,2);assert.deepEqual(engine.metrics.poseFeedback.affectedJoints,[27]);assert.match(engine.metrics.feedback,/左脚踝出画/);
 });
