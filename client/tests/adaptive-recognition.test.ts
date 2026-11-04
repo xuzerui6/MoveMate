@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {AdaptiveRecognition,adaptiveEligible,selectRecognitionStrategy} from '../src/features/motion/lib/adaptiveRecognition';
+import {AdaptiveRecognition,adaptiveEligible,loadRecognitionPreference,saveRecognitionPreference,selectNewRecognitionStrategy,selectRecognitionStrategy} from '../src/features/motion/lib/adaptiveRecognition';
 import {FrameOrder,fullIsFast,TimeFilter,type PoseFrame} from '../src/features/motion/lib/poseProtocol';
 import {recognitionDemonstration,newDemonstrationPose} from '../src/features/motion/lib/recognition';
 import {planPose} from './fixtures/plan-camera';
@@ -138,5 +138,17 @@ test('automatic strategy uses device and exercise support for new records and re
  assert.equal(selectRecognitionStrategy('squat',undefined,false),'legacy');
  assert.equal(selectRecognitionStrategy('standing_leg_curl',undefined,true),'legacy');
  assert.equal(selectRecognitionStrategy('squat','legacy',true),'legacy');
+ assert.equal(selectRecognitionStrategy('squat','adaptive-v1',false),'adaptive-v1');
+});
+
+test('device preference can force legacy for new records only and persists best-effort',()=>{
+ assert.equal(selectNewRecognitionStrategy('squat','legacy',true),'legacy');
+ assert.equal(selectNewRecognitionStrategy('squat','auto',true),'adaptive-v1');
+ assert.equal(selectNewRecognitionStrategy('squat','auto',false),'legacy');
+ assert.equal(selectNewRecognitionStrategy('standing_leg_curl','auto',true),'legacy');
+ assert.equal(selectNewRecognitionStrategy('standing_leg_curl','legacy',true),'legacy');
+ assert.doesNotThrow(()=>saveRecognitionPreference('legacy'));
+ assert.ok(['auto','legacy'].includes(loadRecognitionPreference()));
+ // A preference never rewrites a saved strategy.
  assert.equal(selectRecognitionStrategy('squat','adaptive-v1',false),'adaptive-v1');
 });

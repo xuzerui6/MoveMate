@@ -1,4 +1,9 @@
 import type {PoseTelemetry} from '../lib/poseProtocol';
+import type {RecognitionPreference} from '../lib/adaptiveRecognition';
+export function RecognitionOverride({eligible,disabled,preference,onChange}:{eligible:boolean;disabled:boolean;preference:RecognitionPreference;onChange:(value:RecognitionPreference)=>void}){
+ if(!eligible)return null;
+ return <label className="training-recognition-choice">识别方式（新记录）<select aria-label="识别方式" value={preference} disabled={disabled} onChange={e=>onChange(e.target.value==='legacy'?'legacy':'auto')}><option value="auto">自动 · 新版自适应优先</option><option value="legacy">旧版</option></select><small>默认自动选择新版自适应；若在这台设备上识别不稳定，可改选旧版，对之后的新记录生效。已开始或已保存的训练仍用原策略。此选择只保存在本机。</small></label>;
+}
 const modes={'worker-gpu':'Worker GPU','worker-cpu':'Worker CPU','main-gpu':'主线程 GPU（降级）','main-cpu':'主线程 CPU（降级）'};
 export function PoseDiagnostics({telemetry}:{telemetry:PoseTelemetry|null}){
  if(!telemetry)return null;

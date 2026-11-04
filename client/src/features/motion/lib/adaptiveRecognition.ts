@@ -10,6 +10,20 @@ export function selectRecognitionStrategy(type: string, saved?: unknown, adaptiv
  if(saved !== undefined)return saved === 'adaptive-v1' ? 'adaptive-v1' : 'legacy';
  return adaptiveAvailable && adaptiveEligible(type) ? 'adaptive-v1' : 'legacy';
 }
+export type RecognitionPreference = 'auto' | 'legacy';
+const recognitionPreferenceKey = 'movemate:recognition-preference';
+/** Device-local escape hatch for new records only; never stored on the server. */
+export function loadRecognitionPreference(): RecognitionPreference {
+ try { return globalThis.localStorage?.getItem(recognitionPreferenceKey) === 'legacy' ? 'legacy' : 'auto'; } catch { return 'auto'; }
+}
+export function saveRecognitionPreference(preference: RecognitionPreference) {
+ try { globalThis.localStorage?.setItem(recognitionPreferenceKey, preference); } catch { /* best-effort device preference */ }
+}
+/** The preference can only force legacy for a new record; saved strategies still win via selectRecognitionStrategy. */
+export function selectNewRecognitionStrategy(type: string, preference: RecognitionPreference, adaptiveAvailable = typeof globalThis.crypto?.subtle?.digest === 'function') {
+ if(preference === 'legacy') return 'legacy' as const;
+ return selectRecognitionStrategy(type, undefined, adaptiveAvailable);
+}
 const distance=(a:Point,b:Point)=>Math.hypot(a.x-b.x,a.y-b.y,(a.z||0)-(b.z||0));
 export class AdaptiveRecognition {
  private base:ReturnType<typeof createRecognitionTracker>;
