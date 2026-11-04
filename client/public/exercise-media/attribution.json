@@ -12521,6 +12521,427 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:1460": {
+      "kind": "illustration",
+      "note": "徒手向前行走弓步：一步前迈、前膝与脚踝对齐、躯干直立，后脚蹬地向前迈出下一步，连续交替向前，不推回原地。 原创静态分阶段示意，不是连续视频。",
+      "images": [
+        {
+          "src": "/exercise-media/original-exdb-1460-0.9d6698461e24.webp",
+          "bytes": 2828,
+          "sha256": "9d6698461e24856d6a4494127c5dc9b540decbdd907aa96ada994ab29e59006a",
+          "phase": "站立准备",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-1460-1.bc6b5f1e7ca8.webp",
+          "bytes": 4648,
+          "sha256": "bc6b5f1e7ca8e8de49ae210828a70e13e94fdf1429305bb0aec1d7d38aa39ef2",
+          "phase": "右脚前迈弓步",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-1460-2.84a3351b3e09.webp",
+          "bytes": 4632,
+          "sha256": "84a3351b3e09ff24e590efdb1c0954f0df6152f59a429d74cacb9be29007e3d0",
+          "phase": "左脚向前迈步弓步",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-1460-3.05f50f7aaa74.webp",
+          "bytes": 4604,
+          "sha256": "05f50f7aaa74f7b4017e43d68c039f7f097a84b62e4efde65a181de17cc848ba",
+          "phase": "右脚再向前迈步",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        }
+      ],
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:1460",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "7eec18c391f58d0cef0f9e13644bfffc69d586d66cd6b7cf5082c45e5524f2d7",
+            "6ca10a326516a631ae16101656b1526d24c8c0b13c5cfd805a951fa42e4a09e6",
+            "7ed6882156959a6a6e49e3355d718be879f54c8630b59be383bf7adb7f924815",
+            "2cfad1ff5857c9ee3379ae1e871dcbf3117ec3cd20c7a4f37d59cab73895659f"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1427": {
+      "kind": "illustration",
+      "note": "侧卧、双腿伸直叠放，下臂垫于头下支撑；保持骨盆稳定、臀不后倾，上侧腿伸直抬高再缓慢放回，图示一侧，完成后换边。 原创静态三阶段示意，不是连续视频。",
+      "images": [
+        {
+          "src": "/exercise-media/original-exdb-1427-0.2b567338036b.webp",
+          "bytes": 3504,
+          "sha256": "2b567338036bc1369153f6c6214df206deffa011961ad2b08a8dce5bfadd585a",
+          "phase": "侧卧·双腿伸直叠放",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-1427-1.a924dedbcf26.webp",
+          "bytes": 5174,
+          "sha256": "a924dedbcf26c42e22db8fc1ec191b35af60cbac5db38bab82a81a8506949808",
+          "phase": "上侧腿伸直抬高",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-1427-2.2b567338036b.webp",
+          "bytes": 3504,
+          "sha256": "2b567338036bc1369153f6c6214df206deffa011961ad2b08a8dce5bfadd585a",
+          "phase": "控制放回",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        }
+      ],
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:1427",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "0330bb36f9bbeb501c74048de7ddcdb4e15b63ba04c24505e0b35f6e7ad504ef",
+            "f559c831fc54fba6a5c1104a6f42cabcbc206b0681d42b00848f075b28a456a1",
+            "edcd962382bc31732e2d11bf4c14339e9e2422948e485090a0bd9b56ab234aaa"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:2312": {
+      "kind": "illustration",
+      "note": "仰卧屈膝、双脚平放、双手脑后；卷起上半身使一侧肘靠近对侧膝，同时另一腿伸直抬离地面，左右交替。 原创静态分阶段示意，不是连续视频。",
+      "images": [
+        {
+          "src": "/exercise-media/original-exdb-2312-0.d496d0aca3f0.webp",
+          "bytes": 3790,
+          "sha256": "d496d0aca3f0b50ab5c163734218532d9be09cfd751bf07c24c2156149c656ba",
+          "phase": "仰卧屈膝·双手脑后",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-2312-1.0174b93934cf.webp",
+          "bytes": 5404,
+          "sha256": "0174b93934cf91f050eed474accc71f7aa3f58e05565c8ab796f693d150492ba",
+          "phase": "右肘触左膝·右腿伸直抬起",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-2312-2.d496d0aca3f0.webp",
+          "bytes": 3790,
+          "sha256": "d496d0aca3f0b50ab5c163734218532d9be09cfd751bf07c24c2156149c656ba",
+          "phase": "回位",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-2312-3.428f62bd0181.webp",
+          "bytes": 5132,
+          "sha256": "428f62bd0181a2a800f7ae28466f3fbb6230f1c08b91bcdf226f48cd34c579af",
+          "phase": "左肘触右膝·左腿伸直抬起",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        }
+      ],
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:2312",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "a8309cb8b64339666ae468c17d7d14b325b29aa3018549a74c36b1e4413f6316",
+            "d7db86cd4dc95695c5d7c241ea5f99c8aa832805661faed470b855d1e853b591",
+            "52ed2ec3649f1f4793b5a79586052c6d5777ffb809b6ea2177caf05a5c3cdcc4",
+            "0f23936ff195b8c059de14ad847b5bb99a57bf3864361b6034ddfade53c160f8"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1494": {
+      "kind": "illustration",
+      "note": "坐于地面、脊柱拉长；先双腿伸直向前，再屈膝使脚底相对、双膝向两侧自然下落，双手扶脚踝或脚，保持数个呼吸后伸直双腿放松；不强行下压膝盖。 原创静态分阶段示意，不是连续视频。",
+      "images": [
+        {
+          "src": "/exercise-media/original-exdb-1494-0.8f925b1cd7a9.webp",
+          "bytes": 4816,
+          "sha256": "8f925b1cd7a96bf417dc093331912bf077c55d38fa2e21b27919b9b14fed52d1",
+          "phase": "坐姿·双腿伸直向前",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-1494-1.feb9ee66e44a.webp",
+          "bytes": 7454,
+          "sha256": "feb9ee66e44a61a207b76e9a529f2569da90a69996dee28081a53bdb795b47ab",
+          "phase": "屈膝·脚底相对",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-1494-2.feb9ee66e44a.webp",
+          "bytes": 7454,
+          "sha256": "feb9ee66e44a61a207b76e9a529f2569da90a69996dee28081a53bdb795b47ab",
+          "phase": "保持·脊柱拉长",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-1494-3.8f925b1cd7a9.webp",
+          "bytes": 4816,
+          "sha256": "8f925b1cd7a96bf417dc093331912bf077c55d38fa2e21b27919b9b14fed52d1",
+          "phase": "伸直双腿回位",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        }
+      ],
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:1494",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "4822736029b64516e7116f053d0168399ee1e77084d4e545640e24ef06eb1573",
+            "5cdf2157abee9ece046bd6c5245a4e8897c923b7032af87d4d1d1660f417fb56",
+            "53583957d86d862b417afae373b75056208152a4d62a7272c8f7cd1651e453a3",
+            "8e1b06d5357f76c14c84cc0f2768bce7fd87857a7982fad7a48f7ef469324a65"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:2466": {
+      "kind": "illustration",
+      "note": "高平板起、双手在肩正下方、身体成一线、臀保持水平；一膝向前向对侧肘方向提，脚回位后换侧交替，速度受控。 原创静态分阶段示意，不是连续视频。",
+      "images": [
+        {
+          "src": "/exercise-media/original-exdb-2466-0.cc2fd87fc6b8.webp",
+          "bytes": 5296,
+          "sha256": "cc2fd87fc6b851e17239eac3a78dae4f9aef912ce15678143dad9d2d5e8576c4",
+          "phase": "高平板",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-2466-1.febd00671657.webp",
+          "bytes": 6514,
+          "sha256": "febd00671657ed14293d6602dc7c49638d6b9fabcf039e8fc355fcb8a30bd4fe",
+          "phase": "右膝向左肘",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-2466-2.cc2fd87fc6b8.webp",
+          "bytes": 5296,
+          "sha256": "cc2fd87fc6b851e17239eac3a78dae4f9aef912ce15678143dad9d2d5e8576c4",
+          "phase": "回平板",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-2466-3.490f1f2f03d9.webp",
+          "bytes": 6438,
+          "sha256": "490f1f2f03d9df77d23fe4c360c0363bdd3618a71bf9954557d89d221784bf99",
+          "phase": "左膝向右肘",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        }
+      ],
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:2466",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "6ee96b35d9244c1a38a201382e69f6639b8bc2cab438c3c65a5ebe38c8de73b5",
+            "0b121b2df78ff8ab0393a9e7ac8bb85c6887b275fe0a1bb65473732b26d92a9e",
+            "a3d99bbbae9856ca5df26605a01608e65707044c314871256b92257d8082d73d",
+            "206c7c151e85b76aac933664800cb5c5a218ac74b4418910d25c2df4d28796ab"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1379": {
+      "kind": "illustration",
+      "note": "坐于长凳、双脚平放，前脚掌踩在垫高台上、脚跟悬于台边，双手扶稳压在大腿上的哑铃；抬脚跟至最高、停顿后缓慢落回。 原创静态三阶段示意，不是连续视频。",
+      "images": [
+        {
+          "src": "/exercise-media/original-exdb-1379-0.a7b1d6242398.webp",
+          "bytes": 5276,
+          "sha256": "a7b1d6242398e6661ad677a670e1a49da8c61507b3dd7b8764f548063efcb387",
+          "phase": "坐凳·前脚掌垫台·脚跟着地",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-1379-1.79eefb3424ff.webp",
+          "bytes": 5832,
+          "sha256": "79eefb3424ff480160de460428f34a47df6ee60ac9da774b4988a31c12a72955",
+          "phase": "抬脚跟至最高",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-1379-2.a7b1d6242398.webp",
+          "bytes": 5276,
+          "sha256": "a7b1d6242398e6661ad677a670e1a49da8c61507b3dd7b8764f548063efcb387",
+          "phase": "控制脚跟落回",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        }
+      ],
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:1379",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "a843932cfeafc2d16618aba116fbc4ec5f01a82f7371f77de14f1b35af1bd92a",
+            "11869fad2c1847d0434fdf73d7b0cb7c512407ef9eb6681ccf9000f8e34f9939",
+            "3cfb061893ddf18a42c8ca4b28c9f29f9bc671e20d912a60d43a7415e12f2406"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0864": {
+      "kind": "illustration",
+      "note": "站姿、双手各持一铃掌心向内；双臂向两侧抬至与地面平行、肘微屈，然后保持上臂位置不动、前臂向外旋转使铃向头侧上举，缓慢放回。 原创静态分阶段示意，不是连续视频。",
+      "images": [
+        {
+          "src": "/exercise-media/original-exdb-0864-0.a2ee65861ea5.webp",
+          "bytes": 6424,
+          "sha256": "a2ee65861ea544a5744a1a41e55e4c6ceb004eaa063fa0f3855f449faf2185ea",
+          "phase": "站姿·双铃体侧掌心向内",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-0864-1.905e2f8631de.webp",
+          "bytes": 5488,
+          "sha256": "905e2f8631def0919c58b80c75bba31e7512f17c9ced866a8918b0d22496eebe",
+          "phase": "双臂侧抬至与地面平行·肘微屈",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-0864-2.57e2947c76cc.webp",
+          "bytes": 6006,
+          "sha256": "57e2947c76cc880dc6d028e95aaf4f4af8a2ccc48f508dda5e9a0ad29b22894e",
+          "phase": "前臂外旋·铃向头侧上举",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-0864-3.a2ee65861ea5.webp",
+          "bytes": 6424,
+          "sha256": "a2ee65861ea544a5744a1a41e55e4c6ceb004eaa063fa0f3855f449faf2185ea",
+          "phase": "放回体侧",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        }
+      ],
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0864",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "35406654ba47564a22daf920c34ecaff616f9dfe0f0638d2d7386aa5bfa61736",
+            "102a95b6097ed99f6bd3ef0b55e74e475b7567efad9cfab8cdfc4ff5dc3675e8",
+            "b369d22d3e454f1971f7e3de81ccc65e42402a5693eedb6a762a1a4b029f329f",
+            "c7251d3c8f8e109a1cf5a6e39e60952b2a871b49303ca7fe85aeeac753f20443"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0408": {
+      "kind": "illustration",
+      "note": "侧卧、双腿伸直，下臂托头支撑；上手握哑铃、手掌朝下，手臂伸直举至肩高，停顿后缓慢放回，图示一侧，完成后换边。 原创静态三阶段示意，不是连续视频。",
+      "images": [
+        {
+          "src": "/exercise-media/original-exdb-0408-0.d1bdcb6d3122.webp",
+          "bytes": 3976,
+          "sha256": "d1bdcb6d312240188a776c78d44b7f636177e7974f2f668dc21aa04e6bbb174d",
+          "phase": "侧卧·下臂托头·上手持铃",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-0408-1.0d9069ebabfd.webp",
+          "bytes": 5344,
+          "sha256": "0d9069ebabfdc56910512f12fca1e88083cde893481c413a9719e3f4322240dc",
+          "phase": "上手伸直举至肩高",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-0408-2.d1bdcb6d3122.webp",
+          "bytes": 3976,
+          "sha256": "d1bdcb6d312240188a776c78d44b7f636177e7974f2f668dc21aa04e6bbb174d",
+          "phase": "控制放回",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        }
+      ],
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0408",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "ac388c12a6353c7f85643196c45cd484751caca5d2c7dfce65b8c6691453bb05",
+            "a84e0f17f6db5d71288c8acdc2f43004d967f8d97bdc0c565b5ef0bf0f4fd39c",
+            "40ac9c0466a9a41634fa731060a24d6234b050c0b8e4cb1b8404912331d51466"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }
