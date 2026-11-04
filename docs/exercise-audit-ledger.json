@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewedAt": "2026-10-29",
+  "reviewedAt": "2026-11-04",
   "total": 1329,
   "entries": [
     {
@@ -2863,7 +2863,7 @@
       "originalName": "barbell front chest squat",
       "status": "needs_review",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：前架双手肩宽、肘向前明确；与已有前蹲条目近同但握法细节未证明，不自动合并。",
+      "reason": "候选已对照（2026-11-04）：固定版本 Front_Barbell_Squat 实拍双帧为双臂交叉抱杠，与本条文字的双手肩宽握杠、肘向前不一致；Front_Squat_Clean_Grip 为指托前架，已用于 exdb:0042／0029，亦不能证明本条握法。当前不发布此候选，不计完整覆盖。",
       "text": {
         "status": "reviewed_with_issues",
         "source": "exercises-dataset",
@@ -15629,7 +15629,7 @@
       "originalName": "dumbbell rear delt raise",
       "status": "needs_review",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：俯身双臂外展、稳定下放说明清楚，但与已有后束条目的具体支撑/方向仍需逐图核对，不按同义词批量配。",
+      "reason": "候选已对照（2026-11-04）：固定版本后束抬举仅有坐姿俯身、前额抵凳与俯卧形式，无站姿无支撑俯身双臂外展实拍，与本条支撑不符。当前不发布此候选，不计完整覆盖。",
       "text": {
         "status": "reviewed_with_issues",
         "source": "exercises-dataset",
@@ -15669,7 +15669,7 @@
       "originalName": "dumbbell rear fly",
       "status": "needs_review",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：双脚站姿髋铰链、中立握外展明确，需实际俯身角度及双铃展开图。",
+      "reason": "候选已对照（2026-11-04）：固定版本 Reverse_Flyes 为俯卧上斜凳、胸腹贴凳，与本条双脚站姿髋铰链、双臂垂地起始不符。当前不发布此候选，不计完整覆盖。",
       "text": {
         "status": "reviewed_with_issues",
         "source": "exercises-dataset",
@@ -15829,7 +15829,7 @@
       "originalName": "dumbbell reverse fly",
       "status": "needs_review",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：俯身中立握侧展开明确，但手臂起始写身前而非垂地，需核对肩部平面与0378区别。",
+      "reason": "候选已对照（2026-11-04）：Reverse_Flyes 及 Reverse_Flyes_With_External_Rotation 均为俯卧上斜凳（后者掌心向下），与本条站姿中立握侧展开不符，与 exdb:0378 的区别仍无实拍可证。当前不发布此候选，不计完整覆盖。",
       "text": {
         "status": "reviewed_with_issues",
         "source": "exercises-dataset",
@@ -16946,7 +16946,7 @@
       "originalName": "dumbbell seated shoulder press (parallel grip)",
       "status": "needs_review",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文起始掌心向内、随后肩高掌心朝前，与标题平行握全程保持冲突。",
+      "reason": "逐项对照固定版本完整步骤：正文起始掌心向内、随后肩高掌心朝前，与标题平行握全程保持冲突。候选已对照（2026-11-04）：固定版本无坐姿平行握肩推条目，Dumbbell_Shoulder_Press 为掌心向前标准推、已用于 exdb:0405，不能顶替平行握。当前不发布此候选，不计完整覆盖。",
       "text": {
         "status": "reviewed_with_issues",
         "source": "exercises-dataset",

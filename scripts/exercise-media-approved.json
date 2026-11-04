@@ -1,5 +1,5 @@
 {
-  "reviewedAt": "2026-10-29",
+  "reviewedAt": "2026-11-04",
   "freeVersion": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
   "stills": [
     {
@@ -3786,6 +3786,26 @@
       "source": "https://www.pexels.com/photo/man-in-gray-tank-top-holding-black-and-red-exercise-equipment-6551053/",
       "subjectOrigin": "来源描述 Asian man",
       "reason": "实际为划船测功仪，不是坐姿绳索划船；不采用。"
+    },
+    {
+      "source": "Front_Barbell_Squat",
+      "reason": "2026-11-04 对照 exdb:0039 杠铃胸前深蹲：实拍双帧为双臂交叉抱杠，与条目文字的双手肩宽握杠、肘部向前不一致；不采用。"
+    },
+    {
+      "source": "Seated_Bent-Over_Rear_Delt_Raise",
+      "reason": "2026-11-04 对照 exdb:2292 哑铃后束上举：候选为坐姿俯身，本条为站姿俯身；支撑不匹配，不采用。"
+    },
+    {
+      "source": "Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench",
+      "reason": "2026-11-04 对照 exdb:2292 哑铃后束上举：候选需前额抵凳支撑，本条为无支撑站姿俯身；不采用。"
+    },
+    {
+      "source": "Reverse_Flyes",
+      "reason": "2026-11-04 对照 exdb:0378／0383：实拍为俯卧上斜凳、胸腹贴凳，两条均为站姿髋铰链；支撑不匹配，不采用。"
+    },
+    {
+      "source": "Reverse_Flyes_With_External_Rotation",
+      "reason": "2026-11-04 对照 exdb:0383 哑铃反向飞鸟：俯卧上斜凳且掌心向下，与站姿中立握侧展开不符；不采用。"
     }
   ],
   "batch": 3,
