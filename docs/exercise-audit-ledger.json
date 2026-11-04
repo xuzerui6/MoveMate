@@ -353,11 +353,11 @@
     {
       "id": "exdb:1368",
       "originalName": "ankle circles",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源坐姿，候选只拍站姿脚踝局部，支撑不匹配。 当前不发布此候选，不计完整覆盖。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
@@ -365,10 +365,26 @@
         "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:1368",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "9eb36a7d6a5eb83b26867277135415b39fb79731b3e450e8b255606cb1eab7c0",
+            "04cd299d697dd94b44328722723d50dc374e368670919e34aaa959ca27e34146",
+            "a10e53eaff17fc3057c529910b05124b9e6e7bac7733b40ffcee6e212faf5848"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3293",
@@ -6665,22 +6681,41 @@
     {
       "id": "exdb:1160",
       "originalName": "burpee",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源明确包含下蹲、后跳支撑、俯卧撑、收腿和向上跳；完整多阶段示范尚未核对，不采用删去俯卧撑的简化版。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "cc5f10ff0f3ad73803ba5ecfea69de991f822ec90c2749aa1445e210f279d36b",
-        "steps": 7
+        "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:1160",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "13f72d789a605727bff4276b34a334a3479716181fc81f01641ebe68bdfa9f8a",
+            "3341ddd1a72e4db2c2631edcd282e5283044baebaac07f4b84d43f18a9ab7890",
+            "9e816e159c9da7fc28276af4067e5231113307a85df69775c7aba299628fb9c9",
+            "e2cc277b08e13603c3497589d4707964db15efb18ecbab96bfbb6a707bb81b0f",
+            "d4beae5cf65c308ea5a2caa9465be8d157a13917464d8e08633bf6b0a9df85dc",
+            "140ce18fdc9b954cbcc645113b27d1931c5b844138f5f0580aa75b48f5433821"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0870",
@@ -10470,11 +10505,11 @@
     {
       "id": "exdb:0251",
       "originalName": "chest dip",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字要求降至肩低于肘，但未明确适合的躯干前倾和可控深度；需要核对支撑与胸部侧重形式后再发布图解。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
@@ -10482,10 +10517,26 @@
         "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0251",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "f1ef19992c8c58815486b1fa0b58bce621d593a71c637899cc9fded34648038d",
+            "7636e4e361e58bde26250ea76eb3fdfa14317d71a273c9a5338d3475fe44b313",
+            "34bab35cc8e9291608a86e7f5d652fccc350409bf9d44b0d64864ef9d8f244c5"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1430",
@@ -10720,11 +10771,11 @@
     {
       "id": "exdb:0259",
       "originalName": "close-grip push-up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源同时说双手并拢、在肩正下方，实际手距有歧义；需要确认是窄握还是钻石手型后再配图。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
@@ -10732,10 +10783,26 @@
         "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0259",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "778fa2e9494a49643a911a2c5b1b37c4066e26aa76729249c8972454cd88e051",
+            "afa89bc5a938938cc4c535601e70af99f8ee074bdee1c70591009b4ab7ee31fc",
+            "4611ddf9bb56f7fede080c55bc366533dfa544d82c2df2625d4675cdadecd1c2"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2398",
@@ -19760,11 +19827,11 @@
     {
       "id": "exdb:0459",
       "originalName": "flutter kicks",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源仰卧打腿，图片为俯卧凳上打腿。 当前不发布此候选，不计完整覆盖。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
@@ -19772,10 +19839,26 @@
         "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0459",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "c49c7cfc040119d9e3acfa912c68ec4d741056d4308d626236a593f0a097b166",
+            "9b560d58c4e9d3af566e3adfad2c18f85a910014ea0dc9628fc5e2382a2edd43",
+            "f337184cdd7180cb7db28d51d5bd8ca55a6a2deed98318e8f6d0721035af7586"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1472",
@@ -20045,22 +20128,38 @@
     {
       "id": "exdb:3561",
       "originalName": "glute bridge march",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字确认抬臀保持、单膝向胸交替；需要明确肩与单脚承重及骨盆保持的左右阶段，不能采用双脚普通臀桥。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "31aa2f54ed65a718fe83c50a41bcdb62b8b0f8db8b8954a031ff11a634c7fe62",
-        "steps": 6
+        "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:3561",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "6724a48262eb244d77253174053c7863accaaa174429d3e4b590e3f08a587680",
+            "e47e2f57e8dfe058fa43c5cf349e20b18be3772656ce1fe08bc689028ee5dbb6",
+            "4aa884ad2d6eefa66d5a1805092bbb6e7b5a2b6de7d8800b2267bb85d5bee554"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3523",
@@ -20225,22 +20324,38 @@
     {
       "id": "exdb:1511",
       "originalName": "hamstring stretch",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源为站姿拉伸，图片为仰卧拉伸。 当前不发布此候选，不计完整覆盖。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "4fc5dca470aeb36c0df8e854b682b808c4b56ee0172dc5c3a5bd02fa2e2dcc9b",
-        "steps": 5
+        "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:1511",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "2a254f3c9d94700a24efa91016dac65e2477f9c3c89af6b879ac1609813d5678",
+            "45ffc30336b83e72b0af800613f7dec330232a80154d1b82ffcfd1f9adb242aa",
+            "9fea6b1504dde275303f4ef4b50ec9bcd98b39a1a268c21f1b240414f23ca169"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2139",
@@ -26765,22 +26880,38 @@
     {
       "id": "exdb:0687",
       "originalName": "russian twist",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源徒手，候选持配重片，不能直接当徒手形式。 当前不发布此候选，不计完整覆盖。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "26ae93491e565428d9c223f43621149280612fd4cc277e360b06f24061b50977",
-        "steps": 7
+        "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0687",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "26c8f8a58f306fd3a2b2218c1c5c2afd792b5198e89e55280f7af0f72dbb1534",
+            "3862d56d57e825bfb615efc35c783102727f4aafa3f91ac50a8aa7445804f0c5",
+            "b425a0a5e36cf0b0a68f948734bab8d2cfda157798f79a1fa1f124f6e763691f"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3012",
