@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision'
+import { usesMainThreadLite } from '../lib/poseCompatibility'
 import { cameraFrame, cameraPoint, type CameraFit } from '../lib/cameraFrame'
 
 const connections = [[11,12],[11,13],[13,15],[12,14],[14,16],[11,23],[12,24],[23,24],[23,25],[25,27],[24,26],[26,28]]
 
 export function PoseCanvas({ videoRef, landmarks, demo, phase, affectedJoints = [], fit = 'contain', keepVideoRendering = false }: { videoRef: React.RefObject<HTMLVideoElement>; landmarks: NormalizedLandmark[] | null; demo: boolean; phase: string; affectedJoints?: number[]; fit?: CameraFit; keepVideoRendering?: boolean }) {
+  const nativePreview = keepVideoRendering && !demo &&
+    usesMainThreadLite(navigator.userAgent, navigator.platform, navigator.maxTouchPoints)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [surface, setSurface] = useState({ width: 360, height: 410, dpr: 1, mobile: false })
   useEffect(() => {
@@ -14,13 +17,13 @@ export function PoseCanvas({ videoRef, landmarks, demo, phase, affectedJoints = 
       const box = canvas.getBoundingClientRect()
       if (!box.width || !box.height) return
       // Preserve the desktop drawing surface and layout exactly as before.
-      const next = phone.matches ? { width: box.width, height: box.height, dpr: Math.min(window.devicePixelRatio || 1, 2), mobile: true } : { width: 360, height: 410, dpr: 1, mobile: false }
+      const next = phone.matches || nativePreview ? { width: box.width, height: box.height, dpr: Math.min(window.devicePixelRatio || 1, 2), mobile: true } : { width: 360, height: 410, dpr: 1, mobile: false }
       setSurface(previous => Object.keys(next).every(key => previous[key as keyof typeof previous] === next[key as keyof typeof next]) ? previous : next)
     }
     const observer = new ResizeObserver(measure); observer.observe(canvas)
     phone.addEventListener('change', measure); measure()
     return () => { observer.disconnect(); phone.removeEventListener('change', measure) }
-  }, [])
+  }, [nativePreview])
   useEffect(() => {
     const canvas = canvasRef.current; if (!canvas) return
     const pixelWidth = Math.round(surface.width * surface.dpr), pixelHeight = Math.round(surface.height * surface.dpr)
@@ -32,8 +35,8 @@ export function PoseCanvas({ videoRef, landmarks, demo, phase, affectedJoints = 
       const w = surface.width, h = surface.height; ctx.clearRect(0,0,w,h)
       const video=videoRef.current;
       const frame = !demo && video?.videoWidth && video.videoHeight ? cameraFrame(video.videoWidth, video.videoHeight, w, h, surface.mobile ? fit : 'contain') : surface.mobile ? cameraFrame(360,410,w,h) : { x:0,y:0,width:w,height:h };
-      if (video && video.readyState >= 2 && video.videoWidth && !demo) { ctx.fillStyle='#f6f8f7';ctx.fillRect(0,0,w,h);ctx.save();ctx.translate(w,0);ctx.scale(-1,1);ctx.drawImage(video,frame.x,frame.y,frame.width,frame.height);ctx.restore() }
-      else {
+      if (!nativePreview && video && video.readyState >= 2 && video.videoWidth && !demo) { ctx.fillStyle='#f6f8f7';ctx.fillRect(0,0,w,h);ctx.save();ctx.translate(w,0);ctx.scale(-1,1);ctx.drawImage(video,frame.x,frame.y,frame.width,frame.height);ctx.restore() }
+      else if (!nativePreview) {
         const g = ctx.createLinearGradient(0,0,w,h); g.addColorStop(0,'#111814'); g.addColorStop(1,'#26332d'); ctx.fillStyle=g; ctx.fillRect(0,0,w,h)
         ctx.fillStyle='rgba(255,255,255,.04)'; for(let x=0;x<w;x+=28) for(let y=0;y<h;y+=28) ctx.fillRect(x,y,1,1)
       }
@@ -51,6 +54,10 @@ export function PoseCanvas({ videoRef, landmarks, demo, phase, affectedJoints = 
       ctx.restore()
     }
     draw()
-  }, [landmarks, demo, phase, videoRef, affectedJoints, surface, fit])
-  return <><video ref={videoRef} className={keepVideoRendering?"hidden-video pose-source-live":"hidden-video"} aria-hidden="true" tabIndex={-1} muted playsInline/><canvas ref={canvasRef} width={360} height={410} className="pose-canvas"/></>
+  }, [landmarks, demo, phase, videoRef, affectedJoints, surface, fit, nativePreview])
+  const video = <video ref={videoRef} className={nativePreview ? 'pose-native-video' : keepVideoRendering ? 'hidden-video pose-source-live' : 'hidden-video'}
+    style={nativePreview ? { objectFit: fit } : undefined} autoPlay={nativePreview} aria-hidden="true" tabIndex={-1} muted playsInline/>
+  const canvas = <canvas ref={canvasRef} width={360} height={410} className="pose-canvas"/>
+  // Keep the video element mounted when presentation changes.
+  return <div className={nativePreview ? 'pose-native-preview' : 'pose-canvas-contents'}>{video}{canvas}</div>
 }

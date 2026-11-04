@@ -10,7 +10,7 @@ export type PoseFailurePhase='camera'|'model'|'calibration'|'performance'|'infer
 export type AdaptiveOptions={type:string;key:string;target:number;restored:Partial<ExerciseMetrics>;warmWhenPaused?:boolean};
 export type EngineSnapshot={metrics:ExerciseMetrics;diagnostics:RecognitionDiagnostics};
 type Video=HTMLVideoElement&{requestVideoFrameCallback?:(cb:(now:number,metadata:{mediaTime:number})=>void)=>number;cancelVideoFrameCallback?:(id:number)=>void};
-type Runtime={controller:AbortController;transport:PoseTransport|null;stream:MediaStream|null;runId:number;frameId:number;origin:number|null;lastMedia:number;lastDecoded:number;inFlight:boolean;callback:number;raf:boolean;forceRaf:boolean;fallbackTimer:ReturnType<typeof setTimeout>|null;preparing:boolean;passive:boolean;probing:boolean;probeTimes:number[];latencies:number[];times:number[];slowSince:number|null;startedAt:number;lastReceived:number;lastSubmitted:number;model:PoseModel;engine:AdaptiveRecognition;key:string;finish:((ready:boolean)=>void)|null;timer:ReturnType<typeof setTimeout>|null};
+type Runtime={controller:AbortController;transport:PoseTransport|null;stream:MediaStream|null;runId:number;frameId:number;origin:number|null;lastMedia:number;lastDecoded:number;inFlight:boolean;callback:number;raf:boolean;forceRaf:boolean;appleCamera:boolean;playRetried:boolean;fallbackTimer:ReturnType<typeof setTimeout>|null;preparing:boolean;passive:boolean;probing:boolean;probeTimes:number[];latencies:number[];times:number[];slowSince:number|null;startedAt:number;lastReceived:number;lastSubmitted:number;model:PoseModel;engine:AdaptiveRecognition;key:string;finish:((ready:boolean)=>void)|null;timer:ReturnType<typeof setTimeout>|null};
 export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
  const videoRef=useRef<HTMLVideoElement>(null),errorReason=useRef(''),opts=useRef(options),activeRef=useRef(active),runtime=useRef<Runtime|null>(null),serial=useRef(0),mounted=useRef(true),lastStats=useRef<{key:string;metrics:ExerciseMetrics}|null>(null);opts.current=options;activeRef.current=active;
  const [failurePhase,setFailurePhase]=useState<PoseFailurePhase|null>(null);
@@ -72,14 +72,24 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
   const callback=(_now:number,metadata?:{mediaTime:number})=>{
    if(consumed||r.controller.signal.aborted||runtime.current!==r)return;
    consumed=true;if(r.fallbackTimer)clearTimeout(r.fallbackTimer);
-   schedule(r);const now=performance.now();
+   const now=performance.now();
+   if(r.appleCamera&&metadata&&metadata.mediaTime<=r.lastMedia&&now-r.lastSubmitted>500){
+    // Some inline streams keep firing callbacks with a stale media timestamp.
+    r.forceRaf=true;
+    metadata=undefined;
+   }
+   schedule(r);
+   if(r.appleCamera&&r.preparing&&r.transport&&v.paused&&!r.playRetried){
+    r.playRetried=true;
+    void v.play().catch(()=>undefined);
+   }
    if(activeRef.current&&!r.preparing&&r.transport&&now-r.lastReceived>3000){performanceFailure(r);return;}
    if(!r.transport||r.inFlight||v.readyState<2||(!r.preparing&&!activeRef.current&&!r.passive))return;
    if(r.passive&&!r.preparing&&!activeRef.current&&r.times.length&&now-r.times[r.times.length-1]<90)return;
    const decoded=decodedFrameCount(v.getVideoPlaybackQuality?.().totalVideoFrames,(v as Video&{webkitDecodedFrameCount?:number}).webkitDecodedFrameCount);
    const media=metadata?.mediaTime??v.currentTime;
    if(!Number.isFinite(media)||media<=r.lastMedia)return;
-   if(!metadata&&decoded!==null&&decoded<=r.lastDecoded)return;
+   if(!metadata&&!r.appleCamera&&decoded!==null&&decoded<=r.lastDecoded)return;
    if(r.transport.mode.startsWith('main')&&now-r.lastSubmitted<1000/15)return;
    if(decoded!==null)r.lastDecoded=decoded;
    r.lastSubmitted=now;
@@ -109,7 +119,8 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
   if(v.requestVideoFrameCallback&&!r.forceRaf){r.raf=false;r.callback=v.requestVideoFrameCallback(callback);r.fallbackTimer=setTimeout(()=>{if(r.controller.signal.aborted)return;v.cancelVideoFrameCallback?.(r.callback);r.forceRaf=true;callback(performance.now());},500);}else{r.raf=true;r.callback=requestAnimationFrame(callback);}
  };
  const start=useCallback(async(forceLite=false)=>{
-  const mainThread=forceLite||usesMainThreadLite(navigator.userAgent,navigator.platform,navigator.maxTouchPoints);
+  const appleCamera=usesMainThreadLite(navigator.userAgent,navigator.platform,navigator.maxTouchPoints);
+  const mainThread=forceLite||appleCamera;
   const previous=runtime.current;
   if(previous&&!forceLite&&!previous.controller.signal.aborted&&previous.key===opts.current.key&&status==='ready'&&performance.now()-previous.lastReceived<=200){
    const elapsed=previous.times.length>1?previous.times[previous.times.length-1]-previous.times[0]:0,fps=elapsed>0?(previous.times.length-1)*1000/elapsed:0;
@@ -119,7 +130,7 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
   const oldStats=previous?.key===opts.current.key?previous.engine.metrics:lastStats.current?.key===opts.current.key?lastStats.current.metrics:undefined,saved=oldStats&&oldStats.reps>(opts.current.restored.reps||0)?oldStats:opts.current.restored;
   const reuse=previous&&!previous.controller.signal.aborted&&previous.transport&&(!mainThread||previous.model==='lite'&&previous.transport.mode.startsWith('main'));let r:Runtime;
   if(reuse){r=previous!;r.runId=++serial.current;r.frameId=0;r.preparing=true;r.passive=false;r.probing=false;r.times=[];r.latencies=[];r.slowSince=null;r.startedAt=performance.now();r.key=opts.current.key;r.engine=new AdaptiveRecognition(opts.current.type,opts.current.target,saved,r.runId);r.finish?.(false);}
-  else{if(previous)release(previous);const runId=++serial.current;r={controller:new AbortController(),transport:null,stream:null,runId,frameId:0,origin:null,lastMedia:-1,lastDecoded:-1,inFlight:false,callback:0,raf:true,forceRaf:false,fallbackTimer:null,preparing:true,passive:false,probing:false,probeTimes:[],latencies:[],times:[],slowSince:null,startedAt:performance.now(),lastReceived:performance.now(),lastSubmitted:-Infinity,model:mainThread?'lite':'full',engine:new AdaptiveRecognition(opts.current.type,opts.current.target,saved,runId),key:opts.current.key,finish:null,timer:null};runtime.current=r;}
+  else{if(previous)release(previous);const runId=++serial.current;r={controller:new AbortController(),transport:null,stream:null,runId,frameId:0,origin:null,lastMedia:-1,lastDecoded:-1,inFlight:false,callback:0,raf:true,forceRaf:false,appleCamera,playRetried:false,fallbackTimer:null,preparing:true,passive:false,probing:false,probeTimes:[],latencies:[],times:[],slowSince:null,startedAt:performance.now(),lastReceived:performance.now(),lastSubmitted:-Infinity,model:mainThread?'lite':'full',engine:new AdaptiveRecognition(opts.current.type,opts.current.target,saved,runId),key:opts.current.key,finish:null,timer:null};runtime.current=r;}
   let phase:PoseFailurePhase='camera';errorReason.current='';setFailurePhase(null);setStatus('loading');publish(r,reuse?'请保持起始姿势':'正在准备摄像头');
   try{
    if(!reuse){

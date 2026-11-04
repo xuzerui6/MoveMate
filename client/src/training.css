@@ -79,3 +79,9 @@
 .motion-view .hidden-video.pose-source-live{display:block;position:fixed;top:0;left:0;width:1px;height:1px;opacity:.01;pointer-events:none}
 
 .training-calibration-guidance{padding:12px 0;line-height:1.65;font-size:14px}.training-calibration-guidance p{margin:6px 0 10px;color:var(--color-primary-dark)}.training-calibration-guidance button{min-height:44px}
+
+.pose-canvas-contents{display:contents}
+.pose-native-preview{position:relative;width:100%;height:100%;overflow:hidden}
+.pose-native-preview .pose-native-video,.pose-native-preview .pose-canvas{display:block;position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.pose-native-preview .pose-native-video{transform:scaleX(-1)}
+.motion-view .pose-native-preview .pose-canvas,.gym-camera .pose-native-preview .pose-canvas{background:transparent!important;object-fit:fill!important}
