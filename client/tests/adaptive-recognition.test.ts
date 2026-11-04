@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {AdaptiveRecognition,adaptiveEligible,approvedAdaptiveCombinations} from '../src/features/motion/lib/adaptiveRecognition';
+import {AdaptiveRecognition,adaptiveEligible,selectRecognitionStrategy} from '../src/features/motion/lib/adaptiveRecognition';
 import {FrameOrder,fullIsFast,TimeFilter,type PoseFrame} from '../src/features/motion/lib/poseProtocol';
 import {recognitionDemonstration,newDemonstrationPose} from '../src/features/motion/lib/recognition';
 import {planPose} from './fixtures/plan-camera';
@@ -46,7 +46,7 @@ test('unstable preparation cannot award repetitions',()=>{
 });
 test('Full requires actual two-second throughput and bounded P95 delay',()=>{
  const fast=Array.from({length:70},(_,i)=>i*33.4);assert.ok(fullIsFast(fast,fast.map(()=>30)));assert.equal(fullIsFast([0,100], [10,10]),false);assert.equal(fullIsFast(fast,fast.map(()=>250)),false);assert.equal(fullIsFast(Array.from({length:24},(_,i)=>i*100),[20]),false);
- assert.equal(approvedAdaptiveCombinations.length,0);assert.equal(adaptiveEligible('standing_leg_curl'),false);
+ assert.equal(adaptiveEligible('standing_leg_curl'),false);
 });
 test('time filter keeps raw confidence and bounded outputs at varying frame rates',()=>{
  for(const dt of [33,66,125]){const f=new TimeFilter(),p=fixture('squat').landmarks;f.apply(p,0);const moved=p.map(v=>({...v,x:v.x+.03,visibility:.4}));const result=f.apply(moved,dt);assert.equal(result[11].visibility,.4);assert.ok(result[11].x>p[11].x&&result[11].x<moved[11].x);}
@@ -131,4 +131,12 @@ test('a squat continues on its tracked side if the other side disappears mid-cyc
  r.cycle();
  assert.equal(r.tracker.metrics.reps,2);
  assert.equal(r.tracker.metrics.scoreAccumulator.count,1);
+});
+
+test('automatic strategy uses device and exercise support for new records and respects saved strategies',()=>{
+ assert.equal(selectRecognitionStrategy('squat',undefined,true),'adaptive-v1');
+ assert.equal(selectRecognitionStrategy('squat',undefined,false),'legacy');
+ assert.equal(selectRecognitionStrategy('standing_leg_curl',undefined,true),'legacy');
+ assert.equal(selectRecognitionStrategy('squat','legacy',true),'legacy');
+ assert.equal(selectRecognitionStrategy('squat','adaptive-v1',false),'adaptive-v1');
 });

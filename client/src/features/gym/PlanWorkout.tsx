@@ -5,8 +5,8 @@ import { Header } from "../motion/components/Header";
 import { PoseCanvas } from "../motion/components/PoseCanvas";
 import { usePose } from "../motion/hooks/usePose";
 import { usePlanRecognition, type PlanRecognitionType } from "./usePlanRecognition";
-import {adaptiveEligible} from '../motion/lib/adaptiveRecognition';
-import {RecognitionChoice,PoseDiagnostics} from '../motion/components/PoseDiagnostics';
+import {selectRecognitionStrategy} from '../motion/lib/adaptiveRecognition';
+import {PoseDiagnostics} from '../motion/components/PoseDiagnostics';
 import { isRecognitionType } from '../motion/lib/recognition';
 import { PlanRecognitionStatus } from "./PlanRecognitionStatus";
 import { isNewPlanProfile } from "./planRecognition";
@@ -191,9 +191,9 @@ export default function PlanWorkout() {
   const capability=current?.exercise.planCamera;
   const canRecognize=supportedRecognition&&!current?.targetSeconds&&current?.side==='both';
   const restored=useMemo(()=>restoredSetMetrics(current),[current?.id,recoveryKey]);
-  const [adaptive,setAdaptive]=useState(false);
-  useEffect(()=>{setAdaptive(current?.recognitionStrategy==='adaptive-v1');},[current?.id]);
-  const pose=usePose(camera&&supportedRecognition&&working&&!busy&&!blocked&&!offline&&!finishAttempted,{adaptive:adaptive&&adaptiveEligible(type),warmWhenPaused:camera&&row?.phase==='paused'&&!blocked&&!offline&&!finishAttempted,type,key:current?.id||'none',target:current?.targetReps||20,restored:{...restored,reps:current?.reps||restored.reps}}),seconds=useSessionClock(row?.session,busy||blocked||offline||finishAttempted);
+  const savedStrategy = current?.recognitionStrategy ?? (camera || current?.status !== 'pending' ? 'legacy' : undefined);
+  const adaptive = canRecognize && selectRecognitionStrategy(type, savedStrategy) === 'adaptive-v1';
+  const pose=usePose(camera&&supportedRecognition&&working&&!busy&&!blocked&&!offline&&!finishAttempted,{adaptive,warmWhenPaused:camera&&row?.phase==='paused'&&!blocked&&!offline&&!finishAttempted,type,key:current?.id||'none',target:current?.targetReps||20,restored:{...restored,reps:current?.reps||restored.reps}}),seconds=useSessionClock(row?.session,busy||blocked||offline||finishAttempted);
   const { metrics, diagnostics } = usePlanRecognition(
     type,
     pose.landmarks,
@@ -857,7 +857,7 @@ export default function PlanWorkout() {
               {current && <ExerciseDemo exercise={current.exercise} suspended={working || busy || finished}/>}
               {!working && canRecognize && (
                 <section className="gym-camera-preparation">
-                  <RecognitionChoice adaptive={adaptive} eligible={adaptiveEligible(type)} disabled={busy||camera||current?.status!=='pending'} onChange={setAdaptive}/><PoseDiagnostics telemetry={pose.telemetry}/>
+                  <PoseDiagnostics telemetry={pose.telemetry}/>
                   <strong>摄像头自动记组{capability ? " · 试用" : ""}</strong>
                   <p>本组目标 {current.targetReps} {type === "high_knees" ? "对" : "次"}，达到目标后自动进入休息。</p>
                   <p>{capability?.placement || exerciseInfo(type).placement}</p>

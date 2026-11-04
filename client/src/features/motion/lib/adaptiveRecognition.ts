@@ -5,8 +5,11 @@ import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
 import {framingFeedback} from './framingFeedback';
 import {analyzeSquatFrame,squatSideVisible} from './squatMetrics';
 export const adaptiveEligible=(type:string)=>['squat','jumping_jack','push_up','high_knees','biceps_curl','hammer_curl','barbell_curl','reverse_barbell_curl','seated_curl','shoulder_press','neutral_seated_press','bent_over_row','barbell_row','bench_press','incline_bench_press','barbell_deadlift','romanian_deadlift','goblet_squat','barbell_back_squat','barbell_front_squat'].includes(type);
-// Empty until real iPhone Safari / Windows Chrome comparisons pass. No automatic rollout.
-export const approvedAdaptiveCombinations:readonly string[]=[];
+/** A saved session takes precedence over detection on the current device. */
+export function selectRecognitionStrategy(type: string, saved?: unknown, adaptiveAvailable = typeof globalThis.crypto?.subtle?.digest === 'function') {
+ if(saved !== undefined)return saved === 'adaptive-v1' ? 'adaptive-v1' : 'legacy';
+ return adaptiveAvailable && adaptiveEligible(type) ? 'adaptive-v1' : 'legacy';
+}
 const distance=(a:Point,b:Point)=>Math.hypot(a.x-b.x,a.y-b.y,(a.z||0)-(b.z||0));
 export class AdaptiveRecognition {
  private base:ReturnType<typeof createRecognitionTracker>;

@@ -20,8 +20,8 @@ import { useStore, type SportSession } from '../lib/store'
 import type { WorkoutContext, WorkoutSession, XiaozhiState } from '../types'
 import { ExerciseDemo } from '../../gym/ExerciseMedia'
 
-import {adaptiveEligible} from '../lib/adaptiveRecognition'
-import {RecognitionChoice,PoseDiagnostics} from '../components/PoseDiagnostics'
+import {selectRecognitionStrategy} from '../lib/adaptiveRecognition'
+import {PoseDiagnostics} from '../components/PoseDiagnostics'
 
 const format = (seconds: number) => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
 const VOICE_LABEL: Record<XiaozhiState, string> = {
@@ -56,7 +56,9 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const [visionConsent, setVisionConsent] = useState<boolean | null>(null)
   const testSlotValue = new URLSearchParams(window.location.search).get('voiceTestSlot')
   const testSlot = testSlotValue ? Number(testSlotValue) : undefined
-  const [adaptive,setAdaptive]=useState(existing?.metrics?.recognitionStrategy==='adaptive-v1')
+  const adaptive = selectRecognitionStrategy(
+    exerciseType, restored ? restored.metrics?.recognitionStrategy ?? 'legacy' : undefined,
+  ) === 'adaptive-v1'
   const pose = usePose(active && !simulatedPose && !paused && !busy && !ending,{adaptive:adaptive&&!simulatedPose,warmWhenPaused:active&&paused&&!ending&&!pendingAction,type:exerciseType,key:exerciseType,target:20,restored:{...(sessions.find(s=>s.id===serverId.current)?.metrics||restored?.metrics),reps:sessions.find(s=>s.id===serverId.current)?.reps||restored?.reps||0}})
   const heartRate = useHeartRateMonitor(appState.age)
   const heartRef = useRef(heartRate); heartRef.current = heartRate
@@ -256,7 +258,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   return <div className={`page workout-page training-workout ${active ? 'live' : 'setup'}${cameraExpanded ? ' camera-expanded' : ''}`}>
     <Header title={exercise.name + '训练'} back={leave} action={active ? <span className={'training-status' + (paused ? ' paused' : '')}>{statusLabel}</span> : <span className="muted">目标 20 {exercise.unit}</span>}/>
     {!active && <section className="training-prep">
-      <RecognitionChoice adaptive={adaptive} eligible={adaptiveEligible(exerciseType)} disabled={busy||!!restored} onChange={setAdaptive}/><PoseDiagnostics telemetry={pose.telemetry}/>
+      <PoseDiagnostics telemetry={pose.telemetry}/>
       <h2>{restored ? '继续上次训练' : '准备好，就开始'}</h2>
       <p className="prep-placement">{exercise.placement}</p><p>{exercise.instruction}</p>
       <ExerciseDemo exercise={isNewExercise(exerciseType)?{id:NEW_EXERCISES[exerciseType].exerciseIds[0],nameZh:exercise.name,form:exercise.instruction}:{id:'motion:'+exerciseType,nameZh:exercise.name,target:exerciseType==='push_up'?'pectorals':exerciseType==='jumping_jack'?'full body':'quadriceps',secondaryMuscles:[]}} suspended={preparing||busy}/>
