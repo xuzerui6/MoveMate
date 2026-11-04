@@ -2877,22 +2877,38 @@
     {
       "id": "exdb:0039",
       "originalName": "barbell front chest squat",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照（2026-11-04）：固定版本 Front_Barbell_Squat 实拍双帧为双臂交叉抱杠，与本条文字的双手肩宽握杠、肘向前不一致；Front_Squat_Clean_Grip 为指托前架，已用于 exdb:0042／0029，亦不能证明本条握法。当前不发布此候选，不计完整覆盖。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "4853b65a8c8212f0d3b7a7e29f1dab2cf5ce6e236e1c3b03dae3820ba02824e4",
-        "steps": 6
+        "steps": 5
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0039",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "6733c0a075f1c5711a9093dfd8c1ef64332b1dba3846dd1631b96d14bf9a0056",
+            "7a5fcf9ef5d5839b59d6c3d718047489eb99b05ba997eba3821a7ba1973a3e5b",
+            "2cca24b755bc115ee9b4f43b2d4076b86eac0e4ccbfdce1f3b8718856e6b01fe"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0041",
@@ -15794,11 +15810,11 @@
     {
       "id": "exdb:2292",
       "originalName": "dumbbell rear delt raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照（2026-11-04）：固定版本后束抬举仅有坐姿俯身、前额抵凳与俯卧形式，无站姿无支撑俯身双臂外展实拍，与本条支撑不符。当前不发布此候选，不计完整覆盖。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
@@ -15806,10 +15822,26 @@
         "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:2292",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "901f9b5c6ef2fc6d738ff94b33f64dc1d8baa3ece27e1692bf1311b10f75e72c",
+            "ad374d72e698ca090df2bccb88db7f4bcedb0b0ed18c7430023de1dcef9e3f20",
+            "74cc1472295fe027019cd8f8c1a32764fd01fcb406b27263e4ba6f3beb272d14"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0377",
@@ -15834,22 +15866,38 @@
     {
       "id": "exdb:0378",
       "originalName": "dumbbell rear fly",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照（2026-11-04）：固定版本 Reverse_Flyes 为俯卧上斜凳、胸腹贴凳，与本条双脚站姿髋铰链、双臂垂地起始不符。当前不发布此候选，不计完整覆盖。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "7ca5ff40c51357d2a0d03401d419d5eeb1af92180abc8a64abe676a9675d7a9d",
-        "steps": 6
+        "steps": 5
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0378",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "626bc1228eb87aa4568cd4cc6f2893355ad1b93262ce44e83d51aaaf76a327da",
+            "95b8a2b4263f4107d6a10ff3b6709bc3f7317be38ff64acdd1ae11cf0e13ca94",
+            "aa6c8330f3f19b3a483d7c33d78bfab8ba896beafbfdb40f85dcd90ec1c089c8"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0380",
@@ -15994,22 +16042,38 @@
     {
       "id": "exdb:0383",
       "originalName": "dumbbell reverse fly",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照（2026-11-04）：Reverse_Flyes 及 Reverse_Flyes_With_External_Rotation 均为俯卧上斜凳（后者掌心向下），与本条站姿中立握侧展开不符，与 exdb:0378 的区别仍无实拍可证。当前不发布此候选，不计完整覆盖。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "14c2a7415a0c23e00efbc5d22fc39ea6c70282204f420a670c79b0679a959126",
-        "steps": 6
+        "steps": 5
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0383",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "b1b060aad712ee1700685a7ead2dbccc4e0adf4bb81f9570b46c2c31a382b916",
+            "73b329669f91cc12f3d8cd8a5337bbe6309622e0f7e6eda18257424c709f8486",
+            "b50176a7e4dae5fec28627e9867ec9cb112daebe4cd444b3220cd7580b8749ee"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1330",

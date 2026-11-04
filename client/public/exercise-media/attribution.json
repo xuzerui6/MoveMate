@@ -12942,6 +12942,194 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:0039": {
+      "kind": "illustration",
+      "note": "杠铃置于胸前、双手肩宽握杠、肘向前；双脚与肩同宽、脚趾微向外，屈髋屈膝下蹲至大腿平行，底部停顿后脚跟推地站起。 原创静态三阶段示意，不是连续视频。",
+      "images": [
+        {
+          "src": "/exercise-media/original-exdb-0039-0.c045e1a64734.webp",
+          "bytes": 4870,
+          "sha256": "c045e1a647347c7a0678b5c7ce82726c753418d54cc9ffcf7f92ce5cff954561",
+          "phase": "胸前持杠·双手肩宽·肘向前",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-0039-1.ef06f0b07514.webp",
+          "bytes": 6106,
+          "sha256": "ef06f0b075142544b6d99d57b79a45cf0b17c4a88327b06e4d0ab74bf1e9a3b7",
+          "phase": "屈髋屈膝下蹲至大腿平行",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-0039-2.c045e1a64734.webp",
+          "bytes": 4870,
+          "sha256": "c045e1a647347c7a0678b5c7ce82726c753418d54cc9ffcf7f92ce5cff954561",
+          "phase": "脚跟推地站起回位",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        }
+      ],
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0039",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "6733c0a075f1c5711a9093dfd8c1ef64332b1dba3846dd1631b96d14bf9a0056",
+            "7a5fcf9ef5d5839b59d6c3d718047489eb99b05ba997eba3821a7ba1973a3e5b",
+            "2cca24b755bc115ee9b4f43b2d4076b86eac0e4ccbfdce1f3b8718856e6b01fe"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:2292": {
+      "kind": "illustration",
+      "note": "站姿屈髋俯身、微屈膝，双手各持一铃；背部稳定、肘微屈，双臂向两侧打开至肩部能控制的高度后缓慢放回，俯身角度全程不变。 原创静态三阶段示意，不是连续视频。",
+      "images": [
+        {
+          "src": "/exercise-media/original-exdb-2292-0.b7663209b71c.webp",
+          "bytes": 6402,
+          "sha256": "b7663209b71ca88c495a74c9c4f987ce6db3b231970490e34bf91486060f4f4b",
+          "phase": "屈髋俯身·双臂下垂·肘微屈",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-2292-1.347de3fe3725.webp",
+          "bytes": 8370,
+          "sha256": "347de3fe3725538a31317cfa191c8001e1033a80b8145dcb1fdc97672662e209",
+          "phase": "双臂向两侧打开至能控制的高度",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-2292-2.b7663209b71c.webp",
+          "bytes": 6402,
+          "sha256": "b7663209b71ca88c495a74c9c4f987ce6db3b231970490e34bf91486060f4f4b",
+          "phase": "缓慢放回",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        }
+      ],
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:2292",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "901f9b5c6ef2fc6d738ff94b33f64dc1d8baa3ece27e1692bf1311b10f75e72c",
+            "ad374d72e698ca090df2bccb88db7f4bcedb0b0ed18c7430023de1dcef9e3f20",
+            "74cc1472295fe027019cd8f8c1a32764fd01fcb406b27263e4ba6f3beb272d14"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0378": {
+      "kind": "illustration",
+      "note": "站姿髋铰链、背部挺直，双臂起始笔直下垂指向地面、掌心相对；肘微屈向两侧抬起、肩胛骨挤压，顶部停顿后缓慢放回。与 0383 的区别：本条起始双臂下垂指向地面，顶部以收紧肩胛为准，不要求抬至与地面平行。 原创静态三阶段示意，不是连续视频。",
+      "images": [
+        {
+          "src": "/exercise-media/original-exdb-0378-0.98d1430f7f0f.webp",
+          "bytes": 6270,
+          "sha256": "98d1430f7f0f66a056176e121fbd085b146a66a3490d74cbdea9a0e5377831d3",
+          "phase": "髋铰链俯身·双臂下垂指向地面",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-0378-1.edb9453aeea4.webp",
+          "bytes": 9586,
+          "sha256": "edb9453aeea48bd1efe6cd2c56f5eb88b474595f333723ad92e672c4b88d2cbb",
+          "phase": "肘微屈向两侧抬起·肩胛挤压",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-0378-2.98d1430f7f0f.webp",
+          "bytes": 6270,
+          "sha256": "98d1430f7f0f66a056176e121fbd085b146a66a3490d74cbdea9a0e5377831d3",
+          "phase": "缓慢放回",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        }
+      ],
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0378",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "626bc1228eb87aa4568cd4cc6f2893355ad1b93262ce44e83d51aaaf76a327da",
+            "95b8a2b4263f4107d6a10ff3b6709bc3f7317be38ff64acdd1ae11cf0e13ca94",
+            "aa6c8330f3f19b3a483d7c33d78bfab8ba896beafbfdb40f85dcd90ec1c089c8"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0383": {
+      "kind": "illustration",
+      "note": "站姿髋铰链、背部挺直，双臂起始伸向身前、掌心相对；肘微屈向两侧展开至与地面平行，顶部停顿后缓慢放回。与 0378 的区别：本条起始双臂在身前（非下垂指向地面），顶部以与地面平行为准。 原创静态三阶段示意，不是连续视频。",
+      "images": [
+        {
+          "src": "/exercise-media/original-exdb-0383-0.7f4356ef139d.webp",
+          "bytes": 6344,
+          "sha256": "7f4356ef139d34b9daf3f4a791528e21e9f32a7de5aab6ad9a6fdfca1026247e",
+          "phase": "髋铰链俯身·双臂伸向身前",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-0383-1.abef4ca4ec35.webp",
+          "bytes": 8070,
+          "sha256": "abef4ca4ec355000690dd52fa3381a887ea2b2591392dd9b59a88d56b18f35a9",
+          "phase": "肘微屈向两侧展开至与地面平行",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        },
+        {
+          "src": "/exercise-media/original-exdb-0383-2.7f4356ef139d.webp",
+          "bytes": 6344,
+          "sha256": "7f4356ef139d34b9daf3f4a791528e21e9f32a7de5aab6ad9a6fdfca1026247e",
+          "phase": "缓慢放回",
+          "sourceIndex": 0,
+          "distribution": "repository"
+        }
+      ],
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0383",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "b1b060aad712ee1700685a7ead2dbccc4e0adf4bb81f9570b46c2c31a382b916",
+            "73b329669f91cc12f3d8cd8a5337bbe6309622e0f7e6eda18257424c709f8486",
+            "b50176a7e4dae5fec28627e9867ec9cb112daebe4cd444b3220cd7580b8749ee"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }
