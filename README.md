@@ -94,6 +94,8 @@ npm test --prefix cloudflare
 
 GitHub Actions 使用 Node 24 检查后端、前端类型、Workers 与公开媒体。`test:repository` 校验所有示范元数据和仓库内媒体字节，不包含站内专用素材的真实文件检查。已配置素材的部署电脑应额外执行 `npm test --prefix client` 与完整构建。CI 不持有部署密钥，也不自动发布网站。
 
+公开构建与站内构建：默认构建是严格的站内构建，缺 `MOVEMATE_MEDIA_DIR` 时会中断；公开克隆可用 `MOVEMATE_PUBLIC_BUILD=1 npm run build --prefix client` 跳过站内专用素材完成构建（7 个含 `site-only` 文件的条目示范不完整，文字与肌群仍可用）。公开构建不是完整站点构建，详见[公开构建说明](docs/public-build.md)。
+
 ## 当前边界
 
 - 动作库共 1,329 项，目前 **177 项有真人图片、95 项有原创图解、15 个动作 ID 有连续视频（12 段独立视频）**；全库均有逐条来源对照结果，272 项完成图文对照，1,057 项仍待核对或补齐。没有把待核对条目计为已完成，[本次实际补齐清单](docs/exercise-library-completion-2026-10-29.md)、[全库覆盖与未完成清单](docs/exercise-library-full-audit.md)。有示范不等于支持识别。

@@ -31,20 +31,33 @@ export function mediaFiles(entries) {
   return [...files.values()];
 }
 
+export function isPublicBuild(options = {}) {
+  return options.publicBuild ?? (process.env.MOVEMATE_PUBLIC_BUILD === '1' || process.env.MOVEMATE_PUBLIC_BUILD === 'true');
+}
+
 export function verifyExerciseMedia(options = {}) {
   const root = resolve(options.root || repo);
   const manifest = options.manifest || JSON.parse(readFileSync(resolve(root, 'client/src/features/gym/exercise-media.json'), 'utf8'));
   if(!options.manifest)verifyMediaMetadata(root,manifest);
   const publicDir = resolve(root, 'client/public');
   const files = mediaFiles(manifest.entries);
-  const needsPrivate = files.some(f => f.distribution === 'site-only');
+  const publicBuild = isPublicBuild(options);
+  // Public builds are opt-in only (MOVEMATE_PUBLIC_BUILD=1). The default stays
+  // strict so a site build can never silently ship without its licensed media.
+  // A public build skips site-only bytes instead of failing, but it must never
+  // leak them: a site-only file placed in client/public is still rejected, and
+  // the tracked/staged restricted-byte checks below still run.
+  if (publicBuild) for (const file of files.filter(f => f.distribution === 'site-only')) {
+    if (existsSync(resolve(publicDir, '.' + file.src))) throw Error('Site-only media must not be placed in client/public: ' + file.src);
+  }
+  const needsPrivate = files.some(f => f.distribution === 'site-only') && !publicBuild;
   const localConfig = resolve(root, 'server/data/media-config.json');
   const configured = options.mediaDir ?? process.env.MOVEMATE_MEDIA_DIR ??
     (existsSync(localConfig) ? JSON.parse(readFileSync(localConfig, 'utf8')).MOVEMATE_MEDIA_DIR : undefined);
   if (needsPrivate && (!configured || !existsSync(configured))) throw Error('Missing MOVEMATE_MEDIA_DIR: provide the reviewed site-only media directory before building. See docs/exercise-media-batch3.md');
   const mediaDir = needsPrivate ? realpathSync(configured) : undefined;
   if (mediaDir && within(realpathSync(root), mediaDir)) throw Error('MOVEMATE_MEDIA_DIR must stay outside the Git repository');
-  const verified = files.map(file => {
+  const verified = (publicBuild ? files.filter(f => f.distribution !== 'site-only') : files).map(file => {
     if (file.distribution && !['repository', 'site-only'].includes(file.distribution)) throw Error('Unknown media distribution');
     const base = file.distribution === 'site-only' ? mediaDir : publicDir;
     const path = resolve(base, '.' + file.src);
@@ -55,7 +68,9 @@ export function verifyExerciseMedia(options = {}) {
     if (file.distribution === 'site-only' && existsSync(resolve(publicDir, '.' + file.src))) throw Error('Site-only media must not be placed in client/public: ' + file.src);
     return { ...file, path, bytes };
   });
-  const restricted = new Set(verified.filter(f => f.distribution === 'site-only').map(f => f.sha256));
+  // Restricted hashes come from the manifest, not from verified bytes, so the
+  // tracked/staged leak check stays full-strength in public builds too.
+  const restricted = new Set(files.filter(f => f.distribution === 'site-only').map(f => f.sha256));
   for (const entry of Object.values(manifest.entries)) {
     for (const source of entry.sources) if (source.distribution === 'site-only') {
       for (const h of source.sourceSha256 || []) restricted.add(h);

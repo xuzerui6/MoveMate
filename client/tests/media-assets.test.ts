@@ -38,6 +38,16 @@ test('missing directory/file or corrupt bytes stop before output is written',t=>
   assert.throws(()=>installExerciseMedia(out,f.opts),/checksum/);assert.ok(!fs.existsSync(out));
   fs.unlinkSync(p);assert.throws(()=>verifyExerciseMedia(f.opts),/Missing reviewed media/);
 });
+test('public build skips site-only bytes without a media directory, but never ships them from public',t=>{
+  const f=fixture(t),out=path.join(f.dir,'public-out');
+  const verified=verifyExerciseMedia({...f.opts,mediaDir:'',publicBuild:true});
+  assert.deepEqual(verified.map((x:any)=>x.src),[f.publicFile.src]);
+  assert.equal(installExerciseMedia(out,{...f.opts,mediaDir:'',publicBuild:true}),1);
+  assert.ok(!fs.existsSync(path.join(out,f.siteFile.src)),'Public builds copy no site-only file');
+  assert.throws(()=>verifyExerciseMedia({...f.opts,mediaDir:'',publicBuild:false}),/MOVEMATE_MEDIA_DIR/);
+  const copied=path.join(f.root,'client/public',f.siteFile.src);fs.mkdirSync(path.dirname(copied),{recursive:true});fs.copyFileSync(path.join(f.mediaDir,f.siteFile.src),copied);
+  assert.throws(()=>verifyExerciseMedia({...f.opts,mediaDir:'',publicBuild:true}),/client\/public/);
+});
 test('inside-repository storage, path traversal and misplaced public copies are rejected',t=>{
   const f=fixture(t),inside=path.join(f.root,'private');fs.mkdirSync(inside);
   assert.throws(()=>verifyExerciseMedia({...f.opts,mediaDir:inside}),/outside/);
