@@ -72,10 +72,35 @@ node scripts/backup-restore-drill.mjs --keep     # 保留临时目录以便检�
 恢复后行数一致、标记行在位、应用层读到标记行 1 条；
 Turso 拒绝分支实测退出码 2。
 
+## 生产侧（Cloudflare Durable Object）：现状与未演练项
+
+生产站点 dongban.xyz 的数据不在上文的本地/Turso 路径上：它运行于
+Cloudflare Worker + SQLite-backed Durable Object（见
+[Cloudflare 部署](cloudflare-deployment.md)），头像也存于 DO 库内
+（`avatar_files` / `avatar_chunks` 表）。已核实的事实：
+
+- 代码回滚走 `wrangler versions` / `wrangler rollback`，只回滚 Worker
+  代码，继续绑定原 DO namespace 与 production 实例；部署文档明文禁止
+  删除 namespace、重建数据库或用 Turso 旧快照覆盖生产库。
+- 灾难恢复的既定路径是 Durable Object 的 PITR（时间点恢复）书签；
+  开放新写入后不要用旧快照覆盖数据库。
+- 迁移期建有 AES-256-GCM 加密导出/导入工具
+  （`cloudflare/scripts/migrate.mjs`），解密密钥在
+  `server/data/cloudflare-backup-key.json`（被 Git 排除，不得与备份
+  同处存放）；但该工具的导出源是当年的迁移源站，**未验证**能直接导出
+  当前 DO 生产库，不得当作现成的生产备份手段引用。
+
+**未演练（2026-11-05 补记）**：把生产数据完整导出并恢复到一个空白
+实例、再跑业务回归的端到端恢复演练从未执行。建议演练步骤（需维护者
+在场、确认窗口后执行）：① 确认 PITR 书签的可用时间点与保留窗口；
+② 在预览/空白实例恢复一份生产快照；③ 跑登录、训练结算、动作库、
+管理面板四项业务回归并记录耗时与缺口；④ 结论回填本节。在此之前，
+对外只可表述为「平台提供 PITR，恢复演练未做」。
+
 ## 未验证项（不要对外承诺）
 
-- 生产库（dongban.xyz / Turso 云库）的备份与恢复均未演练；本脚本与本文
-  只覆盖本地 SQLite 演练路径。
+- 生产库（dongban.xyz，Cloudflare Durable Object）的备份与恢复均未
+  演练，详见上一节；本脚本与本文的已实测部分只覆盖本地 SQLite 路径。
 - 不停服热备份（`VACUUM INTO` 对运行中库）未作为生产流程验证。
 - `uploads/` 目录的恢复未进演练脚本，只在上文列为手动步骤。
 - 备份保留周期、异地存放、加密均未定，需要 Edward 定后再补。

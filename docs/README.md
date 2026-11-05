@@ -29,6 +29,8 @@
 | [全库覆盖 CSV](exercise-media-coverage.csv) / [缺失 CSV](exercise-media-missing.csv) | 按动作 ID 查询图片、视频及摄像头能力 |
 | [统一语音](shared-voice.md) | 设备池、学习演示限制、配置与验证 |
 | [Cloudflare 部署](cloudflare-deployment.md) | 生产／预览、密钥、迁移、备份与回滚 |
+| [生产发布检查清单](release-checklist.md) | 发布前中后逐项清单与回滚点 |
+| [服务端备份与恢复](server-backup-restore.md) | 本地演练实测、生产侧现状与未演练项 |
 | [第三方声明](../DONGBAN_THIRD_PARTY_NOTICES.md) | 代码与独立素材许可、署名 |
 
 ## 验收记录
@@ -38,6 +40,7 @@
 - [稳定性与恢复第三批](recovery-reliability-stage3.md)（2026-10-25，草稿基线与冲突、加载隔离、断网与存储异常）
 - [产品体检与体验修复](product-experience-fixes.md)（2026-10-20，训练结束、日程、单位、收藏及失败恢复）
 - [计划编辑可靠性与手机操作](plan-editor-reliability.md)（2026-10-21，保存快照、草稿异常、设置与周日程缓存）
+- [真人验收手册](acceptance-runbook.md)（力量动作逐项对照、五路真人有声，待实测）
 - [计划训练验收](plan-training-acceptance.md)
 - [训练流程验收](training-acceptance.md)
 - [四动作验收](../CAMERA_TRAINING_ACCEPTANCE.md)
