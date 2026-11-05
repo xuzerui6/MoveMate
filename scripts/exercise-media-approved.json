@@ -4568,6 +4568,97 @@
         "高平板支撑、双手宽于肩",
         "屈肘将胸部降向地面"
       ]
+    },
+    {
+      "exerciseId": "exdb:0536",
+      "expectedName": "kettlebell lunge pass through",
+      "sourceId": "Lunge_Pass_Through",
+      "sourceSha256": [
+        "375cef19a0c54878304208e508d870470e0b5260e84a59b6cbd116fcb0b5b4ef",
+        "fd9a2b3d647c6e9f5c4919e3f170fb4daeaed915c18eea75d9c2390e4dfa05e8"
+      ],
+      "phases": [
+        "单手提铃于体侧、前迈弓步",
+        "弓步中将壶铃从前腿下穿过换手"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0369",
+      "expectedName": "dumbbell over bench wrist curl",
+      "sourceId": "Palms-Up_Dumbbell_Wrist_Curl_Over_A_Bench",
+      "sourceSha256": [
+        "0aa1d08f0276372934e08dfcf96fe0bf6af7fe2def161edcf6790adcb8238ec9",
+        "8d651d9ad4a9cd1937d585c5b316e468bddbc20184fed2b27514ea655f3d3e7a"
+      ],
+      "phases": [
+        "凳侧跪姿、前臂置凳面掌心向上、腕悬空",
+        "屈腕将哑铃上抬"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1623",
+      "expectedName": "dumbbell palms in incline bench press",
+      "sourceId": "Incline_Dumbbell_Bench_With_Palms_Facing_In",
+      "sourceSha256": [
+        "2fbbb960cf801bc147c4c0d0483e9b25d7470b1ed6ee0ee855425d68cfbdcc2e",
+        "df48f3bad71641d86fbd382a3dac4f135c123d5918c794a85354f44ea4da83de"
+      ],
+      "phases": [
+        "上斜仰卧双臂伸直掌心相对",
+        "下放哑铃至胸侧、掌心仍朝内"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1677",
+      "expectedName": "dumbbell seated bicep curl",
+      "sourceId": "Seated_Dumbbell_Curl",
+      "sourceSha256": [
+        "09eaabb7368cbc2f87ed27b0da4c66042fe84b2ea64825c925798db3dd042550",
+        "63a97b19561b2684e119b3d0f498c5e0dd9b502a291b35fd25d45591cb32dcf0"
+      ],
+      "phases": [
+        "坐姿双手持铃垂于体侧、掌心朝上",
+        "双臂同时屈肘弯举哑铃至肩部"
+      ]
+    },
+    {
+      "exerciseId": "exdb:2432",
+      "expectedName": "ez-bar close-grip bench press",
+      "sourceId": "Close-Grip_EZ-Bar_Press",
+      "sourceSha256": [
+        "34618d14b7cbaa9d0ffb57b109582a52b32ec2c25be6ba99745b5c9c45701490",
+        "9c28267c52a6e5d09243ddee0f10ba1b3653068ce91af6d52c01f20a82379e3b"
+      ],
+      "phases": [
+        "仰卧平凳、窄握曲杠置于胸上方、双臂伸直",
+        "屈肘将曲杠降至胸部、肘贴身体"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1298",
+      "expectedName": "kettlebell one arm floor press",
+      "sourceId": "Extended_Range_One-Arm_Kettlebell_Floor_Press",
+      "sourceSha256": [
+        "0675bee781dd3e786445bff7218d86414d6ad8fa6b13808c82f0b37bd41d7b2c",
+        "777e119a544e9fdac273304f0f19a27f1fdc891fbb1f3f88bc6247a2a7e0ad9c"
+      ],
+      "phases": [
+        "仰卧地板、单手握壶铃置于胸部",
+        "伸肘将壶铃推举至手臂伸直"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1723",
+      "expectedName": "cable one arm tricep pushdown",
+      "sourceId": "Cable_One_Arm_Tricep_Extension",
+      "sourceSha256": [
+        "c8bb4d856df4156ec9f0d6c9b76dd085cb511162c3702b6ef53e285dfda4fc6d",
+        "7bb90f0ffaf45d5264f8d25925fd12214f2723dca57b56bf350e91cbe67927c6"
+      ],
+      "phases": [
+        "面向绳索机站立、单手握柄屈肘于胸前",
+        "伸肘将手柄下压至手臂伸直"
+      ]
     }
   ],
   "videos": [
@@ -5230,9 +5321,37 @@
     {
       "source": "free-exercise-db Push_Up_to_Side_Plank → exdb:0717",
       "reason": "两帧仅示常规俯卧撑起止，未见侧平板或侧卧推起阶段，与条目「侧卧推起」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Seated_Dumbbell_Press → exdb:0388",
+      "reason": "两帧均为双臂同时推举过顶，条目定义为左右交替推举，交替形式不符。"
+    },
+    {
+      "source": "free-exercise-db Front_Barbell_Squat → exdb:0024",
+      "reason": "照片为交叉臂抱杠前蹲，条目定义为正手握杠、肘部上抬、上臂与地面平行，握法与肘位不符。"
+    },
+    {
+      "source": "free-exercise-db Close-Grip_Push-Up_off_of_a_Dumbbell → exdb:0259",
+      "reason": "照片为双手握持哑铃做支撑，条目为徒手、双手并拢撑地，支撑器械不符。"
+    },
+    {
+      "source": "free-exercise-db Lying_Rear_Delt_Raise → exdb:2470",
+      "reason": "照片为俯卧长凳、双臂下垂后向两侧抬起，条目为俯卧地板、双臂前伸后向上向两侧抬起，支撑面与手臂路径不符。"
+    },
+    {
+      "source": "free-exercise-db Seated_Glute → exdb:1424",
+      "reason": "照片为他人辅助加压拉伸，条目为自行拉伸（左手轻压右膝），形式不符。"
+    },
+    {
+      "source": "free-exercise-db Dips_-_Triceps_Version → exdb:0815",
+      "reason": "照片为双杠臂屈伸，条目为凳边支撑、双腿前伸的凳上臂屈伸，支撑器械与体位不符。"
+    },
+    {
+      "source": "free-exercise-db One_Arm_Pronated_Dumbbell_Triceps_Extension → exdb:0362",
+      "reason": "照片为仰卧凳上单臂臂屈伸，条目为坐姿凳上过顶臂屈伸，体位不符（与第十七批 Dumbbell_One-Arm_Triceps_Extension 驳回同理）。"
     }
   ],
-  "batch": 24,
+  "batch": 25,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",

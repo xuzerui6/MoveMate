@@ -8652,22 +8652,37 @@
     {
       "id": "exdb:1723",
       "originalName": "cable one arm tricep pushdown",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：名称单臂，正文直杆肩宽双手且初始已完全伸肘又再伸肘，支撑与阶段冲突。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：面向绳索机站立、单手握柄、屈肘于胸前与伸肘下压至伸直清晰；条目名称为准，单臂形式与名称一致，目录「直杆」「双手」写法已按照片的单手柄单臂改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a9f24ba96514f174a4d4eda9fb52a5fae87bce7448cfa163c0e9b6e4205ceeb1",
-        "steps": 8
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_One_Arm_Tricep_Extension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_One_Arm_Tricep_Extension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "c8bb4d856df4156ec9f0d6c9b76dd085cb511162c3702b6ef53e285dfda4fc6d",
+            "7bb90f0ffaf45d5264f8d25925fd12214f2723dca57b56bf350e91cbe67927c6"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1636",
@@ -16042,22 +16057,37 @@
     {
       "id": "exdb:0369",
       "originalName": "dumbbell over bench wrist curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：前臂凳撑掌心向上、腕悬空屈曲明确，需准确小关节和握铃近景示范。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：凳侧跪姿、前臂置凳面掌心向上、腕悬空屈曲上抬清晰，与条目定义一致；目录「坐在长凳上」写法已按照片的凳侧跪姿改写。本批为第二十四批已核对合格的结转项，复核后采用。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "dd6535ecce2f504540f49ae3218e54499a6f6c802bc68025ae95acf8ea976378",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Palms-Up_Dumbbell_Wrist_Curl_Over_A_Bench",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Palms-Up_Dumbbell_Wrist_Curl_Over_A_Bench",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "0aa1d08f0276372934e08dfcf96fe0bf6af7fe2def161edcf6790adcb8238ec9",
+            "8d651d9ad4a9cd1937d585c5b316e468bddbc20184fed2b27514ea655f3d3e7a"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1329",
@@ -16082,22 +16112,37 @@
     {
       "id": "exdb:1623",
       "originalName": "dumbbell palms in incline bench press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：45度背靠中立握清楚，与0321/0324近同但需逐图确认实际手肘路径，保留原ID。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：45 度上斜仰卧、双臂伸直掌心相对与下放至胸侧掌心仍朝内清晰，与条目定义一致。本批为第二十四批已核对合格的结转项，复核后采用。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "54a37609e8fe235c72d0a983df00c82c4820e50ed4e94c10643f92e84658d419",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Incline_Dumbbell_Bench_With_Palms_Facing_In",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Incline_Dumbbell_Bench_With_Palms_Facing_In",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "2fbbb960cf801bc147c4c0d0483e9b25d7470b1ed6ee0ee855425d68cfbdcc2e",
+            "df48f3bad71641d86fbd382a3dac4f135c123d5918c794a85354f44ea4da83de"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0370",
@@ -17157,33 +17202,32 @@
       "originalName": "dumbbell seated bicep curl",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "已逐项核对原始完整步骤、原创各阶段及器械/支撑；中性线条图，非真人或专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐姿、双手持铃垂于体侧掌心朝上与双臂同时屈肘弯举至肩部清晰，与条目定义一致；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "7743aa45a3227f14eb26483508b97b5e77ecdf629f9ca188b5cf0d800cbaa16d",
-        "steps": 4
+        "steps": 5
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:1677",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Seated_Dumbbell_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Dumbbell_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "2c3aed116ffecbb4b69ac27b2fae69ddfcb8f8554249705450e8d966d6f61b19",
-            "fc11fdab9c553abb7a8a99a15f777abd2a99b1fbcfe285f01d0c3c6cee1b5a3e",
-            "7bb912ef96e7bf036c710210334e54cccf3d868f9b39a24d938512af1c2d72f0"
+            "09eaabb7368cbc2f87ed27b0da4c66042fe84b2ea64825c925798db3dd042550",
+            "63a97b19561b2684e119b3d0f498c5e0dd9b502a291b35fd25d45591cb32dcf0"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -20540,22 +20584,37 @@
     {
       "id": "exdb:2432",
       "originalName": "ez-bar close-grip bench press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：平凳肩宽推胸明确，但标题close grip实际握曲柄何处需核对，不复用直杆卧推图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：仰卧平凳、窄握曲杠、双臂伸直置于胸上方与屈肘降至胸部、肘贴身体清晰，曲杠形态明确，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "d302e600bf464395d471b403728f3b6a097807c08dc7bf97a86253a1962535b5",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Close-Grip_EZ-Bar_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Close-Grip_EZ-Bar_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "34618d14b7cbaa9d0ffb57b109582a52b32ec2c25be6ba99745b5c9c45701490",
+            "9c28267c52a6e5d09243ddee0f10ba1b3653068ce91af6d52c01f20a82379e3b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2741",
@@ -23093,22 +23152,37 @@
     {
       "id": "exdb:0536",
       "originalName": "kettlebell lunge pass through",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤、支撑和器械：正文开头双手胸前，接着说传入左手再传回右手，起始持手与回位不充分；穿腿路径需连续周期核对。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：单手提铃于体侧、前迈弓步与弓步中壶铃从前腿下穿过换手清晰，与条目定义一致；目录「双手胸前起始」写法已按照片的单手体侧提铃改写。本批为第二十四批已核对合格的结转项，复核后采用。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "845c47de3424648f653847a66b09a219663390c2bdc753dda48bd8f6460576a8",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Lunge_Pass_Through",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Lunge_Pass_Through",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "375cef19a0c54878304208e508d870470e0b5260e84a59b6cbd116fcb0b5b4ef",
+            "fd9a2b3d647c6e9f5c4919e3f170fb4daeaed915c18eea75d9c2390e4dfa05e8"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0537",
@@ -23133,22 +23207,37 @@
     {
       "id": "exdb:1298",
       "originalName": "kettlebell one arm floor press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源屈膝双脚踩地，候选双腿伸直，支撑姿势不一致。 当前不发布此候选，不计完整覆盖。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：仰卧地板、单臂握壶铃、屈肘降至胸部与伸肘推举过顶清晰，定义性的地板单臂壶铃推举要素齐全；双腿交叉屈膝、双脚触地为稳定身体的支撑变式。2026-10-29 针对 Gym Visual 候选的旧驳回（候选双腿伸直）不适用于本实拍，本实拍屈膝、双脚触地。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "57812c49a2f3df9ed33887cea92c6de34a2023a9d938a1a39f38b9d21f60ad9e",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Extended_Range_One-Arm_Kettlebell_Floor_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Extended_Range_One-Arm_Kettlebell_Floor_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "0675bee781dd3e786445bff7218d86414d6ad8fa6b13808c82f0b37bd41d7b2c",
+            "777e119a544e9fdac273304f0f19a27f1fdc891fbb1f3f88bc6247a2a7e0ad9c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0538",
