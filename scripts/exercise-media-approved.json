@@ -4256,6 +4256,110 @@
         "杠铃胸前交叉臂站立",
         "下蹲至大腿平行"
       ]
+    },
+    {
+      "exerciseId": "exdb:1564",
+      "expectedName": "intermediate hip flexor and quad stretch",
+      "sourceId": "Intermediate_Hip_Flexor_and_Quad_Stretch",
+      "sourceSha256": [
+        "df29f89d822cd02848e7c4928680a2b12ba3b264cf238e06c3759f9a3f43c8f9",
+        "ecdc7da99b3d78c3daf4ca627269f5fcd88f81858b3df7c02b48535366f4277e"
+      ],
+      "phases": [
+        "坐地伸腿绳绕脚掌",
+        "俯卧绳带拉腿贴臀"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1390",
+      "expectedName": "seated calf stretch (male)",
+      "sourceId": "Seated_Calf_Stretch",
+      "sourceSha256": [
+        "a9fc285572c79d5eb85a436e1aacbfdf0ce249266cb659c55f3b6b42d846967b",
+        "49e0dd714abcc76927d1ec36fb2db71a8a574281681e3736592cfefd557c3ea5"
+      ],
+      "phases": [
+        "地面坐姿双腿伸直",
+        "单腿伸直前倾拉伸小腿"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0122",
+      "expectedName": "barbell wide bench press",
+      "sourceId": "Wide-Grip_Barbell_Bench_Press",
+      "sourceSha256": [
+        "13d755ade6bfa7f2de9f50b69e79d745be820c27110efeb473307c8df715d203",
+        "cb99280cbb7fb540fceffec9a0ed4e97426ca41fc8437d582e0e35d0136f0a51"
+      ],
+      "phases": [
+        "仰卧宽握杠铃上举",
+        "杠铃下放触胸"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0108",
+      "expectedName": "barbell standing leg calf raise",
+      "sourceId": "Standing_Barbell_Calf_Raise",
+      "sourceSha256": [
+        "82724066c87baa757b9639ddd5448303a8f07e641d3a90829401c671f6c7a554",
+        "f8da9c48c7bc8bd7c3084fb192f27a8e00d8a16c652e56acce34cb6b7d4f0552"
+      ],
+      "phases": [
+        "杠铃置于上背站立",
+        "脚跟抬离地面至最高"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0044",
+      "expectedName": "barbell good morning",
+      "sourceId": "Good_Morning",
+      "sourceSha256": [
+        "e85711c454e0cc433ba1628386e886da621f07e698bd58a421d867e44e3b5807",
+        "d58742f191821aa45cc3162a07b449805bc990b6c282c7943aae32ae3bf75bff"
+      ],
+      "phases": [
+        "杠铃置于上背站立",
+        "屈髋俯身至躯干近水平"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0069",
+      "expectedName": "barbell overhead squat",
+      "sourceId": "Overhead_Squat",
+      "sourceSha256": [
+        "57408e80d0603cbd40cb46aa9d6dfe79662c7814d22e364b11cd9080dfd1fdf3",
+        "be91b50b45cb018b82650606eeef1d83ce78ab763ef643ac46977110a4377b50"
+      ],
+      "phases": [
+        "杠铃高举过顶站立",
+        "下蹲至底部杠铃仍过顶"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0117",
+      "expectedName": "barbell sumo deadlift",
+      "sourceId": "Sumo_Deadlift",
+      "sourceSha256": [
+        "40350f7e6ab32f208c04e84e175989a9fe9c33ce41057bf1585a67b1402f3baa",
+        "ece39dbd0f736ffd2071a252b8f6a9cad6341c629257509aa44c0a425a47a432"
+      ],
+      "phases": [
+        "宽站距屈膝握杠",
+        "伸髋伸膝拉起杠铃"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0534",
+      "expectedName": "kettlebell goblet squat",
+      "sourceId": "Goblet_Squat",
+      "sourceSha256": [
+        "342ea87afb9fa03d9b1ac9c28c269f9ad2536d40b5a73b0bfb1ea25c9d605d02",
+        "49d5facb019c3be9302134edf1e4b786cc88fbe25413ee7ba3e8d278952ded85"
+      ],
+      "phases": [
+        "双手持铃贴胸站立",
+        "下蹲至大腿平行"
+      ]
     }
   ],
   "videos": [
@@ -4870,9 +4974,21 @@
     {
       "source": "free-exercise-db Preacher_Hammer_Dumbbell_Curl → exdb:1646",
       "reason": "照片为双臂同时锤式弯举，条目定义为交替弯举，形式不符。"
+    },
+    {
+      "source": "free-exercise-db One_Arm_Against_Wall → exdb:1355",
+      "reason": "来源仅提供同一张照片（0/1 两帧字节相同），无起始位与关键位之分；且照片为屈肘前臂贴墙，与条目「手臂伸直、手掌贴墙前推」定义不符。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Kettlebell_Jerk → exdb:0537",
+      "reason": "两帧仅示架铃位站立与下蹲预备，未见挺举过顶锁定关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db Double_Kettlebell_Alternating_Hang_Clean → exdb:0518",
+      "reason": "候选照片已在第十八批用于近同条目 exdb:0526（双壶铃交替悬垂翻举），两条目步骤近同，同一组照片不重复采用。"
     }
   ],
-  "batch": 21,
+  "batch": 22,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",

@@ -3230,7 +3230,7 @@
       "originalName": "barbell good morning",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照文字与原创器械、支撑和阶段示意，非真人实拍或专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站姿上背托杠站立与屈髋俯身至躯干近水平清晰，与条目定义一致；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -3239,24 +3239,23 @@
         "sourceRecordSha256": "930fa72fe8ecbef0654d8a81826679faf288f27ad24eb743c21b262de2291d3b",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0044",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Good_Morning",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Good_Morning",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "9d0ad979cb9833d1138b543380f46a0f7657203a07aaaf3903bef9da9b149014",
-            "83902dd30ab57a499661f2aada106144d7ca0ff5783101cbda9809820b2e87c7",
-            "830cc7bd857dfcc6568a392d44562afe83ba776862fe43a70ce3def68d870134"
+            "e85711c454e0cc433ba1628386e886da621f07e698bd58a421d867e44e3b5807",
+            "d58742f191821aa45cc3162a07b449805bc990b6c282c7943aae32ae3bf75bff"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -4113,7 +4112,7 @@
       "originalName": "barbell overhead squat",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照文字与原创器械、支撑和阶段示意，非真人实拍或专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：双手宽握杠铃高举过顶站立与下蹲至底部、杠铃始终过顶清晰，与条目定义一致；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -4122,24 +4121,23 @@
         "sourceRecordSha256": "8e3717f03f92e52afcb714b04a71cdc4bc7ee4e24c91c09906b3265fd3fd2eb2",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0069",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Overhead_Squat",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Overhead_Squat",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "e1c61bddf82801e11f6cd5ca0af0fa8effa50e6585a317872023bbaf403ef014",
-            "18322e1006926cd63246dc1a155dc109fc8759844ba8b26dcfc3ffac1e07eea3",
-            "a8597cd9705012e0b354f0af6332c76d79b00680c4cf082315dbbe34511e3855"
+            "57408e80d0603cbd40cb46aa9d6dfe79662c7814d22e364b11cd9080dfd1fdf3",
+            "be91b50b45cb018b82650606eeef1d83ce78ab763ef643ac46977110a4377b50"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -5658,22 +5656,37 @@
     {
       "id": "exdb:0108",
       "originalName": "barbell standing leg calf raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：上背负杠、双脚着地、抬跟回落明确；需要显式肩部杠位、地面前脚掌接触及回落的分解图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：杠铃置于上背站立、脚跟抬离地面至最高清晰，与站姿提踵定义一致；照片立于平板面，全脚掌承托。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "492a07c0625e738d8d1811dda3535d6db79e2de0702a47ddc2a9e1194c08bd68",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Barbell_Calf_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Barbell_Calf_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "82724066c87baa757b9639ddd5448303a8f07e641d3a90829401c671f6c7a554",
+            "f8da9c48c7bc8bd7c3084fb192f27a8e00d8a16c652e56acce34cb6b7d4f0552"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0109",
@@ -5966,7 +5979,7 @@
       "originalName": "barbell sumo deadlift",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：宽站距、脚尖外转屈膝握杠与伸髋伸膝拉起清晰，与条目定义一致；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -5975,24 +5988,23 @@
         "sourceRecordSha256": "af296a2375ec1f6143e1f09d794b3b9dbf6924d77d4440cd8fa24e71e7ecb40d",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0117",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Sumo_Deadlift",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Sumo_Deadlift",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "0b3e3f229110ff45c15946b2d98d60d0248f52f243cea4ee2aa09b06b2709b74",
-            "39c45f06da032427d06b6016142d3a8340e850b11e645257b99e3f785ab2ffe3",
-            "86aabf653b430f66a700633adb157e64485f447f990df0c887d6c7fc12378de3"
+            "40350f7e6ab32f208c04e84e175989a9fe9c33ce41057bf1585a67b1402f3baa",
+            "ece39dbd0f736ffd2071a252b8f6a9cad6341c629257509aa44c0a425a47a432"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -6095,22 +6107,37 @@
     {
       "id": "exdb:0122",
       "originalName": "barbell wide bench press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：平凳宽握推胸明确，宽度只写略宽肩，需准确握距与下降路径示范，不用任意卧推图片。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：仰卧平凳宽握杠铃上举与下放触胸清晰，握距明显宽于肩，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "be0f3978cdb0bb5516c191dd612bb13b9a4fd8de4b870833175bd21c90177c54",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Wide-Grip_Barbell_Bench_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Wide-Grip_Barbell_Bench_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "13d755ade6bfa7f2de9f50b69e79d745be820c27110efeb473307c8df715d203",
+            "cb99280cbb7fb540fceffec9a0ed4e97426ca41fc8437d582e0e35d0136f0a51"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1258",
@@ -21916,22 +21943,37 @@
     {
       "id": "exdb:1564",
       "originalName": "intermediate hip flexor and quad stretch",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源站姿，图片为仰卧绳带拉伸。 当前不发布此候选，不计完整覆盖。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐地伸腿绳绕脚掌为准备位，俯卧绳带拉腿贴臀为关键位，与名称所指的髋屈肌与股四头肌拉伸一致；目录站姿写法已按照片的俯卧绳带形式改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "099411758a2f179b37fff4585b769ba77d53e6f4c43db8020f6046ed56ff69a5",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Intermediate_Hip_Flexor_and_Quad_Stretch",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Intermediate_Hip_Flexor_and_Quad_Stretch",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "df29f89d822cd02848e7c4928680a2b12ba3b264cf238e06c3759f9a3f43c8f9",
+            "ecdc7da99b3d78c3daf4ca627269f5fcd88f81858b3df7c02b48535366f4277e"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0496",
@@ -22871,7 +22913,7 @@
       "originalName": "kettlebell goblet squat",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "已逐项核对器械、支撑、握法和原创分解图；非真人、连续动画或专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：双手持一只壶铃贴胸站立与下蹲至大腿平行清晰，与条目定义一致；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -22880,24 +22922,23 @@
         "sourceRecordSha256": "1a85625a76272738e881754485e4b0a976b8d49b4a555b9f5ec97a30b2055808",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0534",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Goblet_Squat",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Goblet_Squat",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "145b50cae87f195fbaa6cfb9f52976a214484d784441909fc8b6b6e7f2834fae",
-            "0ec83f8346e1a923dfe6e67d04d6d28e619cb3e3384a44e78060a4428905cbf8",
-            "9942b96454350246a06076bad34bd2a6966d352d35016a4db706973a6e65501d"
+            "342ea87afb9fa03d9b1ac9c28c269f9ad2536d40b5a73b0bfb1ea25c9d605d02",
+            "49d5facb019c3be9302134edf1e4b786cc88fbe25413ee7ba3e8d278952ded85"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -28264,22 +28305,37 @@
     {
       "id": "exdb:1390",
       "originalName": "seated calf stretch (male)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源椅边伸单腿、脚跟落地，但未说明踝背屈或足尖方向，单纯前倾也可能是腘绳肌拉伸；需核对足部。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：地面坐姿双腿伸直为起始位，单腿伸直、脚跟贴地、脚尖回勾前倾够脚掌为关键位，与小腿拉伸定义一致、与腘绳肌拉伸可区分；目录椅边写法已按照片的地面坐姿改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "68ac8d9ca620e9df69b743b665a29e7a79e5182e90bb3b942fbea0f3a8285865",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Seated_Calf_Stretch",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Calf_Stretch",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "a9fc285572c79d5eb85a436e1aacbfdf0ce249266cb659c55f3b6b42d846967b",
+            "49e0dd714abcc76927d1ec36fb2db71a8a574281681e3736592cfefd557c3ea5"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1424",
