@@ -10385,22 +10385,37 @@
     {
       "id": "exdb:0227",
       "originalName": "cable standing fly",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：胸高双侧、背对机器、双臂胸前合拢明确，仍需起始手位及索路的专门图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：背对绳索机、胸高双侧握柄、肘微屈、双臂向前胸前合拢清晰，与条目定义一致；来源名为胸推，照片实为飞鸟弧线（起始手位在体侧、合拢于胸前），按照片与条目定义采用。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a699051adf9557e3707218b2f0ee1ce345e4e96b7464be9daf9c21ea24f6df83",
-        "steps": 9
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Cable_Chest_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Cable_Chest_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "0cb8759f65b292a272e1a737f9856500e01638810576d1c9a71b7be51eca3e8e",
+            "6632bf5c06e45a7649ead2c4b874475df97461da4872b6ca8ac2d9d40d5fbe2c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0228",
@@ -19603,22 +19618,37 @@
     {
       "id": "exdb:2796",
       "originalName": "dumbbell step-up lunge",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文只有上台再一脚下放，没有地面弓步，组合标题与步骤不一致。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：双手各持一铃体侧、整脚踩上台面、蹬地抬身、另一脚抬起清晰，与条目步骤一致；标题中的 lunge 在条目正文中无对应的地面弓步阶段（沿用既有复核口径），照片按步骤所示的上台动作采用；所示为一侧，另一侧镜像重复。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "00c065e9c971742ea6471bbc004d1abfbaeab987ef7aaf9b690f7fb593c4cbb2",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Step_Ups",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Dumbbell_Step_Ups",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "581f4f8eb98680a738ec97c1b9666fd2dac04d6a68a456632aaf1accbaa88118",
+            "8fd899686805d4165937628846ebf2a6499ea1636623579d8e88234b4a1aa64c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2812",
