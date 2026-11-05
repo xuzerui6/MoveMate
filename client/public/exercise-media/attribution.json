@@ -15046,6 +15046,228 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:0532": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/kettlebell_figure_8-0.00105669e051.webp",
+          "sha256": "00105669e0517b2ec3213f4170682c15d2395a74eb77bfcbad31769f50ccd210",
+          "bytes": 29066,
+          "distribution": "repository",
+          "phase": "俯身腿间向后递铃",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/kettlebell_figure_8-1.68ff7dc08ff0.webp",
+          "sha256": "68ff7dc08ff02660a8d019f675db265ebfee2a219e617cf48a13fc5ce504e18e",
+          "bytes": 30838,
+          "distribution": "repository",
+          "phase": "前侧接铃继续绕腿",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Kettlebell_Figure_8",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Kettlebell_Figure_8",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "2a6dfdb2bbae82d6851660c06d04474027354af37306fa3681c740be9a0cc6f6",
+            "65bfb43ef91b00cc32bfd20ab157b094f47489be8583c33ea0427e98c1842f8c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0526": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/double_kettlebell_alternating_hang_clean-0.ea648b836f82.webp",
+          "sha256": "ea648b836f822bddbe538a32f44f89e1d78361182dc188c324b996cd43bb164d",
+          "bytes": 30700,
+          "distribution": "repository",
+          "phase": "双铃悬垂低位",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/double_kettlebell_alternating_hang_clean-1.85b125f8ca7b.webp",
+          "sha256": "85b125f8ca7b881b0db90d1ea804b2afe6313b5941dd4c2519a0a840ba01615d",
+          "bytes": 31458,
+          "distribution": "repository",
+          "phase": "单侧翻至肩高另一侧下垂",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Double_Kettlebell_Alternating_Hang_Clean",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Double_Kettlebell_Alternating_Hang_Clean",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "ded90634d25eccd902a4ab811b2e5f9501ee7d58deac71a25688bc497d694e6c",
+            "bac7e56378b4ab1d35062803c89da2ed255d2780a080dfdbbd8e29d5614ecd2a"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0323": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/one-arm_incline_lateral_raise-0.537d9f3682b0.webp",
+          "sha256": "537d9f3682b0431aec2eadb36742ec1885a72f0b0c855759e37a94475f984fcf",
+          "bytes": 42546,
+          "distribution": "repository",
+          "phase": "侧卧上斜凳手臂横过身体",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/one-arm_incline_lateral_raise-1.aeab8e7a51b2.webp",
+          "sha256": "aeab8e7a51b2804d417baea356561419e58bb90c54a68b3a1065903a1fb1f116",
+          "bytes": 47268,
+          "distribution": "repository",
+          "phase": "侧举至指向天花板",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / One-Arm_Incline_Lateral_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/One-Arm_Incline_Lateral_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "bf9b4569a2fbab29886976ec13247cb3e1e26d7ee3de53e1a819b59d40ed9772",
+            "cb0b13d37cc7cf79fa027c08d88cb251262cb87ca04b5a62a9726bf8bde31be6"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0638": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/one_arm_chin-up-0.6152865a2d91.webp",
+          "sha256": "6152865a2d91e9bde7c70f4e33561541309dc51500444fabe15ae078f1f168d6",
+          "bytes": 32094,
+          "distribution": "repository",
+          "phase": "单手握杠毛巾辅助悬垂",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/one_arm_chin-up-1.24ba6a86fd99.webp",
+          "sha256": "24ba6a86fd99bdeec1b99d0508d969be1ccc9570c5d619cca82c72efa51a3f5d",
+          "bytes": 33820,
+          "distribution": "repository",
+          "phase": "屈肘拉起至胸近杠",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / One_Arm_Chin-Up",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/One_Arm_Chin-Up",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "213944edd4920bea97cfe4d19f21ee552ddc9b0852ee644975f03625b82b60e7",
+            "5d50fca3ec1fff9fca26fbd7108b735502ee8e9acf663dceadaf3d922361250f"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0806": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/suspended_push-up-0.481f5575ce60.webp",
+          "sha256": "481f5575ce60df413c9534bd1b9d48cddd020aa6227ceacf53898ff7518a916e",
+          "bytes": 50514,
+          "distribution": "repository",
+          "phase": "吊环斜板支撑伸臂",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/suspended_push-up-1.5bfb9013e1f6.webp",
+          "sha256": "5bfb9013e1f6793f85bdbd62e76169ddef3cc16329cfabc4cfb6ca135bf1773c",
+          "bytes": 52054,
+          "distribution": "repository",
+          "phase": "屈肘胸向吊环下降",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Suspended_Push-Up",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Suspended_Push-Up",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "2f73e37b4a2defc15f4f73f2bbcff27cb1942cd1a02c168357ad487df2081ea8",
+            "5be0bc94e6e65da28f0c63fcb1da2dba684401eb8818fe349f4a670bf403bf93"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0809": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/suspended_split_squat-0.729dd95aac53.webp",
+          "sha256": "729dd95aac534ecda46ad7bb83444f4dfdcbe80a94f4595176e7ca56693887eb",
+          "bytes": 50286,
+          "distribution": "repository",
+          "phase": "后脚置环中站立",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/suspended_split_squat-1.ebec61ccdc5f.webp",
+          "sha256": "ebec61ccdc5f7069c1c870536773d04d41faf667ff3e23d7bd35daaa6e42aaec",
+          "bytes": 50316,
+          "distribution": "repository",
+          "phase": "屈膝下蹲至弓步",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Suspended_Split_Squat",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Suspended_Split_Squat",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "94b39835fb4abce2fcfe85887e370349e2653ab045ebbc9ed9153587f17d0ab8",
+            "dcb6abf9cce948b9f4a423ef2f5f2d34b16d0f02665f687d902e6449da828b56"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }

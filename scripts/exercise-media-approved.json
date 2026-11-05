@@ -3866,6 +3866,84 @@
         "宽站下蹲握铃",
         "爆发提拉至胸前"
       ]
+    },
+    {
+      "exerciseId": "exdb:0532",
+      "expectedName": "kettlebell figure 8",
+      "sourceId": "Kettlebell_Figure_8",
+      "sourceSha256": [
+        "2a6dfdb2bbae82d6851660c06d04474027354af37306fa3681c740be9a0cc6f6",
+        "65bfb43ef91b00cc32bfd20ab157b094f47489be8583c33ea0427e98c1842f8c"
+      ],
+      "phases": [
+        "俯身腿间向后递铃",
+        "前侧接铃继续绕腿"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0526",
+      "expectedName": "kettlebell double alternating hang clean",
+      "sourceId": "Double_Kettlebell_Alternating_Hang_Clean",
+      "sourceSha256": [
+        "ded90634d25eccd902a4ab811b2e5f9501ee7d58deac71a25688bc497d694e6c",
+        "bac7e56378b4ab1d35062803c89da2ed255d2780a080dfdbbd8e29d5614ecd2a"
+      ],
+      "phases": [
+        "双铃悬垂低位",
+        "单侧翻至肩高另一侧下垂"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0323",
+      "expectedName": "dumbbell incline one arm lateral raise",
+      "sourceId": "One-Arm_Incline_Lateral_Raise",
+      "sourceSha256": [
+        "bf9b4569a2fbab29886976ec13247cb3e1e26d7ee3de53e1a819b59d40ed9772",
+        "cb0b13d37cc7cf79fa027c08d88cb251262cb87ca04b5a62a9726bf8bde31be6"
+      ],
+      "phases": [
+        "侧卧上斜凳手臂横过身体",
+        "侧举至指向天花板"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0638",
+      "expectedName": "one arm chin-up",
+      "sourceId": "One_Arm_Chin-Up",
+      "sourceSha256": [
+        "213944edd4920bea97cfe4d19f21ee552ddc9b0852ee644975f03625b82b60e7",
+        "5d50fca3ec1fff9fca26fbd7108b735502ee8e9acf663dceadaf3d922361250f"
+      ],
+      "phases": [
+        "单手握杠毛巾辅助悬垂",
+        "屈肘拉起至胸近杠"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0806",
+      "expectedName": "suspended push-up",
+      "sourceId": "Suspended_Push-Up",
+      "sourceSha256": [
+        "2f73e37b4a2defc15f4f73f2bbcff27cb1942cd1a02c168357ad487df2081ea8",
+        "5be0bc94e6e65da28f0c63fcb1da2dba684401eb8818fe349f4a670bf403bf93"
+      ],
+      "phases": [
+        "吊环斜板支撑伸臂",
+        "屈肘胸向吊环下降"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0809",
+      "expectedName": "suspended split squat",
+      "sourceId": "Suspended_Split_Squat",
+      "sourceSha256": [
+        "94b39835fb4abce2fcfe85887e370349e2653ab045ebbc9ed9153587f17d0ab8",
+        "dcb6abf9cce948b9f4a423ef2f5f2d34b16d0f02665f687d902e6449da828b56"
+      ],
+      "phases": [
+        "后脚置环中站立",
+        "屈膝下蹲至弓步"
+      ]
     }
   ],
   "videos": [
@@ -4384,9 +4462,41 @@
     {
       "source": "free-exercise-db Flat_Bench_Leg_Pull-In → exdb:0570",
       "reason": "照片为仰卧凳面屈腿收腿，与条目坐姿凳边伸腿收腿定义不符，体位不符。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_Lying_Pronation → exdb:0347",
+      "reason": "照片为俯卧凳上屈肘90°旋臂，目录定义为双臂直垂下屈肘旋掌弯举，无弯举过程，动作形式不符。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_Lying_Supination → exdb:0349",
+      "reason": "照片为侧卧凳上屈肘90°旋臂，目录定义为平躺双臂伸展掌心向上向肩卷曲，无卷曲过程，动作形式不符。"
+    },
+    {
+      "source": "free-exercise-db Double_Kettlebell_Push_Press → exdb:0528",
+      "reason": "两帧仅示双铃架肩站姿与预蹲，未见推举过顶锁定关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db Balance_Board → exdb:0020",
+      "reason": "照片为双脚站板平衡，目录定义为单脚踩板、转移重心、换脚重复，单双脚形式不符。"
+    },
+    {
+      "source": "free-exercise-db Behind_Head_Chest_Stretch → exdb:1259",
+      "reason": "照片为同伴辅助坐姿、双手脑后拉肘，目录定义为站姿独自双手脑后挤压肩胛，体位与辅助形式不符。"
+    },
+    {
+      "source": "free-exercise-db Chest_And_Front_Of_Shoulder_Stretch → exdb:1271",
+      "reason": "照片为双手持杆前举后摆过头，目录定义为徒手双臂交叉前推、掌心相压，器械与动作不符。"
+    },
+    {
+      "source": "free-exercise-db Weighted_Squat → exdb:0852",
+      "reason": "照片为腰带挂片、双脚站于两凳的腰带深蹲，目录定义为重物抱于胸前或肩上，负重位置与支撑不符，暂不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Double_Kettlebell_Jerk → exdb:0527",
+      "reason": "两帧均为双铃架肩站姿与微蹲，未见挺举过顶锁定与分腿关键阶段，不采用。"
     }
   ],
-  "batch": 15,
+  "batch": 18,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",
