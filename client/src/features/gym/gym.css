@@ -854,3 +854,38 @@
   .gym-page .gym-editor-save-bar>button{min-width:0;min-height:48px;margin:0}
   .keyboard-open .gym-editor-save-bar{position:static}
 }
+
+/* 按部位找动作（人体图浏览） */
+.muscle-browser-details {
+  margin: 0.5rem 0;
+}
+.muscle-browser-details > summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.35rem 0;
+}
+.muscle-browser .exercise-muscle-pair {
+  max-width: 430px;
+  margin: 0 auto;
+}
+.muscle-browser .exercise-muscle-pair svg {
+  max-height: 340px;
+}
+.muscle-browser g[role="button"] path {
+  transition: fill 0.15s ease;
+}
+.muscle-browser g[role="button"]:hover path,
+.muscle-browser g[role="button"]:focus-visible path {
+  fill: #9be5ba;
+}
+.muscle-browser g[role="button"]:focus-visible {
+  outline: 2px solid #008b43;
+  outline-offset: 2px;
+}
+.muscle-browser-extra {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 0.4rem 0;
+}

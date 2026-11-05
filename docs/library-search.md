@@ -36,7 +36,23 @@ nameZh+别名里搜不到、扩展词搜得到，才加。当前词表：
 「练背、练胸、二头、三头、泡沫轴」这类说法由部位标签通道覆盖，
 不需要进俗称表。
 
+## 按部位浏览（人体图）
+
+不知道动作名时走浏览：动作库页有「按部位找动作」人体图（正/背面），
+点着色区域即按该肌群筛选，再点一次取消。区域→目录代码的映射在
+`client/src/features/gym/media.ts` 的 `regionFilterCodes`，由详情页
+着色用的 `muscleGroups` 反演得到，两种口径由
+`client/tests/muscle-browser.test.ts` 双向锁定一致；一个区域常对应
+多个等价目录代码（如 quadriceps/quads），服务端 `library()` 的
+muscle 参数因此支持逗号分隔多值，任一命中即可。
+
+诚实边界：MuscleMap 源图没有背阔肌的独立轮廓（详情页同样不着色），
+浏览图不拿其它背部轮廓冒充，改用图下按钮补位并注明；头发、头部、
+膝部等没有对应目录肌群的区域不可点。
+
 ## 测试
 
 `server/tests/library-search.test.ts`：拼音全拼/首字母、俗称、部位
 通道、跨字段拼接回归、加权、以及 library() 集成排序。
+`client/tests/muscle-browser.test.ts`：区域映射双向一致性、等价代码
+分组、无轮廓肌群的诚实处理、交互区域标签齐全。

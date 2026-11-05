@@ -113,6 +113,27 @@ test("library: colloquial and body-part queries work", async () => {
   );
 });
 
+test("library: muscle accepts comma-separated equivalent codes", async () => {
+  const quad = await gym.library(owner, { muscle: "quadriceps", role: "primary" });
+  const quads = await gym.library(owner, { muscle: "quads", role: "primary" });
+  const multi = await gym.library(owner, {
+    muscle: "quadriceps,quads",
+    role: "primary",
+  });
+  assert.ok(quad.total > 0 && quads.total > 0);
+  // target/bodyPart 都是单值字段，两组结果不重叠，多值总数恰为两者之和
+  assert.equal(multi.total, quad.total + quads.total);
+  assert.ok(
+    multi.items.every(
+      (e: any) =>
+        e.target === "quadriceps" ||
+        e.target === "quads" ||
+        e.bodyPart === "quadriceps" ||
+        e.bodyPart === "quads",
+    ),
+  );
+});
+
 test("library: ranking puts name matches ahead of instruction mentions", async () => {
   const r = await gym.library(owner, { q: "卧推" });
   assert.ok(r.items[0].nameZh.includes("卧推"));

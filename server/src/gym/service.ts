@@ -78,6 +78,12 @@ export async function library(uid: number, query: any) {
   const wanted = query.ids
     ? new Set(String(query.ids).split(",").slice(0, 500))
     : null;
+  // muscle 支持逗号分隔多值（人体图浏览里一个区域对应多个等价目录代码，
+  // 如股四头肌同时有 quadriceps 与 quads 两种写法），任一命中即可。
+  const muscles = String(query.muscle || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
   const q = String(query.q || ""),
     cursor = Math.max(0, Number(query.cursor) || 0),
     limit = Math.min(wanted ? 500 : 50, Math.max(1, Number(query.limit) || 24));
@@ -90,11 +96,13 @@ export async function library(uid: number, query: any) {
         prefs.equipment.includes(e.equipment)) &&
       (!wanted || wanted.has(e.id)) &&
       (!mediaIds || mediaIds.has(e.id)) &&
-      (!query.muscle ||
-        e.bodyPart === query.muscle ||
-        e.target === query.muscle ||
-        (query.role !== "primary" &&
-          e.secondaryMuscles.includes(query.muscle))) &&
+      (!muscles.length ||
+        muscles.some(
+          (m) =>
+            e.bodyPart === m ||
+            e.target === m ||
+            (query.role !== "primary" && e.secondaryMuscles.includes(m)),
+        )) &&
       (!query.equipment || e.equipment === query.equipment) &&
       (!query.category || e.category === query.category) &&
       (!query.favorite || favorite.has(e.id)),

@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { label, request, useGymQuery, getErrorMessage } from "./api";
 import { CameraCapability } from "./CameraCapability";
 import { ExerciseMediaPanel, ExerciseThumb } from "./ExerciseMedia";
-import { mediaSummaryFor, type MediaFilter } from "./media";
+import { mediaSummaryFor, REGION_LABELS, type MediaFilter } from "./media";
+import { MuscleBrowser } from "./MuscleBrowser";
 import { useAuthStore } from "../../stores/authStore";
 import { CachedDataNotice } from "./CachedDataNotice";
 import { FavoriteRequests, mergeExercisePage } from "./libraryState";
@@ -38,6 +39,8 @@ export function ExerciseLibrary({
     [next, setNext] = useState<number | null>(null),
     [readOnly, setReadOnly] = useState(false),
     [facets, setFacets] = useState<{muscles: string[]; equipment: string[]}>({muscles: [], equipment: []}),
+    [region, setRegion] = useState(""),
+    [mapOpen, setMapOpen] = useState(!onPick),
     [favoritePending, setFavoritePending] = useState<Set<string>>(new Set()),
     [favoriteErrors, setFavoriteErrors] = useState<Record<string, {message: string; enabled: boolean}>>({});
   const favorites = useRef(new Map<string, boolean>()), favoriteRequests = useRef(new FavoriteRequests()), mounted = useRef(true);
@@ -106,6 +109,17 @@ export function ExerciseLibrary({
     setter(value);
     setCursor(0);
   };
+  const clearRegion = () => {
+    setRegion("");
+    filter(setMuscle)("");
+  };
+  const pickRegion = (key: string, codes: string[]) => {
+    if (region === key) clearRegion();
+    else {
+      setRegion(key);
+      filter(setMuscle)(codes.join(","));
+    }
+  };
   const saveCustom = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (readOnly) return;
@@ -142,6 +156,25 @@ export function ExerciseLibrary({
           自定义动作
         </button>
       </div>
+      <details
+        className="muscle-browser-details"
+        open={mapOpen}
+        onToggle={(e) => setMapOpen((e.target as HTMLDetailsElement).open)}
+      >
+        <summary>按部位找动作 · 点人体图选肌群</summary>
+        <MuscleBrowser selected={region} onSelect={pickRegion} />
+      </details>
+      {!!region && (
+        <p className="gym-inline-actions">
+          <span>
+            部位：
+            {REGION_LABELS[region] || (region === "lats" ? "背阔肌" : region)}
+          </span>
+          <button className="secondary" onClick={clearRegion}>
+            清除部位筛选
+          </button>
+        </p>
+      )}
       <div className="gym-inline-actions">
         <label>
           动作示范
@@ -213,8 +246,11 @@ export function ExerciseLibrary({
           <label>
             肌群
             <select
-              value={muscle}
-              onChange={(e) => filter(setMuscle)(e.target.value)}
+              value={facets.muscles.includes(muscle) ? muscle : ""}
+              onChange={(e) => {
+                setRegion("");
+                filter(setMuscle)(e.target.value);
+              }}
             >
               <option value="">全部肌群</option>
               {facets.muscles.map((v: string) => (
