@@ -5978,22 +5978,37 @@
     {
       "id": "exdb:1457",
       "originalName": "barbell standing wide military press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题宽握而步骤仅略宽肩，肩前路径可读；需示范确认握距与1456窄握区别。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站姿、正手宽握杠铃置于肩高、推举过顶至双臂伸直清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "51deef977acdb3a81cbfff1db0238911d90c63c4cf6df8e6484f2f3449ed322b",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Military_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Military_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "fb258efda95067b243b1c5033b1ff7b72a0f8cef8607477b71b969d3f72a8471",
+            "b9419884fa57bd7de1dff2d0f811aa61d4cd5547b3c6ebafaca01c7017d8be1a"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0113",
@@ -16714,22 +16729,37 @@
     {
       "id": "exdb:0370",
       "originalName": "dumbbell peacher hammer curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题peacher hammer，正文站姿旋至掌前普通弯举，没有牧师垫且非锤式握法。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐于牧师凳、双手各握哑铃掌心相对、上臂贴垫、手臂伸直与双臂同时屈肘弯举至肩高清晰，与条目名称「哑铃牧师锤式弯举」一致；目录「站直、旋转手掌至掌心朝前」写法已按名称与照片的坐姿牧师凳、锤式握法、双臂同时弯举改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "7be12d1792747201d4e0917e34d64b8059c1fe4408140e0264c46f6d599e64dc",
-        "steps": 8
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Preacher_Hammer_Dumbbell_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Preacher_Hammer_Dumbbell_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "0a3e5d8489e2867270619942cc940a5c25849e99109ce4bd7fce8c687fc6f324",
+            "53a1441ef0d1bf0b70902f18ba7139db9e54adc4e78836b7106ab0a00d37ace8"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0371",
@@ -17169,22 +17199,37 @@
     {
       "id": "exdb:0379",
       "originalName": "dumbbell rear lateral raise (support head)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题support head，全文无额头支撑物及接触，不能省略该特征。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站姿俯身、额头抵于上斜凳、双臂下垂握铃与向两侧平举至肩高清晰，与条目名称「哑铃后束侧平举（支撑头部）」一致；目录未写头部支撑，已按照片补写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "bd5414d4918c3a0ef624b6517a8fb6357c13e6d9090e4a4c0a0227f8643c1729",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "96474831b0193198bc920d9035596805495485e79ae9b6e68e476bedd5a24ca4",
+            "8bbea1e8187d0296fe3b46523e7cb8773dc2421eb19cecb609b6d03e8687b29f"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0381",
@@ -25542,22 +25587,37 @@
     {
       "id": "exdb:0589",
       "originalName": "lever one arm bent over row",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题单臂杠杆，正文双手肩宽握长杠、双臂伸展，器械与单侧均不一致。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站姿俯身、单手握杠铃杆端、杠铃一端固定于地面支点、拉向胸腹清晰，与条目名称「杠杆单臂俯身划船」一致；目录「正手握住杠铃」写法已按照片的单手握杆端、杠杆固定端改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "726b9384aa3a0622de02f5cdd6a7d8e8caa2f92325a913222e2bbd9c5b9c30ba",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / One-Arm_Long_Bar_Row",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/One-Arm_Long_Bar_Row",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "7b36ce6746fec34944e0889d8a663673fd33b9b4dc20da37352e712ff1a3cb9a",
+            "dade6215736287e16db3622838f11a3bea3d180e31e292ee2b96e50e55949c8f"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1356",
@@ -30986,22 +31046,37 @@
     {
       "id": "exdb:1625",
       "originalName": "smith machine decline close grip bench press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：下斜却双脚地面无固定，凳与轨道关系及窄握下落点需核验。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：史密斯机、下斜凳、窄握杠铃置于胸前与推举至双臂伸直清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "94ab362d62b5f4b5e74a24ffb378e09385fe2b4df3a6b7b32056233df3a4c570",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Smith_Machine_Decline_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Smith_Machine_Decline_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "a9b8d86c47a826298f6c9afe410ed9f2b0181131a1b98c826708acf5677c46f9",
+            "ac891759da8010051c343a371ab60d5575815cccf8dbfa77319942ec9c454a87"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1752",

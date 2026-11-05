@@ -5595,6 +5595,71 @@
         "背对滑轮、双手握绳举过头顶、屈肘绳落头后",
         "伸直手臂回到过顶位"
       ]
+    },
+    {
+      "exerciseId": "exdb:0370",
+      "expectedName": "dumbbell peacher hammer curl",
+      "sourceId": "Preacher_Hammer_Dumbbell_Curl",
+      "sourceSha256": [
+        "0a3e5d8489e2867270619942cc940a5c25849e99109ce4bd7fce8c687fc6f324",
+        "53a1441ef0d1bf0b70902f18ba7139db9e54adc4e78836b7106ab0a00d37ace8"
+      ],
+      "phases": [
+        "坐于牧师凳、双臂伸直掌心相对握铃",
+        "双臂同时屈肘弯举哑铃至肩高"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1457",
+      "expectedName": "barbell standing wide military press",
+      "sourceId": "Standing_Military_Press",
+      "sourceSha256": [
+        "fb258efda95067b243b1c5033b1ff7b72a0f8cef8607477b71b969d3f72a8471",
+        "b9419884fa57bd7de1dff2d0f811aa61d4cd5547b3c6ebafaca01c7017d8be1a"
+      ],
+      "phases": [
+        "站姿、杠铃置于肩高、正手宽握",
+        "推举杠铃过顶至双臂伸直"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0589",
+      "expectedName": "lever one arm bent over row",
+      "sourceId": "One-Arm_Long_Bar_Row",
+      "sourceSha256": [
+        "7b36ce6746fec34944e0889d8a663673fd33b9b4dc20da37352e712ff1a3cb9a",
+        "dade6215736287e16db3622838f11a3bea3d180e31e292ee2b96e50e55949c8f"
+      ],
+      "phases": [
+        "俯身、单手握杠铃杆端、杠铃下垂",
+        "杠铃拉向胸腹、肩胛收紧"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1625",
+      "expectedName": "smith machine decline close grip bench press",
+      "sourceId": "Smith_Machine_Decline_Press",
+      "sourceSha256": [
+        "a9b8d86c47a826298f6c9afe410ed9f2b0181131a1b98c826708acf5677c46f9",
+        "ac891759da8010051c343a371ab60d5575815cccf8dbfa77319942ec9c454a87"
+      ],
+      "phases": [
+        "仰卧下斜凳、窄握杠铃置于胸前",
+        "推举杠铃至双臂伸直"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0379",
+      "expectedName": "dumbbell rear lateral raise (support head)",
+      "sourceId": "Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench",
+      "sourceSha256": [
+        "96474831b0193198bc920d9035596805495485e79ae9b6e68e476bedd5a24ca4",
+        "8bbea1e8187d0296fe3b46523e7cb8773dc2421eb19cecb609b6d03e8687b29f"
+      ],
+      "phases": [
+        "俯身、额头抵于上斜凳、双臂下垂握铃",
+        "双臂向两侧平举至肩高"
+      ]
     }
   ],
   "videos": [
@@ -7049,9 +7114,365 @@
     {
       "source": "free-exercise-db Round_The_World_Shoulder_Stretch → exdb:1604",
       "reason": "照片为站姿双手持棍于身后、抬棍拉伸肩部的持棍肩拉伸，条目定义为弓步起势、双手撑地、转体伸臂向天花板的环球拉伸；动作与体位均不符。"
+    },
+    {
+      "source": "free-exercise-db Plyo_Push-up → exdb:0803",
+      "reason": "照片为爆发式俯卧撑（低位＋高位平板），未见降低时一臂一腿抬离地面的超人式关键阶段，与条目「超人俯卧撑」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Plyo_Push-up → exdb:1275",
+      "reason": "照片为爆发式俯卧撑，未见胸触地后屈膝跪地的下落式关键阶段，与条目「下落俯卧撑」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Standing_Hamstring_and_Calf_Stretch → exdb:1398",
+      "reason": "两帧为同一张图（md5 相同）；且照片为拉带前屈够脚的站姿拉伸，非扶墙后撤步小腿拉伸，与条目定义不符。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Dumbbell_Row → exdb:0360",
+      "reason": "照片为凳上支撑单臂划船，条目定义为站姿单臂肩推；动作不符。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Dumbbell_Row → exdb:0367",
+      "reason": "照片为凳上支撑单臂划船，条目定义为坐姿凳上掌心向下腕弯举；动作不符。"
+    },
+    {
+      "source": "free-exercise-db Kneeling_Cable_Triceps_Extension → exdb:0149",
+      "reason": "照片为跪姿双臂绳索过顶臂屈伸，条目定义为站姿单臂交替臂屈伸（上臂与地面平行、前臂向后伸展）；体位与交替形式均不符。"
+    },
+    {
+      "source": "free-exercise-db Low_Cable_Triceps_Extension → exdb:0176",
+      "reason": "照片为仰卧长凳绳索臂屈伸，条目定义为面向绳索机跪姿、双手握绳置于头侧；体位不符。"
+    },
+    {
+      "source": "free-exercise-db Preacher_Hammer_Dumbbell_Curl → exdb:1647",
+      "reason": "照片为双臂同时锤式握法牧师弯举，条目定义为掌心向上交替牧师弯举；握法与交替形式均不符。"
+    },
+    {
+      "source": "free-exercise-db Alternate_Hammer_Curl → exdb:1646",
+      "reason": "照片为站姿交替锤式弯举，条目定义为坐姿牧师凳交替锤式弯举；无牧师凳、站姿与坐姿不符。"
+    },
+    {
+      "source": "free-exercise-db Calf_Raise_On_A_Dumbbell → exdb:0409",
+      "reason": "照片为双脚站于哑铃之上、扶杠铃提踵，条目定义为单腿站台阶边缘、手持哑铃提踵；双脚非单腿、哑铃为垫脚物非手持负重。"
+    },
+    {
+      "source": "free-exercise-db Wide-Grip_Rear_Pull-Up → exdb:0670",
+      "reason": "两帧仅示悬垂与微屈肘，未见杠过颈后的颈后上拉关键位，与条目「颈后引体」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Incline_Push-Up_Wide → exdb:3011",
+      "reason": "照片为宽距上斜俯卧撑，未见肩胛挤压的肩胛俯卧撑关键特征，与条目「上斜肩胛俯卧撑」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Plyo_Push-up → exdb:3021",
+      "reason": "照片为爆发式俯卧撑，未见肩胛前伸/回缩的肩胛俯卧撑关键阶段，与条目「肩胛俯卧撑」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Plyo_Push-up → exdb:3145",
+      "reason": "照片为爆发式俯卧撑，未见顶部肩胛前伸的「plus」关键阶段，与条目「俯卧撑 plus」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Clock_Push-Up → exdb:0699",
+      "reason": "照片为常规俯卧撑起止，双手始终撑地，未见拍肩或时钟式转体，与条目「拍肩俯卧撑」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Clock_Push-Up → exdb:1467",
+      "reason": "照片为双手撑地俯卧撑，未见前臂支撑，与条目「前臂俯卧撑」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Clock_Push-Up → exdb:3217",
+      "reason": "照片为常规俯卧撑，未见印度式俯卧撑的俯冲下潜动作，与条目「改良印度俯卧撑」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Seated_One-Arm_Dumbbell_Palms-Down_Wrist_Curl → exdb:1669",
+      "reason": "照片为坐姿单臂掌心向下腕弯举，条目定义为坐姿锤式弯举（屈肘）；腕弯举非弯举。"
+    },
+    {
+      "source": "free-exercise-db Standing_Dumbbell_Triceps_Extension → exdb:0373",
+      "reason": "照片为站姿双手共握一只哑铃过顶臂屈伸，条目定义为坐姿旋前握臂屈伸；站姿与坐姿不符。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_Raise → exdb:0380",
+      "reason": "照片为站姿直立、屈肘将哑铃提至胸前，条目定义为俯身后束侧平举；无俯身体位与后举动作。"
+    },
+    {
+      "source": "free-exercise-db Standing_Gastrocnemius_Calf_Stretch → exdb:1398",
+      "reason": "照片为单脚踏台阶、前屈够脚尖的站姿拉伸，无墙面支撑、后脚未平放地面后撤，与条目「扶墙后撤步小腿拉伸」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Cable_Rear_Delt_Fly → exdb:0233",
+      "reason": "照片为站姿绳索后束飞鸟（双臂向两侧展开），无绳索附件、动作为飞鸟非划船，与条目「绳索站姿后束划船（带绳）」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Reverse_Triceps_Bench_Press → exdb:1258",
+      "reason": "照片杠路向额前、属臂屈伸类推举，宽握特征亦不可确认，与条目「杠铃宽握反握卧推」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Bent-Arm_Dumbbell_Pullover → exdb:0288",
+      "reason": "照片为横卧凳面屈臂上拉，条目定义为平躺长凳、头在一端的环绕上拉；体位与环绕路径均不符。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_Floor_Press → exdb:0296",
+      "reason": "照片为仰卧地板推举，条目定义为坐姿长凳窄握推举；体位不符。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_Floor_Press → exdb:0338",
+      "reason": "照片为仰卧地板单只哑铃推举，条目定义为仰卧长凳、每手一只哑铃肘部推举；长凳与哑铃数量均不符。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_Floor_Press → exdb:1731",
+      "reason": "照片为仰卧地板推举，条目定义为坐姿长凳窄握推举；体位不符。"
+    },
+    {
+      "source": "free-exercise-db Seated_Hamstring_and_Calf_Stretch → exdb:1424",
+      "reason": "照片为双腿伸直、拉带前屈的腘绳肌拉伸，条目定义为坐姿臀部拉伸；拉伸部位不符。"
+    },
+    {
+      "source": "free-exercise-db Hip_Flexion_with_Band → exdb:1408",
+      "reason": "照片为站姿弹力带屈髋抬膝，条目定义为仰卧屈膝提髋（臀桥）；体位不符。"
+    },
+    {
+      "source": "free-exercise-db Overhead_Cable_Curl → exdb:1644",
+      "reason": "照片为站姿高位过顶双臂弯举，条目定义为下蹲低位绳索弯举；体位与滑轮位置均不符。"
+    },
+    {
+      "source": "free-exercise-db Overhead_Cable_Curl → exdb:1632",
+      "reason": "照片为高位过顶双臂弯举，条目定义为拖拽式弯举（肘后拉）；动作形式不符。"
+    },
+    {
+      "source": "free-exercise-db Standing_Gastrocnemius_Calf_Stretch → exdb:1599",
+      "reason": "照片为单脚踏台阶前屈够脚尖，未见拉伸带，与条目「带拉伸带的站姿腘绳肌与小腿拉伸」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Seated_Barbell_Twist → exdb:0112",
+      "reason": "照片为坐姿杠铃转体，条目定义为站姿杠铃转体；坐姿与站姿不符。"
+    },
+    {
+      "source": "free-exercise-db Calf_Raise_On_A_Dumbbell → exdb:0400",
+      "reason": "照片为双脚站于哑铃之上提踵，条目定义为坐姿、哑铃置于大腿的单腿提踵；体位与负重方式均不符。"
+    },
+    {
+      "source": "free-exercise-db Weighted_Jump_Squat → exdb:1420",
+      "reason": "照片为站姿杠铃深蹲，未见跪姿起势与跳跃离地，与条目「跪姿跳深蹲」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Step-up_with_Knee_Raise → exdb:0431",
+      "reason": "照片为徒手上台阶提膝，未见双手持哑铃，与条目「哑铃上台阶」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Calf_Raise_On_A_Dumbbell → exdb:1370",
+      "reason": "照片为双脚站于哑铃之上、杠铃仅作扶手，条目定义为脚掌踩杠铃边缘提踵；垫脚器械为哑铃非杠铃。"
+    },
+    {
+      "source": "free-exercise-db Seated_One-Arm_Dumbbell_Palms-Down_Wrist_Curl → exdb:0397",
+      "reason": "照片为单臂掌心向下腕弯举，条目名称 neutral 定义为掌心相对的中立握、双臂；握法与手臂数量均不符。"
+    },
+    {
+      "source": "free-exercise-db Seated_Dumbbell_Palms-Down_Wrist_Curl → exdb:1415",
+      "reason": "照片为双臂掌心向下腕弯举，条目定义为单臂掌心向上中立握腕弯举；握法与手臂数量均不符。"
+    },
+    {
+      "source": "free-exercise-db Clock_Push-Up → exdb:0259",
+      "reason": "照片为双手与肩同宽俯卧撑，未见双手并拢于肩下的窄距，与条目「窄距俯卧撑」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Clock_Push-Up → exdb:0664",
+      "reason": "照片为常规俯卧撑起止，未见侧平板阶段，与条目「俯卧撑接侧平板」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Plie_Dumbbell_Squat → exdb:0411",
+      "reason": "照片为双腿宽站距相扑深蹲、双手共握一只哑铃，条目定义为单腿深蹲；双腿非单腿。"
+    },
+    {
+      "source": "free-exercise-db Double_Kettlebell_Push_Press → exdb:0546",
+      "reason": "照片为站姿双壶铃借力推举，条目定义为坐姿壶铃推举；站姿与坐姿不符。"
+    },
+    {
+      "source": "free-exercise-db Incline_Dumbbell_Curl → exdb:1655",
+      "reason": "照片为上斜仰卧哑铃弯举，条目定义为站姿深蹲弯举；体位不符。"
+    },
+    {
+      "source": "free-exercise-db Alternate_Hammer_Curl → exdb:1678",
+      "reason": "照片为站姿交替锤式弯举，条目定义为坐姿锤式弯举；站姿与坐姿不符。"
+    },
+    {
+      "source": "free-exercise-db Overhead_Cable_Curl → exdb:1638",
+      "reason": "照片为高位过顶双臂弯举，条目定义为高位直杆下拉式弯举；动作形式不符。"
+    },
+    {
+      "source": "free-exercise-db Overhead_Cable_Curl → exdb:0210",
+      "reason": "照片为高位过顶双臂弯举，条目定义为坐姿低滑轮反握腕弯举；动作与体位均不符。"
+    },
+    {
+      "source": "free-exercise-db Bent-Arm_Dumbbell_Pullover → exdb:0034",
+      "reason": "照片为哑铃平凳屈臂上拉，条目定义为杠铃下斜屈臂上拉；器械与凳面角度均不符。"
+    },
+    {
+      "source": "free-exercise-db Seated_Palms-Down_Barbell_Wrist_Curl → exdb:0104",
+      "reason": "照片为坐姿掌心向下杠铃腕弯举，条目定义为站姿身后握杠腕弯举；坐姿与站姿、握杠位置均不符。"
+    },
+    {
+      "source": "free-exercise-db Weighted_Jump_Squat → exdb:3222",
+      "reason": "照片为站姿杠铃深蹲，未见跳跃离地，条目定义为徒手半蹲跳；负重与跳跃均不符。"
+    },
+    {
+      "source": "free-exercise-db Weighted_Jump_Squat → exdb:0513",
+      "reason": "照片为站姿杠铃深蹲，未见跳跃离地，条目定义为徒手跳深蹲 v.2；负重与跳跃均不符。"
+    },
+    {
+      "source": "free-exercise-db Weighted_Jump_Squat → exdb:3543",
+      "reason": "照片为站姿杠铃深蹲，未见跳跃离地，条目定义为徒手下落跳深蹲；负重与跳跃均不符。"
+    },
+    {
+      "source": "free-exercise-db Chin_To_Chest_Stretch → exdb:1259",
+      "reason": "照片为坐姿双腿伸展、低头抱头颈部拉伸，条目定义为站姿脑后胸部拉伸；体位与拉伸部位均不符。"
+    },
+    {
+      "source": "free-exercise-db Incline_Bench_Pull → exdb:1318",
+      "reason": "照片为上斜凳支撑杠铃划船，条目定义为绳索上斜凳划船；杠铃非绳索。"
+    },
+    {
+      "source": "free-exercise-db Seated_Overhead_Stretch → exdb:1643",
+      "reason": "照片为坐姿地面过顶拉伸，条目定义为坐姿绳索过顶弯举；徒手拉伸非绳索弯举。"
+    },
+    {
+      "source": "free-exercise-db Physioball_Hip_Bridge → exdb:1774",
+      "reason": "照片为仰卧健身球臀桥，条目定义为侧卧侧桥髋外展；体位不符。"
+    },
+    {
+      "source": "free-exercise-db Seated_Cable_Shoulder_Press → exdb:3547",
+      "reason": "照片为坐姿绳索肩推，条目定义为坐姿哑铃弯举接肩推；器械不符且无弯举段。"
+    },
+    {
+      "source": "free-exercise-db Cross_Over_-_With_Bands → exdb:0155",
+      "reason": "照片为弹力带交叉拉伸，条目定义为绳索交叉；弹力带非绳索。"
+    },
+    {
+      "source": "free-exercise-db Calf_Raise_On_A_Dumbbell → exdb:1380",
+      "reason": "照片为双脚站于哑铃之上提踵，条目定义为坐姿、哑铃置于大腿的单腿提踵（锤式握）；体位与负重方式均不符。"
+    },
+    {
+      "source": "free-exercise-db Close-Grip_EZ_Bar_Curl → exdb:0182",
+      "reason": "照片为站姿曲杠窄握弯举，条目定义为仰卧绳索窄握弯举；体位与器械均不符。"
+    },
+    {
+      "source": "free-exercise-db Close-Grip_EZ_Bar_Curl → exdb:1748",
+      "reason": "照片为站姿曲杠弯举，条目定义为仰卧曲杠窄握臂屈伸；弯举非臂屈伸。"
+    },
+    {
+      "source": "free-exercise-db Machine_Triceps_Extension → exdb:2189",
+      "reason": "照片为坐姿器械臂屈伸，条目定义为坐姿哑铃臂屈伸；器械非哑铃。"
+    },
+    {
+      "source": "free-exercise-db Smith_Machine_Bent_Over_Row → exdb:1329",
+      "reason": "照片为史密斯机俯身划船，条目定义为哑铃旋掌俯身划船；器械不符且无旋掌。"
+    },
+    {
+      "source": "free-exercise-db Chest_Push_single_response → exdb:1304",
+      "reason": "照片为跪姿药球胸前推，条目定义为站姿药球胸前推；跪姿与站姿不符。"
+    },
+    {
+      "source": "free-exercise-db Close-Grip_Dumbbell_Press → exdb:0055",
+      "reason": "照片为仰卧长凳双哑铃窄握推举，条目定义为杠铃仰卧窄握推举；哑铃非杠铃。"
+    },
+    {
+      "source": "free-exercise-db Lateral_Raise_-_With_Bands → exdb:0178",
+      "reason": "照片为弹力带侧平举，条目定义为绳索侧平举；弹力带非绳索。"
+    },
+    {
+      "source": "free-exercise-db Cable_Iron_Cross → exdb:0332",
+      "reason": "照片为绳索十字交叉，条目定义为哑铃十字交叉；绳索非哑铃。"
+    },
+    {
+      "source": "free-exercise-db Shoulder_Stretch → exdb:1271",
+      "reason": "照片为手臂横胸拉伸后束，条目定义为胸部及肩前侧拉伸；拉伸部位不符。"
+    },
+    {
+      "source": "free-exercise-db Seated_Barbell_Twist → exdb:2399",
+      "reason": "照片为坐姿杠铃转体，条目定义为坐姿绳索转体；杠铃非绳索。"
+    },
+    {
+      "source": "free-exercise-db Plyo_Push-up → exdb:0699",
+      "reason": "照片为爆发式俯卧撑，未见拍肩动作，与条目「拍肩俯卧撑」定义不符（与 Clock_Push-Up → exdb:0699 驳回同理）。"
+    },
+    {
+      "source": "free-exercise-db Plyo_Push-up → exdb:1467",
+      "reason": "照片为双手撑地爆发俯卧撑，未见前臂支撑，与条目「前臂俯卧撑」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Plyo_Push-up → exdb:3217",
+      "reason": "照片为爆发式俯卧撑，未见印度式俯卧撑的俯冲动作，与条目「改良印度俯卧撑」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Clock_Push-Up → exdb:3327",
+      "reason": "照片为常规俯卧撑，未见全平板支撑式俯卧撑（双脚离地、身体水平）关键形态，与条目「全平板俯卧撑」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Clock_Push-Up → exdb:3662",
+      "reason": "照片为常规俯卧撑，未见下犬式至眼镜蛇式的弓身起伏，与条目「派克至眼镜蛇俯卧撑」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Calf_Raise_On_A_Dumbbell → exdb:0727",
+      "reason": "照片为双脚站于哑铃之上、扶杠铃提踵，条目定义为单腿、手持哑铃提踵；双脚非单腿、哑铃为垫脚物非手持负重。"
+    },
+    {
+      "source": "free-exercise-db Overhead_Cable_Curl → exdb:1637",
+      "reason": "照片为站姿高位过顶弯举，条目定义为坐于健身球上的过顶弯举；无健身球、站姿与坐姿不符。"
+    },
+    {
+      "source": "free-exercise-db Seated_One-Arm_Dumbbell_Palms-Up_Wrist_Curl → exdb:1669",
+      "reason": "照片为坐姿单臂掌心向上腕弯举，条目定义为坐姿锤式弯举（屈肘）；腕弯举非弯举。"
+    },
+    {
+      "source": "free-exercise-db Clock_Push-Up → exdb:0717",
+      "reason": "照片为常规俯卧撑起止，未见侧卧推起阶段，与条目「侧卧俯卧撑」定义不符。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Dumbbell_Row → exdb:1281",
+      "reason": "照片为凳上支撑单臂划船，条目定义为上斜单臂卧推；动作不符。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Dumbbell_Row → exdb:1670",
+      "reason": "照片为凳上支撑单臂划船，条目定义为站姿单臂弯举；动作不符。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Dumbbell_Row → exdb:0341",
+      "reason": "照片为凳上支撑单臂划船，条目定义为俯卧长凳单臂后束侧举；动作与体位均不符。"
+    },
+    {
+      "source": "free-exercise-db Seated_Dumbbell_Palms-Down_Wrist_Curl → exdb:0402",
+      "reason": "照片为双臂掌心向下腕弯举，条目定义为坐姿牧师弯举；腕弯举非弯举。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Dumbbell_Row → exdb:1287",
+      "reason": "照片为凳上支撑单臂划船，条目定义为下斜单臂卧推；动作不符。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Dumbbell_Row → exdb:1289",
+      "reason": "照片为凳上支撑单臂划船，条目定义为上斜单臂卧推；动作不符。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Dumbbell_Row → exdb:1290",
+      "reason": "照片为凳上支撑单臂划船，条目定义为健身球上单臂推举；动作与支撑均不符。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Dumbbell_Row → exdb:1622",
+      "reason": "照片为凳上支撑单臂划船，条目定义为反握单臂卧推；动作不符。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Dumbbell_Row → exdb:1672",
+      "reason": "照片为凳上支撑单臂划船，条目定义为坐姿牧师凳佐特曼弯举；动作不符。"
+    },
+    {
+      "source": "free-exercise-db Seated_Dumbbell_Palms-Down_Wrist_Curl → exdb:1678",
+      "reason": "照片为双臂掌心向下腕弯举，条目定义为坐姿锤式弯举；腕弯举非弯举。"
+    },
+    {
+      "source": "free-exercise-db Cable_Rear_Delt_Fly → exdb:3697",
+      "reason": "照片为站姿绳索后束飞鸟，条目定义为跪姿绳索后束划船（带绳）；体位、器械与动作均不符。"
     }
   ],
-  "batch": 36,
+  "batch": 37,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",
