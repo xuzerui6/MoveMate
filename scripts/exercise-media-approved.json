@@ -4360,6 +4360,110 @@
         "双手持铃贴胸站立",
         "下蹲至大腿平行"
       ]
+    },
+    {
+      "exerciseId": "exdb:1364",
+      "expectedName": "standing pelvic tilt",
+      "sourceId": "Standing_Pelvic_Tilt",
+      "sourceSha256": [
+        "44bb5116519fbf25443d6d6d138c00cfa46dbe8b6f588690e2bb6046f9d5e597",
+        "02590a23d8cc4077a19e663d24d7e6a80dfd705e7fe8711ba0b114fb11f73253"
+      ],
+      "phases": [
+        "站立手臂下垂",
+        "双手扶髋骨盆前倾"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0215",
+      "expectedName": "cable seated rear lateral raise",
+      "sourceId": "Cable_Seated_Lateral_Raise",
+      "sourceSha256": [
+        "11357e31f4536329cc0c38e77b4360426ce730a659bbf2c81607865701d51be2",
+        "d162b1f2d78c2613e6f7a129a27e48e0c336132215e8d6776cada54f628dcb8e"
+      ],
+      "phases": [
+        "坐姿前倾双手握柄下垂",
+        "双臂侧举至与地面平行"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0071",
+      "expectedName": "barbell press sit-up",
+      "sourceId": "Press_Sit-Up",
+      "sourceSha256": [
+        "2f89b210c09b0a58de402947cfe341b2708b05a917741009084cc3cef471a327",
+        "b8bc3d7d5a39bf340ee01821e071fc32eaf8d5ba7636605736f33e4b8866ba18"
+      ],
+      "phases": [
+        "仰卧斜凳杠铃置于胸前",
+        "卷腹坐起推举过顶"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1634",
+      "expectedName": "cable lying bicep curl",
+      "sourceId": "Lying_Cable_Curl",
+      "sourceSha256": [
+        "59192588d7452021aac0c7125ebd287462fea3a7ec9115fd5cdda20bf04edfa9",
+        "500d9b74672d537bcbe438315e9936afaeafd06eddd9f636562cb0e2dcd51b63"
+      ],
+      "phases": [
+        "地面垫上仰卧双臂伸直握杆",
+        "屈肘弯举杠铃向肩"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0290",
+      "expectedName": "dumbbell bench seated press",
+      "sourceId": "Seated_Dumbbell_Press",
+      "sourceSha256": [
+        "bbcfab72d376f973932e7c46a87cc2022865a4641c0798b2d724ce6aea266deb",
+        "c61aba91d6ecb5c34bdec0086123c11a7b987a40314727a1fefe3e365210cb23"
+      ],
+      "phases": [
+        "坐姿双手持铃置于胸侧",
+        "上推哑铃至手臂伸直"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0331",
+      "expectedName": "dumbbell incline twisted flyes",
+      "sourceId": "Incline_Dumbbell_Flyes",
+      "sourceSha256": [
+        "4e5380dee95375c4873ae2f50e94633d48c32db4d83a99001a55dd602a1c9b1d",
+        "2f4d476d9b1d00732eef2c4abc3797bd8da3b47f187a3cc848526e208a4b3259"
+      ],
+      "phases": [
+        "上斜仰卧双臂伸直持铃于胸上",
+        "宽弧线下放至两侧、腕部旋前"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1737",
+      "expectedName": "dumbbell seated bent over triceps extension",
+      "sourceId": "Seated_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+      "sourceSha256": [
+        "329a1c6ead6d3db86b5bea35e1343243c17c8166892496e2627d7d1d130417a0",
+        "dab70be604f3b482a8e51ddac9261dd8f02201db5cece83345364fe70a4d150a"
+      ],
+      "phases": [
+        "坐姿俯身双手持铃屈肘",
+        "双臂向后伸直"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1381",
+      "expectedName": "dumbbell seated one leg calf raise - palm up",
+      "sourceId": "Dumbbell_Seated_One-Leg_Calf_Raise",
+      "sourceSha256": [
+        "8a1d0067293d2c96e7a5b20c2ab8bcdaec77648154a744871ae666193e79ab6b",
+        "678fcfa770ac3adc959fec45e3c26d44aecf98ab40ac77e664e57e6d009974d3"
+      ],
+      "phases": [
+        "坐姿哑铃掌心向上置于单腿大腿",
+        "脚掌蹬地抬起脚跟"
+      ]
     }
   ],
   "videos": [
@@ -4986,9 +5090,29 @@
     {
       "source": "free-exercise-db Double_Kettlebell_Alternating_Hang_Clean → exdb:0518",
       "reason": "候选照片已在第十八批用于近同条目 exdb:0526（双壶铃交替悬垂翻举），两条目步骤近同，同一组照片不重复采用。"
+    },
+    {
+      "source": "free-exercise-db Front_Raise_And_Pullover → exdb:0040",
+      "reason": "照片为仰卧平凳上拉，条目定义为站姿前平举接头后下放，体位与动作形式不符。"
+    },
+    {
+      "source": "free-exercise-db Standing_Bradford_Press → exdb:0105",
+      "reason": "两帧仅示肩前架铃与推举过顶，未见布拉德福德推举定义性的颈后交替阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db Hanging_Leg_Raise → exdb:1764",
+      "reason": "照片为悬垂屈膝抬腿至大腿平行，与悬垂举膝相同，未见骨盆后卷的举髋阶段，与条目名称「举髋」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_Lying_Pronation → exdb:2705",
+      "reason": "照片为俯卧平凳、前臂置凳上旋腕，条目名称定义为地面俯卧、双臂前伸提铃离地，支撑与动作形式不符；且与 2706 照片形式近同、掌向区分不可靠。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_Lying_Supination → exdb:2706",
+      "reason": "照片为侧卧平凳、前臂置凳上旋腕，条目名称定义为地面仰卧、双臂置体侧屈臂向肩，支撑与动作形式不符；且与 2705 照片形式近同、掌向区分不可靠。"
     }
   ],
-  "batch": 22,
+  "batch": 23,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",

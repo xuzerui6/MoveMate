@@ -16076,6 +16076,302 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:1364": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/standing_pelvic_tilt-0.895405f8af45.webp",
+          "sha256": "895405f8af458060be4d80717aad63299da31c9bdcf242d2ca396c64e0afc6fe",
+          "bytes": 19362,
+          "distribution": "repository",
+          "phase": "站立手臂下垂",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/standing_pelvic_tilt-1.2ff69852e379.webp",
+          "sha256": "2ff69852e37903d63948fd47ebca1e628018e863ec96d37c13725f9a6bbcff41",
+          "bytes": 19122,
+          "distribution": "repository",
+          "phase": "双手扶髋骨盆前倾",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Pelvic_Tilt",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Pelvic_Tilt",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "44bb5116519fbf25443d6d6d138c00cfa46dbe8b6f588690e2bb6046f9d5e597",
+            "02590a23d8cc4077a19e663d24d7e6a80dfd705e7fe8711ba0b114fb11f73253"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0215": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/cable_seated_lateral_raise-0.527798ff9518.webp",
+          "sha256": "527798ff9518efd4e58e98e4b62f7f0952c39dc75de7da5e00c496dd6ea09c63",
+          "bytes": 51394,
+          "distribution": "repository",
+          "phase": "坐姿前倾双手握柄下垂",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/cable_seated_lateral_raise-1.e08bade1c78c.webp",
+          "sha256": "e08bade1c78cd9524e46354d892ef1355ca571078733dd62a14b30c177a00650",
+          "bytes": 53402,
+          "distribution": "repository",
+          "phase": "双臂侧举至与地面平行",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Seated_Lateral_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Seated_Lateral_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "11357e31f4536329cc0c38e77b4360426ce730a659bbf2c81607865701d51be2",
+            "d162b1f2d78c2613e6f7a129a27e48e0c336132215e8d6776cada54f628dcb8e"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0071": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/press_sit-up-0.7b7fcdc41363.webp",
+          "sha256": "7b7fcdc41363d5dd1a10abbc5e768bbe13908a0b22aadc2971fd456264ddf81b",
+          "bytes": 48610,
+          "distribution": "repository",
+          "phase": "仰卧斜凳杠铃置于胸前",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/press_sit-up-1.7e75f45e0f8d.webp",
+          "sha256": "7e75f45e0f8dce1054ae7f74a09d43572209ca0382d40ea0ab5e4979c4c03d49",
+          "bytes": 42250,
+          "distribution": "repository",
+          "phase": "卷腹坐起推举过顶",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Press_Sit-Up",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Press_Sit-Up",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "2f89b210c09b0a58de402947cfe341b2708b05a917741009084cc3cef471a327",
+            "b8bc3d7d5a39bf340ee01821e071fc32eaf8d5ba7636605736f33e4b8866ba18"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1634": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/lying_cable_curl-0.0035fcd6b20a.webp",
+          "sha256": "0035fcd6b20af771f137d3f6baf230242d6d4e28b9e5ef3cda675c20406d66e2",
+          "bytes": 47716,
+          "distribution": "repository",
+          "phase": "地面垫上仰卧双臂伸直握杆",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/lying_cable_curl-1.442378bf83c4.webp",
+          "sha256": "442378bf83c4e65b5bea0d863db76e98328a3f4eba116551b6adcc5ecdc743d3",
+          "bytes": 47328,
+          "distribution": "repository",
+          "phase": "屈肘弯举杠铃向肩",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Lying_Cable_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Lying_Cable_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "59192588d7452021aac0c7125ebd287462fea3a7ec9115fd5cdda20bf04edfa9",
+            "500d9b74672d537bcbe438315e9936afaeafd06eddd9f636562cb0e2dcd51b63"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0290": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/seated_dumbbell_press-0.d56bd8bc4c45.webp",
+          "sha256": "d56bd8bc4c45d2511d2ed2625bdecb5d45816e03d1a344c48a6b8ec92e0aa350",
+          "bytes": 49686,
+          "distribution": "repository",
+          "phase": "坐姿双手持铃置于胸侧",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/seated_dumbbell_press-1.c4dc7ef21311.webp",
+          "sha256": "c4dc7ef21311a0e2a97ea623c981cc61c0c9b077027f9cfe3453affb4ae12784",
+          "bytes": 50158,
+          "distribution": "repository",
+          "phase": "上推哑铃至手臂伸直",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Seated_Dumbbell_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Dumbbell_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "bbcfab72d376f973932e7c46a87cc2022865a4641c0798b2d724ce6aea266deb",
+            "c61aba91d6ecb5c34bdec0086123c11a7b987a40314727a1fefe3e365210cb23"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0331": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/incline_dumbbell_flyes-0.7c230e3dbcc7.webp",
+          "sha256": "7c230e3dbcc74f6456ddb6d74a777b8620c3c088459f02a6805a18d234128db2",
+          "bytes": 46996,
+          "distribution": "repository",
+          "phase": "上斜仰卧双臂伸直持铃于胸上",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/incline_dumbbell_flyes-1.d1dd24c4f452.webp",
+          "sha256": "d1dd24c4f452955ecaa5342c38ba9e268285665534457a6b6ebb9c59af45e3da",
+          "bytes": 47632,
+          "distribution": "repository",
+          "phase": "宽弧线下放至两侧、腕部旋前",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Incline_Dumbbell_Flyes",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Incline_Dumbbell_Flyes",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "4e5380dee95375c4873ae2f50e94633d48c32db4d83a99001a55dd602a1c9b1d",
+            "2f4d476d9b1d00732eef2c4abc3797bd8da3b47f187a3cc848526e208a4b3259"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1737": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/seated_bent-over_two-arm_dumbbell_triceps_extension-0.d70d84b09a98.webp",
+          "sha256": "d70d84b09a98555827d4a2d77ed5bb37d99a2500f364dc4cf1e35f30a1f566f7",
+          "bytes": 56612,
+          "distribution": "repository",
+          "phase": "坐姿俯身双手持铃屈肘",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/seated_bent-over_two-arm_dumbbell_triceps_extension-1.825aee991d63.webp",
+          "sha256": "825aee991d63e9163b7d5bc6810a63a5412368b782c89ad0a2240a4a9e16dbc8",
+          "bytes": 55802,
+          "distribution": "repository",
+          "phase": "双臂向后伸直",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Seated_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "329a1c6ead6d3db86b5bea35e1343243c17c8166892496e2627d7d1d130417a0",
+            "dab70be604f3b482a8e51ddac9261dd8f02201db5cece83345364fe70a4d150a"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1381": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/dumbbell_seated_one-leg_calf_raise-0.066e3c3c9b29.webp",
+          "sha256": "066e3c3c9b29b47c9453f89d2e075ae90ee6410c8a4b533942835c357304eeae",
+          "bytes": 38050,
+          "distribution": "repository",
+          "phase": "坐姿哑铃掌心向上置于单腿大腿",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/dumbbell_seated_one-leg_calf_raise-1.cf4360e2954f.webp",
+          "sha256": "cf4360e2954f74643375da4a438909319f959e397ab7c766625ac44213471972",
+          "bytes": 38962,
+          "distribution": "repository",
+          "phase": "脚掌蹬地抬起脚跟",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Seated_One-Leg_Calf_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Dumbbell_Seated_One-Leg_Calf_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "8a1d0067293d2c96e7a5b20c2ab8bcdaec77648154a744871ae666193e79ab6b",
+            "678fcfa770ac3adc959fec45e3c26d44aecf98ab40ac77e664e57e6d009974d3"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }

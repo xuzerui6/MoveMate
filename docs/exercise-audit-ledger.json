@@ -4316,22 +4316,37 @@
     {
       "id": "exdb:0071",
       "originalName": "barbell press sit-up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文仅胸前持杠卷起至45度，没有上推阶段，不能冒充推举起坐组合。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：仰卧斜凳持杠贴胸与卷腹坐起推举过顶清晰，坐起加推举的组合形式与名称「杠铃上推仰卧起坐」一致；先前正文缺上推阶段、仅写平垫卷起的问题已按照片改写（斜凳坐起加过顶推举）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "fda4757b44ee752ed57769adb3ffba57d5e53d1d15e65465ffb17b2a7166e16b",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Press_Sit-Up",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Press_Sit-Up",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "2f89b210c09b0a58de402947cfe341b2708b05a917741009084cc3cef471a327",
+            "b8bc3d7d5a39bf340ee01821e071fc32eaf8d5ba7636605736f33e4b8866ba18"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0072",
@@ -8224,22 +8239,37 @@
     {
       "id": "exdb:1634",
       "originalName": "cable lying bicep curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：低索平凳仰卧、反手直杆明确；头朝哪侧和肘位仍需图像对照，不套站姿。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：地面垫上仰卧、双臂伸直反手握杆与屈肘弯举向肩清晰，头脚朝向与肘位已按照片核对；目录平凳写法已按照片的地面垫上形式改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "6daead2281bcaad277a2dc047642fe6fe7b65613696d5349fbd182b305db8040",
-        "steps": 8
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Lying_Cable_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Lying_Cable_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "59192588d7452021aac0c7125ebd287462fea3a7ec9115fd5cdda20bf04edfa9",
+            "500d9b74672d537bcbe438315e9936afaeafd06eddd9f636562cb0e2dcd51b63"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0182",
@@ -9644,22 +9674,37 @@
     {
       "id": "exdb:0215",
       "originalName": "cable seated rear lateral raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：坐姿向两侧展开清楚，但未写前倾和滑轮方位，前束侧举与后束水平展开不能混同。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐姿前倾、双手握低位滑轮柄下垂与双臂侧举至与地面平行清晰，前倾坐姿与双侧低位滑轮方位已按照片写明，与前束侧举可区分，与后束侧平举定义一致。本批为第二十二批已核对合格的结转项，复核后采用。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "62fda899ec4d422a4583e038d1f26d1777761dad105512b1495a48fbffbc15b3",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Seated_Lateral_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Seated_Lateral_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "11357e31f4536329cc0c38e77b4360426ce730a659bbf2c81607865701d51be2",
+            "d162b1f2d78c2613e6f7a129a27e48e0c336132215e8d6776cada54f628dcb8e"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0861",
@@ -12137,22 +12182,37 @@
     {
       "id": "exdb:0290",
       "originalName": "dumbbell bench seated press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题坐姿，正文向后倾到胸侧推，未确定背垫角度和坐/卧终点。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐姿直立、双手持铃置于胸侧掌心向前与上推至手臂伸直清晰；目录「向后倾斜」写法已按照片的直立坐姿改写，背垫角度与坐姿终点已按照片确定。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "76672ae445a17794bd0abe28b047a3541f112ae21e4798cb3103a03fa9b1e03f",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Seated_Dumbbell_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Dumbbell_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "bbcfab72d376f973932e7c46a87cc2022865a4641c0798b2d724ce6aea266deb",
+            "c61aba91d6ecb5c34bdec0086123c11a7b987a40314727a1fefe3e365210cb23"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0291",
@@ -14029,22 +14089,37 @@
     {
       "id": "exdb:0331",
       "originalName": "dumbbell incline twisted flyes",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：45度背靠、下放时从中立旋到掌前明确，需旋转分阶段与凳面图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：上斜仰卧、双臂伸直持铃于胸上与宽弧线下放至两侧清晰，两帧间哑铃朝向由掌心相对转为掌前，旋腕分阶段可见，与条目「旋腕飞鸟」定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "0a48dc13cea67b0337562b60cbbe6a96b6bf6137b23ba0185211ab459c893adc",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Incline_Dumbbell_Flyes",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Incline_Dumbbell_Flyes",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "4e5380dee95375c4873ae2f50e94633d48c32db4d83a99001a55dd602a1c9b1d",
+            "2f4d476d9b1d00732eef2c4abc3797bd8da3b47f187a3cc848526e208a4b3259"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1733",
@@ -17047,22 +17122,37 @@
     {
       "id": "exdb:1737",
       "originalName": "dumbbell seated bent over triceps extension",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文俯身手臂后伸，却要求肘靠头部，后伸与过顶臂屈伸混淆。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐姿俯身、双手持铃屈肘与双臂向后伸直至与躯干平行清晰，照片明确为俯身后伸（臂屈伸后伸式）而非过顶臂屈伸；目录「肘靠头部」写法已按照片改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a12c01bb86a58aa58698e78dc5bae4d52955909e86f5440206a46956e5cb9ee2",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Seated_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "329a1c6ead6d3db86b5bea35e1343243c17c8166892496e2627d7d1d130417a0",
+            "dab70be604f3b482a8e51ddac9261dd8f02201db5cece83345364fe70a4d150a"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1677",
@@ -17575,22 +17665,37 @@
     {
       "id": "exdb:1381",
       "originalName": "dumbbell seated one leg calf raise - palm up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文将该腿伸离地面，却要求通过脚掌抬跟，承重与悬腿矛盾。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐姿、哑铃掌心向上托于单腿大腿与伸腿置于矮板上抬跟清晰；先前正文「伸腿离地又要求脚掌抬跟」的矛盾已按照片改写——工作腿前伸置于矮板承重抬跟，另一腿平放地面。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "769de7f00499e4b969a11bc5cb2314563747b492baebfcf9fe8cf559ffac3886",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Seated_One-Leg_Calf_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Dumbbell_Seated_One-Leg_Calf_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "8a1d0067293d2c96e7a5b20c2ab8bcdaec77648154a744871ae666193e79ab6b",
+            "678fcfa770ac3adc959fec45e3c26d44aecf98ab40ac77e664e57e6d009974d3"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0401",
@@ -31003,22 +31108,37 @@
     {
       "id": "exdb:1364",
       "originalName": "standing pelvic tilt",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：骨盆前后倾方向文字存在矛盾，须先重新核对。 当前不发布此候选，不计完整覆盖。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站立手臂下垂与双手扶髋骨盆前倾清晰，倾斜方向与名称「站姿骨盆倾斜」及「向前倾斜骨盆」一致；先前文字的方向矛盾已按照片与名称改写明确为前倾。本批为第二十二批已核对合格的结转项，复核后采用。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "0bd42ca57178ac25950a316eecbb70f16fc390289a39ac0f060882ace6adf247",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Pelvic_Tilt",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Pelvic_Tilt",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "44bb5116519fbf25443d6d6d138c00cfa46dbe8b6f588690e2bb6046f9d5e597",
+            "02590a23d8cc4077a19e663d24d7e6a80dfd705e7fe8711ba0b114fb11f73253"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0795",
