@@ -14982,22 +14982,37 @@
     {
       "id": "exdb:0343",
       "originalName": "dumbbell lying one arm press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：平凳双脚地面单手正握推明确，另一手支撑与躯干稳定需专用图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：仰卧平凳、双脚平放地面、单手持铃于肩高、推铃至手臂完全伸直清晰，与条目定义一致；照片所示为一侧，另一侧镜像重复。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "0ef4dda08a9a8e731991c463016f5bfbac56aa86851ca150f71cf72f8eb2ed30",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / One_Arm_Dumbbell_Bench_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/One_Arm_Dumbbell_Bench_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "23fe95197ee585b970140b54cc771f4a90123de1453de42de95276e6060eac30",
+            "52cd5303fd6347f1c2e5c125fcdc54519e4785beee8d5d08966d5c02398b7302"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0342",
@@ -17591,7 +17606,7 @@
       "originalName": "dumbbell seated bent over alternate kickback",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "2026-10-29：源说明与显式原创配置逐项对照，已对照本地渲染逐帧检查。原创静态示意，非真人实拍或专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐姿平凳、双脚着地、屈髋俯身、上臂贴体侧、单侧屈肘后向后伸肘清晰，与条目定义一致；照片所示为一侧工作相，另一侧镜像重复（条目为双哑铃交替）；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -17600,26 +17615,23 @@
         "sourceRecordSha256": "87a3c87dfa96486b844924d6ab5241b66ebe98eb49c50db6be7c742982850242",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:1730",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Seated_Bent-Over_One-Arm_Dumbbell_Triceps_Extension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Bent-Over_One-Arm_Dumbbell_Triceps_Extension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "ca5b8e13c9e8f0e22162ff6499b7f272c9f4ce0791b101ed3f9af542ab10ca79",
-            "016f5d844aae3858bf8adfe2ba3b791fe8a3ad4c6510b4abc4e6d57f4812c5f2",
-            "50c7d92a65d658b383b5fb644cf8c66380b66bb845eb782a05a55d32471f5072",
-            "653276fd9c83801ac31ec3b2d33bd5d8488db24953f8b403a11f857945cbf5a2",
-            "2622684d0eff96f2d21395fcf0f765912999c643b6624052fd5f95ac9e2cc41a"
+            "84dc125305fa55d4da561db781c1c8882f1df0d963d9e68f3eea80c045a0f897",
+            "e8301f98e241070f618dc162daeca9d7d8037d5075aa31886a144752cdb5c351"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -18383,7 +18395,7 @@
       "originalName": "dumbbell seated triceps extension",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐姿平凳、双脚踩地、双手共握一只哑铃、屈肘铃落头后、伸肘推铃过顶清晰，与条目定义一致；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -18392,24 +18404,23 @@
         "sourceRecordSha256": "8a5b8ca6b7edc8f6a9d290d8b115bd7d4d39d345b76eeb76cbe78119f9965c94",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:2188",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Seated_Triceps_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Triceps_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "59992f7a0f5bb4f31b9bde5d5a4842cc217b1ad209ed5f78c7189e22d268a4f4",
-            "e98f8a4fe76432f76937d02d8b04835ff4fa472ca128aab8f79b13a50ba40bfb",
-            "4f85b8c29b67057542a77458925ca5a418218ef837532eb2dcc29ca6a8140d66"
+            "1e9c8760bdaf3a8d7a69485b436e1df6e7444a02ad10d3d5c89f9ab0b1ddbcb8",
+            "566e9eae79da144a54df952012f508b05ce385f144b56753b821dbbee88b6052"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -18736,7 +18747,7 @@
       "originalName": "dumbbell standing alternate overhead press",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "已逐项核对原始完整步骤、原创各阶段及器械/支撑；中性线条图，非真人或专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站姿、双铃置于肩侧、掌心朝前、一侧推铃过顶、另一侧留肩侧清晰，与条目定义一致；照片所示为一侧推顶相，另一侧镜像重复；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -18745,26 +18756,23 @@
         "sourceRecordSha256": "018b8bb1e109c03ca6bf037bc6d3b2ff415641109d338ee59a27b6647f7c6c6d",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0414",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Standing_Alternating_Dumbbell_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Alternating_Dumbbell_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "ac1c648b23b5a00954b55a594f1b87b29bc88e101b26544c4a0b80cb61663289",
-            "a8ac535fa0ba9410e36b37ba33f8a38b62357c86920d70ef36061ba44297c2c5",
-            "516f04f75ae059620916b3bcb412440e6ef5a2638adb018766f45d3815e1c1eb",
-            "ab932e5251d467b864d5ee166ffbda22451389f463f3035000a69998a82af0e2",
-            "d2829d1eecb5f68ee86dd918a58163162de01bbe0a2df06a86b510e66595d56e"
+            "9eba2b2e29ecb3e6b0cf3606ac8315f30e25e72ee5dcfbd5eeb662894cb4159a",
+            "54adc58f5a8743730d6d68796bace163bbd8c2287a2eaa377c2c1ee3fc0c8f6b"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -29526,22 +29534,37 @@
     {
       "id": "exdb:0705",
       "originalName": "side bridge v. 2",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源就是叠脚前臂侧平板保持，没有版本2的额外差异依据；不合并或用重复图计另一变式完成。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：侧躺垫面、双腿伸展叠放、前臂位于肩正下方、抬臀至头脚成直线清晰，与条目定义一致；照片所示为一侧，另一侧镜像重复。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "3c72f1fe8e2ed235e2d662e6b8545307fa1108a2d8d37ed527f2c3151a33c229",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Side_Bridge",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Side_Bridge",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "fcbf157799efdce6c7d5a9aff22e7f73aec23e016d504abe5b4161a55844a48f",
+            "ba9eb40f70d37af9830676643b36ddff7aeeb2ba88d76be272b4a0e697927f15"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0709",
@@ -31498,22 +31521,37 @@
     {
       "id": "exdb:0778",
       "originalName": "spider crawl push up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源先同侧膝近肘，再在膝回伸时下降，时序与常见下压时收膝变式不同；需独立核对完整组合过程。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：俯卧撑起始位、屈膝靠近同侧肘、同时屈肘将身体降向地面清晰，与条目定义一致；照片所示为右侧，另一侧镜像重复。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "4902e735b634295be893f2506632786905c20b49c897149d3da5b5b34fe2ef65",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Spider_Crawl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Spider_Crawl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "a3db3cf8cf5cd939b8690b3ff8a5d1e2789a189fe59173095640ca899a9091e1",
+            "4a4b541741c705c3344965ed2e3a6761a8a31acb8bdf3b0caec624d1d3ac8366"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1363",

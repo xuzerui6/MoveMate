@@ -44,7 +44,7 @@ test('every official ID has an honest separate documentation decision; custom ID
 });
 
 test('alternating illustrations show both sides and mark only the moving side',()=>{
-  for(const id of ['exdb:0388','exdb:0414','exdb:0415','exdb:0387','exdb:1648','exdb:1730','exdb:1739']){
+  for(const id of ['exdb:0388','exdb:0415','exdb:0387','exdb:1648','exdb:1739']){
     const recipe=diagrams.entries[id] as {phasePoseIndices:number[];poseArrows:number[][][]};
     assert.deepEqual(recipe.phasePoseIndices,[0,1,0,2,0]);
     assert.equal(recipe.poseArrows[1].length,1);assert.equal(recipe.poseArrows[2].length,1);
@@ -54,6 +54,16 @@ test('alternating illustrations show both sides and mark only the moving side',(
     }
     assert.equal(mediaFor(id)?.video,undefined,'Five still frames must never be presented as a continuous video');
     assert.equal(exercises.find(e=>e.id===id)!.planCamera,undefined);
+  }
+  // Batch 34 replaced the 0414 and 1730 illustrations with verified real photos:
+  // the two-frame photos show one working side and the entry text states the other
+  // side is mirrored, so the both-sides guard now checks the photo record instead
+  // of the deleted illustration entries.
+  for(const [id,source] of [['exdb:0414','free-exercise-db / Standing_Alternating_Dumbbell_Press'],['exdb:1730','free-exercise-db / Seated_Bent-Over_One-Arm_Dumbbell_Triceps_Extension']] as const){
+    assert.equal(diagrams.entries[id],undefined,'Batch 34 removed the '+id+' illustration when the real photo replaced it');
+    assert.equal(mediaFor(id)!.images.length,2);
+    assert.equal(mediaFor(id)!.sources[0].name,source);
+    assert.ok(exercises.find(e=>e.id===id)!.form!.includes('另一侧镜像'));
   }
 });
 
