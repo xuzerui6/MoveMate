@@ -13984,22 +13984,37 @@
     {
       "id": "exdb:0321",
       "originalName": "dumbbell incline hammer press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：45度靠背中立握双铃推明确，需准确凳面和掌向图，不用正握上斜卧推。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：上斜凳 45 度仰卧、双铃置于肩高、掌心相对、推至手臂完全伸展清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "229112791e2dc6101769dbf64be25d1b96ee4c20f4ee46659d10d022ffffc879",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Hammer_Grip_Incline_DB_Bench_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Hammer_Grip_Incline_DB_Bench_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "48ef74485ce7491a7740bcc60e0d9ac33b922af3262e0586291aa5a96d2acab9",
+            "0d48cf59477772384d72c22696dcb18d529804636e8c841599d1bbb7c83729af"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1618",
@@ -25654,22 +25669,37 @@
     {
       "id": "exdb:0594",
       "originalName": "lever seated calf raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：坐姿脚掌踏板抬跟明确，但膝上压垫和杠杆固定未说明，不能用徒手坐姿图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐于杠杆器械、膝盖微屈、脚掌踩踏板、脚跟抬至最高清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "2374f3e206f2ee26cc9ba0b5746bcad210791376ac6824f9ceeb26b033bcb977",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Seated_Calf_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Calf_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "6f1e5d06681b9d7050531622e065391fd3adb8d18e41a23fb80c62cf99c88d63",
+            "c397665d9d93377db1a579a6c7a3ab4b2b92428706df545fffcc7cb35e7ec738"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1452",
@@ -25834,22 +25864,37 @@
     {
       "id": "exdb:0599",
       "originalName": "lever seated leg curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：小腿在脚踝上方杠垫下，却向上弯腿、向下降回，可能与腿屈伸混用，膝上固定垫也缺失。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐于器械、背部贴靠背、小腿置于脚踝上方杠垫下、屈膝弯腿至腘绳肌收缩清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "2371d8bc26560852e6aa01be0e25090bd27b69498fc7922b4408d85956c09388",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Seated_Leg_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Leg_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "c84ece2e8b52314c8605e9fc3ef1930a59fec475ff1b5a7f98687a4b8fc580a7",
+            "2cbd4aa6c22162a209a7ced5d1a68274d44e88780c8c3936c7fab57d6e9918fd"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0600",
@@ -29875,7 +29920,7 @@
       "originalName": "sit-up with arms on chest",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "已逐项核对完整来源步骤与原创分阶段图，支撑、握法和组合动作分别标注；非实拍或专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：屈膝仰卧、双脚平放、双臂交叉胸前、躯干坐起再下放清晰，与条目定义一致；来源名为 Janda_Sit-Up，照片所示即抱胸仰卧起坐形态（扬达式特有的脚跟下压内在发力不属本条目定义）；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -29884,24 +29929,23 @@
         "sourceRecordSha256": "4005d40d2e067ec7f8e97960a8685af7c38ce3f02839991ca23b02411c6fc86d",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:3679",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Janda_Sit-Up",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Janda_Sit-Up",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "341837111e3bf0f4d5aa07b81fd956c53d50555d8d91077f26e2beb8102125fd",
-            "fa60a4d0993a72a469be4831fc485006e2af5d1c8aefce2e538cd93b43adcad5",
-            "a4a3318c9c84e8dacf854c687efa7ba03b7505fad1b7e2f2c1ef60c6ec320176"
+            "5f056055fde30012d0ae1833b3e739c56c07311fe83dfa701ee5478b19668169",
+            "1fe5304527a7633a626e7e8c9f929df590b85747ab106c524a577c42188ecbd4"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -32070,22 +32114,37 @@
     {
       "id": "exdb:0805",
       "originalName": "suspended abdominal fallout",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字明确高锚点悬挂带、双手向前伸，但腰部前倾与保持直体的说法不清；须核对锚点与完整前伸轨迹。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：悬挂带接高锚点、背对锚点站立、双臂前伸握柄、身体挺直前倾下放清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "ea0b7a213f2a6b2309d67f6d01e63e9a3147de7803f77ee47cce7acfa9575eec",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Suspended_Fallout",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Suspended_Fallout",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "ce016c3cdf49e725ef6b746090aeb0ce4579516366d274cb4c9c06aed8f20505",
+            "2bb6dfd147078d51bd2a3b8475f7439fffbd3937d0473c61a9baa5f02c14616c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0806",
@@ -33115,22 +33174,37 @@
     {
       "id": "exdb:0835",
       "originalName": "weighted hyperextension (on stability ball)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：俯卧球手脑后或胸前，但完全没写负重物，不能直接用徒手球背伸图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：俯卧健身球、臀部置于球面、双手抱杠铃片于胸前、抬起上半身至身体成直线清晰，与条目定义一致；双脚踩地支撑（目录「双脚靠墙」已按照片的地面支撑改写），杠铃片即条目名称「负重」所指。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "6526580531d03d6996e09db83bebfa8af3f9f49a2278e6f43acfa81f7add02a8",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Weighted_Ball_Hyperextension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Weighted_Ball_Hyperextension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "32e7a2e0a4a67f271fe1313ad60379a770f600c5f8cdd919775599a9208a21ab",
+            "821f65aad2ac3e18e1415ac8bea4b210aca3e198b43f2aa67c1175090f3fed77"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3641",

@@ -5444,53 +5444,6 @@
         }
       ]
     },
-    "exdb:3679": {
-      "kind": "illustration",
-      "note": "屈膝仰卧、双脚着地、双臂交叉胸前；躯干坐起再下放，手臂不摆动。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-3679-0.e271eca50936.webp",
-          "bytes": 4674,
-          "sha256": "e271eca509362880aa432772de41f57825d7d06ce783cc628d60c72fa75831d9",
-          "phase": "抱胸仰卧准备",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3679-1.dea1a50dad02.webp",
-          "bytes": 6470,
-          "sha256": "dea1a50dad02737e9bb71f4d47bcaf2ba16a1769788b3b3860a8862a23168ff6",
-          "phase": "躯干坐起",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3679-2.e271eca50936.webp",
-          "bytes": 4674,
-          "sha256": "e271eca509362880aa432772de41f57825d7d06ce783cc628d60c72fa75831d9",
-          "phase": "控制下放",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:3679",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "341837111e3bf0f4d5aa07b81fd956c53d50555d8d91077f26e2beb8102125fd",
-            "fa60a4d0993a72a469be4831fc485006e2af5d1c8aefce2e538cd93b43adcad5",
-            "a4a3318c9c84e8dacf854c687efa7ba03b7505fad1b7e2f2c1ef60c6ec320176"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
     "exdb:0710": {
       "kind": "illustration",
       "note": "徒手站姿，双手放髋部；一腿支撑，另一腿伸直向侧抬起后回落。本图展示浅色侧腿，完成后换侧。 原创静态三阶段示意，不是连续视频。",
@@ -17996,6 +17949,228 @@
           "sourceSha256": [
             "1390e5e23c50887f1ce8d7deefb235327609bf679e3ed00cfe23cd75e4456a6c",
             "61ef424d669ee2c70ce2623925f937a7c6714ead999676cf9c3b7912e6a46e1b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:3679": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/janda_sit-up-0.d259949e13d8.webp",
+          "sha256": "d259949e13d82493f91eeb4744c44c76cd4ec376b0725bcfa8cc779d8c31136c",
+          "bytes": 37890,
+          "distribution": "repository",
+          "phase": "仰卧屈膝、双臂交叉胸前",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/janda_sit-up-1.9bf39a46643d.webp",
+          "sha256": "9bf39a46643d6670bb8ca6fd5e158ec70037d1f9dfcadc53ad13d8a8c39f0eeb",
+          "bytes": 38056,
+          "distribution": "repository",
+          "phase": "收腹坐起至可控位置",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Janda_Sit-Up",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Janda_Sit-Up",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "5f056055fde30012d0ae1833b3e739c56c07311fe83dfa701ee5478b19668169",
+            "1fe5304527a7633a626e7e8c9f929df590b85747ab106c524a577c42188ecbd4"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0321": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/hammer_grip_incline_db_bench_press-0.c7e57b731791.webp",
+          "sha256": "c7e57b73179188b799dd19ab539b11ad837764282b6d8ee506eb4919dceab8d8",
+          "bytes": 46848,
+          "distribution": "repository",
+          "phase": "仰卧上斜凳、双铃置于肩高、掌心相对",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/hammer_grip_incline_db_bench_press-1.ec460a295427.webp",
+          "sha256": "ec460a295427b433d8039fb292315c7fd3fe07b579f4dc98d08ca21946e213e2",
+          "bytes": 47456,
+          "distribution": "repository",
+          "phase": "双臂伸直向上推起",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Hammer_Grip_Incline_DB_Bench_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Hammer_Grip_Incline_DB_Bench_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "48ef74485ce7491a7740bcc60e0d9ac33b922af3262e0586291aa5a96d2acab9",
+            "0d48cf59477772384d72c22696dcb18d529804636e8c841599d1bbb7c83729af"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0805": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/suspended_fallout-0.7fec20bde87a.webp",
+          "sha256": "7fec20bde87a2439f09b0992d5281fb99485088762a65572380c73e817467434",
+          "bytes": 19044,
+          "distribution": "repository",
+          "phase": "背对锚点站立、双臂前伸握柄",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/suspended_fallout-1.60459dec0cc9.webp",
+          "sha256": "60459dec0cc9b262eb4d8c6971b64bf23e7a678eaf4a0c5a0daeaf4e50523c8c",
+          "bytes": 22710,
+          "distribution": "repository",
+          "phase": "身体挺直前倾下放",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Suspended_Fallout",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Suspended_Fallout",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "ce016c3cdf49e725ef6b746090aeb0ce4579516366d274cb4c9c06aed8f20505",
+            "2bb6dfd147078d51bd2a3b8475f7439fffbd3937d0473c61a9baa5f02c14616c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0594": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/seated_calf_raise-0.50f4638e82f3.webp",
+          "sha256": "50f4638e82f33237833ac0bfec56f66d4f0f4fbc6c2f6848bc2acca2a9a1bce0",
+          "bytes": 48060,
+          "distribution": "repository",
+          "phase": "坐姿器械、脚掌踏板、脚跟下放",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/seated_calf_raise-1.32175a104ff9.webp",
+          "sha256": "32175a104ff9fc1b6e252acea813165de56c80ffb6a2f2fd98950f12a033f4cf",
+          "bytes": 49546,
+          "distribution": "repository",
+          "phase": "脚跟抬至最高",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Seated_Calf_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Calf_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "6f1e5d06681b9d7050531622e065391fd3adb8d18e41a23fb80c62cf99c88d63",
+            "c397665d9d93377db1a579a6c7a3ab4b2b92428706df545fffcc7cb35e7ec738"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0599": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/seated_leg_curl-0.3188c57f3adf.webp",
+          "sha256": "3188c57f3adf7dffd72d02da410ea8fa030d162b0e41faaaa43fda4a45502f21",
+          "bytes": 82326,
+          "distribution": "repository",
+          "phase": "坐姿器械、小腿伸直置于杠垫下",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/seated_leg_curl-1.cc990ffe069d.webp",
+          "sha256": "cc990ffe069d24b9f097af9810dd98cbddc9e41fd14719985698b6ef20ee37d2",
+          "bytes": 83508,
+          "distribution": "repository",
+          "phase": "屈膝弯腿至收缩",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Seated_Leg_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Leg_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "c84ece2e8b52314c8605e9fc3ef1930a59fec475ff1b5a7f98687a4b8fc580a7",
+            "2cbd4aa6c22162a209a7ced5d1a68274d44e88780c8c3936c7fab57d6e9918fd"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0835": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/weighted_ball_hyperextension-0.b95a27adc8d2.webp",
+          "sha256": "b95a27adc8d234e197007222f5fa20d57583c7bc4ac42cf3529ccec9e785c526",
+          "bytes": 49656,
+          "distribution": "repository",
+          "phase": "俯卧健身球、抱杠铃片于胸前、下放",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/weighted_ball_hyperextension-1.b1710ce66b0b.webp",
+          "sha256": "b1710ce66b0bb5140581528b0deb9b8ff650e40120ef74f5ec79948158646e1b",
+          "bytes": 33140,
+          "distribution": "repository",
+          "phase": "抬起上半身至身体成直线",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Weighted_Ball_Hyperextension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Weighted_Ball_Hyperextension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "32e7a2e0a4a67f271fe1313ad60379a770f600c5f8cdd919775599a9208a21ab",
+            "821f65aad2ac3e18e1415ac8bea4b210aca3e198b43f2aa67c1175090f3fed77"
           ],
           "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
