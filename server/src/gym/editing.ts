@@ -70,12 +70,16 @@ export async function editWorkout(
       (e) => e.id === edit.exerciseId && !(e as any).archived,
     );
     if (!exercise) throw new ValidationError("动作不存在或已归档");
-    selected.data = JSON.stringify({
+    const replaced = {
       ...json(selected.data),
       ...(edit.target || {}),
       exercise,
       adjusted: true,
-    });
+    };
+    // A replaced exercise starts from the edited target, not from the
+    // previous exercise's last-session actuals.
+    delete replaced.prefilled;
+    selected.data = JSON.stringify(replaced);
   } else if (edit.kind === "remove") {
     assertPending();
     selected.status = "removed";

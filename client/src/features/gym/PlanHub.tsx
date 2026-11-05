@@ -6,6 +6,7 @@ import { Icon } from "../motion/components/Icons";
 import PlanDraft from "./PlanDraft";
 import { todayPlanState } from "./trainingPresentation";
 import { CachedDataNotice } from "./CachedDataNotice";
+import { RoutineMuscleMap } from "./RoutineMuscles";
 export function PlanEntry() {
   const query = useGymQuery("/training-plans"),
     navigate = useNavigate(),
@@ -13,6 +14,17 @@ export function PlanEntry() {
     [error, setError] = useState("");
   const schedule=useGymQuery("/training-schedule?days=1");
   const today=schedule.data?.entries||[];
+  const targetIds = [
+      ...new Set(
+        today.flatMap(({ routine }: any) =>
+          routine.exercises.map((item: any) => item.exerciseId),
+        ),
+      ),
+    ],
+    targets = useGymQuery("/exercises?limit=500&ids=" + targetIds.join(",")),
+    targetById = new Map(
+      (targets.data?.items || []).map((item: any) => [item.id, item.target]),
+    );
   const availability = todayPlanState(query, schedule);
   const cached = !!(query.data?.__offline || schedule.data?.__offline);
   const begin = async (p: any, r: any) => {
@@ -54,26 +66,35 @@ export function PlanEntry() {
       ) : availability === "scheduled" ? (
         today.map(({ plan, routine }: any) => (
           <article className="gym-today" key={plan.id + routine.id}>
-            <span className="gym-eyebrow">
-              {plan.mode === "rotation" ? "轮到这一练" : "今天的安排"}
-            </span>
-            <h3>{routine.name}</h3>
-            <p>
-              {plan.name} · {routine.exercises.length} 个动作 ·{" "}
-              {routine.exercises.reduce(
-                (n: number, e: any) => n + e.sets.length,
-                0,
-              )}{" "}
-              组
-            </p>
-            <button
-              className="primary"
-              disabled={busy || cached}
-              onClick={() => void begin(plan, routine)}
-            >
-              {busy ? "正在准备…" : "开始计划训练"}
-              <Icon name="arrow" />
-            </button>
+            <div className="gym-today-main">
+              <div>
+                <span className="gym-eyebrow">
+                  {plan.mode === "rotation" ? "轮到这一练" : "今天的安排"}
+                </span>
+                <h3>{routine.name}</h3>
+                <p>
+                  {plan.name} · {routine.exercises.length} 个动作 ·{" "}
+                  {routine.exercises.reduce(
+                    (n: number, e: any) => n + e.sets.length,
+                    0,
+                  )}{" "}
+                  组
+                </p>
+                <button
+                  className="primary"
+                  disabled={busy || cached}
+                  onClick={() => void begin(plan, routine)}
+                >
+                  {busy ? "正在准备…" : "开始计划训练"}
+                  <Icon name="arrow" />
+                </button>
+              </div>
+              <RoutineMuscleMap
+                exercises={routine.exercises.map((item: any) => ({
+                  target: targetById.get(item.exerciseId),
+                }))}
+              />
+            </div>
           </article>
         ))
       ) : (

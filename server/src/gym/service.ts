@@ -451,6 +451,37 @@ export async function listWorkouts(uid: number) {
     };
   });
 }
+// Prefill source for a new plan workout: the most recent finished,
+// non-imported run of the same plan + routine (same matching as
+// progression()). Only completed sets contribute, keyed by the set's
+// exerciseIndex/setIndex in the plan snapshot. Actual reps/load live in
+// the gym_sets columns; the snapshot data keeps the plan targets.
+async function lastWorkoutActuals(
+  uid: number,
+  planId: string,
+  routineId: string,
+) {
+  const last = (await listWorkouts(uid)).find(
+    (w) =>
+      w.phase === "finished" &&
+      w.planId === planId &&
+      !w.imported &&
+      w.routineId === routineId,
+  );
+  if (!last) return null;
+  const map = new Map<
+    string,
+    { exerciseId: string; reps: number; loadKg: number }
+  >();
+  for (const s of last.sets)
+    if (s.status === "completed")
+      map.set(`${s.exerciseIndex}:${s.setIndex}`, {
+        exerciseId: s.exercise?.id,
+        reps: s.reps,
+        loadKg: s.loadKg,
+      });
+  return map;
+}
 export async function startWorkout(uid: number, input: any) {
   return withTransaction(async () => {
     const data = z
@@ -489,7 +520,11 @@ export async function startWorkout(uid: number, input: any) {
       return old;
     }
     let snapshot: any,
-      planId = data.planId || null;
+      planId = data.planId || null,
+      prefill: Map<
+        string,
+        { exerciseId: string; reps: number; loadKg: number }
+      > | null = null;
     if (data.gameId) {
       snapshot = (await gamePlan(uid, data.gameId)).snapshot;
       if (!snapshot) throw new NotFoundError("活动尚未附计划");
@@ -509,6 +544,7 @@ export async function startWorkout(uid: number, input: any) {
       const r = p.routines.find((r) => r.id === data.routineId);
       if (!r) throw new NotFoundError("训练日不存在");
       snapshot = await snapshotRoutine(uid, p.name, r);
+      prefill = await lastWorkoutActuals(uid, data.planId || "", r.id);
     }
     if (snapshot.sets.length > 500)
       throw new ValidationError("每次训练最多500组");
@@ -529,14 +565,21 @@ export async function startWorkout(uid: number, input: any) {
     );
     for (let i = 0; i < snapshot.sets.length; i++) {
       const set = snapshot.sets[i];
+      // Prefill only rewrites the working values (reps / load columns) and
+      // flags the set; the snapshot data — and with it the plan targets —
+      // stays exactly as planned. The seconds column is a live, server-
+      // measured elapsed accumulator, never a prefilled working value.
+      const hit = prefill?.get(`${set.exerciseIndex}:${set.setIndex}`),
+        use = hit && hit.exerciseId === set.exercise.id ? hit : undefined;
       await pool.query(
-        "INSERT INTO gym_sets(id,workout_id,position,data,load_g) VALUES($1,$2,$3,$4,$5)",
+        "INSERT INTO gym_sets(id,workout_id,position,data,reps,load_g) VALUES($1,$2,$3,$4,$5,$6)",
         [
           randomUUID(),
           data.id,
           i,
-          JSON.stringify(set),
-          Math.round(set.loadKg * 1000),
+          JSON.stringify(use ? { ...set, prefilled: true } : set),
+          use ? use.reps : 0,
+          Math.round((use ? use.loadKg : set.loadKg) * 1000),
         ],
       );
     }

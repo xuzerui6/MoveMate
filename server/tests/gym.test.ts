@@ -473,6 +473,105 @@ test("progression stays opt-in and suggestions require explicit optimistic save"
     3,
   );
 });
+test("plan workouts prefill working values from the last finished run of the same routine", async () => {
+  const p = await plan(owner, 2);
+  const begin = () =>
+    gym.startWorkout(owner, {
+      id: randomUUID(),
+      planId: p.id,
+      routineId: "a",
+    });
+  // No history: actuals start empty, load starts at the plan value, and the
+  // targets are exactly the plan's.
+  let w = await begin();
+  assert.equal(w.sets[0].reps, 0);
+  assert.equal(w.sets[0].loadKg, 5);
+  assert.equal(w.sets[0].targetReps, 3);
+  assert.equal(w.sets[0].targetLoadKg, 5);
+  assert.equal(w.sets[0].prefilled, undefined);
+  // Finish a run whose actuals differ per set position.
+  w = await act(w, "start");
+  w = await act(w, "complete", { reps: 8, loadKg: 20 });
+  w = await act(w, "start");
+  w = await act(w, "complete", { reps: 6, loadKg: 22.5 });
+  await act(w, "finish");
+  // The next run of the same plan + routine is prefilled per position;
+  // the plan targets stay untouched.
+  w = await begin();
+  assert.equal(w.sets[0].reps, 8);
+  assert.equal(w.sets[0].loadKg, 20);
+  assert.equal(w.sets[0].prefilled, true);
+  assert.equal(w.sets[1].reps, 6);
+  assert.equal(w.sets[1].loadKg, 22.5);
+  assert.equal(w.sets[1].prefilled, true);
+  assert.equal(w.sets[0].targetReps, 3);
+  assert.equal(w.sets[0].targetLoadKg, 5);
+  assert.equal(w.sets[1].targetReps, 3);
+  assert.equal(w.sets[1].targetLoadKg, 5);
+  // A newer finished run replaces the source: its completed set follows the
+  // newest actuals, its skipped set falls back to the plan values.
+  w = await act(w, "start");
+  w = await act(w, "complete", { reps: 9, loadKg: 25 });
+  w = await act(w, "skip");
+  await act(w, "finish");
+  w = await begin();
+  assert.equal(w.sets[0].reps, 9);
+  assert.equal(w.sets[0].loadKg, 25);
+  assert.equal(w.sets[0].prefilled, true);
+  assert.equal(w.sets[1].reps, 0);
+  assert.equal(w.sets[1].loadKg, 5);
+  assert.equal(w.sets[1].prefilled, undefined);
+  // Accepting the prefill as-is: completing the set without edits records
+  // exactly the prefilled values, so this run stays a valid prefill source.
+  w = await act(w, "start");
+  w = await act(w, "complete", {});
+  assert.equal(w.sets[0].reps, 9);
+  assert.equal(w.sets[0].loadKg, 25);
+  await act(w, "finish");
+  // An imported record (no sport session) for the same plan + routine is
+  // never a prefill source, even when it is the newest and looks finished.
+  const importedId = randomUUID();
+  await pool.query(
+    "INSERT INTO gym_workouts(id,user_id,sport_session_id,plan_id,snapshot,phase,created_at) VALUES($1,$2,NULL,$3,$4,'finished',$5)",
+    [
+      importedId,
+      owner,
+      p.id,
+      JSON.stringify({ name: "导入 · A", routineId: "a", sets: [] }),
+      new Date(Date.now() + 60000).toISOString(),
+    ],
+  );
+  for (const [i, reps] of [99, 98].entries())
+    await pool.query(
+      "INSERT INTO gym_sets(id,workout_id,position,data,status,reps,load_g) VALUES($1,$2,$3,$4,'completed',$5,$6)",
+      [
+        randomUUID(),
+        importedId,
+        i,
+        JSON.stringify({
+          kind: "work",
+          reps: 3,
+          seconds: 0,
+          loadKg: 5,
+          restSec: 60,
+          side: "both",
+          superset: "",
+          exercise: w.sets[0].exercise,
+          exerciseIndex: 0,
+          setIndex: i,
+        }),
+        reps,
+        99000,
+      ],
+    );
+  w = await begin();
+  assert.equal(w.sets[0].reps, 9);
+  assert.equal(w.sets[0].loadKg, 25);
+  assert.equal(w.sets[1].reps, 0);
+  assert.equal(w.sets[1].loadKg, 5);
+  // Leave no active workout behind for later tests sharing this user.
+  await act(w, "finish");
+});
 test("group plan snapshots hide private load; attendance, early finish and activity-end races settle once", async () => {
   const p = await plan(owner, 1),
     game = (

@@ -235,7 +235,7 @@ export default function PlanWorkout() {
         (current.targetSeconds ? 0 : (suggestion?.reps ?? current.targetReps)),
     );
     setWeight(
-      current.status === "pending"
+      current.status === "pending" && !current.prefilled
         ? (suggestion?.loadKg ?? current.loadKg)
         : current.loadKg,
     );
@@ -629,6 +629,11 @@ export default function PlanWorkout() {
                 </b>
               </div>
               <h2>{current?.exercise.nameZh || "全部组已完成"}</h2>
+              {row.sets.some((s: any) => s.prefilled) && (
+                <p className="gym-muted" role="status">
+                  已按上次实际完成值预填
+                </p>
+              )}
               {current && (
                 <>
                   <p>

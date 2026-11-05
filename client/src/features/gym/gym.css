@@ -257,6 +257,23 @@
   background: #f4faf6;
   border: 0;
 }
+.gym-today-main,
+.gym-schedule-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.routine-muscles {
+  display: flex;
+  gap: 6px;
+  flex: none;
+  padding-top: 4px;
+}
+.routine-muscles svg {
+  height: 96px;
+  width: auto;
+}
 .gym-eyebrow {
   color: #007a3b;
   font-size: 13px;

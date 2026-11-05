@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../stores/authStore";
 import { CachedDataNotice } from "./CachedDataNotice";
+import { RoutineMuscleMap } from "./RoutineMuscles";
 import { recoveryDraft, readRecoveryDraft, archivedDrafts, archiveDraft, forgetDraft, restoreFields, validSettingsDraft, settingNames, settingValue, type RecoveryDraft } from "./recoveryDrafts";
 import { SnapshotEditor, sameContent, changedFields } from "./editingState";
 import { writeDraft, removeDraft, draftWriteWarning } from "./draftStorage";
@@ -220,6 +221,17 @@ export default function Schedule() {
   const q = useGymQuery(
     "/training-schedule?days=7" + (from ? "&from=" + from : ""),
   );
+  const targetIds = [
+      ...new Set(
+        (q.data?.entries || []).flatMap((entry: any) =>
+          entry.routine.exercises.map((item: any) => item.exerciseId),
+        ),
+      ),
+    ],
+    targets = useGymQuery("/exercises?limit=500&ids=" + targetIds.join(",")),
+    targetById = new Map(
+      (targets.data?.items || []).map((item: any) => [item.id, item.target]),
+    );
   const readOnly=q.loading || !!q.error || !q.data || !!q.data.__offline;
   const lock=useRef(false);
   const change = async (entry: any, kind: string, targetDate?: string) => {
@@ -284,15 +296,24 @@ export default function Schedule() {
           className="gym-form"
           key={entry.date + entry.plan.id + entry.routine.id + i}
         >
-          <span className="gym-eyebrow">
-            {entry.date}
-            {entry.movedFrom ? " · 从 " + entry.movedFrom + " 调来" : ""}
-            {entry.rotation ? " · 循环当前轮次" : ""}
-          </span>
-          <h3>{entry.routine.name}</h3>
-          <p>
-            {entry.plan.name} · {entry.routine.exercises.length} 个动作
-          </p>
+          <div className="gym-schedule-head">
+            <div>
+              <span className="gym-eyebrow">
+                {entry.date}
+                {entry.movedFrom ? " · 从 " + entry.movedFrom + " 调来" : ""}
+                {entry.rotation ? " · 循环当前轮次" : ""}
+              </span>
+              <h3>{entry.routine.name}</h3>
+              <p>
+                {entry.plan.name} · {entry.routine.exercises.length} 个动作
+              </p>
+            </div>
+            <RoutineMuscleMap
+              exercises={entry.routine.exercises.map((item: any) => ({
+                target: targetById.get(item.exerciseId),
+              }))}
+            />
+          </div>
           <div className="gym-inline-actions">
             <button
               disabled={busy || readOnly}
