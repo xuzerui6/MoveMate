@@ -6,7 +6,7 @@ import { Icon } from "../motion/components/Icons";
 import PlanDraft from "./PlanDraft";
 import { todayPlanState } from "./trainingPresentation";
 import { CachedDataNotice } from "./CachedDataNotice";
-import { RoutineMuscleMap } from "./RoutineMuscles";
+import { RoutineMuscleMap } from "./RoutineMuscleMap";
 export function PlanEntry() {
   const query = useGymQuery("/training-plans"),
     navigate = useNavigate(),

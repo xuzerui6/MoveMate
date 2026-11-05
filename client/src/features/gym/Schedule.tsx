@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../stores/authStore";
 import { CachedDataNotice } from "./CachedDataNotice";
-import { RoutineMuscleMap } from "./RoutineMuscles";
+import { RoutineMuscleMap } from "./RoutineMuscleMap";
 import { recoveryDraft, readRecoveryDraft, archivedDrafts, archiveDraft, forgetDraft, restoreFields, validSettingsDraft, settingNames, settingValue, type RecoveryDraft } from "./recoveryDrafts";
 import { SnapshotEditor, sameContent, changedFields } from "./editingState";
 import { writeDraft, removeDraft, draftWriteWarning } from "./draftStorage";
