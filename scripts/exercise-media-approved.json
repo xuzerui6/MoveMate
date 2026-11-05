@@ -1,5 +1,5 @@
 {
-  "reviewedAt": "2026-11-04",
+  "reviewedAt": "2026-11-05",
   "freeVersion": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
   "stills": [
     {
@@ -3424,6 +3424,84 @@
         "visual": "已逐帧查看原始双帧，对照独立来源说明和器械、支撑及动作方向。",
         "personBackground": "来源未明确说明，不推断族裔。"
       }
+    },
+    {
+      "exerciseId": "exdb:1316",
+      "expectedName": "barbell bent arm pullover",
+      "sourceId": "Bent-Arm_Barbell_Pullover",
+      "sourceSha256": [
+        "7e1d127718470a3733030ea76fd4f881297d5dcf74b77445d52ab199502236fe",
+        "dd9a3f780605595a806bd7f02bba284cae1c60bfa92abb77d8cf0514cc77cf87"
+      ],
+      "phases": [
+        "胸前伸直持杠",
+        "屈臂放至脑后"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0520",
+      "expectedName": "kettlebell alternating press",
+      "sourceId": "Alternating_Kettlebell_Press",
+      "sourceSha256": [
+        "583eac2365483c9f6fa0e26efe3fc05777e80ccb3276d5e7ff9b745ce7b394cd",
+        "1802ac208d925d3e65f6865f4f9497fceb5063120c9554df26675364a26284af"
+      ],
+      "phases": [
+        "双铃肩侧架铃",
+        "单臂推举过顶"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0026",
+      "expectedName": "barbell bench squat",
+      "sourceId": "Barbell_Squat_To_A_Bench",
+      "sourceSha256": [
+        "9b6d388687cf5d90de7ceb18e8697593165fc3094c9d2e95ae6ca7cf181b15b9",
+        "25f74da0f2ca00b61b4faf98a13a5170d47b583c72c39c3db16437406b04b7c3"
+      ],
+      "phases": [
+        "背杠站立",
+        "下蹲轻触凳面"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0391",
+      "expectedName": "dumbbell seated curl",
+      "sourceId": "Seated_Dumbbell_Curl",
+      "sourceSha256": [
+        "09eaabb7368cbc2f87ed27b0da4c66042fe84b2ea64825c925798db3dd042550",
+        "63a97b19561b2684e119b3d0f498c5e0dd9b502a291b35fd25d45591cb32dcf0"
+      ],
+      "phases": [
+        "坐姿双铃下垂",
+        "弯举至肩前"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0417",
+      "expectedName": "dumbbell standing calf raise",
+      "sourceId": "Standing_Dumbbell_Calf_Raise",
+      "sourceSha256": [
+        "5e120471e335e58248af0202c3720a6f7c7f822566c785d0e43122d17da94aa7",
+        "9102c567e60b12ce944e4ce3177caad918a13ca0fe1c1be15f099f89369aa100"
+      ],
+      "phases": [
+        "双铃体侧站立",
+        "双侧脚跟抬起"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0267",
+      "expectedName": "crunch (hands overhead)",
+      "sourceId": "Crunch_-_Hands_Overhead",
+      "sourceSha256": [
+        "799c7d2c765fa1da1ab23a514ada449342f4e0d9f0dffd2b7c31c8b99353c39f",
+        "35b288d80ac51f5ac47521c21b5b629fce9c207584420a17cee9c4b7fba0d9dc"
+      ],
+      "phases": [
+        "仰卧双臂过顶",
+        "卷起上半身"
+      ]
     }
   ],
   "videos": [
@@ -3806,9 +3884,41 @@
     {
       "source": "Reverse_Flyes_With_External_Rotation",
       "reason": "2026-11-04 对照 exdb:0383 哑铃反向飞鸟：俯卧上斜凳且掌心向下，与站姿中立握侧展开不符；不采用。"
+    },
+    {
+      "source": "free-exercise-db Front_Barbell_Squat_To_A_Bench → exdb:0024",
+      "reason": "来源条目名为胸前深蹲，照片实际为背杠深蹲，名称与画面不符，不用于 exdb:0024。"
+    },
+    {
+      "source": "free-exercise-db Cable_Incline_Pushdown → exdb:0172",
+      "reason": "照片为仰卧上斜凳下拉，条目为站姿前倾下压，姿势不符。"
+    },
+    {
+      "source": "free-exercise-db Front_Dumbbell_Raise → exdb:0310",
+      "reason": "照片为单臂交替前平举，条目未定义交替形式，暂不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Standing_Dumbbell_Triceps_Extension → exdb:0430",
+      "reason": "照片为双手共握一只哑铃，条目定义为单手持铃，握持方式不符。"
+    },
+    {
+      "source": "free-exercise-db Flutter_Kicks → exdb:0459",
+      "reason": "照片为俯卧凳上交替打腿，条目定义为仰卧交替踢腿，体位不符。"
+    },
+    {
+      "source": "free-exercise-db Overhead_Cable_Curl → exdb:1636",
+      "reason": "照片为双侧高位拉力器过顶弯举，条目为单侧直杆向下弯举，器械配置不符。"
+    },
+    {
+      "source": "free-exercise-db Close-Grip_Dumbbell_Press → exdb:0296",
+      "reason": "照片为双手共握一只哑铃卧推，条目为每手一只哑铃，握铃数量不符。"
+    },
+    {
+      "source": "free-exercise-db Wrist_Circles → exdb:1428",
+      "reason": "照片为双臂下垂于体侧做腕环绕，条目步骤为手臂前伸，姿势不符。"
     }
   ],
-  "batch": 3,
+  "batch": 13,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",
