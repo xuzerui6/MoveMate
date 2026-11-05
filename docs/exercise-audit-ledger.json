@@ -6395,22 +6395,37 @@
     {
       "id": "exdb:0126",
       "originalName": "barbell wrist curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：前臂抵大腿、反握并滚至指尖的细部明确；需要手腕近景和杠铃接触示范，不用普通前臂弯举充数。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐姿、前臂置于大腿、反握杠铃、手腕下垂滚向指尖与屈腕卷起清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "e9b03ae8272263134f13b3072bcbc5b00897c1a2da4616d325a4b6d16c0959ab",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Seated_Palm-Up_Barbell_Wrist_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Palm-Up_Barbell_Wrist_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "37be49b5db8bd7efede4f4ab8cb4372a49f3917f7f0e635528858e4fcbc89bcc",
+            "9d4c7cc1e5270d7ade366fbcb183f1bb1d1280c7ad65f60a215705f9c9bc781e"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0125",
@@ -7365,22 +7380,37 @@
     {
       "id": "exdb:0148",
       "originalName": "cable alternate shoulder press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：肩侧交替向上推明确，但缺滑轮高度与左右拉索路径图，不能用双侧同时图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站姿、双手握柄置于肩高掌心朝前、一侧手臂推举过顶、另一侧留于肩高清晰，与条目定义一致；交替形式明确，照片所示为一侧工作相，另一侧镜像重复。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "d0310a8a135a8f3070ab86a9c43112e5c2039ed51e5dc58388b25bf0c6d92159",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Alternating_Cable_Shoulder_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Alternating_Cable_Shoulder_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "a94a9e2775c6e1f07a52bf5cf99a3e14401c79cb3dd30b671860f0b27a3c7688",
+            "f7076a6de1d64678eb7294832c8384002aa57c0419f478e25baa0ef5b407ca1a"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0149",
@@ -7890,22 +7920,37 @@
     {
       "id": "exdb:0167",
       "originalName": "cable high row (kneeling)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文滑轮胸高、坐脚跟拉上腹，不清是高位下拉还是水平划船，需核对索角。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：跪姿、双手握绳、高位滑轮拉向下胸、肘向两侧张开清晰，与条目名称「跪姿高位绳索划船」一致；目录「直杆」「拉向上腹」「坐脚跟」写法已按照片的绳索附件、拉至上胸、直立跪姿改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "d35646e2aadb8a0349351da6acfed2266cc66b75b1816b4db5f11ed0d3224e58",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Kneeling_High_Pulley_Row",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Kneeling_High_Pulley_Row",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "352498171b985313d7b8b586aa5815641055f4e80ce3b2734a16fe0810f0ee3a",
+            "a727a56bfd35d7c161c86fe37a09f84be3f67ac10cdbc3ed797d529c1a721a25"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0168",
@@ -9650,22 +9695,37 @@
     {
       "id": "exdb:1724",
       "originalName": "cable rope high pulley overhead tricep extension",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文掌心向下与常见绳柄中立握不一致，且与1722近同，保留独立待握法核对。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：背对滑轮机、绳索高位、双手握绳举过头顶、上臂靠头垂直、屈肘绳落头后与伸臂过顶清晰，与条目定义一致；目录「掌心朝下」写法已按照片的分握绳端（中立握）改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "d66cda718bb30861e1279201dd5096d497093afc39e941e8f6d1bc7449e8198e",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Triceps_Overhead_Extension_with_Rope",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Triceps_Overhead_Extension_with_Rope",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "3854dbd93fb1739912d6bcec1a748fb6d704de19d767e7b6ff3abbbe55f5d2bf",
+            "d6b07f64965f583d5afbbcf7a5b967bf7abc0ef0597d576ba48c6983ff4ebc64"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1725",
@@ -9750,22 +9810,37 @@
     {
       "id": "exdb:0211",
       "originalName": "cable russian twists (on stability ball)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：坐球双手持索向左右臀旋转可读，但单侧固定索如何跨两侧、滑轮方位需核对。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐于稳定球、双脚平放、膝弯约 90 度、双手握柄前伸、微向后仰、躯干向一侧扭转拉柄向同侧臀部清晰，与条目定义一致；照片所示为向一侧的扭转相，另一侧镜像重复。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "3805ec36019ff17f3d2cfa0022ff1317746db6ea3b6a53c256204741c0ff8be5",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Russian_Twists",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Russian_Twists",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "646f94241a30b844bfa3bcf6974aeff7e063d0bf305c84c5abe5bc31641fbba5",
+            "2d2e5c67a36d6d5d0466a9b7e43a5d383feade0eda306ad8e673c2389e0fc357"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2144",
@@ -10630,22 +10705,37 @@
     {
       "id": "exdb:0235",
       "originalName": "cable standing shoulder external rotation",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：上臂前伸肘微屈，手臂向外远离身体，可能混同水平外展；缺明确旋转轴。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站姿、手臂前伸与地面平行、握柄、肘微屈、保持肘位向外旋转远离身体清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "f760d8f9e435fb2a792fafca267d041e7bbe965bf9dc66fbf0c5640b2cad70f1",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / External_Rotation_with_Cable",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/External_Rotation_with_Cable",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "257b354403173f5e9acd99b31b252d8be61e70062fbfc10a3835e28638df74cb",
+            "94d34acb3c806ad0ff087002b7720c4901e0395d113209177248efc520929f20"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0236",
@@ -24867,22 +24957,37 @@
     {
       "id": "exdb:0574",
       "originalName": "lever bent over row",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题lever、器械却barbell，正文普通双手杠铃划船，没有固定端或器械支点。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站姿俯身、双手共握杠铃杆端、杠铃一端固定于地面支点、拉向胸腹清晰，与条目名称「杠杆俯身划船」一致；目录「双手分开略宽于肩宽握杠铃」写法已按照片的双手共握杆端、杠杆固定端改写（此前复核注记的 lever 与器械不符问题即由此照片解决）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "c86fe94df8cda5002eeedf7fd2581fa5c70ef53e5a96b86945016b36559ad1f7",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Bent_Over_Two-Arm_Long_Bar_Row",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Bent_Over_Two-Arm_Long_Bar_Row",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "7e6218a8a6333c8c4567685177d7ec2c9fbabae7bbe276de3f81c1583a646504",
+            "27a64406c650b461e3df00603fb4947d69e55c005b17dfe88a0c2b4ebf1cffaa"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3200",

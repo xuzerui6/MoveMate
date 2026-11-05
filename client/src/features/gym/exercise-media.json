@@ -18517,6 +18517,265 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:0148": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/alternating_cable_shoulder_press-0.7a17712f977b.webp",
+          "sha256": "7a17712f977b9b5752a7ebd92e67b4d3f318e5bcfc8277ef5e0c606adbdc0240",
+          "bytes": 35478,
+          "distribution": "repository",
+          "phase": "双手握柄置于肩高、掌心朝前",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/alternating_cable_shoulder_press-1.5cf2f5e195fc.webp",
+          "sha256": "5cf2f5e195fc60be2bbf6ab04834b49833025f57c50d64e77d3ca54a7065a060",
+          "bytes": 36290,
+          "distribution": "repository",
+          "phase": "一侧手臂推举过顶、另一侧留于肩高",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Alternating_Cable_Shoulder_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Alternating_Cable_Shoulder_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "a94a9e2775c6e1f07a52bf5cf99a3e14401c79cb3dd30b671860f0b27a3c7688",
+            "f7076a6de1d64678eb7294832c8384002aa57c0419f478e25baa0ef5b407ca1a"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0167": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/kneeling_high_pulley_row-0.3517ecbedfa7.webp",
+          "sha256": "3517ecbedfa71d833a7b821456e2d57513fecc5e977d39e5393260b5f56b827c",
+          "bytes": 33946,
+          "distribution": "repository",
+          "phase": "跪姿、双手握绳举至头顶上方",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/kneeling_high_pulley_row-1.98f83f9ffdd8.webp",
+          "sha256": "98f83f9ffdd8bd19bb652153de27ce7cbf53c53f16e9009a0a0face4ff477677",
+          "bytes": 36430,
+          "distribution": "repository",
+          "phase": "绳索拉至上胸、肘向两侧张开",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Kneeling_High_Pulley_Row",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Kneeling_High_Pulley_Row",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "352498171b985313d7b8b586aa5815641055f4e80ce3b2734a16fe0810f0ee3a",
+            "a727a56bfd35d7c161c86fe37a09f84be3f67ac10cdbc3ed797d529c1a721a25"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0211": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/cable_russian_twists-0.645e544494d6.webp",
+          "sha256": "645e544494d660806353ab92b273e76b9aa00e5e849fc91f6f5e4a570d5244d9",
+          "bytes": 71258,
+          "distribution": "repository",
+          "phase": "坐于稳定球、双手握柄前伸、微向后仰",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/cable_russian_twists-1.6c9728b20316.webp",
+          "sha256": "6c9728b2031696cdd4fce05eee1a8fcf010e7c556d7c829c539c493c6717d158",
+          "bytes": 73220,
+          "distribution": "repository",
+          "phase": "躯干向一侧扭转、柄拉向同侧臀部",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Russian_Twists",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Russian_Twists",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "646f94241a30b844bfa3bcf6974aeff7e063d0bf305c84c5abe5bc31641fbba5",
+            "2d2e5c67a36d6d5d0466a9b7e43a5d383feade0eda306ad8e673c2389e0fc357"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0235": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/external_rotation_with_cable-0.20c086c6d739.webp",
+          "sha256": "20c086c6d73999b3ffaa8c852ee736945917fa23d26357e5431687af7f180b23",
+          "bytes": 78328,
+          "distribution": "repository",
+          "phase": "站姿、手臂前伸与地面平行、握柄",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/external_rotation_with_cable-1.db0e51d3e363.webp",
+          "sha256": "db0e51d3e363c4c0a6badcd42289f0b07214a5caafeb60e0fee762808f4a110f",
+          "bytes": 76990,
+          "distribution": "repository",
+          "phase": "保持肘位、手臂向外旋转远离身体",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / External_Rotation_with_Cable",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/External_Rotation_with_Cable",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "257b354403173f5e9acd99b31b252d8be61e70062fbfc10a3835e28638df74cb",
+            "94d34acb3c806ad0ff087002b7720c4901e0395d113209177248efc520929f20"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0574": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/bent_over_two-arm_long_bar_row-0.3a1f9af7d481.webp",
+          "sha256": "3a1f9af7d481e6eca1ed8899e73d8c69af7ef00c6a6685466a863c9c92940ce4",
+          "bytes": 50804,
+          "distribution": "repository",
+          "phase": "俯身、双手共握杠铃杆端、杠铃下垂",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/bent_over_two-arm_long_bar_row-1.f36bff7b8425.webp",
+          "sha256": "f36bff7b8425ee8a064f2876ee125c02329aeea803e5ae6af2febbe7a1bbb21e",
+          "bytes": 51664,
+          "distribution": "repository",
+          "phase": "杠铃拉向胸腹、肩胛收紧",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Bent_Over_Two-Arm_Long_Bar_Row",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Bent_Over_Two-Arm_Long_Bar_Row",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "7e6218a8a6333c8c4567685177d7ec2c9fbabae7bbe276de3f81c1583a646504",
+            "27a64406c650b461e3df00603fb4947d69e55c005b17dfe88a0c2b4ebf1cffaa"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0126": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/seated_palm-up_barbell_wrist_curl-0.59fc62f377b1.webp",
+          "sha256": "59fc62f377b1f237b6f9886fb6c7730ce8a010189843d337230ec76558dc59a4",
+          "bytes": 39772,
+          "distribution": "repository",
+          "phase": "坐姿、前臂置于大腿、反握杠铃、手腕下垂",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/seated_palm-up_barbell_wrist_curl-1.235e9d1c3af7.webp",
+          "sha256": "235e9d1c3af7df512bcfd084c285177f773fe69ab78d38a7a12dbf3f8a6cbfc4",
+          "bytes": 38624,
+          "distribution": "repository",
+          "phase": "屈腕将杠铃卷向上",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Seated_Palm-Up_Barbell_Wrist_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Palm-Up_Barbell_Wrist_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "37be49b5db8bd7efede4f4ab8cb4372a49f3917f7f0e635528858e4fcbc89bcc",
+            "9d4c7cc1e5270d7ade366fbcb183f1bb1d1280c7ad65f60a215705f9c9bc781e"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1724": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/triceps_overhead_extension_with_rope-0.fb2298d7048a.webp",
+          "sha256": "fb2298d7048a860b3839a981d57d4c2d6a77389fc559b73f684d81dc8e35261b",
+          "bytes": 54474,
+          "distribution": "repository",
+          "phase": "背对滑轮、双手握绳举过头顶、屈肘绳落头后",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/triceps_overhead_extension_with_rope-1.aa8bf79618a7.webp",
+          "sha256": "aa8bf79618a703de0045848ffa78cd688499e9ef94ded7d39c359155e15331fa",
+          "bytes": 55982,
+          "distribution": "repository",
+          "phase": "伸直手臂回到过顶位",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Triceps_Overhead_Extension_with_Rope",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Triceps_Overhead_Extension_with_Rope",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "3854dbd93fb1739912d6bcec1a748fb6d704de19d767e7b6ff3abbbe55f5d2bf",
+            "d6b07f64965f583d5afbbcf7a5b967bf7abc0ef0597d576ba48c6983ff4ebc64"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }

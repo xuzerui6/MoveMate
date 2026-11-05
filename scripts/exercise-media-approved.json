@@ -5504,6 +5504,97 @@
         "站上台面、双手各持一铃体侧",
         "一脚踩台、另一脚抬起"
       ]
+    },
+    {
+      "exerciseId": "exdb:0148",
+      "expectedName": "cable alternate shoulder press",
+      "sourceId": "Alternating_Cable_Shoulder_Press",
+      "sourceSha256": [
+        "a94a9e2775c6e1f07a52bf5cf99a3e14401c79cb3dd30b671860f0b27a3c7688",
+        "f7076a6de1d64678eb7294832c8384002aa57c0419f478e25baa0ef5b407ca1a"
+      ],
+      "phases": [
+        "双手握柄置于肩高、掌心朝前",
+        "一侧手臂推举过顶、另一侧留于肩高"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0167",
+      "expectedName": "cable high row (kneeling)",
+      "sourceId": "Kneeling_High_Pulley_Row",
+      "sourceSha256": [
+        "352498171b985313d7b8b586aa5815641055f4e80ce3b2734a16fe0810f0ee3a",
+        "a727a56bfd35d7c161c86fe37a09f84be3f67ac10cdbc3ed797d529c1a721a25"
+      ],
+      "phases": [
+        "跪姿、双手握绳举至头顶上方",
+        "绳索拉至上胸、肘向两侧张开"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0211",
+      "expectedName": "cable russian twists (on stability ball)",
+      "sourceId": "Cable_Russian_Twists",
+      "sourceSha256": [
+        "646f94241a30b844bfa3bcf6974aeff7e063d0bf305c84c5abe5bc31641fbba5",
+        "2d2e5c67a36d6d5d0466a9b7e43a5d383feade0eda306ad8e673c2389e0fc357"
+      ],
+      "phases": [
+        "坐于稳定球、双手握柄前伸、微向后仰",
+        "躯干向一侧扭转、柄拉向同侧臀部"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0235",
+      "expectedName": "cable standing shoulder external rotation",
+      "sourceId": "External_Rotation_with_Cable",
+      "sourceSha256": [
+        "257b354403173f5e9acd99b31b252d8be61e70062fbfc10a3835e28638df74cb",
+        "94d34acb3c806ad0ff087002b7720c4901e0395d113209177248efc520929f20"
+      ],
+      "phases": [
+        "站姿、手臂前伸与地面平行、握柄",
+        "保持肘位、手臂向外旋转远离身体"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0574",
+      "expectedName": "lever bent over row",
+      "sourceId": "Bent_Over_Two-Arm_Long_Bar_Row",
+      "sourceSha256": [
+        "7e6218a8a6333c8c4567685177d7ec2c9fbabae7bbe276de3f81c1583a646504",
+        "27a64406c650b461e3df00603fb4947d69e55c005b17dfe88a0c2b4ebf1cffaa"
+      ],
+      "phases": [
+        "俯身、双手共握杠铃杆端、杠铃下垂",
+        "杠铃拉向胸腹、肩胛收紧"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0126",
+      "expectedName": "barbell wrist curl",
+      "sourceId": "Seated_Palm-Up_Barbell_Wrist_Curl",
+      "sourceSha256": [
+        "37be49b5db8bd7efede4f4ab8cb4372a49f3917f7f0e635528858e4fcbc89bcc",
+        "9d4c7cc1e5270d7ade366fbcb183f1bb1d1280c7ad65f60a215705f9c9bc781e"
+      ],
+      "phases": [
+        "坐姿、前臂置于大腿、反握杠铃、手腕下垂",
+        "屈腕将杠铃卷向上"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1724",
+      "expectedName": "cable rope high pulley overhead tricep extension",
+      "sourceId": "Triceps_Overhead_Extension_with_Rope",
+      "sourceSha256": [
+        "3854dbd93fb1739912d6bcec1a748fb6d704de19d767e7b6ff3abbbe55f5d2bf",
+        "d6b07f64965f583d5afbbcf7a5b967bf7abc0ef0597d576ba48c6983ff4ebc64"
+      ],
+      "phases": [
+        "背对滑轮、双手握绳举过头顶、屈肘绳落头后",
+        "伸直手臂回到过顶位"
+      ]
     }
   ],
   "videos": [
@@ -6930,9 +7021,37 @@
     {
       "source": "free-exercise-db Kettlebell_Pirate_Ships → exdb:0543",
       "reason": "照片为双手壶铃摆动（上举过顶一侧、下摆腿间），条目定义为单手持铃、肩高推举过顶的单臂壶铃推举；双手摆动非单臂推举。"
+    },
+    {
+      "source": "free-exercise-db One_Arm_Lat_Pulldown → exdb:3563",
+      "reason": "放大裁切核对：照片为坐姿单臂高位下拉（坐于下拉器械座位、空闲手扶于座边），条目定义为面向机器站姿；坐姿与站姿不符。"
+    },
+    {
+      "source": "free-exercise-db Seated_Dumbbell_Palms-Down_Wrist_Curl → exdb:0397",
+      "reason": "照片为掌心向下腕弯举，条目名称 neutral 定义为掌心相对的中立握腕弯举；握法不符。"
+    },
+    {
+      "source": "free-exercise-db Lying_Close-Grip_Bar_Curl_On_High_Pulley → exdb:0182",
+      "reason": "照片为仰卧绳索臂屈伸（屈肘将杠降向额前），条目定义为仰卧窄握弯举（屈肘将杠卷向胸部）；臂屈伸非弯举，动作不符。"
+    },
+    {
+      "source": "free-exercise-db Incline_Push-Up_Wide → exdb:0492",
+      "reason": "照片仅示手撑高杠的宽距上斜俯卧撑上下，未见跳下台面的深度跳关键阶段（与 Incline_Push-Up_Depth_Jump → exdb:0492 驳回同理）。"
+    },
+    {
+      "source": "free-exercise-db Backward_Medicine_Ball_Throw → exdb:1750",
+      "reason": "照片为站姿下蹲后将药球向后上方抛出的站姿后抛，条目定义为仰卧长凳、将球推向胸部上方的仰卧胸前抛；体位与抛掷方向均不符。"
+    },
+    {
+      "source": "free-exercise-db Front_Plate_Raise → exdb:0040",
+      "reason": "照片为双手持杠铃片由体前上举过顶，条目定义为杠铃前平举至肩高后再向头后下放的上拉；器械为杠铃片非杠铃，且未见头后下放的上拉阶段。"
+    },
+    {
+      "source": "free-exercise-db Round_The_World_Shoulder_Stretch → exdb:1604",
+      "reason": "照片为站姿双手持棍于身后、抬棍拉伸肩部的持棍肩拉伸，条目定义为弓步起势、双手撑地、转体伸臂向天花板的环球拉伸；动作与体位均不符。"
     }
   ],
-  "batch": 35,
+  "batch": 36,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",
