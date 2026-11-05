@@ -18176,6 +18176,228 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:0751": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/smith_machine_close-grip_bench_press-0.74eb0900c579.webp",
+          "sha256": "74eb0900c579511ea44a6195599425b4da31e266c45c7b301961db88103a02c5",
+          "bytes": 67544,
+          "distribution": "repository",
+          "phase": "仰卧史密斯架、窄握杠铃落于胸部",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/smith_machine_close-grip_bench_press-1.6bae1b8ce40c.webp",
+          "sha256": "6bae1b8ce40ce3aaab468537b4c7274b01538c3700e53473721bf1695b06d865",
+          "bytes": 67458,
+          "distribution": "repository",
+          "phase": "推起杠铃至手臂伸直",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Smith_Machine_Close-Grip_Bench_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Smith_Machine_Close-Grip_Bench_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "43a675014d1dbf0fc617331820cff80dd4dee04f59d85ea45bd4ee1d149c24bd",
+            "8774b1d908dc7d4ef7f4cd6693d99867a55e9db69851efa51ec3016f0d93fe9d"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0449": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/incline_barbell_triceps_extension-0.1c50b0c8eab7.webp",
+          "sha256": "1c50b0c8eab72a66991f2a20be906728a0ee1cc3e2fbfc88c08e9b6c430c9ca4",
+          "bytes": 39318,
+          "distribution": "repository",
+          "phase": "上斜仰卧、EZ 杠落于头后、屈肘",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/incline_barbell_triceps_extension-1.f6f3b21c01a9.webp",
+          "sha256": "f6f3b21c01a943cbfc8db371ecab3dc66d9a3cab18bd074d22cfa885946d9deb",
+          "bytes": 44006,
+          "distribution": "repository",
+          "phase": "伸臂过顶至手臂伸直",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Incline_Barbell_Triceps_Extension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Incline_Barbell_Triceps_Extension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "f085cd8b89899606220348b3fcd9740765feb681b9cec0b78cd88b40dfeb82e6",
+            "478581f43fcf43d5bff0707d984761328d083e631d8790be2e7802456086f76b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0753": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/decline_smith_press-0.db314f578538.webp",
+          "sha256": "db314f578538f9e146c24036b785c8679f22c9ffa61de78c48207387642cd8a5",
+          "bytes": 40482,
+          "distribution": "repository",
+          "phase": "下斜仰卧史密斯架、杠铃推起至手臂伸直",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/decline_smith_press-1.b31fd1cb8db7.webp",
+          "sha256": "b31fd1cb8db76b362c1c9f45b13b18ec2a1c97fa22198d78e25edf4da9feb7a3",
+          "bytes": 38506,
+          "distribution": "repository",
+          "phase": "杠铃下放落于胸部",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Decline_Smith_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Decline_Smith_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "673b79af5319d05e4ec5b2e3761f2dc1848703b3362d66fe49ad4a48c708e0cf",
+            "23ac560b7d765e7e6e9423e4919e97a7b403cd9efd5e7139f1ee86e5ce6bb9b7"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0721": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/side_wrist_pull-0.b9d29a5853d6.webp",
+          "sha256": "b9d29a5853d677ddc2d4ee8cfc0c5185883fb10d21d8781095edff1a4164ec7a",
+          "bytes": 16640,
+          "distribution": "repository",
+          "phase": "站立、右臂前伸、左手握右腕",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/side_wrist_pull-1.86955384e896.webp",
+          "sha256": "86955384e896fa02ee6de254a5d38ae99b589691602d0f19649401d23eea6ed3",
+          "bytes": 17014,
+          "distribution": "repository",
+          "phase": "右臂侧平举、左手拉右手向身体",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Side_Wrist_Pull",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Side_Wrist_Pull",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "16dde9201b89355eba93b12b613fc00a522e0b308d681554fccef68b7964660d",
+            "64142bbf6580646ccb2ca2a102b39572660ab4a9267ad55d62736fb12c1bd48b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1353": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/catch_and_overhead_throw-0.00dad21eec2b.webp",
+          "sha256": "00dad21eec2bf891b65fe96d2af5ae32c5117e694d1a97fab32742e700b8d837",
+          "bytes": 45912,
+          "distribution": "repository",
+          "phase": "下蹲、双手持球于身前低位",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/catch_and_overhead_throw-1.2c3323a384d5.webp",
+          "sha256": "2c3323a384d5d3932e6da476040c845242c736148708970e1c8828fe4a67e694",
+          "bytes": 36836,
+          "distribution": "repository",
+          "phase": "站立伸髋、双手持球过顶",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Catch_and_Overhead_Throw",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Catch_and_Overhead_Throw",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "ba909d223bcfac19ce11b1ec07e831b906a16a3c60a59530fcb88fe5152bc430",
+            "58a8d0ed416caa3b53b4a7485ea14c68a592dbad6bea6ac072af720fb3706c91"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0874": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/standing_rope_crunch-0.41d4ce80d44e.webp",
+          "sha256": "41d4ce80d44ede91fc80e864156e5ce79b5d43fbad8610cda467321fa87b94eb",
+          "bytes": 31398,
+          "distribution": "repository",
+          "phase": "背对缆绳机站立、绳索置于脑后",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/standing_rope_crunch-1.a5a5a3886857.webp",
+          "sha256": "a5a5a3886857f2c171fbf670f308e987621400129dc5f0825a85403f31c6610d",
+          "bytes": 31398,
+          "distribution": "repository",
+          "phase": "收腹前屈、肘部靠近膝盖",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Rope_Crunch",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Rope_Crunch",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "507451c47858987a9bbe116344f2594ad75bb773f32337c5cea2acbedcd8a6cd",
+            "17d198af9d9a7050cc7d26f395c262a3e943530ed9ea68ccf8037cac8e25f71a"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }

@@ -5322,6 +5322,84 @@
         "俯卧健身球、抱杠铃片于胸前、下放",
         "抬起上半身至身体成直线"
       ]
+    },
+    {
+      "exerciseId": "exdb:0751",
+      "expectedName": "smith close-grip bench press",
+      "sourceId": "Smith_Machine_Close-Grip_Bench_Press",
+      "sourceSha256": [
+        "43a675014d1dbf0fc617331820cff80dd4dee04f59d85ea45bd4ee1d149c24bd",
+        "8774b1d908dc7d4ef7f4cd6693d99867a55e9db69851efa51ec3016f0d93fe9d"
+      ],
+      "phases": [
+        "仰卧史密斯架、窄握杠铃落于胸部",
+        "推起杠铃至手臂伸直"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0449",
+      "expectedName": "ez barbell incline triceps extension",
+      "sourceId": "Incline_Barbell_Triceps_Extension",
+      "sourceSha256": [
+        "f085cd8b89899606220348b3fcd9740765feb681b9cec0b78cd88b40dfeb82e6",
+        "478581f43fcf43d5bff0707d984761328d083e631d8790be2e7802456086f76b"
+      ],
+      "phases": [
+        "上斜仰卧、EZ 杠落于头后、屈肘",
+        "伸臂过顶至手臂伸直"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0753",
+      "expectedName": "smith decline bench press",
+      "sourceId": "Decline_Smith_Press",
+      "sourceSha256": [
+        "673b79af5319d05e4ec5b2e3761f2dc1848703b3362d66fe49ad4a48c708e0cf",
+        "23ac560b7d765e7e6e9423e4919e97a7b403cd9efd5e7139f1ee86e5ce6bb9b7"
+      ],
+      "phases": [
+        "下斜仰卧史密斯架、杠铃推起至手臂伸直",
+        "杠铃下放落于胸部"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0721",
+      "expectedName": "side wrist pull stretch",
+      "sourceId": "Side_Wrist_Pull",
+      "sourceSha256": [
+        "16dde9201b89355eba93b12b613fc00a522e0b308d681554fccef68b7964660d",
+        "64142bbf6580646ccb2ca2a102b39572660ab4a9267ad55d62736fb12c1bd48b"
+      ],
+      "phases": [
+        "站立、右臂前伸、左手握右腕",
+        "右臂侧平举、左手拉右手向身体"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1353",
+      "expectedName": "medicine ball catch and overhead throw",
+      "sourceId": "Catch_and_Overhead_Throw",
+      "sourceSha256": [
+        "ba909d223bcfac19ce11b1ec07e831b906a16a3c60a59530fcb88fe5152bc430",
+        "58a8d0ed416caa3b53b4a7485ea14c68a592dbad6bea6ac072af720fb3706c91"
+      ],
+      "phases": [
+        "下蹲、双手持球于身前低位",
+        "站立伸髋、双手持球过顶"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0874",
+      "expectedName": "cable standing crunch (with rope attachment)",
+      "sourceId": "Standing_Rope_Crunch",
+      "sourceSha256": [
+        "507451c47858987a9bbe116344f2594ad75bb773f32337c5cea2acbedcd8a6cd",
+        "17d198af9d9a7050cc7d26f395c262a3e943530ed9ea68ccf8037cac8e25f71a"
+      ],
+      "phases": [
+        "背对缆绳机站立、绳索置于脑后",
+        "收腹前屈、肘部靠近膝盖"
+      ]
     }
   ],
   "videos": [
@@ -6328,9 +6406,41 @@
     {
       "source": "free-exercise-db Cuban_Press → exdb:2136",
       "reason": "两帧仅示直立划船后肘部 90 度外旋的旋转阶段，未见条目版本 2 步骤所述的「肩高位垂直推过头顶至手臂完全伸展」关键阶段。"
+    },
+    {
+      "source": "free-exercise-db Wide-Grip_Rear_Pull-Up → exdb:1367",
+      "reason": "照片为杠在身前的正手宽握引体（杠位于面部前方），条目名称「rear」定义为颈后引体（杠过颈后）；名图不符。"
+    },
+    {
+      "source": "free-exercise-db Worlds_Greatest_Stretch → exdb:1604",
+      "reason": "两帧仅示弓步站立与俯身双手撑地，未见躯干旋转、手臂伸向天花板的关键阶段；与普通髋屈肌拉伸无异。"
+    },
+    {
+      "source": "free-exercise-db Plyo_Push-up → exdb:0545",
+      "reason": "照片为徒手地面爆发俯卧撑，双手未置于壶铃上，且未见双手离地腾空关键阶段；与条目「双手放在壶铃上」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Push_Press → exdb:1700",
+      "reason": "照片为杠铃前架位借力推举，器械与条目「双手各握一个哑铃」不符，且未见推举过顶锁定关键阶段。"
+    },
+    {
+      "source": "free-exercise-db Chest_Push_with_Run_Release → exdb:1312",
+      "reason": "两帧仅示低位持球站位与胸前持球迈步，未见向前推球、松手滚球与跑动接球的关键阶段。"
+    },
+    {
+      "source": "free-exercise-db Chest_Push_single_response → exdb:1305",
+      "reason": "照片为跪姿向上抛球，条目定义为站姿向前胸前推球；体位与推球方向均不符。"
+    },
+    {
+      "source": "free-exercise-db Chest_Push_multiple_response → exdb:1304",
+      "reason": "照片为跪姿对墙胸前推球，条目定义为站姿推球；体位不符。"
+    },
+    {
+      "source": "free-exercise-db Supine_Chest_Throw → exdb:1750",
+      "reason": "照片为仰卧地面抛球，条目定义为仰卧长凳；支撑面不符。"
     }
   ],
-  "batch": 32,
+  "batch": 33,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",

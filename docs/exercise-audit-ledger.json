@@ -10350,22 +10350,37 @@
     {
       "id": "exdb:0874",
       "originalName": "cable standing crunch (with rope attachment)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：胸高后方绳柄、双手脑后屈曲可读，但与高位版索角不同，需对应完整图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：背对缆绳机站立、绳索置于脑后、收腹前屈肘近膝清晰，与条目定义一致；绳索接点为后方高位滑轮，目录「胸部高度」已按照片改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "8f3466a6c0ef8aa194486c14f6062e3c0437d4f6f849ded629a5bdb0386ecdaf",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Rope_Crunch",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Rope_Crunch",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "507451c47858987a9bbe116344f2594ad75bb773f32337c5cea2acbedcd8a6cd",
+            "17d198af9d9a7050cc7d26f395c262a3e943530ed9ea68ccf8037cac8e25f71a"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0227",
@@ -20878,22 +20893,37 @@
     {
       "id": "exdb:0449",
       "originalName": "ez barbell incline triceps extension",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：45度凳背靠、上臂过顶降脑后明确，需曲杆和头后接触范围示范。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：上斜凳仰卧、EZ 曲杠、屈肘杠落头后、伸臂过顶清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a5fe00c16b44555178c609d3532c39e1da0d0aca291a62691ea4da3c1112e579",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Incline_Barbell_Triceps_Extension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Incline_Barbell_Triceps_Extension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "f085cd8b89899606220348b3fcd9740765feb681b9cec0b78cd88b40dfeb82e6",
+            "478581f43fcf43d5bff0707d984761328d083e631d8790be2e7802456086f76b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0450",
@@ -26491,22 +26521,37 @@
     {
       "id": "exdb:1353",
       "originalName": "medicine ball catch and overhead throw",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤、支撑和器械：下蹲上抛再接球明确，但接球落点、投掷区域及球型未核验，不用静态举球图代替抛接周期。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：下蹲持球于身前低位、站立伸髋双手持球过顶清晰，与条目定义一致；球离手的释放瞬间未定格，所示为抛接周期的过顶持球相。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "3dfb1c8503a2372f6cffe36f88240f3242ea1288bf61b9442a4f7558721d2646",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Catch_and_Overhead_Throw",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Catch_and_Overhead_Throw",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "ba909d223bcfac19ce11b1ec07e831b906a16a3c60a59530fcb88fe5152bc430",
+            "58a8d0ed416caa3b53b4a7485ea14c68a592dbad6bea6ac072af720fb3706c91"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1302",
@@ -29672,22 +29717,37 @@
     {
       "id": "exdb:0721",
       "originalName": "side wrist pull stretch",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字手掌朝下但未说明腕屈/伸方向和被抓的位置，无法确定前臂伸肌或屈肌拉伸；简化线稿不能可靠表达手型。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站立、右臂侧平举与地面平行、手掌朝下、左手抓右手拉向身体清晰，与条目定义一致；照片所示为一侧牵拉，另一侧镜像重复。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "eb195f0097b9e899fcbe026ce9ff6c24be1c79034de1f4df34a6bd8fb4162e89",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Side_Wrist_Pull",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Side_Wrist_Pull",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "16dde9201b89355eba93b12b613fc00a522e0b308d681554fccef68b7964660d",
+            "64142bbf6580646ccb2ca2a102b39572660ab4a9267ad55d62736fb12c1bd48b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0720",
@@ -30448,22 +30508,37 @@
     {
       "id": "exdb:0751",
       "originalName": "smith close-grip bench press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：平凳略窄肩握、肘靠身明确，需对应导轨、窄握和凳面支撑专门图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：史密斯架导轨、平凳仰卧、窄握杠铃落于胸部、推起至手臂伸直清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "4889822bd88a0e1b11d07b5c556974ccf02dd73bbb9b93d58584d088860b86e5",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Smith_Machine_Close-Grip_Bench_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Smith_Machine_Close-Grip_Bench_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "43a675014d1dbf0fc617331820cff80dd4dee04f59d85ea45bd4ee1d149c24bd",
+            "8774b1d908dc7d4ef7f4cd6693d99867a55e9db69851efa51ec3016f0d93fe9d"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0752",
@@ -30488,22 +30563,37 @@
     {
       "id": "exdb:0753",
       "originalName": "smith decline bench press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：下斜脚固定、正握胸前推明确，凳角和导轨相交位置需要实图核验。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：史密斯架导轨、下斜凳仰卧、双脚固定、杠铃落于胸部与推起伸直清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "f7dc19fe9fc0c79740ee31a4f5883c2d78273570d2d26013f9e206a76993060e",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Decline_Smith_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Decline_Smith_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "673b79af5319d05e4ec5b2e3761f2dc1848703b3362d66fe49ad4a48c708e0cf",
+            "23ac560b7d765e7e6e9423e4919e97a7b403cd9efd5e7139f1ee86e5ce6bb9b7"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0754",
