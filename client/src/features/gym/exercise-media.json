@@ -10236,53 +10236,6 @@
         }
       ]
     },
-    "exdb:0423": {
-      "kind": "illustration",
-      "note": "站姿单手持一只哑铃，工作侧上臂保持头侧，屈肘下放脑后再伸肘。 与 0430 是同一明确形式，保留独立ID。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0423-0.d9431c2e5b0d.webp",
-          "bytes": 5344,
-          "sha256": "d9431c2e5b0d98a2a15e847dac9211edb1d7aac5fe2023bb9bc6f89e7d01af41",
-          "phase": "单臂伸肘准备",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0423-1.e4bf8c48718a.webp",
-          "bytes": 6246,
-          "sha256": "e4bf8c48718a49ca28404dabcdaea481438e3048cec6d6dafeedb88c78f87f92",
-          "phase": "屈肘下放头后",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0423-2.d9431c2e5b0d.webp",
-          "bytes": 5344,
-          "sha256": "d9431c2e5b0d98a2a15e847dac9211edb1d7aac5fe2023bb9bc6f89e7d01af41",
-          "phase": "伸肘回位",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0423",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "ab11d56f7691fef3846f7221621782329f3ef6208735ed480253275a74a9241c",
-            "3e9c82d72e467acaced0cd6cce118ae192481cf5ebe74fe8470dc4474b6887c4",
-            "08170360649dfd38652c02e40b316366c998f542f860636f2c1e1c764860363a"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
     "exdb:0425": {
       "kind": "illustration",
       "note": "站姿单手持铃，掌心朝下正握，工作侧上臂固定在体侧；不是双侧或反握形式。 原创静态三阶段示意，不是连续视频。",
@@ -14311,6 +14264,302 @@
           "sourceSha256": [
             "50c11172c80de0db8e5407c4b708cd4f46dab230a841b629cba9c081ad436720",
             "4eafb869ecd2194c0513cfa4cbf5045ffd9f554fe1b99cd03113f27443f7d9cf"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0036": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/wide-grip_decline_barbell_bench_press-0.dc4f557dec2f.webp",
+          "sha256": "dc4f557dec2fc2914b8ad1aa19d0d43c6392b5d6a6b74d7820eac7ecb1adc487",
+          "bytes": 83274,
+          "distribution": "repository",
+          "phase": "下斜凳宽握伸直",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/wide-grip_decline_barbell_bench_press-1.d2ac16a5e879.webp",
+          "sha256": "d2ac16a5e8790937c4e478bc8bc1508a02a5fcaf4c306bb76ed55ea5ff2212d8",
+          "bytes": 83454,
+          "distribution": "repository",
+          "phase": "下放杠铃至下胸",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Wide-Grip_Decline_Barbell_Bench_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Wide-Grip_Decline_Barbell_Bench_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "d97fe9458cec3b8817bec6db9f0ab3371fe8bb8eb4c087672ce4512a2a854836",
+            "9bf5931d36f5bb2290cbbb77fc0446449e7f53d36609ecc62ec281b5e65990fa"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0194": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/cable_rope_overhead_triceps_extension-0.860b4fb67bda.webp",
+          "sha256": "860b4fb67bdaa4f1eca206ccb62888f0710dc4b5deed23a58bfdfabd28b9b99d",
+          "bytes": 74658,
+          "distribution": "repository",
+          "phase": "绳柄脑后屈肘",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/cable_rope_overhead_triceps_extension-1.8931a95b2243.webp",
+          "sha256": "8931a95b224352bc0d23ae8e6d565b26ad2b37faff1c21c687110447c891f33f",
+          "bytes": 72162,
+          "distribution": "repository",
+          "phase": "过顶伸臂",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Rope_Overhead_Triceps_Extension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Rope_Overhead_Triceps_Extension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "206683ce757bedf841689cb8382e0576c81934ca736d3866a034155b518f3e9b",
+            "7f2b439eff6d30be27e06e87b14733ee345bf1ec33ebf8c316e1552f341a06a1"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0473": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/hanging_pike-0.cd711afb576c.webp",
+          "sha256": "cd711afb576c2617c63e7e914e5a1a901f14888682a048c14b6c595727af20d2",
+          "bytes": 27342,
+          "distribution": "repository",
+          "phase": "悬垂屈膝准备",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/hanging_pike-1.49ac3d23da8c.webp",
+          "sha256": "49ac3d23da8c7aef35fa48e216d09eb5088f995506c1e454a579ce4aab3166f8",
+          "bytes": 21142,
+          "distribution": "repository",
+          "phase": "直腿上举近杠",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Hanging_Pike",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Hanging_Pike",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "9dc7ba34973204dd18815b02392553c2287197dbf5a46a6034f8ce2c3d9d4fa9",
+            "1b2cfd67c8fd0fcd83a8e66abaa6ff7f300e8216a7cba77cbbdb2ef2aa2e7c9e"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1412": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/palms-up_barbell_wrist_curl_over_a_bench-0.39fa173bc26a.webp",
+          "sha256": "39fa173bc26ac5c2e20a818cdb7f92d6c746e8ec135939673ec45da22de9cbb2",
+          "bytes": 49678,
+          "distribution": "repository",
+          "phase": "跪姿前臂贴凳掌心向上",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/palms-up_barbell_wrist_curl_over_a_bench-1.5649d3139be2.webp",
+          "sha256": "5649d3139be26d8b48c41c753cd3b6677969d2bfa2c22a154f44301f1ba55dab",
+          "bytes": 50418,
+          "distribution": "repository",
+          "phase": "屈腕上卷",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Palms-Up_Barbell_Wrist_Curl_Over_A_Bench",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Palms-Up_Barbell_Wrist_Curl_Over_A_Bench",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "96c17bd05147a27959a5e032b800bcaf64dbd02067a275d281eae8a29e5ff170",
+            "bb636ce2bbd58642518c238e17338d37e0a9c762e8eb6bedcbe9d80555234bfc"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0089": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/seated_close-grip_concentration_barbell_curl-0.38e798534774.webp",
+          "sha256": "38e798534774f5f5b58a0989827d0abcd8d8f323e4545f8fd32f6d1eba6af169",
+          "bytes": 48466,
+          "distribution": "repository",
+          "phase": "坐姿上臂贴大腿内侧下放",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/seated_close-grip_concentration_barbell_curl-1.53c12fc63338.webp",
+          "sha256": "53c12fc63338df4ffcd58a3bd6f9b56f3bd3ac213a8c0600aee1d790b0f4d313",
+          "bytes": 49744,
+          "distribution": "repository",
+          "phase": "窄握弯举至肩高",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Seated_Close-Grip_Concentration_Barbell_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Close-Grip_Concentration_Barbell_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "2264abc83698f73b0ff58142cd312ab75ba51cf2bf343069cce6386fcb418762",
+            "ab6409b605c95fad987243d5f175175f291509611ca3decd2f3b24727f70b34c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0970": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/band_assisted_pull-up-0.7a8ac3526432.webp",
+          "sha256": "7a8ac352643229748d2d979a76f97d46359843739507542b1596a0e464edb2dc",
+          "bytes": 40638,
+          "distribution": "repository",
+          "phase": "弹力带辅助悬垂",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/band_assisted_pull-up-1.aa4618931ff8.webp",
+          "sha256": "aa4618931ff81030d698bfce70a17e47ce5d887c07c347713df62299fb0cb586",
+          "bytes": 41870,
+          "distribution": "repository",
+          "phase": "下巴过杠",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Band_Assisted_Pull-Up",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Band_Assisted_Pull-Up",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "7af060c6c064e6e8a074add38c950dc59f93801ecd54b7d652172bd9800b034d",
+            "edc82e3a48ec624be2b920262d99399d055b96333850579b22fefa7375768a30"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0490": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/incline_push-up_close-grip-0.85f32fc20d02.webp",
+          "sha256": "85f32fc20d02f1591284b27fc34f24dff0cee85b670c243276bfdf12145616a2",
+          "bytes": 36348,
+          "distribution": "repository",
+          "phase": "史密斯杠上窄距撑起",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/incline_push-up_close-grip-1.abc4e15e1243.webp",
+          "sha256": "abc4e15e12437c3a994a7c35d226d9269a603d8c58ecc3774612da9f49a8b78d",
+          "bytes": 37752,
+          "distribution": "repository",
+          "phase": "屈肘胸贴杠",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Incline_Push-Up_Close-Grip",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Incline_Push-Up_Close-Grip",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "90adc4846d8f6335b033aa7dd8147c94223ef5f73ab5e0314e7f2397934eed88",
+            "be59e3a0b3da2a47c7192b321ab28dcb61394e0e200c2281a8506c89293e4fc8"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0423": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/standing_one-arm_dumbbell_triceps_extension-0.300126a55500.webp",
+          "sha256": "300126a5550045850e44916154d8324f356b5fbb48411083b2c55b676a2fd267",
+          "bytes": 40056,
+          "distribution": "repository",
+          "phase": "站姿单臂过顶伸直",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/standing_one-arm_dumbbell_triceps_extension-1.c17c58397e3d.webp",
+          "sha256": "c17c58397e3d4072fc4cdd18c23992a07b5b5a2a84ef03aa495ee8a3fffcae4e",
+          "bytes": 38580,
+          "distribution": "repository",
+          "phase": "屈肘下放脑后",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_One-Arm_Dumbbell_Triceps_Extension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_One-Arm_Dumbbell_Triceps_Extension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "f456eb2aa60510346a8f874d2afd9354141ab050d957407c3ceb1c762e8c96dc",
+            "89e19634fbeb117e471e924602091bc2b7dfa63574bbec6a196dabb7e6c76930"
           ],
           "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"

@@ -3593,6 +3593,110 @@
         "俯身双铃下垂",
         "单侧拉向胸部"
       ]
+    },
+    {
+      "exerciseId": "exdb:0036",
+      "expectedName": "barbell decline wide-grip press",
+      "sourceId": "Wide-Grip_Decline_Barbell_Bench_Press",
+      "sourceSha256": [
+        "d97fe9458cec3b8817bec6db9f0ab3371fe8bb8eb4c087672ce4512a2a854836",
+        "9bf5931d36f5bb2290cbbb77fc0446449e7f53d36609ecc62ec281b5e65990fa"
+      ],
+      "phases": [
+        "下斜凳宽握伸直",
+        "下放杠铃至下胸"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0194",
+      "expectedName": "cable overhead triceps extension (rope attachment)",
+      "sourceId": "Cable_Rope_Overhead_Triceps_Extension",
+      "sourceSha256": [
+        "206683ce757bedf841689cb8382e0576c81934ca736d3866a034155b518f3e9b",
+        "7f2b439eff6d30be27e06e87b14733ee345bf1ec33ebf8c316e1552f341a06a1"
+      ],
+      "phases": [
+        "绳柄脑后屈肘",
+        "过顶伸臂"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0473",
+      "expectedName": "hanging pike",
+      "sourceId": "Hanging_Pike",
+      "sourceSha256": [
+        "9dc7ba34973204dd18815b02392553c2287197dbf5a46a6034f8ce2c3d9d4fa9",
+        "1b2cfd67c8fd0fcd83a8e66abaa6ff7f300e8216a7cba77cbbdb2ef2aa2e7c9e"
+      ],
+      "phases": [
+        "悬垂屈膝准备",
+        "直腿上举近杠"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1412",
+      "expectedName": "barbell palms up wrist curl over a bench",
+      "sourceId": "Palms-Up_Barbell_Wrist_Curl_Over_A_Bench",
+      "sourceSha256": [
+        "96c17bd05147a27959a5e032b800bcaf64dbd02067a275d281eae8a29e5ff170",
+        "bb636ce2bbd58642518c238e17338d37e0a9c762e8eb6bedcbe9d80555234bfc"
+      ],
+      "phases": [
+        "跪姿前臂贴凳掌心向上",
+        "屈腕上卷"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0089",
+      "expectedName": "barbell seated close-grip concentration curl",
+      "sourceId": "Seated_Close-Grip_Concentration_Barbell_Curl",
+      "sourceSha256": [
+        "2264abc83698f73b0ff58142cd312ab75ba51cf2bf343069cce6386fcb418762",
+        "ab6409b605c95fad987243d5f175175f291509611ca3decd2f3b24727f70b34c"
+      ],
+      "phases": [
+        "坐姿上臂贴大腿内侧下放",
+        "窄握弯举至肩高"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0970",
+      "expectedName": "band assisted pull-up",
+      "sourceId": "Band_Assisted_Pull-Up",
+      "sourceSha256": [
+        "7af060c6c064e6e8a074add38c950dc59f93801ecd54b7d652172bd9800b034d",
+        "edc82e3a48ec624be2b920262d99399d055b96333850579b22fefa7375768a30"
+      ],
+      "phases": [
+        "弹力带辅助悬垂",
+        "下巴过杠"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0490",
+      "expectedName": "incline close-grip push-up",
+      "sourceId": "Incline_Push-Up_Close-Grip",
+      "sourceSha256": [
+        "90adc4846d8f6335b033aa7dd8147c94223ef5f73ab5e0314e7f2397934eed88",
+        "be59e3a0b3da2a47c7192b321ab28dcb61394e0e200c2281a8506c89293e4fc8"
+      ],
+      "phases": [
+        "史密斯杠上窄距撑起",
+        "屈肘胸贴杠"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0423",
+      "expectedName": "dumbbell standing one arm extension",
+      "sourceId": "Standing_One-Arm_Dumbbell_Triceps_Extension",
+      "sourceSha256": [
+        "f456eb2aa60510346a8f874d2afd9354141ab050d957407c3ceb1c762e8c96dc",
+        "89e19634fbeb117e471e924602091bc2b7dfa63574bbec6a196dabb7e6c76930"
+      ],
+      "phases": [
+        "站姿单臂过顶伸直",
+        "屈肘下放脑后"
+      ]
     }
   ],
   "videos": [
@@ -4035,9 +4139,29 @@
     {
       "source": "free-exercise-db Kneeling_Cable_Triceps_Extension → exdb:0176",
       "reason": "照片为背对器械、俯身撑凳的跪姿臂屈伸，条目定义为面向器械跪姿、双手位于头两侧，朝向与支撑不符。"
+    },
+    {
+      "source": "free-exercise-db Power_Clean → exdb:0648",
+      "reason": "两帧仅示下蹲握杠起杠与高拉耸肩，未见前架接杠关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db Push_Up_to_Side_Plank → exdb:0664",
+      "reason": "两帧均为俯卧撑撑起与下放，未见转体侧平板关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db Kettlebell_Seated_Press → exdb:0546",
+      "reason": "照片为地面坐姿单臂壶铃推举，与条目坐凳双臂同时推举定义不符，暂不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Russian_Twist → exdb:0687",
+      "reason": "照片为双脚压片固定、可持片转体，与条目徒手双脚离地定义不符，暂不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Ankle_Circles → exdb:1368",
+      "reason": "照片为站姿单脚离地绕环，与条目坐姿双腿前伸定义不符，暂不替换既有图解。"
     }
   ],
-  "batch": 14,
+  "batch": 15,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",
