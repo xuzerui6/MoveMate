@@ -50,9 +50,41 @@ muscle 参数因此支持逗号分隔多值，任一命中即可。
 浏览图不拿其它背部轮廓冒充，改用图下按钮补位并注明；头发、头部、
 膝部等没有对应目录肌群的区域不可点。
 
+## 情景入口（P2）
+
+知道自己在什么情景、但不知道动作名时的两条捷径，都只拨动已有的
+筛选/数据，不另建列表：
+
+**计划编辑「换同肌群」**：计划编辑器每个动作行有「换同肌群」按钮，
+只替换该行动作，组数、次数、重量、休息与进阶覆盖全部保留。候选从
+动作库按主练肌群现查（`library()` 的 muscle 多值参数 + role=primary，
+再按 target 精确过滤）：同肌群的等价代码集合由
+`client/src/features/gym/swap.ts` 的 `equivalentTargetCodes` 给出，
+与人体图浏览共用同一套区域映射（含背阔肌在 OUTLINELESS_FILTERS 里
+的写法）。候选排序有完整示范素材的在前（`orderSwapCandidates`，
+素材口径与搜索加权一致，看本地 media-index）；反复点按按
+`nextSwapId` 在候选里轮换一圈才重复。没有其他同肌群动作、动作缺
+主练肌群信息或读取失败时，只在该行给出提示，不动任何内容。
+
+**动作库「快捷入口」货架**：搜索框下方三个货架，全部拨动既有筛选
+状态——「我的收藏」即仅收藏开关，「无器械」即器械筛选取
+`body weight`（与器械下拉是同一份状态，互相同步），再点一次取消。
+「最近用过」的数据来自训练记录接口 `/workout-sessions`（按时间
+倒序、每组带动作快照），`client/src/features/gym/recent.ts` 的
+`recentExerciseIds` 现算最近 30 个不重复动作 id，再走动作库已有
+的 `ids` 参数筛选；没有训练记录时只提示，不拨动筛选。
+
+诚实边界：「拉伸」货架没有做——服务端归一化后的类型只有
+strength / cardio / timed，目录里不存在拉伸类别，拿名称关键词
+冒充类别筛选会名不副实，等目录真有拉伸分类再补。
+
 ## 测试
 
 `server/tests/library-search.test.ts`：拼音全拼/首字母、俗称、部位
 通道、跨字段拼接回归、加权、以及 library() 集成排序。
 `client/tests/muscle-browser.test.ts`：区域映射双向一致性、等价代码
 分组、无轮廓肌群的诚实处理、交互区域标签齐全。
+`client/tests/swap.test.ts`：等价肌群代码分组（对全部目录 target
+做自反/对称校验）、候选素材优先排序、轮换取下一个。
+`client/tests/recent-exercises.test.ts`：最近用过 id 的顺序、去重、
+上限与畸形记录容错。

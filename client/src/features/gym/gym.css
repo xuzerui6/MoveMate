@@ -334,6 +334,29 @@
   color: #fff;
   border-color: #008b43;
 }
+.gym-shelves {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  overflow-x: auto;
+  padding: 4px 2px 12px;
+}
+.gym-shelves > span {
+  flex-shrink: 0;
+  color: #5a6b5f;
+}
+.gym-shelf {
+  flex-shrink: 0;
+  border: 1px solid #dde6df;
+  border-radius: 12px;
+  padding: 8px 16px;
+  background: #fff;
+}
+.gym-shelf[aria-pressed="true"] {
+  background: #008b43;
+  color: #fff;
+  border-color: #008b43;
+}
 .gym-weekdays {
   border: 0;
   padding: 12px 0;

@@ -10,6 +10,7 @@ import { MuscleBrowser } from "./MuscleBrowser";
 import { useAuthStore } from "../../stores/authStore";
 import { CachedDataNotice } from "./CachedDataNotice";
 import { FavoriteRequests, mergeExercisePage } from "./libraryState";
+import { recentExerciseIds } from "./recent";
 export function ExerciseLibrary({
   onPick,
 }: {
@@ -42,12 +43,15 @@ export function ExerciseLibrary({
     [region, setRegion] = useState(""),
     [mapOpen, setMapOpen] = useState(!onPick),
     [favoritePending, setFavoritePending] = useState<Set<string>>(new Set()),
-    [favoriteErrors, setFavoriteErrors] = useState<Record<string, {message: string; enabled: boolean}>>({});
+    [favoriteErrors, setFavoriteErrors] = useState<Record<string, {message: string; enabled: boolean}>>({}),
+    [recentIds, setRecentIds] = useState<string[] | null>(null),
+    [recentBusy, setRecentBusy] = useState(false),
+    [recentNote, setRecentNote] = useState("");
   const favorites = useRef(new Map<string, boolean>()), favoriteRequests = useRef(new FavoriteRequests()), mounted = useRef(true);
   const favoriteFilter = useRef(favorite);favoriteFilter.current=favorite;
   const searching=query!==search;
   useEffect(() => {mounted.current=true; return () => {mounted.current=false;};}, []);
-  useEffect(() => {favorites.current.clear();setFavoritePending(new Set());setFavoriteErrors({});setFacets({muscles: [], equipment: []});}, [uid]);
+  useEffect(() => {favorites.current.clear();setFavoritePending(new Set());setFavoriteErrors({});setFacets({muscles: [], equipment: []});setRecentIds(null);setRecentNote("");}, [uid]);
   useEffect(() => {
     const id = setTimeout(() => {
       setSearch(query);
@@ -71,6 +75,7 @@ export function ExerciseLibrary({
     ...(favorite ? { favorite: "1" } : {}),
     ...(cameraOnly ? { camera: "1" } : {}),
     ...(demoFilter !== "all" ? {media:demoFilter} : {}),
+    ...(recentIds ? { ids: recentIds.join(",") } : {}),
   });
   const result = useGymQuery("/exercises?" + params);
   const filters = new URLSearchParams(params); filters.delete("cursor");
@@ -120,6 +125,39 @@ export function ExerciseLibrary({
       filter(setMuscle)(codes.join(","));
     }
   };
+  // 货架只是已有筛选状态的快捷入口：收藏与器械直接拨动同一份状态；
+  // 「最近用过」从训练记录现算动作 id 集合，走动作库已有的 ids 参数，
+  // 不另建一套列表。没有训练记录时只提示，不拨动任何筛选。
+  const toggleFavoriteShelf = () => {
+    setFavorite(!favorite);
+    setCursor(0);
+  };
+  const toggleBodyweightShelf = () =>
+    filter(setEquipment)(equipment === "body weight" ? "" : "body weight");
+  const toggleRecentShelf = async () => {
+    if (recentIds) {
+      setRecentIds(null);
+      setCursor(0);
+      return;
+    }
+    if (recentBusy) return;
+    setRecentBusy(true);
+    setRecentNote("");
+    try {
+      const data = await request("GET", "/workout-sessions");
+      const ids = recentExerciseIds(Array.isArray(data) ? data : []);
+      if (!ids.length)
+        setRecentNote("还没有训练记录，完成一次训练后，这里会显示最近用过的动作。");
+      else {
+        setRecentIds(ids);
+        setCursor(0);
+      }
+    } catch (e) {
+      setRecentNote("最近记录读取失败：" + getErrorMessage(e));
+    } finally {
+      setRecentBusy(false);
+    }
+  };
   const saveCustom = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (readOnly) return;
@@ -156,6 +194,42 @@ export function ExerciseLibrary({
           自定义动作
         </button>
       </div>
+      <div className="gym-shelves" role="group" aria-label="快捷入口">
+        <span>快捷入口</span>
+        <button
+          type="button"
+          className="gym-shelf"
+          aria-pressed={favorite}
+          onClick={toggleFavoriteShelf}
+        >
+          我的收藏
+        </button>
+        <button
+          type="button"
+          className="gym-shelf"
+          aria-pressed={equipment === "body weight"}
+          onClick={toggleBodyweightShelf}
+        >
+          无器械
+        </button>
+        <button
+          type="button"
+          className="gym-shelf"
+          aria-pressed={!!recentIds}
+          disabled={recentBusy}
+          onClick={() => void toggleRecentShelf()}
+        >
+          {recentBusy ? "正在读取记录…" : "最近用过"}
+        </button>
+      </div>
+      {recentNote && (
+        <p className="gym-muted" role="status">
+          {recentNote}
+          <button className="text-btn" onClick={() => setRecentNote("")}>
+            关闭
+          </button>
+        </p>
+      )}
       <details
         className="muscle-browser-details"
         open={mapOpen}

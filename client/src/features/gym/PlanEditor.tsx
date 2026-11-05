@@ -11,6 +11,8 @@ import { writeDraft, removeDraft, validPlanDraft, draftWriteWarning } from "./dr
 import { repUnit } from "./trainingPresentation";
 import { WeightInput } from "./WeightInput";
 import { ExerciseLibrary } from "./Library";
+import { mediaSummaryFor } from "./media";
+import { equivalentTargetCodes, orderSwapCandidates, nextSwapId } from "./swap";
 import { CameraCapability } from "./CameraCapability";
 import {ExerciseDemo} from './ExerciseMedia';
 import { request, useGymQuery, getErrorMessage, download } from "./api";
@@ -40,6 +42,10 @@ function PlanEditorForm() {
     [busy, setBusy] = useState(false),
     [remove, setRemove] = useState(false),
     [proposal, setProposal] = useState<any>(null);
+  const [swapBusy, setSwapBusy] = useState(""),
+    [swapNotes, setSwapNotes] = useState<Record<string, string>>({});
+  const swapCache = useRef(new Map<string, {ids: string[]; names: Record<string, string>}>()),
+    swapLast = useRef(new Map<string, string>());
   const uid = useAuthStore(s => s.user?.id), draftKey = "gym:draft:" + uid + ":" + planId;
   const token=useRef(localStorage.getItem('token')).current;
   const unreadActive=useRef(false), baseline=useRef<any>(null), protectedDraft=useRef<RecoveryDraft|null>(null), restoredArchive=useRef<RecoveryDraft|null>(null);
@@ -133,6 +139,53 @@ function PlanEditorForm() {
     if (!editor.current) return;
     setPlan(editor.current.edit(change));persist(true);
     setMessage(editor.current.busy ? "正在保存提交版本，当前还有未保存修改" : "未保存");
+  };
+  // 换同肌群：只替换这一行的动作，组数、次数、重量、休息和进阶覆盖
+  // 全部保留。候选按等价肌群代码从动作库现查，有完整示范的排前面；
+  // 反复点按在候选里轮换，不会连续换到同一个。
+  const swapExercise = async (entry: any, index: number) => {
+    const rowKey = day + ":" + index,
+      note = (text: string) => setSwapNotes(v => ({...v, [rowKey]: text})),
+      current = map[entry.exerciseId];
+    if (!current?.target) {
+      note("这个动作缺少主练肌群信息，暂时不能换同肌群动作。");
+      return;
+    }
+    const codes = equivalentTargetCodes(current.target),
+      cacheKey = codes.join(",");
+    try {
+      let cached = swapCache.current.get(cacheKey);
+      if (!cached) {
+        setSwapBusy(rowKey);
+        const data = await request(
+          "GET",
+          "/exercises?muscle=" + encodeURIComponent(cacheKey) + "&role=primary&limit=50",
+          undefined,
+          token,
+        );
+        const items = (data?.items || []).filter(
+          (e: any) => codes.includes(e.target) && !e.archived,
+        );
+        cached = {
+          ids: orderSwapCandidates(items, id => !!mediaSummaryFor(id)),
+          names: Object.fromEntries(items.map((e: any) => [e.id, e.nameZh || e.id])),
+        };
+        swapCache.current.set(cacheKey, cached);
+      }
+      const candidates = cached.ids.filter(id => id !== entry.exerciseId),
+        pick = nextSwapId(candidates, swapLast.current.get(rowKey));
+      if (!pick) {
+        note("暂时没有其他同肌群动作可换。");
+        return;
+      }
+      swapLast.current.set(rowKey, pick);
+      edit(p => (p.routines[day].exercises[index].exerciseId = pick));
+      note(`已换成同肌群动作：${cached.names[pick] || pick}（组数、次数和休息保持不变，再点一次继续换）`);
+    } catch (e) {
+      note("换动作失败：" + getErrorMessage(e));
+    } finally {
+      setSwapBusy("");
+    }
   };
   const save = async (next?:any, reviewed=false) => {
     if (writeLock.current || !editor.current || (readOnly && !reviewed)) return;
@@ -348,6 +401,12 @@ function PlanEditorForm() {
                   下移
                 </button>
                 <button
+                  disabled={readOnly || !!swapBusy}
+                  onClick={() => void swapExercise(entry, index)}
+                >
+                  {swapBusy === day + ":" + index ? "正在换…" : "换同肌群"}
+                </button>
+                <button
                   onClick={() =>
                     edit((p) => p.routines[day].exercises.splice(index, 1))
                   }
@@ -356,6 +415,11 @@ function PlanEditorForm() {
                 </button>
               </div>
             </div>
+            {swapNotes[day + ":" + index] && (
+              <p className="gym-muted" role="status">
+                {swapNotes[day + ":" + index]}
+              </p>
+            )}
             <CameraCapability exercise={map[entry.exerciseId]} />
             <ExerciseDemo exercise={map[entry.exerciseId]}/>
             <details>
