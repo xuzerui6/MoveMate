@@ -17587,6 +17587,265 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:0325": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/front_incline_dumbbell_raise-0.987c81fc380c.webp",
+          "sha256": "987c81fc380c2bc06c886e6d5e798c1ec6694849ad69f67916da2bb91d0a3671",
+          "bytes": 45946,
+          "distribution": "repository",
+          "phase": "坐于上斜凳、双铃置于肩高掌心朝前",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/front_incline_dumbbell_raise-1.a6a4586c8b6e.webp",
+          "sha256": "a6a4586c8b6e991b7dc0749b8781b58cdccddfa51c7c5c23f0c0adc4c5dc2a12",
+          "bytes": 46612,
+          "distribution": "repository",
+          "phase": "双臂推铃过顶至伸直",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Front_Incline_Dumbbell_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Front_Incline_Dumbbell_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "41d570e0b87bcded6051f0951d6c5a4c59809c4bea70acfccba79a76d8e3138a",
+            "598658f1fe01f333d412ac178d9ac6fb772088659d41c5b83068d0ebdd6b20eb"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0035": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/decline_close-grip_bench_to_skull_crusher-0.d57382f90760.webp",
+          "sha256": "d57382f90760130199fb5bb22e5f41f62162f0ac53f7d4184f3556f3ad1d3cff",
+          "bytes": 47932,
+          "distribution": "repository",
+          "phase": "仰卧下斜凳、窄握杠铃双臂伸直于胸前上方",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/decline_close-grip_bench_to_skull_crusher-1.90ad7992f078.webp",
+          "sha256": "90ad7992f0789ec1564ce6fef41335db37a08b8da6913ad57a7e4cb16036c632",
+          "bytes": 42448,
+          "distribution": "repository",
+          "phase": "屈肘将杠铃降至前额",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Decline_Close-Grip_Bench_To_Skull_Crusher",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Decline_Close-Grip_Bench_To_Skull_Crusher",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "d721c66df0eb802a73e7bd48260e6e954b122bfe1ce0bd579914bdf8a68da353",
+            "333622627497249bbb2638fe3f3f2564b98109d757862ef27c5539f85b01b0a0"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:3645": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/single_leg_glute_bridge-0.5a2364babf68.webp",
+          "sha256": "5a2364babf68f7d09fb3cb4bbf4f758cd661c54db0ad3628616061e43b5e01aa",
+          "bytes": 49206,
+          "distribution": "repository",
+          "phase": "仰卧、一腿伸直抬起、另一脚平放地面",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/single_leg_glute_bridge-1.dedab36f84f6.webp",
+          "sha256": "dedab36f84f62476ad96ad7db3e51e7740b52b73346bad36ac093b0a09e325ab",
+          "bytes": 50076,
+          "distribution": "repository",
+          "phase": "收紧臀部抬髋至膝肩成直线",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Single_Leg_Glute_Bridge",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Single_Leg_Glute_Bridge",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "12c9bb37081512ce5c013f02e986a00153411681ca36a9f1dbeab720c6eea667",
+            "bc3a789ff17aa09758e6f6e9594d369b83989cf145dbbce0734b772dfde81ee3"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0052": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/jm_press-0.9b5c3826d314.webp",
+          "sha256": "9b5c3826d31456ccb69c4a264a36202b3aa50157236996f22c6937315ddf3c2f",
+          "bytes": 54378,
+          "distribution": "repository",
+          "phase": "仰卧平凳、正手握杠双臂伸直于胸前上方",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/jm_press-1.68cb02646999.webp",
+          "sha256": "68cb026469992650fbdb109c989092a9947c6be519cdb0fd9d4c4b883ee7a2df",
+          "bytes": 54658,
+          "distribution": "repository",
+          "phase": "屈肘将杠铃降至下巴/胸部上方、肘贴身",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / JM_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/JM_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "68efb38bccbf26b45fd668d70e072dfddfe234237e061d8bfc45d239bfe4d3f7",
+            "37b0381df797e1f1fbe3ef8f1e69ae96752ea6b09b605045a81890d417a2e814"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0114": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/barbell_step_ups-0.835b7fe52af3.webp",
+          "sha256": "835b7fe52af3fc6a6cd8777409665a3a4e7557417668b0231c5868111fca7825",
+          "bytes": 53450,
+          "distribution": "repository",
+          "phase": "杠铃置于上背、一脚踏上平台",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/barbell_step_ups-1.fe0948e54116.webp",
+          "sha256": "fe0948e541165b7bc14eda97b178f0c6477c53f4dbee5d985d5a327d0ce734c3",
+          "bytes": 46270,
+          "distribution": "repository",
+          "phase": "蹬地站上平台、另一腿随之抬起",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Barbell_Step_Ups",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Barbell_Step_Ups",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "aea3ae14b4b6d5c24d12db9750d1d3be11f210c0b53c29ca339044c4974d3f36",
+            "630057ccd90a8e7b8fd59b29d52fcf1338f361e520da8eb97aae915c96374ffc"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0165": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/cable_hammer_curls_-_rope_attachment-0.1e720906b141.webp",
+          "sha256": "1e720906b14151c411f488d80f630b60eaaab5c7fb6c21ffcc07a2a495b8b54e",
+          "bytes": 60998,
+          "distribution": "repository",
+          "phase": "站立、双手握绳柄、手臂伸直下垂",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/cable_hammer_curls_-_rope_attachment-1.d8f1c2345405.webp",
+          "sha256": "d8f1c23454053ae0cb1b24d3119bf647532f8840e742a896de318207c65de845",
+          "bytes": 62386,
+          "distribution": "repository",
+          "phase": "屈肘将绳柄弯举至肩部、掌心相对",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Hammer_Curls_-_Rope_Attachment",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Hammer_Curls_-_Rope_Attachment",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "109ca8df56a461172bd57dcfd1816bad744efdc624bfc567d2de83de9c9aff29",
+            "314dceefe8a5a37d8824b069a1340a215ee5248fee3c9db11a3bb3a93dfaaa0c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0179": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/low_cable_crossover-0.0052df352c18.webp",
+          "sha256": "0052df352c18ff8713d3d862b820e6bd2d301ef13ed0e63503ddeacfeeff2a37",
+          "bytes": 29152,
+          "distribution": "repository",
+          "phase": "站于绳索机中、双手握低位手柄向两侧伸展",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/low_cable_crossover-1.4d393e35ad28.webp",
+          "sha256": "4d393e35ad28b02746ce8862c942f6315a3f603e930451367337b90fe7e79421",
+          "bytes": 30288,
+          "distribution": "repository",
+          "phase": "双臂向前扫动、在身前交叉合拢",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Low_Cable_Crossover",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Low_Cable_Crossover",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "275181283b0ae4ce334326c9485a98b3e381170e5478b2c6dc67e70466a59a1e",
+            "64b4848cc2f8b4d66b90774a3ad22623b515a94497d0dca6a4c1e1f16895038b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }

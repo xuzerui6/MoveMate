@@ -2792,22 +2792,37 @@
     {
       "id": "exdb:0035",
       "originalName": "barbell decline close grip to skull press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文只有额前臂屈伸，没有窄握卧推与额前推组合关系，具体握法和终点仍需核对。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：仰卧下斜凳（头低于脚）、窄握杠铃、屈肘降杠至前额清晰，与条目定义一致。第二十九批看图合格结转，本批复核后采用。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "bf87a8333f942606c53b3e4e15067fc10df7bc5c732c6eaff6427f8b23da1664",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Decline_Close-Grip_Bench_To_Skull_Crusher",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Decline_Close-Grip_Bench_To_Skull_Crusher",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "d721c66df0eb802a73e7bd48260e6e954b122bfe1ce0bd579914bdf8a68da353",
+            "333622627497249bbb2638fe3f3f2564b98109d757862ef27c5539f85b01b0a0"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1255",
@@ -3585,22 +3600,37 @@
     {
       "id": "exdb:0052",
       "originalName": "barbell jm bench press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文只有普通屈肘卧推到胸部，没有JM推特定肘部和杠路，不能用卧推图替代。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：仰卧平凳、正手握杠、屈肘降杠至下巴/上胸、肘贴身清晰，JM 推的斜向杠路与肘部形态与名称一致（名称为准；目录正文普通卧推的写法已按照片的 JM 杠路改写）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "8af6d7c89ea788690e77ed79efe4fbf66f78b87983728386eb6c1408317807bc",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / JM_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/JM_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "68efb38bccbf26b45fd668d70e072dfddfe234237e061d8bfc45d239bfe4d3f7",
+            "37b0381df797e1f1fbe3ef8f1e69ae96752ea6b09b605045a81890d417a2e814"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0053",
@@ -5975,22 +6005,37 @@
     {
       "id": "exdb:0114",
       "originalName": "barbell step-up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：候选顶端包含额外抬膝，原文只描述普通踏上平台，尚缺一致形式。 当前不发布此候选，不计完整覆盖。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：杠铃置于上背、一脚踏上平台、蹬地站上平台清晰，与条目定义一致；顶部位另一腿随之抬起为踏步完成的自然形态，非额外抬膝动作。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "b10e16739b8d0f8936c1f9ff1d4619f6f42c46800aaf3c7569abcedd0f791fbc",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Barbell_Step_Ups",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Barbell_Step_Ups",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "aea3ae14b4b6d5c24d12db9750d1d3be11f210c0b53c29ca339044c4974d3f36",
+            "630057ccd90a8e7b8fd59b29d52fcf1338f361e520da8eb97aae915c96374ffc"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0115",
@@ -7762,22 +7807,37 @@
     {
       "id": "exdb:0165",
       "originalName": "cable hammer curl (with rope)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：中立握绳柄弯举明确，中途误称哑铃且滑轮未注明，需确认低位固定及握柄。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站姿、双手掌心相对握低位绳柄、手臂伸直下垂、屈肘弯举至肩部清晰，与条目定义一致；照片中为绳索附件（目录正文误称哑铃处已按绳索改写）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "57f023eb68a844d291f23890a1f451d4d7bd3d73db3e1d149386429f33222034",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Hammer_Curls_-_Rope_Attachment",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Hammer_Curls_-_Rope_Attachment",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "109ca8df56a461172bd57dcfd1816bad744efdc624bfc567d2de83de9c9aff29",
+            "314dceefe8a5a37d8824b069a1340a215ee5248fee3c9db11a3bb3a93dfaaa0c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1722",
@@ -8287,22 +8347,37 @@
     {
       "id": "exdb:0179",
       "originalName": "cable low fly",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：低滑轮、双手前合明确，但合拢高度和交叉范围需专用示范，不用胸高索夹胸图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：低滑轮手柄、站姿、手臂向两侧伸展、向前交叉合拢清晰，与条目定义一致；非胸高索夹胸图。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "e3e851d45148644b1945622e35a7949763f14573da54347ac1687020f755f9b0",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Low_Cable_Crossover",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Low_Cable_Crossover",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "275181283b0ae4ce334326c9485a98b3e381170e5478b2c6dc67e70466a59a1e",
+            "64b4848cc2f8b4d66b90774a3ad22623b515a94497d0dca6a4c1e1f16895038b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0180",
@@ -14131,22 +14206,37 @@
     {
       "id": "exdb:0325",
       "originalName": "dumbbell incline raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：名称raise，正文屈肘肩高向上推，可能与上斜肩举混淆，不按字面画直臂前举。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐于上斜凳、双铃置于肩高掌心朝前、推铃过顶至伸直清晰，与目录步骤的上斜推举形式一致；名称 raise、正文为推举步骤，按照片与目录步骤为准，不画直臂前举。第二十九批看图合格结转，本批复核后采用。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "24eb61078aa5893b2439546c0e059a9dcdec0623d6af780a32164329febf0799",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Front_Incline_Dumbbell_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Front_Incline_Dumbbell_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "41d570e0b87bcded6051f0951d6c5a4c59809c4bea70acfccba79a76d8e3138a",
+            "598658f1fe01f333d412ac178d9ac6fb772088659d41c5b83068d0ebdd6b20eb"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0326",
@@ -29560,22 +29650,37 @@
     {
       "id": "exdb:3645",
       "originalName": "single leg bridge with outstretched leg",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源明确一腿伸直抬离地面、另一脚支撑抬髋；需核对肩、支撑脚和直腿的阶段，不用双脚臀桥图代替。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：仰卧、一腿伸直抬起、支撑脚平放地面、抬髋至膝肩成直线清晰，与条目定义一致；非双脚臀桥图。第二十九批看图合格结转，本批复核后采用。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "d7173e063be02b2ecd1375c2f435c6b81f34123475604d0e5b416e2a8dfd19af",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Single_Leg_Glute_Bridge",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Single_Leg_Glute_Bridge",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "12c9bb37081512ce5c013f02e986a00153411681ca36a9f1dbeab720c6eea667",
+            "bc3a789ff17aa09758e6f6e9594d369b83989cf145dbbce0734b772dfde81ee3"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0727",

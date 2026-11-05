@@ -5049,6 +5049,97 @@
         "站立、双铃正握垂于大腿前",
         "肘引导将双铃沿体前上提至下巴高度"
       ]
+    },
+    {
+      "exerciseId": "exdb:0325",
+      "expectedName": "dumbbell incline raise",
+      "sourceId": "Front_Incline_Dumbbell_Raise",
+      "sourceSha256": [
+        "41d570e0b87bcded6051f0951d6c5a4c59809c4bea70acfccba79a76d8e3138a",
+        "598658f1fe01f333d412ac178d9ac6fb772088659d41c5b83068d0ebdd6b20eb"
+      ],
+      "phases": [
+        "坐于上斜凳、双铃置于肩高掌心朝前",
+        "双臂推铃过顶至伸直"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0035",
+      "expectedName": "barbell decline close grip to skull press",
+      "sourceId": "Decline_Close-Grip_Bench_To_Skull_Crusher",
+      "sourceSha256": [
+        "d721c66df0eb802a73e7bd48260e6e954b122bfe1ce0bd579914bdf8a68da353",
+        "333622627497249bbb2638fe3f3f2564b98109d757862ef27c5539f85b01b0a0"
+      ],
+      "phases": [
+        "仰卧下斜凳、窄握杠铃双臂伸直于胸前上方",
+        "屈肘将杠铃降至前额"
+      ]
+    },
+    {
+      "exerciseId": "exdb:3645",
+      "expectedName": "single leg bridge with outstretched leg",
+      "sourceId": "Single_Leg_Glute_Bridge",
+      "sourceSha256": [
+        "12c9bb37081512ce5c013f02e986a00153411681ca36a9f1dbeab720c6eea667",
+        "bc3a789ff17aa09758e6f6e9594d369b83989cf145dbbce0734b772dfde81ee3"
+      ],
+      "phases": [
+        "仰卧、一腿伸直抬起、另一脚平放地面",
+        "收紧臀部抬髋至膝肩成直线"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0052",
+      "expectedName": "barbell jm bench press",
+      "sourceId": "JM_Press",
+      "sourceSha256": [
+        "68efb38bccbf26b45fd668d70e072dfddfe234237e061d8bfc45d239bfe4d3f7",
+        "37b0381df797e1f1fbe3ef8f1e69ae96752ea6b09b605045a81890d417a2e814"
+      ],
+      "phases": [
+        "仰卧平凳、正手握杠双臂伸直于胸前上方",
+        "屈肘将杠铃降至下巴/胸部上方、肘贴身"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0114",
+      "expectedName": "barbell step-up",
+      "sourceId": "Barbell_Step_Ups",
+      "sourceSha256": [
+        "aea3ae14b4b6d5c24d12db9750d1d3be11f210c0b53c29ca339044c4974d3f36",
+        "630057ccd90a8e7b8fd59b29d52fcf1338f361e520da8eb97aae915c96374ffc"
+      ],
+      "phases": [
+        "杠铃置于上背、一脚踏上平台",
+        "蹬地站上平台、另一腿随之抬起"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0165",
+      "expectedName": "cable hammer curl (with rope)",
+      "sourceId": "Cable_Hammer_Curls_-_Rope_Attachment",
+      "sourceSha256": [
+        "109ca8df56a461172bd57dcfd1816bad744efdc624bfc567d2de83de9c9aff29",
+        "314dceefe8a5a37d8824b069a1340a215ee5248fee3c9db11a3bb3a93dfaaa0c"
+      ],
+      "phases": [
+        "站立、双手握绳柄、手臂伸直下垂",
+        "屈肘将绳柄弯举至肩部、掌心相对"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0179",
+      "expectedName": "cable low fly",
+      "sourceId": "Low_Cable_Crossover",
+      "sourceSha256": [
+        "275181283b0ae4ce334326c9485a98b3e381170e5478b2c6dc67e70466a59a1e",
+        "64b4848cc2f8b4d66b90774a3ad22623b515a94497d0dca6a4c1e1f16895038b"
+      ],
+      "phases": [
+        "站于绳索机中、双手握低位手柄向两侧伸展",
+        "双臂向前扫动、在身前交叉合拢"
+      ]
     }
   ],
   "videos": [
@@ -5823,9 +5914,37 @@
     {
       "source": "free-exercise-db Calf_Raise_On_A_Dumbbell → exdb:1379",
       "reason": "照片为站姿双脚踩于横置哑铃上提踵，条目定义为坐姿（坐凳、哑铃置于大腿上、脚掌踩抬高面），体位不符，不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Seated_Cable_Shoulder_Press → exdb:2144",
+      "reason": "照片为坐姿绳索肩推（手柄置于肩高、向上推过头顶），条目定义为坐姿绳索胸推（向前推离身体）；推举方向不符。"
+    },
+    {
+      "source": "free-exercise-db Alternate_Incline_Dumbbell_Curl → exdb:3545",
+      "reason": "照片为上斜凳交替弯举（一臂屈肘至胸前、另一臂下垂），条目定义为上斜交替推举；弯举与推举动作不符。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Dumbbell_Row → exdb:3888",
+      "reason": "照片为单臂俯身划船（俯身撑凳、单手拉铃至躯干），条目定义为单臂抓举（爆发伸髋、翻铃过顶）；划船与抓举动作不符。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Kettlebell_Clean → exdb:0542",
+      "reason": "照片为单臂壶铃翻举准备与铰链下放（站立持铃、俯身降铃至两腿之间），未见过顶抓举锁定；条目定义为单臂抓举（翻铃过顶、手臂伸直），关键阶段缺失。"
+    },
+    {
+      "source": "free-exercise-db Single_Dumbbell_Raise → exdb:0727",
+      "reason": "照片为双手共握一只哑铃上举过顶，条目定义为单腿提踵（一手持铃、一脚离地、脚跟抬高）；上举与提踵动作不符。"
+    },
+    {
+      "source": "free-exercise-db Clock_Push-Up → exdb:3294",
+      "reason": "照片为双手前后交错的普通俯卧撑（一起一伏），未见一臂向侧伸直、与地面平行的弓箭手形态；条目定义为弓箭手俯卧撑，关键形态缺失。"
+    },
+    {
+      "source": "free-exercise-db Barbell_Shoulder_Press → exdb:0028",
+      "reason": "照片为坐姿杠铃肩推（杠铃置于肩上、推过头顶），条目定义为杠铃翻举加推举（杠铃自地面翻举至肩再推举）；无地面翻举阶段，体位与动作构成不符。"
     }
   ],
-  "batch": 29,
+  "batch": 30,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",
