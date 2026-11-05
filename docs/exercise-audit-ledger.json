@@ -5760,22 +5760,37 @@
     {
       "id": "exdb:0111",
       "originalName": "barbell standing rocking leg calf raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题rocking，正文只有抬跟回落，缺脚尖抬起/前后摇摆阶段，不能用普通提踵图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：杠铃置于上背、脚跟抬离地面至最高清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "7ce85e071b5ac45c61206d05163eb31aedc1b843da29b8a1d788814e5925101b",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Rocking_Standing_Calf_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Rocking_Standing_Calf_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "b6530a1a4e02e782f94a100c8312a6b6c13939d0b525d5e8bda75954722c5105",
+            "0570bc1b3f526530cfcd634143ec36a3c997d3f5bc51a144236586e770156f8c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0112",
@@ -8332,22 +8347,37 @@
     {
       "id": "exdb:0186",
       "originalName": "cable lying triceps extension v. 2",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：低索绳柄中立握降前额明确，但版本2与其他条目区别没有独立说明。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：仰卧平凳头朝绳索机、双手握绳柄屈肘降至前额与伸直回位清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "5a3fcbed0ccc70740944ffe8343a909a04efbe741e5d150ae6bb6878d81bbd17",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Lying_Triceps_Extension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Lying_Triceps_Extension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "bf82e48128aa4897bb94a763e92b697e7e01ca8c8f5044e27fe36930d01ceaba",
+            "f59fe17e1e872d16afa634f7434bd6039287f2d220f0ef758f993faede245631"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0188",
@@ -9047,22 +9077,37 @@
     {
       "id": "exdb:0203",
       "originalName": "cable rear delt row (with rope)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：低索俯身拉胸明确，但要求肘仅微屈且缺高肘外展，反向飞鸟与划船区别待核对。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：面向绳索机站立、双手握绳柄前伸与屈肘拉向胸部挤压肩胛清晰，与条目定义一致；目录「低滑轮」写法已按照片的肩高绳索位改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "96b8c48bae08e2620a567c33243efe17546e763a2dfe9e9414a018773cdc878e",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Rope_Rear-Delt_Rows",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Rope_Rear-Delt_Rows",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "2454cb406b2e4688817fb0ad31898207d4333906bd298840569493e3583a9a14",
+            "065f66fac634fea62b16551b4b0528f3940fb8ee5c255fde13ee4342e2cea457"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0204",
@@ -9907,22 +9952,37 @@
     {
       "id": "exdb:0221",
       "originalName": "cable side bend crunch (bosu ball)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题BOSU，全文普通站姿单手侧屈，没有半球支撑或摆放。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：BOSU 球上坐姿后仰、双手握低位绳索手柄、向一侧屈体清晰，与条目名称「cable side bend crunch (bosu ball)」一致；目录「站姿单手握柄」写法已按照片的 BOSU 坐姿双手握柄改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "7dd8cad21c4a786f1c7b886a1a8d722f2959a687713bacb6a9d671063490cd16",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Bosu_Ball_Cable_Crunch_With_Side_Bends",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Bosu_Ball_Cable_Crunch_With_Side_Bends",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "da798b4eeee27e0b90c038e0e7ced78fc92b1ec112cd687b69d24f217d6f16d4",
+            "d0dc722667c64e7ff9f5ffa492aa8067a7faca97c7ed6134f8f71fc1ae59db4f"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0223",
@@ -11213,22 +11273,37 @@
     {
       "id": "exdb:0257",
       "originalName": "circles knee stretch",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源要求抬脚跟后旋转双膝，但没有说明踝、髋及足部承重关系；不据此制作通用绕膝教学图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站姿双手扶髋、微屈膝与膝盖环绕转动位清晰，与条目定义一致；目录「双脚分开与肩同宽、脚跟抬离地面」写法已按照片的双脚并拢站姿改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "50e61d8af20624e39de2c3c14be5938c79cf7d841f0c20bc3e24f789f1a9fba5",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Knee_Circles",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Knee_Circles",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "4452f9c7ef1cc6b0214442669adf3c9180cd254aa4f485e93311039f9554a6ab",
+            "4ed8beb2e67f27db334a1a3e8ca175e68616734e94623cfde7b19f1ee3d1dabb"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1273",
@@ -21216,22 +21291,37 @@
     {
       "id": "exdb:0467",
       "originalName": "gorilla chin",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称和腹部目标暗示引体与收腹组合，文字却只有正握引体，没有抬膝过程；组合形式无法确认。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：悬垂双臂伸直与屈膝收腹拉至下巴过杠清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "359486912ff586b375de230998032513829a10217db3612472f8c2e81be07032",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Gorilla_Chin_Crunch",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Gorilla_Chin_Crunch",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "2899b1c786a775e610f104143c6fd213b5101e237a3242cfa12ba3cb9a86f6b0",
+            "3ea588671d504f58d0418203f98b1caede804bb03e73a81f44f1b40685a159bb"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0469",
@@ -22657,22 +22747,37 @@
     {
       "id": "exdb:0518",
       "originalName": "kettlebell alternating hang clean",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤、支撑和器械：正文有双手同时翻举与随后交替的冲突，翻腕架式属复杂爆发转换，需逐阶段示范确认。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：双手各握壶铃悬垂于体侧、单侧爆发翻举至架铃位清晰，与条目定义一致，另一侧为镜像交替；本批所用 Alternating_Hang_Clean 为与 exdb:0526 所用照片组不同的独立实拍组，不重复采用。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "342aaeb73be5754af17b399590e2e8b4bc692d88f98d8cd25110b4b6e1aa305b",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Alternating_Hang_Clean",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Alternating_Hang_Clean",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "a6b8fd0f296e54d5881ea5378f45924d71cb423209aee5dfc5da71a72fdd3692",
+            "e848401c59114f3df150b1a6644050551f31449adbac2bc1de9f78b7692f369c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0520",
@@ -22837,22 +22942,37 @@
     {
       "id": "exdb:0524",
       "originalName": "kettlebell bent press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤、支撑和器械：正文先锁肘过顶再压低躯干，更接近风车流程；需核对真正侧屈推举与风车差异，不用相近复杂动作替代。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：单手架铃与躯干侧屈下压、持铃臂锁定过顶清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "e73bbb20b6dc94c1f40c7dfd0d63aa37d80582452476c71d0b3884a8813b1c5f",
-        "steps": 8
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Bent_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Bent_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "f2bd3540c35f63e5cacae3ac4d0dc63c05ac9b2db86b18ddd8596dacac7b2684",
+            "3d578b1f133a889b046f2b412521145168ad4ef79e49ef200233dbb266f71875"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0525",

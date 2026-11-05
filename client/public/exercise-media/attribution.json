@@ -16618,6 +16618,302 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:0518": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/alternating_hang_clean-0.93da63ebedee.webp",
+          "sha256": "93da63ebedeec28a3e64b00f8b101fe39c7220ce87f6bdf0daaccfb134ca007f",
+          "bytes": 31544,
+          "distribution": "repository",
+          "phase": "双手各握壶铃悬垂于体侧、双臂伸直",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/alternating_hang_clean-1.dd3e2380d914.webp",
+          "sha256": "dd3e2380d9141b044168302aacb934c1757c51d6b864124625499e03397a6dbe",
+          "bytes": 30996,
+          "distribution": "repository",
+          "phase": "单侧爆发翻举至架铃位，另一侧镜像交替",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Alternating_Hang_Clean",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Alternating_Hang_Clean",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "a6b8fd0f296e54d5881ea5378f45924d71cb423209aee5dfc5da71a72fdd3692",
+            "e848401c59114f3df150b1a6644050551f31449adbac2bc1de9f78b7692f369c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0221": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/bosu_ball_cable_crunch_with_side_bends-0.d8c1864b0777.webp",
+          "sha256": "d8c1864b077751db6e3bd05d91406aee6250e2eb54c8b64a4c7f8730303c8f5a",
+          "bytes": 59584,
+          "distribution": "repository",
+          "phase": "坐于 BOSU 球上、双手握低位绳索手柄、身体后仰",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/bosu_ball_cable_crunch_with_side_bends-1.aeffa75fd0e5.webp",
+          "sha256": "aeffa75fd0e500b56935135e15faf0d173ed76b5e77505afdd9b1c992430ebf9",
+          "bytes": 59800,
+          "distribution": "repository",
+          "phase": "收腹向一侧屈体后回正，换侧交替",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Bosu_Ball_Cable_Crunch_With_Side_Bends",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Bosu_Ball_Cable_Crunch_With_Side_Bends",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "da798b4eeee27e0b90c038e0e7ced78fc92b1ec112cd687b69d24f217d6f16d4",
+            "d0dc722667c64e7ff9f5ffa492aa8067a7faca97c7ed6134f8f71fc1ae59db4f"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0111": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/rocking_standing_calf_raise-0.d5b4fe7c7126.webp",
+          "sha256": "d5b4fe7c7126d30a9828664132fbf71be647a4c218771584deb88be54c8f6e54",
+          "bytes": 48232,
+          "distribution": "repository",
+          "phase": "杠铃置于上背、双脚平放站立",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/rocking_standing_calf_raise-1.706f890cc820.webp",
+          "sha256": "706f890cc82027dfdf531fd88fdc2bd220e59a72bbe073a5d5e7bb962fb52dd4",
+          "bytes": 48694,
+          "distribution": "repository",
+          "phase": "脚跟抬离地面至最高点后缓慢放回",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Rocking_Standing_Calf_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Rocking_Standing_Calf_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "b6530a1a4e02e782f94a100c8312a6b6c13939d0b525d5e8bda75954722c5105",
+            "0570bc1b3f526530cfcd634143ec36a3c997d3f5bc51a144236586e770156f8c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0186": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/cable_lying_triceps_extension-0.dd407e1fb523.webp",
+          "sha256": "dd407e1fb52385d671598bd0e5bf546f0957a986d9e72535ae6d784ecc716597",
+          "bytes": 56122,
+          "distribution": "repository",
+          "phase": "仰卧平凳、头朝绳索机，双手握绳柄臂伸直于胸前",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/cable_lying_triceps_extension-1.19afba0cab2f.webp",
+          "sha256": "19afba0cab2f719c73494b2da89747a7f7ed912866ec62baf416672367075f1d",
+          "bytes": 55318,
+          "distribution": "repository",
+          "phase": "屈肘将绳柄降至前额后伸直回位",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Lying_Triceps_Extension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Lying_Triceps_Extension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "bf82e48128aa4897bb94a763e92b697e7e01ca8c8f5044e27fe36930d01ceaba",
+            "f59fe17e1e872d16afa634f7434bd6039287f2d220f0ef758f993faede245631"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0203": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/cable_rope_rear-delt_rows-0.b5a675a39744.webp",
+          "sha256": "b5a675a3974497db9e8b2fa268c57af6e17db922b1cb83d50577f4349b4d1416",
+          "bytes": 78370,
+          "distribution": "repository",
+          "phase": "面向绳索机站立、双手握绳柄向前伸直",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/cable_rope_rear-delt_rows-1.c22f39319636.webp",
+          "sha256": "c22f39319636df692f5bdd2d5472f9e566f3cc72664bfd9be91970881344f66b",
+          "bytes": 78112,
+          "distribution": "repository",
+          "phase": "屈肘将绳柄拉向胸部、挤压肩胛",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Rope_Rear-Delt_Rows",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Rope_Rear-Delt_Rows",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "2454cb406b2e4688817fb0ad31898207d4333906bd298840569493e3583a9a14",
+            "065f66fac634fea62b16551b4b0528f3940fb8ee5c255fde13ee4342e2cea457"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0257": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/knee_circles-0.b306a39ba815.webp",
+          "sha256": "b306a39ba81585fc95932c92106d240b428cc4a9c6701fc4be44a81c0b3f8521",
+          "bytes": 37756,
+          "distribution": "repository",
+          "phase": "站姿双手扶髋、微屈膝站立",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/knee_circles-1.2944e0cf26e4.webp",
+          "sha256": "2944e0cf26e4e8f5fda2e76af952a7deb52a422c6220f74f8e083ec65280169e",
+          "bytes": 38442,
+          "distribution": "repository",
+          "phase": "膝盖顺时针与逆时针环绕转动",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Knee_Circles",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Knee_Circles",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "4452f9c7ef1cc6b0214442669adf3c9180cd254aa4f485e93311039f9554a6ab",
+            "4ed8beb2e67f27db334a1a3e8ca175e68616734e94623cfde7b19f1ee3d1dabb"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0467": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/gorilla_chin_crunch-0.cb85373f1dfa.webp",
+          "sha256": "cb85373f1dfa54061bd1452c503f47a90697c426d0ac4a3e2e4737c9f1995f36",
+          "bytes": 27194,
+          "distribution": "repository",
+          "phase": "正手握杠悬垂、双臂伸直、屈膝收腹",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/gorilla_chin_crunch-1.93f2d0b79432.webp",
+          "sha256": "93f2d0b79432dc12fb80c0aec38344df23399a5560b98bbe375849fbd278aa91",
+          "bytes": 23454,
+          "distribution": "repository",
+          "phase": "将身体拉至下巴过杠后缓慢放回",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Gorilla_Chin_Crunch",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Gorilla_Chin_Crunch",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "2899b1c786a775e610f104143c6fd213b5101e237a3242cfa12ba3cb9a86f6b0",
+            "3ea588671d504f58d0418203f98b1caede804bb03e73a81f44f1b40685a159bb"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0524": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/bent_press-0.85335b866982.webp",
+          "sha256": "85335b8669825c20df4105fd740b2903f2cf2ad2a9276c7c516cdaee98fd0804",
+          "bytes": 29886,
+          "distribution": "repository",
+          "phase": "单手握壶铃置于肩部架铃位、肘锁定",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/bent_press-1.efa0c9d65abd.webp",
+          "sha256": "efa0c9d65abda843be74adb707b32c694e6b45a34dca31fce3152acfeb6c2fd5",
+          "bytes": 31888,
+          "distribution": "repository",
+          "phase": "躯干侧屈下压、持铃臂锁定过顶、另一手触地",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Bent_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Bent_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "f2bd3540c35f63e5cacae3ac4d0dc63c05ac9b2db86b18ddd8596dacac7b2684",
+            "3d578b1f133a889b046f2b412521145168ad4ef79e49ef200233dbb266f71875"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }

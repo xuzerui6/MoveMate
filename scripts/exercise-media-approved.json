@@ -4659,6 +4659,110 @@
         "面向绳索机站立、单手握柄屈肘于胸前",
         "伸肘将手柄下压至手臂伸直"
       ]
+    },
+    {
+      "exerciseId": "exdb:0518",
+      "expectedName": "kettlebell alternating hang clean",
+      "sourceId": "Alternating_Hang_Clean",
+      "sourceSha256": [
+        "a6b8fd0f296e54d5881ea5378f45924d71cb423209aee5dfc5da71a72fdd3692",
+        "e848401c59114f3df150b1a6644050551f31449adbac2bc1de9f78b7692f369c"
+      ],
+      "phases": [
+        "双手各握壶铃悬垂于体侧、双臂伸直",
+        "单侧爆发翻举至架铃位，另一侧镜像交替"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0221",
+      "expectedName": "cable side bend crunch (bosu ball)",
+      "sourceId": "Bosu_Ball_Cable_Crunch_With_Side_Bends",
+      "sourceSha256": [
+        "da798b4eeee27e0b90c038e0e7ced78fc92b1ec112cd687b69d24f217d6f16d4",
+        "d0dc722667c64e7ff9f5ffa492aa8067a7faca97c7ed6134f8f71fc1ae59db4f"
+      ],
+      "phases": [
+        "坐于 BOSU 球上、双手握低位绳索手柄、身体后仰",
+        "收腹向一侧屈体后回正，换侧交替"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0111",
+      "expectedName": "barbell standing rocking leg calf raise",
+      "sourceId": "Rocking_Standing_Calf_Raise",
+      "sourceSha256": [
+        "b6530a1a4e02e782f94a100c8312a6b6c13939d0b525d5e8bda75954722c5105",
+        "0570bc1b3f526530cfcd634143ec36a3c997d3f5bc51a144236586e770156f8c"
+      ],
+      "phases": [
+        "杠铃置于上背、双脚平放站立",
+        "脚跟抬离地面至最高点后缓慢放回"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0186",
+      "expectedName": "cable lying triceps extension v. 2",
+      "sourceId": "Cable_Lying_Triceps_Extension",
+      "sourceSha256": [
+        "bf82e48128aa4897bb94a763e92b697e7e01ca8c8f5044e27fe36930d01ceaba",
+        "f59fe17e1e872d16afa634f7434bd6039287f2d220f0ef758f993faede245631"
+      ],
+      "phases": [
+        "仰卧平凳、头朝绳索机，双手握绳柄臂伸直于胸前",
+        "屈肘将绳柄降至前额后伸直回位"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0203",
+      "expectedName": "cable rear delt row (with rope)",
+      "sourceId": "Cable_Rope_Rear-Delt_Rows",
+      "sourceSha256": [
+        "2454cb406b2e4688817fb0ad31898207d4333906bd298840569493e3583a9a14",
+        "065f66fac634fea62b16551b4b0528f3940fb8ee5c255fde13ee4342e2cea457"
+      ],
+      "phases": [
+        "面向绳索机站立、双手握绳柄向前伸直",
+        "屈肘将绳柄拉向胸部、挤压肩胛"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0257",
+      "expectedName": "circles knee stretch",
+      "sourceId": "Knee_Circles",
+      "sourceSha256": [
+        "4452f9c7ef1cc6b0214442669adf3c9180cd254aa4f485e93311039f9554a6ab",
+        "4ed8beb2e67f27db334a1a3e8ca175e68616734e94623cfde7b19f1ee3d1dabb"
+      ],
+      "phases": [
+        "站姿双手扶髋、微屈膝站立",
+        "膝盖顺时针与逆时针环绕转动"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0467",
+      "expectedName": "gorilla chin",
+      "sourceId": "Gorilla_Chin_Crunch",
+      "sourceSha256": [
+        "2899b1c786a775e610f104143c6fd213b5101e237a3242cfa12ba3cb9a86f6b0",
+        "3ea588671d504f58d0418203f98b1caede804bb03e73a81f44f1b40685a159bb"
+      ],
+      "phases": [
+        "正手握杠悬垂、双臂伸直、屈膝收腹",
+        "将身体拉至下巴过杠后缓慢放回"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0524",
+      "expectedName": "kettlebell bent press",
+      "sourceId": "Bent_Press",
+      "sourceSha256": [
+        "f2bd3540c35f63e5cacae3ac4d0dc63c05ac9b2db86b18ddd8596dacac7b2684",
+        "3d578b1f133a889b046f2b412521145168ad4ef79e49ef200233dbb266f71875"
+      ],
+      "phases": [
+        "单手握壶铃置于肩部架铃位、肘锁定",
+        "躯干侧屈下压、持铃臂锁定过顶、另一手触地"
+      ]
     }
   ],
   "videos": [
@@ -5349,9 +5453,33 @@
     {
       "source": "free-exercise-db One_Arm_Pronated_Dumbbell_Triceps_Extension → exdb:0362",
       "reason": "照片为仰卧凳上单臂臂屈伸，条目为坐姿凳上过顶臂屈伸，体位不符（与第十七批 Dumbbell_One-Arm_Triceps_Extension 驳回同理）。"
+    },
+    {
+      "source": "free-exercise-db Clean_and_Press → exdb:0028",
+      "reason": "两帧为地面起杠与提拉至髋部，未见推举过顶锁定阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db Cuban_Press → exdb:0299",
+      "reason": "两帧为直立划船位与外旋 90 度位，未见推举过顶、手臂完全伸展阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db One_Arm_Dumbbell_Bench_Press → exdb:1285",
+      "reason": "照片为单臂卧推（屈肘下放至胸侧后伸臂推起），条目定义为单臂飞鸟（宽弧线向一侧放低），动作形式不符。"
+    },
+    {
+      "source": "free-exercise-db Kneeling_Squat → exdb:1420",
+      "reason": "两帧均为跪姿地面深蹲（髋部下坐回位），未见跳跃离地关键阶段，与「jump squat」定义不符。"
+    },
+    {
+      "source": "free-exercise-db Front_Raise_And_Pullover → exdb:0041",
+      "reason": "照片为仰卧平凳杠铃上拉，条目为站姿杠铃前平举，体位与动作形式均不符，不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Straight-Arm_Dumbbell_Pullover → exdb:0375",
+      "reason": "照片为肩部横卧凳面、髋部悬空的上拉姿势，条目定义为头与躯干沿凳面支撑的纵卧姿势，支撑形式不符，不替换既有图解。"
     }
   ],
-  "batch": 25,
+  "batch": 26,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",
