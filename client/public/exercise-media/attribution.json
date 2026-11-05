@@ -11042,53 +11042,6 @@
         }
       ]
     },
-    "exdb:0660": {
-      "kind": "illustration",
-      "note": "地面两只稳固哑铃分别支撑双手、双脚着地，窄距屈肘下降后推起；侧面简化投影不表示实际握距。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0660-0.108ebf84efc0.webp",
-          "bytes": 5986,
-          "sha256": "108ebf84efc0729b0d3683dd2742c28fbc2cb35182c1e4d9aa771ac7c2cf258e",
-          "phase": "分别握稳两只哑铃",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0660-1.b1e313024a63.webp",
-          "bytes": 6004,
-          "sha256": "b1e313024a638f5310bf1bf58b1f86815be744e2746605b56e0bae1c4e83991c",
-          "phase": "屈肘受控下降",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0660-2.108ebf84efc0.webp",
-          "bytes": 5986,
-          "sha256": "108ebf84efc0729b0d3683dd2742c28fbc2cb35182c1e4d9aa771ac7c2cf258e",
-          "phase": "伸肘推起",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0660",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "f930644c71f19d0d2b193278bddf6d675b37ea814416a3b1c1ca4bf926502e91",
-            "1aa74e8086a45b179a8080a8263ba0367bd2cab824aab39958a3f666276e8152",
-            "3982dfebb2fa5c90bdbf892c9260b0bd1507ea76fdfee41ff098d752d0a8b34b"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
     "exdb:0354": {
       "kind": "illustration",
       "note": "双脚站立屈髋俯身，一手持铃、另一手可轻扶大腿，工作侧上臂靠近体侧。 原创静态三阶段示意，不是连续视频。",
@@ -15263,6 +15216,302 @@
           "sourceSha256": [
             "94b39835fb4abce2fcfe85887e370349e2653ab045ebbc9ed9153587f17d0ab8",
             "dcb6abf9cce948b9f4a423ef2f5f2d34b16d0f02665f687d902e6449da828b56"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0530": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/double_kettlebell_windmill-0.6723b0a639fb.webp",
+          "sha256": "6723b0a639fb9f68672a72d12a3dc2746d64fcbbd940ef6a95822e8c85ad7af4",
+          "bytes": 29604,
+          "distribution": "repository",
+          "phase": "双铃站立一臂过顶",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/double_kettlebell_windmill-1.084778c0a628.webp",
+          "sha256": "084778c0a628f8c542dc0b2b86f778b5bf02e6ec0676c7ed0675bba92cd84628",
+          "bytes": 32158,
+          "distribution": "repository",
+          "phase": "侧屈风车下探至低位",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Double_Kettlebell_Windmill",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Double_Kettlebell_Windmill",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "6ef3099f2c3d747793dda27f051afd0029e07310761998d4125b02ea0aba205f",
+            "b01a644e007b22307b5b366da7efd82d5216e491cc6a3e3f8f3f78055c562648"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0517": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/advanced_kettlebell_windmill-0.8dd07b3f8b5c.webp",
+          "sha256": "8dd07b3f8b5c4930774b9be1e5dbe55a116cd849b1422a773d99e47115bd6848",
+          "bytes": 31950,
+          "distribution": "repository",
+          "phase": "单臂持铃过顶站立",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/advanced_kettlebell_windmill-1.8f34d15fbbb3.webp",
+          "sha256": "8f34d15fbbb3a861abe362f0a4bb97379cdf328679eb9ecf42237a593492dfbc",
+          "bytes": 31556,
+          "distribution": "repository",
+          "phase": "屈膝侧屈风车下探",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Advanced_Kettlebell_Windmill",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Advanced_Kettlebell_Windmill",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "b758e272b8efc42023caaf8bcf3f3b152959cd4f5cb8cfa1a7fe0f43c08af1f7",
+            "d47c85720839098d247f1225ba77f4175ee43dd6e8a209a3d165129f8fe5982b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0531": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/extended_range_one-arm_kettlebell_floor_press-0.371594f19d73.webp",
+          "sha256": "371594f19d737b4eb68a37f260613c27d92057d8b44d4eeb1258dda2a451a89a",
+          "bytes": 30360,
+          "distribution": "repository",
+          "phase": "仰卧地面持铃屈肘",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/extended_range_one-arm_kettlebell_floor_press-1.ef12ce3c0bfe.webp",
+          "sha256": "ef12ce3c0bfe1adebbe33e3fa681857f025472e94f78084c8233f9ef833fe610",
+          "bytes": 31180,
+          "distribution": "repository",
+          "phase": "伸臂推举至锁定",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Extended_Range_One-Arm_Kettlebell_Floor_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Extended_Range_One-Arm_Kettlebell_Floor_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "0675bee781dd3e786445bff7218d86414d6ad8fa6b13808c82f0b37bd41d7b2c",
+            "777e119a544e9fdac273304f0f19a27f1fdc891fbb1f3f88bc6247a2a7e0ad9c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0777": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/spell_caster-0.28ef0d135c80.webp",
+          "sha256": "28ef0d135c80a96d78f490551e35f253c7b78012ef6bcae8e1ab8fdebd1aff16",
+          "bytes": 37646,
+          "distribution": "repository",
+          "phase": "单手持铃向对侧下伸",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/spell_caster-1.eaca32911569.webp",
+          "sha256": "eaca3291156936f7c4bab40f1e912cbd3c2286cc378fd86095aa7fd8fd47ddd7",
+          "bytes": 36580,
+          "distribution": "repository",
+          "phase": "转体摆铃至另一侧",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Spell_Caster",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Spell_Caster",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "4babd464029b28fa84c15664391b63bd9ff4efd3bfd730ff5fdae68016476c0f",
+            "6abd6bdd3bc69439a9760543f1c2159a4863756915a4f2057018e0f66f96d770"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0807": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/suspended_reverse_crunch-0.bb813d0449a1.webp",
+          "sha256": "bb813d0449a1335076824c9dd3b3669e66cc4a1572ada4cd912babab0ed93b49",
+          "bytes": 53030,
+          "distribution": "repository",
+          "phase": "双脚悬吊平板支撑",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/suspended_reverse_crunch-1.0fcd8d45e217.webp",
+          "sha256": "0fcd8d45e217469e97a3683d547a6d6fd02d8d2bde81f59e95a953ac3e97efce",
+          "bytes": 56772,
+          "distribution": "repository",
+          "phase": "屈膝收腹卷骨盆",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Suspended_Reverse_Crunch",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Suspended_Reverse_Crunch",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "da2ba0190e8bf44c94ef57a4d5cdfca540bd25951ea39bff4dc3d5436dfaadb2",
+            "440937ed547491fc05eb138eb60a79938eab97b322d73d3e5ccb3d56ab489887"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:3193": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/glute_ham_raise-0.c371be71582c.webp",
+          "sha256": "c371be71582c5b07768ab7634f462d021dbb7014ec5aefb33386148599aebbf7",
+          "bytes": 34550,
+          "distribution": "repository",
+          "phase": "俯身器械低位",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/glute_ham_raise-1.eac1d3cec88d.webp",
+          "sha256": "eac1d3cec88d9a22999a0cb85476a0ae77d3d93b4db86955686f98f75d44461e",
+          "bytes": 29494,
+          "distribution": "repository",
+          "phase": "发力抬体至直线",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Glute_Ham_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Glute_Ham_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "0056f7c5fcfd9bf11b8a2da697b735bdf4dc5ded66cf1edd929e62fa52a939f4",
+            "5e4add29994c8664b8675f17233e289ddcf11fe12e8d53cd449af1f4a501e859"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0628": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/monster_walk-0.1d112fc0c354.webp",
+          "sha256": "1d112fc0c354a45336a10921e32af270ccda293847215c8d8a9db2858f646b38",
+          "bytes": 31236,
+          "distribution": "repository",
+          "phase": "脚踝套带微屈膝站立",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/monster_walk-1.27ef588d562a.webp",
+          "sha256": "27ef588d562a165650d351a477ba594f2b8b0f90b475a8d26dc3eec410128ed1",
+          "bytes": 31592,
+          "distribution": "repository",
+          "phase": "侧向迈步保持张力",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Monster_Walk",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Monster_Walk",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "678270397cff6264520bb9da3d382d5636aecc47846ffddc1a0b47bcaabbebdb",
+            "0f9bcb3068cfb76d38fca224be11577243cd8217d66b5bc30efa4c6456ce0135"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0660": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/close-grip_push-up_off_of_a_dumbbell-0.a3f191833622.webp",
+          "sha256": "a3f19183362224dd85bf0a578b6d0b3ec3fbaa6c85eb49a376f9aee98363da83",
+          "bytes": 36414,
+          "distribution": "repository",
+          "phase": "双手握铃平板支撑",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/close-grip_push-up_off_of_a_dumbbell-1.a832173a3c03.webp",
+          "sha256": "a832173a3c03824a34db73a9951193341a9f7793409ba4dd2b814523c1549692",
+          "bytes": 32766,
+          "distribution": "repository",
+          "phase": "屈肘身体贴近铃面",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Close-Grip_Push-Up_off_of_a_Dumbbell",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Close-Grip_Push-Up_off_of_a_Dumbbell",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "7910420f04a24759707c5b8fcc592db7b6897d25bce0a4d8894bcc959c80222d",
+            "25c5341d9ffb08c81054a6333f79eb7f68ec34dac72238fc9d985f000ed175ef"
           ],
           "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"

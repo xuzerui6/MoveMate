@@ -3944,6 +3944,110 @@
         "后脚置环中站立",
         "屈膝下蹲至弓步"
       ]
+    },
+    {
+      "exerciseId": "exdb:0530",
+      "expectedName": "kettlebell double windmill",
+      "sourceId": "Double_Kettlebell_Windmill",
+      "sourceSha256": [
+        "6ef3099f2c3d747793dda27f051afd0029e07310761998d4125b02ea0aba205f",
+        "b01a644e007b22307b5b366da7efd82d5216e491cc6a3e3f8f3f78055c562648"
+      ],
+      "phases": [
+        "双铃站立一臂过顶",
+        "侧屈风车下探至低位"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0517",
+      "expectedName": "kettlebell advanced windmill",
+      "sourceId": "Advanced_Kettlebell_Windmill",
+      "sourceSha256": [
+        "b758e272b8efc42023caaf8bcf3f3b152959cd4f5cb8cfa1a7fe0f43c08af1f7",
+        "d47c85720839098d247f1225ba77f4175ee43dd6e8a209a3d165129f8fe5982b"
+      ],
+      "phases": [
+        "单臂持铃过顶站立",
+        "屈膝侧屈风车下探"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0531",
+      "expectedName": "kettlebell extended range one arm press on floor",
+      "sourceId": "Extended_Range_One-Arm_Kettlebell_Floor_Press",
+      "sourceSha256": [
+        "0675bee781dd3e786445bff7218d86414d6ad8fa6b13808c82f0b37bd41d7b2c",
+        "777e119a544e9fdac273304f0f19a27f1fdc891fbb1f3f88bc6247a2a7e0ad9c"
+      ],
+      "phases": [
+        "仰卧地面持铃屈肘",
+        "伸臂推举至锁定"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0777",
+      "expectedName": "spell caster",
+      "sourceId": "Spell_Caster",
+      "sourceSha256": [
+        "4babd464029b28fa84c15664391b63bd9ff4efd3bfd730ff5fdae68016476c0f",
+        "6abd6bdd3bc69439a9760543f1c2159a4863756915a4f2057018e0f66f96d770"
+      ],
+      "phases": [
+        "单手持铃向对侧下伸",
+        "转体摆铃至另一侧"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0807",
+      "expectedName": "suspended reverse crunch",
+      "sourceId": "Suspended_Reverse_Crunch",
+      "sourceSha256": [
+        "da2ba0190e8bf44c94ef57a4d5cdfca540bd25951ea39bff4dc3d5436dfaadb2",
+        "440937ed547491fc05eb138eb60a79938eab97b322d73d3e5ccb3d56ab489887"
+      ],
+      "phases": [
+        "双脚悬吊平板支撑",
+        "屈膝收腹卷骨盆"
+      ]
+    },
+    {
+      "exerciseId": "exdb:3193",
+      "expectedName": "glute-ham raise",
+      "sourceId": "Glute_Ham_Raise",
+      "sourceSha256": [
+        "0056f7c5fcfd9bf11b8a2da697b735bdf4dc5ded66cf1edd929e62fa52a939f4",
+        "5e4add29994c8664b8675f17233e289ddcf11fe12e8d53cd449af1f4a501e859"
+      ],
+      "phases": [
+        "俯身器械低位",
+        "发力抬体至直线"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0628",
+      "expectedName": "monster walk",
+      "sourceId": "Monster_Walk",
+      "sourceSha256": [
+        "678270397cff6264520bb9da3d382d5636aecc47846ffddc1a0b47bcaabbebdb",
+        "0f9bcb3068cfb76d38fca224be11577243cd8217d66b5bc30efa4c6456ce0135"
+      ],
+      "phases": [
+        "脚踝套带微屈膝站立",
+        "侧向迈步保持张力"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0660",
+      "expectedName": "push-up close-grip off dumbbell",
+      "sourceId": "Close-Grip_Push-Up_off_of_a_Dumbbell",
+      "sourceSha256": [
+        "7910420f04a24759707c5b8fcc592db7b6897d25bce0a4d8894bcc959c80222d",
+        "25c5341d9ffb08c81054a6333f79eb7f68ec34dac72238fc9d985f000ed175ef"
+      ],
+      "phases": [
+        "双手握铃平板支撑",
+        "屈肘身体贴近铃面"
+      ]
     }
   ],
   "videos": [
@@ -4494,9 +4598,33 @@
     {
       "source": "free-exercise-db Double_Kettlebell_Jerk → exdb:0527",
       "reason": "两帧均为双铃架肩站姿与微蹲，未见挺举过顶锁定与分腿关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db Double_Kettlebell_Snatch → exdb:0529",
+      "reason": "两帧仅为双铃站立与腿间屈髋低位，未见双铃过顶锁定关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Kettlebell_Clean_and_Jerk → exdb:0537",
+      "reason": "两帧为腿间摆铃与架肩，翻举完成但未见挺举过顶锁定关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Kettlebell_Jerk → exdb:0538",
+      "reason": "两帧均为架肩站姿与下蹲预蹲，未见过顶锁定关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db Kettlebell_Turkish_Get-Up_Squat_style → exdb:0551",
+      "reason": "两帧为仰卧与坐起过渡，未见深蹲式起身（跪姿经深蹲站起）关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db Squat_Jerk → exdb:0786",
+      "reason": "两帧为杠铃架肩站姿与下蹲预蹲，未见过顶推举与分腿关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db Bottoms-Up_Clean_From_The_Hang_Position → exdb:0525",
+      "reason": "两帧均为悬垂低位，未见底部朝上架肩关键位，不采用。"
     }
   ],
-  "batch": 18,
+  "batch": 19,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",

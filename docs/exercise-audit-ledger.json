@@ -20937,22 +20937,37 @@
     {
       "id": "exdb:3193",
       "originalName": "glute-ham raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：臀腿器械支点与屈膝、伸髋过程未完全核对。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：俯卧器械低位与抬体至直线关键位，与臀腿挺身定义一致。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "f5a33afd637b96fb8d1adefb3c4880f1996a6fe38ca3902d2c9e92ce357d67fe",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Glute_Ham_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Glute_Ham_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "0056f7c5fcfd9bf11b8a2da697b735bdf4dc5ded66cf1edd929e62fa52a939f4",
+            "5e4add29994c8664b8675f17233e289ddcf11fe12e8d53cd449af1f4a501e859"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0467",
@@ -22351,22 +22366,37 @@
     {
       "id": "exdb:0517",
       "originalName": "kettlebell advanced windmill",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源左右脚和持铃臂指向的文字矛盾，复杂风车形式尚未核清。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：单臂过顶站立与屈膝侧屈下探关键位，与进阶风车定义一致；目录原左右指向矛盾写法已按照片改写。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "95e504c7f13def6602d197c08c5dd0895640758153fe3744c2c47141f83d25b8",
-        "steps": 9
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Advanced_Kettlebell_Windmill",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Advanced_Kettlebell_Windmill",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "b758e272b8efc42023caaf8bcf3f3b152959cd4f5cb8cfa1a7fe0f43c08af1f7",
+            "d47c85720839098d247f1225ba77f4175ee43dd6e8a209a3d165129f8fe5982b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0518",
@@ -22656,42 +22686,72 @@
     {
       "id": "exdb:0530",
       "originalName": "kettlebell double windmill",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：名称双壶铃，来源只说明一个壶铃，候选却有一高一低两只，器械数量矛盾。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：双手各握一铃、一臂过顶侧屈下探，与「双壶铃风车」名称定义一致；目录原单铃写法已按照片的双铃形式改写。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "e86f24c33982dbd9c43747d67feb2e0001d0d714bffd9b75ea71300ae96169ee",
-        "steps": 7
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Double_Kettlebell_Windmill",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Double_Kettlebell_Windmill",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "6ef3099f2c3d747793dda27f051afd0029e07310761998d4125b02ea0aba205f",
+            "b01a644e007b22307b5b366da7efd82d5216e491cc6a3e3f8f3f78055c562648"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0531",
       "originalName": "kettlebell extended range one arm press on floor",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤、支撑和器械：标题加大幅度，步骤仅普通仰卧地板推，缺少桥式/转体或额外幅度方式，保留独立待核对。",
+      "reason": "真人实拍双帧对照：仰卧地面单臂由屈肘位推至锁定，与加大幅度单臂地板推举定义一致。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "898e8494cc45514f9b054534a5df0cf9555bab5ed83c41b90c37bb894cc74ecc",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Extended_Range_One-Arm_Kettlebell_Floor_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Extended_Range_One-Arm_Kettlebell_Floor_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "0675bee781dd3e786445bff7218d86414d6ad8fa6b13808c82f0b37bd41d7b2c",
+            "777e119a544e9fdac273304f0f19a27f1fdc891fbb1f3f88bc6247a2a7e0ad9c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0532",
@@ -25762,22 +25822,37 @@
     {
       "id": "exdb:0628",
       "originalName": "monster walk",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：器械分类为徒手，但文字与图片使用弹力带。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：脚踝套带侧向迈步，与怪兽行走定义一致；照片所示弹力带形式已写入步骤。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "07822d915a414ed2d4206c65161935f2227109aa2aef7dc32551f8f6ed3cffd8",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Monster_Walk",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Monster_Walk",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "678270397cff6264520bb9da3d382d5636aecc47846ffddc1a0b47bcaabbebdb",
+            "0f9bcb3068cfb76d38fca224be11577243cd8217d66b5bc30efa4c6456ce0135"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0630",
@@ -26975,7 +27050,7 @@
       "originalName": "push-up close-grip off dumbbell",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "2026-10-29：源说明与显式原创配置逐项对照，已对照本地渲染逐帧检查。原创静态示意，非真人实拍或专业教学认证。",
+      "reason": "真人实拍双帧替换既有原创图解：双手分别握稳地面两只哑铃窄距支撑、屈肘下降后推起，与条目定义一致；图解文件已删除。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -26984,24 +27059,23 @@
         "sourceRecordSha256": "22ae2f720248b8c233ea908c9bfa40199cc35abc0cea8db9e5a2418c4a316bf9",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0660",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Close-Grip_Push-Up_off_of_a_Dumbbell",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Close-Grip_Push-Up_off_of_a_Dumbbell",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "f930644c71f19d0d2b193278bddf6d675b37ea814416a3b1c1ca4bf926502e91",
-            "1aa74e8086a45b179a8080a8263ba0367bd2cab824aab39958a3f666276e8152",
-            "3982dfebb2fa5c90bdbf892c9260b0bd1507ea76fdfee41ff098d752d0a8b34b"
+            "7910420f04a24759707c5b8fcc592db7b6897d25bce0a4d8894bcc959c80222d",
+            "25c5341d9ffb08c81054a6333f79eb7f68ec34dac72238fc9d985f000ed175ef"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -30236,22 +30310,37 @@
     {
       "id": "exdb:0777",
       "originalName": "spell caster",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源一只手持哑铃，图片为双手各持铃，动作变式不清。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：单手持铃向对侧下伸与转体摆铃至另一侧，与施法者摆动定义一致，并注明交替与镜像。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "212318eb425d23b28ab063663ae7f56b9df9f5915b904b436e65b0471991e739",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Spell_Caster",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Spell_Caster",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "4babd464029b28fa84c15664391b63bd9ff4efd3bfd730ff5fdae68016476c0f",
+            "6abd6bdd3bc69439a9760543f1c2159a4863756915a4f2057018e0f66f96d770"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1362",
@@ -31008,22 +31097,37 @@
     {
       "id": "exdb:0807",
       "originalName": "suspended reverse crunch",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源单杠悬垂卷腹，图片为脚托悬吊俯卧收膝。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：双脚悬吊带中平板支撑与屈膝收腹关键位，与「悬吊反向卷腹」名称定义一致；目录原单杠悬垂写法已按照片的悬吊带形式改写。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "50bbfd8f4c3d8424588ec6d9f6b00178a1cd9c0701ab5b757ab32744f06fde57",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Suspended_Reverse_Crunch",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Suspended_Reverse_Crunch",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "da2ba0190e8bf44c94ef57a4d5cdfca540bd25951ea39bff4dc3d5436dfaadb2",
+            "440937ed547491fc05eb138eb60a79938eab97b322d73d3e5ccb3d56ab489887"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0808",

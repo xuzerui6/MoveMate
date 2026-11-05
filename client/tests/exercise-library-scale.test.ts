@@ -186,5 +186,12 @@ test('independent references correct specific source errors, retain licenses and
   assert.ok(exercises.find(e=>e.id==='exdb:0436')!.form!.includes('平凳仰卧'));
   assert.equal(mediaFor('exdb:0332')!.kind,'illustration','The squat-and-raise photo must not replace this source’s standing lateral raise');
   assert.equal(mediaFor('exdb:0433')!.kind,'illustration','Cross-bench shoulder support must not replace this source’s full-length bench support');
-  assert.equal(diagrams.entries['exdb:0660'].props.filter(p=>typeof p==='object'&&p.type==='dumbbell').length,2,'Two separate dumbbells must not be replaced by the upright single-dumbbell photo');
+  // Batch 19 replaced the 0660 illustration with a verified real photo: two separate
+  // dumbbells on the ground (not one upright dumbbell), so the two-dumbbell guard now
+  // checks the photo record instead of the deleted illustration entry.
+  assert.equal(diagrams.entries['exdb:0660'],undefined,'Batch 19 removed the 0660 illustration when the real photo replaced it');
+  assert.equal(mediaFor('exdb:0660')!.images.length,2);
+  assert.equal(mediaFor('exdb:0660')!.sources[0].name,'free-exercise-db / Close-Grip_Push-Up_off_of_a_Dumbbell');
+  assert.ok(exercises.find(e=>e.id==='exdb:0660')!.form!.includes('分别'));
+  assert.ok(exercises.find(e=>e.id==='exdb:0660')!.form!.includes('两只'));
 });
