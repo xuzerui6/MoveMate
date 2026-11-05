@@ -4282,33 +4282,32 @@
       "originalName": "barbell preacher curl",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐姿牧师凳、上臂置垫、反手握杠与屈肘弯举至肩部清晰，与条目定义一致；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "83975ff1277cdcd340183ed1f768d218b55c6d35c691a6762d2e8471a7ec7e14",
-        "steps": 4
+        "steps": 5
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0070",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Preacher_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Preacher_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "5a336af068ea12e3299b572fc05324dd8a75bb58e5a3c258a19e24afa24e43da",
-            "a1a00be136246cd1f1aa62ccea9ae79cae9198e81ff5acfc30d7bc97193c6cca",
-            "d14ac626bce73c78d072125eef7a098625db408fa43915b7c4e1a7d0baef39e6"
+            "b727674d48727a3bbba6a682fdaa228284ecc1875a2cd8b262bde2ac38cef0f4",
+            "487fa4636df3e55b50161b391cfb683211f3d7a278bfe16d272f395daf2faa37"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -6179,33 +6178,32 @@
       "originalName": "barbell wide squat",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：宽站距正视可辨、杠置上背与下蹲至大腿平行清晰，站距为本式与高杠深蹲的区别；原图解已删除，目录文字与照片一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "691c5e25090ab1cced59ffe27f8043f2a9036705bbc56b3ceddd3fc727cc61a2",
-        "steps": 4
+        "steps": 5
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0124",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Wide_Stance_Barbell_Squat",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Wide_Stance_Barbell_Squat",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "e57eea273ae5415616c5ce5b7c7e9befa1a407ec1272186231fd9dd897f7ab68",
-            "2225d9d1794ee27ed927f591bb0acbe7c2bca54e64878688bcac2df3b544eef7",
-            "6a735a644ccee91a1f12365e1d0c6a74b2415313d0e50c56b6f1a949b5a32c94"
+            "8bb7beb603ed22f3aad27a46b5742998aea652fd029a825446e9fe460f0fcc19",
+            "29c32813b5fdd6939cb79dd24b9c2cc4da77f835dac758b6d04197fc1a0289cd"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -18515,29 +18513,44 @@
     {
       "id": "exdb:0418",
       "originalName": "dumbbell standing concentration curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：单手中立握、空手扶腿可辨，但持铃上臂固定点、俯身程度及旋掌是否发生未明确。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站姿俯身、单手持铃下垂掌心朝内、另一手扶腿与屈肘弯举哑铃至肩部清晰，与条目定义一致。本批为第二十三批已核对合格的结转项，复核后采用。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "5aaa70bff3d97588aa941ed5a138290e8bbe8376c9a23130940e5cf76fafa8df",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Concentration_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Concentration_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "e36a9772967ea38bbeda6d3ff18bc521ff9717dd6fee349fd6a1780953dec56e",
+            "9a36741c8b2727a4f4586504a066c8d466f4bf7acd3b62ab77e85c08932e92c4"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0419",
       "originalName": "dumbbell standing front raise above head",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站姿双手持铃垂于体侧正握与双臂伸直前举过头顶清晰，与条目定义一致；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -18546,26 +18559,23 @@
         "sourceRecordSha256": "f3b173cd472b6d2ecd9c1b5a3622047f7bee46f40e60c1d2f37da661d372c469",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0419",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Standing_Dumbbell_Straight-Arm_Front_Delt_Raise_Above_Head",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Dumbbell_Straight-Arm_Front_Delt_Raise_Above_Head",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "a2d9ab6a5084e53499518bacf0ae88edb82e5817cd4d52500cfee3917f213033",
-            "9ec56e4eefa8c84ceb453fd2c443fcb358b24e0698226b9cbba0dac8806b5a39",
-            "c0abe09854de88acc99b1d350cb89dcfb70f9c09f1f38a9c0a81743557759b5a",
-            "2d8bf6018a5ee968fb9108499b53629dd708c26ffd8bd33a41b372fe92d0f14d",
-            "e29feba93fcf250615186de76398e06c5393617b44ac20b47540245725b7198d"
+            "798ef47de58d634f83d4e1ef37a550446924f1edca0f819da761ec3d0eb20188",
+            "4fd440d2343ad1a28ea401698cd65ee93953bb29f8908f4b38f542e046d0747c"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -21939,7 +21949,7 @@
       "originalName": "incline push-up (on box)",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项核对来源步骤与原创分阶段线稿，支撑、左右及回位分别展示；非实拍和专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：双手撑高架横杠略宽于肩、身体成一直线与屈肘降胸清晰；支撑为史密斯架横杠，属条目「高架表面」，与盒子支撑等效；原图解已删除，目录「盒子」写法已按照片的高架横杠改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -21948,24 +21958,23 @@
         "sourceRecordSha256": "6618ae138eaf35c0325d80eb6a012a363887ecf30071f926ea5aa1a2b1bca850",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:3785",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Incline_Push-Up_Medium",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Incline_Push-Up_Medium",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "64a81a52dfa93dc62d381b2872d88deb84bb4abcac4b038b9e855c9c3a5a0254",
-            "e4b4600b8603d1213d8b6d8ebc93923bb5985b37095b77ce6fa486c968a49cd9",
-            "276ac7c5facfd61dfef8fb611614db37d1df12c2df74daf35b626b5a8574b47f"
+            "37d5df4d88379ffed999fe9a96e763d0812aa7d3dc396b7bcf85025fcb62cc01",
+            "9b23bd609e255e8966d661dafb06fa464cda00c1190aef4823fd40a5929f7ab2"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -22501,34 +22510,32 @@
       "originalName": "jump squat",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：徒手深蹲双臂胸前交叉与爆发跳起双脚离地清晰，与条目定义一致；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "3bb45d36746632fb15ac59713b6e04d00310e69e2d127cac50e40be9fbff4283",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0514",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Freehand_Jump_Squat",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Freehand_Jump_Squat",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "1b7f8a056a70b2fe987e933ef1982d9862cea0a6adb5004522980c15f235fbdf",
-            "841298c3ec53d8938572763032ebaac60d2114396e88f751a199d6602bcd1daf",
-            "63fc5d577d6d9914093e74003f1a2fa3dad19ec033b57e70f2ff3b785f0493ac",
-            "b6a2b6f05e975b76f7fc0c9c7b480987ce4d6c0e28773079dad427b448eba514"
+            "6efb2bc42ce6554aa70b8b4e1643e41d539342117ac1ad39327790eedd2f87ed",
+            "269e6d3308ead7b95a1b0c8ce102ce1bd892507e680740bde3b38bf20949ae97"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -22681,22 +22688,37 @@
     {
       "id": "exdb:0521",
       "originalName": "kettlebell alternating renegade row",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤、支撑和器械：双手撑壶铃、左右交替划船清楚，但壶铃底部稳定支撑及抗旋转需要准确三维分解，暂不套普通划船图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：高平板支撑双手撑壶铃与单侧划船至胸部清晰，交替形式已在文字中注明、另一侧为镜像，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "c50c1bb71f7132d14bd0c67ca9bf1bd6b9b1a529715790036a9386d0057fbd42",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Alternating_Renegade_Row",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Alternating_Renegade_Row",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "a85127300a8dcb1d926437e2d30180bdc283bc31b3d18f420f57283e35e694fc",
+            "3c18e0bd11d4ac3cd601bec55a589ad6114278e569ea048dc07b7162036a649e"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0522",
@@ -33094,22 +33116,37 @@
     {
       "id": "exdb:1311",
       "originalName": "wide hand push up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源明确双手宽于肩，现有普通俯卧撑示范没有固定可对照的宽手距说明；需明确宽距手位图，不按相近视频复用。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：高平板支撑、双手分开明显宽于肩与屈肘降胸清晰，宽手距为本式与普通俯卧撑的区别，已放大手部位置核对。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a9b5a2392825dc5531d07a971c5297ba0225dede6d5973e6382442a9222c9de3",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Push-Up_Wide",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Push-Up_Wide",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "94f027d2a6aa5de82866d3c2a1519cc564bc168810c652632a2ac9ae20ff39a8",
+            "19eef3f2315e5013eed2934297f3943cdcbb020d69b42a983b4b09d68a13fe07"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2363",

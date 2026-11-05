@@ -4464,6 +4464,110 @@
         "坐姿哑铃掌心向上置于单腿大腿",
         "脚掌蹬地抬起脚跟"
       ]
+    },
+    {
+      "exerciseId": "exdb:0418",
+      "expectedName": "dumbbell standing concentration curl",
+      "sourceId": "Standing_Concentration_Curl",
+      "sourceSha256": [
+        "e36a9772967ea38bbeda6d3ff18bc521ff9717dd6fee349fd6a1780953dec56e",
+        "9a36741c8b2727a4f4586504a066c8d466f4bf7acd3b62ab77e85c08932e92c4"
+      ],
+      "phases": [
+        "站姿俯身单手持铃下垂、另一手扶腿",
+        "屈肘弯举哑铃至肩部"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0124",
+      "expectedName": "barbell wide squat",
+      "sourceId": "Wide_Stance_Barbell_Squat",
+      "sourceSha256": [
+        "8bb7beb603ed22f3aad27a46b5742998aea652fd029a825446e9fe460f0fcc19",
+        "29c32813b5fdd6939cb79dd24b9c2cc4da77f835dac758b6d04197fc1a0289cd"
+      ],
+      "phases": [
+        "宽站距背杠站立、脚趾微向外",
+        "屈髋屈膝下蹲至大腿平行"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0070",
+      "expectedName": "barbell preacher curl",
+      "sourceId": "Preacher_Curl",
+      "sourceSha256": [
+        "b727674d48727a3bbba6a682fdaa228284ecc1875a2cd8b262bde2ac38cef0f4",
+        "487fa4636df3e55b50161b391cfb683211f3d7a278bfe16d272f395daf2faa37"
+      ],
+      "phases": [
+        "坐姿牧师凳上臂置垫、反手握杠下垂",
+        "屈肘弯举杠铃至肩部"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0419",
+      "expectedName": "dumbbell standing front raise above head",
+      "sourceId": "Standing_Dumbbell_Straight-Arm_Front_Delt_Raise_Above_Head",
+      "sourceSha256": [
+        "798ef47de58d634f83d4e1ef37a550446924f1edca0f819da761ec3d0eb20188",
+        "4fd440d2343ad1a28ea401698cd65ee93953bb29f8908f4b38f542e046d0747c"
+      ],
+      "phases": [
+        "站姿双手持铃垂于体侧",
+        "双臂伸直前举过头顶"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0514",
+      "expectedName": "jump squat",
+      "sourceId": "Freehand_Jump_Squat",
+      "sourceSha256": [
+        "6efb2bc42ce6554aa70b8b4e1643e41d539342117ac1ad39327790eedd2f87ed",
+        "269e6d3308ead7b95a1b0c8ce102ce1bd892507e680740bde3b38bf20949ae97"
+      ],
+      "phases": [
+        "徒手深蹲、双臂胸前交叉",
+        "爆发跳起、双脚离地"
+      ]
+    },
+    {
+      "exerciseId": "exdb:3785",
+      "expectedName": "incline push-up (on box)",
+      "sourceId": "Incline_Push-Up_Medium",
+      "sourceSha256": [
+        "37d5df4d88379ffed999fe9a96e763d0812aa7d3dc396b7bcf85025fcb62cc01",
+        "9b23bd609e255e8966d661dafb06fa464cda00c1190aef4823fd40a5929f7ab2"
+      ],
+      "phases": [
+        "双手撑高架横杠、身体成一直线",
+        "屈肘将胸部降向横杠"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0521",
+      "expectedName": "kettlebell alternating renegade row",
+      "sourceId": "Alternating_Renegade_Row",
+      "sourceSha256": [
+        "a85127300a8dcb1d926437e2d30180bdc283bc31b3d18f420f57283e35e694fc",
+        "3c18e0bd11d4ac3cd601bec55a589ad6114278e569ea048dc07b7162036a649e"
+      ],
+      "phases": [
+        "高平板支撑、双手撑壶铃",
+        "单侧划船壶铃至胸部、另一侧为镜像"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1311",
+      "expectedName": "wide hand push up",
+      "sourceId": "Push-Up_Wide",
+      "sourceSha256": [
+        "94f027d2a6aa5de82866d3c2a1519cc564bc168810c652632a2ac9ae20ff39a8",
+        "19eef3f2315e5013eed2934297f3943cdcbb020d69b42a983b4b09d68a13fe07"
+      ],
+      "phases": [
+        "高平板支撑、双手宽于肩",
+        "屈肘将胸部降向地面"
+      ]
     }
   ],
   "videos": [
@@ -5110,9 +5214,25 @@
     {
       "source": "free-exercise-db Dumbbell_Lying_Supination → exdb:2706",
       "reason": "照片为侧卧平凳、前臂置凳上旋腕，条目名称定义为地面仰卧、双臂置体侧屈臂向肩，支撑与动作形式不符；且与 2705 照片形式近同、掌向区分不可靠。"
+    },
+    {
+      "source": "free-exercise-db Iron_Cross → exdb:0332",
+      "reason": "起始帧为深蹲加双臂前平举，与条目站姿双臂下垂起始、侧举至 T 字形的定义不符，两帧动作形式不一致。"
+    },
+    {
+      "source": "free-exercise-db Overhead_Triceps → exdb:0643",
+      "reason": "照片为他人辅助拉伸：伸臂肘部由站立同伴拉动，与条目「用另一只手」自行拉伸的定义不符。"
+    },
+    {
+      "source": "free-exercise-db Alternate_Incline_Dumbbell_Curl → exdb:0318",
+      "reason": "两帧均为一臂上举一臂下垂的交替弯举，与条目双侧同时屈肘的定义不符（与第十四批 Incline_Dumbbell_Curl 驳回同理）。"
+    },
+    {
+      "source": "free-exercise-db Push_Up_to_Side_Plank → exdb:0717",
+      "reason": "两帧仅示常规俯卧撑起止，未见侧平板或侧卧推起阶段，与条目「侧卧推起」定义不符。"
     }
   ],
-  "batch": 23,
+  "batch": 24,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",
