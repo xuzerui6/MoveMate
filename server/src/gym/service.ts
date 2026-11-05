@@ -1,5 +1,6 @@
 import { randomUUID, createHash } from "node:crypto";
 import {reviewedMediaIds} from './media-filter';
+import { rankByQuery } from "./search";
 import { z } from "zod";
 import { refreshOnline, onlineCutoff } from "./online";
 import { snapshotCameraProfile } from "./camera";
@@ -77,10 +78,7 @@ export async function library(uid: number, query: any) {
   const wanted = query.ids
     ? new Set(String(query.ids).split(",").slice(0, 500))
     : null;
-  const q = String(query.q || "")
-      .toLowerCase()
-      .trim()
-      .replace(/\s/g, ""),
+  const q = String(query.q || ""),
     cursor = Math.max(0, Number(query.cursor) || 0),
     limit = Math.min(wanted ? 500 : 50, Math.max(1, Number(query.limit) || 24));
   const result = list.filter(
@@ -92,9 +90,6 @@ export async function library(uid: number, query: any) {
         prefs.equipment.includes(e.equipment)) &&
       (!wanted || wanted.has(e.id)) &&
       (!mediaIds || mediaIds.has(e.id)) &&
-      (!q ||
-        [e.name, e.nameZh, ...((e as any).aliases || []), ...e.instructions]
-          .some(field=>String(field).toLowerCase().replace(/\s/g, "").includes(q))) &&
       (!query.muscle ||
         e.bodyPart === query.muscle ||
         e.target === query.muscle ||
@@ -104,12 +99,15 @@ export async function library(uid: number, query: any) {
       (!query.category || e.category === query.category) &&
       (!query.favorite || favorite.has(e.id)),
   );
+  // 查询词不再做过滤谓词：统一走 search.ts 的打分排序（拼音/俗称/部位
+  // 标签/相关性），旧子串命中是其中的一个通道，一条不丢。
+  const ranked = rankByQuery(result, q, favorite);
   return {
-    items: result
+    items: ranked
       .slice(cursor, cursor + limit)
       .map((e) => ({ ...e, favorite: favorite.has(e.id) })),
-    total: result.length,
-    next: cursor + limit < result.length ? cursor + limit : null,
+    total: ranked.length,
+    next: cursor + limit < ranked.length ? cursor + limit : null,
     muscles: [
       ...new Set([
         ...list.map((e) => e.bodyPart),
