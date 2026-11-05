@@ -3502,6 +3502,97 @@
         "仰卧双臂过顶",
         "卷起上半身"
       ]
+    },
+    {
+      "exerciseId": "exdb:0219",
+      "expectedName": "cable shoulder press",
+      "sourceId": "Cable_Shoulder_Press",
+      "sourceSha256": [
+        "a6948547e9b1d1fd850eb398411a6357cbd485587a96c0c69467dcd0f17db154",
+        "2d57b2546818eab50b63bc8bbc2cb2ee2c8b1f356c81bd4fc612daecd6701a3d"
+      ],
+      "phases": [
+        "背对器械肩高握柄",
+        "双手推举过顶"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0295",
+      "expectedName": "dumbbell clean",
+      "sourceId": "Dumbbell_Clean",
+      "sourceSha256": [
+        "f642ca019c49f19dd0521a2ad9b5b9365aa7a99183063b4bfbbf4c42373b5854",
+        "ceeab9fb804d3c71a919d04eeed781835bddc7174fbe8b2bfdf4b47139b449ba"
+      ],
+      "phases": [
+        "下蹲双铃低位",
+        "翻至肩高接铃"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0507",
+      "expectedName": "jackknife sit-up",
+      "sourceId": "Jackknife_Sit-Up",
+      "sourceSha256": [
+        "a291b1bd63f2e520d40f49183247248af68998a6d942d93e5377de3d240a8903",
+        "69d63eaa77d468aeb9881288aa3c8e83943f6fb6589018938a0d1a351b078883"
+      ],
+      "phases": [
+        "仰卧双臂过顶",
+        "折刀收拢触趾"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0045",
+      "expectedName": "barbell guillotine bench press",
+      "sourceId": "Barbell_Guillotine_Bench_Press",
+      "sourceSha256": [
+        "62cdf1bfa6fa889a8953b572e4a594d4d67c241b77606a339922b0e2dd179d63",
+        "d4b79be17c2905c7da232eb8d976a5b136111b3712c6d647eb7551a547304c9a"
+      ],
+      "phases": [
+        "仰卧杠铃伸直",
+        "下放杠铃至颈部"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0037",
+      "expectedName": "barbell decline wide-grip pullover",
+      "sourceId": "Wide-Grip_Decline_Barbell_Pullover",
+      "sourceSha256": [
+        "7e90840650a54589ee6d81bd2105e880afac59f507934bfb82258ac59e475f9b",
+        "d21441e7a670411154095a0ce69fc6eceacad4e12081130d8ae2d87820bb57af"
+      ],
+      "phases": [
+        "下斜凳宽握伸直",
+        "直臂下放至脑后"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0306",
+      "expectedName": "dumbbell decline triceps extension",
+      "sourceId": "Decline_Dumbbell_Triceps_Extension",
+      "sourceSha256": [
+        "d590531e0a1e5bc3af63ab79555e16ee75e1e37edcfbb670f966285311b802f3",
+        "9a82dce15b7b1cfe591563d48870bb39ee40c9ff1aaa720fc142dbb7ed786ef4"
+      ],
+      "phases": [
+        "下斜凳双臂伸直",
+        "屈肘下放至脑后"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0522",
+      "expectedName": "kettlebell alternating row",
+      "sourceId": "Alternating_Kettlebell_Row",
+      "sourceSha256": [
+        "50c11172c80de0db8e5407c4b708cd4f46dab230a841b629cba9c081ad436720",
+        "4eafb869ecd2194c0513cfa4cbf5045ffd9f554fe1b99cd03113f27443f7d9cf"
+      ],
+      "phases": [
+        "俯身双铃下垂",
+        "单侧拉向胸部"
+      ]
     }
   ],
   "videos": [
@@ -3916,9 +4007,37 @@
     {
       "source": "free-exercise-db Wrist_Circles → exdb:1428",
       "reason": "照片为双臂下垂于体侧做腕环绕，条目步骤为手臂前伸，姿势不符。"
+    },
+    {
+      "source": "free-exercise-db One_Leg_Barbell_Squat → exdb:0068",
+      "reason": "照片为后脚搭凳的分腿蹲，条目定义为前腿前伸的单腿深蹲，动作形式不符。"
+    },
+    {
+      "source": "free-exercise-db Clock_Push-Up → exdb:0258",
+      "reason": "两帧均为常规俯卧撑姿态，未见转体与手臂向侧伸出的绕钟特征，无法核对条目关键动作。"
+    },
+    {
+      "source": "free-exercise-db Hanging_Leg_Raise → exdb:0472",
+      "reason": "抬腿帧明显屈膝，属屈膝抬腿而非条目要求的直腿抬腿。"
+    },
+    {
+      "source": "free-exercise-db Incline_Dumbbell_Curl → exdb:0318",
+      "reason": "两帧均为一臂上举一臂下垂的交替弯举，条目定义为双侧同时屈肘，暂不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Straight-Arm_Dumbbell_Pullover → exdb:0433",
+      "reason": "照片为横凳肩背支撑的上拉，条目定义明确排除横凳形式、要求头与躯干沿平凳支撑，暂不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Seated_Barbell_Twist → exdb:0094",
+      "reason": "照片杠铃置于上背部/颈后转体，条目定义为双手握杠于胸前转体，握杠位置不符。"
+    },
+    {
+      "source": "free-exercise-db Kneeling_Cable_Triceps_Extension → exdb:0176",
+      "reason": "照片为背对器械、俯身撑凳的跪姿臂屈伸，条目定义为面向器械跪姿、双手位于头两侧，朝向与支撑不符。"
     }
   ],
-  "batch": 13,
+  "batch": 14,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",

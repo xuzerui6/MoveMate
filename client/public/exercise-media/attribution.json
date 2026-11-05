@@ -14057,6 +14057,265 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:0219": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/cable_shoulder_press-0.4142a52cecf0.webp",
+          "sha256": "4142a52cecf0689803b3bba52784173ad5ac4c9fad92f2a0b3a9a1bd1fcb7150",
+          "bytes": 59884,
+          "distribution": "repository",
+          "phase": "背对器械肩高握柄",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/cable_shoulder_press-1.ff21f3a3015f.webp",
+          "sha256": "ff21f3a3015fa4a44045ba5db5cf8dd8401c52a409de48178dba43520bcb8c3a",
+          "bytes": 58890,
+          "distribution": "repository",
+          "phase": "双手推举过顶",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Shoulder_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Shoulder_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "a6948547e9b1d1fd850eb398411a6357cbd485587a96c0c69467dcd0f17db154",
+            "2d57b2546818eab50b63bc8bbc2cb2ee2c8b1f356c81bd4fc612daecd6701a3d"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0295": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/dumbbell_clean-0.6b3105f3a412.webp",
+          "sha256": "6b3105f3a4126679cefb71456eeec68a90bdd705356e24975c2e80e5e61742d0",
+          "bytes": 35758,
+          "distribution": "repository",
+          "phase": "下蹲双铃低位",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/dumbbell_clean-1.0f9a9f734f55.webp",
+          "sha256": "0f9a9f734f55956516fb2808bfcf2d4f5586a43a4032fb835df49bc2b7d6b0e0",
+          "bytes": 26224,
+          "distribution": "repository",
+          "phase": "翻至肩高接铃",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Clean",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Dumbbell_Clean",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "f642ca019c49f19dd0521a2ad9b5b9365aa7a99183063b4bfbbf4c42373b5854",
+            "ceeab9fb804d3c71a919d04eeed781835bddc7174fbe8b2bfdf4b47139b449ba"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0507": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/jackknife_sit-up-0.64613a4c0ae6.webp",
+          "sha256": "64613a4c0ae604044ac1e990285b6476844335375557e998281f68f01037404b",
+          "bytes": 58540,
+          "distribution": "repository",
+          "phase": "仰卧双臂过顶",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/jackknife_sit-up-1.4d83446bbef8.webp",
+          "sha256": "4d83446bbef88a8bf3ddb23432b16094caebead0208e5fc45929e1c0f8e36b36",
+          "bytes": 55846,
+          "distribution": "repository",
+          "phase": "折刀收拢触趾",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Jackknife_Sit-Up",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Jackknife_Sit-Up",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "a291b1bd63f2e520d40f49183247248af68998a6d942d93e5377de3d240a8903",
+            "69d63eaa77d468aeb9881288aa3c8e83943f6fb6589018938a0d1a351b078883"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0045": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/barbell_guillotine_bench_press-0.3ce188e17df1.webp",
+          "sha256": "3ce188e17df1e0697ff553db8a93e7991c1bc5d91512e8cc18838f4407762fdb",
+          "bytes": 65260,
+          "distribution": "repository",
+          "phase": "仰卧杠铃伸直",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/barbell_guillotine_bench_press-1.862e91bb1517.webp",
+          "sha256": "862e91bb15173478b6ebee7615afe71a7ae220b1ff1e6be5eea401ced7f2e33a",
+          "bytes": 65980,
+          "distribution": "repository",
+          "phase": "下放杠铃至颈部",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Barbell_Guillotine_Bench_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Barbell_Guillotine_Bench_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "62cdf1bfa6fa889a8953b572e4a594d4d67c241b77606a339922b0e2dd179d63",
+            "d4b79be17c2905c7da232eb8d976a5b136111b3712c6d647eb7551a547304c9a"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0037": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/wide-grip_decline_barbell_pullover-0.dc7f71c3c21b.webp",
+          "sha256": "dc7f71c3c21b6cdb4951122c7b26656b8d2b2583b632fddb7216431b05926c00",
+          "bytes": 43868,
+          "distribution": "repository",
+          "phase": "下斜凳宽握伸直",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/wide-grip_decline_barbell_pullover-1.0cb8792deaa9.webp",
+          "sha256": "0cb8792deaa96ab36ec435d60781fec37de04add504c03c49a31dfe160283a66",
+          "bytes": 44782,
+          "distribution": "repository",
+          "phase": "直臂下放至脑后",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Wide-Grip_Decline_Barbell_Pullover",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Wide-Grip_Decline_Barbell_Pullover",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "7e90840650a54589ee6d81bd2105e880afac59f507934bfb82258ac59e475f9b",
+            "d21441e7a670411154095a0ce69fc6eceacad4e12081130d8ae2d87820bb57af"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0306": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/decline_dumbbell_triceps_extension-0.bb607d7b07f5.webp",
+          "sha256": "bb607d7b07f500a9c2552280e997d31cb7ff6816ded73d8f13f1515cc5f38d07",
+          "bytes": 33230,
+          "distribution": "repository",
+          "phase": "下斜凳双臂伸直",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/decline_dumbbell_triceps_extension-1.976ce8fc0511.webp",
+          "sha256": "976ce8fc05111ec41b60a04de10f06019a1ea808c72458988c822c7d096494d5",
+          "bytes": 29724,
+          "distribution": "repository",
+          "phase": "屈肘下放至脑后",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Decline_Dumbbell_Triceps_Extension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Decline_Dumbbell_Triceps_Extension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "d590531e0a1e5bc3af63ab79555e16ee75e1e37edcfbb670f966285311b802f3",
+            "9a82dce15b7b1cfe591563d48870bb39ee40c9ff1aaa720fc142dbb7ed786ef4"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0522": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/alternating_kettlebell_row-0.9300403c2ff8.webp",
+          "sha256": "9300403c2ff801ea9f7514b558829c69841ee1d608afa05701a1eb2b1f2dcb60",
+          "bytes": 29512,
+          "distribution": "repository",
+          "phase": "俯身双铃下垂",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/alternating_kettlebell_row-1.ad5c447c6f79.webp",
+          "sha256": "ad5c447c6f79a0b59daf561e932dbf636d31109129f61420b7e256a7538e1988",
+          "bytes": 29844,
+          "distribution": "repository",
+          "phase": "单侧拉向胸部",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Alternating_Kettlebell_Row",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Alternating_Kettlebell_Row",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "50c11172c80de0db8e5407c4b708cd4f46dab230a841b629cba9c081ad436720",
+            "4eafb869ecd2194c0513cfa4cbf5045ffd9f554fe1b99cd03113f27443f7d9cf"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }
