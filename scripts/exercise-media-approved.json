@@ -4867,6 +4867,84 @@
         "下斜仰卧、双铃置于胸前上方掌心相对",
         "双铃以宽弧线向两侧放低"
       ]
+    },
+    {
+      "exerciseId": "exdb:0248",
+      "expectedName": "cambered bar lying row",
+      "sourceId": "Lying_Cambered_Barbell_Row",
+      "sourceSha256": [
+        "f8561e0ba5aa87133da6df50f952e910673011c1478ccb7cd435eecb95b72dc3",
+        "ad29770bca7b6e143aed90991b46a2fc3370f7c0be2f5d8a3e28de9cb18ba9a8"
+      ],
+      "phases": [
+        "俯卧长凳、双臂下垂握弯曲杠",
+        "屈肘将弯曲杠拉向胸部"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0570",
+      "expectedName": "leg pull in flat bench",
+      "sourceId": "Seated_Flat_Bench_Leg_Pull-In",
+      "sourceSha256": [
+        "561f863e9f5d9e66ae3da22470e5c0e0016bbbc4ef52ba6a3ef3c3344028e048",
+        "914a667c482e3317269ead665e2068b08192556215bd0222801303af02c5dfc5"
+      ],
+      "phases": [
+        "坐于平凳边、双腿身前伸直、双手撑凳",
+        "收腹屈膝将双腿拉向胸部"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1663",
+      "expectedName": "dumbbell one arm hammer preacher curl",
+      "sourceId": "One_Arm_Dumbbell_Preacher_Curl",
+      "sourceSha256": [
+        "ea14dbd96c85928a5539c0d86d80f8a2958457adcb24fc317e9d797b602be5ac",
+        "4e1533ad2187e1ded71d5aa2d4eedf317b4b620527dffea624e4c335f3b2f17e"
+      ],
+      "phases": [
+        "坐牧师凳、单臂置垫、中立握铃臂伸直",
+        "屈肘将哑铃弯举至肩部"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0372",
+      "expectedName": "dumbbell preacher curl",
+      "sourceId": "Two-Arm_Dumbbell_Preacher_Curl",
+      "sourceSha256": [
+        "02f673dd3256dacceea58546ff9d8ae6ee5b149b2126cf6537d924eb5f23104c",
+        "b52f22e5609a6b934d3a38dd65b80e7146aacfd2df004d424957a2c7689f7406"
+      ],
+      "phases": [
+        "坐牧师凳、双臂置垫、双铃掌心朝上臂伸直",
+        "双臂同时屈肘弯举至肩部"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0432",
+      "expectedName": "dumbbell stiff leg deadlift",
+      "sourceId": "Stiff-Legged_Dumbbell_Deadlift",
+      "sourceSha256": [
+        "02659ec9c245a9b44be7da73d19b9ea6bfc819fcdf4de3ec6fab705e45abb7ca",
+        "4d56648788e857b4675ef398907a12a4d99c1a43240acac1d8fda1554cf119dc"
+      ],
+      "phases": [
+        "双脚站立、双手握铃于体侧",
+        "髋铰链俯身将双铃降至近地面"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0474",
+      "expectedName": "hanging straight leg hip raise",
+      "sourceId": "Hanging_Leg_Raise",
+      "sourceSha256": [
+        "c166cd61aec9cd4cd3881a17602f7a6afd80df51329ea6a143e6ffcf9bebb2af",
+        "c623bd4bb6848367407ddbc7c39d1611acf9c5001fe9a61360a580b78d86fa60"
+      ],
+      "phases": [
+        "悬挂于单杠、双臂伸直",
+        "双腿抬至与地面平行"
+      ]
     }
   ],
   "videos": [
@@ -5601,9 +5679,37 @@
     {
       "source": "free-exercise-db Dumbbell_One-Arm_Triceps_Extension → exdb:0354",
       "reason": "照片为站姿单臂过顶臂屈伸，条目定义为俯身单臂臂屈伸（kickback），体位与动作形式不符。"
+    },
+    {
+      "source": "free-exercise-db Kettlebell_Turkish_Get-Up_Lunge_style → exdb:0551",
+      "reason": "两帧仅示仰卧与坐起过渡，未见深蹲式起身（跪姿经深蹲站起）关键阶段，不采用（与第十九批 Kettlebell_Turkish_Get-Up_Squat_style 驳回同理）。"
+    },
+    {
+      "source": "free-exercise-db Jerk_Dip_Squat → exdb:0786",
+      "reason": "两帧为杠铃架肩站姿与下蹲预蹲，未见过顶推举锁定与分腿／下蹲接杠关键阶段，不采用（与第十九批 Squat_Jerk 驳回同理）。"
+    },
+    {
+      "source": "free-exercise-db Alternate_Incline_Dumbbell_Curl → exdb:0315",
+      "reason": "照片为一臂上举、一臂下放的交替形式，与本条双侧同时屈肘定义不符（与第二十批 Incline_Dumbbell_Curl 驳回同理），不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Single_Dumbbell_Raise → exdb:0409",
+      "reason": "照片为双手共握一只哑铃由双腿之间上举过顶，与单腿提踵（台阶边缘、脚跟悬垂、一手持铃、一手扶墙）定义不符。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Kettlebell_Clean → exdb:0538",
+      "reason": "照片为单臂翻举摆动起始（壶铃低位摆动），未见挺举过顶锁定关键阶段，动作与条目（单臂挺举）不符。"
+    },
+    {
+      "source": "free-exercise-db Tricep_Dumbbell_Kickback → exdb:1742",
+      "reason": "照片为凳上跪姿单手支撑后伸，条目定义为站姿（名称为鹤立单腿站姿、正文为双脚站姿俯身），支撑形式不符。"
+    },
+    {
+      "source": "free-exercise-db Standing_Hamstring_and_Calf_Stretch → exdb:1599",
+      "reason": "两帧为同一拉伸姿势、无起始位与关键位之分，不符合双帧标准，不采用。"
     }
   ],
-  "batch": 27,
+  "batch": 28,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",

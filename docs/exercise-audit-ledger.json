@@ -11097,22 +11097,37 @@
     {
       "id": "exdb:0248",
       "originalName": "cambered bar lying row",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题cambered bar，正文只说普通杠铃，没有中部弯曲的器械形状和凳面空间，不按直杠图替代。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：俯卧长凳、双臂下垂握中部弯曲的曲杠、拉向胸部清晰，与名称「弯曲杠俯卧划船」一致（名称为准）；第二十七批已核对合格结转，本批复核后采用。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "98425815fc44eab18674bb5864929e974544f7ead504362f3992c0c856eb083d",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Lying_Cambered_Barbell_Row",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Lying_Cambered_Barbell_Row",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "f8561e0ba5aa87133da6df50f952e910673011c1478ccb7cd435eecb95b72dc3",
+            "ad29770bca7b6e143aed90991b46a2fc3370f7c0be2f5d8a3e28de9cb18ba9a8"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2963",
@@ -15410,22 +15425,37 @@
     {
       "id": "exdb:1663",
       "originalName": "dumbbell one arm hammer preacher curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：中立握单臂托垫清楚，需要专门凳面与侧别图，不使用双臂反握版。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐牧师凳、单臂置垫、中立握铃、屈肘弯举至肩部清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "c1ee1956838cad9805276785e139629d24960f3489cf8109d74808964f7bd84a",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / One_Arm_Dumbbell_Preacher_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/One_Arm_Dumbbell_Preacher_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "ea14dbd96c85928a5539c0d86d80f8a2958457adcb24fc317e9d797b602be5ac",
+            "4e1533ad2187e1ded71d5aa2d4eedf317b4b620527dffea624e4c335f3b2f17e"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1621",
@@ -16351,22 +16381,37 @@
     {
       "id": "exdb:0372",
       "originalName": "dumbbell preacher curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：双上臂托垫、双铃旋后屈肘明确，需要准确凳面与双侧同步阶段图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐牧师凳、双上臂托垫、双铃掌心朝上、双臂同时屈肘至肩部清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "34e5640e3de2d351a4748da9f6c9a8728ef60ba4af8143e9b542eafe3f6b78de",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Two-Arm_Dumbbell_Preacher_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Two-Arm_Dumbbell_Preacher_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "02f673dd3256dacceea58546ff9d8ae6ee5b149b2126cf6537d924eb5f23104c",
+            "b52f22e5609a6b934d3a38dd65b80e7146aacfd2df004d424957a2c7689f7406"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1673",
@@ -19324,22 +19369,37 @@
     {
       "id": "exdb:0432",
       "originalName": "dumbbell stiff leg deadlift",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：双铃髋铰链、膝微屈明确，但与1459罗马尼亚/0434近同，需独立终点与膝角证据。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：双铃体侧站立、髋铰链俯身、膝微屈降铃至近地面清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "18b6b84037c78f331f1d457768573336c0a884bab31b6d0de67619d0e9f8466e",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Stiff-Legged_Dumbbell_Deadlift",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Stiff-Legged_Dumbbell_Deadlift",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "02659ec9c245a9b44be7da73d19b9ea6bfc819fcdf4de3ec6fab705e45abb7ca",
+            "4d56648788e857b4675ef398907a12a4d99c1a43240acac1d8fda1554cf119dc"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0433",
@@ -21761,22 +21821,37 @@
     {
       "id": "exdb:0474",
       "originalName": "hanging straight leg hip raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称含 hip raise，文字与 exdb:0475 同为抬腿至水平，未说明额外举髋；保留独立ID，差异待核对。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：悬挂双臂伸直、双腿抬至与地面平行清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "d7f080ca7f2a83a3aaa2f7eaac38471e5d4cacf34991fef2fba5dd2d1100ad27",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Hanging_Leg_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Hanging_Leg_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "c166cd61aec9cd4cd3881a17602f7a6afd80df51329ea6a143e6ffcf9bebb2af",
+            "c623bd4bb6848367407ddbc7c39d1611acf9c5001fe9a61360a580b78d86fa60"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0475",
@@ -24324,22 +24399,37 @@
     {
       "id": "exdb:0570",
       "originalName": "leg pull in flat bench",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源坐姿凳边收腿，候选是仰卧凳面屈腿卷臀。 当前不发布此候选，不计完整覆盖。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐于平凳边、双腿身前伸直双手撑凳、屈膝收腿至胸部清晰，与条目定义一致；此前驳回的 Flat_Bench_Leg_Pull-In 为仰卧凳面形式，与本候选 Seated_Flat_Bench_Leg_Pull-In 不同。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "36ec6745e80f0ebf10f712d0f570b44203f1c33e266be72072ea2d9e0bd2b9fd",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Seated_Flat_Bench_Leg_Pull-In",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Seated_Flat_Bench_Leg_Pull-In",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "561f863e9f5d9e66ae3da22470e5c0e0016bbbc4ef52ba6a3ef3c3344028e048",
+            "914a667c482e3317269ead665e2068b08192556215bd0222801303af02c5dfc5"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1576",
