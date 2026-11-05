@@ -55,6 +55,18 @@ test('standing curls reject high knees and switching sides before returning, and
 test('unknown profiles fail closed and never reuse squat or push-up algorithms',()=>{
   assert.throws(()=>createRecognitionTracker('unsupported'),/不支持/);assert.match(exerciseInfo('unsupported').name,/未知/);
 });
+test('hammer curls count alternating single-arm cycles as one rep per arm',()=>{
+  const r=run('hammer_curl');r.feed('neutral',3000);assert.equal(r.tracker.diagnostics.stage,'ready');
+  const leftOnly=(p:Point[])=>{p[16]={...p[16],x:.57,y:.56};};
+  const rightOnly=(p:Point[])=>{p[15]={...p[15],x:.43,y:.56};};
+  r.feed('peak',1000,leftOnly);r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,1);
+  r.feed('peak',1000,rightOnly);r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,2);
+  assert.equal(r.tracker.metrics.scoreAccumulator.count,2);
+});
+test('hammer curls never count a shallow curl that stops above the peak threshold on both sides',()=>{
+  const r=run('hammer_curl');r.feed('neutral',3000);
+  r.feed('peak',1000,p=>{for(const o of [0,1]){p[15+o]={...p[15+o],x:.43+o*.14+.13,y:.44};}});r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,0);
+});
 test('a counted curl with upper-arm drift receives lower control feedback without blocking its rep',()=>{
   const stable=run('hammer_curl'),drift=run('hammer_curl');
   for(const r of [stable,drift])r.feed('neutral',3000);

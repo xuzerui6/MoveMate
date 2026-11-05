@@ -15,7 +15,10 @@ const cross=(a:number[],b:number[])=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[
 const angle=(a:Point,b:Point,c:Point)=>Math.acos(Math.max(-1,Math.min(1,dot(norm(vector(a,b)),norm(vector(c,b))))))*180/Math.PI;
 const mean=(a:number,b:number)=>(a+b)/2;
 type Side='left'|'right';
-type Measurement={start:boolean;peak:boolean;amplitude:number;angle:number;confidence:number;scorable:boolean;posture:number;symmetry:number;controlPenalty:number;hint?:string;side?:Side;basis:string;motion:string;points:Point[];torso:number;tilt:number};
+type Measurement={start:boolean;peak:boolean;amplitude:number;angle:number;confidence:number;scorable:boolean;posture:number;symmetry:number;controlPenalty:number;hint?:string;side?:Side;basis:string;motion:string;points:Point[];torso:number;tilt:number;elbows?:[number,number]};
+type SideCycle={movingAt:number|null;peakAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;returnAt:number|null;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number};
+type SideCompletion={side:number;at:number;peakStart:number;peakEnd:number;peakAmp:number;peakPosture:number;peakOther:number;peakElbow:number;duration:number;scoring:boolean;control:number;shift:number;speed:number};
+const freshSideCycle=():SideCycle=>({movingAt:null,peakAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,returnAt:null,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180});
 const axes=['depth','stability','trunk','symmetry'] as const;
 type ExtendedType=NewExerciseType|'bench_press'|'reverse_fly'|'seated_triceps_extension'|'barbell_deadlift'|'incline_bench_press'|'seated_curl'|'seated_lateral_raise'|'lying_triceps_extension';
 const definitions={...NEW_EXERCISES,...LIBRARY_RECOGNITION};
@@ -45,6 +48,8 @@ export class ExtendedExerciseTracker {
   private speed=0;
   private shift=0;
   private controlPenalty=0;
+  private hammerSides:[SideCycle,SideCycle]=[freshSideCycle(),freshSideCycle()];
+  private hammerPending:SideCompletion|null=null;
   requiredIndices(raw:Point[]){return this.needed(raw)}
   constructor(readonly type:ExtendedType,targetReps=20,restored:Partial<ExerciseMetrics>={},readonly prefiltered=false,readonly armOnStart=false){
     const acc={...emptyFormBreakdown(),count:0,total:0,...restored.scoreAccumulator};
@@ -52,7 +57,7 @@ export class ExtendedExerciseTracker {
     this.updateAverage();
   }
   private updateAverage(){const a=this.metrics.scoreAccumulator,b=emptyFormBreakdown();for(const k of axes)b[k]=a.count?Math.round(a[k]/a.count):0;this.metrics.formBreakdown=b;}
-  private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;}
+  private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;this.hammerSides=[freshSideCycle(),freshSideCycle()];this.hammerPending=null;}
   interrupt(reason='已暂停，继续后重新校准'){
     this.frames=[];this.worlds=[];this.last=null;this.calibration=null;this.baseline=null;this.ready=false;this.side=null;this.times=[];this.previous=null;this.resetCycle();
     this.diagnostics={...this.diagnostics,stage:'tracking_lost',fps:0,calibrationProgress:0,lastResetReason:reason};
@@ -85,6 +90,7 @@ export class ExtendedExerciseTracker {
     const elbows=[angle(a[11],a[13],a[15]),angle(a[12],a[14],a[16])];
     const knees=[angle(a[23],a[25],a[27]),angle(a[24],a[26],a[28])];
     let start=false,peak=false,amplitude=0,measured=0,posture=cap(100-Math.max(0,tilt-12)*2),symmetry=100,controlPenalty=0,side:Side|undefined=this.side||undefined,basis='',motion='',hint:string|undefined;
+    let perSide:[number,number]|undefined;
     if(this.type==='seated_curl'||this.type==='seated_lateral_raise'){
       const hips=[angle(a[11],a[23],a[25]),angle(a[12],a[24],a[26])];
       if(tilt>30||hips.some(v=>v<60||v>130)||knees.some(v=>v<55||v>140))return '请坐稳、双脚支撑并调整为斜侧面，让屈膝坐姿清楚可见；站姿不计入';
@@ -146,7 +152,7 @@ export class ExtendedExerciseTracker {
       if(!start&&!spread)hint='请向身体两侧打开双臂；向前抬臂不计入反向飞鸟';
     }else if(this.type==='hammer_curl'){
       if(tilt>35)return '请直立站稳，保持双上臂在体侧';
-      start=Math.min(...elbows)>=145;peak=Math.max(...elbows)<=80;measured=mean(elbows[0],elbows[1]);amplitude=cap((160-Math.max(...elbows))/95*100);symmetry=cap(100-Math.abs(elbows[0]-elbows[1])*1.5);basis='双肘屈伸；握法由本人按说明保持';motion=`双肘 ${Math.round(elbows[0])}° / ${Math.round(elbows[1])}°；弯举≤80°、放回≥145°`;
+      start=Math.min(...elbows)>=145;peak=Math.max(...elbows)<=80;measured=mean(elbows[0],elbows[1]);amplitude=cap((160-Math.max(...elbows))/95*100);symmetry=cap(100-Math.abs(elbows[0]-elbows[1])*1.5);perSide=[elbows[0],elbows[1]];basis='双肘屈伸；握法由本人按说明保持';motion=`双肘 ${Math.round(elbows[0])}° / ${Math.round(elbows[1])}°；弯举≤80°、放回≥145°`;
       controlPenalty=Math.max(0,Math.max(angle(a[13],a[11],a[23]),angle(a[14],a[12],a[24]))-15)*1.5;
       if(controlPenalty>25)hint='请让上臂靠近体侧，不要抬肩或摆动上臂借力';
     }else if(this.type==='front_raise'){
@@ -193,7 +199,73 @@ export class ExtendedExerciseTracker {
       if(!start&&hips<150)hint='请让大腿保持向下，脚跟向后抬起，向前抬膝不计入';
     }
     const scorable=confidence>=.7&&[11,12,23,24,...(this.type==='romanian_deadlift'||this.type==='glute_bridge'||this.type==='barbell_deadlift'?[25,26,27,28]:[])].every(i=>(points[i].visibility??0)>=.7);
-    return {start,peak,amplitude,angle:measured,confidence,scorable,posture,symmetry,controlPenalty,hint,side,basis,motion,points:p,torso,tilt};
+    return {start,peak,amplitude,angle:measured,confidence,scorable,posture,symmetry,controlPenalty,hint,side,basis,motion,points:p,torso,tilt,elbows:perSide};
+  }
+  private emitHammerRep(parts:SideCompletion[],f:Measurement):boolean{
+    if(this.metrics.reps>=this.metrics.targetReps)return false;
+    const pair=parts.length===2;
+    const depth=pair?Math.min(parts[0].peakAmp,parts[1].peakAmp):parts[0].peakAmp;
+    const posture=pair?Math.min(parts[0].peakPosture,parts[1].peakPosture):parts[0].peakPosture;
+    const control=Math.max(...parts.map(p=>p.control)),shift=Math.max(...parts.map(p=>p.shift)),speed=Math.max(...parts.map(p=>p.speed)),duration=Math.max(...parts.map(p=>p.duration));
+    const symmetry=pair?cap(100-Math.abs(parts[0].peakElbow-parts[1].peakElbow)*1.5):cap(100-Math.max(0,140-parts[0].peakOther)*1.2);
+    const breakdown={depth,stability:cap(100-Math.max(0,speed-260)*.08-Math.max(0,.6-duration)*70-control),trunk:cap(posture-shift*1.5),symmetry};
+    const score=Math.round(breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2+breakdown.symmetry*.2),scored=parts.every(p=>p.scoring)&&f.scorable,issues:PoseIssue[]=[];
+    if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(breakdown.symmetry<70)issues.push('poor_coordination');
+    const acc={...this.metrics.scoreAccumulator},counts={...this.metrics.correctionCounts};
+    if(scored){acc.count++;acc.total+=score;axes.forEach(k=>acc[k]+=breakdown[k]);issues.forEach(k=>counts[k]++);}
+    this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`已记录第 ${this.metrics.reps+1} 次 · 本次 ${score} 分`:`已记录第 ${this.metrics.reps+1} 次 · 本次无法评分`};
+    this.updateAverage();
+    return true;
+  }
+  /** Hammer curls count per side: an alternating curl scores one rep per arm, while two sides whose peaks overlap merge into a single synchronized rep. */
+  private updateHammerCurl(f:Measurement,now:number):ExerciseMetrics{
+    const elbows=f.elbows!;
+    let completed=false;
+    if(this.hammerPending&&now-this.hammerPending.at>600){const pending=this.hammerPending;this.hammerPending=null;if(this.emitHammerRep([pending],f))completed=true;}
+    for(const s of [0,1] as const){
+      const cyc=this.hammerSides[s],e=elbows[s],other=elbows[1-s];
+      if(e>=145){
+        if(cyc.peakStart!==null){
+          if(cyc.returnAt===null)cyc.returnAt=now;
+          if(now-cyc.returnAt>=150){
+            const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:cyc.controlMax,shift:cyc.shiftMax,speed:cyc.speedMax};
+            this.hammerSides[s]=freshSideCycle();
+            if(this.hammerPending){
+              const pending=this.hammerPending;
+              const overlap=done.peakStart<=pending.peakEnd+150&&pending.peakStart<=done.peakEnd+150;
+              if(pending.side!==s&&overlap){this.hammerPending=null;if(this.emitHammerRep([pending,done],f))completed=true;}
+              else{this.hammerPending=null;if(this.emitHammerRep([pending],f))completed=true;this.hammerPending=done;}
+            }else this.hammerPending=done;
+          }
+        }else if(cyc.movingAt!==null)this.hammerSides[s]=freshSideCycle();
+      }else{
+        if(cyc.movingAt===null)cyc.movingAt=now;
+        cyc.returnAt=null;
+        cyc.scoring=cyc.scoring&&f.scorable;
+        cyc.controlMax=Math.max(cyc.controlMax,f.controlPenalty);
+        cyc.shiftMax=Math.max(cyc.shiftMax,Math.abs(f.tilt-this.baseline!.tilt));
+        if(cyc.sampleAt===null){cyc.sampleAt=now;cyc.sampleAngle=e;}
+        else if(now-cyc.sampleAt>=100){cyc.speedMax=Math.max(cyc.speedMax,Math.abs(e-cyc.sampleAngle)*1000/(now-cyc.sampleAt));cyc.sampleAt=now;cyc.sampleAngle=e;}
+        if(e<=80){
+          if(cyc.peakAt===null)cyc.peakAt=now;
+          if(now-cyc.peakAt>=120){
+            if(cyc.peakStart===null)cyc.peakStart=cyc.peakAt;
+            cyc.peakEnd=now;
+            const amp=cap((160-e)/95*100);
+            if(amp>=cyc.peakAmp){cyc.peakAmp=amp;cyc.peakElbow=e;cyc.peakPosture=f.posture;cyc.peakOther=other;}
+          }
+        }else cyc.peakAt=null;
+      }
+    }
+    const anyPeak=this.hammerSides.some(c=>c.peakStart!==null)||this.hammerPending!==null;
+    const stage=this.metrics.reps>=this.metrics.targetReps?'complete':anyPeak?(f.start?'returning':'peak'):f.start?'ready':'moving';
+    const copy=definitions[this.type].stages;
+    const nearPeak=stage==='moving'&&elbows.every(e=>e>80)&&elbows.some(e=>e<=105);
+    const message=stage==='complete'?'已完成本组目标':completed?this.metrics.feedback:nearPeak?'幅度接近了，再举高一点，举到接近肩膀再放回':(f.hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 幅度尚未确认':''));
+    const issue:PoseIssue|null=f.controlPenalty>30?'unstable_movement':f.posture<70?'body_alignment':null;
+    this.diagnostics={...this.diagnostics,stage};
+    this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?POSE_ISSUE_COPY[issue].joints:[],calibrated:true,message:f.hint||(issue?POSE_ISSUE_COPY[issue].action:message)}};
+    return this.metrics;
   }
   update(raw:Point[]|null,now:number,aspect=1,world:Point[]|null=null):ExerciseMetrics{
     if(!raw||raw.length!==33||!Number.isFinite(now)||!Number.isFinite(aspect)||aspect<=0||raw.some(p=>!p||![p.x,p.y,p.visibility??0].every(Number.isFinite)))return this.interrupt('未检测到完整人体关键点，请调整入镜范围');
@@ -214,6 +286,7 @@ export class ExtendedExerciseTracker {
       const message=this.ready?'已识别起始姿势，可以开始完整动作':f.start?`保持起始姿势，校准 ${Math.round(progress*100)}%`:f.hint||(this.armOnStart?'请回到本动作起始姿势':'请回到本动作起始姿势，保持两秒');
       this.metrics={...this.metrics,feedback:message,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:this.ready,confidence:f.confidence,message}};return this.metrics;
     }
+    if(this.type==='hammer_curl')return this.updateHammerCurl(f,now);
     if(!f.start){
       if(this.movingAt===null){this.movingAt=now;if(this.type==='standing_leg_curl')this.cycleSide=f.side||null;}
       this.scoring=this.scoring&&f.scorable;this.shift=Math.max(this.shift,Math.abs(f.tilt-this.baseline!.tilt));
