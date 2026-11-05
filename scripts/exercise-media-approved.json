@@ -3775,6 +3775,97 @@
         "史密斯杠反握斜撑",
         "屈肘胸贴杠"
       ]
+    },
+    {
+      "exerciseId": "exdb:0247",
+      "expectedName": "cable wrist curl",
+      "sourceId": "Cable_Wrist_Curl",
+      "sourceSha256": [
+        "af2214f3c033b6365210d238227efbb0416d2715f7b26c91836b6e748e721f42",
+        "7e12e3ffc307bfd880dd6b14bbc37a80c8f5be9ee4b1c3914f4a9daca3280ff7"
+      ],
+      "phases": [
+        "坐姿前臂贴腿掌心向上",
+        "屈腕上举"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0345",
+      "expectedName": "dumbbell lying one arm rear lateral raise",
+      "sourceId": "Dumbbell_Lying_One-Arm_Rear_Lateral_Raise",
+      "sourceSha256": [
+        "42eedff743e124ded8c623942128864744b85da5a6a9a94e850079a63d8e1bc0",
+        "00eab88d3a48a73dd0bea62720fc102e82cce3fbe3da41e9400e27fda69d3267"
+      ],
+      "phases": [
+        "上斜凳俯卧单臂垂铃",
+        "向侧抬起至平行"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0348",
+      "expectedName": "dumbbell lying rear lateral raise",
+      "sourceId": "Dumbbell_Lying_Rear_Lateral_Raise",
+      "sourceSha256": [
+        "09d6633bbd678fe1ec73d140f8b32553286c399af50730c4a05e834e4c26b4eb",
+        "5aa12107279064cb70d4f248b9a78fffa784239ff295c5ed0d74ae377b687530"
+      ],
+      "phases": [
+        "上斜凳俯卧双臂垂铃",
+        "双臂向侧抬起至平行"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0174",
+      "expectedName": "cable judo flip",
+      "sourceId": "Cable_Judo_Flip",
+      "sourceSha256": [
+        "4f1d5e3793f0ce712aa2064e1f37e4e943f6e82ddd28ab600532993ee6161acd",
+        "4cdd74a52abf2ddc7da799acbc6a3eb96e12abb5a892608b919a7be34f4ac221"
+      ],
+      "phases": [
+        "双手胸前握把站立",
+        "转体俯身翻把过肩"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0725",
+      "expectedName": "single arm push-up",
+      "sourceId": "Single-Arm_Push-Up",
+      "sourceSha256": [
+        "216dcaeedf588b1ce8757bdcbd2e021cb9214b74dee48d752a02dd41c1b82b22",
+        "49cb58ab90e9c783a96756b7c68879f8ed63638d94f01c38bb75837db762ad01"
+      ],
+      "phases": [
+        "单臂屈肘下降至底",
+        "单臂推起撑起"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0540",
+      "expectedName": "kettlebell one arm push press",
+      "sourceId": "One-Arm_Kettlebell_Push_Press",
+      "sourceSha256": [
+        "945d1a868ee209801b8d8e0a85fae7c86383616ea5d43d27cdf2f942502dbc79",
+        "62513a62312f540f9cf97343b56fdb8d091a67f9469d2bd15f18d98525deba10"
+      ],
+      "phases": [
+        "单臂架铃于肩",
+        "蹬腿推举过顶"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0548",
+      "expectedName": "kettlebell sumo high pull",
+      "sourceId": "Kettlebell_Sumo_High_Pull",
+      "sourceSha256": [
+        "46d1828b4891d04dca7b5b3c72107f55c51b7204b9b51c827d9e02597e9194ab",
+        "4ea5fa21e606eb864609ae0d4f4107adfedde65f161cbf6b35364da508fa12ba"
+      ],
+      "phases": [
+        "宽站下蹲握铃",
+        "爆发提拉至胸前"
+      ]
     }
   ],
   "videos": [
@@ -4269,6 +4360,30 @@
     {
       "source": "free-exercise-db Close-Grip_Dumbbell_Press → exdb:1731",
       "reason": "照片为双手共握一只哑铃的窄握推举，与条目每手一只哑铃定义不符（与 exdb:0296 的驳回同源）。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_One-Arm_Triceps_Extension → exdb:0362",
+      "reason": "照片为站姿单臂过顶臂屈伸，条目定义为坐凳、一手扶凳支撑的凳上版本，姿势与支撑不符，暂不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Kettlebell_Arnold_Press → exdb:0523",
+      "reason": "照片为单臂推举，条目定义为双臂同时阿诺德推举，单双臂形式不符。"
+    },
+    {
+      "source": "free-exercise-db Kettlebell_Hang_Clean → exdb:0535",
+      "reason": "两帧仅示站姿持铃与低位摆铃，未见架铃接铃关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Kettlebell_Snatch → exdb:0542",
+      "reason": "两帧仅示站姿与低位准备，未见单臂抓举过顶关键位置，不采用。"
+    },
+    {
+      "source": "free-exercise-db Kettlebell_Thruster → exdb:0550",
+      "reason": "两帧仅示胸前持铃站姿与下蹲底位，未见推举过顶锁定阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db Flat_Bench_Leg_Pull-In → exdb:0570",
+      "reason": "照片为仰卧凳面屈腿收腿，与条目坐姿凳边伸腿收腿定义不符，体位不符。"
     }
   ],
   "batch": 15,

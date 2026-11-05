@@ -7918,22 +7918,37 @@
     {
       "id": "exdb:0174",
       "originalName": "cable judo flip",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：图片中握把与转体路径受遮挡，尚未核清绳索方向。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：双手胸前握把站立、转体俯身翻把过肩，与绳索柔道翻转定义一致，文字按照片的转体翻把过程写明并注明交替。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "f1aa6530122ac57e648643eb8176267d09ef5038cfe395e7801087e99bd0e67a",
-        "steps": 8
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Judo_Flip",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Judo_Flip",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "4f1d5e3793f0ce712aa2064e1f37e4e943f6e82ddd28ab600532993ee6161acd",
+            "4cdd74a52abf2ddc7da799acbc6a3eb96e12abb5a892608b919a7be34f4ac221"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0860",
@@ -10703,22 +10718,37 @@
     {
       "id": "exdb:0247",
       "originalName": "cable wrist curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：前臂支撑和坐站方式不一致。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：坐姿、前臂贴腿、掌心向上反握低滑轮直杆、屈腕上举，与绳索腕弯举定义一致；目录正文的站姿凳面支撑写法以照片形式改写为坐姿贴腿支撑。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "299fe08104e2dd2f17e7e0c1bfb829951f803613655aa5ceb83cb9b951845c6e",
-        "steps": 7
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Wrist_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Wrist_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "af2214f3c033b6365210d238227efbb0416d2715f7b26c91836b6e748e721f42",
+            "7e12e3ffc307bfd880dd6b14bbc37a80c8f5be9ee4b1c3914f4a9daca3280ff7"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1407",
@@ -14482,22 +14512,37 @@
     {
       "id": "exdb:0345",
       "originalName": "dumbbell lying one arm rear lateral raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：俯卧凳支撑角度尚未明确，不冒充平凳单臂后束抬举。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：上斜凳俯卧支撑、单臂垂铃、向侧抬起至平行，与俯卧单臂后束侧举定义一致；目录正文的平凳写法以照片的上斜凳支撑形式改写。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "f21b8356b67a36080ec0f13838fd49df773fed8018bf82b4f35c97894850e808",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Lying_One-Arm_Rear_Lateral_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Dumbbell_Lying_One-Arm_Rear_Lateral_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "42eedff743e124ded8c623942128864744b85da5a6a9a94e850079a63d8e1bc0",
+            "00eab88d3a48a73dd0bea62720fc102e82cce3fbe3da41e9400e27fda69d3267"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0346",
@@ -14612,22 +14657,37 @@
     {
       "id": "exdb:0348",
       "originalName": "dumbbell lying rear lateral raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：俯卧凳支撑角度尚未明确，不冒充平凳双臂后束抬举。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：上斜凳俯卧支撑、双臂垂铃、同时向侧抬起至平行，与俯卧双臂后束侧举定义一致；目录正文的平凳写法以照片的上斜凳支撑形式改写。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "33f53c32c650271d0279ba20ecc08a4edf4c62dc3c0f80db08e55694569bcabc",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Lying_Rear_Lateral_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Dumbbell_Lying_Rear_Lateral_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "09d6633bbd678fe1ec73d140f8b32553286c399af50730c4a05e834e4c26b4eb",
+            "5aa12107279064cb70d4f248b9a78fffa784239ff295c5ed0d74ae377b687530"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1735",
@@ -22802,22 +22862,37 @@
     {
       "id": "exdb:0540",
       "originalName": "kettlebell one arm push press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：两帧只有肩前与预蹲，没有过顶位置，缺少完整关键阶段。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：单臂架铃于肩、蹬腿推举过顶锁定，与壶铃单臂借力推举定义一致。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "1fbd45c0f6ea3e4b20393795d2c4a03bebd7a686d13c915b7cf27e7621d4e480",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / One-Arm_Kettlebell_Push_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/One-Arm_Kettlebell_Push_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "945d1a868ee209801b8d8e0a85fae7c86383616ea5d43d27cdf2f942502dbc79",
+            "62513a62312f540f9cf97343b56fdb8d091a67f9469d2bd15f18d98525deba10"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0541",
@@ -23059,22 +23134,37 @@
     {
       "id": "exdb:0548",
       "originalName": "kettlebell sumo high pull",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：仅有深蹲与拉高两帧，尚缺连贯爆发提拉核验。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：宽站下蹲握铃、爆发提拉至胸前肘高且宽，与壶铃相扑高拉定义一致。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "d59a85046f3639d0432a896e79173c92b4eb58f2ca2415a25535402b35ad13cb",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Kettlebell_Sumo_High_Pull",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Kettlebell_Sumo_High_Pull",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "46d1828b4891d04dca7b5b3c72107f55c51b7204b9b51c827d9e02597e9194ab",
+            "4ea5fa21e606eb864609ae0d4f4107adfedde65f161cbf6b35364da508fa12ba"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0549",
@@ -28479,22 +28569,37 @@
     {
       "id": "exdb:0725",
       "originalName": "single arm push-up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源描述交替移手，图片为单手持续支撑，单臂形式未核清。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：一手撑地、一手背于身后、单臂屈肘下降与推起，与条目名称「单臂俯卧撑」一致；目录正文的交替伸手写法以名称为准改写为真正单臂形式。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "c56989f2d0ac065893b056198549607b663924c0051cf5ef3cd7ea570e0aec72",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Single-Arm_Push-Up",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Single-Arm_Push-Up",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "216dcaeedf588b1ce8757bdcbd2e021cb9214b74dee48d752a02dd41c1b82b22",
+            "49cb58ab90e9c783a96756b7c68879f8ed63638d94f01c38bb75837db762ad01"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3645",

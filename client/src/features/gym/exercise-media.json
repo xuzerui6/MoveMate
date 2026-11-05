@@ -14787,6 +14787,265 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:0247": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/cable_wrist_curl-0.438709017ddc.webp",
+          "sha256": "438709017ddcbe0a90984e422ca94f98c1dbf96169379c67cefc66cc7ca8dfb6",
+          "bytes": 46720,
+          "distribution": "repository",
+          "phase": "坐姿前臂贴腿掌心向上",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/cable_wrist_curl-1.080ddd767860.webp",
+          "sha256": "080ddd767860ebe765f78ba901e39fad43af4c9a871c27c14cc421e419a295b5",
+          "bytes": 47816,
+          "distribution": "repository",
+          "phase": "屈腕上举",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Wrist_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Wrist_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "af2214f3c033b6365210d238227efbb0416d2715f7b26c91836b6e748e721f42",
+            "7e12e3ffc307bfd880dd6b14bbc37a80c8f5be9ee4b1c3914f4a9daca3280ff7"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0345": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/dumbbell_lying_one-arm_rear_lateral_raise-0.42819c02b25d.webp",
+          "sha256": "42819c02b25d43ba0ce94c844e8aeb34c67bf9037b810dd3c850b8193a060ba9",
+          "bytes": 44982,
+          "distribution": "repository",
+          "phase": "上斜凳俯卧单臂垂铃",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/dumbbell_lying_one-arm_rear_lateral_raise-1.6c0d4f0594ca.webp",
+          "sha256": "6c0d4f0594ca32a141d6c8aa85c09790bc4f1538f811780966394a50451b59ca",
+          "bytes": 44018,
+          "distribution": "repository",
+          "phase": "向侧抬起至平行",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Lying_One-Arm_Rear_Lateral_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Dumbbell_Lying_One-Arm_Rear_Lateral_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "42eedff743e124ded8c623942128864744b85da5a6a9a94e850079a63d8e1bc0",
+            "00eab88d3a48a73dd0bea62720fc102e82cce3fbe3da41e9400e27fda69d3267"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0348": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/dumbbell_lying_rear_lateral_raise-0.2aad5b7ab8c5.webp",
+          "sha256": "2aad5b7ab8c5d654cd2a42c34fe56dd57eaadd8e79c1824b7b46c1ed10be962f",
+          "bytes": 45028,
+          "distribution": "repository",
+          "phase": "上斜凳俯卧双臂垂铃",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/dumbbell_lying_rear_lateral_raise-1.e45f9dc0e19b.webp",
+          "sha256": "e45f9dc0e19bd40c36d00fc4d1874204ddd300b4d5bc19d27b8101f0304a712b",
+          "bytes": 45804,
+          "distribution": "repository",
+          "phase": "双臂向侧抬起至平行",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Dumbbell_Lying_Rear_Lateral_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Dumbbell_Lying_Rear_Lateral_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "09d6633bbd678fe1ec73d140f8b32553286c399af50730c4a05e834e4c26b4eb",
+            "5aa12107279064cb70d4f248b9a78fffa784239ff295c5ed0d74ae377b687530"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0174": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/cable_judo_flip-0.1ffd437073b3.webp",
+          "sha256": "1ffd437073b35e8bb578104258ed4b3e98bfc22cf757ee796f490ea52dc17722",
+          "bytes": 40078,
+          "distribution": "repository",
+          "phase": "双手胸前握把站立",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/cable_judo_flip-1.4d81201c3f8a.webp",
+          "sha256": "4d81201c3f8a07195f146d4deab40c1ea4f3cd00c5b263b8c6283147bc84dcf5",
+          "bytes": 40824,
+          "distribution": "repository",
+          "phase": "转体俯身翻把过肩",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Cable_Judo_Flip",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Cable_Judo_Flip",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "4f1d5e3793f0ce712aa2064e1f37e4e943f6e82ddd28ab600532993ee6161acd",
+            "4cdd74a52abf2ddc7da799acbc6a3eb96e12abb5a892608b919a7be34f4ac221"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0725": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/single-arm_push-up-0.ee984066a01e.webp",
+          "sha256": "ee984066a01e3772957c0795b617e8de006aa299ffa195aebaaf366fc17a8d6c",
+          "bytes": 46422,
+          "distribution": "repository",
+          "phase": "单臂屈肘下降至底",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/single-arm_push-up-1.1af6bb55b9f1.webp",
+          "sha256": "1af6bb55b9f12126842c482d56cd7a4d1603d4a2315b037269e7af6aa6a1e322",
+          "bytes": 47008,
+          "distribution": "repository",
+          "phase": "单臂推起撑起",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Single-Arm_Push-Up",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Single-Arm_Push-Up",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "216dcaeedf588b1ce8757bdcbd2e021cb9214b74dee48d752a02dd41c1b82b22",
+            "49cb58ab90e9c783a96756b7c68879f8ed63638d94f01c38bb75837db762ad01"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0540": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/one-arm_kettlebell_push_press-0.ea1c6911c2d4.webp",
+          "sha256": "ea1c6911c2d4c45fc6dc4fc19ea6501b23748b11b784c0f5ecf9482265a7dc08",
+          "bytes": 29850,
+          "distribution": "repository",
+          "phase": "单臂架铃于肩",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/one-arm_kettlebell_push_press-1.2a1aadc7b56d.webp",
+          "sha256": "2a1aadc7b56d4f67843b3382163cd1c7a3cb7851dee5ec1e439c10fc80f53e79",
+          "bytes": 33828,
+          "distribution": "repository",
+          "phase": "蹬腿推举过顶",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / One-Arm_Kettlebell_Push_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/One-Arm_Kettlebell_Push_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "945d1a868ee209801b8d8e0a85fae7c86383616ea5d43d27cdf2f942502dbc79",
+            "62513a62312f540f9cf97343b56fdb8d091a67f9469d2bd15f18d98525deba10"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0548": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/kettlebell_sumo_high_pull-0.d74dc8a0254b.webp",
+          "sha256": "d74dc8a0254b8662e824ea6a70302d8ee2223384bcc7bd6bd4589339af048845",
+          "bytes": 30360,
+          "distribution": "repository",
+          "phase": "宽站下蹲握铃",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/kettlebell_sumo_high_pull-1.c100da026750.webp",
+          "sha256": "c100da026750c73e62faef4d7787b7ae74e3f55c599bd594e132b949a791d082",
+          "bytes": 28878,
+          "distribution": "repository",
+          "phase": "爆发提拉至胸前",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Kettlebell_Sumo_High_Pull",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Kettlebell_Sumo_High_Pull",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "46d1828b4891d04dca7b5b3c72107f55c51b7204b9b51c827d9e02597e9194ab",
+            "4ea5fa21e606eb864609ae0d4f4107adfedde65f161cbf6b35364da508fa12ba"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }
