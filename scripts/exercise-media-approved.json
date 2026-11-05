@@ -4048,6 +4048,110 @@
         "双手握铃平板支撑",
         "屈肘身体贴近铃面"
       ]
+    },
+    {
+      "exerciseId": "exdb:0539",
+      "expectedName": "kettlebell one arm military press to the side",
+      "sourceId": "One-Arm_Kettlebell_Military_Press_To_The_Side",
+      "sourceSha256": [
+        "3e7b4d96e647d4a67aadb86ab3ccfe4a22c8eecfa1548652d359df987322b92d",
+        "6e29adf33a4f66d503f18456eac94f1fba6c03cb1f20ab0d1e1b351d5890e357"
+      ],
+      "phases": [
+        "单臂架铃站立",
+        "侧倾推举过顶"
+      ]
+    },
+    {
+      "exerciseId": "exdb:2459",
+      "expectedName": "tire flip",
+      "sourceId": "Tire_Flip",
+      "sourceSha256": [
+        "7ef98dd2f945f896185742e7a662a8f41f72f477d1a912f92144561a34cbdffd",
+        "86c7540d92d8b574b63958eb91f2fe3c63d95f0e9bed4b46f97a83100f9ac5e4"
+      ],
+      "phases": [
+        "下蹲握胎起步",
+        "发力推翻轮胎"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0851",
+      "expectedName": "weighted sissy squat",
+      "sourceId": "Weighted_Sissy_Squat",
+      "sourceSha256": [
+        "6607652c427d440ee00bb58894e57688fc253dc94649475851bf5c16537efbff",
+        "45d8d70af3e85e8f0445ce4e5710e02bc28a4e96663dacbe85fb9e67373d81f8"
+      ],
+      "phases": [
+        "胸前持片站立",
+        "提踵屈膝下蹲"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0065",
+      "expectedName": "barbell one arm floor press",
+      "sourceId": "One_Arm_Floor_Press",
+      "sourceSha256": [
+        "7a60bb3b5449fd07be551ad307fb149151feff39b4f9b0d59a16b7405ac3c646",
+        "d566e7cd016add0e028b49cf94f1f0784c7707ff7b420349094cc703359dfe41"
+      ],
+      "phases": [
+        "仰卧单手握杠屈肘",
+        "单臂推杠至伸直"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0788",
+      "expectedName": "standing behind neck press",
+      "sourceId": "Standing_Barbell_Press_Behind_Neck",
+      "sourceSha256": [
+        "f98bd39ebddccccc758e31b6f3a746f5bb590dc901050bf906d4cfba1bb92451",
+        "cac1b7091ac11b007f36a7192181be9552203037c0f552b5e5ea9c41ddf594ed"
+      ],
+      "phases": [
+        "站姿杠铃置于颈后",
+        "推举过顶锁定"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0519",
+      "expectedName": "kettlebell alternating press on floor",
+      "sourceId": "Alternating_Floor_Press",
+      "sourceSha256": [
+        "eab274fa6d8b6db1f55ba381af4d6bc52170bf51baf8348e5353fefee904371c",
+        "82534ca9ec9efc5426401484bdbd9d0e5e02639d2b5fa56401ba277452019646"
+      ],
+      "phases": [
+        "仰卧双铃准备",
+        "交替推举一侧至锁定"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0794",
+      "expectedName": "standing lateral stretch",
+      "sourceId": "Standing_Lateral_Stretch",
+      "sourceSha256": [
+        "79311cdaedebd74d4a89346bef2fd45a67ee9babedb2ebd19e8abdcd2689f983",
+        "b2dda02b97a2aa213d9afd5402352bcd8d96487127a969c3b20e6c2229dfd589"
+      ],
+      "phases": [
+        "站立单臂上举准备",
+        "向对侧侧屈拉伸"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0310",
+      "expectedName": "dumbbell front raise",
+      "sourceId": "Front_Two-Dumbbell_Raise",
+      "sourceSha256": [
+        "0214f23fefda90518ded2efffe5da6e6aa15cf577a4e6891a49852763296e28f",
+        "e6ae004f166cd9fd64a11ddc147a7f0b4c1ceb9e7921ac996fb6ef34e85079b4"
+      ],
+      "phases": [
+        "双铃大腿前准备",
+        "双臂前举至肩高"
+      ]
     }
   ],
   "videos": [
@@ -4622,9 +4726,33 @@
     {
       "source": "free-exercise-db Bottoms-Up_Clean_From_The_Hang_Position → exdb:0525",
       "reason": "两帧均为悬垂低位，未见底部朝上架肩关键位，不采用。"
+    },
+    {
+      "source": "free-exercise-db One_Arm_Dumbbell_Preacher_Curl → exdb:1672",
+      "reason": "照片为普通牧师凳弯举，未见佐特曼关键的顶部转腕与旋前下放阶段，握法流程与条目定义不符，不采用。"
+    },
+    {
+      "source": "free-exercise-db Chair_Leg_Extended_Stretch → exdb:1548",
+      "reason": "目录要求伸腿时脚跟保持在地面上，照片伸腿时脚离地抬起，且未见前倾拉伸步骤，不采用。"
+    },
+    {
+      "source": "free-exercise-db Incline_Push-Up_Depth_Jump → exdb:0492",
+      "reason": "照片为脚垫高的俯卧撑上下位，未见深度跳的跳跃阶段，且与目录手垫高形式不符，不采用。"
+    },
+    {
+      "source": "free-exercise-db Rope_Climb → exdb:0680",
+      "reason": "两帧仅示抓绳上攀，足部锁绳与控制下降方式仍不可辨，不采用（沿用此前暂挂口径）。"
+    },
+    {
+      "source": "free-exercise-db Incline_Dumbbell_Curl → exdb:0315",
+      "reason": "照片为一臂上举、一臂下放的交替形式，与本条双侧同时屈肘定义不符（交替形式属 0318），不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Hanging_Leg_Raise → exdb:0475",
+      "reason": "照片抬腿时屈膝约90°，与本条双腿伸展、不是屈膝举腿的定义直接冲突，不替换既有图解。"
     }
   ],
-  "batch": 19,
+  "batch": 20,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",

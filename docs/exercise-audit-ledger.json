@@ -3992,22 +3992,37 @@
     {
       "id": "exdb:0065",
       "originalName": "barbell one arm floor press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：仰卧单手掌心向上推杠，长杠单手平衡与握点未说明，不能套单手哑铃图。",
+      "reason": "真人实拍双帧对照：仰卧单手握杠屈肘与推至伸直关键位，与杠铃单臂地板推定义一致；目录屈膝写法已按照片的双腿伸直形式改写。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "be3cbae07d588fcdf9764366926e3b39059e8c732f839d928f6a130f51c5d4cb",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / One_Arm_Floor_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/One_Arm_Floor_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "7a60bb3b5449fd07be551ad307fb149151feff39b4f9b0d59a16b7405ac3c646",
+            "d566e7cd016add0e028b49cf94f1f0784c7707ff7b420349094cc703359dfe41"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0066",
@@ -13020,7 +13035,7 @@
       "originalName": "dumbbell front raise",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "2026-10-29：完整来源文字与各阶段原创配置逐项对照；已对照本地渲染逐帧检查。原创静态图，不是实拍、连续视频或专业教学认证。",
+      "reason": "真人实拍双帧替换既有原创图解：双手各持一铃站姿、双臂同时前举至肩高，与条目定义一致；图解文件已删除。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -13029,24 +13044,23 @@
         "sourceRecordSha256": "e82421715e0bae960e0e88814bab8c47162679a882dd46c1478b258b081b4567",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0310",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Front_Two-Dumbbell_Raise",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Front_Two-Dumbbell_Raise",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "125f85a1064f897844e9c55f030bac617fdcf78b005c24aa727e1dab72294115",
-            "ae75c5a4c77402f979363eafb1ed15852448a34113dd58f6528bf9abe112ee3e",
-            "3f3cb246b1241819f0b54adf160c044e99a6c98e3e6d90ccbe63af46f181b606"
+            "0214f23fefda90518ded2efffe5da6e6aa15cf577a4e6891a49852763296e28f",
+            "e6ae004f166cd9fd64a11ddc147a7f0b4c1ceb9e7921ac996fb6ef34e85079b4"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -22456,22 +22470,37 @@
     {
       "id": "exdb:0519",
       "originalName": "kettlebell alternating press on floor",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤、支撑和器械：双手各持壶铃、仰卧屈膝、交替推清楚；仍需核对钟体在手腕外侧的位置和交替阶段，不以哑铃图替代。",
+      "reason": "真人实拍双帧对照：仰卧双铃与一侧下放、一侧伸直的交替关键位，与壶铃交替地板推举定义一致；目录屈膝写法已按照片的双腿伸直形式改写，文字注明交替与镜像。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "12418a47b70556c8da0595e148b694b1c3b8ef8f2b72e0cc7659613961ced323",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Alternating_Floor_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Alternating_Floor_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "eab274fa6d8b6db1f55ba381af4d6bc52170bf51baf8348e5353fefee904371c",
+            "82534ca9ec9efc5426401484bdbd9d0e5e02639d2b5fa56401ba277452019646"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0521",
@@ -22947,22 +22976,37 @@
     {
       "id": "exdb:0539",
       "originalName": "kettlebell one arm military press to the side",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：名称含侧向推举，来源却是普通垂直肩推，候选有侧倾，需核对变式。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：单臂架铃站立与侧倾推举过顶关键位，与「壶铃单臂侧向军式推举」名称定义一致；目录通用推举写法已按照片的侧倾形式补充。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "752eab69ad9d38bb2a2e1e8805bba7c8096706c9c4b50527ec95124f0131e168",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / One-Arm_Kettlebell_Military_Press_To_The_Side",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/One-Arm_Kettlebell_Military_Press_To_The_Side",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "3e7b4d96e647d4a67aadb86ab3ccfe4a22c8eecfa1548652d359df987322b92d",
+            "6e29adf33a4f66d503f18456eac94f1fba6c03cb1f20ab0d1e1b351d5890e357"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0540",
@@ -30617,22 +30661,37 @@
     {
       "id": "exdb:0788",
       "originalName": "standing behind neck press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：站姿颈后正握过顶推明确；颈后支点及手肘位置需要专门核对，不能用肩前肩推图。",
+      "reason": "真人实拍双帧对照：颈后握杠站立与推举过顶关键位，与站姿颈后推举定义一致。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "ac07dfaa571647375edbaa7ac203f27b02a7399f4af388c3429976c751219c0e",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Barbell_Press_Behind_Neck",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Barbell_Press_Behind_Neck",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "f98bd39ebddccccc758e31b6f3a746f5bb590dc901050bf906d4cfba1bb92451",
+            "cac1b7091ac11b007f36a7192181be9552203037c0f552b5e5ea9c41ddf594ed"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1490",
@@ -30751,7 +30810,7 @@
       "originalName": "standing lateral stretch",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。",
+      "reason": "真人实拍双帧替换既有原创图解：单臂上举过头向对侧侧屈，与「站姿体侧拉伸」名称定义一致；原双臂侧展写法已按照片的单臂上举形式改写；图解文件已删除。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -30760,24 +30819,23 @@
         "sourceRecordSha256": "c7419e36389a25098107077553ee82df8f72f6e451dfb8c3a5ac6b6c0f2f3dad",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0794",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Standing_Lateral_Stretch",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Lateral_Stretch",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "12640e3d8261c1eeba0118d3ad849ec911558f7e789f41f3b2cdd8ff0cb762cc",
-            "8839313871bcf3f2a621f4019fcd858d3ddf0374a95674a2a813b45fdab6a2ab",
-            "976bb8cbb2443fd7989415c0723fb8d58f9c7fb209740ce36310ef19d655df04"
+            "79311cdaedebd74d4a89346bef2fd45a67ee9babedb2ebd19e8abdcd2689f983",
+            "b2dda02b97a2aa213d9afd5402352bcd8d96487127a969c3b20e6c2229dfd589"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -31262,22 +31320,37 @@
     {
       "id": "exdb:2459",
       "originalName": "tire flip",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：轮胎翻举两帧缺少推过与落胎阶段，复杂动作尚待核验。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：下蹲握胎起步与推翻进行中的关键位，与翻轮胎定义一致。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a7575501e213b21e85b7c6f6d51bfdeaeb0d599e4c02cba46b201731316f5797",
-        "steps": 7
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Tire_Flip",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Tire_Flip",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "7ef98dd2f945f896185742e7a662a8f41f72f477d1a912f92144561a34cbdffd",
+            "86c7540d92d8b574b63958eb91f2fe3c63d95f0e9bed4b46f97a83100f9ac5e4"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0811",
@@ -32372,22 +32445,37 @@
     {
       "id": "exdb:0851",
       "originalName": "weighted sissy squat",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源是普通蹲，图片为膝主导负重西西蹲，形式矛盾。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：胸前持片提踵屈膝后仰下蹲，与「负重西西蹲」名称定义一致；目录通用深蹲写法已按照片的西西蹲形式改写。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "9ed5b23641b7ec1c96f839a35674f12389f3e07cd38e3b90fad8d861bd5b5473",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Weighted_Sissy_Squat",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Weighted_Sissy_Squat",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "6607652c427d440ee00bb58894e57688fc253dc94649475851bf5c16537efbff",
+            "45d8d70af3e85e8f0445ce4e5710e02bc28a4e96663dacbe85fb9e67373d81f8"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0852",
