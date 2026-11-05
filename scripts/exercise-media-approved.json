@@ -4763,6 +4763,110 @@
         "单手握壶铃置于肩部架铃位、肘锁定",
         "躯干侧屈下压、持铃臂锁定过顶、另一手触地"
       ]
+    },
+    {
+      "exerciseId": "exdb:1512",
+      "expectedName": "all fours squad stretch",
+      "sourceId": "All_Fours_Quad_Stretch",
+      "sourceSha256": [
+        "29ae8af3f71c422b5bf0491404bd80c33fd57aa0efe6f559e7ff3f51f6f5038b",
+        "8d976af0061414a6a864f673648d6a6a7d3552a6adfff75cb318620d5489ce15"
+      ],
+      "phases": [
+        "四肢着地、双手撑地",
+        "一腿向后伸直、屈膝手抓脚背拉伸"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0083",
+      "expectedName": "barbell rollerout from bench",
+      "sourceId": "Barbell_Rollout_from_Bench",
+      "sourceSha256": [
+        "1dd1bcffb40208fe0e8b6a19439b905a9f9a52efc7bba0b0c402654d3fcb5a18",
+        "2d3af3094b6fa5d14850599dddae8d49e04c66524abd5fc24151e28fe46adb9b"
+      ],
+      "phases": [
+        "双膝跪于凳面、双手握杠铃置于地面",
+        "向前滚动杠铃至身体完全伸展"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0169",
+      "expectedName": "cable incline bench press",
+      "sourceId": "Incline_Cable_Chest_Press",
+      "sourceSha256": [
+        "b952ca589892227e0447f399b8b8345bd6b9e3852bca84b05bb0ac9e479509f6",
+        "7c50d192c5e841b67c0edb35505cbd275a8d55c66d05d456b9b3886e99af9c1f"
+      ],
+      "phases": [
+        "上斜仰卧、双手握绳索手柄于胸前",
+        "双臂伸直将手柄向前上方推出"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0229",
+      "expectedName": "cable standing inner curl",
+      "sourceId": "Standing_Biceps_Cable_Curl",
+      "sourceSha256": [
+        "ccfe9ea6c72996c905bc82c032facf110246442ef6ccf28babee775277f0bc29",
+        "5aa3493077fbf138f40bd71a476880395275599ff72ca30f04ce0a15313c201b"
+      ],
+      "phases": [
+        "面向绳索机站立、反手握柄双臂下垂",
+        "屈肘将手柄弯举至肩部"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0368",
+      "expectedName": "dumbbell over bench revers wrist curl",
+      "sourceId": "Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench",
+      "sourceSha256": [
+        "7044d9ea82a03cf5d8b1a9f76ffce9e532a228dde51a9b7c3569868bed83268c",
+        "dd0d434fc08e805cf8eb9caefb2d90b52f66448d61594886d181523de5e3672f"
+      ],
+      "phases": [
+        "凳侧跪姿、前臂置凳面掌心向下、腕悬空",
+        "伸腕将哑铃向上抬起"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0562",
+      "expectedName": "landmine 180",
+      "sourceId": "Landmine_180s",
+      "sourceSha256": [
+        "e4cc6ed6721e7a4a8f61271412e9f367565c77bbdfa706098d32234d5a3c0da8",
+        "89b1e75dbf0816da15ed8b09161cbf5c059954b43a8e7282f18b75a83819b214"
+      ],
+      "phases": [
+        "双手握杠铃于胸前、躯干转向一侧",
+        "杠铃摆向对侧臀部、转体 180 度"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0064",
+      "expectedName": "barbell one arm bent over row",
+      "sourceId": "Bent_Over_One-Arm_Long_Bar_Row",
+      "sourceSha256": [
+        "e1627c45899d270e579dadf449c7705be29927cfdfb2cd28ed8eb3b1ceda6a4f",
+        "a8f091eae74572605a0794cf36850ea182c2f26c544c7d02a4814fc8fe5f72f6"
+      ],
+      "phases": [
+        "俯身单手正握长杠铃、远端固定",
+        "屈肘将杠铃拉向胸部"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0302",
+      "expectedName": "dumbbell decline fly",
+      "sourceId": "Decline_Dumbbell_Flyes",
+      "sourceSha256": [
+        "a8e11c60bc8599ed94790703a4085effd3a28038c5fa12bb90eb8c28d99b997a",
+        "50c70bfb53eccef4199a1c12b30de2edad55f439c68b5908da2be078b2630dae"
+      ],
+      "phases": [
+        "下斜仰卧、双铃置于胸前上方掌心相对",
+        "双铃以宽弧线向两侧放低"
+      ]
     }
   ],
   "videos": [
@@ -5477,9 +5581,29 @@
     {
       "source": "free-exercise-db Straight-Arm_Dumbbell_Pullover → exdb:0375",
       "reason": "照片为肩部横卧凳面、髋部悬空的上拉姿势，条目定义为头与躯干沿凳面支撑的纵卧姿势，支撑形式不符，不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Low_Cable_Triceps_Extension → exdb:0149",
+      "reason": "照片为仰卧平凳双臂绳索臂屈伸，条目定义为站姿单臂交替臂屈伸，体位与单双臂均不符。"
+    },
+    {
+      "source": "free-exercise-db Front_Dumbbell_Raise → exdb:0309",
+      "reason": "照片为单臂上举、另一臂下垂的前平举，条目未定义交替（与第十三批 Front_Dumbbell_Raise → exdb:0310 驳回同理）。"
+    },
+    {
+      "source": "free-exercise-db Incline_Dumbbell_Curl → exdb:0317",
+      "reason": "照片为一臂上举、一臂下放的交替形式，与本条双侧同时屈肘定义不符（与 Incline_Dumbbell_Curl → exdb:0315 驳回同理）。"
+    },
+    {
+      "source": "free-exercise-db Plie_Dumbbell_Squat → exdb:1760",
+      "reason": "照片为宽站距、哑铃下垂于双腿之间的 plié 深蹲，条目定义为双手托铃于胸前的高脚杯深蹲，持铃位置与站距不符。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_One-Arm_Triceps_Extension → exdb:0354",
+      "reason": "照片为站姿单臂过顶臂屈伸，条目定义为俯身单臂臂屈伸（kickback），体位与动作形式不符。"
     }
   ],
-  "batch": 26,
+  "batch": 27,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",

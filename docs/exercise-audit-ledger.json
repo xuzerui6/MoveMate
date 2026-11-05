@@ -278,22 +278,37 @@
     {
       "id": "exdb:1512",
       "originalName": "all fours squad stretch",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源同时说腿向后伸直又保持膝弯曲，且未说明如何形成股四头肌拉伸；不能确定腿部摆位。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：四肢着地支撑、一腿向后伸直屈膝、手抓脚背拉向臀部清晰，与条目定义一致；目录「腿向后伸直又保持膝弯曲、臀部降至地面」写法已按照片的屈膝抓脚拉伸改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "5686c34241f35f5af9275b0164aa11452c1d6f410383b0db9d1f80aaf3fb3c9d",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / All_Fours_Quad_Stretch",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/All_Fours_Quad_Stretch",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "29ae8af3f71c422b5bf0491404bd80c33fd57aa0efe6f559e7ff3f51f6f5038b",
+            "8d976af0061414a6a864f673648d6a6a7d3552a6adfff75cb318620d5489ce15"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0006",
@@ -3970,22 +3985,37 @@
     {
       "id": "exdb:0064",
       "originalName": "barbell one arm bent over row",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：单手握一根杠铃拉胸，没有说明握中央还是单端地雷杆固定，不能改成另一种器械形式。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：俯身单手正握长杠铃一端、远端固定、拉向胸部清晰，与条目定义一致；2026-10-29 针对 Gym Visual 候选的旧挂起（单手握杠形式不明）不适用于本实拍，本实拍握杠形式明确。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "8a2971842a9bdec622c36056e0c0b1021ab0932e973ebd1ba72727aed85f43b6",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Bent_Over_One-Arm_Long_Bar_Row",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Bent_Over_One-Arm_Long_Bar_Row",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "e1627c45899d270e579dadf449c7705be29927cfdfb2cd28ed8eb3b1ceda6a4f",
+            "a8f091eae74572605a0794cf36850ea182c2f26c544c7d02a4814fc8fe5f72f6"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0065",
@@ -4816,22 +4846,37 @@
     {
       "id": "exdb:0083",
       "originalName": "barbell rollerout from bench",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文跪地而杠铃在凳上，与名称凳上前滚的承重方式不清，凳面运动路径需核对。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：双膝跪于凳面、杠铃置于身前地面、向前滚动至身体完全伸展清晰，与名称「杠铃凳上前滚」一致；目录「跪在地板上、杠铃放在凳上」写法已按照片的跪凳滚地改写（名称为准）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "120f4496fba43c0ae3014cf4f39f2d18955fb62b9abbb150265b2762e4c53274",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Barbell_Rollout_from_Bench",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Barbell_Rollout_from_Bench",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "1dd1bcffb40208fe0e8b6a19439b905a9f9a52efc7bba0b0c402654d3fcb5a18",
+            "2d3af3094b6fa5d14850599dddae8d49e04c66524abd5fc24151e28fe46adb9b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0085",
@@ -7807,22 +7852,37 @@
     {
       "id": "exdb:0169",
       "originalName": "cable incline bench press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：面向高滑轮坐45度凳再向前上推，实际绳索受力与凳朝向存疑。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：45 度上斜仰卧、双手握绳索手柄于胸前与向前上方推至双臂伸直清晰，与条目定义一致；目录「坐姿面向缆绳机」写法已按照片的上斜仰卧推举改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "1489e95a74f7267559b293973304d4f834b5fd9bb9d35791005dba60bc92483d",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Incline_Cable_Chest_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Incline_Cable_Chest_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "b952ca589892227e0447f399b8b8345bd6b9e3852bca84b05bb0ac9e479509f6",
+            "7c50d192c5e841b67c0edb35505cbd275a8d55c66d05d456b9b3886e99af9c1f"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1318",
@@ -10187,22 +10247,37 @@
     {
       "id": "exdb:0229",
       "originalName": "cable standing inner curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题inner，正文普通肘贴身向肩弯举，缺跨身或外旋等内侧路径。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站姿面向缆绳机、反手握柄掌心朝上、肘贴身弯举至肩部清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "0407a73693fcca1f625bd57daa6e0def0446854a7ace917fe03c9bc893c9eb1d",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Biceps_Cable_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Biceps_Cable_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "ccfe9ea6c72996c905bc82c032facf110246442ef6ccf28babee775277f0bc29",
+            "5aa3493077fbf138f40bd71a476880395275599ff72ca30f04ce0a15313c201b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0230",
@@ -12923,7 +12998,7 @@
       "originalName": "dumbbell decline fly",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：下斜仰卧、双脚固定、头部低于臀部、双铃掌心相对置于胸前上方与宽弧线向两侧放低清晰，与条目定义一致；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -12932,24 +13007,23 @@
         "sourceRecordSha256": "d4a47d10eb377808b0678d527f66113868ba716e99a3ef328926dfea4a94d313",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0302",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Decline_Dumbbell_Flyes",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Decline_Dumbbell_Flyes",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "da707da5353b4c76f1942cd8fa0fc3c7d18d518668da85b987fd927402bf5597",
-            "dd7c40012e50af6260cf05ff79496e672ac873c8bf437072535e5fce96985446",
-            "8cbb248adfffad4e991724548246eff74a1fedaae232abe4efc3df2bd29f0949"
+            "a8e11c60bc8599ed94790703a4085effd3a28038c5fa12bb90eb8c28d99b997a",
+            "50c70bfb53eccef4199a1c12b30de2edad55f439c68b5908da2be078b2630dae"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -16112,22 +16186,37 @@
     {
       "id": "exdb:0368",
       "originalName": "dumbbell over bench revers wrist curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：双前臂撑凳、正握伸腕明确，仍需腕近景与凳边接触，不用坐姿大腿支撑图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：凳侧跪姿、前臂置凳面掌心向下、腕悬空伸腕上抬清晰，与条目定义一致；目录「坐在长凳上」写法已按照片的凳侧跪姿改写（与 exdb:0369 掌心向上版同一拍摄形式）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "75d608e27ddb45640e181a663d8565e45c22bff869c804df350c109fe36ba929",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "7044d9ea82a03cf5d8b1a9f76ffce9e532a228dde51a9b7c3569868bed83268c",
+            "dd0d434fc08e805cf8eb9caefb2d90b52f66448d61594886d181523de5e3672f"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0369",
@@ -24140,22 +24229,37 @@
     {
       "id": "exdb:0562",
       "originalName": "landmine 180",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：摆动左右路径可辨，但未交代杠另一端地雷固定，手位/轴点不能确认，不能用自由杠转体代替。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：双手握杠铃于胸前、杠铃远端固定于地雷架、躯干转体摆向两侧臀部清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "385c92faccf61c3e97aa69c0bb349b71d611c92a810a68daf7682812a4aab94e",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Landmine_180s",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Landmine_180s",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "e4cc6ed6721e7a4a8f61271412e9f367565c77bbdfa706098d32234d5a3c0da8",
+            "89b1e75dbf0816da15ed8b09161cbf5c059954b43a8e7282f18b75a83819b214"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3237",

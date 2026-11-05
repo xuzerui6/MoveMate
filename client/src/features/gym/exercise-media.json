@@ -12916,53 +12916,6 @@
         }
       ]
     },
-    "exdb:0302": {
-      "kind": "illustration",
-      "note": "下斜凳、双脚固定、头部低于臀部，双手各一铃掌心相对置于胸前上方；双铃以宽弧线向两侧放低，再挤压胸部拉回起始。凳面下斜方向与上斜飞鸟相反。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0302-0.6e6a9b59d3eb.webp",
-          "bytes": 6422,
-          "sha256": "6e6a9b59d3ebd6695100b6897f47abf2ac2f526fb9a9332532835f71f0358536",
-          "phase": "下斜·双脚固定·双铃胸前上方",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0302-1.4692cc370862.webp",
-          "bytes": 7548,
-          "sha256": "4692cc3708623f7ae07e40d3ae46ecc4e98e9dd45b4a2c6321e3cb30eb8ba151",
-          "phase": "宽弧线向两侧放低",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0302-2.6e6a9b59d3eb.webp",
-          "bytes": 6422,
-          "sha256": "6e6a9b59d3ebd6695100b6897f47abf2ac2f526fb9a9332532835f71f0358536",
-          "phase": "挤压胸部拉回起始",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0302",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "da707da5353b4c76f1942cd8fa0fc3c7d18d518668da85b987fd927402bf5597",
-            "dd7c40012e50af6260cf05ff79496e672ac873c8bf437072535e5fce96985446",
-            "8cbb248adfffad4e991724548246eff74a1fedaae232abe4efc3df2bd29f0949"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
     "exdb:0049": {
       "kind": "illustration",
       "note": "脸朝下俯卧 45 度上斜凳、胸部靠垫、双脚平放地面，正手握杠略宽于肩悬于胸前下方；拉向胸部并挤压肩胛，再控制下放。胸托支撑，与站姿俯身划船不同。 原创静态三阶段示意，不是连续视频。",
@@ -16909,6 +16862,302 @@
           "sourceSha256": [
             "f2bd3540c35f63e5cacae3ac4d0dc63c05ac9b2db86b18ddd8596dacac7b2684",
             "3d578b1f133a889b046f2b412521145168ad4ef79e49ef200233dbb266f71875"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1512": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/all_fours_quad_stretch-0.b07df59dc375.webp",
+          "sha256": "b07df59dc37500809b2817de4530c272935eb1c2417b11adf9379615a425af00",
+          "bytes": 29244,
+          "distribution": "repository",
+          "phase": "四肢着地、双手撑地",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/all_fours_quad_stretch-1.da78bfb71e3c.webp",
+          "sha256": "da78bfb71e3c8fa16a0a4a99f829b9489bf4691be8588575c941c40e6da5eccb",
+          "bytes": 30596,
+          "distribution": "repository",
+          "phase": "一腿向后伸直、屈膝手抓脚背拉伸",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / All_Fours_Quad_Stretch",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/All_Fours_Quad_Stretch",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "29ae8af3f71c422b5bf0491404bd80c33fd57aa0efe6f559e7ff3f51f6f5038b",
+            "8d976af0061414a6a864f673648d6a6a7d3552a6adfff75cb318620d5489ce15"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0083": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/barbell_rollout_from_bench-0.9d46b19977d9.webp",
+          "sha256": "9d46b19977d9efded5536d97d66b7e60a4082102529562a7ce56f783d47aa4c2",
+          "bytes": 40510,
+          "distribution": "repository",
+          "phase": "双膝跪于凳面、双手握杠铃置于地面",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/barbell_rollout_from_bench-1.9fa428c5e634.webp",
+          "sha256": "9fa428c5e634c80e1f5d43b4c966e3570a494149e57edac2c52490a84867afdc",
+          "bytes": 38556,
+          "distribution": "repository",
+          "phase": "向前滚动杠铃至身体完全伸展",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Barbell_Rollout_from_Bench",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Barbell_Rollout_from_Bench",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "1dd1bcffb40208fe0e8b6a19439b905a9f9a52efc7bba0b0c402654d3fcb5a18",
+            "2d3af3094b6fa5d14850599dddae8d49e04c66524abd5fc24151e28fe46adb9b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0169": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/incline_cable_chest_press-0.7b33932a594b.webp",
+          "sha256": "7b33932a594b07815a0314ae789d453c5d525a2c2f3ecd9a32d4a665d6b4051b",
+          "bytes": 39108,
+          "distribution": "repository",
+          "phase": "上斜仰卧、双手握绳索手柄于胸前",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/incline_cable_chest_press-1.81214747dde4.webp",
+          "sha256": "81214747dde42bab1bb061f9efdb6b64a5a519130b34cb5f4c88350e7adc50fb",
+          "bytes": 39260,
+          "distribution": "repository",
+          "phase": "双臂伸直将手柄向前上方推出",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Incline_Cable_Chest_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Incline_Cable_Chest_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "b952ca589892227e0447f399b8b8345bd6b9e3852bca84b05bb0ac9e479509f6",
+            "7c50d192c5e841b67c0edb35505cbd275a8d55c66d05d456b9b3886e99af9c1f"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0229": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/standing_biceps_cable_curl-0.6763db099624.webp",
+          "sha256": "6763db099624c4ee4cecfa391d9eaf722546385fde9ac51505e27251d5ce7eb8",
+          "bytes": 48932,
+          "distribution": "repository",
+          "phase": "面向绳索机站立、反手握柄双臂下垂",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/standing_biceps_cable_curl-1.1a3929c57a0a.webp",
+          "sha256": "1a3929c57a0a7f102762d6f653ca3127e0630d93f3feb14ce6b071eee603cf32",
+          "bytes": 49248,
+          "distribution": "repository",
+          "phase": "屈肘将手柄弯举至肩部",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Biceps_Cable_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Biceps_Cable_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "ccfe9ea6c72996c905bc82c032facf110246442ef6ccf28babee775277f0bc29",
+            "5aa3493077fbf138f40bd71a476880395275599ff72ca30f04ce0a15313c201b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0368": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/palms-down_dumbbell_wrist_curl_over_a_bench-0.a29fda9dff3b.webp",
+          "sha256": "a29fda9dff3ba79b3539f306b7f24b12152f87b3d405b4add62bf5c30493aa3c",
+          "bytes": 43928,
+          "distribution": "repository",
+          "phase": "凳侧跪姿、前臂置凳面掌心向下、腕悬空",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/palms-down_dumbbell_wrist_curl_over_a_bench-1.1164dfc32720.webp",
+          "sha256": "1164dfc327209b9913b4ecde3fbbad650fedc844527f2720e4ffdd170f9046e1",
+          "bytes": 44896,
+          "distribution": "repository",
+          "phase": "伸腕将哑铃向上抬起",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "7044d9ea82a03cf5d8b1a9f76ffce9e532a228dde51a9b7c3569868bed83268c",
+            "dd0d434fc08e805cf8eb9caefb2d90b52f66448d61594886d181523de5e3672f"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0562": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/landmine_180s-0.5dfa6ab8aed1.webp",
+          "sha256": "5dfa6ab8aed140c1aca3a8425846b437e328620d840c499c4166b48bb4e820df",
+          "bytes": 45688,
+          "distribution": "repository",
+          "phase": "双手握杠铃于胸前、躯干转向一侧",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/landmine_180s-1.814099f85274.webp",
+          "sha256": "814099f85274bae8f91085699eeff8218a6f2af1842b6c4ab7d01600a4f66245",
+          "bytes": 44862,
+          "distribution": "repository",
+          "phase": "杠铃摆向对侧臀部、转体 180 度",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Landmine_180s",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Landmine_180s",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "e4cc6ed6721e7a4a8f61271412e9f367565c77bbdfa706098d32234d5a3c0da8",
+            "89b1e75dbf0816da15ed8b09161cbf5c059954b43a8e7282f18b75a83819b214"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0064": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/bent_over_one-arm_long_bar_row-0.baf4cf68c5c0.webp",
+          "sha256": "baf4cf68c5c0f795e1c754a2b523900f660c0466eab03ee4febc9e9ce6aaad79",
+          "bytes": 47422,
+          "distribution": "repository",
+          "phase": "俯身单手正握长杠铃、远端固定",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/bent_over_one-arm_long_bar_row-1.d4eaa557356a.webp",
+          "sha256": "d4eaa557356a59f4941013f7a77226c6a9ddfcce180a68fc14f64d036c4b62bf",
+          "bytes": 54208,
+          "distribution": "repository",
+          "phase": "屈肘将杠铃拉向胸部",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Bent_Over_One-Arm_Long_Bar_Row",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Bent_Over_One-Arm_Long_Bar_Row",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "e1627c45899d270e579dadf449c7705be29927cfdfb2cd28ed8eb3b1ceda6a4f",
+            "a8f091eae74572605a0794cf36850ea182c2f26c544c7d02a4814fc8fe5f72f6"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0302": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/decline_dumbbell_flyes-0.7f3c0d348b8d.webp",
+          "sha256": "7f3c0d348b8d25ff9172a14a8a28a2ae963faf979700482a52b70771cbaf27c9",
+          "bytes": 42962,
+          "distribution": "repository",
+          "phase": "下斜仰卧、双铃置于胸前上方掌心相对",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/decline_dumbbell_flyes-1.98c58cdd0d33.webp",
+          "sha256": "98c58cdd0d338bc5d203eafe71e5379fec47c1815c99cbfe3a4892274263cce6",
+          "bytes": 41064,
+          "distribution": "repository",
+          "phase": "双铃以宽弧线向两侧放低",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Decline_Dumbbell_Flyes",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Decline_Dumbbell_Flyes",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "a8e11c60bc8599ed94790703a4085effd3a28038c5fa12bb90eb8c28d99b997a",
+            "50c70bfb53eccef4199a1c12b30de2edad55f439c68b5908da2be078b2630dae"
           ],
           "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
