@@ -31,6 +31,27 @@ test('model file size and checksum failures stop initialization',async t=>{
  const bytes=new Uint8Array(models.lite.bytes);t.mock.method(globalThis,'fetch',async()=>new Response(bytes));await assert.rejects(modelBytes('lite',new AbortController().signal),/完整性/);
 });
 
+test('verified model bytes persist in the on-device cache; corrupt entries are dropped',async t=>{
+ environment(t);
+ const store=new Map<string,ArrayBuffer>();
+ const cache={match:async(key:string)=>{const b=store.get(key);return b?new Response(b.slice(0)):undefined;},put:async(key:string,res:Response)=>{store.set(key,await res.arrayBuffer());},delete:async(key:string)=>store.delete(key)};
+ Object.defineProperty(globalThis,'caches',{configurable:true,value:{open:async()=>cache}});
+ t.after(()=>{Reflect.deleteProperty(globalThis,'caches');});
+ const first=await modelBytes('lite',new AbortController().signal);assert.equal(first.byteLength,models.lite.bytes);assert.ok(store.has(models.lite.src));
+ t.mock.method(globalThis,'fetch',async()=>{throw new TypeError('offline');});
+ const second=await modelBytes('lite',new AbortController().signal);assert.equal(second.byteLength,models.lite.bytes);
+ store.set(models.lite.src,new ArrayBuffer(8));
+ t.mock.method(globalThis,'fetch',async(input:any)=>new Response(readFileSync(new URL('../public'+String(input),import.meta.url))));
+ const third=await modelBytes('lite',new AbortController().signal);assert.equal(third.byteLength,models.lite.bytes);
+});
+test('a transient network failure is retried once; a size failure is not retried',async t=>{
+ environment(t);
+ let calls=0;t.mock.method(globalThis,'fetch',async(input:any)=>{calls++;if(calls===1)throw new TypeError('fetch failed');return new Response(readFileSync(new URL('../public'+String(input),import.meta.url)));});
+ const bytes=await modelBytes('lite',new AbortController().signal);assert.equal(bytes.byteLength,models.lite.bytes);assert.equal(calls,2);
+ let bad=0;t.mock.method(globalThis,'fetch',async()=>{bad++;return new Response(new Uint8Array([1,2,3]));});
+ await assert.rejects(modelBytes('full',new AbortController().signal),/大小/);assert.equal(bad,1);
+});
+
 // Initialization alone is insufficient: first inference may fail on a browser GPU.
 test('worker first-frame failure is checked before readiness and falls back to CPU',async t=>{
  const env=environment(t,false,false,true),runtime=await openPoseTransport('full',new AbortController().signal,{} as any);

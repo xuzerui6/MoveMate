@@ -362,8 +362,13 @@ export default {
     let response = await env.ASSETS.fetch(demoVideo?new Request(request,{headers:assetHeaders}):request);
     if(demoVideo&&response.ok&&!response.headers.get('Content-Type')?.includes('text/html'))response=applyVideoRange(request,response,(demoVideoSizes as Record<string,number>)[url.pathname]);
     const headers = new Headers(response.headers);
+    // Pose models and WASM are pinned by version/checksum in the client and are
+    // re-downloaded at every model load otherwise; give them a month of cache.
+    if (url.pathname.startsWith('/pose/')) {
+      if (response.ok || response.status === 304) headers.set('Cache-Control', 'public, max-age=2592000');
+    }
     // Vite content hashes make long browser caching safe. Keep HTML revalidated.
-    if (url.pathname.startsWith('/assets/') || url.pathname.startsWith('/exercise-media/')) {
+    else if (url.pathname.startsWith('/assets/') || url.pathname.startsWith('/exercise-media/')) {
       // An SPA fallback is not a valid script. Never cache a temporary missing
       // chunk's HTML response for a year: that would keep a tab broken even
       // after the matching asset is deployed.

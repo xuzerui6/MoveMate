@@ -3,15 +3,41 @@ import type {PoseModel,PoseMode} from './poseProtocol';
 import models from './pose-models.json';
 export type PoseResult={landmarks:any;worldLandmarks:any};
 export type PoseTransport={mode:PoseMode;infer:(video:HTMLVideoElement,timestamp:number)=>Promise<PoseResult>;close:()=>void};
-export async function modelBytes(name:PoseModel,signal:AbortSignal){
- const item=models[name],download=new AbortController(),cancel=()=>download.abort();signal.addEventListener('abort',cancel,{once:true});if(signal.aborted)cancel();
- const timeout=setTimeout(cancel,20000);
+type ModelItem=(typeof models)[PoseModel];
+const modelCacheName='pose-models-v1';
+const digestHex=async(bytes:ArrayBuffer)=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(n=>n.toString(16).padStart(2,'0')).join('');
+/** Verified model bytes persist on-device; the pinned sha256 revalidates every read, so a stale entry can never be used. */
+async function readModelCache(item:ModelItem):Promise<ArrayBuffer|null>{
+ try{
+  if(typeof caches==='undefined')return null;
+  const cache=await caches.open(modelCacheName),hit=await cache.match(item.src);if(!hit)return null;
+  const bytes=await hit.arrayBuffer();
+  if(bytes.byteLength!==item.bytes||await digestHex(bytes)!==item.sha256){await cache.delete(item.src);return null;}
+  return bytes;
+ }catch{return null;}
+}
+async function writeModelCache(item:ModelItem,bytes:ArrayBuffer){
+ try{if(typeof caches==='undefined')return;const cache=await caches.open(modelCacheName);await cache.put(item.src,new Response(bytes.slice(0),{headers:{'Content-Type':'application/octet-stream'}}));}catch{/* the cache is best-effort */}
+}
+async function fetchModelBytes(name:PoseModel,item:ModelItem,signal:AbortSignal){
+ const download=new AbortController(),cancel=()=>download.abort();signal.addEventListener('abort',cancel,{once:true});if(signal.aborted)cancel();
+ const timeout=setTimeout(cancel,60000);
  try{
   const response=await fetch(item.src,{signal:download.signal});if(!response.ok)throw Error(`${name==='full'?'Full':'Lite'} 模型文件读取失败（${response.status}）`);
   const bytes=await response.arrayBuffer();if(bytes.byteLength!==item.bytes)throw Error('模型大小校验失败');
-  const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(n=>n.toString(16).padStart(2,'0')).join('');if(hash!==item.sha256)throw Error('模型完整性校验失败');return bytes;
- }catch(e){if(download.signal.aborted&&!signal.aborted)throw Error('模型下载超时，请检查网络或使用 Lite 兼容模式');throw e;}
+  if(await digestHex(bytes)!==item.sha256)throw Error('模型完整性校验失败');return bytes;
+ }catch(e){if(download.signal.aborted&&!signal.aborted)throw Error('模型下载超时，请检查网络后重试');throw e;}
  finally{clearTimeout(timeout);signal.removeEventListener('abort',cancel);}
+}
+export async function modelBytes(name:PoseModel,signal:AbortSignal){
+ const item=models[name],cached=await readModelCache(item);if(cached)return cached;
+ let lastError:unknown;
+ // One automatic retry for transient network failures; checksum/size failures are final.
+ for(let attempt=0;attempt<2;attempt++){
+  try{const bytes=await fetchModelBytes(name,item,signal);await writeModelCache(item,bytes);return bytes;}
+  catch(e){if(signal.aborted)throw e;if(e instanceof Error&&(e.message.includes('大小')||e.message.includes('完整性')||e.message.includes('读取失败')))throw e;lastError=e;}
+ }
+ throw lastError;
 }
 async function workerTransport(bytes:ArrayBuffer,delegate:'GPU'|'CPU',signal:AbortSignal):Promise<PoseTransport>{
  if(typeof Worker==='undefined'||typeof createImageBitmap==='undefined'||(delegate==='GPU'&&typeof OffscreenCanvas==='undefined'))throw Error('浏览器不支持此 Worker 方式');
