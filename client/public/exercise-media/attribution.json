@@ -6977,53 +6977,6 @@
         }
       ]
     },
-    "exdb:0426": {
-      "kind": "illustration",
-      "note": "双脚着地站姿，双手各一铃在肩侧、掌心朝前，双臂同时推过头顶再回位；不是借力推或坐姿。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0426-0.8797c822609c.webp",
-          "bytes": 5160,
-          "sha256": "8797c822609c02d78340c0e672aeb56ca22311131e01abe00f0fdcaa87fed5bd",
-          "phase": "站稳·双铃肩侧",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0426-1.316836157245.webp",
-          "bytes": 7150,
-          "sha256": "316836157245fa5f8557816968093ab80fde6ec2b255e9c3bec3beb04ba7841e",
-          "phase": "双臂同时推起",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0426-2.8797c822609c.webp",
-          "bytes": 5160,
-          "sha256": "8797c822609c02d78340c0e672aeb56ca22311131e01abe00f0fdcaa87fed5bd",
-          "phase": "控制回到肩侧",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0426",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "f318fe4fa94fa2c7b296e9bc7e547c66fb9c2b2637aeec51d0b523953ca6c5d4",
-            "ee477e642bd2b06e0ce0905ac8393623162a90ac36248de599f2e6320d4d4f03",
-            "b472c729514293d09ee9bd9f1460c0e52a2213c5ae3b114b629179bdc94a1aad"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
     "exdb:0388": {
       "kind": "illustration",
       "note": "坐稳平凳、双脚着地，双手各持一铃、掌心朝前；一侧推顶另一侧留肩侧，放回后换侧，五帧分别显示两侧。 原创静态分阶段示意，不是连续视频。",
@@ -9666,53 +9619,6 @@
             "de1aed996db128326cc63045da17a8873298265a4d7da4684a36498d23849f28",
             "91bec19a0652050f2dad567ab3952b439ee103ba04ad15cfbb29ccdb5d45a290",
             "2c9357a15593885842fc0305abdf514901cca80d1305b305dd6695c274cfaef1"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
-    "exdb:0437": {
-      "kind": "illustration",
-      "note": "双脚站稳、双手正握哑铃于体前，以双肘向外上方引导哑铃靠近躯干上提。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0437-0.e63843fd7344.webp",
-          "bytes": 6514,
-          "sha256": "e63843fd7344c8a4ba98e91518e402b2bb325720d84e9271d5759db6edc97f8b",
-          "phase": "双铃在体前",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0437-1.754dfcf60b1e.webp",
-          "bytes": 8166,
-          "sha256": "754dfcf60b1e96d091d37e2204adb5c06f486fc68ee934cbdf3d9ef5c56fe8b7",
-          "phase": "双肘引导上提",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0437-2.e63843fd7344.webp",
-          "bytes": 6514,
-          "sha256": "e63843fd7344c8a4ba98e91518e402b2bb325720d84e9271d5759db6edc97f8b",
-          "phase": "控制下放",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0437",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "8a9b04347c8519998f04ee093f95ec7df05972141c9fc2f1efd91873dd39d4a9",
-            "729b7d522b92cf783d1cdcb0816d5b6ed23581844055eebfe6dd7da224476742",
-            "2abe8869370f0218b841be81b43d596142656caca482f3ed47a5682131619dc4"
           ],
           "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
           "distribution": "repository"
@@ -17380,6 +17286,302 @@
           "sourceSha256": [
             "c166cd61aec9cd4cd3881a17602f7a6afd80df51329ea6a143e6ffcf9bebb2af",
             "c623bd4bb6848367407ddbc7c39d1611acf9c5001fe9a61360a580b78d86fa60"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0627": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/mixed_grip_chin-0.56636a1d8e49.webp",
+          "sha256": "56636a1d8e4962d9750bb17ee552b9650fc33e7c91c7ad18e9977f91c8c0db0e",
+          "bytes": 25978,
+          "distribution": "repository",
+          "phase": "双臂伸直悬挂、一手正握一手反握",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/mixed_grip_chin-1.9b72fcbe4544.webp",
+          "sha256": "9b72fcbe454485a3c4e6bf430e6e03b502549cdf2606a914c77c19e994339346",
+          "bytes": 21552,
+          "distribution": "repository",
+          "phase": "拉起至下巴越过杠",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Mixed_Grip_Chin",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Mixed_Grip_Chin",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "479a9bce837aa935e05d8f6874e63342adf275b6756d72f0ecf0aa61f604e6b9",
+            "2cba9eefce6ea8f8216eaa08d8e3738a3682dfa877664b4f6232e6673591b322"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1325": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/wide-grip_pulldown_behind_the_neck-0.ee2d0b924079.webp",
+          "sha256": "ee2d0b9240795c045183322f8c14de7f265a2509b24a33d2a9395476faedeb9c",
+          "bytes": 55662,
+          "distribution": "repository",
+          "phase": "坐于下拉机、宽握杠于头顶上方双臂伸直",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/wide-grip_pulldown_behind_the_neck-1.8d4c0890f0c1.webp",
+          "sha256": "8d4c0890f0c1f6c543e62e9d70ca379cf2e3a4b7de133ded0e03b251bb7ea5eb",
+          "bytes": 55436,
+          "distribution": "repository",
+          "phase": "下拉杠至颈后、肩胛收紧",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Wide-Grip_Pulldown_Behind_The_Neck",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Wide-Grip_Pulldown_Behind_The_Neck",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "98a0a8f27430f514d0410e16e10a8c573c6df5c4fa8fddd529578086829edc99",
+            "d5b39e56ddf1197707c68cb4b2e8f38ecbfdcd0bf268e085703eeecde23e5178"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1285": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/one-arm_flat_bench_dumbbell_flye-0.9224fa87c55a.webp",
+          "sha256": "9224fa87c55a68059dd3c682a89098850a652285b7d1728ff1c4fdf28586d093",
+          "bytes": 41440,
+          "distribution": "repository",
+          "phase": "仰卧平凳、单臂握铃于肩上方手掌朝内",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/one-arm_flat_bench_dumbbell_flye-1.a6e8cbda69e7.webp",
+          "sha256": "a6e8cbda69e7a8c55f1bf7a0b62952385178a3dcfe41e149d3f598a1956390c5",
+          "bytes": 44094,
+          "distribution": "repository",
+          "phase": "单臂以宽弧线向一侧放低至与地面平行",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / One-Arm_Flat_Bench_Dumbbell_Flye",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/One-Arm_Flat_Bench_Dumbbell_Flye",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "c8f9d481b0f1e7f3b4f97776272a6b6df0c7dd915f336b27f682d6d553fb2e44",
+            "cd92f32b1f379b1e38b1da7a4abcb4b1d77c65aec0fd4690024e702d1872950d"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0190": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/standing_one-arm_cable_curl-0.b6b01838e4fd.webp",
+          "sha256": "b6b01838e4fd6691aee3f23f33b0edb9a7d79ce9cecd875d2cbb7c7236c76d2c",
+          "bytes": 67034,
+          "distribution": "repository",
+          "phase": "面向绳索机站立、单手反握手柄臂下垂",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/standing_one-arm_cable_curl-1.5af9d547f115.webp",
+          "sha256": "5af9d547f115b08574b6720c3603ac53c0740e5f672e895ce9170c89418ece88",
+          "bytes": 68548,
+          "distribution": "repository",
+          "phase": "屈肘将手柄弯举至肩部",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_One-Arm_Cable_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_One-Arm_Cable_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "d1ac98019e1840b456c1f1c1517a0f066a4b243bca245542ba396bcc67c1e00b",
+            "a2931e72359e79d05cf5858625ad742d8a501a9771cd7b46e85e861da55d625b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:2321": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/standing_inner-biceps_curl-0.f0b5bce75933.webp",
+          "sha256": "f0b5bce7593333f25b3c9368831645a091eb005c3ae5ab5ffd5d282c465bf6bb",
+          "bytes": 34868,
+          "distribution": "repository",
+          "phase": "站立、双手握铃于体侧掌心向内",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/standing_inner-biceps_curl-1.3028cadecb9c.webp",
+          "sha256": "3028cadecb9cec58a8c9a1e96701d6d19ba9c325a478f358fbde7008d567da64",
+          "bytes": 35466,
+          "distribution": "repository",
+          "phase": "肘贴身、双铃贴近身体中线弯举至肩部",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Inner-Biceps_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Inner-Biceps_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "540014bd7ae673b7e881b69e4ce3fc566fe3532bf48d1d7701bd138b3933897c",
+            "895bc6586d75ad01ea72a42ca725218fbedbfdc98034e232124ccc5f18bf1e39"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0056": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/lying_close-grip_barbell_triceps_extension_behind_the_head-0.47dbc77b5f5c.webp",
+          "sha256": "47dbc77b5f5c72602ad5857d1ab83a284e028ce404a25fcb81cf1974fc251e42",
+          "bytes": 53686,
+          "distribution": "repository",
+          "phase": "仰卧平凳、正手窄握杠铃双臂伸直于胸前上方",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/lying_close-grip_barbell_triceps_extension_behind_the_head-1.587fb2475943.webp",
+          "sha256": "587fb247594373dbeb5df3c77096644ce27d6661b83e64403f7fb4e95b4cc70d",
+          "bytes": 54012,
+          "distribution": "repository",
+          "phase": "屈肘将杠铃降至脑后",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Lying_Close-Grip_Barbell_Triceps_Extension_Behind_The_Head",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Lying_Close-Grip_Barbell_Triceps_Extension_Behind_The_Head",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "08ffabafd8aff1c2d3a77ba72b31078b7c92993d808c051fec1787db06e0213f",
+            "bfff7f75fdc1aef027d537c185de9ad795fc1bb87e11b00fd2af3f5405498100"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0426": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/standing_dumbbell_press-0.d26335be7da2.webp",
+          "sha256": "d26335be7da2b5612d9522f3ad3e9fb6ca1c000375ba09275e6e1a477c6ccc35",
+          "bytes": 39746,
+          "distribution": "repository",
+          "phase": "站立、双铃置于肩侧掌心朝前",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/standing_dumbbell_press-1.5286eb9f9b11.webp",
+          "sha256": "5286eb9f9b110bf09b277903715faa059f17fc65e33425fd4169715bcc400658",
+          "bytes": 39978,
+          "distribution": "repository",
+          "phase": "双臂同时推铃过顶至伸直",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Dumbbell_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Dumbbell_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "db1ff8c6dc877a840884f8a3202eba2be7a3f14ab95065f5f18dff50c4208423",
+            "fe28bcdd4d76ece161141a80f79c8a18e480c262d2dec80b4beafc4720027ea8"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0437": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/standing_dumbbell_upright_row-0.edaae1c0c93d.webp",
+          "sha256": "edaae1c0c93d393f56a551579e000dc8df4fd49e48bbbe355fd9b72ed0341901",
+          "bytes": 33686,
+          "distribution": "repository",
+          "phase": "站立、双铃正握垂于大腿前",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/standing_dumbbell_upright_row-1.66c2fdcb21b7.webp",
+          "sha256": "66c2fdcb21b793c34935337e001b98134cd55d49f0df9b19268cf61be5b6c605",
+          "bytes": 31794,
+          "distribution": "repository",
+          "phase": "肘引导将双铃沿体前上提至下巴高度",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Dumbbell_Upright_Row",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Dumbbell_Upright_Row",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "d236b7eb88d46f826fdd480c8ac671d2d600516e7127e459880cf9d9e006e7fc",
+            "7a329816fdbe96c8d208747cab069a55217980247728096cce380aeedb1c5335"
           ],
           "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"

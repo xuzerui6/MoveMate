@@ -4945,6 +4945,110 @@
         "悬挂于单杠、双臂伸直",
         "双腿抬至与地面平行"
       ]
+    },
+    {
+      "exerciseId": "exdb:0627",
+      "expectedName": "mixed grip chin-up",
+      "sourceId": "Mixed_Grip_Chin",
+      "sourceSha256": [
+        "479a9bce837aa935e05d8f6874e63342adf275b6756d72f0ecf0aa61f604e6b9",
+        "2cba9eefce6ea8f8216eaa08d8e3738a3682dfa877664b4f6232e6673591b322"
+      ],
+      "phases": [
+        "双臂伸直悬挂、一手正握一手反握",
+        "拉起至下巴越过杠"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1325",
+      "expectedName": "cable wide grip rear pulldown behind neck",
+      "sourceId": "Wide-Grip_Pulldown_Behind_The_Neck",
+      "sourceSha256": [
+        "98a0a8f27430f514d0410e16e10a8c573c6df5c4fa8fddd529578086829edc99",
+        "d5b39e56ddf1197707c68cb4b2e8f38ecbfdcd0bf268e085703eeecde23e5178"
+      ],
+      "phases": [
+        "坐于下拉机、宽握杠于头顶上方双臂伸直",
+        "下拉杠至颈后、肩胛收紧"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1285",
+      "expectedName": "dumbbell one arm bench fly",
+      "sourceId": "One-Arm_Flat_Bench_Dumbbell_Flye",
+      "sourceSha256": [
+        "c8f9d481b0f1e7f3b4f97776272a6b6df0c7dd915f336b27f682d6d553fb2e44",
+        "cd92f32b1f379b1e38b1da7a4abcb4b1d77c65aec0fd4690024e702d1872950d"
+      ],
+      "phases": [
+        "仰卧平凳、单臂握铃于肩上方手掌朝内",
+        "单臂以宽弧线向一侧放低至与地面平行"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0190",
+      "expectedName": "cable one arm curl",
+      "sourceId": "Standing_One-Arm_Cable_Curl",
+      "sourceSha256": [
+        "d1ac98019e1840b456c1f1c1517a0f066a4b243bca245542ba396bcc67c1e00b",
+        "a2931e72359e79d05cf5858625ad742d8a501a9771cd7b46e85e861da55d625b"
+      ],
+      "phases": [
+        "面向绳索机站立、单手反握手柄臂下垂",
+        "屈肘将手柄弯举至肩部"
+      ]
+    },
+    {
+      "exerciseId": "exdb:2321",
+      "expectedName": "dumbbell standing inner biceps curl v. 2",
+      "sourceId": "Standing_Inner-Biceps_Curl",
+      "sourceSha256": [
+        "540014bd7ae673b7e881b69e4ce3fc566fe3532bf48d1d7701bd138b3933897c",
+        "895bc6586d75ad01ea72a42ca725218fbedbfdc98034e232124ccc5f18bf1e39"
+      ],
+      "phases": [
+        "站立、双手握铃于体侧掌心向内",
+        "肘贴身、双铃贴近身体中线弯举至肩部"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0056",
+      "expectedName": "barbell lying close-grip triceps extension",
+      "sourceId": "Lying_Close-Grip_Barbell_Triceps_Extension_Behind_The_Head",
+      "sourceSha256": [
+        "08ffabafd8aff1c2d3a77ba72b31078b7c92993d808c051fec1787db06e0213f",
+        "bfff7f75fdc1aef027d537c185de9ad795fc1bb87e11b00fd2af3f5405498100"
+      ],
+      "phases": [
+        "仰卧平凳、正手窄握杠铃双臂伸直于胸前上方",
+        "屈肘将杠铃降至脑后"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0426",
+      "expectedName": "dumbbell standing overhead press",
+      "sourceId": "Standing_Dumbbell_Press",
+      "sourceSha256": [
+        "db1ff8c6dc877a840884f8a3202eba2be7a3f14ab95065f5f18dff50c4208423",
+        "fe28bcdd4d76ece161141a80f79c8a18e480c262d2dec80b4beafc4720027ea8"
+      ],
+      "phases": [
+        "站立、双铃置于肩侧掌心朝前",
+        "双臂同时推铃过顶至伸直"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0437",
+      "expectedName": "dumbbell upright row",
+      "sourceId": "Standing_Dumbbell_Upright_Row",
+      "sourceSha256": [
+        "d236b7eb88d46f826fdd480c8ac671d2d600516e7127e459880cf9d9e006e7fc",
+        "7a329816fdbe96c8d208747cab069a55217980247728096cce380aeedb1c5335"
+      ],
+      "phases": [
+        "站立、双铃正握垂于大腿前",
+        "肘引导将双铃沿体前上提至下巴高度"
+      ]
     }
   ],
   "videos": [
@@ -5707,9 +5811,21 @@
     {
       "source": "free-exercise-db Standing_Hamstring_and_Calf_Stretch → exdb:1599",
       "reason": "两帧为同一拉伸姿势、无起始位与关键位之分，不符合双帧标准，不采用。"
+    },
+    {
+      "source": "free-exercise-db Front_Dumbbell_Raise → exdb:0335",
+      "reason": "照片仅示站姿单臂前平举（起始位与一臂前举位），未见侧举阶段；条目定义为先侧举回位、再前举回位的四阶段组合，单张前举图不能代表，暂不采用。"
+    },
+    {
+      "source": "free-exercise-db Smith_Machine_Close-Grip_Bench_Press → exdb:1625",
+      "reason": "照片为史密斯机平凳窄握卧推，凳面水平；条目定义为下斜凳，凳面角度不符。"
+    },
+    {
+      "source": "free-exercise-db Calf_Raise_On_A_Dumbbell → exdb:1379",
+      "reason": "照片为站姿双脚踩于横置哑铃上提踵，条目定义为坐姿（坐凳、哑铃置于大腿上、脚掌踩抬高面），体位不符，不替换既有图解。"
     }
   ],
-  "batch": 28,
+  "batch": 29,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",

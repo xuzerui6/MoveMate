@@ -3772,22 +3772,37 @@
     {
       "id": "exdb:0056",
       "originalName": "barbell lying close-grip triceps extension",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文掌心向上与普通额前正握臂屈伸不同，需确认究竟反握还是翻译歧义。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：仰卧平凳、正手窄握杠铃、屈肘降杠至脑后清晰，与名称「杠铃仰卧窄握臂屈伸」（来源名含 Behind_The_Head）一致（名称为准；目录正文掌心向上、降至额前的写法已按照片的脑后改写）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "9d7fff98bd581c62f933f79d87cd12a08b52c1e99b32724639ac1e7fc4d16e6c",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Lying_Close-Grip_Barbell_Triceps_Extension_Behind_The_Head",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Lying_Close-Grip_Barbell_Triceps_Extension_Behind_The_Head",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "08ffabafd8aff1c2d3a77ba72b31078b7c92993d808c051fec1787db06e0213f",
+            "bfff7f75fdc1aef027d537c185de9ad795fc1bb87e11b00fd2af3f5405498100"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0057",
@@ -8482,22 +8497,37 @@
     {
       "id": "exdb:0190",
       "originalName": "cable one arm curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：单手反握站姿弯举清楚，但滑轮与手柄类型缺失，不能直接用双手直杆图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站姿单手反握单柄手柄、肘贴身弯举至肩部清晰，与条目定义一致；非双手直杆图。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "9f0710c4c5f82a2acf709845963f37af7e565675620e6d6cece67872cafa9ccc",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_One-Arm_Cable_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_One-Arm_Cable_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "d1ac98019e1840b456c1f1c1517a0f066a4b243bca245542ba396bcc67c1e00b",
+            "a2931e72359e79d05cf5858625ad742d8a501a9771cd7b46e85e861da55d625b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1262",
@@ -10932,22 +10962,37 @@
     {
       "id": "exdb:1325",
       "originalName": "cable wide grip rear pulldown behind neck",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题明确behind neck，正文却拉到上胸，不能用胸前图冒充颈后。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐姿宽握、杠拉至颈后清晰，与名称「绳索宽握颈后下拉」一致（名称为准；目录正文拉到上胸的写法已按照片的颈后改写）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "7f00d6a56dac78dc05477865507025ec2b97639c8bc36ff5c6d8ef2ce5aa7e95",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Wide-Grip_Pulldown_Behind_The_Neck",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Wide-Grip_Pulldown_Behind_The_Neck",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "98a0a8f27430f514d0410e16e10a8c573c6df5c4fa8fddd529578086829edc99",
+            "d5b39e56ddf1197707c68cb4b2e8f38ecbfdcd0bf268e085703eeecde23e5178"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0247",
@@ -15269,22 +15314,37 @@
     {
       "id": "exdb:1285",
       "originalName": "dumbbell one arm bench fly",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：平凳单手中立握外展明确，需准确肩弧线、空手支撑与另一侧躯干接触图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：仰卧平凳、单臂中立握、宽弧线外展至与地面平行清晰，与条目定义一致；此前驳回的另一候选为单臂卧推形式，与本候选 One-Arm_Flat_Bench_Dumbbell_Flye 不同。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "0e90c335cdea2e3a79865f4ff626226b7c97f5bfe65f7339c101fe49e9d05d83",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / One-Arm_Flat_Bench_Dumbbell_Flye",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/One-Arm_Flat_Bench_Dumbbell_Flye",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "c8f9d481b0f1e7f3b4f97776272a6b6df0c7dd915f336b27f682d6d553fb2e44",
+            "cd92f32b1f379b1e38b1da7a4abcb4b1d77c65aec0fd4690024e702d1872950d"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0292",
@@ -18836,22 +18896,37 @@
     {
       "id": "exdb:2321",
       "originalName": "dumbbell standing inner biceps curl v. 2",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文普通旋后弯举没有内侧路线，版本2区别缺失。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站姿双铃、肘贴身、哑铃贴近身体中线内侧上行清晰，与名称「内侧弯举」一致（名称为准；版本2的内侧路线已按照片改写）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "7bfb48d9aadb8ba953662e94361f1b9462638d1cf5fc9fb7a5d20455f22054e3",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Standing_Inner-Biceps_Curl",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Inner-Biceps_Curl",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "540014bd7ae673b7e881b69e4ce3fc566fe3532bf48d1d7701bd138b3933897c",
+            "895bc6586d75ad01ea72a42ca725218fbedbfdc98034e232124ccc5f18bf1e39"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0420",
@@ -19109,7 +19184,7 @@
       "originalName": "dumbbell standing overhead press",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "已逐项核对原始完整步骤、原创各阶段及器械/支撑；中性线条图，非真人或专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站立、双铃置于肩侧掌心朝前、双臂同时推铃过顶至伸直清晰，与条目定义一致；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -19118,24 +19193,23 @@
         "sourceRecordSha256": "5bd244dc8fcab40aba0b84f26dda3870bfecca8f1490b598006be717377d076f",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0426",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Standing_Dumbbell_Press",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Dumbbell_Press",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "f318fe4fa94fa2c7b296e9bc7e547c66fb9c2b2637aeec51d0b523953ca6c5d4",
-            "ee477e642bd2b06e0ce0905ac8393623162a90ac36248de599f2e6320d4d4f03",
-            "b472c729514293d09ee9bd9f1460c0e52a2213c5ae3b114b629179bdc94a1aad"
+            "db1ff8c6dc877a840884f8a3202eba2be7a3f14ab95065f5f18dff50c4208423",
+            "fe28bcdd4d76ece161141a80f79c8a18e480c262d2dec80b4beafc4720027ea8"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -19587,7 +19661,7 @@
       "originalName": "dumbbell upright row",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "2026-10-29：已对照来源步骤并完成独立的起止位、支撑及器械配置；已对照本地渲染逐帧检查。原创静态示意，非实拍或专业教学认证。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：站立、双铃正握垂于大腿前、肘引导沿体前上提至下巴高度清晰，与条目定义一致；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
@@ -19596,24 +19670,23 @@
         "sourceRecordSha256": "f94ccb8e70d07815c79f47822728e623a896640e9f1bc5c10fafb21a72bf8d83",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0437",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "free-exercise-db / Standing_Dumbbell_Upright_Row",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Standing_Dumbbell_Upright_Row",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
           "sourceSha256": [
-            "8a9b04347c8519998f04ee093f95ec7df05972141c9fc2f1efd91873dd39d4a9",
-            "729b7d522b92cf783d1cdcb0816d5b6ed23581844055eebfe6dd7da224476742",
-            "2abe8869370f0218b841be81b43d596142656caca482f3ed47a5682131619dc4"
+            "d236b7eb88d46f826fdd480c8ac671d2d600516e7127e459880cf9d9e006e7fc",
+            "7a329816fdbe96c8d208747cab069a55217980247728096cce380aeedb1c5335"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
         }
       ]
@@ -26406,22 +26479,37 @@
     {
       "id": "exdb:0627",
       "originalName": "mixed grip chin-up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称为一正一反混合握，步骤却双手反握；握法冲突，不能配普通反手引体图。",
+      "reason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：放大核对握法，一手正握（手指搭过杠顶）、一手反握（手背朝镜头），混合握清晰；双臂伸直悬挂、拉起至下巴越过杠清晰，与名称「混合握引体向上」一致（名称为准；目录正文双手反握的写法已按照片的混合握改写）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "79ef8a258dec138610e7c7ccad509acc119029bbcc2cc73d134da7f1c8487464",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Mixed_Grip_Chin",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Mixed_Grip_Chin",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "479a9bce837aa935e05d8f6874e63342adf275b6756d72f0ecf0aa61f604e6b9",
+            "2cba9eefce6ea8f8216eaa08d8e3738a3682dfa877664b4f6232e6673591b322"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3217",
