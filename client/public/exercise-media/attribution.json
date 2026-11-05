@@ -12614,53 +12614,6 @@
         }
       ]
     },
-    "exdb:0039": {
-      "kind": "illustration",
-      "note": "杠铃置于胸前、双手肩宽握杠、肘向前；双脚与肩同宽、脚趾微向外，屈髋屈膝下蹲至大腿平行，底部停顿后脚跟推地站起。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0039-0.c045e1a64734.webp",
-          "bytes": 4870,
-          "sha256": "c045e1a647347c7a0678b5c7ce82726c753418d54cc9ffcf7f92ce5cff954561",
-          "phase": "胸前持杠·双手肩宽·肘向前",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0039-1.ef06f0b07514.webp",
-          "bytes": 6106,
-          "sha256": "ef06f0b075142544b6d99d57b79a45cf0b17c4a88327b06e4d0ab74bf1e9a3b7",
-          "phase": "屈髋屈膝下蹲至大腿平行",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0039-2.c045e1a64734.webp",
-          "bytes": 4870,
-          "sha256": "c045e1a647347c7a0678b5c7ce82726c753418d54cc9ffcf7f92ce5cff954561",
-          "phase": "脚跟推地站起回位",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0039",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "6733c0a075f1c5711a9093dfd8c1ef64332b1dba3846dd1631b96d14bf9a0056",
-            "7a5fcf9ef5d5839b59d6c3d718047489eb99b05ba997eba3821a7ba1973a3e5b",
-            "2cca24b755bc115ee9b4f43b2d4076b86eac0e4ccbfdce1f3b8718856e6b01fe"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
     "exdb:2292": {
       "kind": "illustration",
       "note": "站姿屈髋俯身、微屈膝，双手各持一铃；背部稳定、肘微屈，双臂向两侧打开至肩部能控制的高度后缓慢放回，俯身角度全程不变。 原创静态三阶段示意，不是连续视频。",
@@ -15714,6 +15667,302 @@
           "sourceSha256": [
             "0214f23fefda90518ded2efffe5da6e6aa15cf577a4e6891a49852763296e28f",
             "e6ae004f166cd9fd64a11ddc147a7f0b4c1ceb9e7921ac996fb6ef34e85079b4"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0641": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/otis-up-0.99d3e84cf4c3.webp",
+          "sha256": "99d3e84cf4c3d6f835b3a8f9930783d31b9beb28a483dd82d9d1f6c5d36d6af6",
+          "bytes": 30480,
+          "distribution": "repository",
+          "phase": "仰卧屈膝持片贴腹",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/otis-up-1.765e6bf880a1.webp",
+          "sha256": "765e6bf880a16ce93bc3048d43a71f036b9e482b603fe81f34b417f70c3fd722",
+          "bytes": 30724,
+          "distribution": "repository",
+          "phase": "卷腹坐起推片过顶",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Otis-Up",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Otis-Up",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "1637477e3fb2939c5406b8890daa3dd4bffff2d76741ef0a6c9fd99e585cc8cb",
+            "d23cc40b3fa16b487137e016f2deb2cfa78f25e96bf252b719cb480e10cb1b91"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1388": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/peroneals_stretch-0.2478da21efcc.webp",
+          "sha256": "2478da21efcc0f891497facc1c51664972c22cdc4481415255890b650022eb40",
+          "bytes": 30400,
+          "distribution": "repository",
+          "phase": "坐地伸腿绳绕脚掌",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/peroneals_stretch-1.940ea228c8ff.webp",
+          "sha256": "940ea228c8ffc1e07d30c6634252473edc3565416bf8cb5c1701517da89e093e",
+          "bytes": 30382,
+          "distribution": "repository",
+          "phase": "拉绳足尖外翻拉伸",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Peroneals_Stretch",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Peroneals_Stretch",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "651fd390fcbedb0d7f078afb124e9e7ce84fab7736016fd3231692d8f74664d7",
+            "1f6a1976db93125f864fc02991bf1966266ea625ed7e115d43a0c268268cc103"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1389": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/posterior_tibialis_stretch-0.ba9c4f6d4f82.webp",
+          "sha256": "ba9c4f6d4f823267f96bbb3e895f22c51c6c95a16c34cbdd9e27719053ebb8b0",
+          "bytes": 33734,
+          "distribution": "repository",
+          "phase": "坐地伸腿绳绕脚掌",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/posterior_tibialis_stretch-1.014dc3494251.webp",
+          "sha256": "014dc349425138912759b5e14fd61a04e3ceda35a8f90a45eb8743ca56e81401",
+          "bytes": 29506,
+          "distribution": "repository",
+          "phase": "拉绳足尖内扣拉伸",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Posterior_Tibialis_Stretch",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Posterior_Tibialis_Stretch",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "0e4401baa35481058b051e51afb132bef11b79f1614a65c7e5dcddbe4a99d4d2",
+            "937de9eb8555edb6228a3b83a1e42de6beb6a0d4cdf47856ebf224633aac41dd"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0344": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/one_arm_pronated_dumbbell_triceps_extension-0.da9472f9a3fc.webp",
+          "sha256": "da9472f9a3fc3175ef2011a66847ed606a2b53c548820905c0f821d1f7741f39",
+          "bytes": 54362,
+          "distribution": "repository",
+          "phase": "仰卧平凳单臂掌心向下持铃上举",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/one_arm_pronated_dumbbell_triceps_extension-1.95dfdc08be0a.webp",
+          "sha256": "95dfdc08be0a85d6fcfa34c81f54dfa3bb188a2a0ce97f359f8352833f1ac97e",
+          "bytes": 53428,
+          "distribution": "repository",
+          "phase": "屈肘降铃至脑后",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / One_Arm_Pronated_Dumbbell_Triceps_Extension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/One_Arm_Pronated_Dumbbell_Triceps_Extension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "b2f4bdf4e2a62f9e52b86db5c14036d084294dbd6c4d381014f3f72302364be3",
+            "909e7ed1e9d330632a59894ab2d26a71c9f7cf727b99c4c92e0ae09e7742298a"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0346": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/one_arm_supinated_dumbbell_triceps_extension-0.a7004ffec8ec.webp",
+          "sha256": "a7004ffec8ecc3a246177ae2c4782d744eec1b57fb8ca83ac0766cfe70906b43",
+          "bytes": 50442,
+          "distribution": "repository",
+          "phase": "仰卧平凳单臂反握持铃脑后",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/one_arm_supinated_dumbbell_triceps_extension-1.255bed76f248.webp",
+          "sha256": "255bed76f248eecc8cab42ca834831422ac714090f85143f347344d4fac494f1",
+          "bytes": 49142,
+          "distribution": "repository",
+          "phase": "伸肘举铃至肩上",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / One_Arm_Supinated_Dumbbell_Triceps_Extension",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/One_Arm_Supinated_Dumbbell_Triceps_Extension",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "e2069f3a5e898c6eb035a6bbb5091f72f9c7bce6bff3ad1ec7ee9ba3a28687d8",
+            "c250054d542c3cb7f99dedc0318636a037ab9e1e9e7b8c718dda6cc93b91f82c"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1358": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/side-lying_floor_stretch-0.64b6b62aa85b.webp",
+          "sha256": "64b6b62aa85b1e1fdfc4e30ecd3f27174603e8eb0f3460e4f7f59753bd233927",
+          "bytes": 29226,
+          "distribution": "repository",
+          "phase": "侧卧下臂过头上膝弯曲",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/side-lying_floor_stretch-1.e8153d352eeb.webp",
+          "sha256": "e8153d352eebff73104b26a2551c42cf8946ee5c15efddf5de1a7b829eba260c",
+          "bytes": 29008,
+          "distribution": "repository",
+          "phase": "双臂过头伸展下腿抬离地面",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Side-Lying_Floor_Stretch",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Side-Lying_Floor_Stretch",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "93da856ff9bf9a8200e85aaed402289c28bb8a16c152f1e4826f05074697afe6",
+            "c5d00fe1cecbd62514beb602845b85800d3064e8cf20b634f78f417801cd456b"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0666": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/single-arm_push-up-0.ee984066a01e.webp",
+          "sha256": "ee984066a01e3772957c0795b617e8de006aa299ffa195aebaaf366fc17a8d6c",
+          "bytes": 46422,
+          "distribution": "repository",
+          "phase": "俯卧撑低位单臂支撑",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/single-arm_push-up-1.1af6bb55b9f1.webp",
+          "sha256": "1af6bb55b9f12126842c482d56cd7a4d1603d4a2315b037269e7af6aa6a1e322",
+          "bytes": 47008,
+          "distribution": "repository",
+          "phase": "一臂侧举悬空推起",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Single-Arm_Push-Up",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Single-Arm_Push-Up",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "216dcaeedf588b1ce8757bdcbd2e021cb9214b74dee48d752a02dd41c1b82b22",
+            "49cb58ab90e9c783a96756b7c68879f8ed63638d94f01c38bb75837db762ad01"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0039": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/front_barbell_squat-0.d6827599a62b.webp",
+          "sha256": "d6827599a62b8b592e364a677665c4a5530faf1345ff43983bb6e4b62c5ec58a",
+          "bytes": 55978,
+          "distribution": "repository",
+          "phase": "杠铃胸前交叉臂站立",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/front_barbell_squat-1.682915898203.webp",
+          "sha256": "68291589820375609e267187abf6b2820f44639b934252c7c9db915c1d894102",
+          "bytes": 54566,
+          "distribution": "repository",
+          "phase": "下蹲至大腿平行",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Front_Barbell_Squat",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Front_Barbell_Squat",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "f8a366b6913bd5af3072080720ba3ab7a74a7ef5754d1a39c200800cd6461f92",
+            "6bb5c5eee794bd13d411271f0ad1cdeabdfecf5cdeb471727996555d07ff43fb"
           ],
           "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"

@@ -4152,6 +4152,110 @@
         "双铃大腿前准备",
         "双臂前举至肩高"
       ]
+    },
+    {
+      "exerciseId": "exdb:0641",
+      "expectedName": "otis up",
+      "sourceId": "Otis-Up",
+      "sourceSha256": [
+        "1637477e3fb2939c5406b8890daa3dd4bffff2d76741ef0a6c9fd99e585cc8cb",
+        "d23cc40b3fa16b487137e016f2deb2cfa78f25e96bf252b719cb480e10cb1b91"
+      ],
+      "phases": [
+        "仰卧屈膝持片贴腹",
+        "卷腹坐起推片过顶"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1388",
+      "expectedName": "peroneals stretch",
+      "sourceId": "Peroneals_Stretch",
+      "sourceSha256": [
+        "651fd390fcbedb0d7f078afb124e9e7ce84fab7736016fd3231692d8f74664d7",
+        "1f6a1976db93125f864fc02991bf1966266ea625ed7e115d43a0c268268cc103"
+      ],
+      "phases": [
+        "坐地伸腿绳绕脚掌",
+        "拉绳足尖外翻拉伸"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1389",
+      "expectedName": "posterior tibialis stretch",
+      "sourceId": "Posterior_Tibialis_Stretch",
+      "sourceSha256": [
+        "0e4401baa35481058b051e51afb132bef11b79f1614a65c7e5dcddbe4a99d4d2",
+        "937de9eb8555edb6228a3b83a1e42de6beb6a0d4cdf47856ebf224633aac41dd"
+      ],
+      "phases": [
+        "坐地伸腿绳绕脚掌",
+        "拉绳足尖内扣拉伸"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0344",
+      "expectedName": "dumbbell lying one arm pronated triceps extension",
+      "sourceId": "One_Arm_Pronated_Dumbbell_Triceps_Extension",
+      "sourceSha256": [
+        "b2f4bdf4e2a62f9e52b86db5c14036d084294dbd6c4d381014f3f72302364be3",
+        "909e7ed1e9d330632a59894ab2d26a71c9f7cf727b99c4c92e0ae09e7742298a"
+      ],
+      "phases": [
+        "仰卧平凳单臂掌心向下持铃上举",
+        "屈肘降铃至脑后"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0346",
+      "expectedName": "dumbbell lying one arm supinated triceps extension",
+      "sourceId": "One_Arm_Supinated_Dumbbell_Triceps_Extension",
+      "sourceSha256": [
+        "e2069f3a5e898c6eb035a6bbb5091f72f9c7bce6bff3ad1ec7ee9ba3a28687d8",
+        "c250054d542c3cb7f99dedc0318636a037ab9e1e9e7b8c718dda6cc93b91f82c"
+      ],
+      "phases": [
+        "仰卧平凳单臂反握持铃脑后",
+        "伸肘举铃至肩上"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1358",
+      "expectedName": "side lying floor stretch",
+      "sourceId": "Side-Lying_Floor_Stretch",
+      "sourceSha256": [
+        "93da856ff9bf9a8200e85aaed402289c28bb8a16c152f1e4826f05074697afe6",
+        "c5d00fe1cecbd62514beb602845b85800d3064e8cf20b634f78f417801cd456b"
+      ],
+      "phases": [
+        "侧卧下臂过头上膝弯曲",
+        "双臂过头伸展下腿抬离地面"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0666",
+      "expectedName": "raise single arm push-up",
+      "sourceId": "Single-Arm_Push-Up",
+      "sourceSha256": [
+        "216dcaeedf588b1ce8757bdcbd2e021cb9214b74dee48d752a02dd41c1b82b22",
+        "49cb58ab90e9c783a96756b7c68879f8ed63638d94f01c38bb75837db762ad01"
+      ],
+      "phases": [
+        "俯卧撑低位单臂支撑",
+        "一臂侧举悬空推起"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0039",
+      "expectedName": "barbell front chest squat",
+      "sourceId": "Front_Barbell_Squat",
+      "sourceSha256": [
+        "f8a366b6913bd5af3072080720ba3ab7a74a7ef5754d1a39c200800cd6461f92",
+        "6bb5c5eee794bd13d411271f0ad1cdeabdfecf5cdeb471727996555d07ff43fb"
+      ],
+      "phases": [
+        "杠铃胸前交叉臂站立",
+        "下蹲至大腿平行"
+      ]
     }
   ],
   "videos": [
@@ -4750,9 +4854,25 @@
     {
       "source": "free-exercise-db Hanging_Leg_Raise → exdb:0475",
       "reason": "照片抬腿时屈膝约90°，与本条双腿伸展、不是屈膝举腿的定义直接冲突，不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Kipping_Muscle_Up → exdb:0558",
+      "reason": "照片为吊环摆动上拉，条目定义为引体向上杆（单杠）正手悬挂，器械不符。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Kettlebell_Clean → exdb:0537",
+      "reason": "两帧仅示单臂持铃站立与俯身铃置腿间起始，未见翻至肩高架铃关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Kettlebell_Clean_and_Jerk → exdb:0538",
+      "reason": "仅见俯身起始与翻至肩高架铃，未见挺举过顶锁定关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db Preacher_Hammer_Dumbbell_Curl → exdb:1646",
+      "reason": "照片为双臂同时锤式弯举，条目定义为交替弯举，形式不符。"
     }
   ],
-  "batch": 20,
+  "batch": 21,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",
