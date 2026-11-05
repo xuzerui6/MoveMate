@@ -5140,6 +5140,110 @@
         "站于绳索机中、双手握低位手柄向两侧伸展",
         "双臂向前扫动、在身前交叉合拢"
       ]
+    },
+    {
+      "exerciseId": "exdb:1436",
+      "expectedName": "barbell high bar squat",
+      "sourceId": "Barbell_Squat",
+      "sourceSha256": [
+        "469a3c5a6eb35b88c45cda9fa7f9086032976fa3d45f5d844a0cc09a95574db5",
+        "8663a34f2d0a0a33d3d39b505cf3cdd38e282c1c9020d39d5587976e8d8a3020"
+      ],
+      "phases": [
+        "站立、杠铃置于上背斜方肌上",
+        "下蹲至大腿与地面平行"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0396",
+      "expectedName": "dumbbell seated lateral raise",
+      "sourceId": "Seated_Side_Lateral_Raise",
+      "sourceSha256": [
+        "1fdeefecb4bc51e6891212a46a72162b3816e1de39cfa33a6e1c5c63862d4a54",
+        "107602e2a219e08f0736a10e58dec50d109e754435fbb0bf4461600f82664d1e"
+      ],
+      "phases": [
+        "坐于平凳、双铃垂于体侧",
+        "双臂向两侧抬至与地面平行"
+      ]
+    },
+    {
+      "exerciseId": "exdb:2144",
+      "expectedName": "cable seated chest press",
+      "sourceId": "Cable_Chest_Press",
+      "sourceSha256": [
+        "7d52bd9e516e132e32f6829ffbc319458285449f3f59fb00057d1675a7716cd5",
+        "f882f588340d709951913103d27335ff2d70dc3176ed093461e4ed09ccb5929b"
+      ],
+      "phases": [
+        "坐于凳面、双手正握肩高手柄",
+        "向前推柄至双臂伸直"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0214",
+      "expectedName": "cable seated one arm alternate row",
+      "sourceId": "Seated_One-arm_Cable_Pulley_Rows",
+      "sourceSha256": [
+        "2fa8f2c1db609642e272502a8ce0aa29234e1b0817615d7b0b0ec772c970a358",
+        "a13de8f65164441a337738fba7e43650bbbdca06b9dc878eab15bee3a42a85af"
+      ],
+      "phases": [
+        "坐于划船凳、单手握柄臂前伸",
+        "单臂拉柄向身体、肘贴身"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0074",
+      "expectedName": "barbell rack pull",
+      "sourceId": "Rack_Pull_with_Bands",
+      "sourceSha256": [
+        "af86ad4327fd5b8045def8354168fd30ccee915ae59bcff8d23afb20f8e87a4e",
+        "369b7b07c977053ef3d8f4a3a6116a138c99d81a7709aeb78a1a1b2435d49875"
+      ],
+      "phases": [
+        "杠铃置于膝高架上、俯身正握",
+        "伸髋伸膝拉起至站立锁定"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0087",
+      "expectedName": "barbell seated bradford rocky press",
+      "sourceId": "Seated_Barbell_Military_Press",
+      "sourceSha256": [
+        "53f3ed946d059741670f634ad9028af3e925e13868d7d66c64e603fcb95d6177",
+        "3aa292e814cfe068b60ce92bae3abece0ee75a436b6c963c19273c430b985d32"
+      ],
+      "phases": [
+        "坐于长凳、杠铃置于颈后上背",
+        "推杠过顶至双臂伸直"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1328",
+      "expectedName": "dumbbell lying rear delt row",
+      "sourceId": "Lying_Rear_Delt_Raise",
+      "sourceSha256": [
+        "6db755345b18b87cefb5eb698402b62b0d0c357e431c3bc7e1728d405e9d5c8a",
+        "e618283e45c3545ce36236c8a584074847b6aa1e74f2669dc6d1d72d75ce7b16"
+      ],
+      "phases": [
+        "俯卧平凳、双臂下垂持铃",
+        "拉铃向胸部、挤压肩胛"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0090",
+      "expectedName": "barbell seated good morning",
+      "sourceId": "Seated_Good_Mornings",
+      "sourceSha256": [
+        "1390e5e23c50887f1ce8d7deefb235327609bf679e3ed00cfe23cd75e4456a6c",
+        "61ef424d669ee2c70ce2623925f937a7c6714ead999676cf9c3b7912e6a46e1b"
+      ],
+      "phases": [
+        "坐于凳面、杠铃置于上背、躯干直立",
+        "髋部前屈、躯干前倾下放"
+      ]
     }
   ],
   "videos": [
@@ -5942,9 +6046,101 @@
     {
       "source": "free-exercise-db Barbell_Shoulder_Press → exdb:0028",
       "reason": "照片为坐姿杠铃肩推（杠铃置于肩上、推过头顶），条目定义为杠铃翻举加推举（杠铃自地面翻举至肩再推举）；无地面翻举阶段，体位与动作构成不符。"
+    },
+    {
+      "source": "free-exercise-db Kettlebell_Seated_Press → exdb:1438",
+      "reason": "照片为地面分腿坐姿单臂壶铃推举（一铃过顶、另一臂侧伸），条目定义为坐凳、双脚平放地面、双手各持一铃同时过顶推举；支撑、持铃数量与体位均不符。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_Raise → exdb:2292",
+      "reason": "照片为站姿双手持铃提至胸前（直立划船式上提），条目定义为屈髋俯身、双臂向两侧打开的后束侧举；体位与动作方向均不符。"
+    },
+    {
+      "source": "free-exercise-db Overhead_Cable_Curl → exdb:1643",
+      "reason": "照片为站姿双侧高位过顶弯举（双臂侧平举、屈肘向头侧卷），条目定义为坐姿过顶弯举；坐姿与站姿体位不符。"
+    },
+    {
+      "source": "free-exercise-db Chest_Push_from_3_point_stance → exdb:1303",
+      "reason": "两帧仅示三点站姿扶球与屈膝双手触球，未见药球离手前推（名称定义）或一手撑球俯卧撑（正文定义）的关键阶段；动作类型无法核验。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_Step_Ups → exdb:0431",
+      "reason": "照片为上台阶后抬膝（另一腿屈膝抬起、脚未落凳），条目定义为另一脚跟上站稳、双脚站于台阶完全直立；顶部阶段不符。"
+    },
+    {
+      "source": "free-exercise-db Sit-Up → exdb:3679",
+      "reason": "照片为双手抱头仰卧起坐，条目定义为双臂交叉于胸前；手臂位置不符。"
+    },
+    {
+      "source": "free-exercise-db Tricep_Dumbbell_Kickback → exdb:1739",
+      "reason": "照片为单臂俯身撑凳臂屈伸（单手撑凳、单膝跪凳），条目定义为站姿双手持铃交替臂屈伸；支撑与交替形式均不符。"
+    },
+    {
+      "source": "free-exercise-db Clean → exdb:0648",
+      "reason": "两帧仅示下蹲握杠起杠与高拉耸肩，未见前架接杠关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db Kettlebell_Dead_Clean → exdb:0535",
+      "reason": "照片为地面起铃的 dead clean（壶铃静置地面起铃），条目定义为悬垂翻举（壶铃持于腿前悬垂位起铃、不触地）；起铃方式不符。"
+    },
+    {
+      "source": "free-exercise-db Cable_Chest_Press → exdb:0151",
+      "reason": "照片为坐姿推胸，条目名称为准为卧推（需仰卧凳面）；体位不符。"
+    },
+    {
+      "source": "free-exercise-db Barbell_Squat → exdb:1435",
+      "reason": "照片杠铃置于斜方肌上（高杠位），条目定义为低杠（杠置于后束）；杠位不符。"
+    },
+    {
+      "source": "free-exercise-db Barbell_Squat → exdb:1545",
+      "reason": "照片为背杠深蹲，条目定义为杠置肘弯处的泽奇深蹲；持杠位置不符。"
+    },
+    {
+      "source": "free-exercise-db Barbell_Squat → exdb:0053",
+      "reason": "两帧仅示站立与下蹲，未见跳跃离地腾空；条目定义为跳跃深蹲，关键阶段缺失。"
+    },
+    {
+      "source": "free-exercise-db Sit-Up → exdb:3201",
+      "reason": "照片为双手抱头全程仰卧起坐（躯干抬至近直立），条目定义为躯干抬至 45 度的四分之一仰卧起坐；幅度不符。"
+    },
+    {
+      "source": "free-exercise-db Sit-Up → exdb:3202",
+      "reason": "照片为双手抱头全程仰卧起坐（躯干抬至近直立），条目定义为躯干抬至 45 度的半程仰卧起坐；幅度不符。"
+    },
+    {
+      "source": "free-exercise-db Sit-Up → exdb:3203",
+      "reason": "照片为双手抱头全程仰卧起坐（躯干抬至近直立），条目定义为躯干抬至 45 度的囚徒半程仰卧起坐；幅度不符。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_Raise → exdb:0415",
+      "reason": "照片为双手同时上提，条目定义为站姿交替上举；交替形式不符。"
+    },
+    {
+      "source": "free-exercise-db Incline_Dumbbell_Curl → exdb:0316",
+      "reason": "照片为上斜凳弯举（第二十七批已看图核对），条目定义为上斜卧推（正文为卧推步骤）；弯举与推举动作不符。"
+    },
+    {
+      "source": "free-exercise-db Cable_Rear_Delt_Fly → exdb:0202",
+      "reason": "照片为双手绳索后束飞鸟（双臂向两侧展开），条目定义为单手马镫柄划船（单臂拉向胸部、挤压肩胛）；双侧飞鸟与单侧划船动作不符。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_Lying_Supination → exdb:0347",
+      "reason": "两帧几乎相同，仅哑铃角度微变，未见旋前旋转与屈肘弯举的关键阶段；旋转方向无法辨认。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_Lying_Pronation → exdb:0349",
+      "reason": "照片所示为旋前方向旋转，条目定义为旋后卷曲；旋转方向相反。"
+    },
+    {
+      "source": "free-exercise-db Plyo_Push-up → exdb:1273",
+      "reason": "两帧仅示俯卧撑底部与顶部、手掌始终触地，未见离地腾空与击掌关键阶段；条目定义为击掌俯卧撑，关键阶段缺失。"
+    },
+    {
+      "source": "free-exercise-db Hyperextensions_With_No_Hyperextension_Bench → exdb:0488",
+      "reason": "照片为他人按压双脚辅助的平凳背伸，条目定义为单人使用背伸凳、双脚由器械固定；支撑方式与器械不符，且需他人辅助。"
     }
   ],
-  "batch": 30,
+  "batch": 31,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",
