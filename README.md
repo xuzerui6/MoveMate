@@ -18,7 +18,13 @@
 
 ![动伴概念渲染：摄像头就是教练——深蹲计数、动作评分与骨骼追踪](docs/images/render-hero.jpg)
 
-![动伴首页：个人成长、像素分身与运动入口](docs/images/home.png)
+<div align="center">
+
+| 动作库条目 | 图文完整 | 真人实拍示范 | 摄像头识别动作 |
+| :---: | :---: | :---: | :---: |
+| **1,329** | **422** | **302** | **43** |
+
+</div>
 
 ## 产品能力
 
@@ -35,7 +41,13 @@ MoveMate 整合「动伴」的运动陪练、成长形象和「搭个局」的�
 | 语音陪练 | 可选小智接入与设备池；未配置时使用本地文字反馈，不阻塞训练 |
 | 数据工具 | 历史导入导出、计划草稿、进阶建议、配重计算、单位偏好与 PWA 只读缓存 |
 
-![动伴训练入口](docs/images/training.png)
+<div align="center">
+
+| 首页：成长与入口 | 训练入口 |
+| :---: | :---: |
+| ![动伴首页：个人成长、像素分身与运动入口](docs/images/home.png) | ![动伴训练入口](docs/images/training.png) |
+
+</div>
 
 截图来自演示账号的实际页面；截图不代表摄像头实拍质量验收。新动作识别为试用，评分用于反馈，不代表专业认证。
 
@@ -72,13 +84,11 @@ Windows 配置好素材后，双击根目录 [`start-demo.bat`](start-demo.bat)�
 
 ## 运行与架构
 
-```text
-浏览器 · React 18 / TypeScript / Vite / MediaPipe
-   │ 同源 API、实时消息与可选语音
-   ├─ 本机：Express + node:sqlite + Socket.IO
-   └─ 云端：Cloudflare Worker + Static Assets
-                 └─ SQLite-backed Durable Object
-                    原生 WebSocket / Alarm / 持久化数据
+```mermaid
+flowchart LR
+    A["浏览器<br/>React 18 · TypeScript · Vite · MediaPipe"] -->|"同源 API · 实时消息 · 可选语音"| B["本机部署<br/>Express · node:sqlite · Socket.IO"]
+    A --> C["云端部署<br/>Cloudflare Worker · Static Assets"]
+    C --> D["Durable Object<br/>SQLite 持久化 · 原生 WebSocket · Alarm"]
 ```
 
 生产入口为 [dongban.xyz](https://dongban.xyz)，采用 Cloudflare Workers 与 Durable Objects。当前使用免费方案，不自动开通付费资源；免费额度和网络状态会影响可用性。Vercel／Turso 为历史迁移方案，不是当前运行依赖。
@@ -123,3 +133,11 @@ GitHub Actions 使用 Node 24 检查后端、前端类型、Workers 与公开媒
 - 动伴原始前端与像素素材来自 [xuzerui6/dongban](https://github.com/xuzerui6/dongban)，引入版本保留于[实施记录](docs/implementation-notes.md)。
 - 计划训练参考 [openGym](https://github.com/DuarteSantos8/openGym) 的功能组织并独立实现；没有复制其 AGPL 代码、翻译或受限媒体。
 - 感谢 MediaPipe、MuscleMap、free-exercise-db、wger 及第三方声明中列出的项目与素材作者。
+
+<div align="center">
+
+**MoveMate · 动伴 — 每次运动，都算数。**
+
+[在线体验](https://dongban.xyz) · [文档中心](docs/README.md) · [反馈问题](https://github.com/xuzerui6/MoveMate/issues/new/choose)
+
+</div>
