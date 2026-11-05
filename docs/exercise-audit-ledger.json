@@ -6126,22 +6126,38 @@
     {
       "id": "exdb:0129",
       "originalName": "bench dip (knees bent)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称为屈膝，第二步却要求身前双腿伸直、脚跟着地；膝关节姿势与名称矛盾。",
+      "reason": "2026-11-05 按条目名称定义作出编辑决定：屈膝版（双膝弯曲、双脚平放地面）；来源正文第二步「双腿伸直、脚跟着地」与名称冲突，不采用，正文已按屈膝改写。显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "e262d077a83f86cfbcc9d4e570cd81c21620ce21c5c1e08bf3bd3983aeccbc21",
-        "steps": 5
+        "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0129",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "c1a8bc047c305840a8aef9306620fb7e7b306f84006f79b73bb5e0c1315e072c",
+            "7f556a3e3f3b0e436591dc54c17292408441c444e3ce939e4a4a81963a502143",
+            "f04821787d6427febfe94f90921a5bc8dba762ee4f44de573071be1b2aa6a05e"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1399",
@@ -17191,22 +17207,38 @@
     {
       "id": "exdb:0404",
       "originalName": "dumbbell seated shoulder press (parallel grip)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文起始掌心向内、随后肩高掌心朝前，与标题平行握全程保持冲突。候选已对照（2026-11-04）：固定版本无坐姿平行握肩推条目，Dumbbell_Shoulder_Press 为掌心向前标准推、已用于 exdb:0405，不能顶替平行握。当前不发布此候选，不计完整覆盖。",
+      "reason": "2026-11-05 按条目名称定义作出编辑决定：全程平行握（掌心相对）；来源正文「肩高掌心朝前」与标题及摄像头档案（neutral_seated_press）冲突，不采用，正文已按平行握改写。显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a844396aadb22ac3c1a8334fb9b05d499182e9d373dae6021519eeebd106bd96",
-        "steps": 5
+        "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0404",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "9c7563bf4bf99d26322235d3db908048c81b7e8be22faf7b104d36d3a4ea9964",
+            "52d32285d7d88118589ce254c0e7af86b8deed856bcba41fba80557cbd637081",
+            "eba7d7bcd0678d15ed8bc2cd64b7a77e04488591308d948e0573f64a0aa1eee5"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2188",
