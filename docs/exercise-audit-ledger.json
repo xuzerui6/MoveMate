@@ -3356,22 +3356,38 @@
     {
       "id": "exdb:0049",
       "originalName": "barbell incline row",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：45度凳俯卧胸托正握拉明确，但凳架与杠铃活动空间需要图像核对，不用站姿俯身划船代替。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "24b492f5f249b7ee945b6fc10c8893f400462e49949a80e563da623856289abc",
-        "steps": 7
+        "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0049",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "9efd74df5eade6ff043e94bdee6f370666fff535aaa913f4a547cffcdd9ed97c",
+            "2924182bcc6983cbcc9082b9390a3eb3be4ad0514866bad6df3eb3ccd37d3be2",
+            "9fc8c02f88d12c4fce56c3aa18de68474fc022f61501b6d986418fe142b00023"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0050",
@@ -4132,22 +4148,38 @@
     {
       "id": "exdb:0070",
       "originalName": "barbell preacher curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：坐姿上臂托垫、反握弯举明确；托垫角度、手腕和凳面接触仍需对应示范。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "83975ff1277cdcd340183ed1f768d218b55c6d35c691a6762d2e8471a7ec7e14",
-        "steps": 6
+        "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0070",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "5a336af068ea12e3299b572fc05324dd8a75bb58e5a3c258a19e24afa24e43da",
+            "a1a00be136246cd1f1aa62ccea9ae79cae9198e81ff5acfc30d7bc97193c6cca",
+            "d14ac626bce73c78d072125eef7a098625db408fa43915b7c4e1a7d0baef39e6"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0071",
@@ -4879,42 +4911,74 @@
     {
       "id": "exdb:0091",
       "originalName": "barbell seated overhead press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：坐凳肩前正握过顶推明确；需要区别直杠与双哑铃的握距及凳面支撑，尚无匹配图。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "c3dd2fe1faff00314169696a5c8469be33eb8a0ba9b64c5697fa992884f8d991",
-        "steps": 6
+        "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0091",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "f2606c7b735e03cad80db14a48c063680a6defdb58edf54f5af7c97b4eabd26f",
+            "873b23d79f16560579de9da16e290a790df07a25402bccaf58cfcb426abb5e24",
+            "74ce6a2b0f3da23a8ecd2f8bc8bc22a55407576495cab321efdac1fa1d0aa532"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0092",
       "originalName": "barbell seated overhead triceps extension",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：坐姿直杠正握、上臂靠头、降脑后明确；细部握位与可控终点需专门图示，不用站姿或曲杠替代。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "928f422e7b205141d85a51e44b9d833355e5ff5d0bde3ac66afacdc2a4d913fa",
-        "steps": 5
+        "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0092",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "8d8975651f7610d965f0246cbb51461f5ce54793e2d9e0b1ddd4f014a07b8d4c",
+            "7545285e82a7ea99f2dab8b478fe20d05148e9daf901f19bd8b95856971ca1e0",
+            "473e6bdd6023a13cf97efc552e02f4b7a5bab4be4d4ffdd54863352a31bbdfd3"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0094",
@@ -5922,42 +5986,74 @@
     {
       "id": "exdb:0124",
       "originalName": "barbell wide squat",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：宽脚距、上背杠清楚，但文本同时允许斜方肌和后束托杠，未确定高低杠形式。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "691c5e25090ab1cced59ffe27f8043f2a9036705bbc56b3ceddd3fc727cc61a2",
-        "steps": 6
+        "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0124",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "e57eea273ae5415616c5ce5b7c7e9befa1a407ec1272186231fd9dd897f7ab68",
+            "2225d9d1794ee27ed927f591bb0acbe7c2bca54e64878688bcac2df3b544eef7",
+            "6a735a644ccee91a1f12365e1d0c6a74b2415313d0e50c56b6f1a949b5a32c94"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0123",
       "originalName": "barbell wide-grip upright row",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：宽握提肘拉到下巴可辨，与版本2/3文本近同，需握距和终点独立核验。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "8950ac8b4b4d64dbb02bc66aa901eea019c9df00bb1acaef6a74555f42b62101",
-        "steps": 5
+        "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0123",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "3f5bf5faf1d6f02be5ea7a9c3b999f5173279580359df62d5eea2007a0eec2ce",
+            "e2c1256bb680b5be846443d6ed910cf1d41e9c41db4675db3b100a58ccb80b85",
+            "46c82343ed9b4d335ebe38712df8846a9a3ef8473ca0d3b790d7c57569a32b3c"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0126",
@@ -12427,22 +12523,38 @@
     {
       "id": "exdb:0302",
       "originalName": "dumbbell decline fly",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：下斜双脚固定、中立握弧线展开明确，仍需凳角、肘微屈和幅度示范。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "d4a47d10eb377808b0678d527f66113868ba716e99a3ef328926dfea4a94d313",
-        "steps": 5
+        "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0302",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "da707da5353b4c76f1942cd8fa0fc3c7d18d518668da85b987fd927402bf5597",
+            "dd7c40012e50af6260cf05ff79496e672ac873c8bf437072535e5fce96985446",
+            "8cbb248adfffad4e991724548246eff74a1fedaae232abe4efc3df2bd29f0949"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0303",
@@ -13092,22 +13204,38 @@
     {
       "id": "exdb:0319",
       "originalName": "dumbbell incline fly",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：45度凳中立握、双铃弧线展开明确，仍需准确肘角、凳面和脚支撑示范。",
+      "reason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "cdd3eca7ea3b6d0bb29cde1efeceb78e2e2d75c09cd412dc6a4fcd409cc8c7c5",
-        "steps": 6
+        "steps": 4
       },
       "photo": false,
-      "illustration": false,
+      "illustration": true,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "MoveMate 原创人体动作示意 / exdb:0319",
+          "author": "MoveMate contributors",
+          "license": "MIT",
+          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
+          "version": "original-1",
+          "sourceSha256": [
+            "83071cf19d2fe839b6f581ad2e9a5af03ede15213d2569ab7334d318885ef0cb",
+            "5b8afe015faec99a3f2c6a1f478c86f23cd83ac0143739951212889271b87f8d",
+            "d4ceea83652eb562b9a03058b96ea0d17ae0a7f841a89052df576e00c17cd624"
+          ],
+          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1278",
