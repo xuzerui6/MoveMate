@@ -4133,22 +4133,37 @@
     {
       "id": "exdb:1411",
       "originalName": "barbell palms down wrist curl over a bench",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题前臂撑凳，正文前臂抵大腿，支撑不同，不能自动用大腿支撑图证明。",
+      "reason": "真人实拍双帧对照：跪姿前臂贴凳、掌心向下握杠、伸腕上举，与条目名称「凳上掌心向下腕伸」一致；目录正文的坐姿大腿支撑写法以名称为准改写为贴凳形式。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a4b312f611a0ea23ee04cb058d420e1f4c3769a51d1207c9bae3de0933e37c34",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Palms-Down_Wrist_Curl_Over_A_Bench",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Palms-Down_Wrist_Curl_Over_A_Bench",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "415635b89e971929abf07124fc30791c512e884c5297ee1e2f4570d3c2032219",
+            "75dfa4e46a11e9054986a5570de2ec41e9852105f5c56c9af4ef6b847b7ef403"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1412",
@@ -21693,22 +21708,37 @@
     {
       "id": "exdb:0494",
       "originalName": "incline reverse grip push-up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源未明确反握方式，候选为反握固定杠支撑，不能直接当掌撑凳面变式。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：史密斯杠反握斜撑、屈肘胸贴杠，与上斜反握俯卧撑定义一致，文字按照片的史密斯杠形式写明。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "6081ecb0c4654d5bfcde0d1a75062727fda9fbd126ef145a0fc2e163a8711adb",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Incline_Push-Up_Reverse_Grip",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Incline_Push-Up_Reverse_Grip",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "b145afdaf42fcfa252069ffd190dc4eb8d7df355a92746403f49f9a32ae62287",
+            "c971940b4dbc9335edbf8c6910ed2c66dc95f11ce0797498e3f318e7ce77efaa"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3011",
@@ -23214,22 +23244,37 @@
     {
       "id": "exdb:0554",
       "originalName": "kettlebell windmill",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：过顶风车需核对足部角度与髋折叠方向，当前文字不足。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：壶铃过顶站立、髋折叠侧屈下探、另一手下探，与壶铃风车定义一致。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "51074075d27950cd8224b29e991700d3ea32405fcddc20fba4bfca33e92dbeee",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Kettlebell_Windmill",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Kettlebell_Windmill",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "5b4ec258e0f7be4cc21827480e91b5035fdb9a7443dfc061b6486438de51d56c",
+            "c8567970896915261677deadc0205646fcc3838ee43face860ee204c283b4447"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0555",
@@ -25347,22 +25392,37 @@
     {
       "id": "exdb:1302",
       "originalName": "medicine ball chest pass",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：接球方式、前后脚转换与来源表述矛盾，尚待核对。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：胸前持球、双臂前推、球在空中、同伴准备接球，与药球胸前传球定义一致。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "aead4af126fa235656c507ce8dbebb1c0e0cc71df5e6d11a5d48db8c9f646084",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Medicine_Ball_Chest_Pass",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Medicine_Ball_Chest_Pass",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "e5a1180336164dea6c017287e5766a2587ce73596245ccddfe2274e86e25101e",
+            "566654af5a25fd68636b5d273d91f10f1d42f08aeef6f7ca565d10ee77f53b5e"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1303",
@@ -25757,22 +25817,37 @@
     {
       "id": "exdb:0635",
       "originalName": "oblique crunches floor",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字确认仰卧卷肩时向一侧旋转，左右交替；需要对照肩、膝及回落图，不采用不转体的普通卷腹。",
+      "reason": "真人实拍双帧对照：仰卧屈膝倒腿、卷肩旋转起身，与地面斜向卷腹定义一致，文字按照片的倒腿形式写明并注明交替。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "f6e02394f10641981dfd197f44f03814f0c300ecf7bb61d7bcaac3264be9ab6c",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Oblique_Crunches_-_On_The_Floor",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Oblique_Crunches_-_On_The_Floor",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "5660368a4ad7f3c6a8614a6df4ed2876dbfb084ca7040543a377a3b3a6d133de",
+            "0986b228d1f4562b656f2069e78ff0ce3558b1ecf71f8e1a4674ef7b5584824f"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0636",
@@ -31451,22 +31526,37 @@
     {
       "id": "exdb:0830",
       "originalName": "weighted bench dip",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：文字没有说明腿部负重与第二凳支撑，候选额外条件未核实。 当前不发布此候选，不计完整覆盖。",
+      "reason": "真人实拍双帧对照：双凳支撑、腿上压片、屈肘下放，与负重凳上臂屈伸定义一致，文字按照片的双凳与压片形式写明。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "8bfdeab33ab2cf28690295bf0b6d299d80dc1f47d6ebd297d0f4018ca8aefdf2",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "free-exercise-db / Weighted_Bench_Dip",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Weighted_Bench_Dip",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "1a766d8998e7e73f972ea2c4d75de09b3beb4bd4c304daa502bf63008b42c9b6",
+            "3b08bc6683766a569ca48456d148d1d2b3d90ee5a11979e2b01affd41ea77900"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2987",

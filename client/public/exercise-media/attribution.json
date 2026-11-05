@@ -14565,6 +14565,228 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:1411": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/palms-down_wrist_curl_over_a_bench-0.3a0b09f2321a.webp",
+          "sha256": "3a0b09f2321a965f90d56bdbaecdbd40aff252a70681a2414215b142b3f76a81",
+          "bytes": 52812,
+          "distribution": "repository",
+          "phase": "跪姿前臂贴凳掌心向下",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/palms-down_wrist_curl_over_a_bench-1.99d4a6f6962d.webp",
+          "sha256": "99d4a6f6962dae2b669e5729c847f559856879ce6fc6c75b23871321b47949c9",
+          "bytes": 53808,
+          "distribution": "repository",
+          "phase": "伸腕上举",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Palms-Down_Wrist_Curl_Over_A_Bench",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Palms-Down_Wrist_Curl_Over_A_Bench",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "415635b89e971929abf07124fc30791c512e884c5297ee1e2f4570d3c2032219",
+            "75dfa4e46a11e9054986a5570de2ec41e9852105f5c56c9af4ef6b847b7ef403"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0635": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/oblique_crunches_-_on_the_floor-0.1f8fb90376ef.webp",
+          "sha256": "1f8fb90376ef45d39f229642cadc53293a658c2a1791bd36b7f166a6018a0434",
+          "bytes": 55090,
+          "distribution": "repository",
+          "phase": "仰卧屈膝双腿倒向一侧",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/oblique_crunches_-_on_the_floor-1.0a889e40b7ba.webp",
+          "sha256": "0a889e40b7badc188377f384ee307e468dd64e238a1c5860168fff7dd74c0452",
+          "bytes": 61346,
+          "distribution": "repository",
+          "phase": "卷肩旋转起身",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Oblique_Crunches_-_On_The_Floor",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Oblique_Crunches_-_On_The_Floor",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "5660368a4ad7f3c6a8614a6df4ed2876dbfb084ca7040543a377a3b3a6d133de",
+            "0986b228d1f4562b656f2069e78ff0ce3558b1ecf71f8e1a4674ef7b5584824f"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1302": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/medicine_ball_chest_pass-0.23ffe6ef19d7.webp",
+          "sha256": "23ffe6ef19d7c9c916d2fbcd6da1baf534f8f42274ce894886f5048f0eba6155",
+          "bytes": 39062,
+          "distribution": "repository",
+          "phase": "胸前持球准备",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/medicine_ball_chest_pass-1.50d8b55bb7ad.webp",
+          "sha256": "50d8b55bb7ad7bbb366a003123c0afde2c3e664e14789ebb0edaef501c8fb3ea",
+          "bytes": 38148,
+          "distribution": "repository",
+          "phase": "双臂前推传球",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Medicine_Ball_Chest_Pass",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Medicine_Ball_Chest_Pass",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "e5a1180336164dea6c017287e5766a2587ce73596245ccddfe2274e86e25101e",
+            "566654af5a25fd68636b5d273d91f10f1d42f08aeef6f7ca565d10ee77f53b5e"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0554": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/kettlebell_windmill-0.7eda57f6f05c.webp",
+          "sha256": "7eda57f6f05c79873751243509a476d0efa67c7eee692712401203a7e630bd36",
+          "bytes": 29730,
+          "distribution": "repository",
+          "phase": "壶铃过顶站立",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/kettlebell_windmill-1.d03b49c1f277.webp",
+          "sha256": "d03b49c1f277518087adf2a7968ded501bd1e47a2cf54831d56e35f209796713",
+          "bytes": 32402,
+          "distribution": "repository",
+          "phase": "髋折叠侧屈下探",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Kettlebell_Windmill",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Kettlebell_Windmill",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "5b4ec258e0f7be4cc21827480e91b5035fdb9a7443dfc061b6486438de51d56c",
+            "c8567970896915261677deadc0205646fcc3838ee43face860ee204c283b4447"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0830": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/weighted_bench_dip-0.e770bce0f491.webp",
+          "sha256": "e770bce0f4911f0650b238b04f83422609e830bf5c8c92a402a7ead9381f3709",
+          "bytes": 37530,
+          "distribution": "repository",
+          "phase": "双凳支撑腿上压片",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/weighted_bench_dip-1.c2b694da26cb.webp",
+          "sha256": "c2b694da26cbc9be7bd4f88745375b6320fb0579b145b0277e2f722f6e406018",
+          "bytes": 36950,
+          "distribution": "repository",
+          "phase": "屈肘下放身体",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Weighted_Bench_Dip",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Weighted_Bench_Dip",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "1a766d8998e7e73f972ea2c4d75de09b3beb4bd4c304daa502bf63008b42c9b6",
+            "3b08bc6683766a569ca48456d148d1d2b3d90ee5a11979e2b01affd41ea77900"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0494": {
+      "note": "实拍双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/incline_push-up_reverse_grip-0.af80c198f148.webp",
+          "sha256": "af80c198f148da77890cbd3050eb9c48fce41aa7f402f77f2a1abf4f5debd444",
+          "bytes": 33886,
+          "distribution": "repository",
+          "phase": "史密斯杠反握斜撑",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/incline_push-up_reverse_grip-1.bdfc05168452.webp",
+          "sha256": "bdfc05168452fd2a5fa3d6da2e26eab6c862cc185cb1345f8814899fbf6ebb95",
+          "bytes": 34296,
+          "distribution": "repository",
+          "phase": "屈肘胸贴杠",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "free-exercise-db / Incline_Push-Up_Reverse_Grip",
+          "author": "free-exercise-db contributors（原图未单独署名）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/exercises/Incline_Push-Up_Reverse_Grip",
+          "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+          "sourceSha256": [
+            "b145afdaf42fcfa252069ffd190dc4eb8d7df355a92746403f49f9a32ae62287",
+            "c971940b4dbc9335edbf8c6910ed2c66dc95f11ce0797498e3f318e7ce77efaa"
+          ],
+          "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }

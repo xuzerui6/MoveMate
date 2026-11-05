@@ -3697,6 +3697,84 @@
         "站姿单臂过顶伸直",
         "屈肘下放脑后"
       ]
+    },
+    {
+      "exerciseId": "exdb:1411",
+      "expectedName": "barbell palms down wrist curl over a bench",
+      "sourceId": "Palms-Down_Wrist_Curl_Over_A_Bench",
+      "sourceSha256": [
+        "415635b89e971929abf07124fc30791c512e884c5297ee1e2f4570d3c2032219",
+        "75dfa4e46a11e9054986a5570de2ec41e9852105f5c56c9af4ef6b847b7ef403"
+      ],
+      "phases": [
+        "跪姿前臂贴凳掌心向下",
+        "伸腕上举"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0635",
+      "expectedName": "oblique crunches floor",
+      "sourceId": "Oblique_Crunches_-_On_The_Floor",
+      "sourceSha256": [
+        "5660368a4ad7f3c6a8614a6df4ed2876dbfb084ca7040543a377a3b3a6d133de",
+        "0986b228d1f4562b656f2069e78ff0ce3558b1ecf71f8e1a4674ef7b5584824f"
+      ],
+      "phases": [
+        "仰卧屈膝双腿倒向一侧",
+        "卷肩旋转起身"
+      ]
+    },
+    {
+      "exerciseId": "exdb:1302",
+      "expectedName": "medicine ball chest pass",
+      "sourceId": "Medicine_Ball_Chest_Pass",
+      "sourceSha256": [
+        "e5a1180336164dea6c017287e5766a2587ce73596245ccddfe2274e86e25101e",
+        "566654af5a25fd68636b5d273d91f10f1d42f08aeef6f7ca565d10ee77f53b5e"
+      ],
+      "phases": [
+        "胸前持球准备",
+        "双臂前推传球"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0554",
+      "expectedName": "kettlebell windmill",
+      "sourceId": "Kettlebell_Windmill",
+      "sourceSha256": [
+        "5b4ec258e0f7be4cc21827480e91b5035fdb9a7443dfc061b6486438de51d56c",
+        "c8567970896915261677deadc0205646fcc3838ee43face860ee204c283b4447"
+      ],
+      "phases": [
+        "壶铃过顶站立",
+        "髋折叠侧屈下探"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0830",
+      "expectedName": "weighted bench dip",
+      "sourceId": "Weighted_Bench_Dip",
+      "sourceSha256": [
+        "1a766d8998e7e73f972ea2c4d75de09b3beb4bd4c304daa502bf63008b42c9b6",
+        "3b08bc6683766a569ca48456d148d1d2b3d90ee5a11979e2b01affd41ea77900"
+      ],
+      "phases": [
+        "双凳支撑腿上压片",
+        "屈肘下放身体"
+      ]
+    },
+    {
+      "exerciseId": "exdb:0494",
+      "expectedName": "incline reverse grip push-up",
+      "sourceId": "Incline_Push-Up_Reverse_Grip",
+      "sourceSha256": [
+        "b145afdaf42fcfa252069ffd190dc4eb8d7df355a92746403f49f9a32ae62287",
+        "c971940b4dbc9335edbf8c6910ed2c66dc95f11ce0797498e3f318e7ce77efaa"
+      ],
+      "phases": [
+        "史密斯杠反握斜撑",
+        "屈肘胸贴杠"
+      ]
     }
   ],
   "videos": [
@@ -4159,6 +4237,38 @@
     {
       "source": "free-exercise-db Ankle_Circles → exdb:1368",
       "reason": "照片为站姿单脚离地绕环，与条目坐姿双腿前伸定义不符，暂不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Hamstring_Stretch → exdb:1511",
+      "reason": "照片为仰卧拉带腘绳肌拉伸，与条目站姿髋铰链前倾拉伸定义不符，暂不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Hip_Lift_with_Band → exdb:1408",
+      "reason": "照片为弹力带横过髋部、下端锚定地面哑铃的臀桥，与条目膝上套带地面臀桥定义不符（带位不同），暂不替换既有图解。"
+    },
+    {
+      "source": "free-exercise-db Plyo_Push-up → exdb:1306",
+      "reason": "两帧仅示俯卧撑底部与平板撑起，未见双手离地的增强式关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db Kneeling_Jump_Squat → exdb:1420",
+      "reason": "两帧仅示跪姿背杠姿态，未见起跳腾空与双脚落地关键阶段，不采用。"
+    },
+    {
+      "source": "free-exercise-db One-Arm_Kettlebell_Floor_Press → exdb:1298",
+      "reason": "照片为双腿伸直仰卧地板推举，与条目屈膝双脚踩地定义不符。"
+    },
+    {
+      "source": "free-exercise-db Muscle_Up → exdb:0631",
+      "reason": "照片为吊环双力臂，与条目单杠双力臂器械定义不符。"
+    },
+    {
+      "source": "free-exercise-db Dumbbell_Seated_One-Leg_Calf_Raise → exdb:0400",
+      "reason": "照片非工作腿屈膝、脚平放于台阶附近，与条目另一腿前伸定义不符。"
+    },
+    {
+      "source": "free-exercise-db Close-Grip_Dumbbell_Press → exdb:1731",
+      "reason": "照片为双手共握一只哑铃的窄握推举，与条目每手一只哑铃定义不符（与 exdb:0296 的驳回同源）。"
     }
   ],
   "batch": 15,
