@@ -79,13 +79,13 @@ const GameCard: React.FC<Props> = ({ game, hideActionBtn = false, customActionBt
       <div className="ui-pages-lobby-gamecard-topRow">
         <div className="ui-pages-lobby-gamecard-sportInfo">
           <span className="ui-pages-lobby-gamecard-sportIconWrapper">
-            <SportIcon sport={game.sport_type} size={26} color="#123e29" />
+            <SportIcon sport={game.sport_type} size={26} color="#08783b" />
           </span>
           <div className="ui-pages-lobby-gamecard-sportTitleBlock">
             <div className="ui-pages-lobby-gamecard-titleRow">
               <span className="ui-pages-lobby-gamecard-sportName">{sportLabel}</span>
               {relationLabel && (
-                <span style={isHost ? styles.relationChipHost : styles.relationChipMember}>
+                <span className={isHost ? "ui-pages-lobby-gamecard-relationChipHost" : "ui-pages-lobby-gamecard-relationChipMember"}>
                   {relationLabel}
                 </span>
               )}
@@ -161,145 +161,6 @@ const GameCard: React.FC<Props> = ({ game, hideActionBtn = false, customActionBt
       </div>
     </div>
   );
-};
-
-const styles: Record<string, React.CSSProperties> = {
-  card: {
-    marginBottom: '1rem',
-  },
-  topRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: '1.25rem',
-  },
-  sportInfo: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: '0.75rem',
-  },
-  sportIconWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '2.75rem',
-    height: '2.75rem',
-    background: '#f3f6f3',
-    borderRadius: '12px',
-    flexShrink: 0,
-  },
-  sportTitleBlock: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.25rem',
-  },
-  titleRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-  },
-  sportName: {
-    fontSize: '1.125rem',
-    fontWeight: 800,
-    color: '#123e29',
-    letterSpacing: '-0.02em',
-  },
-  relationChipHost: {
-    fontSize: '0.75rem',
-    fontWeight: 700,
-    padding: '0.125rem 0.4rem',
-    borderRadius: '4px',
-    background: '#123e29',
-    color: '#FFFFFF',
-  },
-  relationChipMember: {
-    fontSize: '0.75rem',
-    fontWeight: 700,
-    padding: '0.125rem 0.4rem',
-    borderRadius: '4px',
-    background: '#edf2ee',
-    color: '#475569',
-  },
-  tag: {
-    fontSize: '0.75rem',
-    fontWeight: 500,
-    color: '#64748B',
-  },
-  hostMetaRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.45rem',
-    flexWrap: 'wrap',
-    marginTop: '0.05rem',
-  },
-  hostName: {
-    fontSize: '0.78rem',
-    color: '#64748B',
-    fontWeight: 600,
-  },
-  hostLevelChip: {
-    fontSize: '0.75rem',
-    fontWeight: 700,
-    color: '#7C3AED',
-    background: '#F5F3FF',
-    borderRadius: '9999px',
-    padding: '0.15rem 0.5rem',
-  },
-  infoBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.5rem',
-    marginBottom: '1.25rem',
-  },
-  infoRow: {
-    display: 'flex',
-    alignItems: 'baseline',
-    gap: '0.75rem',
-  },
-  infoLabel: {
-    fontSize: '0.8125rem',
-    fontWeight: 600,
-    color: '#74817a',
-    width: '2rem',
-    flexShrink: 0,
-  },
-  infoTextValue: {
-    fontSize: '0.875rem',
-    color: '#334155',
-    fontWeight: 500,
-    lineHeight: 1.4,
-  },
-  bottomRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: '1rem',
-    borderTop: '1px solid #edf2ee',
-  },
-  participants: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.75rem',
-  },
-  countBlock: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '2px',
-  },
-  countText: {
-    fontSize: '0.8125rem',
-    color: '#475569',
-    fontWeight: 600,
-  },
-  remainingText: {
-    fontSize: '0.75rem',
-    color: '#008a49',
-    fontWeight: 700,
-  },
-  actionBtn: {
-    padding: '0.35rem 1rem',
-    minWidth: '4.5rem',
-  },
 };
 
 export default GameCard;

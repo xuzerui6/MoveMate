@@ -187,13 +187,13 @@ const Login: React.FC = () => {
       {/* 登录/注册切换 */}
       <div className="ui-pages-login-login-tabs">
         <button
-          className="ui-pages-login-login-tab" style={{color: mode === 'login' ? '#009c55' : '#9CA3AF',borderBottomColor: mode === 'login' ? '#009c55' : 'transparent'}}
+          className="ui-pages-login-login-tab" style={{color: mode === 'login' ? '#008a40' : '#9CA3AF',borderBottomColor: mode === 'login' ? '#008a40' : 'transparent'}}
           onClick={() => setMode('login')}
         >
           登录
         </button>
         <button
-          className="ui-pages-login-login-tab" style={{color: mode === 'register' ? '#009c55' : '#9CA3AF',borderBottomColor: mode === 'register' ? '#009c55' : 'transparent'}}
+          className="ui-pages-login-login-tab" style={{color: mode === 'register' ? '#008a40' : '#9CA3AF',borderBottomColor: mode === 'register' ? '#008a40' : 'transparent'}}
           onClick={() => setMode('register')}
         >
           注册

@@ -23,7 +23,7 @@
   border: 1px solid #dce7e0;
   border-radius: 12px;
   padding: 8px 14px;
-  color: #145d35;
+  color: #08783b;
   font: inherit;
   cursor: pointer;
 }
@@ -41,23 +41,23 @@
 }
 .media-tabs button[aria-selected="true"],
 .media-controls button[aria-pressed="true"] {
-  background: #e3f7eb;
-  color: #006b32;
+  background: #e5faee;
+  color: #08783b;
   font-weight: 800;
 }
 .media-tabs button:disabled {
   color: #78867d;
   cursor: default;
-  background: #f5f7f6;
+  background: #f6f8f7;
 }
 .exercise-media button:focus-visible,
 .exercise-media select:focus-visible,
 .exercise-demo-disclosure summary:focus-visible {
-  outline: 3px solid #008b43;
+  outline: 3px solid #008a40;
   outline-offset: 3px;
 }
 .exercise-media-stage {
-  background: #f3f6f4;
+  background: #f6f8f7;
   position: relative;
   display: grid;
   place-items: center;
@@ -82,7 +82,7 @@
   border: 0;
   border-radius: 30px;
   padding: 12px 24px;
-  background: #008b43;
+  background: #008a40;
   color: white;
   font: inherit;
   font-weight: 700;
@@ -135,7 +135,7 @@
   padding: 8px;
 }
 .media-pending {
-  background: #f1f6f3;
+  background: #f6f8f7;
   color: #52695b;
 }
 .media-note {
@@ -149,7 +149,7 @@
   color: #52695b;
   overflow-wrap: anywhere;
 }
-.media-frame-caption a { color: #00753b; text-decoration: underline; }
+.media-frame-caption a { color: #08783b; text-decoration: underline; }
 .gym-library > .gym-inline-actions > label:has(select) {
   display: flex;
   flex-direction: row;
@@ -176,7 +176,7 @@
   line-height: 1.6;
 }
 .media-attribution a {
-  color: #00753b;
+  color: #08783b;
   text-decoration: underline;
 }
 .media-attribution small {
@@ -212,10 +212,10 @@
   margin-right: 8px;
 }
 .primary-muscle {
-  background: #008b43;
+  background: #008a40;
 }
 .secondary-muscle {
-  background: #9be5ba;
+  background: #00c65e;
 }
 .exercise-demo-disclosure {
   margin: 12px 0;
@@ -223,7 +223,7 @@
 .exercise-demo-disclosure > summary {
   min-height: 44px;
   cursor: pointer;
-  color: #00723b;
+  color: #08783b;
   font-weight: 700;
   display: list-item;
   list-style-position: inside;
@@ -239,7 +239,7 @@
   flex: 0 0 88px;
   border-radius: 14px;
   overflow: hidden;
-  background: #f0f5f2;
+  background: #f6f8f7;
   color: #718177;
   font-size: 12px;
   text-align: center;
@@ -285,13 +285,13 @@
 }
 .exercise-media-badges span {
   border-radius: 5px;
-  background: #e9f6ee;
-  color: #007039;
+  background: #e5faee;
+  color: #08783b;
   font-size: 12px;
   padding: 1px 5px;
 }
 .exercise-media-badges .pending {
-  background: #f1f4f2;
+  background: #f6f8f7;
   color: #77847b;
 }
 .gym-library > .gym-inline-actions {

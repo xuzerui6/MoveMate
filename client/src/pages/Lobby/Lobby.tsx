@@ -133,13 +133,13 @@ const Lobby: React.FC = () => {
       {/* 极简筛选器 */}
       <div className="ui-pages-lobby-lobby-campusBar">
         <button
-          className="ui-pages-lobby-lobby-scopeChip" style={{...(filter.scope !== 'school' ? styles.scopeChipActive : {})}}
+          className={"ui-pages-lobby-lobby-scopeChip" + (filter.scope !== 'school' ? " ui-pages-lobby-lobby-scopeChipActive" : "")}
           onClick={() => filterByCampus(user?.campus_id, 'campus')}
         >
           本校区
         </button>
         <button
-          className="ui-pages-lobby-lobby-scopeChip" style={{...(filter.scope === 'school' ? styles.scopeChipActive : {})}}
+          className={"ui-pages-lobby-lobby-scopeChip" + (filter.scope === 'school' ? " ui-pages-lobby-lobby-scopeChipActive" : "")}
           onClick={() => filterByCampus(undefined, 'school')}
         >
           全校
@@ -172,13 +172,13 @@ const Lobby: React.FC = () => {
         </div>
         <div  className="lobby-date-filter__actions ui-pages-lobby-lobby-dateFilterActions">
           <button
-            className="ui-pages-lobby-lobby-dateQuickBtn" style={{...(filter.date === todayText ? styles.dateQuickBtnActive : {})}}
+            className={"ui-pages-lobby-lobby-dateQuickBtn" + (filter.date === todayText ? " ui-pages-lobby-lobby-dateQuickBtnActive" : "")}
             onClick={() => filterByDate(todayText)}
           >
             今天
           </button>
           <button
-            className="ui-pages-lobby-lobby-dateQuickBtn" style={{...(filter.date === tomorrowText ? styles.dateQuickBtnActive : {})}}
+            className={"ui-pages-lobby-lobby-dateQuickBtn" + (filter.date === tomorrowText ? " ui-pages-lobby-lobby-dateQuickBtnActive" : "")}
             onClick={() => filterByDate(tomorrowText)}
           >
             明天
@@ -243,213 +243,6 @@ const Lobby: React.FC = () => {
       </div>
     </div>
   );
-};
-
-const styles: Record<string, React.CSSProperties> = {
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: '1.5rem',
-    paddingTop: '0.5rem',
-  },
-  title: {
-    fontSize: '1.75rem',
-    fontWeight: 900,
-    color: '#123e29',
-    margin: 0,
-    letterSpacing: '-0.03em',
-  },
-  locationMeta: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.35rem',
-    marginTop: '0.25rem',
-  },
-  dot: {
-    width: '6px',
-    height: '6px',
-    borderRadius: '50%',
-    background: '#10B981',
-  },
-  subtitle: {
-    fontSize: '0.875rem',
-    color: '#64748B',
-    fontWeight: 500,
-  },
-  avatarBtn: {
-    width: '2.5rem',
-    height: '2.5rem',
-    borderRadius: '9999px',
-    overflow: 'hidden',
-    border: '2px solid #edf2ee',
-    padding: 0,
-    flexShrink: 0,
-    boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-  },
-  avatarImg: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-  },
-  avatarPlaceholder: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: '#f3f6f3',
-    color: '#123e29',
-    fontWeight: 700,
-    fontSize: '1rem',
-  },
-  list: {
-    padding: '0.5rem 0 2rem 0',
-  },
-  campusBar: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    marginBottom: '0.75rem',
-  },
-  scopeChip: {
-    borderRadius: '9999px',
-    padding: '0.4rem 1rem',
-    background: '#edf2ee',
-    color: '#64748B',
-    fontSize: '0.8125rem',
-    fontWeight: 600,
-    border: '1px solid transparent',
-    transition: 'all 0.2s',
-  },
-  scopeChipActive: {
-    background: '#123e29',
-    color: '#FFFFFF',
-    boxShadow: '0 2px 6px rgba(15, 23, 42, 0.15)',
-  },
-  selectWrapper: {
-    flex: 1,
-  },
-  campusSelect: {
-    marginBottom: 0,
-    height: '34px',
-    padding: '0 2rem 0 1rem',
-    borderRadius: '9999px',
-    fontSize: '0.8125rem',
-    fontWeight: 500,
-    border: '1px solid #E2E8F0',
-    background: '#FFFFFF',
-    color: '#334155',
-  },
-  endTip: {
-    textAlign: 'center',
-    color: '#d3ddd5',
-    fontSize: '0.75rem',
-    padding: '1.5rem 0',
-    fontWeight: 500,
-  },
-  dateFilterBar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '0.75rem',
-    background: '#f3f6f3',
-    border: '1px solid #E2E8F0',
-    borderRadius: '16px',
-    padding: '0.75rem 0.875rem',
-    marginBottom: '0.85rem',
-  },
-  dateFilterInfo: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.15rem',
-  },
-  dateFilterLabel: {
-    fontSize: '0.75rem',
-    color: '#74817a',
-    fontWeight: 700,
-  },
-  dateFilterValue: {
-    fontSize: '0.88rem',
-    color: '#123e29',
-    fontWeight: 700,
-  },
-  dateFilterActions: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    flexShrink: 0,
-  },
-  dateInput: {
-    position: 'absolute',
-    inset: 0,
-    marginBottom: 0,
-    width: '100%',
-    minWidth: 0,
-    height: '2.2rem',
-    padding: 0,
-    borderRadius: '9999px',
-    fontSize: '0.8125rem',
-    border: 'none',
-    background: 'transparent',
-    opacity: 0,
-    cursor: 'pointer',
-  },
-  dateInputWrap: {
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '0.5rem',
-    width: '8.5rem',
-    minWidth: '8rem',
-    height: '2.2rem',
-    padding: '0 0.75rem',
-    borderRadius: '9999px',
-    border: '1px solid #E2E8F0',
-    background: '#FFFFFF',
-    overflow: 'hidden',
-    cursor: 'pointer',
-    appearance: 'none',
-  },
-  dateInputText: {
-    fontSize: '0.8125rem',
-    color: '#334155',
-    fontWeight: 600,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
-  dateInputIcon: {
-    fontSize: '0.75rem',
-    color: '#74817a',
-    fontWeight: 700,
-    flexShrink: 0,
-  },
-  dateQuickBtn: {
-    fontSize: '0.75rem',
-    color: '#64748B',
-    background: '#FFFFFF',
-    border: '1px solid #E2E8F0',
-    borderRadius: '9999px',
-    padding: '0.42rem 0.72rem',
-    fontWeight: 700,
-    whiteSpace: 'nowrap',
-  },
-  dateQuickBtnActive: {
-    color: '#FFFFFF',
-    background: '#123e29',
-    border: '1px solid #123e29',
-  },
-  dateClearBtn: {
-    fontSize: '0.75rem',
-    color: '#64748B',
-    background: '#FFFFFF',
-    border: '1px solid #E2E8F0',
-    borderRadius: '9999px',
-    padding: '0.42rem 0.75rem',
-    fontWeight: 600,
-  },
 };
 
 export default Lobby;

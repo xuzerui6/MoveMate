@@ -23,7 +23,7 @@
 }
 .gym-page a,
 .gym-entry a {
-  color: #007b3b;
+  color: #08783b;
 }
 .gym-page button,
 .gym-entry button,
@@ -44,7 +44,7 @@
 }
 .gym-page :focus-visible,
 .gym-entry :focus-visible {
-  outline: 3px solid #00bc5b;
+  outline: 3px solid #00c65e;
   outline-offset: 3px;
 }
 .gym-page .primary,
@@ -57,7 +57,7 @@
   gap: 10px;
   min-height: 48px;
   padding: 10px 20px;
-  border: 1px solid #008b43;
+  border: 1px solid #008a40;
   border-radius: 16px;
   text-decoration: none;
   font-weight: 700;
@@ -65,13 +65,13 @@
 }
 .gym-page .primary,
 .gym-entry .primary {
-  background: #008b43;
+  background: #008a40;
   color: white;
 }
 .gym-page .secondary,
 .gym-entry .secondary {
   background: white;
-  color: #007b3b;
+  color: #08783b;
 }
 .gym-page .text-btn {
   border: 0;
@@ -122,7 +122,7 @@
 .gym-page input[type="checkbox"] {
   width: 20px;
   min-height: 20px;
-  accent-color: #008b43;
+  accent-color: #008a40;
 }
 .gym-page .gym-checkbox,
 .gym-page .gym-check {
@@ -190,8 +190,8 @@
   margin: 8px;
 }
 .gym-success {
-  color: #007a3b;
-  background: #e6f8ed;
+  color: #08783b;
+  background: #e5faee;
   padding: 16px;
   border-radius: 14px;
 }
@@ -208,7 +208,7 @@
 .gym-template-grid button {
   border: 1px solid #d4e5da;
   border-radius: 18px;
-  background: #f4faf6;
+  background: #f6f8f7;
   padding: 24px;
   text-align: left;
   display: flex;
@@ -219,7 +219,7 @@
   font-size: 22px;
 }
 .gym-template-grid span {
-  color: #008b43;
+  color: #008a40;
   font-weight: 700;
 }
 .gym-plan-row {
@@ -250,11 +250,11 @@
   text-decoration: none;
   min-height: 72px;
   border-radius: 16px;
-  background: #f2f8f4;
+  background: #f6f8f7;
   padding: 16px;
 }
 .gym-today {
-  background: #f4faf6;
+  background: #f6f8f7;
   border: 0;
 }
 .gym-today-main,
@@ -275,7 +275,7 @@
   width: auto;
 }
 .gym-eyebrow {
-  color: #007a3b;
+  color: #08783b;
   font-size: 13px;
   font-weight: 700;
 }
@@ -320,7 +320,7 @@
 .gym-favorite {
   background: none;
   border: 0;
-  color: #008b43;
+  color: #008a40;
   width: 44px;
   flex-shrink: 0;
 }
@@ -347,9 +347,9 @@
   background: #fff;
 }
 .gym-day-tabs [aria-selected="true"] {
-  background: #008b43;
+  background: #008a40;
   color: #fff;
-  border-color: #008b43;
+  border-color: #008a40;
 }
 .gym-shelves {
   display: flex;
@@ -370,9 +370,9 @@
   background: #fff;
 }
 .gym-shelf[aria-pressed="true"] {
-  background: #008b43;
+  background: #008a40;
   color: #fff;
-  border-color: #008b43;
+  border-color: #008a40;
 }
 .gym-weekdays {
   border: 0;
@@ -394,7 +394,7 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   padding: 16px;
-  background: #f6f9f7;
+  background: #f6f8f7;
   border-radius: 14px;
   margin-bottom: 16px;
 }
@@ -403,7 +403,7 @@
 }
 .gym-small-actions button {
   border: 0;
-  background: #edf5f0;
+  background: #f6f8f7;
   border-radius: 8px;
   padding: 8px 12px;
 }
@@ -424,7 +424,7 @@
 .gym-stat-grid > div {
   display: flex;
   flex-direction: column;
-  border-left: 3px solid #00bc5b;
+  border-left: 3px solid #00c65e;
   padding-left: 16px;
 }
 .gym-stat-grid strong {
@@ -465,7 +465,7 @@
   font-size: 13px;
 }
 .gym-muscle-item.selected {
-  background: #e5f8ec;
+  background: #e5faee;
 }
 .gym-calendar {
   display: grid;
@@ -487,7 +487,7 @@
 }
 .gym-trend meter {
   width: 100%;
-  accent-color: #00bc5b;
+  accent-color: #00c65e;
 }
 .gym-list-row {
   display: flex;
@@ -528,7 +528,7 @@
 }
 .gym-weight-chart > div > div {
   width: 30px;
-  background: #b5eccb;
+  background: #e5faee;
   border-radius: 6px 6px 0 0;
 }
 .gym-preview {
@@ -562,7 +562,7 @@
 .gym-camera[hidden] {
   display: none;
 }
-.gym-camera-preparation { padding: 16px; border: 1px solid #d9e9df; border-radius: 16px; background: #f5fbf7; margin: 12px 0; line-height: 1.7; }
+.gym-camera-preparation { padding: 16px; border: 1px solid #d9e9df; border-radius: 16px; background: #f6f8f7; margin: 12px 0; line-height: 1.7; }
 .gym-camera-preparation summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-weight: 700; }
 .gym-camera-preparation p { margin: 8px 0; }
 .gym-camera .pose-canvas {
@@ -605,7 +605,7 @@
 }
 .gym-rest {
   padding: 20px;
-  background: #e8f8ee;
+  background: #e5faee;
   border-radius: 16px;
   margin: 16px 0;
   display: flex;
@@ -628,7 +628,7 @@
   font-size: 32px;
 }
 .gym-recognition p {
-  color: #007a3b;
+  color: #08783b;
 }
 .gym-voice {
   padding: 20px 0;
@@ -860,11 +860,11 @@
 
 .gym-equipment{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}.gym-page textarea{max-width:100%;width:100%;box-sizing:border-box}.gym-page fieldset{min-width:0}
 
-.gym-year-calendar{display:grid;grid-template-rows:repeat(7,12px);grid-auto-flow:column;grid-auto-columns:12px;gap:3px;overflow-x:auto;padding:8px 0}.gym-year-calendar span{background:#edf1ee;border-radius:2px}.gym-year-calendar [data-level="1"]{background:#adf3ce}.gym-year-calendar [data-level="2"]{background:#3bdc88}.gym-year-calendar [data-level="3"]{background:#008a49}.gym-table-scroll{max-width:100%;overflow-x:auto}.gym-table-scroll table{width:100%;border-collapse:collapse;min-width:520px}.gym-table-scroll th,.gym-table-scroll td{padding:12px 10px;border-bottom:1px solid #e5ebe7;text-align:left;white-space:nowrap}.gym-trend-bars{height:150px;display:flex;gap:6px;align-items:flex-end;padding-bottom:25px}.gym-trend-bars>div{height:100%;flex:1;display:flex;justify-content:flex-end;flex-direction:column;position:relative;min-width:8px}.gym-trend-bars span{display:block;background:#00c96b;border-radius:4px 4px 0 0}.gym-trend-bars small{position:absolute;bottom:-25px;font-size:12px;white-space:nowrap;max-width:100%;overflow:hidden}
+.gym-year-calendar{display:grid;grid-template-rows:repeat(7,12px);grid-auto-flow:column;grid-auto-columns:12px;gap:3px;overflow-x:auto;padding:8px 0}.gym-year-calendar span{background:#edf1ee;border-radius:2px}.gym-year-calendar [data-level="1"]{background:#e5faee}.gym-year-calendar [data-level="2"]{background:#00c65e}.gym-year-calendar [data-level="3"]{background:#008a40}.gym-table-scroll{max-width:100%;overflow-x:auto}.gym-table-scroll table{width:100%;border-collapse:collapse;min-width:520px}.gym-table-scroll th,.gym-table-scroll td{padding:12px 10px;border-bottom:1px solid #e5ebe7;text-align:left;white-space:nowrap}.gym-trend-bars{height:150px;display:flex;gap:6px;align-items:flex-end;padding-bottom:25px}.gym-trend-bars>div{height:100%;flex:1;display:flex;justify-content:flex-end;flex-direction:column;position:relative;min-width:8px}.gym-trend-bars span{display:block;background:#00c65e;border-radius:4px 4px 0 0}.gym-trend-bars small{position:absolute;bottom:-25px;font-size:12px;white-space:nowrap;max-width:100%;overflow:hidden}
 
-.gym-line-chart{width:100%;height:150px;background:#f7faf8;border-radius:12px}
+.gym-line-chart{width:100%;height:150px;background:#f6f8f7;border-radius:12px}
 
-.gym-cache-notice{margin:12px 0;padding:12px 16px;border:1px solid var(--border,#dce5df);border-radius:12px;background:var(--surface,#f7faf8);overflow-wrap:anywhere}
+.gym-cache-notice{margin:12px 0;padding:12px 16px;border:1px solid var(--border,#dce5df);border-radius:12px;background:var(--surface,#f6f8f7);overflow-wrap:anywhere}
 .gym-cache-notice p{margin:0 0 8px}
 .gym-cache-notice button,.gym-favorite-error button{min-height:44px}
 .gym-exercise-list article{flex-wrap:wrap}
@@ -916,10 +916,10 @@
 }
 .muscle-browser g[role="button"]:hover path,
 .muscle-browser g[role="button"]:focus-visible path {
-  fill: #9be5ba;
+  fill: #00c65e;
 }
 .muscle-browser g[role="button"]:focus-visible {
-  outline: 2px solid #008b43;
+  outline: 2px solid #008a40;
   outline-offset: 2px;
 }
 .muscle-browser-extra {

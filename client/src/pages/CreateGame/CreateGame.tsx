@@ -256,7 +256,7 @@ const CreateGame: React.FC = () => {
                     key={venue.id}
                     role="button"
                     tabIndex={0}
-                    className="ui-pages-creategame-creategame-venueChip" style={{...(isActive ? styles.venueChipActive : {})}}
+                    className={"ui-pages-creategame-creategame-venueChip" + (isActive ? " ui-pages-creategame-creategame-venueChipActive" : "")}
                     onClick={() => {
                       setVenueId(venue.id);
                       setLocationInput(venue.name);
@@ -338,7 +338,7 @@ const CreateGame: React.FC = () => {
                 key={t.value}
                 type="button"
                 onClick={() => setTag(tag === t.value ? undefined : t.value)}
-                className="ui-pages-creategame-creategame-tagBtn" style={{background: tag === t.value ? '#123e29' : '#f3f6f3',color: tag === t.value ? '#FFF' : '#64748B',borderColor: tag === t.value ? '#123e29' : '#E2E8F0'}}
+                className={"ui-pages-creategame-creategame-tagBtn" + (tag === t.value ? " ui-pages-creategame-creategame-tagBtnActive" : "")}
               >
                 {t.label}
               </button>
@@ -358,165 +358,6 @@ const CreateGame: React.FC = () => {
       </div>
     </div>
   );
-};
-
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    padding: '0.5rem',
-  },
-  topBar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: '2rem',
-  },
-  backBtn: {
-    fontSize: '0.9375rem',
-    color: '#64748B',
-    padding: '0.25rem 0',
-  },
-  pageTitle: {
-    fontSize: '1.125rem',
-    fontWeight: 800,
-    color: '#123e29',
-  },
-  section: {
-    marginBottom: '1.75rem',
-  },
-  fieldHint: {
-    marginTop: '-0.35rem',
-    marginBottom: '0.55rem',
-    fontSize: '0.75rem',
-    color: '#74817a',
-    lineHeight: 1.5,
-  },
-  gridSection: {
-    display: 'flex',
-    gap: '1rem',
-    marginBottom: '1.75rem',
-  },
-  halfWidth: {
-    flex: 1,
-    minWidth: 0,
-  },
-  venueList: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '0.5rem',
-    marginTop: '0.75rem',
-  },
-  recommendBox: {
-    marginTop: '0.75rem',
-    padding: '0.9rem 1rem',
-    borderRadius: '14px',
-    background: '#f3f6f3',
-    border: '1px solid #EEF2F7',
-  },
-  recommendHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '1rem',
-  },
-  recommendMeta: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.2rem',
-  },
-  recommendTitle: {
-    fontSize: '0.875rem',
-    fontWeight: 700,
-    color: '#123e29',
-  },
-  recommendDesc: {
-    fontSize: '0.75rem',
-    color: '#64748B',
-    fontWeight: 500,
-  },
-  venueChip: {
-    padding: '0.4rem 0.75rem',
-    borderRadius: '8px',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: '#E2E8F0',
-    background: '#f3f6f3',
-    color: '#475569',
-    fontSize: '0.8125rem',
-    fontWeight: 600,
-    cursor: 'pointer',
-    transition: 'all 150ms ease',
-    outline: 'none',
-    boxShadow: 'none',
-    WebkitTapHighlightColor: 'transparent',
-    userSelect: 'none',
-  },
-  venueChipActive: {
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: '#123e29',
-    background: '#123e29',
-    color: '#FFFFFF',
-    outline: 'none',
-    boxShadow: '0 10px 20px rgba(15, 23, 42, 0.12)',
-  },
-  venueMoreToggle: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    marginTop: '0.5rem',
-    padding: '0.5rem 0',
-    fontSize: '0.8125rem',
-    color: '#6B7280',
-    fontWeight: 500,
-    background: 'none',
-    border: '1px dashed #D1D5DB',
-    borderRadius: '0.75rem',
-    cursor: 'pointer',
-  },
-  counterRow: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    background: '#f3f6f3',
-    border: '1px solid #E2E8F0',
-    borderRadius: '12px',
-    padding: '0.25rem',
-    height: '46px',
-  },
-  counterBtn: {
-    width: '32px',
-    height: '32px',
-    padding: 0,
-    borderRadius: '8px',
-    fontSize: '1.25rem',
-    background: '#FFFFFF',
-    border: 'none',
-    boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-  },
-  counterValue: {
-    fontSize: '1rem',
-    fontWeight: 700,
-    color: '#123e29',
-  },
-  tagRow: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '0.4rem',
-  },
-  tagBtn: {
-    padding: '0.3rem 0.6rem',
-    borderRadius: '6px',
-    border: '1px solid',
-    fontSize: '0.75rem',
-    fontWeight: 600,
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
-  },
-  submitArea: {
-    marginTop: '2.5rem',
-    paddingBottom: '2rem',
-  },
 };
 
 export default CreateGame;

@@ -10,7 +10,7 @@ import Avatar from '../../components/Avatar';
 
 function medalColor(rank: number): string {
   if (rank === 1) return '#F59E0B';
-  if (rank === 2) return '#74817a';
+  if (rank === 2) return '#9aa0a6';
   if (rank === 3) return '#F97316';
   return '#d3ddd5';
 }
