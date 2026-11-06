@@ -75,3 +75,32 @@ test('a counted curl with upper-arm drift receives lower control feedback withou
   assert.equal(stable.tracker.metrics.reps,1);assert.equal(drift.tracker.metrics.reps,1);
   assert.ok(drift.tracker.metrics.formScore<stable.tracker.metrics.formScore);
 });
+test('hammer curl returns still confirm when the elbow jitters around the start threshold',()=>{
+  const r=run('hammer_curl',undefined,1,50);r.feed('neutral',3000);assert.equal(r.tracker.diagnostics.stage,'ready');
+  r.feed('peak',1000);
+  // Exact wrist placements for elbow angles of 152° (returned) and 138° (a jitter dip),
+  // keeping the demo pose's forearm length so only the elbow angle changes.
+  const inZone=(p:Point[])=>{p[15]={...p[15],x:.4957,y:.5436};p[16]={...p[16],x:.5043,y:.5436};};
+  const dip=(p:Point[])=>{p[15]={...p[15],x:.5237,y:.524};p[16]={...p[16],x:.4763,y:.524};};
+  // A single returned frame cannot confirm the return: accumulated hold is still required.
+  r.feed('peak',50,inZone);r.feed('peak',50,dip);assert.equal(r.tracker.metrics.reps,0);
+  // Alternating returned/dipped frames accumulate the 150 ms hold inside the window.
+  for(let i=0;i<8;i++){r.feed('peak',50,inZone);r.feed('peak',50,dip);}
+  assert.equal(r.tracker.metrics.reps,1);
+});
+test('hammer curl upper-arm hint needs a sustained deviation and never blocks the rep',()=>{
+  const r=run('hammer_curl',undefined,1,100);r.feed('neutral',3000);
+  // Translate elbows and wrists outward together: upper-arm angle ≈40° (raw hint fires,
+  // control penalty >25) while the elbow stays at the ≈25° peak flexion.
+  const drift=(p:Point[])=>{p[13]={...p[13],x:p[13].x-.1};p[15]={...p[15],x:p[15].x-.1};p[14]={...p[14],x:p[14].x+.1};p[16]={...p[16],x:p[16].x+.1};};
+  // A brief 300 ms drift must not raise the hint (the retest's seated setup flapped it).
+  r.feed('peak',300,drift);
+  assert.doesNotMatch(r.tracker.metrics.feedback,/上臂靠近体侧/);
+  assert.doesNotMatch(r.tracker.metrics.poseFeedback.message,/上臂靠近体侧/);
+  // Clear long enough for the sustain timer to reset, then drift sustained past 1 s.
+  r.feed('peak',500);
+  r.feed('peak',1300,drift);
+  assert.match(r.tracker.metrics.feedback,/上臂靠近体侧/);
+  // The hint is advisory only: the rep still counts when the arms return.
+  r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,1);
+});

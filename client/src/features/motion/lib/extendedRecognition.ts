@@ -16,9 +16,18 @@ const angle=(a:Point,b:Point,c:Point)=>Math.acos(Math.max(-1,Math.min(1,dot(norm
 const mean=(a:number,b:number)=>(a+b)/2;
 type Side='left'|'right';
 type Measurement={start:boolean;peak:boolean;amplitude:number;angle:number;confidence:number;scorable:boolean;posture:number;symmetry:number;controlPenalty:number;hint?:string;side?:Side;basis:string;motion:string;points:Point[];torso:number;tilt:number;elbows?:[number,number]};
-type SideCycle={movingAt:number|null;peakAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;returnAt:number|null;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number};
+type SideCycle={movingAt:number|null;peakAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;returnSince:number|null;returnAccum:number;returnPrevAt:number|null;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number};
 type SideCompletion={side:number;at:number;peakStart:number;peakEnd:number;peakAmp:number;peakPosture:number;peakOther:number;peakElbow:number;duration:number;scoring:boolean;control:number;shift:number;speed:number};
-const freshSideCycle=():SideCycle=>({movingAt:null,peakAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,returnAt:null,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180});
+const freshSideCycle=():SideCycle=>({movingAt:null,peakAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,returnSince:null,returnAccum:0,returnPrevAt:null,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180});
+/** Hammer-curl tuning from the 2026-11-06 on-device retest (counting worked but undercounted):
+ * the return confirmation accumulates 150 ms at/above the start angle inside a 500 ms window,
+ * so elbow jitter around the threshold can no longer stall a rep at the confirm stage.
+ * Per-frame credit is capped so a stalled frame stream cannot manufacture hold time. */
+const HAMMER_RETURN_HOLD_MS=150,HAMMER_RETURN_WINDOW_MS=500,HAMMER_RETURN_FRAME_CAP_MS=100;
+/** The upper-arm form hint is advisory only; it is shown after a sustained deviation and the
+ * sustain timer restarts only after the arms have been back at the sides briefly (hysteresis),
+ * so a seated low-camera setup cannot make it flap. It never gates cycle progression. */
+const UPPER_ARM_SUSTAIN_MS=1000,UPPER_ARM_CLEAR_MS=300;
 const axes=['depth','stability','trunk','symmetry'] as const;
 type ExtendedType=NewExerciseType|'bench_press'|'reverse_fly'|'seated_triceps_extension'|'barbell_deadlift'|'incline_bench_press'|'seated_curl'|'seated_lateral_raise'|'lying_triceps_extension';
 const definitions={...NEW_EXERCISES,...LIBRARY_RECOGNITION};
@@ -50,6 +59,9 @@ export class ExtendedExerciseTracker {
   private controlPenalty=0;
   private hammerSides:[SideCycle,SideCycle]=[freshSideCycle(),freshSideCycle()];
   private hammerPending:SideCompletion|null=null;
+  private upperArmDevAt:number|null=null;
+  private upperArmClearAt:number|null=null;
+  private freezeBridged=false;
   requiredIndices(raw:Point[]){return this.needed(raw)}
   constructor(readonly type:ExtendedType,targetReps=20,restored:Partial<ExerciseMetrics>={},readonly prefiltered=false,readonly armOnStart=false){
     const acc={...emptyFormBreakdown(),count:0,total:0,...restored.scoreAccumulator};
@@ -57,7 +69,19 @@ export class ExtendedExerciseTracker {
     this.updateAverage();
   }
   private updateAverage(){const a=this.metrics.scoreAccumulator,b=emptyFormBreakdown();for(const k of axes)b[k]=a.count?Math.round(a[k]/a.count):0;this.metrics.formBreakdown=b;}
-  private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;this.hammerSides=[freshSideCycle(),freshSideCycle()];this.hammerPending=null;}
+  private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;this.hammerSides=[freshSideCycle(),freshSideCycle()];this.hammerPending=null;this.upperArmDevAt=null;this.upperArmClearAt=null;this.freezeBridged=false;}
+  /** The adaptive wrapper deliberately froze frames during a hammer-curl evidence freeze
+   * (see AdaptiveRecognition); the next frame gap is therefore known-benign and must not be
+   * read as a tracking loss. Only arms when the pending gap actually exceeds the guard. */
+  bridgeFreezeGap(now:number){if(this.last!==null&&now-this.last>750)this.freezeBridged=true;}
+  /** Advisory upper-arm hint gating: visible only while a deviation has been sustained for
+   * UPPER_ARM_SUSTAIN_MS; brief clearances (< UPPER_ARM_CLEAR_MS) neither hide it nor reset
+   * the sustain timer, so the hint cannot flap frame to frame. */
+  private upperArmHintVisible(deviating:boolean,now:number):boolean{
+    if(deviating){this.upperArmClearAt=null;if(this.upperArmDevAt===null)this.upperArmDevAt=now;}
+    else{if(this.upperArmClearAt===null)this.upperArmClearAt=now;if(now-this.upperArmClearAt>=UPPER_ARM_CLEAR_MS)this.upperArmDevAt=null;}
+    return this.upperArmDevAt!==null&&now-this.upperArmDevAt>=UPPER_ARM_SUSTAIN_MS;
+  }
   interrupt(reason='已暂停，继续后重新校准'){
     this.frames=[];this.worlds=[];this.last=null;this.calibration=null;this.baseline=null;this.ready=false;this.side=null;this.times=[];this.previous=null;this.resetCycle();
     this.diagnostics={...this.diagnostics,stage:'tracking_lost',fps:0,calibrationProgress:0,lastResetReason:reason};
@@ -226,8 +250,12 @@ export class ExtendedExerciseTracker {
       const cyc=this.hammerSides[s],e=elbows[s],other=elbows[1-s];
       if(e>=145){
         if(cyc.peakStart!==null){
-          if(cyc.returnAt===null)cyc.returnAt=now;
-          if(now-cyc.returnAt>=150){
+          // Return confirmation: accumulate time at/above the start angle inside a window
+          // instead of demanding one unbroken hold, which elbow jitter kept resetting.
+          if(cyc.returnSince===null||now-cyc.returnSince>HAMMER_RETURN_WINDOW_MS){cyc.returnSince=now;cyc.returnAccum=0;}
+          else if(cyc.returnPrevAt!==null)cyc.returnAccum+=Math.min(HAMMER_RETURN_FRAME_CAP_MS,now-cyc.returnPrevAt);
+          cyc.returnPrevAt=now;
+          if(cyc.returnAccum>=HAMMER_RETURN_HOLD_MS){
             const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:cyc.controlMax,shift:cyc.shiftMax,speed:cyc.speedMax};
             this.hammerSides[s]=freshSideCycle();
             if(this.hammerPending){
@@ -240,7 +268,7 @@ export class ExtendedExerciseTracker {
         }else if(cyc.movingAt!==null)this.hammerSides[s]=freshSideCycle();
       }else{
         if(cyc.movingAt===null)cyc.movingAt=now;
-        cyc.returnAt=null;
+        if(cyc.peakStart!==null)cyc.returnPrevAt=now;
         cyc.scoring=cyc.scoring&&f.scorable;
         cyc.controlMax=Math.max(cyc.controlMax,f.controlPenalty);
         cyc.shiftMax=Math.max(cyc.shiftMax,Math.abs(f.tilt-this.baseline!.tilt));
@@ -261,16 +289,19 @@ export class ExtendedExerciseTracker {
     const stage=this.metrics.reps>=this.metrics.targetReps?'complete':anyPeak?(f.start?'returning':'peak'):f.start?'ready':'moving';
     const copy=definitions[this.type].stages;
     const nearPeak=stage==='moving'&&elbows.every(e=>e>80)&&elbows.some(e=>e<=105);
-    const message=stage==='complete'?'已完成本组目标':completed?this.metrics.feedback:nearPeak?'幅度接近了，再举高一点，举到接近肩膀再放回':(f.hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 幅度尚未确认':''));
+    // The raw per-frame hint (controlPenalty>25 in measure) is gated through the sustained-
+    // deviation hysteresis before it may surface; scoring still uses the raw penalty.
+    const hint=f.hint&&this.upperArmHintVisible(f.controlPenalty>25,now)?f.hint:undefined;
+    const message=stage==='complete'?'已完成本组目标':completed?this.metrics.feedback:nearPeak?'幅度接近了，再举高一点，举到接近肩膀再放回':(hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 幅度尚未确认':''));
     const issue:PoseIssue|null=f.controlPenalty>30?'unstable_movement':f.posture<70?'body_alignment':null;
     this.diagnostics={...this.diagnostics,stage};
-    this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?POSE_ISSUE_COPY[issue].joints:[],calibrated:true,message:f.hint||(issue?POSE_ISSUE_COPY[issue].action:message)}};
+    this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?POSE_ISSUE_COPY[issue].joints:[],calibrated:true,message:hint||(issue?POSE_ISSUE_COPY[issue].action:message)}};
     return this.metrics;
   }
   update(raw:Point[]|null,now:number,aspect=1,world:Point[]|null=null):ExerciseMetrics{
     if(!raw||raw.length!==33||!Number.isFinite(now)||!Number.isFinite(aspect)||aspect<=0||raw.some(p=>!p||![p.x,p.y,p.visibility??0].every(Number.isFinite)))return this.interrupt('未检测到完整人体关键点，请调整入镜范围');
     if(this.last!==null&&now<=this.last)return this.metrics;
-    if(this.last!==null&&now-this.last>750)this.interrupt('画面中断，半程动作已丢弃');
+    if(this.last!==null&&now-this.last>750){if(this.freezeBridged)this.freezeBridged=false;else this.interrupt('画面中断，半程动作已丢弃');}
     const required=this.needed(raw);
     if(required.some(i=>(raw[i].visibility??0)<.25||raw[i].x<0||raw[i].x>1||raw[i].y<0||raw[i].y>1))return this.interrupt('必要关节离开画面或被遮挡，半程动作已丢弃');
     this.frames=[...this.frames,raw].slice(-(this.prefiltered?1:5));const smooth=medianLandmarks(this.frames)!;

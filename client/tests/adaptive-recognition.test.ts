@@ -141,6 +141,54 @@ test('automatic strategy uses device and exercise support for new records and re
  assert.equal(selectRecognitionStrategy('squat','adaptive-v1',false),'adaptive-v1');
 });
 
+function hammerFreezeRig(){
+ const tracker=new AdaptiveRecognition('hammer_curl',20,{},7);let now=0,id=0;
+ let current=newDemonstrationPose('hammer_curl','neutral');
+ const send=(landmarks:ReturnType<typeof newDemonstrationPose>['landmarks'],world:boolean,count=true)=>{
+  const f:PoseFrame={runId:7,frameId:++id,capturedAt:now+=50,receivedAt:now+10,width:720,height:960,landmarks:landmarks.map(p=>({...p})),worldLandmarks:world?landmarks.map(p=>({...p})):null,model:'lite',mode:'main-cpu'};
+  tracker.update(f,count);
+ };
+ // Landmarks and world landmarks are interpolated together so the world-basis shape
+ // ratios evolve gradually, exactly as a real moving subject's would. Wrists travel on
+ // an arc around the elbow: a straight-line blend would pass the wrist through the elbow
+ // and collapse the forearm ratio, which the world-basis check rightly rejects.
+ const feed=(stage:'neutral'|'peak',ms:number,count=true)=>{
+  const from=current,to=newDemonstrationPose('hammer_curl',stage),steps=Math.max(1,Math.round(ms/50));
+  for(let i=1;i<=steps;i++){
+   const u=Math.min(1,i*50/600),lm=from.landmarks.map((p,j)=>({...p,x:p.x+(to.landmarks[j].x-p.x)*u,y:p.y+(to.landmarks[j].y-p.y)*u}));
+   for(const o of [0,1]){
+    const va={x:from.landmarks[15+o].x-from.landmarks[13+o].x,y:from.landmarks[15+o].y-from.landmarks[13+o].y},vb={x:to.landmarks[15+o].x-to.landmarks[13+o].x,y:to.landmarks[15+o].y-to.landmarks[13+o].y};
+    const la=Math.hypot(va.x,va.y),lb=Math.hypot(vb.x,vb.y),ang=Math.atan2(va.y,va.x)+(Math.atan2(vb.y,vb.x)-Math.atan2(va.y,va.x))*u,len=la+(lb-la)*u;
+    lm[15+o]={...lm[15+o],x:lm[13+o].x+Math.cos(ang)*len,y:lm[13+o].y+Math.sin(ang)*len};
+   }
+   send(lm,true,count);
+  }
+  current=to;
+ };
+ const freeze=(ms:number)=>{for(let t=0;t<ms;t+=50)send(current.landmarks,false);};
+ return {tracker,feed,freeze};
+}
+test('hammer curl: a brief 3D-evidence freeze preserves the in-progress cycle',()=>{
+ const r=hammerFreezeRig();r.feed('neutral',600);assert.ok(r.tracker.ready);r.feed('peak',1200);
+ r.freeze(1000);
+ assert.equal(r.tracker.ready,true);
+ assert.equal(r.tracker.metrics.reps,0);
+ assert.match(r.tracker.metrics.feedback,/三维依据暂不可靠，已冻结计数/);
+ r.feed('neutral',1600);
+ assert.equal(r.tracker.metrics.reps,1);
+ assert.equal(r.tracker.metrics.scoreAccumulator.count,1);
+});
+test('hammer curl: a freeze outlasting the grace still voids the half rep',()=>{
+ const r=hammerFreezeRig();r.feed('neutral',600);r.feed('peak',1200);
+ r.freeze(1000);assert.equal(r.tracker.ready,true);assert.match(r.tracker.metrics.feedback,/冻结/);
+ r.freeze(1700);
+ assert.equal(r.tracker.ready,false);
+ assert.equal(r.tracker.metrics.reps,0);
+ // After recalibration a clean cycle counts exactly once: nothing was spliced.
+ r.feed('neutral',800);assert.equal(r.tracker.ready,true);
+ r.feed('peak',1200);r.feed('neutral',1600);
+ assert.equal(r.tracker.metrics.reps,1);
+});
 test('device preference can force legacy for new records only and persists best-effort',()=>{
  assert.equal(selectNewRecognitionStrategy('squat','legacy',true),'legacy');
  assert.equal(selectNewRecognitionStrategy('squat','auto',true),'adaptive-v1');

@@ -25,10 +25,16 @@ export function selectNewRecognitionStrategy(type: string, preference: Recogniti
  return selectRecognitionStrategy(type, undefined, adaptiveAvailable);
 }
 const distance=(a:Point,b:Point)=>Math.hypot(a.x-b.x,a.y-b.y,(a.z||0)-(b.z||0));
+/** Hammer curls only (2026-11-06 on-device retest): an evidence freeze — 3D basis lost or
+ * joints briefly unclear — preserves the in-progress per-side cycles for this grace instead
+ * of voiding them at the generic 200 ms limit. Matches the tracker's own 2 s calibration /
+ * diagnostics windows; a freeze that outlasts it still voids the half rep as before. */
+const HAMMER_FREEZE_GRACE_MS=2000;
 export class AdaptiveRecognition {
  private base:ReturnType<typeof createRecognitionTracker>;
  private order:FrameOrder;private image=new TimeFilter();private world=new TimeFilter();
  private weak:number|null=null;private weakWorld:number|null=null;private source:boolean|null=null;private shape:number[]|null=null;private previous:Point[]|null=null;private previousShoulder=11;
+ private frozenAt:number|null=null;private lastFreezeAt:number|null=null;
  private width=0;private height=0;private scoring=true;
  usableFrame=false;
  constructor(readonly type:string,readonly target:number,readonly restored:Partial<ExerciseMetrics>,runId:number){this.base=createRecognitionTracker(type,target,restored,true,true);this.order=new FrameOrder(runId);}
@@ -43,7 +49,17 @@ export class AdaptiveRecognition {
 
  interrupt(reason='识别已暂停，继续后识别下一个完整动作'){
   this.usableFrame=false;
-  this.base.interrupt(reason);this.image.reset();this.world.reset();this.previous=null;this.shape=null;this.source=null;this.weak=null;this.weakWorld=null;this.scoring=true;
+  this.base.interrupt(reason);this.image.reset();this.world.reset();this.previous=null;this.shape=null;this.source=null;this.weak=null;this.weakWorld=null;this.scoring=true;this.frozenAt=null;this.lastFreezeAt=null;
+ }
+ /** Hammer-curl evidence freeze: hold the frozen message and feed nothing to the base
+  * tracker, so its per-side cycle state (including an already-reached peak) survives.
+  * Past the grace the half rep is voided with the caller's usual reason. */
+ private freezeHammer(capturedAt:number,message:string,expiredReason:string){
+  if(this.frozenAt===null){this.frozenAt=capturedAt;this.lastFreezeAt=capturedAt;}
+  if(capturedAt-this.frozenAt>HAMMER_FREEZE_GRACE_MS){this.frozenAt=null;return this.reject(expiredReason);}
+  const frozen=message+'，已冻结计数';
+  this.base.metrics={...this.metrics,feedback:frozen,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',message:frozen}};
+  return this.metrics;
  }
  private reject(reason:string){this.interrupt(reason);return this.metrics;}
  private freezeSquat(capturedAt:number,message:string,affectedJoints:number[]=[]){
@@ -71,6 +87,7 @@ export class AdaptiveRecognition {
   }
   if(framing){this.reject(framing.message);this.base.metrics.poseFeedback={...this.metrics.poseFeedback,affectedJoints:framing.affected};return this.metrics;}
   if(needed.some(i=>(raw[i].visibility??0)<.55)){
+   if(this.type==='hammer_curl')return this.freezeHammer(f.capturedAt,'关节暂时不清晰','必要关节持续不清晰，半程动作已丢弃');
    this.weak??=f.capturedAt;if(f.capturedAt-this.weak>200)return this.reject('必要关节持续不清晰，半程动作已丢弃');
    this.base.metrics={...this.metrics,feedback:'关节暂时不清晰，已冻结计数',poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',message:'关节暂时不清晰，已冻结计数'}};return this.metrics;
   }
@@ -84,11 +101,28 @@ export class AdaptiveRecognition {
   if(world){const torso=distance(world[shoulder],world[hip]),ratios=pairs.map(([a,b])=>distance(world![a],world![b])/torso);if(torso<.04||torso>1.5||ratios.some((r,i)=>r<.15||r>2.5||this.shape&&Math.abs(r/this.shape[i]-1)>.25))world=null;else this.shape=ratios;}
   if(['jumping_jack','push_up','high_knees'].includes(this.type))world=null;
   if(world&&['goblet_squat','barbell_back_squat','barbell_front_squat'].includes(this.type)&&analyzeSquatFrame(raw,aspect,world)?.angleSource!=='world')world=null;
-  if(this.source===true&&!world){this.weakWorld??=f.capturedAt;if(f.capturedAt-this.weakWorld<=200){this.base.metrics={...this.metrics,feedback:'三维依据暂不可靠，已冻结计数',poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',message:'三维依据暂不可靠，已冻结计数'}};return this.metrics;}}
+  if(this.source===true&&!world){
+   if(this.type==='hammer_curl')return this.freezeHammer(f.capturedAt,'三维依据暂不可靠','二维／三维判断依据改变，请回到起始姿势');
+   this.weakWorld??=f.capturedAt;if(f.capturedAt-this.weakWorld<=200){this.base.metrics={...this.metrics,feedback:'三维依据暂不可靠，已冻结计数',poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',message:'三维依据暂不可靠，已冻结计数'}};return this.metrics;}
+  }
   else this.weakWorld=null;
-  const source=!!world;if(this.source!==null&&source!==this.source)this.interrupt('二维／三维判断依据改变，请回到起始姿势');this.source=source;
+  const source=!!world;
+  if(this.source!==null&&source!==this.source){
+   // Within a hammer-curl freeze episode (or its grace tail) a basis flip is the freeze
+   // resolving, not a tracking change: accept it and let the preserved cycle continue.
+   const tolerated=this.type==='hammer_curl'&&(this.frozenAt!==null||(this.lastFreezeAt!==null&&f.capturedAt-this.lastFreezeAt<=HAMMER_FREEZE_GRACE_MS));
+   if(!tolerated)this.interrupt('二维／三维判断依据改变，请回到起始姿势');
+  }
+  this.source=source;
   this.previousShoulder=shoulder;
   this.previous=raw.map(p=>({...p}));
+  if(this.type==='hammer_curl'&&this.frozenAt!==null){
+   const gap=f.capturedAt-this.frozenAt;this.frozenAt=null;
+   // No frames at all arrived during the freeze and it outlasted the grace: void as usual.
+   if(gap>HAMMER_FREEZE_GRACE_MS)return this.reject('跟踪中断，半程动作已丢弃');
+   // The base tracker's own frame-gap guard must not void what the freeze preserved.
+   (this.base as {bridgeFreezeGap?:(now:number)=>void}).bridgeFreezeGap?.(f.capturedAt);
+  }
   const before=structuredClone(this.metrics),stage=this.diagnostics.stage;
   this.base.update(this.image.apply(raw,f.capturedAt),f.capturedAt,aspect,world?this.world.apply(world,f.capturedAt):null);
   this.usableFrame=this.diagnostics.stage!=='tracking_lost';
