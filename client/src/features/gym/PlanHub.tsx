@@ -112,7 +112,7 @@ export function PlanEntry() {
         </article>
       )}
       <Link className="secondary" to="/train/free">自由训练 · 先选动作再开始</Link>
-      <nav className="gym-links"><Link to="/train/schedule">查看一周日程</Link><Link to="/train/settings">训练设置与器械</Link></nav><div className="gym-shortcuts">
+      <div className="gym-shortcuts">
         <Link to="/train/library">
           <Icon name="dumbbell" />
           动作库
@@ -128,6 +128,14 @@ export function PlanEntry() {
         <Link to="/train/data">
           <Icon name="bag" />
           数据管理
+        </Link>
+        <Link to="/train/schedule">
+          <Icon name="calendar" />
+          查看一周日程
+        </Link>
+        <Link to="/train/settings">
+          <Icon name="sliders" />
+          训练设置与器械
         </Link>
       </div>
       <p className="gym-muted">计划训练：每有效分钟 1 XP，组间休息不计时。</p>
