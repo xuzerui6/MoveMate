@@ -174,6 +174,20 @@
   display: inline-flex;
   align-items: center;
 }
+.gym-toolbar a {
+  min-height: 48px;
+  padding: 6px 14px;
+  border-radius: 12px;
+  background: #f6f8f7;
+  text-decoration: none;
+}
+.gym-toolbar a:hover {
+  background: #e5faee;
+}
+.gym-toolbar a:focus-visible {
+  outline: 3px solid #008a40;
+  outline-offset: 2px;
+}
 .gym-error {
   padding: 14px 16px;
   border: 1px solid #f0c9c9;
@@ -253,6 +267,41 @@
   border-radius: 18px;
   background: #f6f8f7;
   padding: 16px;
+}
+.gym-shortcuts a:focus-visible {
+  outline: 3px solid #008a40;
+  outline-offset: 2px;
+}
+.gym-mini-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+.gym-mini-tiles a {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  min-height: 76px;
+  border: 1px solid #e3e9e6;
+  border-radius: 18px;
+  background: #fff;
+  padding: 16px 8px;
+  color: #080b09;
+  font-weight: 600;
+}
+.gym-mini-tiles a svg {
+  color: #08783b;
+}
+.gym-mini-tiles a:hover {
+  background: #e5faee;
+}
+.gym-mini-tiles a:focus-visible {
+  outline: 3px solid #008a40;
+  outline-offset: 2px;
 }
 .gym-today {
   background: #f6f8f7;

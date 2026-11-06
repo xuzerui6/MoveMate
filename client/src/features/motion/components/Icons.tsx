@@ -39,7 +39,11 @@ import {MapPinIcon} from '@phosphor-icons/react/dist/csr/MapPin';
 import {PencilSimpleIcon} from '@phosphor-icons/react/dist/csr/PencilSimple';
 import {PaperPlaneTiltIcon} from '@phosphor-icons/react/dist/csr/PaperPlaneTilt';
 import {CaretRightIcon} from '@phosphor-icons/react/dist/csr/CaretRight';
+import {SlidersHorizontalIcon} from '@phosphor-icons/react/dist/csr/SlidersHorizontal';
+import {ClipboardTextIcon} from '@phosphor-icons/react/dist/csr/ClipboardText';
+import {ListChecksIcon} from '@phosphor-icons/react/dist/csr/ListChecks';
+import {ChartLineIcon} from '@phosphor-icons/react/dist/csr/ChartLine';
 const icons:Record<string,IconType>={stop:StopIcon,home:HouseIcon,users:UsersIcon,bell:BellIcon,dumbbell:BarbellIcon,user:UserIcon,bag:BackpackIcon,heart:HeartIcon,flame:FireIcon,bluetooth:BluetoothIcon,arrow:ArrowRightIcon,back:ArrowLeftIcon,check:CheckIcon,pause:PauseIcon,play:PlayIcon,spark:SparkleIcon,reset:ArrowCounterClockwiseIcon,mic:MicrophoneIcon,micOff:MicrophoneSlashIcon,volume:SpeakerHighIcon,volumeOff:SpeakerSlashIcon,clock:ClockIcon,bolt:LightningIcon,camera:CameraIcon,close:XIcon,lock:LockKeyIcon,trophy:TrophyIcon,basketball:BasketballIcon,soccer:SoccerBallIcon,tennis:TennisBallIcon,running:PersonSimpleRunIcon,swimming:PersonSimpleSwimIcon,skateboarding:PersonSimpleSkateboardIcon};
-Object.assign(icons,{expand:ArrowsOutIcon,collapse:ArrowsInIcon,calendar:CalendarBlankIcon,pin:MapPinIcon,pencil:PencilSimpleIcon,send:PaperPlaneTiltIcon,caret:CaretRightIcon});
+Object.assign(icons,{expand:ArrowsOutIcon,collapse:ArrowsInIcon,calendar:CalendarBlankIcon,pin:MapPinIcon,pencil:PencilSimpleIcon,send:PaperPlaneTiltIcon,caret:CaretRightIcon,sliders:SlidersHorizontalIcon,clipboard:ClipboardTextIcon,list:ListChecksIcon,chart:ChartLineIcon});
 export function Icon({name,size=22,weight='regular'}:{name:string;size?:number;weight?:IconWeight}){const Component=icons[name]||BarbellIcon;return <Component size={size} weight={weight} aria-hidden="true"/>;}
 
