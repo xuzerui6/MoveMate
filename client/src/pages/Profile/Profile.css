@@ -1,0 +1,193 @@
+/* 「我的」页 (P2 重写, 2026-11-06): 页面自有样式, 取代 foundation.css / design-system.css
+   中原 ui-pages-profile-* 覆盖层与定位补丁群。版式只用文档流 + flex/grid, 无绝对定位补丁。
+   令牌沿用 design-system.css 的批准色板。 */
+
+/* ---------- 页面骨架: DOM 顺序即视觉顺序 ---------- */
+.profile-page{display:flex;flex-direction:column;gap:12px;max-width:none}
+.profile-page h2{font-size:16.5px;font-weight:800}
+.profile-page .form-input{height:52px;font-size:16px;border-radius:12px}
+.profile-page .progress i{background:var(--color-primary)}
+
+/* ---------- 页头 ---------- */
+.profile-page .ui-pages-profile-profile-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.profile-page .ui-pages-profile-profile-title{display:block;font-size:28px;font-weight:900;line-height:1.3}
+.profile-page .ui-pages-profile-profile-headerActions{display:flex;align-items:center;gap:6px;flex:none}
+.profile-page .ui-pages-profile-profile-headerActions button{min-height:44px;padding:10px 8px;border:0;background:none;font-size:13.5px;font-weight:600;color:var(--color-text-secondary);white-space:nowrap}
+.profile-page .ui-pages-profile-profile-logoutBtn{color:#b3261e}
+
+/* ---------- 卡片基线 ---------- */
+.profile-page .ui-pages-profile-profile-userSummaryCard,
+.profile-page .motion-growth,
+.profile-page .profile-shortcuts-card,
+.profile-page .profile-preferences,
+.profile-page .legacy-rewards{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 14px 18px;margin:0}
+
+/* ---------- 身份卡 ---------- */
+.profile-page .ui-pages-profile-profile-avatarRow{display:flex;align-items:center;gap:12px}
+.profile-page .ui-pages-profile-profile-avatarRow .user-avatar{width:64px!important;height:64px!important;border:2px solid var(--color-primary);background:var(--mint);color:var(--color-primary-dark);flex:none}
+.profile-page .profile-pixel-avatar{width:64px;height:64px;overflow:hidden;border-radius:50%;background:var(--mint);border:2px solid var(--color-primary);display:grid;place-items:center;flex:none}
+.profile-page .profile-pixel-avatar .avatar-figure{width:52px;height:64px;margin:0}
+.profile-page .ui-pages-profile-profile-userInfo{flex:1;min-width:0}
+.profile-page .ui-pages-profile-profile-nickname{font-size:20px;font-weight:800;line-height:1.35}
+.profile-page .ui-pages-profile-profile-metaRow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px}
+.profile-page .ui-pages-profile-profile-schoolTag{font-size:12.5px;color:var(--color-text-secondary)}
+.profile-page .ui-pages-profile-profile-verifiedTag{font-size:11px;font-weight:700;color:var(--color-primary-dark);background:var(--mint);padding:3px 9px;border-radius:999px}
+.profile-page .profile-motto{margin:12px 0 0;font-size:13.5px;font-weight:600;color:var(--color-primary-dark);display:flex;align-items:center;min-height:0}
+.profile-page .profile-motto::before{content:"";width:3px;height:12px;background:var(--color-primary-light);border-radius:2px;margin-right:8px;flex:none}
+
+/* ---------- 校园邮箱验证 ---------- */
+.profile-page .profile-verify{border-top:1px solid var(--line);margin-top:14px;padding-top:14px}
+.profile-page .profile-verify-title{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0}
+.profile-page .profile-verify-chip{background:#fdf3e3;color:#9a6a00;font-size:11px;font-weight:700;border-radius:999px;padding:3px 9px}
+.profile-page .profile-verify-row{display:flex;gap:9px;margin-top:11px}
+.profile-page .profile-verify-row .form-input{flex:1;min-width:0}
+.profile-page .profile-verify-row .btn{min-height:52px;border-radius:12px;font-size:15px;font-weight:700;padding:0 16px;white-space:nowrap}
+.profile-page .profile-verify-submit{width:100%;min-height:52px;border-radius:12px;font-size:15px;font-weight:700;margin-top:9px}
+
+/* ---------- 身份卡动作行 (正常流, 48px) ---------- */
+.profile-page .ui-pages-profile-profile-profileActions{display:flex;gap:9px;border-top:1px solid var(--line);margin-top:16px;padding-top:16px}
+.profile-page .ui-pages-profile-profile-profileActions button{flex:1;height:48px;min-height:48px;border-radius:12px;font-size:14.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 12px}
+.profile-page .ui-pages-profile-profile-expandBtn{background:#fff;border:1.5px solid var(--color-primary);color:var(--color-primary-dark)}
+.profile-page .ui-pages-profile-profile-editBtn{background:var(--color-primary);border:1.5px solid var(--color-primary);color:#fff}
+
+/* ---------- 展开资料 ---------- */
+.profile-page .ui-pages-profile-profile-profileDetails{border-top:1px solid var(--line);margin-top:16px;padding-top:4px;display:flex;flex-direction:column}
+.profile-page .ui-pages-profile-profile-infoItem{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:11px 0;border-bottom:1px solid var(--line)}
+.profile-page .ui-pages-profile-profile-infoItem:last-child{border-bottom:0}
+.profile-page .ui-pages-profile-profile-infoLabel{font-size:13.5px;color:var(--color-text-secondary);font-weight:500;flex:none}
+.profile-page .ui-pages-profile-profile-infoValue{font-size:13.5px;font-weight:600;text-align:right}
+.profile-page .ui-pages-profile-profile-inline-3{color:var(--muted);font-size:13px}
+.profile-page .ui-pages-profile-profile-formGroup{display:flex;flex-direction:column;margin-top:13px}
+.profile-page .ui-pages-profile-profile-formGroup:first-child{margin-top:6px}
+.profile-page .ui-pages-profile-profile-formGroup .ui-pages-profile-profile-infoLabel{color:var(--ink);font-weight:700;margin-bottom:7px}
+.profile-page .ui-pages-profile-profile-inline-0{display:none}
+.profile-page .ui-pages-profile-profile-avatarUploadRow{display:flex;align-items:center;gap:11px}
+.profile-page .ui-pages-profile-profile-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:19px;overflow:hidden;flex:none}
+.profile-page .ui-pages-profile-profile-avatarImg{width:100%;height:100%;object-fit:cover}
+.profile-page .ui-pages-profile-profile-inline-1{width:48px;height:48px;font-size:19px}
+.profile-page .ui-pages-profile-profile-avatarChooseBtn{height:44px;padding:0 15px;border-radius:11px;border:1.5px solid var(--color-primary);color:var(--color-primary-dark);font-size:14px;font-weight:700;background:#fff;cursor:pointer}
+.profile-page .ui-pages-profile-profile-avatarRemoveBtn{font-size:13.5px;color:#b3261e;font-weight:600;background:none;border:0;padding:0 6px;cursor:pointer}
+.profile-page .ui-pages-profile-profile-sportTagRow{display:flex;flex-wrap:wrap;gap:8px}
+.profile-page .ui-pages-profile-profile-sportTag{display:inline-flex;align-items:center;gap:6px;height:40px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:13.5px;font-weight:600;cursor:pointer;outline:none}
+.profile-page .ui-pages-profile-profile-sportTagActive{background:var(--mint);border:1.5px solid var(--color-primary);color:var(--color-primary-dark);font-weight:750}
+.profile-page .ui-pages-profile-profile-sportTagActive::before{content:"✓";color:var(--color-primary);font-weight:800;font-size:12px}
+.profile-page .ui-pages-profile-profile-customSportRow{display:flex;gap:9px;margin-top:10px;align-items:center}
+.profile-page .ui-pages-profile-profile-inline-2{flex:1;min-width:0}
+.profile-page .ui-pages-profile-profile-addSportBtn{height:44px;padding:0 15px;border-radius:11px;border:1.5px solid var(--color-primary);color:var(--color-primary-dark);font-size:14px;font-weight:700;background:#fff;cursor:pointer;flex:none}
+.profile-page .ui-pages-profile-profile-saveSportPrefsBtn{width:100%;height:48px;margin-top:10px;font-size:15px;font-weight:700;color:#fff;background:var(--color-primary);border:0;border-radius:12px;cursor:pointer}
+.profile-page .ui-pages-profile-profile-editFooter{display:flex;gap:9px;margin-top:16px}
+.profile-page .ui-pages-profile-profile-editFooter button{height:52px;border-radius:12px;font-size:15px;font-weight:700;padding:0 16px}
+.profile-page .ui-pages-profile-profile-secondaryBtn{flex:1;background:#fff;border:1.5px solid var(--color-primary);color:var(--color-primary-dark)}
+.profile-page .ui-pages-profile-profile-primaryBtn{flex:1.4;background:var(--color-primary);border:1.5px solid var(--color-primary);color:#fff}
+
+/* ---------- 成长卡 (首页语言) ---------- */
+.profile-page .profile-growth-head{display:flex;align-items:center;justify-content:space-between}
+.profile-page .profile-lvl{background:var(--mint);color:var(--color-primary-dark);border-radius:99px;font-size:14px;font-weight:900;padding:5px 12px;white-space:nowrap}
+.profile-page .profile-xp-line{display:flex;align-items:flex-end;justify-content:space-between;margin-top:14px}
+.profile-page .profile-xp-lab{font-size:12.5px;color:var(--color-text-secondary)}
+.profile-page .profile-xp-num{font-size:15px;color:var(--color-text-secondary);margin-top:2px}
+.profile-page .profile-xp-num b{font-size:26px;font-weight:900;color:var(--ink)}
+.profile-page .profile-xp-next{font-size:12px;color:var(--color-text-secondary);text-align:right;line-height:1.5}
+.profile-page .motion-growth .progress{margin-top:9px}
+.profile-page .profile-growth-stats{display:flex;margin-top:16px}
+.profile-page .profile-growth-stats>div{flex:1;display:flex;flex-direction:column}
+.profile-page .profile-growth-stats>div+div{border-left:1px solid var(--line);padding-left:14px}
+.profile-page .profile-growth-stats small{font-size:12px;color:var(--color-text-secondary);margin-bottom:4px}
+.profile-page .profile-growth-stats strong{font-size:21px;font-weight:900}
+
+/* ---------- 快捷入口 ---------- */
+.profile-page .motion-shortcuts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px 2px;margin-top:12px}
+.profile-page .motion-shortcuts a{display:flex;flex-direction:column;align-items:center;gap:7px;padding:9px 0 7px;font-size:12.5px;font-weight:600;color:var(--ink);text-decoration:none}
+.profile-page .profile-shortcut-ic{width:44px;height:44px;border-radius:50%;background:var(--mint);display:flex;align-items:center;justify-content:center;color:var(--color-primary-dark)}
+.profile-page .profile-shortcut-ic svg{width:20px;height:20px}
+
+/* ---------- 运动偏好 ---------- */
+.profile-page .profile-preferences .section-title{display:flex;align-items:center;justify-content:space-between}
+.profile-page .profile-preferences h3{font-size:16.5px;font-weight:800}
+.profile-page .profile-preferences .section-title button{min-height:44px;background:none;border:0;color:var(--color-primary-dark);font-size:13.5px;font-weight:700;padding:6px 2px}
+.profile-page .profile-preference-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.profile-page .profile-preference-list span{height:36px;padding:0 13px;border-radius:999px;background:#fff;border:1px solid var(--line);display:inline-flex;align-items:center;gap:6px;font-size:13px}
+.profile-page .profile-preference-list p{font-size:14px;color:var(--muted)}
+
+/* ---------- 我参与的活动 ---------- */
+.profile-page .ui-pages-profile-profile-section{min-width:0}
+.profile-page .ui-pages-profile-profile-sectionTitle{font-size:17px;font-weight:800;margin:6px 4px 10px}
+.profile-page .ui-pages-profile-profile-gamesList{display:grid;grid-template-columns:1fr;gap:12px}
+.profile-page .ui-pages-profile-profile-gameWrapper{position:relative;min-width:0}
+.profile-page .ui-pages-profile-profile-inline-4{padding:2rem 0}
+.profile-page .ui-pages-profile-profile-confirmGroup{display:flex;align-items:center;gap:0.4rem}
+.profile-page .ui-pages-profile-profile-deleteBtn{font-size:.75rem;font-weight:600;color:#475569;background:#f3f6f3;padding:.35rem 1rem;border-radius:9999px;border:1px solid #E2E8F0}
+.profile-page .ui-pages-profile-profile-confirmDeleteBtn{font-size:.75rem;font-weight:700;color:#fff;background:#ef4444;padding:.35rem .8rem;border-radius:9999px}
+.profile-page .ui-pages-profile-profile-cancelDeleteBtn{font-size:.75rem;font-weight:600;color:#64748b;background:#f3f6f3;padding:.35rem .8rem;border-radius:9999px;border:1px solid #E2E8F0}
+.profile-page .ui-pages-profile-profile-confirmCancelBtn{font-size:.75rem;font-weight:700;color:#fff;background:#ef4444;padding:.35rem .8rem;border-radius:9999px}
+.profile-page .ui-pages-profile-profile-confirmLeaveBtn{font-size:.75rem;font-weight:700;color:#fff;background:var(--color-primary);padding:.35rem .8rem;border-radius:9999px}
+.profile-page .ui-pages-profile-profile-cancelBtn{font-size:.75rem;font-weight:600;color:#ef4444;background:#fef2f2;padding:.35rem 1rem;border-radius:9999px}
+.profile-page .ui-pages-profile-profile-leaveBtn{font-size:.75rem;font-weight:600;color:#64748b;background:var(--mint);padding:.35rem 1rem;border-radius:9999px}
+
+/* ---------- 历史积分 (折叠卡) ---------- */
+.profile-page .legacy-rewards summary{list-style:none;display:flex;align-items:center;gap:10px;cursor:pointer;min-height:44px}
+.profile-page .legacy-rewards summary::-webkit-details-marker{display:none}
+.profile-page .legacy-summary-tx{flex:1;display:flex;flex-direction:column;gap:3px}
+.profile-page .legacy-summary-tx strong{font-size:15.5px;font-weight:800}
+.profile-page .legacy-summary-tx small{font-size:12.5px;color:var(--color-text-secondary)}
+.profile-page .legacy-chev{color:var(--color-text-secondary);font-size:14px;transition:transform 160ms ease}
+.profile-page .legacy-rewards[open ] .legacy-chev{transform:rotate(180deg)}
+.profile-page .ui-pages-profile-profile-rewardPanel{margin-top:6px}
+.profile-page .ui-pages-profile-profile-rewardLabel{font-size:12px;color:var(--muted);font-weight:600;display:block}
+.profile-page .ui-pages-profile-profile-rewardPrimaryRow{display:flex;align-items:baseline;gap:12px;margin-top:6px}
+.profile-page .ui-pages-profile-profile-rewardPrimaryValue{font-size:30px;font-weight:900;color:var(--ink)}
+.profile-page .ui-pages-profile-profile-rewardPrimaryMeta{font-size:13.5px;color:var(--color-primary-dark);font-weight:700}
+.profile-page .ui-pages-profile-profile-rewardGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin-top:14px}
+.profile-page .ui-pages-profile-profile-rewardStat{display:flex;flex-direction:column;gap:3px}
+.profile-page .ui-pages-profile-profile-rewardValue{font-size:19px;font-weight:900;color:var(--ink)}
+.profile-page .ui-pages-profile-profile-badgeRow{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.profile-page .ui-pages-profile-profile-badgeChip{background:#eef4f0;color:var(--color-primary-dark);font-size:12px;font-weight:700;border-radius:999px;padding:5px 11px}
+
+/* ---------- 桌面 (>=1100px): 侧栏壳内双列分区 ---------- */
+@media (min-width:1100px){
+  .profile-page{display:grid;grid-template-columns:400px minmax(0,1fr);gap:20px;align-items:start}
+  .profile-page .ui-pages-profile-profile-header{grid-column:1/-1}
+  .profile-page .ui-pages-profile-profile-title{font-size:31px}
+  .profile-page .ui-pages-profile-profile-headerActions{gap:9px}
+  .profile-page .ui-pages-profile-profile-headerActions button{border:1px solid var(--line);background:#fff;border-radius:12px;padding:8px 18px;font-size:14px;font-weight:700;color:var(--ink)}
+  .profile-page .ui-pages-profile-profile-logoutBtn{color:#b3261e}
+  .profile-page .ui-pages-profile-profile-userSummaryCard{grid-column:1}
+  .profile-page .legacy-rewards{grid-column:1}
+  .profile-page .motion-growth,
+  .profile-page .profile-shortcuts-card,
+  .profile-page .profile-preferences,
+  .profile-page .ui-pages-profile-profile-section{grid-column:2}
+  .profile-page .ui-pages-profile-profile-userSummaryCard,
+  .profile-page .motion-growth,
+  .profile-page .profile-shortcuts-card,
+  .profile-page .profile-preferences,
+  .profile-page .legacy-rewards{padding:22px 24px 24px}
+  .profile-page h2{font-size:17.5px}
+  .profile-page .form-input{font-size:15px}
+  .profile-page .ui-pages-profile-profile-avatarRow{gap:14px}
+  .profile-page .ui-pages-profile-profile-avatarRow .user-avatar{width:72px!important;height:72px!important}
+  .profile-page .profile-pixel-avatar{width:72px;height:72px}
+  .profile-page .profile-pixel-avatar .avatar-figure{width:58px;height:72px}
+  .profile-page .ui-pages-profile-profile-nickname{font-size:22px}
+  .profile-page .profile-lvl{font-size:15px;padding:6px 14px}
+  .profile-page .profile-xp-num b{font-size:30px}
+  .profile-page .profile-growth-stats strong{font-size:24px}
+  .profile-page .profile-growth-stats>div+div{padding-left:20px}
+  .profile-page .motion-shortcuts{grid-template-columns:repeat(8,1fr);gap:4px;margin-top:14px}
+  .profile-page .profile-shortcut-ic{width:46px;height:46px}
+  .profile-page .profile-preferences h3{font-size:17.5px}
+  .profile-page .profile-preference-list span{height:38px;padding:0 14px;font-size:13.5px}
+  .profile-page .ui-pages-profile-profile-sectionTitle{font-size:17.5px;margin:0 0 2px}
+  .profile-page .ui-pages-profile-profile-gamesList{grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+  .profile-page .ui-pages-profile-profile-rewardPrimaryValue{font-size:32px}
+  .profile-page .ui-pages-profile-profile-rewardValue{font-size:20px}
+  /* 编辑态: 身份卡整行展开, 表单两列 (与稿附图一致) */
+  .profile-page:has(.ui-pages-profile-profile-editFooter){display:flex}
+  .profile-page .ui-pages-profile-profile-profileDetails:has(.ui-pages-profile-profile-editFooter){display:grid;grid-template-columns:1fr 1fr;gap:0 20px;grid-auto-flow:dense;align-items:start}
+  .profile-page .ui-pages-profile-profile-profileDetails:has(.ui-pages-profile-profile-editFooter) .ui-pages-profile-profile-formGroup{margin-top:16px}
+  .profile-page .ui-pages-profile-profile-profileDetails:has(.ui-pages-profile-profile-editFooter) .ui-pages-profile-profile-formGroup:nth-child(4){grid-column:1/-1}
+  .profile-page .ui-pages-profile-profile-profileDetails:has(.ui-pages-profile-profile-editFooter) .ui-pages-profile-profile-infoItem{border-bottom:0;padding:0;margin-top:16px;flex-direction:column;align-items:flex-start;gap:7px}
+  .profile-page .ui-pages-profile-profile-profileDetails:has(.ui-pages-profile-profile-editFooter) .ui-pages-profile-profile-infoItem .ui-pages-profile-profile-infoLabel{color:var(--ink);font-weight:700}
+  .profile-page .ui-pages-profile-profile-profileDetails:has(.ui-pages-profile-profile-editFooter) .ui-pages-profile-profile-editFooter{grid-column:1/-1;justify-content:flex-end}
+  .profile-page .ui-pages-profile-profile-profileDetails:has(.ui-pages-profile-profile-editFooter) .ui-pages-profile-profile-editFooter button{flex:none;width:200px}
+}

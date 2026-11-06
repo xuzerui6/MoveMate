@@ -17,6 +17,7 @@ import type { Game, Campus } from '../../types';
 import GameCard from '../Lobby/GameCard';
 import SportIcon from '../../components/SportIcon';
 import Avatar from '../../components/Avatar';
+import './Profile.css';
 
 function getColor(name: string): string {
   const colors = ['#123e29', '#334155', '#475569', '#1E293B'];
@@ -269,8 +270,6 @@ const Profile: React.FC = () => {
 
   return (
     <div className="profile-page">
-      <div className="motion-growth">{motionLoaded?<><div className="profile-level"><b>Lv.{motion.level}</b><div><p>当前经验 <strong>{motion.xp} / {300+(motion.level-1)*100} XP</strong></p><div className="progress"><i style={{width:Math.min(100,motion.xp/(300+(motion.level-1)*100)*100)+'%'}}/></div></div></div><div className="profile-growth-stats"><div><strong>{motion.totalXp}</strong><small>累计 XP</small></div><div><strong>{motion.completedWorkoutCount}</strong><small>有效训练</small></div><div><strong>{motion.streakDays}</strong><small>连续运动天数</small></div></div></>:<p>正在读取成长数据…</p>}</div>
-      <div className="motion-shortcuts"><Link to="/avatar"><Icon name="user"/>我的形象</Link><Link to="/inventory"><Icon name="bag"/>装备背包</Link><Link to="/history"><Icon name="clock"/>训练历史</Link><Link to="/train/plans"><Icon name="dumbbell"/>训练计划</Link><Link to="/train/body"><Icon name="user"/>身体记录</Link><a href="#my-games"><Icon name="calendar"/>活动记录</a><Link to="/leaderboard"><Icon name="trophy"/>成长榜单</Link><Link to="/feedback"><Icon name="spark"/>意见反馈</Link></div>
       <div className="ui-pages-profile-profile-header">
         <h1 className="ui-pages-profile-profile-title">我的</h1>
         <div className="ui-pages-profile-profile-headerActions">
@@ -304,28 +303,22 @@ const Profile: React.FC = () => {
             </div>
           </div>
 
-          <div className="ui-pages-profile-profile-profileActions">
-            <button className="ui-pages-profile-profile-expandBtn" onClick={() => setShowProfileInfo(!showProfileInfo)}>
-              {showProfileInfo ? '收起资料' : '查看资料'}
-            </button>
-            <button className="ui-pages-profile-profile-editBtn" onClick={editingProfile ? handleCancelEdit : handleStartEdit}>
-              <Icon name={editingProfile?'close':'pencil'}/><span className="sr-only">{editingProfile ? '取消编辑' : '编辑资料'}</span>
-            </button>
-          </div>
         </div>
-        <p className="profile-motto">每次运动，都在成为更好的自己。</p>
+        <p className="profile-motto">每次运动，都算数。</p>
 
         {!user.campus_verified && (
-          <div className="form-group">
-            <p>验证校园邮箱后即可发局、加局。</p>
-            <button className="btn btn--outline" disabled={verifyingEmail} onClick={async () => {
-              setVerifyingEmail(true);
-              try { await authApi.sendVerifyCode(user.email); showToast('验证码已发送', 'success'); }
-              catch (error) { showToast(getErrorMessage(error), 'error'); }
-              finally { setVerifyingEmail(false); }
-            }}>发送验证码</button>
-            <input className="form-input" aria-label="校园邮箱验证码" placeholder="6位验证码" value={emailCode} maxLength={6} onChange={(event) => setEmailCode(event.target.value)} />
-            <button className="btn btn--primary" disabled={verifyingEmail || !/^\d{6}$/.test(emailCode)} onClick={async () => {
+          <div className="profile-verify">
+            <p className="profile-verify-title">校园邮箱未验证 <span className="profile-verify-chip">验证后可发局、加局</span></p>
+            <div className="profile-verify-row">
+              <input className="form-input" aria-label="校园邮箱验证码" placeholder="6 位验证码" value={emailCode} maxLength={6} onChange={(event) => setEmailCode(event.target.value)} />
+              <button className="btn btn--outline" disabled={verifyingEmail} onClick={async () => {
+                setVerifyingEmail(true);
+                try { await authApi.sendVerifyCode(user.email); showToast('验证码已发送', 'success'); }
+                catch (error) { showToast(getErrorMessage(error), 'error'); }
+                finally { setVerifyingEmail(false); }
+              }}>发送验证码</button>
+            </div>
+            <button className="btn btn--primary profile-verify-submit" disabled={verifyingEmail || !/^\d{6}$/.test(emailCode)} onClick={async () => {
               setVerifyingEmail(true);
               try { await verifyEmail(emailCode); setEmailCode(''); showToast('邮箱验证成功', 'success'); }
               catch (error) { showToast(getErrorMessage(error), 'error'); }
@@ -333,7 +326,16 @@ const Profile: React.FC = () => {
             }}>验证校园邮箱</button>
           </div>
         )}
-        
+
+        <div className="ui-pages-profile-profile-profileActions">
+          <button className="ui-pages-profile-profile-expandBtn" onClick={() => setShowProfileInfo(!showProfileInfo)}>
+            {showProfileInfo ? '收起资料' : '查看资料'}
+          </button>
+          <button className="ui-pages-profile-profile-editBtn" onClick={editingProfile ? handleCancelEdit : handleStartEdit}>
+            <Icon name={editingProfile ? 'close' : 'pencil'} size={16}/>{editingProfile ? '取消编辑' : '编辑资料'}
+          </button>
+        </div>
+
 
         {/* 展开的个人资料 */}
         {showProfileInfo && (
@@ -535,12 +537,7 @@ const Profile: React.FC = () => {
                   <span className="ui-pages-profile-profile-infoLabel">运动偏好</span>
                   <span className="ui-pages-profile-profile-infoValue">
                     {user.sport_preferences?.length
-                      ? user.sport_preferences.map((s) => (
-                          <span key={s} className="ui-pages-profile-profile-sportTagDisplay">
-                            <SportIcon sport={s} size={14} />
-                            {SPORT_LABELS[s] || s}
-                          </span>
-                        ))
+                      ? user.sport_preferences.map((s) => SPORT_LABELS[s] || s).join(' · ')
                       : '未设置'}
                   </span>
                 </div>
@@ -550,9 +547,46 @@ const Profile: React.FC = () => {
         )}
       </div>
 
+      <div className="motion-growth">
+        {motionLoaded ? <>
+          <div className="profile-growth-head">
+            <h2>我的成长</h2>
+            <span className="profile-lvl">Lv.{motion.level}</span>
+          </div>
+          <div className="profile-xp-line">
+            <div>
+              <span className="profile-xp-lab">当前经验</span>
+              <div className="profile-xp-num"><b>{motion.xp}</b> / {300 + (motion.level - 1) * 100} XP</div>
+            </div>
+            <div className="profile-xp-next">再积累 {Math.max(0, 300 + (motion.level - 1) * 100 - motion.xp)} XP<br />即可升级</div>
+          </div>
+          <div className="progress"><i style={{width: Math.min(100, motion.xp / (300 + (motion.level - 1) * 100) * 100) + '%'}} /></div>
+          <div className="profile-growth-stats">
+            <div><small>累计 XP</small><strong>{motion.totalXp}</strong></div>
+            <div><small>有效训练</small><strong>{motion.completedWorkoutCount}</strong></div>
+            <div><small>连续运动天数</small><strong>{motion.streakDays}</strong></div>
+          </div>
+        </> : <p>正在读取成长数据…</p>}
+      </div>
+
+      <div className="profile-shortcuts-card">
+        <h2>快捷入口</h2>
+        <div className="motion-shortcuts">
+          <Link to="/avatar"><span className="profile-shortcut-ic"><Icon name="user"/></span>我的形象</Link>
+          <Link to="/inventory"><span className="profile-shortcut-ic"><Icon name="bag"/></span>装备背包</Link>
+          <Link to="/history"><span className="profile-shortcut-ic"><Icon name="clock"/></span>训练历史</Link>
+          <Link to="/train/plans"><span className="profile-shortcut-ic"><Icon name="dumbbell"/></span>训练计划</Link>
+          <Link to="/train/body"><span className="profile-shortcut-ic"><Icon name="user"/></span>身体记录</Link>
+          <a href="#my-games"><span className="profile-shortcut-ic"><Icon name="calendar"/></span>活动记录</a>
+          <Link to="/leaderboard"><span className="profile-shortcut-ic"><Icon name="trophy"/></span>成长榜单</Link>
+          <Link to="/feedback"><span className="profile-shortcut-ic"><Icon name="spark"/></span>意见反馈</Link>
+        </div>
+      </div>
+
+      <div className="profile-preferences"><div className="section-title"><h3>我的运动偏好</h3><button onClick={handleStartEdit}>编辑偏好</button></div><div className="profile-preference-list">{(user.sport_preferences||[]).length?(user.sport_preferences||[]).map(sport=><span key={sport}><SportIcon sport={sport} size={14}/>{SPORT_LABELS[sport]||sport}</span>):<p>还未设置运动偏好</p>}</div></div>
+
       {/* 我的局列表 */}
       <div className="ui-pages-profile-profile-section">
-        <div className="profile-preferences"><div className="section-title"><h3>我的运动偏好</h3><button onClick={handleStartEdit}>编辑偏好</button></div><div className="profile-preference-list">{(user.sport_preferences||[]).length?(user.sport_preferences||[]).map(sport=><span key={sport}>{SPORT_LABELS[sport]||sport}</span>):<p>还未设置运动偏好</p>}</div></div>
         <h3 className="ui-pages-profile-profile-sectionTitle" id="my-games">我参与的活动</h3>
         {gamesError&&<div className="inline-error" role="alert"><p>{gamesError}</p><button className="btn btn--secondary" onClick={()=>void loadMyGames()}>重新加载活动</button></div>}
         {gamesLoading && myGames.length === 0 ? (
@@ -646,7 +680,7 @@ const Profile: React.FC = () => {
           </div>
         )}
       </div>
-      <details className="legacy-rewards"><summary>历史积分与出勤记录</summary><div className="ui-pages-profile-profile-rewardPanel">
+      <details className="legacy-rewards"><summary><span className="legacy-summary-tx"><strong>历史积分与出勤记录</strong><small>旧积分体系，点击展开查看</small></span><span className="legacy-chev" aria-hidden="true">▾</span></summary><div className="ui-pages-profile-profile-rewardPanel">
           <div className="ui-pages-profile-profile-rewardCardPrimary">
             <span className="ui-pages-profile-profile-rewardLabel">历史等级（旧积分）</span>
             <div className="ui-pages-profile-profile-rewardPrimaryRow">
