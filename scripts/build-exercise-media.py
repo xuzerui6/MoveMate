@@ -47,14 +47,21 @@ for row in approved['stills']:
   p=stage/'candidates'/f'{source}-{i}.jpg'
   assert sha(p)==expected,f'Unreviewed source bytes: {p}'
   images.append({**photo(p,source.lower()+f'-{i}'),'phase':row.get('phases',[f'分解 {n+1}' for n in range(len(row['sourceSha256']))])[display_index],'sourceIndex':0})
- entries[id]={'note':row.get('note','实拍双帧分解，按顺序查看；不是连续动画。'),'images':images,'sources':[{
-  'name':'free-exercise-db / '+source,'author':'free-exercise-db contributors（原图未单独署名）',
-  'license':'Unlicense','licenseUrl':'/exercise-media/UNLICENSE.txt',
-  'url':f'https://github.com/yuhonas/free-exercise-db/tree/{approved["freeVersion"]}/exercises/{source}',
-  'version':approved['freeVersion'],'sourceSha256':row['sourceSha256'],
-  'changes':'按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。'+(' 按明确审核的源图索引排列动作阶段；未镜像制造另一侧动作。' if row.get('imageOrder') else ''),
- 'distribution':'repository',
- }]}
+ if row.get('generated'):
+  source_block={'name':'AI 生成 / '+source,'author':'MoveMate 项目（AI 生成图片，无摄影师）',
+   'license':'Unlicense','licenseUrl':'/exercise-media/UNLICENSE.txt',
+   'url':'https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch39.md',
+   'version':'2026-11-06 · 生成批次 39','sourceSha256':row['sourceSha256'],
+   'changes':'本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。',
+  'distribution':'repository'}
+ else:
+  source_block={'name':'free-exercise-db / '+source,'author':'free-exercise-db contributors（原图未单独署名）',
+   'license':'Unlicense','licenseUrl':'/exercise-media/UNLICENSE.txt',
+   'url':f'https://github.com/yuhonas/free-exercise-db/tree/{approved["freeVersion"]}/exercises/{source}',
+   'version':approved['freeVersion'],'sourceSha256':row['sourceSha256'],
+   'changes':'按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。'+(' 按明确审核的源图索引排列动作阶段；未镜像制造另一侧动作。' if row.get('imageOrder') else ''),
+  'distribution':'repository'}
+ entries[id]={'note':row.get('note','实拍双帧分解，按顺序查看；不是连续动画。'),'images':images,'sources':[source_block]}
 for row in approved['videos']:
  if only and not only.intersection(row['exerciseIds']):continue
  v=row['source'];id=v['id'];p=stage/'candidates'/v.get('sourceFile',f'wger-{id}.mov')

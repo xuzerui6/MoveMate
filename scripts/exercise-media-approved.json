@@ -5660,6 +5660,186 @@
         "俯身、额头抵于上斜凳、双臂下垂握铃",
         "双臂向两侧平举至肩高"
       ]
+    },
+    {
+      "exerciseId": "exdb:0735",
+      "expectedName": "sit-up v. 2",
+      "sourceId": "ai-generated-exdb-0735",
+      "sourceSha256": [
+        "88632b224ba56de8469d1631780710f989e1565e50b7fcd03b3be0c678ae8d4a",
+        "3c928e0d74c5958f9369fda670707045420a0b46ff449ca0d673be78b0fcab95"
+      ],
+      "phases": [
+        "平躺屈膝、双脚平放、双手脑后肘朝外",
+        "卷起上半身至躯干约45°"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0283",
+      "expectedName": "diamond push-up",
+      "sourceId": "ai-generated-exdb-0283",
+      "sourceSha256": [
+        "54b25f280ccb5b3592ab396c1a5fde5dcec514319aa4560e2a8c07e03fae2154",
+        "92c8e9625753b6bb1eba845f7ff14b32f41379882d60b59aa1aa35ef3d4555e6"
+      ],
+      "phases": [
+        "高位平板支撑、双手并拢成菱形、身体成一条直线",
+        "胸部降至菱形手处、肘贴近身体"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0309",
+      "expectedName": "dumbbell front raise v. 2",
+      "sourceId": "ai-generated-exdb-0309",
+      "sourceSha256": [
+        "57be3dde5d34f776c60cbbbc0a305caa9cfe63cfd2516177aac37b39de93e57c",
+        "ac5163ae2be17f694db13cdef00ae8053170ecc2806f03b0792b3e476aac51f4"
+      ],
+      "phases": [
+        "站立、双哑铃垂于体侧、掌心朝向大腿",
+        "双臂伸直前举至与肩齐平、掌心向下"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0431",
+      "expectedName": "dumbbell step-up",
+      "sourceId": "ai-generated-exdb-0431",
+      "sourceSha256": [
+        "6dba34b08e0ee591d608e45d8806db6dcea092dbdeda870c36c0bf77ee77da33",
+        "1d7bd97670a24527e5e88a211297d6f1c72e2f7472c0ed11c908681bf3ae1820"
+      ],
+      "phases": [
+        "右脚全脚掌踏上台阶、双手各持一哑铃",
+        "双脚站上台阶、完全直立"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0814",
+      "expectedName": "triceps dip",
+      "sourceId": "ai-generated-exdb-0814",
+      "sourceSha256": [
+        "5ea60f58eeb7d151ca9cce8f850c75d969e46b8592d6633922cea19a592f6b81",
+        "f592acdde469bb2de936d5e46e22e1afb5225c9c2137b24edc94530f7a082080"
+      ],
+      "phases": [
+        "坐凳边双手抓凳边、臀部离凳、双臂伸直、双腿伸直脚跟落地",
+        "屈肘将身体降至低位、背贴近凳子"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0865",
+      "expectedName": "lying leg-hip raise",
+      "sourceId": "ai-generated-exdb-0865",
+      "sourceSha256": [
+        "a175c410c5d618dd219729f1e75b2a8c0b2acca7155d7a320ac04e12ecbbbb9e",
+        "1053c35375ba0a89ae56ec80431c35e22fea3f9d7f4d9bf37f33d738541176c3"
+      ],
+      "phases": [
+        "平躺、双腿伸直、双手垫于臀部下方",
+        "双腿上举并举髋、臀部卷离地面"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0150",
+      "expectedName": "cable bar lateral pulldown",
+      "sourceId": "ai-generated-exdb-0150",
+      "sourceSha256": [
+        "3c494b4218b5abe0312b0c3b432859bfcc18e4d6f4cc7bae7817923775acb923",
+        "f98196f97a43614d89b8003cd6e19877d15eb0e3ec8211337770aadc2943898a"
+      ],
+      "phases": [
+        "坐姿面向器械、正手宽握直杆、双臂上伸",
+        "直杆下拉至上胸、肩胛收紧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0447",
+      "expectedName": "ez barbell curl",
+      "sourceId": "ai-generated-exdb-0447",
+      "sourceSha256": [
+        "cd0b235648c916de6c83dd5a483cd5844f4d1ef9939cb1b7d753e68105e948e0",
+        "a8e14171fbee01e804a409119d1bf4cba97fddbda9c92d1e4894762d23ab49be"
+      ],
+      "phases": [
+        "站立、反手（掌心向上）握EZ杠垂于大腿前",
+        "屈肘将杠弯举至肩前、上臂贴体侧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0286",
+      "expectedName": "dumbbell alternate side press",
+      "sourceId": "ai-generated-exdb-0286",
+      "sourceSha256": [
+        "e19be4ffff2c757b16d9a8e880f1e421cd43260a2faf040c4edca33ebc16f3f9",
+        "a487bdd27bc2333a2f14aab48e162a71ebad8ea8d930865ac34b79ccfafc3754"
+      ],
+      "phases": [
+        "站立、双哑铃各置于一侧肩高",
+        "一侧哑铃推举过顶、另一侧保持肩高（交替）"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1749",
+      "expectedName": "ez bar standing french press",
+      "sourceId": "ai-generated-exdb-1749",
+      "sourceSha256": [
+        "cb65d0f5f2da01db526f22179fd782e74b24a3d891db91a97dae07fe52183956",
+        "4194053058a21f19e18787f1e52b432fd8aa3d2031efc3d76efb11cffff0e397"
+      ],
+      "phases": [
+        "站立、正手握EZ杠举过头顶、双臂充分伸展",
+        "屈肘将杠降至脑后、上臂贴近头部"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0342",
+      "expectedName": "dumbbell lying one arm press v. 2",
+      "sourceId": "ai-generated-exdb-0342",
+      "sourceSha256": [
+        "540c6afc40dc7fc896d7b65640644daf0344e5cac342a4450b37483eeb76a57a",
+        "7377a92631e54af8fb75984c8495cc06cffad2b257aced1ac8cca5cf888b152b"
+      ],
+      "phases": [
+        "平躺平凳、单手持哑铃伸向天花板",
+        "哑铃降至胸侧、肘贴近身体"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3132",
+      "expectedName": "potty squat with support",
+      "sourceId": "ai-generated-exdb-3132",
+      "sourceSha256": [
+        "726e19d2774564475c6a6de49aaa27f549288f914a97d922164a7ccddd6e46b3",
+        "33294b1d7bb1cec9510c254db826d52bd31eff480b43c4e593123897749ee19b"
+      ],
+      "phases": [
+        "双脚与肩同宽站立、脚趾稍外展、双手扶住支撑物",
+        "屈膝、臀部后推降至蹲位、挺胸背直"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
@@ -7584,7 +7764,7 @@
       "reason": "照片为跪姿杠铃深蹲，条目定义为站姿徒手跳深蹲；跪姿、杠铃、无跳跃离地。"
     }
   ],
-  "batch": 38,
+  "batch": 39,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",
