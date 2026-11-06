@@ -15,6 +15,23 @@ import {
   beginWorkout,
   label,
 } from "./api";
+/* 设置页在 ≥1100px 用双栏组合、以下用单栏（顺序：显示→器械→偏好→安装）。
+   两种组合由 JS 按断点选择渲染同一组卡片元素（同一时刻只挂载一份，id 不重复），
+   避免用 CSS display:contents 改序——那样 DOM 顺序与视觉顺序不一致，读屏顺序会错乱。 */
+function useWideSettingsLayout() {
+  const [wide, setWide] = useState(
+    () => window.matchMedia("(min-width: 1100px)").matches,
+  );
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1100px)");
+    const onChange = () => setWide(query.matches);
+    onChange();
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }, []);
+  return wide;
+}
+
 export function TrainingSettings() {
   const q = useGymQuery("/training-settings"),
     lib = useGymQuery("/exercises?limit=1"),
@@ -23,6 +40,7 @@ export function TrainingSettings() {
     [busy, setBusy] = useState(false),
     navigate = useNavigate();
   const uid = useAuthStore(s => s.user?.id), draftKey = "gym:draft:"+uid+":settings";
+  const wideLayout = useWideSettingsLayout();
   const token=useRef(localStorage.getItem('token')).current;
   const protectedDraft=useRef<RecoveryDraft|null>(null), unreadActive=useRef(false), resolvedArchives=useRef<RecoveryDraft[]>([]);
   const [reviews,setReviews]=useState<RecoveryDraft[]>([]), [review,setReview]=useState<{record:RecoveryDraft;server:any;keys:string[];current?:boolean}|null>(null), [selected,setSelected]=useState<string[]>([]);
@@ -106,9 +124,106 @@ export function TrainingSettings() {
     }}
     finally{if(alive.current)setBusy(false);}
   };
+  const equipCount = v ? v.equipment.filter((x: string) => x !== "body weight").length : 0;
+  const effortLabel = v?.effort === "rpe" ? "RPE" : v?.effort === "rir" ? "RIR" : "关闭";
+  const displayCard = v ? (
+    <section className="gym-settings-card" aria-labelledby="gym-settings-display-title">
+      <h3 id="gym-settings-display-title" className="gym-settings-title">显示</h3>
+      <p className="gym-settings-hint">
+        记录统一保存 kg，切换显示不影响原始数据。
+      </p>
+      <label>
+        显示单位
+        <select
+          disabled={!!review}
+          value={v.unit}
+          onChange={(e) => change("unit", e.target.value)}
+        >
+          <option value="kg">kg 公斤</option>
+          <option value="lb">lb 磅</option>
+        </select>
+      </label>
+    </section>
+  ) : null;
+  const equipmentCard = v ? (
+    <fieldset className="gym-settings-card gym-settings-equipment">
+      <legend className="gym-settings-title">
+        <span className="gym-settings-legend-row">
+          <span>我拥有的器械</span>
+          <span className="gym-settings-count">已选 {equipCount} 项</span>
+        </span>
+      </legend>
+      <p className="gym-settings-hint">
+        点选你拥有的器械，找动作时可按器械筛选。
+      </p>
+      <div className="gym-equipment">
+        {lib.data?.equipment
+          .filter((x: string) => x !== "body weight")
+          .map((x: string) => (
+            <button
+              type="button"
+              key={x}
+              disabled={!!review}
+              aria-pressed={v.equipment.includes(x)}
+              onClick={() =>
+                change(
+                  "equipment",
+                  v.equipment.includes(x)
+                    ? v.equipment.filter((a: string) => a !== x)
+                    : [...v.equipment, x],
+                )
+              }
+            >
+              {v.equipment.includes(x) && (
+                <span className="gym-chip-tick" aria-hidden="true">✓</span>
+              )}
+              {label(x)}
+            </button>
+          ))}
+      </div>
+    </fieldset>
+  ) : null;
+  const effortCard = v ? (
+    <section className="gym-settings-card" aria-labelledby="gym-settings-effort-title">
+      <h3 id="gym-settings-effort-title" className="gym-settings-title">训练偏好</h3>
+      <label>
+        用力程度
+        <select
+          disabled={!!review}
+          value={v.effort}
+          onChange={(e) => change("effort", e.target.value)}
+        >
+          <option value="off">关闭</option>
+          <option value="rpe">RPE</option>
+          <option value="rir">RIR</option>
+        </select>
+      </label>
+      <p className="gym-settings-hint">
+        开启后，训练中可以为每组记录用力程度；关闭则不记录。
+      </p>
+    </section>
+  ) : null;
+  const installCard = (
+    <div className="gym-settings-install">
+      <InstallApp />
+    </div>
+  );
   return (
     <div className="page gym-page">
-      <Header title="训练设置" back={() => navigate("/train/plans")} />
+      <Header
+        title="训练设置"
+        back={() => navigate("/train/plans")}
+        action={
+          v ? (
+            <span className="gym-settings-topstate">
+              <span>
+                器械已选 <b>{equipCount} 项</b> · 用力程度 <b>{effortLabel}</b>
+              </span>
+              <span>修改后点右下角保存生效</span>
+            </span>
+          ) : undefined
+        }
+      />
       {q.error && <div className="gym-error" role="alert">设置读取失败：{q.error}<button disabled={q.loading || busy} onClick={q.reload}>重试读取设置</button></div>}
       <CachedDataNotice data={q.data} reload={q.reload} busy={q.loading || busy}/>
       {storageWarning && <div className="gym-cache-notice" role="status"><p>{storageWarning}</p>{invalidDraft && <button disabled={busy} onClick={()=>{if(removeDraft(draftKey)){unreadActive.current=false;setInvalidDraft(false);setStorageWarning('');}else setStorageWarning('本机草稿暂时无法清理，仍可编辑并联网保存。');}}>放弃损坏设置草稿</button>}</div>}
@@ -130,76 +245,33 @@ export function TrainingSettings() {
           className="gym-settings-form"
           onSubmit={e => {e.preventDefault();void save();}}
         >
-          <section className="gym-settings-card" aria-labelledby="gym-settings-display-title">
-            <h3 id="gym-settings-display-title" className="gym-settings-title">显示</h3>
-            <p className="gym-settings-hint">
-              记录统一保存 kg，切换显示不影响原始数据。
-            </p>
-            <label>
-              显示单位
-              <select
-                disabled={!!review}
-                value={v.unit}
-                onChange={(e) => change("unit", e.target.value)}
-              >
-                <option value="kg">kg 公斤</option>
-                <option value="lb">lb 磅</option>
-              </select>
-            </label>
-          </section>
-          <fieldset className="gym-settings-card gym-settings-equipment">
-            <legend className="gym-settings-title">我拥有的器械</legend>
-            <p className="gym-settings-hint">
-              点选你拥有的器械，找动作时可按器械筛选。已选{" "}
-              {v.equipment.filter((x: string) => x !== "body weight").length} 项。
-            </p>
-            <div className="gym-equipment">
-              {lib.data?.equipment
-                .filter((x: string) => x !== "body weight")
-                .map((x: string) => (
-                  <button
-                    type="button"
-                    key={x}
-                    disabled={!!review}
-                    aria-pressed={v.equipment.includes(x)}
-                    onClick={() =>
-                      change(
-                        "equipment",
-                        v.equipment.includes(x)
-                          ? v.equipment.filter((a: string) => a !== x)
-                          : [...v.equipment, x],
-                      )
-                    }
-                  >
-                    {label(x)}
-                  </button>
-                ))}
+          {wideLayout ? (
+            <div className="gym-settings-zones">
+              <div className="gym-settings-col gym-settings-col-main">
+                {equipmentCard}
+                {installCard}
+              </div>
+              <div className="gym-settings-col gym-settings-col-rail">
+                {displayCard}
+                {effortCard}
+              </div>
             </div>
-          </fieldset>
-          <section className="gym-settings-card" aria-labelledby="gym-settings-effort-title">
-            <h3 id="gym-settings-effort-title" className="gym-settings-title">训练偏好</h3>
-            <label>
-              用力程度
-              <select
-                disabled={!!review}
-                value={v.effort}
-                onChange={(e) => change("effort", e.target.value)}
-              >
-                <option value="off">关闭</option>
-                <option value="rpe">RPE</option>
-                <option value="rir">RIR</option>
-              </select>
-            </label>
-            <p className="gym-settings-hint">
-              开启后，训练中可以为每组记录用力程度；关闭则不记录。
-            </p>
-          </section>
-          <button className="primary gym-settings-save" disabled={busy || readOnly || !!review}>
-            {busy ? "正在保存…" : editor.current?.uncertain ? "核对并重试保存设置" : "保存个人设置"}
-          </button>
+          ) : (
+            <div className="gym-settings-zones">
+              {displayCard}
+              {equipmentCard}
+              {effortCard}
+              {installCard}
+            </div>
+          )}
+          <div className="gym-settings-savebar">
+            <button className="primary gym-settings-save" disabled={busy || readOnly || !!review}>
+              {busy ? "正在保存…" : editor.current?.uncertain ? "核对并重试保存设置" : "保存个人设置"}
+            </button>
+          </div>
         </form>
       ) : q.loading ? <p role="status">正在读取设置…</p> : <p className="gym-muted">设置尚未读取成功，请重试；已有设置不会被清空。</p>}
-      <InstallApp />
+      {!v && <InstallApp />}
     </div>
   );
 }
