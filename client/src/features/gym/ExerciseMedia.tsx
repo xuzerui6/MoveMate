@@ -200,12 +200,12 @@ export function ExerciseMuscles({ exercise }: { exercise: any }) {
                   <path
                     key={j}
                     d={p}
-                    fill={
+                    className={
                       primary.includes(m.muscle)
-                        ? "#008b43"
+                        ? "muscle-fill-primary"
                         : secondary.includes(m.muscle)
-                          ? "#9be5ba"
-                          : "#e5ece8"
+                          ? "muscle-fill-secondary"
+                          : "muscle-fill-base"
                     }
                     stroke="#fff"
                     strokeWidth="3"
@@ -218,10 +218,10 @@ export function ExerciseMuscles({ exercise }: { exercise: any }) {
       </div>
       <p>
         <span className="media-swatch primary-muscle" />
-        主练：{label(exercise?.target || "未标注")}
+        主要肌群：{label(exercise?.target || "未标注")}
         <br />
         <span className="media-swatch secondary-muscle" />
-        辅助：{exercise?.secondaryMuscles?.map(label).join("、") || "未标注"}
+        协同肌群：{exercise?.secondaryMuscles?.map(label).join("、") || "未标注"}
       </p>
       <small>
         肌群位置示意；未标注的区域不推断。非动作示范或身体恢复评估。图形来自 <a href="/licenses/MuscleMap-MIT.txt" target="_blank" rel="noreferrer">MuscleMap · MIT</a>。
@@ -230,22 +230,28 @@ export function ExerciseMuscles({ exercise }: { exercise: any }) {
     </div>
   );
 }
+type MediaLayout = "tabs" | "detail";
 function Viewer({
   exercise,
   suspended = false,
+  layout = "tabs",
 }: {
   exercise: any;
   suspended?: boolean;
+  layout?: MediaLayout;
 }) {
   const state=useExerciseMedia(exercise.id);
   if(state.loading)return <p className="media-pending" role="status">正在读取此动作的示范资料…</p>;
-  if(state.error)return <><div className="media-error" role="status">{state.error}<button type="button" onClick={state.retry}>重试示范资料</button></div><LoadedViewer key={exercise.id} exercise={exercise} suspended={suspended}/></>;
-  return <LoadedViewer key={exercise.id} exercise={exercise} suspended={suspended} media={state.media||undefined}/>;
+  if(state.error)return <><div className="media-error" role="status">{state.error}<button type="button" onClick={state.retry}>重试示范资料</button></div><LoadedViewer key={exercise.id} exercise={exercise} suspended={suspended} layout={layout}/></>;
+  return <LoadedViewer key={exercise.id} exercise={exercise} suspended={suspended} media={state.media||undefined} layout={layout}/>;
 }
-function LoadedViewer({exercise,suspended=false,media}:{exercise:any;suspended?:boolean;media?:Media}){
+function LoadedViewer({exercise,suspended=false,media,layout="tabs"}:{exercise:any;suspended?:boolean;media?:Media;layout?:MediaLayout}){
+  // detail 布局（动作详情页）：示范台在最上方，肌群图紧随其下常驻展示，
+  // 不再藏进页签；适用形式与注意点由详情页在步骤之后呈现。
+  const detail = layout === "detail";
   const
     [tab, setTab] = useState<"video" | "stills" | "muscles">(
-      media?.video ? "video" : media?.images.length ? "stills" : "muscles",
+      media?.video ? "video" : media?.images.length ? "stills" : detail ? "stills" : "muscles",
     ),
     [frame, setFrame] = useState(0);
   const currentFrame = media?.images[frame];
@@ -255,8 +261,8 @@ function LoadedViewer({exercise,suspended=false,media}:{exercise:any;suspended?:
     <>
       {exercise.reviewStatus==='needs_review'&&<p className="media-pending" role="note"><strong>资料待核对</strong> · {exercise.reviewReason}</p>}
       {media&&isUnreviewedOfficialExercise(exercise)&&<p className="media-note" role="note">示范按当前动作库提供，请对照本次实际动作。旧记录中的说明不会自动改写。</p>}
-      {exercise.form&&<p className="media-note"><strong>适用形式：</strong>{exercise.form}</p>}
-      <div
+      {exercise.form&&!detail&&<p className="media-note"><strong>适用形式：</strong>{exercise.form}</p>}
+      {(!detail||media?.video||media?.images.length)&&<div
         className="media-tabs"
         role="tablist"
         aria-label="动作示范类型"
@@ -299,15 +305,15 @@ function LoadedViewer({exercise,suspended=false,media}:{exercise:any;suspended?:
         >
           {media?.images.length ? "动作分解" : "图片待补"}
         </button>
-        <button
+        {!detail&&<button
           type="button"
           role="tab"
           aria-selected={tab === "muscles"}
           onClick={() => setTab("muscles")}
         >
           肌群
-        </button>
-      </div>
+        </button>}
+      </div>}
       <div role="tabpanel">
         {tab === "video" && media?.video && (
           <Video media={media} suspended={suspended} />
@@ -355,6 +361,12 @@ function LoadedViewer({exercise,suspended=false,media}:{exercise:any;suspended?:
           {mediaSummaryFor(exercise.id)?'示范暂不可用 · 可继续查看肌群、适用形式与文字，或重试读取示范资料。':'示范待补 · 肌群图只表示部位；下方来源步骤尚待核对，不用相近动作替代。'}
         </p>
       )}
+      {detail && (
+        <div className="detail-muscles">
+          <h4 className="detail-section-title">目标肌群</h4>
+          <ExerciseMuscles exercise={exercise} />
+        </div>
+      )}
       {suspended && (
         <p className="media-pending" role="status">
           正在训练，示范已暂停；不影响摄像头识别与本组计时。
@@ -388,23 +400,25 @@ function LoadedViewer({exercise,suspended=false,media}:{exercise:any;suspended?:
           </details>
         </>
       )}
-      {!!exercise.cues?.length&&<div className="media-note"><strong>主要注意点</strong><ul>{exercise.cues.map((cue:string,i:number)=><li key={i}>{cue}</li>)}</ul></div>}
+      {!!exercise.cues?.length&&!detail&&<div className="media-note"><strong>主要注意点</strong><ul>{exercise.cues.map((cue:string,i:number)=><li key={i}>{cue}</li>)}</ul></div>}
     </>
   );
 }
 export function ExerciseMediaPanel({
   exercise,
   suspended = false,
+  layout = "tabs",
 }: {
   exercise: any;
   suspended?: boolean;
+  layout?: MediaLayout;
 }) {
   const [expanded, setExpanded] = useState(false);
   useEffect(() => {
     if (suspended) setExpanded(false);
   }, [suspended]);
   return (
-    <section className="exercise-media" aria-label={exercise.nameZh + "示范"}>
+    <section className={"exercise-media" + (layout === "detail" ? " detail-layout" : "")} aria-label={exercise.nameZh + "示范"}>
       <div className="media-heading">
         <strong>先看示范，再开始</strong>
         <button
@@ -418,7 +432,7 @@ export function ExerciseMediaPanel({
       {expanded ? (
         <p className="media-pending">示范正在放大窗口中展示。</p>
       ) : (
-        <Viewer key={exercise.id} exercise={exercise} suspended={suspended} />
+        <Viewer key={exercise.id} exercise={exercise} suspended={suspended} layout={layout} />
       )}
       {expanded && (
         <Dialog
@@ -430,6 +444,7 @@ export function ExerciseMediaPanel({
               key={exercise.id}
               exercise={exercise}
               suspended={suspended}
+              layout={layout}
             />
           </div>
         </Dialog>

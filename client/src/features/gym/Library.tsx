@@ -443,19 +443,45 @@ export function ExerciseLibrary({
           <button className="secondary" aria-pressed={!!selected.favorite} disabled={readOnly || result.loading || favoritePending.has(selected.id)} onClick={() => void changeFavorite(selected)}>
             {favoritePending.has(selected.id) ? "正在保存收藏…" : selected.favorite ? "取消收藏" : "收藏动作"}
           </button>
-          <p className="gym-muted">
-            {selected.name} · {label(selected.equipment)} ·{" "}
-            {label(selected.bodyPart)}
+          <p className="gym-muted">{selected.name}</p>
+          <ExerciseMediaPanel key={selected.id} exercise={selected} layout="detail" />
+          <p className="exercise-media-badges detail-tags" aria-label="器械与目标肌群">
+            <span>器械 · {label(selected.equipment)}</span>
+            <span>目标 · {label(selected.target)}</span>
+            {selected.secondaryMuscles.map((m: string) => (
+              <span key={m} className="pending">协同 · {label(m)}</span>
+            ))}
+            <span className="pending">部位 · {label(selected.bodyPart)}</span>
           </p>
-          <p>
-            主练：{label(selected.target)} · 辅助：
-            {selected.secondaryMuscles.map(label).join("、") || "未标注"}
-          </p>
+          <h4>{selected.reviewStatus==='needs_review'?'来源步骤（待核对）':'动作步骤'}</h4>
+          <ol>
+            {selected.instructions.map((s: string, i: number) => (
+              <li key={i}>{s}</li>
+            ))}
+          </ol>
+          <p>不适时停止；示范及文字不代表专业教学认证。</p>
+          {selected.form && (
+            <p className="media-note">
+              <strong>适用形式：</strong>
+              {selected.form}
+            </p>
+          )}
+          {!!selected.cues?.length && (
+            <div className="media-note">
+              <strong>主要注意点</strong>
+              <ul>
+                {selected.cues.map((cue: string, i: number) => (
+                  <li key={i}>{cue}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <p className="gym-muted">
             来源：{selected.provenance?.source || "本人自定义／动伴原创"} ·{" "}
             {selected.provenance?.license || "原创文字"}
-            ；示范素材独立核验，来源见下方许可清单。
+            ；示范素材独立核验，来源见上方许可清单。
           </p>
+          <CameraCapability exercise={selected} />
           {selected.id.startsWith("user:") && (
             <div className="gym-inline-actions">
               <button disabled={readOnly} onClick={() => setEditing(structuredClone(selected))}>
@@ -569,15 +595,6 @@ export function ExerciseLibrary({
               </button>
             </form>
           )}
-          <ExerciseMediaPanel key={selected.id} exercise={selected} />
-          <h4>{selected.reviewStatus==='needs_review'?'来源步骤（待核对）':'动作步骤'}</h4>
-          <ol>
-            {selected.instructions.map((s: string, i: number) => (
-              <li key={i}>{s}</li>
-            ))}
-          </ol>
-          <p>不适时停止；示范及文字不代表专业教学认证。</p>
-          <CameraCapability exercise={selected} />
           {onPick && (
             <button className="primary" disabled={searching || result.loading} onClick={() => onPick(selected)}>
               加入这个动作

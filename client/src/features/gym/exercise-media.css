@@ -424,3 +424,43 @@
   height: min(58vh, 640px);
   max-height: none;
 }
+
+/* 详情页编排（detail 布局）：肌群着色只用设计令牌——主要肌群主绿、
+   协同肌群亮绿、底图边框灰，与图例色块（.primary-muscle/.secondary-muscle）
+   同一套口径。 */
+.muscle-fill-primary {
+  fill: var(--color-primary);
+}
+.muscle-fill-secondary {
+  fill: var(--color-primary-light);
+}
+.muscle-fill-base {
+  fill: var(--color-border);
+}
+/* .exercise-media-stage 是示范位：当前放视频/分解图，将来循环假人示范
+   也直接落在这个框内，不需要再改版式。detail 布局下它是一块独立的
+   白底描边舞台，与下方内容拉开层次。 */
+.exercise-media.detail-layout .exercise-media-stage {
+  margin: 12px 12px 0;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: #fff;
+  width: auto;
+}
+.detail-muscles {
+  border-top: 1px solid #e5ece8;
+  margin-top: 16px;
+}
+.detail-section-title {
+  margin: 16px 16px 0;
+  font-size: 16px;
+}
+.detail-tags {
+  margin: 14px 0 4px;
+  gap: 6px;
+}
+.detail-tags span {
+  border-radius: 7px;
+  font-size: 13px;
+  padding: 3px 8px;
+}
