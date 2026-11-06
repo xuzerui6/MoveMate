@@ -1,8 +1,8 @@
 import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
-export type PoseModel='lite'|'full';
+export type PoseModel='lite'|'full'|'heavy';
 export type PoseMode='worker-gpu'|'worker-cpu'|'main-gpu'|'main-cpu';
 export type PoseFrame={runId:number;frameId:number;capturedAt:number;receivedAt:number;width:number;height:number;landmarks:Point[]|null;worldLandmarks:Point[]|null;model:PoseModel;mode:PoseMode};
-export type PoseTelemetry={model:PoseModel;mode:PoseMode|null;fps:number;latency:number;reason:string;preparing:boolean;lowPerformance:boolean};
+export type PoseTelemetry={model:PoseModel;mode:PoseMode|null;fps:number;latency:number;latency50:number;inference:number;experiment:PoseModel|null;recoveredFrom:PoseModel|null;reason:string;preparing:boolean;lowPerformance:boolean};
 export class FrameOrder {
  private id=-1;private time=-1;
  constructor(readonly runId:number){}
@@ -11,7 +11,9 @@ export class FrameOrder {
   this.id=f.frameId;this.time=f.capturedAt;return true;
  }
 }
-export const percentile95=(xs:number[])=>xs.length?[...xs].sort((a,b)=>a-b)[Math.max(0,Math.ceil(xs.length*.95)-1)]:Infinity;
+export const percentile=(xs:number[],q:number)=>xs.length?[...xs].sort((a,b)=>a-b)[Math.max(0,Math.ceil(xs.length*q)-1)]:Infinity;
+export const percentile95=(xs:number[])=>percentile(xs,.95);
+export const percentile50=(xs:number[])=>percentile(xs,.5);
 export function fullIsFast(times:number[],latencies:number[]){const elapsed=times[times.length-1]-times[0];return times.length>=2&&elapsed>=2000&&(times.length-1)*1000/elapsed>=15&&percentile95(latencies)<=200;}
 export class TimeFilter {
  private points:Point[]|null=null;private derivatives:number[][]=[];private at=0;

@@ -1,22 +1,22 @@
 import {useCallback,useEffect,useRef,useState} from 'react';
 import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
-import {AdaptiveRecognition} from '../lib/adaptiveRecognition';
-import {usesMainThreadLite, decodedFrameCount} from '../lib/poseCompatibility';
+import {AdaptiveRecognition, loadPoseModelPreference} from '../lib/adaptiveRecognition';
+import {usesMainThreadLite, decodedFrameCount, planPoseSession} from '../lib/poseCompatibility';
 import {waitForVideoFrame} from '../lib/videoReady';
 import {openPoseTransport,type PoseTransport} from '../lib/poseTransport';
-import {fullIsFast,percentile95,type PoseFrame,type PoseModel,type PoseTelemetry} from '../lib/poseProtocol';
+import {fullIsFast,percentile50,percentile95,type PoseFrame,type PoseModel,type PoseTelemetry} from '../lib/poseProtocol';
 import type {ExerciseMetrics,RecognitionDiagnostics} from '../lib/exerciseMetrics';
 export type PoseFailurePhase='camera'|'model'|'framing'|'performance'|'inference';
 export type AdaptiveOptions={type:string;key:string;target:number;restored:Partial<ExerciseMetrics>;warmWhenPaused?:boolean};
 export type EngineSnapshot={metrics:ExerciseMetrics;diagnostics:RecognitionDiagnostics};
 type Video=HTMLVideoElement&{requestVideoFrameCallback?:(cb:(now:number,metadata:{mediaTime:number})=>void)=>number;cancelVideoFrameCallback?:(id:number)=>void};
-type Runtime={controller:AbortController;transport:PoseTransport|null;stream:MediaStream|null;runId:number;frameId:number;origin:number|null;lastMedia:number;lastDecoded:number;inFlight:boolean;callback:number;raf:boolean;forceRaf:boolean;appleCamera:boolean;playRetried:boolean;fallbackTimer:ReturnType<typeof setTimeout>|null;preparing:boolean;passive:boolean;probing:boolean;probeTimes:number[];latencies:number[];times:number[];slowSince:number|null;startedAt:number;lastReceived:number;lastSubmitted:number;model:PoseModel;engine:AdaptiveRecognition;key:string;finish:((ready:boolean)=>void)|null;timer:ReturnType<typeof setTimeout>|null};
+type Runtime={controller:AbortController;transport:PoseTransport|null;stream:MediaStream|null;runId:number;frameId:number;origin:number|null;lastMedia:number;lastDecoded:number;inFlight:boolean;callback:number;raf:boolean;forceRaf:boolean;appleCamera:boolean;playRetried:boolean;fallbackTimer:ReturnType<typeof setTimeout>|null;preparing:boolean;passive:boolean;probing:boolean;probeTimes:number[];latencies:number[];times:number[];slowSince:number|null;startedAt:number;lastReceived:number;lastSubmitted:number;model:PoseModel;engine:AdaptiveRecognition;key:string;finish:((ready:boolean)=>void)|null;timer:ReturnType<typeof setTimeout>|null;inferTimes:number[];experiment:PoseModel|null;recoveredFrom:PoseModel|null};
 export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
  const videoRef=useRef<HTMLVideoElement>(null),errorReason=useRef(''),opts=useRef(options),activeRef=useRef(active),runtime=useRef<Runtime|null>(null),serial=useRef(0),mounted=useRef(true),lastStats=useRef<{key:string;metrics:ExerciseMetrics}|null>(null);opts.current=options;activeRef.current=active;
  const [failurePhase,setFailurePhase]=useState<PoseFailurePhase|null>(null);
  const [status,setStatus]=useState<'idle'|'loading'|'ready'|'denied'|'error'>('idle');
  const [state,setState]=useState<{landmarks:Point[]|null;worldLandmarks:Point[]|null;frame:PoseFrame|null;engine:EngineSnapshot|null;key:string;telemetry:PoseTelemetry|null}>({landmarks:null,worldLandmarks:null,frame:null,engine:null,key:'',telemetry:null});
- const publish=(r:Runtime,reason:string,f?:PoseFrame)=>{if(!mounted.current||runtime.current!==r)return;lastStats.current={key:r.key,metrics:structuredClone(r.engine.metrics)};const elapsed=r.times.length>1?r.times[r.times.length-1]-r.times[0]:0;setState({landmarks:f?.landmarks||null,worldLandmarks:f?.worldLandmarks||null,frame:f||null,key:r.key,engine:{metrics:{...r.engine.metrics},diagnostics:{...r.engine.diagnostics}},telemetry:{model:r.model,mode:r.transport?.mode||null,fps:elapsed>0?(r.times.length-1)*1000/elapsed:0,latency:Number.isFinite(percentile95(r.latencies))?percentile95(r.latencies):0,reason,preparing:r.preparing,lowPerformance:r.slowSince!==null&&performance.now()-r.slowSince>=3000}});};
+ const publish=(r:Runtime,reason:string,f?:PoseFrame)=>{if(!mounted.current||runtime.current!==r)return;lastStats.current={key:r.key,metrics:structuredClone(r.engine.metrics)};const elapsed=r.times.length>1?r.times[r.times.length-1]-r.times[0]:0;setState({landmarks:f?.landmarks||null,worldLandmarks:f?.worldLandmarks||null,frame:f||null,key:r.key,engine:{metrics:{...r.engine.metrics},diagnostics:{...r.engine.diagnostics}},telemetry:{model:r.model,mode:r.transport?.mode||null,fps:elapsed>0?(r.times.length-1)*1000/elapsed:0,latency:Number.isFinite(percentile95(r.latencies))?percentile95(r.latencies):0,latency50:Number.isFinite(percentile50(r.latencies))?percentile50(r.latencies):0,inference:Number.isFinite(percentile95(r.inferTimes))?percentile95(r.inferTimes):0,experiment:r.experiment,recoveredFrom:r.recoveredFrom,reason,preparing:r.preparing,lowPerformance:r.slowSince!==null&&performance.now()-r.slowSince>=3000}});};
  const release=(r:Runtime)=>{r.runId=++serial.current;r.controller.abort();r.transport?.close();r.stream?.getTracks().forEach(t=>t.stop());if(r.timer)clearTimeout(r.timer);if(r.fallbackTimer)clearTimeout(r.fallbackTimer);r.finish?.(false);r.finish=null;const v=videoRef.current as Video|null;if(v){if(r.raf)cancelAnimationFrame(r.callback);else v.cancelVideoFrameCallback?.(r.callback);v.srcObject=null;}};
  const stop=useCallback(()=>{const r=runtime.current;if(r){release(r);runtime.current=null;}if(mounted.current){setStatus('idle');setFailurePhase(null);setState(s=>({...s,landmarks:null,worldLandmarks:null,frame:null}));}},[]);
  const performanceFailure=(r:Runtime)=>{setFailurePhase('performance');r.engine.interrupt('有效识别帧率过低，已冻结计数，请暂停后使用 Lite 或转手动');activeRef.current=false;errorReason.current='有效识别帧率低于 8 FPS，统计已冻结，请使用 Lite 重试或转手动';release(r);setStatus('error');publish(r,errorReason.current);};
@@ -47,9 +47,11 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
   r.transport?.close();
   r.transport=null;
   r.inFlight=false;
+  if(r.model!=='lite')r.recoveredFrom=r.model;
   r.model='lite';
   r.times=[];
   r.latencies=[];
+  r.inferTimes=[];
   r.probeTimes=[];
   publish(r,'正在准备轻量识别');
   try{
@@ -98,7 +100,9 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
    const capturedAt=Math.min(now,r.origin+media*1000),runId=r.runId,id=++r.frameId,width=v.videoWidth,height=v.videoHeight;
    const transport=r.transport;
    r.inFlight=true;
+   const inferStartedAt=performance.now();
    void transport.infer(v,capturedAt).then(result=>{
+    r.inferTimes=[...r.inferTimes,performance.now()-inferStartedAt].slice(-120);
     if(r.controller.signal.aborted||runtime.current!==r||runId!==r.runId)return;
     const receivedAt=performance.now(),f:PoseFrame={runId,frameId:id,capturedAt,receivedAt,width,height,...result,model:r.model,mode:r.transport!.mode};r.lastReceived=receivedAt;
     r.latencies=[...r.latencies,receivedAt-capturedAt].slice(-120);r.times=[...r.times,...(receivedAt-capturedAt<=250&&(!r.times.length||capturedAt>r.times[r.times.length-1])?[capturedAt]:[])].filter(t=>capturedAt-t<=2000);
@@ -132,7 +136,8 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
  };
  const start=useCallback(async(forceLite=false)=>{
   const appleCamera=usesMainThreadLite(navigator.userAgent,navigator.platform,navigator.maxTouchPoints);
-  const mainThread=forceLite||appleCamera;
+  const plan=planPoseSession(loadPoseModelPreference(),appleCamera,forceLite);
+  const mainThread=plan.mainThread;
   const previous=runtime.current;
   if(previous&&!forceLite&&!previous.controller.signal.aborted&&previous.key===opts.current.key&&status==='ready'&&performance.now()-previous.lastReceived<=200){
    const elapsed=previous.times.length>1?previous.times[previous.times.length-1]-previous.times[0]:0,fps=elapsed>0?(previous.times.length-1)*1000/elapsed:0;
@@ -140,17 +145,17 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
    if(fps>=8&&previous.engine.continuePrepared(nextRun)){serial.current=nextRun;previous.runId=nextRun;previous.frameId=0;previous.passive=false;publish(previous,'起始姿势已准备好，正在继续');return true;}
   }
   const oldStats=previous?.key===opts.current.key?previous.engine.metrics:lastStats.current?.key===opts.current.key?lastStats.current.metrics:undefined,saved=oldStats&&oldStats.reps>(opts.current.restored.reps||0)?oldStats:opts.current.restored;
-  const reuse=previous&&!previous.controller.signal.aborted&&previous.transport&&(!mainThread||previous.model==='lite'&&previous.transport.mode.startsWith('main'));let r:Runtime;
-  if(reuse){r=previous!;r.runId=++serial.current;r.frameId=0;r.preparing=true;r.passive=false;r.probing=false;r.times=[];r.latencies=[];r.slowSince=null;r.startedAt=performance.now();r.key=opts.current.key;r.engine=new AdaptiveRecognition(opts.current.type,opts.current.target,saved,r.runId);r.finish?.(false);}
-  else{if(previous)release(previous);const runId=++serial.current;r={controller:new AbortController(),transport:null,stream:null,runId,frameId:0,origin:null,lastMedia:-1,lastDecoded:-1,inFlight:false,callback:0,raf:true,forceRaf:false,appleCamera,playRetried:false,fallbackTimer:null,preparing:true,passive:false,probing:false,probeTimes:[],latencies:[],times:[],slowSince:null,startedAt:performance.now(),lastReceived:performance.now(),lastSubmitted:-Infinity,model:mainThread?'lite':'full',engine:new AdaptiveRecognition(opts.current.type,opts.current.target,saved,runId),key:opts.current.key,finish:null,timer:null};runtime.current=r;}
+  const reuse=previous&&!previous.controller.signal.aborted&&previous.transport&&previous.model===plan.model&&(!mainThread||previous.transport.mode.startsWith('main'));let r:Runtime;
+  if(reuse){r=previous!;r.runId=++serial.current;r.frameId=0;r.preparing=true;r.passive=false;r.probing=false;r.times=[];r.latencies=[];r.inferTimes=[];r.experiment=plan.experiment;r.recoveredFrom=null;r.slowSince=null;r.startedAt=performance.now();r.key=opts.current.key;r.engine=new AdaptiveRecognition(opts.current.type,opts.current.target,saved,r.runId);r.finish?.(false);}
+  else{if(previous)release(previous);const runId=++serial.current;r={controller:new AbortController(),transport:null,stream:null,runId,frameId:0,origin:null,lastMedia:-1,lastDecoded:-1,inFlight:false,callback:0,raf:true,forceRaf:false,appleCamera,playRetried:false,fallbackTimer:null,preparing:true,passive:false,probing:false,probeTimes:[],latencies:[],times:[],slowSince:null,startedAt:performance.now(),lastReceived:performance.now(),lastSubmitted:-Infinity,model:plan.model,engine:new AdaptiveRecognition(opts.current.type,opts.current.target,saved,runId),key:opts.current.key,finish:null,timer:null,inferTimes:[],experiment:plan.experiment,recoveredFrom:null};runtime.current=r;}
   let phase:PoseFailurePhase='camera';errorReason.current='';setFailurePhase(null);setStatus('loading');publish(r,reuse?'正在恢复识别':'正在准备摄像头');
   try{
    if(!reuse){
     const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:720},height:{ideal:960},aspectRatio:{ideal:3/4}},audio:false});
     if(r.controller.signal.aborted||!videoRef.current){stream.getTracks().forEach(t=>t.stop());return false;}r.stream=stream;videoRef.current.muted=true;videoRef.current.playsInline=true;videoRef.current.srcObject=stream;await videoRef.current.play();await waitForVideoFrame(videoRef.current,r.controller.signal);phase='model';
     publish(r,'正在准备识别');
-    try{r.transport=await openPoseTransport(r.model,r.controller.signal,videoRef.current||undefined,{mainThread});}catch(e){if(r.controller.signal.aborted)throw e;if(r.model==='lite')throw e;r.model='lite';publish(r,'正在准备轻量识别');r.transport=await openPoseTransport('lite',r.controller.signal,videoRef.current||undefined,{mainThread:true});}
-    if(r.controller.signal.aborted){r.transport.close();return false;}r.probing=r.model==='full';schedule(r);
+    try{r.transport=await openPoseTransport(r.model,r.controller.signal,videoRef.current||undefined,{mainThread});}catch(e){if(r.controller.signal.aborted)throw e;if(r.model==='lite')throw e;r.recoveredFrom=r.model;r.model='lite';publish(r,'正在准备轻量识别');r.transport=await openPoseTransport('lite',r.controller.signal,videoRef.current||undefined,{mainThread:true});}
+    if(r.controller.signal.aborted){r.transport.close();return false;}r.probing=r.model!=='lite';schedule(r);
    }
    return await new Promise<boolean>(resolve=>{r.finish=resolve;if(!r.probing)frameDeadline(r);else r.timer=setTimeout(()=>void fallbackToLite(r),12000);});
   }catch(e){if(r.controller.signal.aborted)return false;release(r);setFailurePhase(phase);errorReason.current=e instanceof DOMException&&e.name==='NotAllowedError'?'摄像头权限被拒绝，请允许后重试':e instanceof Error?e.message:'模型或摄像头准备失败';setStatus(e instanceof DOMException&&e.name==='NotAllowedError'?'denied':'error');publish(r,errorReason.current);return false;}

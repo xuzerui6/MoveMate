@@ -20,8 +20,9 @@ import { useStore, type SportSession } from '../lib/store'
 import type { WorkoutContext, WorkoutSession, XiaozhiState } from '../types'
 import { ExerciseDemo } from '../../gym/ExerciseMedia'
 
-import {adaptiveEligible,loadRecognitionPreference,saveRecognitionPreference,selectNewRecognitionStrategy,selectRecognitionStrategy,type RecognitionPreference} from '../lib/adaptiveRecognition'
-import {PoseDiagnostics,RecognitionOverride} from '../components/PoseDiagnostics'
+import {adaptiveEligible,loadPoseModelPreference,loadRecognitionPreference,savePoseModelPreference,saveRecognitionPreference,selectNewRecognitionStrategy,selectRecognitionStrategy,type RecognitionPreference} from '../lib/adaptiveRecognition'
+import type {PoseModelPreference} from '../lib/poseCompatibility'
+import {PoseDiagnostics,PoseModelExperimentSelect,RecognitionOverride} from '../components/PoseDiagnostics'
 
 const format = (seconds: number) => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
 const VOICE_LABEL: Record<XiaozhiState, string> = {
@@ -58,6 +59,8 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const testSlot = testSlotValue ? Number(testSlotValue) : undefined
   const [preference,setPreference]=useState<RecognitionPreference>(()=>loadRecognitionPreference())
   const changePreference=(value:RecognitionPreference)=>{setPreference(value);saveRecognitionPreference(value);}
+  const [modelPreference,setModelPreference]=useState<PoseModelPreference>(()=>loadPoseModelPreference())
+  const changeModelPreference=(value:PoseModelPreference)=>{setModelPreference(value);savePoseModelPreference(value);}
   const adaptive = (restored
     ? selectRecognitionStrategy(exerciseType, restored.metrics?.recognitionStrategy ?? 'legacy')
     : selectNewRecognitionStrategy(exerciseType, preference)) === 'adaptive-v1'
@@ -261,6 +264,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     <Header title={exercise.name + '训练'} back={leave} action={active ? <span className={'training-status' + (paused ? ' paused' : '')}>{statusLabel}</span> : <span className="muted">目标 20 {exercise.unit}</span>}/>
     {!active && <section className="training-prep">
       <RecognitionOverride eligible={adaptiveEligible(exerciseType)} disabled={busy||!!restored} preference={preference} onChange={changePreference}/>
+      <PoseModelExperimentSelect eligible={adaptiveEligible(exerciseType)} disabled={busy||!!restored} value={modelPreference} onChange={changeModelPreference}/>
       <PoseDiagnostics telemetry={pose.telemetry}/>
       <h2>{restored ? '继续上次训练' : '准备好，就开始'}</h2>
       <p className="prep-placement">{exercise.placement}</p><p>{exercise.instruction}</p>

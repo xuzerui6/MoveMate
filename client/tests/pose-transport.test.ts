@@ -58,3 +58,22 @@ test('worker first-frame failure is checked before readiness and falls back to C
  assert.equal(runtime.mode,'worker-cpu');assert.equal(env.instances.length,2);assert.ok(env.instances[0].terminated);
  assert.deepEqual((await runtime.infer({} as any,performance.now()+100)).landmarks,[]);runtime.close();
 });
+
+test('heavy variant bytes are the pinned official file and it runs through the worker path',async t=>{
+ environment(t);
+ const bytes=await modelBytes('heavy',new AbortController().signal);
+ assert.equal(bytes.byteLength,30664242);
+ assert.equal(models.heavy.bytes,30664242);
+ const runtime=await openPoseTransport('heavy',new AbortController().signal);
+ assert.equal(runtime.mode,'worker-gpu');
+ assert.deepEqual((await runtime.infer({} as any,100)).landmarks,[]);
+ runtime.close();
+});
+
+test('a larger variant on the main thread does not touch the worker path',async t=>{
+ const env=environment(t);
+ // The main-thread branch loads the real Tasks Vision runtime, which Node cannot
+ // execute; what matters here is that it is attempted (no Worker is constructed).
+ await assert.rejects(openPoseTransport('heavy',new AbortController().signal,undefined,{mainThread:true}));
+ assert.equal(env.instances.length,0);
+});
