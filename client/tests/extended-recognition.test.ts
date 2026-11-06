@@ -39,6 +39,54 @@ test('front raises reject lateral raises and missing direction data',()=>{
   r.feed('peak',1200,(p,w)=>{for(const o of [0,1]){p[13+o].x=o?.75:.25;p[15+o].x=o?.9:.1;if(w){w[13+o]={...w[13+o],x:o?.4:-.4,z:0};w[15+o]={...w[15+o],x:o?.6:-.6,z:0};}}});r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,0);
   const p=newDemonstrationPose('front_raise','peak').landmarks;r.tracker.update(p,r.next()+100,1,null);assert.equal(r.tracker.metrics.reps,0);assert.match(r.tracker.metrics.feedback,/方向/);
 });
+test('front raises count single-arm and alternating cycles, one rep per arm',()=>{
+  const r=run('front_raise');r.feed('neutral',3000);assert.equal(r.tracker.diagnostics.stage,'ready');
+  // Reverting one side's world arm to its hanging pose leaves only the other side raising.
+  const rightOnly=(p:Point[],w:Point[]|null)=>{if(!w)return;w[13]={...w[13],x:-.2,y:.2,z:0};w[15]={...w[15],x:-.2,y:.4,z:0};};
+  const leftOnly=(p:Point[],w:Point[]|null)=>{if(!w)return;w[14]={...w[14],x:.2,y:.2,z:0};w[16]={...w[16],x:.2,y:.4,z:0};};
+  r.feed('peak',1000,rightOnly);r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,1);
+  r.feed('peak',1000,leftOnly);r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,2);
+  assert.equal(r.tracker.metrics.scoreAccumulator.count,2);
+});
+test('front raises never count a single-arm lateral raise',()=>{
+  const r=run('front_raise');r.feed('neutral',3000);
+  // Right arm straight out to the side in world space (lateral-dominant), left arm down:
+  // the raised angle is in band and the elbow is straight, only the direction can reject it.
+  const lateralRight=(p:Point[],w:Point[]|null)=>{if(!w)return;w[13]={...w[13],x:-.2,y:.2,z:0};w[15]={...w[15],x:-.2,y:.4,z:0};w[14]={...w[14],x:.4,y:0,z:0};w[16]={...w[16],x:.6,y:0,z:0};};
+  r.feed('peak',1200,lateralRight);r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,0);
+});
+test('front raises accept a forward-dominant diagonal and reject a lateral-dominant one',()=>{
+  const r=run('front_raise');r.feed('neutral',3000);
+  const diag=(deg:number,o:0|1)=>(p:Point[],w:Point[]|null)=>{if(!w)return;const rad=deg*Math.PI/180,sx=o?1:-1,q=1-o;
+    w[13+o]={...w[13+o],x:sx*.2+sx*Math.sin(rad)*.22,y:0,z:-Math.cos(rad)*.22};w[15+o]={...w[15+o],x:sx*.2+sx*Math.sin(rad)*.45,y:0,z:-Math.cos(rad)*.45};
+    w[13+q]={...w[13+q],x:q?.2:-.2,y:.2,z:0};w[15+q]={...w[15+q],x:q?.2:-.2,y:.4,z:0};};
+  r.feed('peak',1000,diag(40,1));r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,1);
+  r.feed('peak',1000,diag(60,1));r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,1);
+});
+test('front raise calibration never shows the direction hint',()=>{
+  const r=run('front_raise');
+  // Arms out to the sides before calibration completes: not the start pose and the
+  // direction test is false — the exact trap state from the on-device report, where
+  // the old hint ordered the user to raise an arm and wipe their own calibration.
+  const lateralBoth=(p:Point[],w:Point[]|null)=>{if(!w)return;w[13]={...w[13],x:-.4,y:0,z:0};w[15]={...w[15],x:-.6,y:0,z:0};w[14]={...w[14],x:.4,y:0,z:0};w[16]={...w[16],x:.6,y:0,z:0};};
+  r.feed('peak',500,lateralBoth);
+  assert.equal(r.tracker.diagnostics.stage,'calibrating');
+  assert.doesNotMatch(r.tracker.metrics.feedback,/前举方向/);
+  assert.match(r.tracker.metrics.feedback,/起始姿势/);
+  assert.doesNotMatch(r.tracker.metrics.poseFeedback.message,/前举方向/);
+  r.feed('neutral',3000);assert.equal(r.tracker.diagnostics.stage,'ready');
+});
+test('front raises calibrate and count with kneeling-level hip visibility',()=>{
+  const r=run('front_raise');
+  const kneel=(p:Point[])=>{p[23]={...p[23],visibility:.3};p[24]={...p[24],visibility:.3};};
+  r.feed('neutral',3000,kneel);assert.equal(r.tracker.diagnostics.stage,'ready');
+  const rightOnly=(p:Point[],w:Point[]|null)=>{kneel(p);if(!w)return;w[13]={...w[13],x:-.2,y:.2,z:0};w[15]={...w[15],x:-.2,y:.4,z:0};};
+  r.feed('peak',1000,rightOnly);r.feed('neutral',1200,kneel);
+  assert.equal(r.tracker.metrics.reps,1);
+  // Low hip visibility keeps the rep unscored instead of resetting the session.
+  assert.equal(r.tracker.metrics.scoreAccumulator.count,0);
+  assert.equal(r.tracker.metrics.lastRepScore,null);
+});
 test('Romanian deadlifts reject squats and translating the whole frame',()=>{
   const r=run('romanian_deadlift');r.feed('neutral',3000);r.feed('peak',1200,p=>{for(const o of [0,1]){p[23+o].y=.70;p[25+o].x=.76+o*.06;p[25+o].y=.73;}});r.feed('neutral',3000);assert.equal(r.tracker.metrics.reps,0);
   r.feed('peak',1200,p=>p.forEach(x=>x.x+=.15));r.feed('neutral',3000);assert.equal(r.tracker.metrics.reps,0);

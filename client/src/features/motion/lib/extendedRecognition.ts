@@ -15,7 +15,10 @@ const cross=(a:number[],b:number[])=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[
 const angle=(a:Point,b:Point,c:Point)=>Math.acos(Math.max(-1,Math.min(1,dot(norm(vector(a,b)),norm(vector(c,b))))))*180/Math.PI;
 const mean=(a:number,b:number)=>(a+b)/2;
 type Side='left'|'right';
-type Measurement={start:boolean;peak:boolean;amplitude:number;angle:number;confidence:number;scorable:boolean;posture:number;symmetry:number;controlPenalty:number;hint?:string;side?:Side;basis:string;motion:string;points:Point[];torso:number;tilt:number;elbows?:[number,number]};
+type Measurement={start:boolean;peak:boolean;amplitude:number;angle:number;confidence:number;scorable:boolean;posture:number;symmetry:number;controlPenalty:number;hint?:string;side?:Side;basis:string;motion:string;points:Point[];torso:number;tilt:number;elbows?:[number,number];raiseSides?:[RaiseSide,RaiseSide]};
+/** Per-arm front-raise channel: shoulder-flexion angle, whether that arm's wrist
+ * direction is forward-dominant, and that arm's elbow angle. */
+type RaiseSide={raised:number;forward:boolean;elbow:number};
 type SideCycle={movingAt:number|null;peakAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;returnSince:number|null;returnAccum:number;returnPrevAt:number|null;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number};
 type SideCompletion={side:number;at:number;peakStart:number;peakEnd:number;peakAmp:number;peakPosture:number;peakOther:number;peakElbow:number;duration:number;scoring:boolean;control:number;shift:number;speed:number};
 const freshSideCycle=():SideCycle=>({movingAt:null,peakAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,returnSince:null,returnAccum:0,returnPrevAt:null,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180});
@@ -59,6 +62,8 @@ export class ExtendedExerciseTracker {
   private controlPenalty=0;
   private hammerSides:[SideCycle,SideCycle]=[freshSideCycle(),freshSideCycle()];
   private hammerPending:SideCompletion|null=null;
+  private raiseSides:[SideCycle,SideCycle]=[freshSideCycle(),freshSideCycle()];
+  private raisePending:SideCompletion|null=null;
   private upperArmDevAt:number|null=null;
   private upperArmClearAt:number|null=null;
   private freezeBridged=false;
@@ -69,7 +74,7 @@ export class ExtendedExerciseTracker {
     this.updateAverage();
   }
   private updateAverage(){const a=this.metrics.scoreAccumulator,b=emptyFormBreakdown();for(const k of axes)b[k]=a.count?Math.round(a[k]/a.count):0;this.metrics.formBreakdown=b;}
-  private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;this.hammerSides=[freshSideCycle(),freshSideCycle()];this.hammerPending=null;this.upperArmDevAt=null;this.upperArmClearAt=null;this.freezeBridged=false;}
+  private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;this.hammerSides=[freshSideCycle(),freshSideCycle()];this.hammerPending=null;this.raiseSides=[freshSideCycle(),freshSideCycle()];this.raisePending=null;this.upperArmDevAt=null;this.upperArmClearAt=null;this.freezeBridged=false;}
   /** The adaptive wrapper deliberately froze frames during a hammer-curl evidence freeze
    * (see AdaptiveRecognition); the next frame gap is therefore known-benign and must not be
    * read as a tracking loss. Only arms when the pending gap actually exceeds the guard. */
@@ -115,6 +120,7 @@ export class ExtendedExerciseTracker {
     const knees=[angle(a[23],a[25],a[27]),angle(a[24],a[26],a[28])];
     let start=false,peak=false,amplitude=0,measured=0,posture=cap(100-Math.max(0,tilt-12)*2),symmetry=100,controlPenalty=0,side:Side|undefined=this.side||undefined,basis='',motion='',hint:string|undefined;
     let perSide:[number,number]|undefined;
+    let raiseData:[RaiseSide,RaiseSide]|undefined;
     if(this.type==='seated_curl'||this.type==='seated_lateral_raise'){
       const hips=[angle(a[11],a[23],a[25]),angle(a[12],a[24],a[26])];
       if(tilt>30||hips.some(v=>v<60||v>130)||knees.some(v=>v<55||v>140))return '请坐稳、双脚支撑并调整为斜侧面，让屈膝坐姿清楚可见；站姿不计入';
@@ -187,9 +193,17 @@ export class ExtendedExerciseTracker {
       if(Math.abs(face)<dist(shoulder,pelvis)*.06||dist(a[11],a[12])<.05)return '前举方向不清晰，请调整为斜侧面并让头部入镜';
       if(face<0)forward=forward.map(v=>-v);
       const raised=[angle(a[13],a[11],a[23]),angle(a[14],a[12],a[24])];
-      const direction=[0,1].every(i=>{const v=vector(a[15+i],a[11+i]),n=Math.hypot(...v);return dot(v,forward)>n*.6&&Math.abs(dot(v,lateral))<n*.55;});
+      // Direction is judged per arm and must be forward-DOMINANT: the wrist vector
+      // clears the forward cone (dot > 0.6|v|) and its forward component beats its
+      // lateral component, so a diagonal-forward raise passes while a true lateral
+      // raise — lateral-dominant by construction — never does. The old both-arms
+      // `every` test (plus a 0.55 lateral cap) made single-arm raises impossible:
+      // a resting arm's downward wrist vector is never "forward". Counting is per
+      // side in updateFrontRaise; the aggregate peak below is diagnostics only.
+      raiseData=[0,1].map(i=>{const v=vector(a[15+i],a[11+i]),n=Math.hypot(...v),f=dot(v,forward);return {raised:raised[i],forward:f>n*.6&&f>Math.abs(dot(v,lateral)),elbow:elbows[i]};}) as [RaiseSide,RaiseSide];
+      const direction=raiseData.every(s=>s.forward);
       start=Math.max(...raised)<=25;peak=Math.min(...raised)>=65&&Math.max(...raised)<=115&&direction&&Math.min(...elbows)>=140;
-      measured=mean(raised[0],raised[1]);amplitude=cap(Math.min(...raised)/90*100);symmetry=cap(100-Math.abs(raised[0]-raised[1])*1.5);basis='双臂抬举角＋身体前向运动平面';motion=`抬臂 ${Math.round(raised[0])}° / ${Math.round(raised[1])}°；${direction?'前举方向已确认':'尚未确认前举方向，侧举不计数'}`;
+      measured=mean(raised[0],raised[1]);amplitude=cap(Math.min(...raised)/90*100);symmetry=cap(100-Math.abs(raised[0]-raised[1])*1.5);basis='逐侧抬举角＋前向主导方向';motion=`抬臂 ${Math.round(raised[0])}° / ${Math.round(raised[1])}°；${direction?'双臂前举方向已确认':raiseData.some(s=>s.forward)?'单臂前举方向已确认':'尚未确认前举方向，侧举不计数'}`;
       controlPenalty=Math.max(0,170-Math.min(...elbows))*1.5;
       if(!start&&!direction)hint='尚未确认前举方向；请向身体前方抬臂，侧平举不计入';
     }else if(this.type==='triceps_kickback'){
@@ -223,7 +237,7 @@ export class ExtendedExerciseTracker {
       if(!start&&hips<150)hint='请让大腿保持向下，脚跟向后抬起，向前抬膝不计入';
     }
     const scorable=confidence>=.7&&[11,12,23,24,...(this.type==='romanian_deadlift'||this.type==='glute_bridge'||this.type==='barbell_deadlift'?[25,26,27,28]:[])].every(i=>(points[i].visibility??0)>=.7);
-    return {start,peak,amplitude,angle:measured,confidence,scorable,posture,symmetry,controlPenalty,hint,side,basis,motion,points:p,torso,tilt,elbows:perSide};
+    return {start,peak,amplitude,angle:measured,confidence,scorable,posture,symmetry,controlPenalty,hint,side,basis,motion,points:p,torso,tilt,elbows:perSide,raiseSides:raiseData};
   }
   private emitHammerRep(parts:SideCompletion[],f:Measurement):boolean{
     if(this.metrics.reps>=this.metrics.targetReps)return false;
@@ -298,6 +312,83 @@ export class ExtendedExerciseTracker {
     this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?POSE_ISSUE_COPY[issue].joints:[],calibrated:true,message:hint||(issue?POSE_ISSUE_COPY[issue].action:message)}};
     return this.metrics;
   }
+  private emitFrontRaiseRep(parts:SideCompletion[],f:Measurement):boolean{
+    if(this.metrics.reps>=this.metrics.targetReps)return false;
+    const pair=parts.length===2;
+    const depth=pair?Math.min(parts[0].peakAmp,parts[1].peakAmp):parts[0].peakAmp;
+    const posture=pair?Math.min(parts[0].peakPosture,parts[1].peakPosture):parts[0].peakPosture;
+    const control=Math.max(...parts.map(p=>p.control)),shift=Math.max(...parts.map(p=>p.shift)),speed=Math.max(...parts.map(p=>p.speed)),duration=Math.max(...parts.map(p=>p.duration));
+    // For front raise, peakElbow stores the side's raised angle at its best amplitude
+    // and peakOther the other side's raised angle at that moment: a pair is symmetric
+    // when both sides peaked at the same height, a single when the other arm stayed down.
+    const symmetry=pair?cap(100-Math.abs(parts[0].peakElbow-parts[1].peakElbow)*1.5):cap(100-Math.max(0,parts[0].peakOther-25)*1.2);
+    const breakdown={depth,stability:cap(100-Math.max(0,speed-260)*.08-Math.max(0,.6-duration)*70-control),trunk:cap(posture-shift*1.5),symmetry};
+    const score=Math.round(breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2+breakdown.symmetry*.2),scored=parts.every(p=>p.scoring)&&f.scorable,issues:PoseIssue[]=[];
+    if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(breakdown.symmetry<70)issues.push('poor_coordination');
+    const acc={...this.metrics.scoreAccumulator},counts={...this.metrics.correctionCounts};
+    if(scored){acc.count++;acc.total+=score;axes.forEach(k=>acc[k]+=breakdown[k]);issues.forEach(k=>counts[k]++);}
+    this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`已记录第 ${this.metrics.reps+1} 次 · 本次 ${score} 分`:`已记录第 ${this.metrics.reps+1} 次 · 本次无法评分`};
+    this.updateAverage();
+    return true;
+  }
+  /** Front raises count per side, mirroring hammer curls: each arm independently runs
+   * start (raised ≤25°) → peak (raised 65–115°, elbow ≥140°, that arm forward-dominant)
+   * → return to start. Overlapping peaks merge into one synchronized rep; non-overlapping
+   * count one per arm, so single-arm and alternating raises count — while a single-arm
+   * LATERAL raise never satisfies the forward-dominance test and stays rejected. */
+  private updateFrontRaise(f:Measurement,now:number):ExerciseMetrics{
+    const sides=f.raiseSides!;
+    let completed=false;
+    if(this.raisePending&&now-this.raisePending.at>600){const pending=this.raisePending;this.raisePending=null;if(this.emitFrontRaiseRep([pending],f))completed=true;}
+    for(const s of [0,1] as const){
+      const cyc=this.raiseSides[s],side=sides[s],other=sides[1-s],v=side.raised;
+      if(v<=25){
+        if(cyc.peakStart!==null){
+          // Return confirmation accumulates like hammer curl's: 150 ms at/below the
+          // start angle inside a 500 ms window, so jitter at the bottom cannot stall it.
+          if(cyc.returnSince===null||now-cyc.returnSince>HAMMER_RETURN_WINDOW_MS){cyc.returnSince=now;cyc.returnAccum=0;}
+          else if(cyc.returnPrevAt!==null)cyc.returnAccum+=Math.min(HAMMER_RETURN_FRAME_CAP_MS,now-cyc.returnPrevAt);
+          cyc.returnPrevAt=now;
+          if(cyc.returnAccum>=HAMMER_RETURN_HOLD_MS){
+            const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:cyc.controlMax,shift:cyc.shiftMax,speed:cyc.speedMax};
+            this.raiseSides[s]=freshSideCycle();
+            if(this.raisePending){
+              const pending=this.raisePending;
+              const overlap=done.peakStart<=pending.peakEnd+150&&pending.peakStart<=done.peakEnd+150;
+              if(pending.side!==s&&overlap){this.raisePending=null;if(this.emitFrontRaiseRep([pending,done],f))completed=true;}
+              else{this.raisePending=null;if(this.emitFrontRaiseRep([pending],f))completed=true;this.raisePending=done;}
+            }else this.raisePending=done;
+          }
+        }else if(cyc.movingAt!==null)this.raiseSides[s]=freshSideCycle();
+      }else{
+        if(cyc.movingAt===null)cyc.movingAt=now;
+        if(cyc.peakStart!==null)cyc.returnPrevAt=now;
+        cyc.scoring=cyc.scoring&&f.scorable;
+        cyc.controlMax=Math.max(cyc.controlMax,Math.max(0,170-side.elbow)*1.5);
+        cyc.shiftMax=Math.max(cyc.shiftMax,Math.abs(f.tilt-this.baseline!.tilt));
+        if(cyc.sampleAt===null){cyc.sampleAt=now;cyc.sampleAngle=v;}
+        else if(now-cyc.sampleAt>=100){cyc.speedMax=Math.max(cyc.speedMax,Math.abs(v-cyc.sampleAngle)*1000/(now-cyc.sampleAt));cyc.sampleAt=now;cyc.sampleAngle=v;}
+        if(v>=65&&v<=115&&side.elbow>=140&&side.forward){
+          if(cyc.peakAt===null)cyc.peakAt=now;
+          if(now-cyc.peakAt>=120){
+            if(cyc.peakStart===null)cyc.peakStart=cyc.peakAt;
+            cyc.peakEnd=now;
+            const amp=cap(v/90*100);
+            if(amp>=cyc.peakAmp){cyc.peakAmp=amp;cyc.peakElbow=v;cyc.peakPosture=f.posture;cyc.peakOther=other.raised;}
+          }
+        }else cyc.peakAt=null;
+      }
+    }
+    const anyPeak=this.raiseSides.some(c=>c.peakStart!==null)||this.raisePending!==null;
+    const stage=this.metrics.reps>=this.metrics.targetReps?'complete':anyPeak?(f.start?'returning':'peak'):f.start?'ready':'moving';
+    const copy=definitions[this.type].stages;
+    const nearPeak=stage==='moving'&&sides.every(s=>s.raised<65)&&sides.some(s=>s.raised>=45);
+    const message=stage==='complete'?'已完成本组目标':completed?this.metrics.feedback:nearPeak?'幅度接近了，再举高一点，举到接近肩膀再放回':(f.hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 幅度尚未确认':''));
+    const issue:PoseIssue|null=f.posture<70?'body_alignment':null;
+    this.diagnostics={...this.diagnostics,stage};
+    this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?POSE_ISSUE_COPY[issue].joints:[],calibrated:true,message:f.hint||(issue?POSE_ISSUE_COPY[issue].action:message)}};
+    return this.metrics;
+  }
   update(raw:Point[]|null,now:number,aspect=1,world:Point[]|null=null):ExerciseMetrics{
     if(!raw||raw.length!==33||!Number.isFinite(now)||!Number.isFinite(aspect)||aspect<=0||raw.some(p=>!p||![p.x,p.y,p.visibility??0].every(Number.isFinite)))return this.interrupt('未检测到完整人体关键点，请调整入镜范围');
     if(this.last!==null&&now<=this.last)return this.metrics;
@@ -305,7 +396,12 @@ export class ExtendedExerciseTracker {
     const required=this.needed(raw);
     if(required.some(i=>(raw[i].visibility??0)<.25||raw[i].x<0||raw[i].x>1||raw[i].y<0||raw[i].y>1))return this.interrupt('必要关节离开画面或被遮挡，半程动作已丢弃');
     this.frames=[...this.frames,raw].slice(-(this.prefiltered?1:5));const smooth=medianLandmarks(this.frames)!;
-    if(required.some(i=>(smooth[i].visibility??0)<.55))return this.interrupt('必要关节持续不清晰，请调整角度');
+    // Front raise reads every angle from world landmarks (validity gated separately in
+    // measure), while kneeling systematically tanks image-space hip visibility — so for
+    // front raise the hips leave the smoothed-visibility reset set. The raw gate above
+    // still catches a total loss, and the nose stays gated: it signs the forward axis.
+    const smoothGate=this.type==='front_raise'?required.filter(i=>i!==23&&i!==24):required;
+    if(smoothGate.some(i=>(smooth[i].visibility??0)<.55))return this.interrupt('必要关节持续不清晰，请调整角度');
     this.worlds=world?.length===33&&world.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))?[...this.worlds,world].slice(-(this.prefiltered?1:5)):[];
     const f=this.measure(smooth,aspect,this.worlds.length?medianLandmarks(this.worlds):null,required);
     if(typeof f==='string')return this.interrupt(f);
@@ -314,10 +410,15 @@ export class ExtendedExerciseTracker {
     if(!this.ready){
       if(!f.start){this.calibration=null;this.baseline=null;}else{if(this.calibration===null)this.calibration=now;this.baseline=f;if(this.armOnStart||now-this.calibration>=2000)this.ready=true;}
       const progress=this.ready?1:this.calibration===null?0:Math.min(1,(now-this.calibration)/2000);this.diagnostics={...this.diagnostics,stage:this.ready?'ready':'calibrating',calibrationProgress:progress};
-      const message=this.ready?'已识别起始姿势，可以开始完整动作':f.start?`保持起始姿势，校准 ${Math.round(progress*100)}%`:f.hint||(this.armOnStart?'请回到本动作起始姿势':'请回到本动作起始姿势，保持两秒');
+      // Front raise must not surface its direction hint before calibration completes:
+      // at rest the direction test is always false, so the hint kept ordering the user
+      // to raise an arm — and raising it zeroed the calibration they were holding.
+      const calibHint=this.type==='front_raise'?undefined:f.hint;
+      const message=this.ready?'已识别起始姿势，可以开始完整动作':f.start?`保持起始姿势，校准 ${Math.round(progress*100)}%`:calibHint||(this.armOnStart?'请回到本动作起始姿势':'请回到本动作起始姿势，保持两秒');
       this.metrics={...this.metrics,feedback:message,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:this.ready,confidence:f.confidence,message}};return this.metrics;
     }
     if(this.type==='hammer_curl')return this.updateHammerCurl(f,now);
+    if(this.type==='front_raise')return this.updateFrontRaise(f,now);
     if(!f.start){
       if(this.movingAt===null){this.movingAt=now;if(this.type==='standing_leg_curl')this.cycleSide=f.side||null;}
       this.scoring=this.scoring&&f.scorable;this.shift=Math.max(this.shift,Math.abs(f.tilt-this.baseline!.tilt));
