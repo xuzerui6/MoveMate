@@ -24,6 +24,7 @@ export default function InstallApp() {
       <h3 className="gym-settings-title">安装与离线使用</h3>
       <p className="gym-settings-hint">{online ? "当前在线" : "当前离线 · 缓存只供查看，正式计时需联网"}</p>
       <button
+        type="button"
         className="secondary"
         onClick={async () => {
           if (prompt) {
