@@ -39,7 +39,7 @@ export function restoreFields(server: any, draft: RecoveryDraft) {
   }
   return {value:{...server,...safe},conflicts};
 }
-export const validSettingsDraft = (v: any) => !!v && ['kg','lb'].includes(v.unit) && typeof v.timeZone==='string' &&
+export const validSettingsDraft = (v: any) => !!v && ['kg','lb'].includes(v.unit) &&
   ['off','rpe','rir'].includes(v.effort) && Array.isArray(v.equipment) && v.equipment.every((x:any)=>typeof x==='string');
 
 export const settingNames: Record<string,string> = {unit:'显示单位',timeZone:'日程时区',effort:'用力程度',sound:'声音提醒',wakeLock:'屏幕常亮',equipment:'拥有器械',barKg:'空杆重量 kg',plates:'杠铃片配置',goalKg:'目标体重 kg'};

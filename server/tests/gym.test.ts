@@ -737,15 +737,18 @@ test("training preferences merge without losing account or body settings", async
   });
   assert.equal((await prefs.settings(owner)).unit, "lb");
   assert.equal((await prefs.settings(other)).unit, "kg");
-  await assert.rejects(
-    prefs.saveSettings(owner, { timeZone: "invalid/timezone" }),
-  );
+  // 时区设置已删除：上面提交的 Pacific/Auckland 被忽略，始终钉死北京时间；
+  // 旧版对无效时区的拒绝校验也随之取消，任意提交值都不再生效。
+  assert.equal((await prefs.settings(owner)).timeZone, "Asia/Shanghai");
+  await prefs.saveSettings(owner, { timeZone: "invalid/timezone" });
+  assert.equal((await prefs.settings(owner)).timeZone, "Asia/Shanghai");
 });
 
-test("schedule moves retain collisions, optimistic exceptions and account timezone", async () => {
+test("schedule moves retain collisions, optimistic exceptions and pinned Beijing timezone", async () => {
   const { schedule, saveSchedule } = require("../src/gym/schedule");
   const prefs = require("../src/gym/preferences");
-  await prefs.saveSettings(owner, { timeZone: "Asia/Shanghai" });
+  // 即使历史数据里存过别的时区，日程也一律按北京时间算。
+  await prefs.saveSettings(owner, { timeZone: "Pacific/Auckland" });
   const p = await gym.savePlan(owner, {
     name: "日程",
     routines: [
@@ -771,6 +774,7 @@ test("schedule moves retain collisions, optimistic exceptions and account timezo
     kind: "move",
   });
   let rows = await schedule(owner, { from: "2026-10-19", days: 2 });
+  assert.equal(rows.timeZone, "Asia/Shanghai");
   assert.equal(
     rows.entries.filter(
       (e: any) => e.date === "2026-10-20" && e.plan.id === p.id,

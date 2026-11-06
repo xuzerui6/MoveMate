@@ -1,19 +1,13 @@
 import { z } from "zod";
 import { pool, withTransaction } from "../db";
 import { json } from "./model";
+/** 产品定调：仅面向中国大陆，一切用户可见时间用北京时间，不提供时区设置。 */
+export const APP_TIME_ZONE = "Asia/Shanghai";
 export const settingsSchema = z.object({
   unit: z.enum(["kg", "lb"]).default("kg"),
-  timeZone: z
-    .string()
-    .refine((v) => {
-      try {
-        new Intl.DateTimeFormat("en", { timeZone: v });
-        return true;
-      } catch {
-        return false;
-      }
-    }, "时区无效")
-    .default("Asia/Shanghai"),
+  // 仅为兼容旧数据/API 形状保留：用户提交的值一律忽略，
+  // settings()/saveSettings() 始终钉死为 APP_TIME_ZONE。
+  timeZone: z.string().default(APP_TIME_ZONE),
   effort: z.enum(["off", "rpe", "rir"]).default("off"),
   sound: z.boolean().default(false),
   wakeLock: z.boolean().default(false),
@@ -37,7 +31,7 @@ export const settingsSchema = z.object({
   goalKg: z.number().min(1).max(700).optional(),
 });
 export async function settings(uid: number) {
-  return settingsSchema.parse(
+  const parsed = settingsSchema.parse(
     json(
       (
         await pool.query("SELECT data FROM gym_settings WHERE user_id=$1", [
@@ -46,13 +40,18 @@ export async function settings(uid: number) {
       ).rows[0]?.data || "{}",
     ),
   );
+  // 无论库里存过什么时区，对外一律北京时间。
+  return { ...parsed, timeZone: APP_TIME_ZONE };
 }
 export async function saveSettings(uid: number, input: any) {
   return withTransaction(async () => {
-    const next = settingsSchema.parse({
-      ...(await settings(uid)),
-      ...settingsSchema.partial().parse(input),
-    });
+    const next = {
+      ...settingsSchema.parse({
+        ...(await settings(uid)),
+        ...settingsSchema.partial().parse(input),
+      }),
+      timeZone: APP_TIME_ZONE,
+    };
     await pool.query(
       "INSERT INTO gym_settings(user_id,data) VALUES($1,$2) ON CONFLICT(user_id) DO UPDATE SET data=$2",
       [uid, JSON.stringify(next)],

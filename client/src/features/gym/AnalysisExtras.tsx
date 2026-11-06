@@ -297,7 +297,7 @@ export function AnalysisExtras({ data }: { data: any }) {
         </p>
       </details>
       <PlateCalculator />
-      <Link to="/train/settings">更改显示单位与时区</Link>
+      <Link to="/train/settings">更改显示单位</Link>
     </>
   );
 }

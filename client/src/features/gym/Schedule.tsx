@@ -131,44 +131,21 @@ export function TrainingSettings() {
           onSubmit={e => {e.preventDefault();void save();}}
         >
           <section className="gym-settings-card" aria-labelledby="gym-settings-display-title">
-            <h3 id="gym-settings-display-title" className="gym-settings-title">显示与日程</h3>
+            <h3 id="gym-settings-display-title" className="gym-settings-title">显示</h3>
             <p className="gym-settings-hint">
-              记录统一保存 kg 和 UTC，切换显示不会重写原始精度或 XP。
+              记录统一保存 kg，切换显示不影响原始数据。
             </p>
-            <div className="gym-two">
-              <label>
-                显示单位
-                <select
-                  disabled={!!review}
-                  value={v.unit}
-                  onChange={(e) => change("unit", e.target.value)}
-                >
-                  <option value="kg">kg 公斤</option>
-                  <option value="lb">lb 磅</option>
-                </select>
-              </label>
-              <label>
-                日程与日历时区
-                <input
-                  disabled={!!review}
-                  value={v.timeZone}
-                  onChange={(e) => change("timeZone", e.target.value)}
-                  list="gym-zones"
-                />
-                <datalist id="gym-zones">
-                  {[
-                    "Asia/Shanghai",
-                    "Asia/Hong_Kong",
-                    "Asia/Tokyo",
-                    "Europe/London",
-                    "America/New_York",
-                    "Pacific/Auckland",
-                  ].map((z) => (
-                    <option key={z}>{z}</option>
-                  ))}
-                </datalist>
-              </label>
-            </div>
+            <label>
+              显示单位
+              <select
+                disabled={!!review}
+                value={v.unit}
+                onChange={(e) => change("unit", e.target.value)}
+              >
+                <option value="kg">kg 公斤</option>
+                <option value="lb">lb 磅</option>
+              </select>
+            </label>
           </section>
           <fieldset className="gym-settings-card gym-settings-equipment">
             <legend className="gym-settings-title">我拥有的器械</legend>
