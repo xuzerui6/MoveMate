@@ -24,8 +24,13 @@ async function fetchModelBytes(name:PoseModel,item:ModelItem,signal:AbortSignal)
  const download=new AbortController(),cancel=()=>download.abort();signal.addEventListener('abort',cancel,{once:true});if(signal.aborted)cancel();
  const timeout=setTimeout(cancel,60000);
  try{
-  const response=await fetch(item.src,{signal:download.signal});if(!response.ok)throw Error(`${poseModelLabel[name]} 模型文件读取失败（${response.status}）`);
-  const bytes=await response.arrayBuffer();if(bytes.byteLength!==item.bytes)throw Error('模型大小校验失败');
+  // Models above the hosting per-file limit ship as ordered parts; the pinned
+  // byte size and sha256 always cover the reassembled whole file.
+  const parts=(item as {parts?:string[]}).parts?.length?(item as {parts?:string[]}).parts!:[item.src];
+  const chunks:ArrayBuffer[]=[];
+  for(const part of parts){const response=await fetch(part,{signal:download.signal});if(!response.ok)throw Error(`${poseModelLabel[name]} 模型文件读取失败（${response.status}）`);chunks.push(await response.arrayBuffer());}
+  const bytes=new ArrayBuffer(chunks.reduce((sum,chunk)=>sum+chunk.byteLength,0));const view=new Uint8Array(bytes);let offset=0;for(const chunk of chunks){view.set(new Uint8Array(chunk),offset);offset+=chunk.byteLength;}
+  if(bytes.byteLength!==item.bytes)throw Error('模型大小校验失败');
   if(await digestHex(bytes)!==item.sha256)throw Error('模型完整性校验失败');return bytes;
  }catch(e){if(download.signal.aborted&&!signal.aborted)throw Error('模型下载超时，请检查网络后重试');throw e;}
  finally{clearTimeout(timeout);signal.removeEventListener('abort',cancel);}

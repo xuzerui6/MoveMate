@@ -19,6 +19,10 @@
   },
   "heavy": {
     "src": "/pose/pose_landmarker_heavy.task",
+    "parts": [
+      "/pose/pose_landmarker_heavy.part1",
+      "/pose/pose_landmarker_heavy.part2"
+    ],
     "bytes": 30664242,
     "sha256": "64437af838a65d18e5ba7a0d39b465540069bc8aae8308de3e318aad31fcbc7b",
     "source": "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/1/pose_landmarker_heavy.task",
