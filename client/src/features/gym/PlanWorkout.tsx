@@ -679,6 +679,7 @@ export default function PlanWorkout() {
                   demo={false}
                   phase={metrics.phase}
                   fit={fit}
+                  frame={pose.frame}
                 />
                 {pose.status !== "ready" && (
                   <p className={'gym-camera-overlay'+(adaptive?' adaptive-calibration-hint':'')}>
