@@ -1,0 +1,64 @@
+/* 局详情页页面自有样式 (参照 Profile.css 模式)。2026-11-06 自 foundation.css 迁入 (foundation 退役)。 */
+.chat-message--mine {
+  margin-left: auto;
+  flex-direction: row-reverse;
+}
+.chat-message__avatar {
+  flex-shrink: 0;
+}
+.chat-message__time {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+  text-align: center;
+}
+.chat-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: var(--space-lg) 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+.ui-pages-gamedetail-chatinput-inputWrapper{flex:1;position:relative}
+.ui-pages-gamedetail-chatlist-container{flex:1;overflow-y:auto;padding:0.75rem 0}
+.ui-pages-gamedetail-chatlist-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 1rem}
+.ui-pages-gamedetail-chatlist-emptyIcon{font-size:3rem;margin-bottom:0.75rem}
+.ui-pages-gamedetail-chatlist-emptyText{font-size:1rem;color:#9CA3AF;font-weight:600}
+.ui-pages-gamedetail-chatlist-emptyHint{font-size:0.8125rem;color:#D1D5DB;margin-top:0.375rem}
+.ui-pages-gamedetail-gameheader-container{background:#FFFFFF;border-radius:1.25rem;padding:1.25rem;margin-bottom:1rem;border:1px solid #edf2ee;box-shadow:0 2px 4px rgba(0,0,0,0.02)}
+.ui-pages-gamedetail-gameheader-sportInfo{display:flex;align-items:center;gap:0.875rem}
+.ui-pages-gamedetail-gameheader-remaining{color:#008a49;font-weight:600}
+.ui-pages-gamedetail-hostactions-container{padding:0.75rem 0;flex-shrink:0;position:relative}
+.ui-pages-gamedetail-hostactions-confirmCancelBtn{padding:0.5rem 1rem;border-radius:8px;background:#F3F4F6;color:#6B7280;font-size:0.875rem;font-weight:600;border:none;cursor:pointer}
+.ui-pages-gamedetail-hostactions-creatorActions{display:flex;flex-direction:column}
+.ui-pages-gamedetail-hostactions-memberActions{display:flex;flex-direction:column}
+.ui-pages-gamedetail-hostactions-closedHint{text-align:center;color:#9CA3AF;font-size:0.875rem;padding:0.75rem 0}
+.ui-pages-gamedetail-memberlist-container{background:#fff;border-radius:1rem;padding:1.25rem;margin-bottom:1rem;box-shadow:0 1px 2px rgba(0,0,0,0.05)}
+.ui-pages-gamedetail-memberlist-empty{font-size:0.875rem;color:#9CA3AF;text-align:center;padding:1rem 0}
+.ui-pages-gamedetail-memberlist-list{display:flex;flex-direction:column;gap:0.75rem}
+.ui-pages-gamedetail-memberlist-infoCol{display:flex;flex-direction:column;gap:0.15rem;flex:1}
+.ui-pages-gamedetail-memberlist-nameRow{display:flex;align-items:center;gap:0.45rem;flex-wrap:wrap}
+.ui-pages-gamedetail-memberlist-levelChip{font-size:.75rem;color:#7C3AED;background:#F5F3FF;padding:0.12rem 0.45rem;border-radius:9999px;font-weight:700;white-space:nowrap}
+.ui-pages-gamedetail-memberlist-statusText{font-size:0.75rem;color:#64748B;font-weight:500}
+.ui-pages-gamedetail-memberlist-creatorBadge{font-size:.75rem;color:var(--color-primary);background:#FFF3EE;padding:0.125rem 0.5rem;border-radius:9999px;font-weight:600;flex-shrink:0}
+.ui-pages-gamedetail-memberlist-confirmBtn{font-size:0.75rem;color:var(--ink);background:#f3f6f3;padding:0.4rem 0.65rem;border-radius:9999px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.ui-pages-gamedetail-memberlist-popupCard{margin-left:3rem;margin-top:0.5rem;padding:0.75rem 0.875rem;background:#f3f6f3;border-radius:10px;border:1px solid #E2E8F0}
+.ui-pages-gamedetail-memberlist-popupLoading{font-size:0.75rem;color:var(--muted);text-align:center}
+.ui-pages-gamedetail-memberlist-popupHeader{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem}
+.ui-pages-gamedetail-memberlist-popupName{font-size:0.875rem;font-weight:700;color:var(--ink)}
+.ui-pages-gamedetail-memberlist-popupDept{font-size:0.75rem;color:#64748B;font-weight:500}
+.ui-pages-gamedetail-memberlist-popupSection{border-top:1px solid #E2E8F0;padding-top:0.45rem}
+.ui-pages-gamedetail-memberlist-popupSectionTitle{font-size:.75rem;color:var(--muted);font-weight:600;margin-bottom:0.35rem;display:block}
+.ui-pages-gamedetail-memberlist-popupSportTags{display:flex;flex-wrap:wrap;gap:0.3rem}
+.ui-pages-gamedetail-memberlist-popupSportTag{display:inline-flex;align-items:center;gap:0.2rem;padding:0.15rem 0.45rem;border-radius:6px;background:#edf8f0;color:#008a49;font-size:.75rem;font-weight:600}
+.ui-pages-gamedetail-memberlist-popupEmpty{font-size:0.75rem;color:var(--muted)}
+.game-detail-page .page-header strong{font-size:24px}
+@media (max-width:700px){.game-detail-page .page-header strong{font-size:22px}}
+.game-detail-page .page-header button{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line);background:white;border-radius:12px}
+.ui-pages-gamedetail-chatlist-msgAvatar{width:2rem;height:2rem;border-radius:9999px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:0.75rem;flex-shrink:0}
+.ui-pages-gamedetail-hostactions-inline-0{margin-bottom:0.5rem}
+.ui-pages-gamedetail-hostactions-inline-1{margin-bottom:0.5rem}
+.ui-pages-gamedetail-hostactions-inline-2{margin-bottom:0.5rem}
+.ui-pages-gamedetail-hostactions-inline-3{margin-bottom:0.5rem}

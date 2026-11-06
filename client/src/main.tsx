@@ -6,7 +6,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import '@fontsource-variable/noto-sans-sc';
-import './foundation.css';
 import './design-system.css';
 import './training.css';
 

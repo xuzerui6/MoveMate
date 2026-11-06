@@ -6,6 +6,7 @@ import type { LeaderboardEntry, PublicUserInfo } from '../../types';
 import { SPORT_LABELS } from '../../types';
 import { getErrorMessage } from '../../api/client';
 import SportIcon from '../../components/SportIcon';
+import './Leaderboard.css';
 import Avatar from '../../components/Avatar';
 
 function medalColor(rank: number): string {

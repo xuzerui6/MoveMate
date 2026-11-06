@@ -12,6 +12,7 @@ import { useAuthStore } from '../../stores/authStore';
 import * as authApi from '../../api/auth';
 import type { Campus } from '../../types';
 import client, {getErrorMessage} from '../../api/client';
+import './Login.css';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();

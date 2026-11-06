@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import client from '../../api/client';
 import { showToast } from '../../hooks/useAuth';
+import './Feedback.css';
 
 const Feedback: React.FC = () => {
   const navigate = useNavigate();

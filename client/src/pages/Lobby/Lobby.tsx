@@ -11,6 +11,7 @@ import GameCard from './GameCard';
 import SportFilter from './SportFilter';
 import EmptyState from './EmptyState';
 import type { Campus, SportType } from '../../types';
+import './Lobby.css';
 
 function getDateText(offsetDays = 0): string {
   const date = new Date();

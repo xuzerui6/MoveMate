@@ -9,6 +9,7 @@ import { useNotifications } from '../../hooks/useNotifications';
 import type { Notification, NotificationType } from '../../types';
 import client, { getErrorMessage } from '../../api/client';
 import { showToast } from '../../hooks/useAuth';
+import './Notifications.css';
 
 function formatTime(isoStr: string): string {
   const d = new Date(isoStr);

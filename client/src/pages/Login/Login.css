@@ -1,0 +1,25 @@
+/* 登录页页面自有样式 (参照 Profile.css 模式)。2026-11-06 自 foundation.css 迁入 (foundation 退役)。 */
+.form-label__required {
+  color: var(--color-error);
+  margin-left: 2px;
+}
+.form-input--error {
+  border-color: var(--color-error);
+}
+.ui-pages-login-login-switchBtn{color:var(--color-primary);font-weight:600;background:none;border:none;cursor:pointer;font-size:inherit}
+.ui-pages-login-login-agreementRow{display:flex;align-items:flex-start;gap:0.4rem;cursor:pointer}
+.ui-pages-login-login-checkbox{margin-top:0.15rem;flex-shrink:0}
+.ui-pages-login-login-modalH4{font-size:0.9375rem;font-weight:700;color:var(--ink);margin-bottom:0.35rem;margin-top:1rem}
+.ui-pages-login-login-switchBtn{min-height:44px}
+.agreement-body{font-size:14px;line-height:1.8}
+.agreement-body h4{font-size:16px;margin:20px 0 8px}
+.agreement-body p{margin:12px 0}
+.ui-pages-login-login-tab{flex:1;padding:0.75rem 0;font-size:1rem;font-weight:600;border-bottom:3px solid transparent;background:none;cursor:pointer;transition:all 150ms ease;margin-bottom:-2px}
+.ui-pages-login-login-inline-0{font-size:0.75rem;color:var(--muted);margin-bottom:0.35rem}
+.ui-pages-login-login-inline-1{font-size:0.75rem;color:#F59E0B;margin-bottom:0.5rem}
+.ui-pages-login-login-inline-2{display:flex;gap:0.5rem}
+.ui-pages-login-login-inline-3{flex:1}
+.ui-pages-login-login-inline-4{font-size:0.8rem;font-weight:600;white-space:nowrap;padding:0 0.8rem}
+.ui-pages-login-login-inline-5{font-size:0.75rem;color:var(--muted);font-weight:400}
+.ui-pages-login-login-inline-6{margin-top:0.5rem}
+.ui-pages-login-login-inline-7{margin-top:1rem}

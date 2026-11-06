@@ -11,6 +11,7 @@ import ChatInput from './ChatInput';
 import HostActions from './HostActions';
 import GroupPlan from '../../features/gym/GroupPlan';
 import SportTimer from '../../features/motion/SportTimer';
+import './GameDetail.css';
 const stages:Record<string,[string,string]>={recruiting:['招募搭子中','加入活动后，可以在交流区一起协调。'],full:['搭子已集齐','请按约定时间到场，在签到窗口内完成签到。'],ready:['即将开始','到场后签到，发起人确认成员到场并开始活动。'],in_progress:['一起运动中','每人独立开始计时，休息时记得暂停。'],completed:['这场运动已结束','个人有效运动量和 XP 以服务器结算结果为准。'],cancelled:['活动已取消','本场活动停止加入，交流区已关闭。'],archived:['活动已归档','你可以从运动记录查看自己的结算结果。']};
 export default function GameDetail(){
  const {id}=useParams<{id:string}>(),navigate=useNavigate(),user=useAuthStore(s=>s.user);

@@ -19,6 +19,7 @@ import { StoreProvider, useStore } from './features/motion/lib/store';
 import { HeartRateProvider } from './features/motion/hooks/useHeartRateMonitor';
 import { Home } from './features/motion/pages/Home';
 import './features/gym/gym.css';
+import './features/motion/motion.css';
 const TrainingSchedule=lazy(()=>import("./features/gym/Schedule"));
 const TrainingSettings=lazy(()=>import("./features/gym/Schedule").then(m=>({default:m.TrainingSettings})));
 const FreeWorkout=lazy(()=>import('./features/gym/FreeWorkout'));

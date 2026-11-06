@@ -13,6 +13,7 @@ import GameList from './GameList';
 import VenueList from './VenueList';
 import FeedbackList from './FeedbackList';
 import VoiceService from './VoiceService';
+import './admin.css';
 
 
 type AdminTab = 'dashboard' | 'users' | 'games' | 'venues' | 'feedback' | 'voice';

@@ -11,6 +11,7 @@ import SportPicker from '../../components/SportPicker';
 import { useAuthStore } from '../../stores/authStore';
 import { SPORT_LABELS } from '../../types';
 import type { SportType, GameTag, Campus, Venue } from '../../types';
+import './CreateGame.css';
 
 const TAGS: { value: GameTag; label: string; color: string }[] = [
   { value: 'casual', label: '娱乐局', color: '#10B981' },
