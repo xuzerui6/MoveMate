@@ -148,7 +148,7 @@ const Leaderboard: React.FC = () => {
       )}
 
       {loading ? (
-        <div className="loading-spinner"><div className="spinner" /></div>
+        <div className="motion-loading" role="status">正在读取…</div>
       ) : error ? (
         <div className="empty-state">
           <div className="empty-state__icon"><Icon name="trophy" size={42}/></div>

@@ -1,7 +1,7 @@
 /* Plan training extends MoveMate's shared white/green system; standalone camera layout is unchanged. */
 .gym-page,
 .gym-entry {
-  color: var(--ink, #111b15);
+  color: var(--ink, #080b09);
   font-size: 16px;
   line-height: 1.65;
   min-width: 0;
@@ -55,35 +55,35 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  min-height: 48px;
-  padding: 10px 20px;
-  border: 1px solid #008a40;
-  border-radius: 16px;
+  min-height: 52px;
+  padding: 13px 18px;
+  border: 1px solid var(--color-primary, #008a40);
+  border-radius: 18px;
   text-decoration: none;
-  font-weight: 700;
+  font-weight: 750;
   white-space: normal;
 }
 .gym-page .primary,
 .gym-entry .primary {
-  background: #008a40;
+  background: var(--color-primary, #008a40);
   color: white;
 }
 .gym-page .secondary,
 .gym-entry .secondary {
   background: white;
-  color: #08783b;
+  color: var(--color-primary-dark, #08783b);
 }
 .gym-page .text-btn {
   border: 0;
   background: transparent;
-  color: #567063;
+  color: var(--muted, #68767e);
   text-decoration: underline;
   padding: 10px;
 }
 .gym-muted,
 .gym-page small,
 .gym-entry small {
-  color: #65756d;
+  color: #68767e;
   font-size: 14px;
 }
 .gym-lead {
@@ -92,8 +92,8 @@
 .gym-form,
 .gym-today,
 .gym-exercise-detail {
-  border: 1px solid #e0e9e3;
-  border-radius: 20px;
+  border: 1px solid var(--line, #e3e9e6);
+  border-radius: 18px;
   padding: 24px;
   margin: 20px 0;
   background: #fff;
@@ -113,11 +113,12 @@
 .gym-entry select {
   width: 100%;
   box-sizing: border-box;
-  padding: 10px 12px;
-  border: 1px solid #d3ded6;
-  border-radius: 10px;
+  min-height: 52px;
+  padding: 13px 15px;
+  border: 1px solid var(--line, #e3e9e6);
+  border-radius: 12px;
   background: #fff;
-  color: #122419;
+  color: var(--ink, #080b09);
 }
 .gym-page input[type="checkbox"] {
   width: 20px;
@@ -149,7 +150,7 @@
 }
 .gym-section-title span {
   font-size: 14px;
-  color: #617368;
+  color: #68767e;
 }
 .gym-section-title h2,
 .gym-section-title h3 {
@@ -174,11 +175,11 @@
   align-items: center;
 }
 .gym-error {
-  padding: 16px;
-  border: 1px solid #ffc5b9;
+  padding: 14px 16px;
+  border: 1px solid #f0c9c9;
   background: #fff3f0;
-  color: #9f3524;
-  border-radius: 14px;
+  color: var(--color-error, #c63636);
+  border-radius: 12px;
   margin: 16px 0;
   overflow-wrap: anywhere;
 }
@@ -193,11 +194,11 @@
   color: #08783b;
   background: #e5faee;
   padding: 16px;
-  border-radius: 14px;
+  border-radius: 12px;
 }
 .gym-empty {
   padding: 32px 16px;
-  color: #65756d;
+  color: #68767e;
 }
 .gym-template-grid {
   display: grid;
@@ -206,7 +207,7 @@
   margin: 20px 0;
 }
 .gym-template-grid button {
-  border: 1px solid #d4e5da;
+  border: 1px solid #e3e9e6;
   border-radius: 18px;
   background: #f6f8f7;
   padding: 24px;
@@ -223,7 +224,7 @@
   font-weight: 700;
 }
 .gym-plan-row {
-  border-bottom: 1px solid #e0e9e3;
+  border-bottom: 1px solid #e3e9e6;
   padding: 24px 0;
   display: flex;
   align-items: start;
@@ -249,7 +250,7 @@
   align-items: center;
   text-decoration: none;
   min-height: 72px;
-  border-radius: 16px;
+  border-radius: 18px;
   background: #f6f8f7;
   padding: 16px;
 }
@@ -299,7 +300,7 @@
   gap: 0 24px;
 }
 .gym-exercise-list article {
-  border-bottom: 1px solid #e0e9e3;
+  border-bottom: 1px solid #e3e9e6;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -341,15 +342,16 @@
 }
 .gym-day-tabs button {
   flex-shrink: 0;
-  border: 1px solid #dde6df;
+  border: 1px solid #e3e9e6;
   border-radius: 12px;
   padding: 8px 16px;
   background: #fff;
 }
 .gym-day-tabs [aria-selected="true"] {
-  background: #008a40;
-  color: #fff;
-  border-color: #008a40;
+  background: var(--mint, #e5faee);
+  color: #08783b;
+  border-color: var(--color-primary, #008a40);
+  font-weight: 750;
 }
 .gym-shelves {
   display: flex;
@@ -360,19 +362,20 @@
 }
 .gym-shelves > span {
   flex-shrink: 0;
-  color: #5a6b5f;
+  color: #68767e;
 }
 .gym-shelf {
   flex-shrink: 0;
-  border: 1px solid #dde6df;
+  border: 1px solid #e3e9e6;
   border-radius: 12px;
   padding: 8px 16px;
   background: #fff;
 }
 .gym-shelf[aria-pressed="true"] {
-  background: #008a40;
-  color: #fff;
-  border-color: #008a40;
+  background: var(--mint, #e5faee);
+  color: #08783b;
+  border-color: var(--color-primary, #008a40);
+  font-weight: 750;
 }
 .gym-weekdays {
   border: 0;
@@ -386,7 +389,7 @@
   align-items: center;
 }
 .gym-edit-exercise {
-  border-top: 1px solid #e0e9e3;
+  border-top: 1px solid #e3e9e6;
   padding: 24px 0;
 }
 .gym-set-editor {
@@ -395,7 +398,7 @@
   gap: 12px;
   padding: 16px;
   background: #f6f8f7;
-  border-radius: 14px;
+  border-radius: 12px;
   margin-bottom: 16px;
 }
 .gym-set-editor > b {
@@ -404,12 +407,12 @@
 .gym-small-actions button {
   border: 0;
   background: #f6f8f7;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 8px 12px;
 }
 .gym-save-bar {
   background: #fff;
-  border-top: 1px solid #dde6df;
+  border-top: 1px solid #e3e9e6;
   padding: 16px 0;
   position: sticky;
   bottom: 0;
@@ -428,12 +431,14 @@
   padding-left: 16px;
 }
 .gym-stat-grid strong {
-  font-size: 32px;
+  font-size: 38px;
   font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
 }
 .gym-stat-grid span {
   font-size: 14px;
-  color: #617368;
+  color: #68767e;
 }
 .gym-muscle-layout {
   display: grid;
@@ -452,7 +457,7 @@
   width: 100%;
   background: white;
   border: 0;
-  border-bottom: 1px solid #e0e9e3;
+  border-bottom: 1px solid #e3e9e6;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -461,7 +466,7 @@
   padding: 12px;
 }
 .gym-muscle-item span {
-  color: #65756d;
+  color: #68767e;
   font-size: 13px;
 }
 .gym-muscle-item.selected {
@@ -495,13 +500,13 @@
   align-items: center;
   gap: 12px;
   padding: 14px 0;
-  border-bottom: 1px solid #e0e9e3;
+  border-bottom: 1px solid #e3e9e6;
   flex-wrap: wrap;
 }
 .gym-body-row {
   width: 100%;
   border: 0;
-  border-bottom: 1px solid #e0e9e3;
+  border-bottom: 1px solid #e3e9e6;
   background: #fff;
   display: flex;
   align-items: center;
@@ -532,7 +537,7 @@
   border-radius: 6px 6px 0 0;
 }
 .gym-preview {
-  border-top: 1px solid #d3e3d8;
+  border-top: 1px solid #e3e9e6;
   padding-top: 20px;
   margin-top: 20px;
 }
@@ -562,7 +567,7 @@
 .gym-camera[hidden] {
   display: none;
 }
-.gym-camera-preparation { padding: 16px; border: 1px solid #d9e9df; border-radius: 16px; background: #f6f8f7; margin: 12px 0; line-height: 1.7; }
+.gym-camera-preparation { padding: 16px; border: 1px solid var(--line, #e3e9e6); border-radius: 18px; background: #f6f8f7; margin: 12px 0; line-height: 1.7; }
 .gym-camera-preparation summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-weight: 700; }
 .gym-camera-preparation p { margin: 8px 0; }
 .gym-camera .pose-canvas {
@@ -597,22 +602,26 @@
   display: flex;
   flex-direction: column;
   padding: 20px 0;
-  border-bottom: 1px solid #e0e9e3;
+  border-bottom: 1px solid #e3e9e6;
 }
 .gym-effective strong {
-  font-size: 48px;
+  font-size: 52px;
   font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
 }
 .gym-rest {
   padding: 20px;
   background: #e5faee;
-  border-radius: 16px;
+  border-radius: 18px;
   margin: 16px 0;
   display: flex;
   flex-direction: column;
 }
 .gym-rest strong {
-  font-size: 32px;
+  font-size: 38px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
 }
 .gym-main-actions {
   flex-direction: column;
@@ -625,14 +634,23 @@
   padding: 16px 0;
 }
 .gym-recognition strong {
-  font-size: 32px;
+  font-size: 38px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
 }
 .gym-recognition p {
   color: #08783b;
 }
 .gym-voice {
-  padding: 20px 0;
-  border-top: 1px solid #e0e9e3;
+  margin-top: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--line, #e3e9e6);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--color-primary-dark, #08783b);
+}
+.gym-voice > b {
+  color: var(--ink, #080b09);
 }
 .gym-voice p {
   font-size: 14px;
@@ -645,14 +663,16 @@
   gap: 12px;
 }
 .gym-result > strong {
-  font-size: 56px;
+  font-size: 52px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
 }
 .gym-all-sets {
   margin: 24px 0;
 }
 .gym-group-plan {
   padding: 20px 0;
-  border-block: 1px solid #e0e9e3;
+  border-block: 1px solid #e3e9e6;
   margin: 24px 0;
 }
 .training-entry .training-mode-tabs:has(#plan-mode) {
@@ -753,7 +773,7 @@
     font-size: 26px;
   }
   .gym-effective strong {
-    font-size: 40px;
+    font-size: 38px;
   }
   .gym-body-row {
     flex-wrap: wrap;
@@ -802,7 +822,7 @@
     bottom: calc(80px + env(safe-area-inset-bottom, 0px));
     z-index: 30;
     background: #fff;
-    border-top: 1px solid #dde6df;
+    border-top: 1px solid #e3e9e6;
     margin: 0;
     padding: 12px 20px;
     display: grid;
@@ -856,32 +876,32 @@
   }
 }
 
-.gym-inline-actions{display:flex;flex-wrap:wrap;gap:8px}.gym-inline-actions button{min-height:44px;padding:8px 12px;border:1px solid var(--border,#dce5df);border-radius:12px;background:#fff;color:inherit}.gym-edit-row{flex-wrap:wrap;gap:10px}.gym-edit-row>span{min-width:0;overflow-wrap:anywhere}.gym-form details{max-width:100%}
+.gym-inline-actions{display:flex;flex-wrap:wrap;gap:8px}.gym-inline-actions button{min-height:44px;padding:8px 12px;border:1px solid var(--line,#e3e9e6);border-radius:12px;background:#fff;color:inherit}.gym-edit-row{flex-wrap:wrap;gap:10px}.gym-edit-row>span{min-width:0;overflow-wrap:anywhere}.gym-form details{max-width:100%}
 
 .gym-equipment{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}.gym-page textarea{max-width:100%;width:100%;box-sizing:border-box}.gym-page fieldset{min-width:0}
 
-.gym-year-calendar{display:grid;grid-template-rows:repeat(7,12px);grid-auto-flow:column;grid-auto-columns:12px;gap:3px;overflow-x:auto;padding:8px 0}.gym-year-calendar span{background:#edf1ee;border-radius:2px}.gym-year-calendar [data-level="1"]{background:#e5faee}.gym-year-calendar [data-level="2"]{background:#00c65e}.gym-year-calendar [data-level="3"]{background:#008a40}.gym-table-scroll{max-width:100%;overflow-x:auto}.gym-table-scroll table{width:100%;border-collapse:collapse;min-width:520px}.gym-table-scroll th,.gym-table-scroll td{padding:12px 10px;border-bottom:1px solid #e5ebe7;text-align:left;white-space:nowrap}.gym-trend-bars{height:150px;display:flex;gap:6px;align-items:flex-end;padding-bottom:25px}.gym-trend-bars>div{height:100%;flex:1;display:flex;justify-content:flex-end;flex-direction:column;position:relative;min-width:8px}.gym-trend-bars span{display:block;background:#00c65e;border-radius:4px 4px 0 0}.gym-trend-bars small{position:absolute;bottom:-25px;font-size:12px;white-space:nowrap;max-width:100%;overflow:hidden}
+.gym-year-calendar{display:grid;grid-template-rows:repeat(7,12px);grid-auto-flow:column;grid-auto-columns:12px;gap:3px;overflow-x:auto;padding:8px 0}.gym-year-calendar span{background:#f6f8f7;border-radius:2px}.gym-year-calendar [data-level="1"]{background:#e5faee}.gym-year-calendar [data-level="2"]{background:#00c65e}.gym-year-calendar [data-level="3"]{background:#008a40}.gym-table-scroll{max-width:100%;overflow-x:auto}.gym-table-scroll table{width:100%;border-collapse:collapse;min-width:520px}.gym-table-scroll th,.gym-table-scroll td{padding:12px 10px;border-bottom:1px solid #e3e9e6;text-align:left;white-space:nowrap}.gym-trend-bars{height:150px;display:flex;gap:6px;align-items:flex-end;padding-bottom:25px}.gym-trend-bars>div{height:100%;flex:1;display:flex;justify-content:flex-end;flex-direction:column;position:relative;min-width:8px}.gym-trend-bars span{display:block;background:#00c65e;border-radius:4px 4px 0 0}.gym-trend-bars small{position:absolute;bottom:-25px;font-size:12px;white-space:nowrap;max-width:100%;overflow:hidden}
 
 .gym-line-chart{width:100%;height:150px;background:#f6f8f7;border-radius:12px}
 
-.gym-cache-notice{margin:12px 0;padding:12px 16px;border:1px solid var(--border,#dce5df);border-radius:12px;background:var(--surface,#f6f8f7);overflow-wrap:anywhere}
+.gym-cache-notice{margin:12px 0;padding:12px 16px;border:1px solid var(--line,#e3e9e6);border-radius:12px;background:var(--surface,#f6f8f7);overflow-wrap:anywhere}
 .gym-cache-notice p{margin:0 0 8px}
 .gym-cache-notice button,.gym-favorite-error button{min-height:44px}
 .gym-exercise-list article{flex-wrap:wrap}
 .gym-exercise-list .gym-exercise-name{min-width:0}
-.gym-favorite-error{flex:0 0 100%;color:var(--error,#ad3434);font-size:14px;overflow-wrap:anywhere}
+.gym-favorite-error{flex:0 0 100%;color:var(--color-error,#c63636);font-size:14px;overflow-wrap:anywhere}
 .gym-favorite-error button{margin:6px 0 0;display:block;padding:8px 12px;border:1px solid currentColor;border-radius:10px;background:transparent;color:inherit}
 .ui-dialog .workout-finish-action{display:flex;align-items:center;justify-content:center;width:100%;min-height:52px;margin-top:16px;padding:12px 18px;font:inherit;font-weight:750;color:#fff;background:var(--color-primary,#008a40);border:1px solid var(--color-primary,#008a40);border-radius:16px;white-space:normal;line-height:1.5}
 
 .gym-editor-secondary-actions{display:contents}
 .gym-page .gym-editor-save-bar>.gym-editor-more-toggle{display:none}
 .gym-page .gym-editor-save-bar .text-btn{width:auto}
-.gym-edit-status{color:#52625a;min-height:24px;overflow-wrap:anywhere}
+.gym-edit-status{color:#68767e;min-height:24px;overflow-wrap:anywhere}
 .gym-plan-menu{display:grid;gap:12px}
 .gym-draft-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0}
-.gym-draft-comparison section{min-width:0;padding:12px;border:1px solid #dce5df;border-radius:12px;overflow-wrap:anywhere}
+.gym-draft-comparison section{min-width:0;padding:12px;border:1px solid #e3e9e6;border-radius:12px;overflow-wrap:anywhere}
 .gym-draft-comparison p{margin:8px 0;font-size:14px}
-.gym-draft-field{display:flex!important;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #dce5df;min-height:44px;overflow-wrap:anywhere}
+.gym-draft-field{display:flex!important;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #e3e9e6;min-height:44px;overflow-wrap:anywhere}
 .gym-draft-field input{width:20px!important;min-height:20px!important;flex:0 0 20px}
 .gym-draft-field small{display:block;margin-top:8px}
 @media(max-width:699px){.gym-draft-comparison{grid-template-columns:1fr}}

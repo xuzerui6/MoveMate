@@ -221,7 +221,7 @@ const Lobby: React.FC = () => {
       {/* 列表区 */}
       <div className="ui-pages-lobby-lobby-list">
         {loading && games.length === 0 ? (
-          <div className="loading-spinner"><div className="spinner" /></div>
+          <div className="motion-loading" role="status">正在读取…</div>
         ) : error && games.length === 0 ? (
           <EmptyState error={error||'暂时无法连接，请重试'} onAction={() => refresh()} />
         ) : games.length === 0 ? (
@@ -232,7 +232,7 @@ const Lobby: React.FC = () => {
               <GameCard key={game.id} game={game} />
             ))}
             {loading && (
-              <div  className={["loading-spinner","ui-pages-lobby-lobby-inline-0"].filter(Boolean).join(" ")}><div className="spinner" /></div>
+              <div className={["motion-loading","ui-pages-lobby-lobby-inline-0"].filter(Boolean).join(" ")} role="status">正在加载更多…</div>
             )}
             {hasMore&&!loading&&<button className="btn btn--secondary" onClick={loadMore}>加载更多活动</button>}
             {!loading && !hasMore && games.length > 0 && (

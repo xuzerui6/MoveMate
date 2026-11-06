@@ -1,10 +1,10 @@
 .exercise-media {
-  border: 1px solid #deebe3;
-  border-radius: 20px;
+  border: 1px solid var(--line, #e3e9e6);
+  border-radius: 18px;
   overflow: hidden;
   background: #fff;
   margin: 16px 0;
-  color: #14241b;
+  color: #080b09;
   min-width: 0;
 }
 .media-heading {
@@ -13,14 +13,14 @@
   justify-content: space-between;
   gap: 12px;
   padding: 12px 16px;
-  border-bottom: 1px solid #e5ece8;
+  border-bottom: 1px solid #e3e9e6;
 }
 .media-heading button,
 .media-controls button,
 .media-tabs button {
   min-height: 44px;
   background: #fff;
-  border: 1px solid #dce7e0;
+  border: 1px solid #e3e9e6;
   border-radius: 12px;
   padding: 8px 14px;
   color: #08783b;
@@ -31,7 +31,7 @@
   display: flex;
   gap: 4px;
   padding: 8px;
-  border-bottom: 1px solid #e5ece8;
+  border-bottom: 1px solid #e3e9e6;
   flex-wrap: wrap;
 }
 .media-tabs button {
@@ -46,7 +46,7 @@
   font-weight: 800;
 }
 .media-tabs button:disabled {
-  color: #78867d;
+  color: #68767e;
   cursor: default;
   background: #f6f8f7;
 }
@@ -108,7 +108,7 @@
   padding: 8px !important;
 }
 .media-controls small {
-  color: #68776e;
+  color: #68767e;
   font-size: 12px;
 }
 .media-error,
@@ -120,8 +120,8 @@
   margin: 0;
 }
 .media-error {
-  color: #9d341b;
-  background: #fff2e9;
+  color: var(--color-error, #c63636);
+  background: #fff3f0;
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
@@ -136,17 +136,17 @@
 }
 .media-pending {
   background: #f6f8f7;
-  color: #52695b;
+  color: #68767e;
 }
 .media-note {
-  color: #5c6d62;
+  color: #68767e;
 }
 .media-frame-caption {
   margin: 0;
   padding: 0 16px 12px;
   font-size: 14px;
   line-height: 1.6;
-  color: #52695b;
+  color: #68767e;
   overflow-wrap: anywhere;
 }
 .media-frame-caption a { color: #08783b; text-decoration: underline; }
@@ -170,7 +170,7 @@
   min-height: 44px;
   display: flex;
   align-items: center;
-  color: #52695b;
+  color: #68767e;
 }
 .media-attribution p {
   line-height: 1.6;
@@ -202,7 +202,7 @@
 }
 .exercise-muscles small {
   font-size: 12px;
-  color: #66776c;
+  color: #68767e;
 }
 .media-swatch {
   display: inline-block;
@@ -240,7 +240,7 @@
   border-radius: 14px;
   overflow: hidden;
   background: #f6f8f7;
-  color: #718177;
+  color: #68767e;
   font-size: 12px;
   text-align: center;
   line-height: 1.5;
@@ -276,7 +276,7 @@
 }
 .exercise-list-copy small {
   font-size: 12px;
-  color: #68796e;
+  color: #68767e;
 }
 .exercise-media-badges {
   display: flex;
@@ -292,7 +292,7 @@
 }
 .exercise-media-badges .pending {
   background: #f6f8f7;
-  color: #77847b;
+  color: #68767e;
 }
 .gym-library > .gym-inline-actions {
   align-items: center;
@@ -313,14 +313,14 @@
   scroll-margin-top: 24px;
 }
 .media-library-filters {
-  border-bottom: 1px solid #e0e9e3;
+  border-bottom: 1px solid #e3e9e6;
   padding-bottom: 8px;
   margin-bottom: 12px;
 }
 .media-library-filters > summary {
   min-height: 44px;
   cursor: pointer;
-  color: #536a5c;
+  color: #68767e;
   list-style-position: inside;
 }
 .media-library-filters .gym-inline-actions {
@@ -363,7 +363,7 @@
     max-height: 50svh;
   }
   .exercise-media {
-    border-radius: 16px;
+    border-radius: 18px;
   }
   .exercise-thumbnail {
     width: 76px;
@@ -448,7 +448,7 @@
   width: auto;
 }
 .detail-muscles {
-  border-top: 1px solid #e5ece8;
+  border-top: 1px solid #e3e9e6;
   margin-top: 16px;
 }
 .detail-section-title {
