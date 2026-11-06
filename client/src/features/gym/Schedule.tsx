@@ -127,84 +127,97 @@ export function TrainingSettings() {
       )}
       {v ? (
         <form
-          className="gym-form"
+          className="gym-settings-form"
           onSubmit={e => {e.preventDefault();void save();}}
         >
-          <div className="gym-two">
-            <label>
-              显示单位
-              <select
-                disabled={!!review}
-                value={v.unit}
-                onChange={(e) => change("unit", e.target.value)}
-              >
-                <option value="kg">kg 公斤</option>
-                <option value="lb">lb 磅</option>
-              </select>
-            </label>
-            <label>
-              日程与日历时区
-              <input
-                disabled={!!review}
-                value={v.timeZone}
-                onChange={(e) => change("timeZone", e.target.value)}
-                list="gym-zones"
-              />
-              <datalist id="gym-zones">
-                {[
-                  "Asia/Shanghai",
-                  "Asia/Hong_Kong",
-                  "Asia/Tokyo",
-                  "Europe/London",
-                  "America/New_York",
-                  "Pacific/Auckland",
-                ].map((z) => (
-                  <option key={z}>{z}</option>
-                ))}
-              </datalist>
-            </label>
-          </div>
-          <p className="gym-muted">
-            记录统一保存 kg 和 UTC，切换显示不会重写原始精度或 XP。
-          </p>
-          <fieldset>
-            <legend>我拥有的器械</legend>
+          <section className="gym-settings-card" aria-labelledby="gym-settings-display-title">
+            <h3 id="gym-settings-display-title" className="gym-settings-title">显示与日程</h3>
+            <p className="gym-settings-hint">
+              记录统一保存 kg 和 UTC，切换显示不会重写原始精度或 XP。
+            </p>
+            <div className="gym-two">
+              <label>
+                显示单位
+                <select
+                  disabled={!!review}
+                  value={v.unit}
+                  onChange={(e) => change("unit", e.target.value)}
+                >
+                  <option value="kg">kg 公斤</option>
+                  <option value="lb">lb 磅</option>
+                </select>
+              </label>
+              <label>
+                日程与日历时区
+                <input
+                  disabled={!!review}
+                  value={v.timeZone}
+                  onChange={(e) => change("timeZone", e.target.value)}
+                  list="gym-zones"
+                />
+                <datalist id="gym-zones">
+                  {[
+                    "Asia/Shanghai",
+                    "Asia/Hong_Kong",
+                    "Asia/Tokyo",
+                    "Europe/London",
+                    "America/New_York",
+                    "Pacific/Auckland",
+                  ].map((z) => (
+                    <option key={z}>{z}</option>
+                  ))}
+                </datalist>
+              </label>
+            </div>
+          </section>
+          <fieldset className="gym-settings-card gym-settings-equipment">
+            <legend className="gym-settings-title">我拥有的器械</legend>
+            <p className="gym-settings-hint">
+              点选你拥有的器械，找动作时可按器械筛选。已选{" "}
+              {v.equipment.filter((x: string) => x !== "body weight").length} 项。
+            </p>
             <div className="gym-equipment">
               {lib.data?.equipment
                 .filter((x: string) => x !== "body weight")
                 .map((x: string) => (
-                  <label className="gym-checkbox" key={x}>
-                    <input
-                      type="checkbox"
-                      disabled={!!review}
-                      checked={v.equipment.includes(x)}
-                      onChange={(e) =>
-                        change(
-                          "equipment",
-                          e.target.checked
-                            ? [...v.equipment, x]
-                            : v.equipment.filter((a: string) => a !== x),
-                        )
-                      }
-                    />
+                  <button
+                    type="button"
+                    key={x}
+                    disabled={!!review}
+                    aria-pressed={v.equipment.includes(x)}
+                    onClick={() =>
+                      change(
+                        "equipment",
+                        v.equipment.includes(x)
+                          ? v.equipment.filter((a: string) => a !== x)
+                          : [...v.equipment, x],
+                      )
+                    }
+                  >
                     {label(x)}
-                  </label>
+                  </button>
                 ))}
             </div>
           </fieldset>
-          <label>
-            用力程度
-            <select
-              disabled={!!review}
-              value={v.effort}
-              onChange={(e) => change("effort", e.target.value)}
-            >
-              <option value="off">关闭</option>
-              <option value="rpe">RPE</option>
-              <option value="rir">RIR</option>
-            </select>
-          </label>
-          <button className="primary" disabled={busy || readOnly || !!review}>
+          <section className="gym-settings-card" aria-labelledby="gym-settings-effort-title">
+            <h3 id="gym-settings-effort-title" className="gym-settings-title">训练偏好</h3>
+            <label>
+              用力程度
+              <select
+                disabled={!!review}
+                value={v.effort}
+                onChange={(e) => change("effort", e.target.value)}
+              >
+                <option value="off">关闭</option>
+                <option value="rpe">RPE</option>
+                <option value="rir">RIR</option>
+              </select>
+            </label>
+            <p className="gym-settings-hint">
+              开启后，训练中可以为每组记录用力程度；关闭则不记录。
+            </p>
+          </section>
+          <button className="primary gym-settings-save" disabled={busy || readOnly || !!review}>
             {busy ? "正在保存…" : editor.current?.uncertain ? "核对并重试保存设置" : "保存个人设置"}
           </button>
         </form>
