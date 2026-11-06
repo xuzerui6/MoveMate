@@ -5975,6 +5975,111 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1299",
+      "expectedName": "lever incline chest press",
+      "sourceId": "ai-generated-exdb-1299",
+      "sourceSha256": [
+        "5b9860c943d5c3103c9a1679f0cf673bb73641b9301c913262e5c41f3e6518a3",
+        "cdf4dbbdccae25d2f9f7f136a72f0ee4236e65dadc564fe76fffd28c7c5b8440"
+      ],
+      "phases": [
+        "坐姿背靠斜靠背、正手握手柄于上胸、肘约90°",
+        "向前推至双臂完全伸展"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0588",
+      "expectedName": "lever narrow grip seated row",
+      "sourceId": "ai-generated-exdb-0588",
+      "sourceSha256": [
+        "c14c43f99918cb3e7dbf728ae5434397afdb8f6ffd62024b73407e1790ca37bb",
+        "f68c3b4ebf16ba1e22ad093a746283cedc9f0325bde3fe114f70b669b7abe7ba"
+      ],
+      "phases": [
+        "坐姿脚踏板、双臂前伸、掌心相对握手柄",
+        "将手柄拉向躯干、肩胛收紧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0740",
+      "expectedName": "sled 45в° leg wide press",
+      "sourceId": "ai-generated-exdb-0740",
+      "sourceSha256": [
+        "0ee2474e1baf31ebc5b7b66df352fea0f1872717afe0d821c648534c5ff2bb21",
+        "3ec396b61435c687c41ecf6b1da3a58c56cc2892b18553c27715976543310f23"
+      ],
+      "phases": [
+        "背贴靠背、双脚宽于肩置于踏板、膝屈",
+        "蹬伸双腿至完全伸展、双脚保持宽站位"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0743",
+      "expectedName": "sled hack squat",
+      "sourceId": "ai-generated-exdb-0743",
+      "sourceSha256": [
+        "bd4bb74f9efbe7222e9abad05fa69e93ceaf5540a856dea811409ab8cb6a0557",
+        "44d2d967e300cff1f9bf1ef1e9df3ba8e0c5947704443647924a3e223fd178f1"
+      ],
+      "phases": [
+        "站立背贴背垫、肩置于肩垫下、握侧把手",
+        "屈膝屈髋下蹲至大腿约与平台平行"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0770",
+      "expectedName": "smith squat",
+      "sourceId": "ai-generated-exdb-0770",
+      "sourceSha256": [
+        "a5b347231d9fffdc98784b265b432c31f256c2b63b2d6d74f680954dd1ca2a10",
+        "a9bd2831c50acd34604003fbf596b6d6b5247ec34b7715a71b48b2e5b3b3162a"
+      ],
+      "phases": [
+        "站立、杠置于上斜方肌与肩上、宽握",
+        "屈髋屈膝下蹲至大腿与地面平行"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0607",
+      "expectedName": "lever triceps extension",
+      "sourceId": "ai-generated-exdb-0607",
+      "sourceSha256": [
+        "af556223f8d073758f19855547c280ae043b0078bb91b0fa035402b659b67811",
+        "7efba7305eb043ba053f244264285b424ce7833403758a72af9011a29dafc56d"
+      ],
+      "phases": [
+        "坐姿背靠垫、正手握直杆、双臂完全伸展于身前",
+        "屈肘将手柄降至前额高度"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0584",
+      "expectedName": "lever lateral raise",
+      "sourceId": "ai-generated-exdb-0584",
+      "sourceSha256": [
+        "0b5c3185232bf9d3cbff3b7c5119f0a6fc12a06bf77ffdd558862804c25937e0",
+        "2c6b3316b827556a9e65247a4d646c1f03aa4645ae2189c42d9065ef4e582827"
+      ],
+      "phases": [
+        "坐姿背靠垫、正手握手柄、双臂垂于体侧",
+        "双臂向两侧抬起至与地面平行"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
@@ -7899,7 +8004,7 @@
       "reason": "照片为跪姿杠铃深蹲，条目定义为站姿徒手跳深蹲；跪姿、杠铃、无跳跃离地。"
     }
   ],
-  "batch": 40,
+  "batch": 41,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",
