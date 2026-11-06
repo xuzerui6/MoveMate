@@ -45,21 +45,22 @@ export async function modelBytes(name:PoseModel,signal:AbortSignal){
  }
  throw lastError;
 }
-async function workerTransport(bytes:ArrayBuffer,delegate:'GPU'|'CPU',signal:AbortSignal):Promise<PoseTransport>{
+async function workerTransport(bytes:ArrayBuffer,delegate:'GPU'|'CPU',signal:AbortSignal,timeouts:{init:number;firstFrame:number}={init:12000,firstFrame:8000}):Promise<PoseTransport>{
  if(typeof Worker==='undefined'||typeof createImageBitmap==='undefined'||(delegate==='GPU'&&typeof OffscreenCanvas==='undefined'))throw Error('浏览器不支持此 Worker 方式');
  // The pinned Tasks Vision WASM loader uses importScripts. Vite bundles this as IIFE.
  const worker=new Worker(new URL('./pose.worker.ts',import.meta.url),{type:'classic'}),pending=new Map<number,{resolve:(v:any)=>void;reject:(e:Error)=>void;timer:ReturnType<typeof setTimeout>}>();let next=0,closed=false,firstFrame=true;
  const close=()=>{if(closed)return;closed=true;worker.terminate();for(const p of pending.values()){clearTimeout(p.timer);p.reject(Error('推理已取消'));}pending.clear();signal.removeEventListener('abort',close);};signal.addEventListener('abort',close,{once:true});
  const fail=(message:string)=>{for(const p of pending.values()){clearTimeout(p.timer);p.reject(Error(message));}pending.clear();};worker.onerror=()=>fail('Worker 推理初始化失败');
  worker.onmessage=({data})=>{const p=pending.get(data.id);if(!p)return;pending.delete(data.id);clearTimeout(p.timer);data.error?p.reject(Error(data.error)):p.resolve(data);};
- const call=(data:any,transfer:Transferable[]=[])=>new Promise<any>((resolve,reject)=>{if(closed||signal.aborted){reject(Error('推理已取消'));return;}const id=++next,timer=setTimeout(()=>{pending.delete(id);reject(Error('推理响应超时'));},data.kind==='init'?12000:firstFrame?8000:1000);pending.set(id,{resolve,reject,timer});try{worker.postMessage({...data,id},transfer);}catch(e){clearTimeout(timer);pending.delete(id);reject(e);}});
+ const call=(data:any,transfer:Transferable[]=[])=>new Promise<any>((resolve,reject)=>{if(closed||signal.aborted){reject(Error('推理已取消'));return;}const id=++next,timer=setTimeout(()=>{pending.delete(id);reject(Error('推理响应超时'));},data.kind==='init'?timeouts.init:firstFrame?timeouts.firstFrame:1000);pending.set(id,{resolve,reject,timer});try{worker.postMessage({...data,id},transfer);}catch(e){clearTimeout(timer);pending.delete(id);reject(e);}});
  try{const copy=bytes.slice(0);await call({kind:'init',bytes:copy,delegate,wasm:new URL('/pose/wasm',location.origin).href},[copy]);}catch(e){close();throw e;}
  return {mode:delegate==='GPU'?'worker-gpu':'worker-cpu',close,infer:async(video,timestamp)=>{const image=await createImageBitmap(video);if(closed||signal.aborted){image.close();throw Error('推理已取消');}try{const result=await call({kind:'frame',image,timestamp},[image]);firstFrame=false;return result;}catch(e){image.close();throw e;}}};
 }
-export async function openPoseTransport(name:PoseModel,signal:AbortSignal,video?:HTMLVideoElement,options:{mainThread?:boolean}={}):Promise<PoseTransport>{
+export async function openPoseTransport(name:PoseModel,signal:AbortSignal,video?:HTMLVideoElement,options:{mainThread?:boolean;initTimeoutMs?:number;firstFrameTimeoutMs?:number}={}):Promise<PoseTransport>{
  if(name!=='lite'&&!options.mainThread&&(typeof Worker==='undefined'||typeof createImageBitmap==='undefined'))throw Error(`${poseModelLabel[name]} Worker 不可用，降级到 Lite`);
  const bytes=await modelBytes(name,signal);
- if(!options.mainThread)for(const delegate of ['GPU','CPU'] as const){try{const candidate=await workerTransport(bytes,delegate,signal);try{if(video)await candidate.infer(video,performance.now());return candidate;}catch(e){candidate.close();throw e;}}catch(e){if(signal.aborted)throw e;}}
+ const timeouts={init:options.initTimeoutMs??12000,firstFrame:options.firstFrameTimeoutMs??8000};
+ if(!options.mainThread)for(const delegate of ['GPU','CPU'] as const){try{const candidate=await workerTransport(bytes,delegate,signal,timeouts);try{if(video)await candidate.infer(video,performance.now());return candidate;}catch(e){candidate.close();throw e;}}catch(e){if(signal.aborted)throw e;}}
  // Larger variants need the worker unless the caller explicitly runs them on the main
  // thread (the iOS experiment path); the caller recovers to Lite when this throws.
  if(name!=='lite'&&!options.mainThread)throw Error(`${poseModelLabel[name]} Worker 不可用，降级到 Lite`);
