@@ -6185,6 +6185,96 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0752",
+      "expectedName": "smith deadlift",
+      "sourceId": "ai-generated-exdb-0752",
+      "sourceSha256": [
+        "3399c8fd1b92f3de7c4d99680afa52354b9e25cbdf176e6cbfe160e3a9e763b8",
+        "e62aec59bc025824d572d8da64685bdebaa1e9e4300698e63464987dc0bf94b5"
+      ],
+      "phases": [
+        "起始：站于史密斯机导轨之间，髋膝弯曲、背部挺直，正手握杠于小腿高度",
+        "关键阶段：站直锁定，杠握于大腿前侧，髋膝充分伸展"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0157",
+      "expectedName": "cable deadlift",
+      "sourceId": "ai-generated-exdb-0157",
+      "sourceSha256": [
+        "3bdeeb248156d9f786c8170f7e9c82976a81a5a6bfee6dec9529166debac949a",
+        "6219fa68cfd620138abe3c29280ba18bbafb44ae716b974597c9e91afec2e6fc"
+      ],
+      "phases": [
+        "起始：面对低位滑轮站立，髋铰链前倾、背部挺直，双臂伸直正手握直杆把手",
+        "关键阶段：站直锁定，把手停于大腿前侧，钢索保持张紧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0197",
+      "expectedName": "cable pulldown (pro lat bar)",
+      "sourceId": "ai-generated-exdb-0197",
+      "sourceSha256": [
+        "8b03dea349c96ae914a6a95d53a2328c64b2228c9273785354f433dcb1470aa4",
+        "99c8aa293d2b84fc50bb3aec81e7dad1a9ff4a15ab0829293b6eb405b3ec46fa"
+      ],
+      "phases": [
+        "起始：坐于下拉器械、大腿被压腿垫固定，双臂上伸正手宽握横杆",
+        "关键阶段：横杆下拉至上胸，肘部向下向后、肩胛收紧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0741",
+      "expectedName": "sled closer hack squat",
+      "sourceId": "ai-generated-exdb-0741",
+      "sourceSha256": [
+        "46bf85d93a032cd15719257b4686efb472bc6aad67d53c61c6fb457d47588239",
+        "b3643e15ebfb719ea4424c221f0c19ce90729d00b530740e2ac1b46a1e0e16f6"
+      ],
+      "phases": [
+        "起始：背靠哈克深蹲机靠垫、肩顶肩垫，双脚窄距全掌踩踏板，双腿伸直",
+        "关键阶段：滑轨下放，膝盖深屈、背部仍贴靠垫，双脚位置不变"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0765",
+      "expectedName": "smith seated shoulder press",
+      "sourceId": "ai-generated-exdb-0765",
+      "sourceSha256": [
+        "d5d3793ff1981d564404fded330d526463c3c4342fecb9414ec2c5fb58928033",
+        "dabf361e77968b41d98a16b8b59f2ba76113aa1fe1d5ff724e987f58bbbabe6c"
+      ],
+      "phases": [
+        "起始：坐于史密斯机靠背椅，杠位于肩部高度、正手握杠、肘部弯曲",
+        "关键阶段：杠沿导轨推至头顶上方，双臂充分伸展"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0577",
+      "expectedName": "lever chest press",
+      "sourceId": "ai-generated-exdb-0577",
+      "sourceSha256": [
+        "8af3e8b32f6fc859640ccee421865d1e83bfa6dc3c8a97ccb3391a15645d2b91",
+        "784bf082c79836f206092d1ab10875f279b680a064961ad2c65031eda927df99"
+      ],
+      "phases": [
+        "起始：坐于器械推胸机、背贴靠背，正手握把手于胸部两侧，肘屈约90度",
+        "关键阶段：把手向前推至胸前，双臂伸展、杠杆臂前摆"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
@@ -8109,7 +8199,7 @@
       "reason": "照片为跪姿杠铃深蹲，条目定义为站姿徒手跳深蹲；跪姿、杠铃、无跳跃离地。"
     }
   ],
-  "batch": 42,
+  "batch": 43,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",
