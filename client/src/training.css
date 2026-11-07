@@ -91,7 +91,7 @@
    桌面 ≥1100px 时 HUD 让位给右侧栏（计次/计时/陪练句在栏内），画面只留骨骼。 */
 .training-hud{position:absolute;inset:0;pointer-events:none;z-index:3}
 .training-hud::before{content:"";position:absolute;left:0;right:0;top:0;height:64px;background:linear-gradient(rgba(10,26,17,.38),transparent)}
-.training-hud::after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(transparent,rgba(10,26,17,.45))}
+.training-hud::after{content:"";position:absolute;left:0;right:0;bottom:0;height:132px;background:linear-gradient(transparent,rgba(10,26,17,.58))}
 /* 胶囊在左缘与右侧语音开关之间的可用带内居中：中心左移 76px、最大宽度 = 宽-176px，
    右缘恒 ≤ 宽-164px；开关实测最宽约 127px、右距 12px（左缘最浅在宽-139px），恒留 ≥25px 间隔。
    文字超长在 span 内省略，任何宽度下不与开关重叠。 */
@@ -100,7 +100,9 @@
 .training-hud-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex:none;animation:motion-pulse 1.6s ease-in-out infinite}
 .training-hud-capsule.amber .training-hud-dot{background:#f5b93f;animation:none}
 .training-hud-voice{position:absolute;top:12px;right:12px;pointer-events:auto;background:rgba(16,32,22,.82);color:#fff;border:0;font-size:12px;font-weight:600;padding:8px 12px;border-radius:999px;min-height:36px;cursor:pointer}
-.training-hud-bottom{position:absolute;left:16px;right:16px;bottom:14px;display:flex;align-items:flex-end;gap:16px}
+/* z-index:1 把底部内容整体抬到 ::after 渐变罩之上：::after 在同层叠上下文按树序绘在普通子元素之后，
+   此前它压在校准文案/计次之上，把白字与衬底一起向罩色混合、对比被压平（实测截图文字最亮仅 ~207/255）。 */
+.training-hud-bottom{position:absolute;left:16px;right:16px;bottom:14px;display:flex;align-items:flex-end;gap:16px;z-index:1}
 .training-hud-count{display:flex;align-items:flex-end;gap:10px;color:#fff;flex:none}
 .training-hud-count strong{font-size:64px;line-height:.95;font-weight:800}
 .training-hud-count span{font-size:12px;line-height:1.5;opacity:.92;padding-bottom:6px}
@@ -108,8 +110,11 @@
 .training-hud-coach span{display:block;font-size:10px;letter-spacing:.14em;color:#7fe3a8;font-weight:700;margin-bottom:2px}
 .training-hud-coach.amber span{color:#f5b93f}
 .training-hud-calib{display:flex;align-items:center;gap:14px;color:#fff}
+/* 校准文案自带与陪练气泡同款的深色底（rgba(16,32,22,.85)）：视频 contain 时卡片底部露出浅灰卡面，
+   白字原本只靠底部渐变衬托、在文案位置对比仅约 1.1:1；自带底后任何背景下对比都 ≥10:1。 */
+.training-hud-calib>div{background:rgba(16,32,22,.85);border-radius:14px;padding:10px 14px}
 .training-hud-ring{width:64px;height:64px;flex:none;transform:rotate(-90deg)}
-.training-hud-ring .ring-bg{fill:rgba(10,26,17,.35);stroke:rgba(255,255,255,.35);stroke-width:5}
+.training-hud-ring .ring-bg{fill:rgba(10,26,17,.62);stroke:rgba(255,255,255,.35);stroke-width:5}
 .training-hud-ring .ring-fg{fill:none;stroke:var(--green);stroke-width:5;stroke-linecap:round}
 .training-hud-ring text{fill:#fff;font-size:15px;font-weight:700;transform:rotate(90deg);transform-origin:32px 32px}
 .training-hud-calib b{display:block;font-size:16px;line-height:1.5}
