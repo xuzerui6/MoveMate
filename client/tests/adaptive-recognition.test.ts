@@ -33,7 +33,7 @@ test('duplicate, out-of-order, stale, wrong-run frames are never accepted',()=>{
 });
 test('brief weak tracking freezes without clearing calibration; sustained loss drops the half rep',()=>{
  const r=replay('squat');r.feed('neutral',3200,false);
- for(let i=0;i<3;i++)r.send(fixture('squat'),true,f=>f.landmarks!.forEach(p=>p.visibility=.4));assert.ok(r.tracker.ready);assert.match(r.tracker.metrics.feedback,/冻结/);
+ for(let i=0;i<3;i++)r.send(fixture('squat'),true,f=>f.landmarks!.forEach(p=>p.visibility=.4));assert.ok(r.tracker.ready);assert.match(r.tracker.metrics.feedback,/看不清/);
  for(let i=0;i<4;i++)r.send(fixture('squat'),true,f=>f.landmarks!.forEach(p=>p.visibility=.4));assert.equal(r.tracker.ready,false);assert.equal(r.tracker.metrics.reps,0);
  r.feed('neutral',3200,false);r.feed('peak');r.tracker.interrupt();r.feed('neutral',3200,false);assert.equal(r.tracker.metrics.reps,0);
 });
@@ -54,7 +54,7 @@ test('time filter keeps raw confidence and bounded outputs at varying frame rate
 
 test('tiny body framing cannot pass stable calibration',()=>{
  const r=replay('squat');for(let i=0;i<70;i++)r.send(fixture('squat'),false,f=>f.landmarks!.forEach(p=>{p.x=.5+(p.x-.5)*.05;p.y=.5+(p.y-.5)*.05;}));
- assert.equal(r.tracker.ready,false);assert.equal(r.tracker.metrics.reps,0);assert.match(r.tracker.metrics.feedback,/过小/);
+ assert.equal(r.tracker.ready,false);assert.equal(r.tracker.metrics.reps,0);assert.match(r.tracker.metrics.feedback,/有点小/);
 });
 
 test('background preparation reuses a neutral calibrated pose and rejects pre-resume frames',()=>{
@@ -92,7 +92,7 @@ for(const offset of [0,1])test(`squat counts consecutive cycles with only side $
 test('short occlusion of the tracked side freezes a squat and preserves its count',()=>{
  const r=replay('squat');r.feed('neutral',200,false);r.feed('peak',1600);
  r.send(fixture('squat','peak'),true,f=>{f.landmarks![27].x=1.1;});
- assert.match(r.tracker.metrics.feedback,/冻结/);
+ assert.match(r.tracker.metrics.feedback,/看不清/);
  r.feed('neutral',1600);
  assert.equal(r.tracker.metrics.reps,1);
  assert.equal(r.tracker.metrics.scoreAccumulator.count,0);
@@ -173,14 +173,14 @@ test('hammer curl: a brief 3D-evidence freeze preserves the in-progress cycle',(
  r.freeze(1000);
  assert.equal(r.tracker.ready,true);
  assert.equal(r.tracker.metrics.reps,0);
- assert.match(r.tracker.metrics.feedback,/三维依据暂不可靠，已冻结计数/);
+ assert.match(r.tracker.metrics.feedback,/稳一稳/);
  r.feed('neutral',1600);
  assert.equal(r.tracker.metrics.reps,1);
  assert.equal(r.tracker.metrics.scoreAccumulator.count,1);
 });
 test('hammer curl: a freeze outlasting the grace still voids the half rep',()=>{
  const r=hammerFreezeRig();r.feed('neutral',600);r.feed('peak',1200);
- r.freeze(1000);assert.equal(r.tracker.ready,true);assert.match(r.tracker.metrics.feedback,/冻结/);
+ r.freeze(1000);assert.equal(r.tracker.ready,true);assert.match(r.tracker.metrics.feedback,/稳一稳/);
  r.freeze(1700);
  assert.equal(r.tracker.ready,false);
  assert.equal(r.tracker.metrics.reps,0);

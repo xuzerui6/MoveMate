@@ -70,8 +70,8 @@ const ENCOURAGE = ['节奏很稳', '就这样', '保持住', '状态不错', '�
  * key 用于冷却去重；null 表示这条提示不值得打断用户去说。
  */
 function mapForm(feedback: string, exerciseType?:CameraExerciseType): { key: string; text: string } | null {
-  if(exerciseType && exerciseType!=='squat')return /(放慢|收紧核心|幅度|支撑|入镜)/.test(feedback)?{key:feedback,text:feedback}:null
-  if (feedback.includes('再蹲低')) return { key: 'depth', text: '还能再低一点点' }
+  if(exerciseType && exerciseType!=='squat')return /(放慢|收紧核心|幅度|支撑|入镜|贴紧)/.test(feedback)?{key:feedback,text:feedback}:null
+  if (feedback.includes('再蹲低') || feedback.includes('再往下')) return { key: 'depth', text: '还能再低一点点' }
   if (feedback.includes('膝盖')) return { key: 'knee', text: '膝盖跟着脚尖的方向' }
   if (feedback.includes('躯干') || feedback.includes('胸口')) return { key: 'trunk', text: '胸口打开，背别塌' }
   if (feedback.includes('进入画面')) return { key: 'frame', text: '往后站一点，让我看到你的全身' }
@@ -114,7 +114,7 @@ export function pickCue(input: CueInput, state: CueState): Cue | null {
     if (reps === 1) return { text: `第一${unit}，开始了`, kind: 'milestone' }
     // 半程
     if (input.targetReps > 0 && reps === Math.floor(input.targetReps / 2)) {
-      return { text: `${reps} ${unit}，一半了`, kind: 'milestone' }
+      return { text: `${reps} ${unit}，一半啦，保持住`, kind: 'milestone' }
     }
     // 每 5 次带一句鼓励，其余只报数字
     if (reps % 5 === 0) {

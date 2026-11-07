@@ -1,6 +1,7 @@
 import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
 import type {ExerciseMetrics,RecognitionDiagnostics} from './exerciseMetrics';
 import {medianLandmarks,POSE_ISSUE_COPY} from './poseFeedback';
+import { COPY_CALIBRATED, COPY_HALF_REP, COPY_NOT_SEEN, COPY_OUT_OF_FRAME } from './companionCopy';
 import {emptyCorrectionCounts,emptyFormBreakdown} from './sessionMigration';
 import {NEW_EXERCISES,type NewExerciseType} from './newExercises';
 import {LIBRARY_RECOGNITION} from '../../gym/libraryRecognition';
@@ -162,7 +163,7 @@ export class ExtendedExerciseTracker {
   requiredIndices(raw:Point[]){return this.needed(raw)}
   constructor(readonly type:ExtendedType,targetReps=20,restored:Partial<ExerciseMetrics>={},readonly prefiltered=false,readonly armOnStart=false){
     const acc={...emptyFormBreakdown(),count:0,total:0,...restored.scoreAccumulator};
-    this.metrics={...restored,reps:Math.max(0,restored.reps||0),targetReps,perfectReps:restored.perfectReps||0,formScore:acc.count?Math.round(acc.total/acc.count):0,phase:'standing',feedback:definitions[type].placement,scoreAccumulator:acc,formBreakdown:emptyFormBreakdown(),correctionCounts:{...emptyCorrectionCounts(),...restored.correctionCounts},lastRepIssues:[],repeatedIssue:null,poseFeedback:{status:'uncertain',confidence:0,issues:[],primaryIssue:null,affectedJoints:[],calibrated:false,message:'保持起始姿势两秒，准备校准'}};
+    this.metrics={...restored,reps:Math.max(0,restored.reps||0),targetReps,perfectReps:restored.perfectReps||0,formScore:acc.count?Math.round(acc.total/acc.count):0,phase:'standing',feedback:definitions[type].placement,scoreAccumulator:acc,formBreakdown:emptyFormBreakdown(),correctionCounts:{...emptyCorrectionCounts(),...restored.correctionCounts},lastRepIssues:[],repeatedIssue:null,poseFeedback:{status:'uncertain',confidence:0,issues:[],primaryIssue:null,affectedJoints:[],calibrated:false,message:'站到起始姿势，陪我停两秒'}};
     this.updateAverage();
   }
   private updateAverage(){const a=this.metrics.scoreAccumulator,b=emptyFormBreakdown();for(const k of axes)b[k]=a.count?Math.round(a[k]/a.count):0;this.metrics.formBreakdown=b;}
@@ -179,10 +180,10 @@ export class ExtendedExerciseTracker {
     else{if(this.upperArmClearAt===null)this.upperArmClearAt=now;if(now-this.upperArmClearAt>=UPPER_ARM_CLEAR_MS)this.upperArmDevAt=null;}
     return this.upperArmDevAt!==null&&now-this.upperArmDevAt>=UPPER_ARM_SUSTAIN_MS;
   }
-  interrupt(reason='已暂停，继续后重新校准'){
+  interrupt(reason='先停一下，继续时重新校准',feedback=reason){
     this.frames=[];this.worlds=[];this.last=null;this.calibration=null;this.calibrationBank=0;this.baseline=null;this.ready=false;this.side=null;this.times=[];this.previous=null;this.resetCycle();
     this.diagnostics={...this.diagnostics,stage:'tracking_lost',fps:0,calibrationProgress:0,lastResetReason:reason};
-    this.metrics={...this.metrics,phase:'standing',feedback:reason,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:false,message:reason}};
+    this.metrics={...this.metrics,phase:'standing',feedback,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:false,message:feedback}};
     return this.metrics;
   }
   private needed(raw:Point[]):number[]{
@@ -218,7 +219,7 @@ export class ExtendedExerciseTracker {
       if(tilt>30||hips.some(v=>v<60||v>130)||knees.some(v=>v<55||v>140))return '请坐稳、双脚支撑并调整为斜侧面，让屈膝坐姿清楚可见；站姿不计入';
       const raised=[angle(a[13],a[11],a[23]),angle(a[14],a[12],a[24])];
       if(this.type==='seated_curl'){
-        if(Math.max(...raised)>45)return '请让上臂靠近体侧，避免抬肩或向前抬起上臂';
+        if(Math.max(...raised)>45)return '上臂贴紧一点点，别让肩膀跟着抬';
         start=Math.min(...elbows)>=145;peak=Math.max(...elbows)<=80;measured=mean(elbows[0],elbows[1]);amplitude=cap((160-Math.max(...elbows))/95*100);symmetry=cap(100-Math.abs(elbows[0]-elbows[1])*1.5);controlPenalty=Math.max(0,Math.max(...raised)-15)*1.5;
         basis='屈膝坐姿＋上臂靠近体侧＋双肘屈伸';motion=`双肘 ${Math.round(elbows[0])}° / ${Math.round(elbows[1])}°；伸臂≥145°，弯举≤80°`;
       }else{
@@ -276,7 +277,7 @@ export class ExtendedExerciseTracker {
       if(tilt>35)return '请直立站稳，保持双上臂在体侧';
       start=Math.min(...elbows)>=145;peak=Math.max(...elbows)<=80;measured=mean(elbows[0],elbows[1]);amplitude=cap((160-Math.max(...elbows))/95*100);symmetry=cap(100-Math.abs(elbows[0]-elbows[1])*1.5);perSide=[elbows[0],elbows[1]];basis='双肘屈伸；握法由本人按说明保持';motion=`双肘 ${Math.round(elbows[0])}° / ${Math.round(elbows[1])}°；弯举≤80°、放回≥145°`;
       controlPenalty=Math.max(0,Math.max(angle(a[13],a[11],a[23]),angle(a[14],a[12],a[24]))-15)*1.5;
-      if(controlPenalty>25)hint='请让上臂靠近体侧，不要抬肩或摆动上臂借力';
+      if(controlPenalty>25)hint='上臂贴紧一点点，你会更省力';
     }else if(this.type==='front_raise'){
       if(!validWorld)return '暂时无法判断前举方向，请斜侧面拍摄，让头部和双臂清晰可见';
       const mid=(i:number,j:number):Point=>({...a[i],x:mean(a[i].x,a[j].x),y:mean(a[i].y,a[j].y),z:mean(a[i].z,a[j].z)});
@@ -338,7 +339,7 @@ export class ExtendedExerciseTracker {
     }else{
       if(tilt>30)return '请保持直立，避免俯身或抬起大腿代替后屈腿';
       const candidate:Side=knees[0]<=knees[1]?'left':'right';side=this.cycleSide||candidate;const k=side==='left'?0:1,support=1-k;
-      if(this.cycleSide&&knees[support]<135)return '请先放回本侧再换腿，未完成动作已丢弃';
+      if(this.cycleSide&&knees[support]<135)return '先放回这一侧再换腿——这个不算，也不扣分';
       const hips=angle(a[11+k],a[23+k],a[25+k]);start=Math.min(...knees)>=150;
       peak=knees[k]<=95&&knees[support]>=145&&hips>=150;
       measured=knees[k];amplitude=cap((170-knees[k])/95*100);posture=cap(100-Math.max(0,170-hips)*2);basis='单侧膝屈伸＋大腿保持向下＋另一腿支撑';motion=`${side==='left'?'左':'右'}膝 ${Math.round(knees[k])}°，髋角 ${Math.round(hips)}°；抬大腿不计数`;
@@ -360,7 +361,7 @@ export class ExtendedExerciseTracker {
     if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(breakdown.symmetry<70)issues.push('poor_coordination');
     const acc={...this.metrics.scoreAccumulator},counts={...this.metrics.correctionCounts};
     if(scored){acc.count++;acc.total+=score;axes.forEach(k=>acc[k]+=breakdown[k]);issues.forEach(k=>counts[k]++);}
-    this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`已记录第 ${this.metrics.reps+1} 次 · 本次 ${score} 分`:`已记录第 ${this.metrics.reps+1} 次 · 本次无法评分`};
+    this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`:`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};
     this.updateAverage();
     return true;
   }
@@ -418,7 +419,7 @@ export class ExtendedExerciseTracker {
     // The raw per-frame hint (controlPenalty>25 in measure) is gated through the sustained-
     // deviation hysteresis before it may surface; scoring still uses the raw penalty.
     const hint=f.hint&&this.upperArmHintVisible(f.controlPenalty>25,now)?f.hint:undefined;
-    const message=stage==='complete'?'已完成本组目标':completed?this.metrics.feedback:nearPeak?'幅度接近了，再举高一点，举到接近肩膀再放回':(hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 幅度尚未确认':''));
+    const message=stage==='complete'?'目标完成啦，漂亮':completed?this.metrics.feedback:nearPeak?'接近啦，再往上带一点点，到肩膀高再放回':(hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 继续，保持住':''));
     const issue:PoseIssue|null=f.controlPenalty>30?'unstable_movement':f.posture<70?'body_alignment':null;
     this.diagnostics={...this.diagnostics,stage};
     this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?POSE_ISSUE_COPY[issue].joints:[],calibrated:true,message:hint||(issue?POSE_ISSUE_COPY[issue].action:message)}};
@@ -439,7 +440,7 @@ export class ExtendedExerciseTracker {
     if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(breakdown.symmetry<70)issues.push('poor_coordination');
     const acc={...this.metrics.scoreAccumulator},counts={...this.metrics.correctionCounts};
     if(scored){acc.count++;acc.total+=score;axes.forEach(k=>acc[k]+=breakdown[k]);issues.forEach(k=>counts[k]++);}
-    this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`已记录第 ${this.metrics.reps+1} 次 · 本次 ${score} 分`:`已记录第 ${this.metrics.reps+1} 次 · 本次无法评分`};
+    this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`:`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};
     this.updateAverage();
     return true;
   }
@@ -498,25 +499,25 @@ export class ExtendedExerciseTracker {
     const stage=this.metrics.reps>=this.metrics.targetReps?'complete':anyPeak?(f.start?'returning':'peak'):f.start?'ready':'moving';
     const copy=definitions[this.type].stages;
     const nearPeak=stage==='moving'&&sides.every(s=>s.raised<65)&&sides.some(s=>s.raised>=45);
-    const message=stage==='complete'?'已完成本组目标':completed?this.metrics.feedback:nearPeak?'幅度接近了，再举高一点，举到接近肩膀再放回':(f.hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 幅度尚未确认':''));
+    const message=stage==='complete'?'目标完成啦，漂亮':completed?this.metrics.feedback:nearPeak?'接近啦，再往上带一点点，到肩膀高再放回':(f.hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 继续，保持住':''));
     const issue:PoseIssue|null=f.posture<70?'body_alignment':null;
     this.diagnostics={...this.diagnostics,stage};
     this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?POSE_ISSUE_COPY[issue].joints:[],calibrated:true,message:f.hint||(issue?POSE_ISSUE_COPY[issue].action:message)}};
     return this.metrics;
   }
   update(raw:Point[]|null,now:number,aspect=1,world:Point[]|null=null):ExerciseMetrics{
-    if(!raw||raw.length!==33||!Number.isFinite(now)||!Number.isFinite(aspect)||aspect<=0||raw.some(p=>!p||![p.x,p.y,p.visibility??0].every(Number.isFinite)))return this.interrupt('未检测到完整人体关键点，请调整入镜范围');
+    if(!raw||raw.length!==33||!Number.isFinite(now)||!Number.isFinite(aspect)||aspect<=0||raw.some(p=>!p||![p.x,p.y,p.visibility??0].every(Number.isFinite)))return this.interrupt('未检测到完整人体关键点',COPY_NOT_SEEN);
     if(this.last!==null&&now<=this.last)return this.metrics;
-    if(this.last!==null&&now-this.last>750){if(this.freezeBridged)this.freezeBridged=false;else this.interrupt('画面中断，半程动作已丢弃');}
+    if(this.last!==null&&now-this.last>750){if(this.freezeBridged)this.freezeBridged=false;else this.interrupt('画面中断',COPY_HALF_REP);}
     const required=this.needed(raw);
-    if(required.some(i=>(raw[i].visibility??0)<.25||raw[i].x<0||raw[i].x>1||raw[i].y<0||raw[i].y>1))return this.interrupt('必要关节离开画面或被遮挡，半程动作已丢弃');
+    if(required.some(i=>(raw[i].visibility??0)<.25||raw[i].x<0||raw[i].x>1||raw[i].y<0||raw[i].y>1))return this.interrupt('必要关节离开画面或被遮挡',COPY_OUT_OF_FRAME);
     this.frames=[...this.frames,raw].slice(-(this.prefiltered?1:5));const smooth=medianLandmarks(this.frames)!;
     // Front raise reads every angle from world landmarks (validity gated separately in
     // measure), while kneeling systematically tanks image-space hip visibility — so for
     // front raise the hips leave the smoothed-visibility reset set. The raw gate above
     // still catches a total loss, and the nose stays gated: it signs the forward axis.
     const smoothGate=this.type==='front_raise'?required.filter(i=>i!==23&&i!==24):required;
-    if(smoothGate.some(i=>(smooth[i].visibility??0)<.55))return this.interrupt('必要关节持续不清晰，请调整角度');
+    if(smoothGate.some(i=>(smooth[i].visibility??0)<.55))return this.interrupt('必要关节持续不清晰','我有点看不清——换个角度，让我看清你');
     this.worlds=world?.length===33&&world.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))?[...this.worlds,world].slice(-(this.prefiltered?1:5)):[];
     const f=this.measure(smooth,aspect,this.worlds.length?medianLandmarks(this.worlds):null,required);
     if(typeof f==='string')return this.interrupt(f);
@@ -534,7 +535,7 @@ export class ExtendedExerciseTracker {
       // at rest the direction test is always false, so the hint kept ordering the user
       // to raise an arm — and raising it zeroed the calibration they were holding.
       const calibHint=this.type==='front_raise'?undefined:f.hint;
-      const message=this.ready?'已识别起始姿势，可以开始完整动作':f.start?`保持起始姿势，校准 ${Math.round(progress*100)}%`:calibHint||(this.armOnStart?'请回到本动作起始姿势':'请回到本动作起始姿势，保持两秒');
+      const message=this.ready?COPY_CALIBRATED:f.start?`就快好啦，保持起始姿势（${Math.round(progress*100)}%）`:calibHint||(this.armOnStart?'先回到起始姿势，陪我停两秒':'回到起始姿势，陪我停两秒');
       this.metrics={...this.metrics,feedback:message,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:this.ready,confidence:f.confidence,message}};return this.metrics;
     }
     if(this.type==='hammer_curl')return this.updateHammerCurl(f,now);
@@ -571,12 +572,12 @@ export class ExtendedExerciseTracker {
           const score=Math.round(breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2+breakdown.symmetry*.2),scored=this.scoring&&f.scorable,issues:PoseIssue[]=[];
           if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(breakdown.symmetry<70)issues.push('poor_coordination');
           const counts={...this.metrics.correctionCounts};if(scored){acc.count++;acc.total+=score;axes.forEach(k=>acc[k]+=breakdown[k]);issues.forEach(k=>counts[k]++);}
-          this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`已记录第 ${this.metrics.reps+1} 次 · 本次 ${score} 分`:`已记录第 ${this.metrics.reps+1} 次 · 本次无法评分`};this.updateAverage();completed=true;
+          this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`:`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};this.updateAverage();completed=true;
         }this.resetCycle();
       }
     }else{this.returnAt=null;if(this.peak)this.retPrevAt=now;}
     const stage=this.metrics.reps>=this.metrics.targetReps?'complete':this.peak?(f.start?'returning':'peak'):f.start?'ready':'moving';
-    const copy=definitions[this.type].stages,message=stage==='complete'?'已完成本组目标':f.hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 幅度尚未确认':'');
+    const copy=definitions[this.type].stages,message=stage==='complete'?'目标完成啦，漂亮':f.hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 继续，保持住':'');
     const issue:PoseIssue|null=f.controlPenalty>30?'unstable_movement':f.posture<70?'body_alignment':f.symmetry<70?'poor_coordination':null;
     this.diagnostics={...this.diagnostics,stage};this.metrics={...this.metrics,phase:f.start?'standing':this.peak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?POSE_ISSUE_COPY[issue].joints:[],calibrated:true,message:f.hint|| (issue?POSE_ISSUE_COPY[issue].action:message)}};this.previous=f;return this.metrics;
   }

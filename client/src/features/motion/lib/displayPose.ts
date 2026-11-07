@@ -103,6 +103,29 @@ export class DisplayPoseFilter {
 }
 
 /**
+ * V4-B skeleton grading (recognition page v2, display only): a segment is only
+ * as honest as its weaker endpoint. Both endpoints clearly seen (≥ 0.5) draw a
+ * solid brand-green line; a half-seen segment (0.3–0.5) draws amber dashed —
+ * the skeleton itself says "not sure here"; below 0.3 nothing is drawn rather
+ * than pretending to track. Primary joints (shoulders/elbows/wrists — the
+ * working chain) draw filled with a white ring so they stay readable in
+ * bright light; hips/knees/ankles draw as smaller secondary points.
+ */
+export type SegmentGrade = 'solid' | 'uncertain' | 'hidden'
+export function segmentGrade(visibilityA: number, visibilityB: number): SegmentGrade {
+  const weaker = Math.min(visibilityA, visibilityB)
+  if (weaker >= 0.5) return 'solid'
+  if (weaker >= 0.3) return 'uncertain'
+  return 'hidden'
+}
+export const PRIMARY_JOINTS: readonly number[] = [11, 12, 13, 14, 15, 16]
+export function jointTier(index: number): 'primary' | 'secondary' {
+  return PRIMARY_JOINTS.includes(index) ? 'primary' : 'secondary'
+}
+/** A joint below this visibility is not drawn at all — no ghost points. */
+export const JOINT_MIN_VISIBILITY = 0.3
+
+/**
  * Push display points forward along their velocity by the measured pipeline
  * age. The horizon is clamped to `capMs`; a stale age (frame effectively
  * lost), a non-positive/non-finite age, an absurd velocity or a

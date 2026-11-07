@@ -4,6 +4,7 @@ import { exerciseInfo, type BaseCameraExerciseType as CameraExerciseType } from 
 import { analyzeSquatFrame, squatJoints, squatSideVisible } from './squatMetrics'
 import { detectPoseIssues, medianLandmarks, POSE_ISSUE_COPY } from './poseFeedback'
 import { emptyCorrectionCounts, emptyFormBreakdown } from './sessionMigration'
+import { COPY_CALIBRATED, COPY_HALF_REP, COPY_NOT_SEEN, COPY_UNCLEAR, COPY_WAIT_START, COPY_WAIT_START_PLANK } from './companionCopy'
 
 export interface ExerciseMetrics extends WorkoutMetrics {
   scoreAccumulator: ScoreAccumulator
@@ -43,10 +44,10 @@ function requiredJoints(type: CameraExerciseType, points: NormalizedLandmark[], 
 function rejectedFrameReason(type: CameraExerciseType, points: NormalizedLandmark[], side?: TrackingSide) {
   const required = requiredJoints(type,points,side)
   const edge = required.find(i => points[i].x < .035 || points[i].x > .965 || points[i].y < .025 || points[i].y > .985)
-  if(edge !== undefined) return `${jointNames[edge]}靠近或超出画面边缘，请调整距离`
+  if(edge !== undefined) return `${jointNames[edge]}靠近画面边缘啦，往后退一点点`
   const hidden = required.find(i => (points[i].visibility ?? 0) < .55)
-  if(hidden !== undefined) return `${jointNames[hidden]}不够清晰，请调整光线或拍摄角度`
-  return '请从侧面拍摄伸臂支撑，让肩到脚踝的身体连线清晰可见'
+  if(hidden !== undefined) return `${jointNames[hidden]}有点看不清，换个角度或让光线亮一点`
+  return '从侧面拍，让我看清你肩到脚踝的连线'
 }
 const clamp = (n: number) => Math.min(100, Math.max(0, n))
 /** Fast-tempo cycle rules (2026-11-07, shared with extendedRecognition/planRecognition):
@@ -178,21 +179,21 @@ export class ExerciseTracker {
   }
   private feedback(frame:Frame|null, calibrated:boolean):PoseFeedback {
     const issues=frame?.issues||['out_of_frame'],primaryIssue=issues[0]||null
-    return {status:!frame||!calibrated?'uncertain':primaryIssue?'adjust':'stable',confidence:frame?.confidence||0,issues,primaryIssue,affectedJoints:primaryIssue?POSE_ISSUE_COPY[primaryIssue].joints:[],calibrated,message:!frame?exerciseInfo(this.type).placement:!calibrated?(this.type==='push_up'?'保持伸臂支撑，正在校准':'保持自然站姿，正在校准'):primaryIssue?POSE_ISSUE_COPY[primaryIssue].action:'姿势稳定，保持这个节奏'}
+    return {status:!frame||!calibrated?'uncertain':primaryIssue?'adjust':'stable',confidence:frame?.confidence||0,issues,primaryIssue,affectedJoints:primaryIssue?POSE_ISSUE_COPY[primaryIssue].joints:[],calibrated,message:!frame?exerciseInfo(this.type).placement:!calibrated?(this.type==='push_up'?COPY_WAIT_START_PLANK:COPY_WAIT_START):primaryIssue?POSE_ISSUE_COPY[primaryIssue].action:'姿势稳定，保持这个节奏'}
   }
-  interrupt(reason = '训练暂停或已停止，继续后重新校准') {
+  interrupt(reason = '先停一下，继续时先回到起始姿势', feedback = reason) {
     this.frames=[];this.calibrationAt=null;this.calibrated=false;this.armed=false;this.peakAt=null;this.peak=null;this.returnAt=null;this.movingAt=null;this.retAnchor=null;this.retAccum=0;this.retPrevAt=null;this.pair.clear();this.issues.clear();this.consecutive={}
     this.trackingSide=undefined;this.lastFrameAt=null;this.frameTimes=[]
     this.worldFrames=[];this.squatSide=undefined;this.squatCycle=null;this.squatBaseline=null;this.jackBaseline=null;this.armsAt=null;this.legsAt=null;this.motionAt=null
     this.diagnostics={...this.diagnostics,fps:0,confidence:0,side:null,angle:null,stage:'tracking_lost',calibrationProgress:0,pairedSides:[],lastResetReason:reason}
-    this.metrics={...this.metrics,phase:'standing',poseFeedback:{...this.feedback(null,false),message:reason},feedback:reason}
+    this.metrics={...this.metrics,phase:'standing',poseFeedback:{...this.feedback(null,false),message:feedback},feedback}
     return this.metrics
   }
   update(raw:NormalizedLandmark[]|null,now:number,aspect=1,world:NormalizedLandmark[]|null=null):ExerciseMetrics {
-    if(!raw)return this.interrupt('未检测到人体，请确认所需关节都在画面内')
-    if(raw.length<29 || raw.some(p=>!p || !Number.isFinite(p.x) || !Number.isFinite(p.y) || (p.visibility!==undefined&&!Number.isFinite(p.visibility))) || !Number.isFinite(aspect) || aspect<=0 || !Number.isFinite(now))return this.interrupt('关键点数据不完整，正在等待有效画面')
+    if(!raw)return this.interrupt('未检测到完整人体关键点',COPY_NOT_SEEN)
+    if(raw.length<29 || raw.some(p=>!p || !Number.isFinite(p.x) || !Number.isFinite(p.y) || (p.visibility!==undefined&&!Number.isFinite(p.visibility))) || !Number.isFinite(aspect) || aspect<=0 || !Number.isFinite(now))return this.interrupt('关键点数据不完整',COPY_UNCLEAR)
     if(this.lastFrameAt!==null && now<=this.lastFrameAt)return this.metrics
-    if(this.lastFrameAt!==null && now-this.lastFrameAt>750)this.interrupt('画面更新中断，已丢弃半程动作，请重新校准')
+    if(this.lastFrameAt!==null && now-this.lastFrameAt>750)this.interrupt('画面更新中断',COPY_HALF_REP)
     this.lastFrameAt=now
     this.frameTimes=[...this.frameTimes,now].filter(time=>now-time<=2000).slice(-120)
     const elapsed=now-this.frameTimes[0]
@@ -205,7 +206,7 @@ export class ExerciseTracker {
     this.worldFrames=world&&world.length>=29&&world.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))?[...this.worldFrames,world].slice(-(this.prefiltered?1:5)):[]
     const smoothedWorld=this.worldFrames.length?medianLandmarks(this.worldFrames):null
     const points=medianLandmarks(this.frames),frame=points?analyzeExerciseFrame(this.type,points,aspect,this.trackingSide,smoothedWorld,this.adaptiveSquat?this.chooseSquatSide(raw):undefined):null
-    if(!frame)return this.interrupt(points?rejectedFrameReason(this.type,points,this.trackingSide):'正在等待完整人体关键点')
+    if(!frame)return this.interrupt(points?rejectedFrameReason(this.type,points,this.trackingSide):'我还在找你，站到画面里来')
     if(this.adaptiveSquat&&!this.squatSide&&frame.start)this.squatSide=this.chooseSquatSide(raw)
     if(this.type==='push_up' && !this.trackingSide && frame.start)this.trackingSide=frame.trackingSide
     this.diagnostics={...this.diagnostics,confidence:frame.confidence,side:this.squatSide||this.trackingSide||frame.trackingSide||null,angle:frame.angle??null}
@@ -253,7 +254,7 @@ export class ExerciseTracker {
       const feedback=this.feedback(frame,this.calibrated)
       const progress=this.calibrated?1:this.calibrationAt===null?0:Math.min(1,(now-this.calibrationAt)/2000)
       this.diagnostics={...this.diagnostics,stage:this.calibrated?'ready':'calibrating',calibrationProgress:progress}
-      const message=this.calibrated?'已识别起始姿势，可以开始完整动作':frame.start?`${feedback.message}（${Math.round(progress*100)}%）`:this.type==='push_up'?'先保持伸臂支撑，再开始动作':'先回到自然站姿，再开始动作'
+      const message=this.calibrated?COPY_CALIBRATED:frame.start?`${feedback.message}（${Math.round(progress*100)}%）`:this.type==='push_up'?'先摆好伸臂支撑，我在等你':'先站回自然站姿，陪我停两秒'
       this.metrics={...this.metrics,poseFeedback:feedback,feedback:message};return this.metrics
     }
     const feedback=this.feedback(frame,true)
@@ -329,13 +330,13 @@ export class ExerciseTracker {
     const stage=this.metrics.reps>=this.metrics.targetReps?'complete':this.peak?(frame.start?'returning':'peak'):frame.peak?'peak':frame.start?'ready':'moving'
     this.diagnostics={...this.diagnostics,stage,pairedSides:[...this.pair.keys()] as TrackingSide[],calibrationProgress:1}
     const instructions = {
-      squat: {ready:'站姿就绪，开始下蹲',moving:'继续下蹲，尚未达到计数深度',peak:'已到下蹲位置，请回到站立',returning:'保持站立，正在确认本次动作'},
-      jumping_jack: {ready:'手脚合拢就绪，可以开始',moving:'手脚一起展开，双手抬过肩部',peak:'已完成展开，请让手脚一起合拢',returning:'保持合拢，正在确认本次动作'},
-      high_knees: {ready:'双脚落下就绪，交替抬腿',moving:'继续抬腿，尚未达到计数高度',peak:'已抬腿，请落下后换另一侧',returning:'保持落下，正在确认这一侧'},
-      push_up: {ready:'伸臂支撑就绪，可以开始下降',moving:'继续屈肘，尚未达到计数幅度',peak:'已完成下降，请推起回到伸臂支撑',returning:'保持伸臂，正在确认本次动作'},
+      squat: {ready:'站好啦，开始下蹲',moving:'再往下一点点，你可以的',peak:'到位啦——慢慢站起来',returning:'好，站稳，我确认一下'},
+      jumping_jack: {ready:'合拢站好，我们开始',moving:'一起展开，双手抬过肩',peak:'展开到位——合拢回来',returning:'好，合拢站稳，我确认一下'},
+      high_knees: {ready:'站好啦，交替抬腿',moving:'再抬高一点点，你可以的',peak:'到位——落下，换另一侧',returning:'好，落稳，我确认一下'},
+      push_up: {ready:'支撑好啦，开始下降',moving:'再往下一点点，你可以的',peak:'到位啦——推起来，回到支撑',returning:'好，撑稳，我确认一下'},
     }[this.type]
-    const pairMessage=this.type==='high_knees'&&frame.start&&this.pair.size===1?`已完成${this.pair.has('left')?'左':'右'}侧，请完成${this.pair.has('left')?'右':'左'}侧后计一组`:null
-    const message=stage==='complete'?'已完成目标次数':unscored?'本次已计数，双侧数据不足，无法评分':completedRep?`已记录第 ${this.metrics.reps} ${exerciseInfo(this.type).unit}`:frame.peak&&!this.peak?(this.type==='jumping_jack'?'正在识别完整开合，保持自然节奏':'幅度已达到，正在确认动作，请保持平稳'):pairMessage||instructions[stage as keyof typeof instructions]
+    const pairMessage=this.type==='high_knees'&&frame.start&&this.pair.size===1?`已完成${this.pair.has('left')?'左':'右'}侧，再来${this.pair.has('left')?'右':'左'}侧，凑成一组`:null
+    const message=stage==='complete'?'目标完成啦，漂亮':unscored?'记下啦 · 两侧没看全，这次不评分':completedRep?`好，第 ${this.metrics.reps} ${exerciseInfo(this.type).unit}，记下啦`:frame.peak&&!this.peak?(this.type==='jumping_jack'?'节奏就这样，保持住':'到位啦，稳住，我确认一下'):pairMessage||instructions[stage as keyof typeof instructions]
     this.metrics={...this.metrics,phase,poseFeedback:feedback,feedback:message}
     return this.metrics
   }
