@@ -7196,6 +7196,204 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0489",
+      "expectedName": "hyperextension",
+      "sourceId": "ai-generated-exdb-0489",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "715fa4507206b3ff0d46f2afab4fcd475f4fb5c053918e6cc70e0702f508a59f",
+        "f9612a2ce592ea34868f5cfa2c96808be6713ca8605e7fff0628de8c3f35be26"
+      ],
+      "phases": [
+        "起始：背伸凳前屈下放、双臂交叉胸前",
+        "关键阶段：躯干抬至与双腿成一直线"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0491",
+      "expectedName": "incline leg hip raise (leg straight)",
+      "sourceId": "ai-generated-exdb-0491",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "b765c8a0b8dcff9c4464eea8f88fe2dc037d5f628b04827804f722c53412cd6b",
+        "6a89651fee1927f7dd78fc5a415540afd82d12b71735646fac712493a7decf40"
+      ],
+      "phases": [
+        "起始：仰卧斜凳头在高位、双腿伸直下放",
+        "关键阶段：双腿伸直上举至高位并举臀"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0582",
+      "expectedName": "lever kneeling leg curl",
+      "sourceId": "ai-generated-exdb-0582",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "0abec285a7b6d92414b3fbf92aa8eb216741e811d456abf668f1e5f846219475",
+        "742a17b1519d039f7a1f869c1d7787cf3ce558d665641e5ba1f27996c7251007"
+      ],
+      "phases": [
+        "起始：跪姿、小腿伸直、滚垫抵脚踝后",
+        "关键阶段：双小腿卷向臀部、滚垫随踝上行"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1451",
+      "expectedName": "lever seated dip",
+      "sourceId": "ai-generated-exdb-1451",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "aeefdc116cf0e0f710d7764e482f09d0553871a7bdcfceb0e6a4b6319f6c8a7e",
+        "6176978f374d64b4117fcf95c6200715b3a80e039b51afd5fefec8e456f50ee0"
+      ],
+      "phases": [
+        "起始：坐姿、双臂伸直、把手在髋侧低位",
+        "关键阶段：双肘屈、把手升至肋侧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0631",
+      "expectedName": "muscle up",
+      "sourceId": "ai-generated-exdb-0631",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "f4930723d33324e9c9cba2112e458865be23ab8c2019cf8c5d618d9a7d0415f6",
+        "99ab6ce03c3b54137dc940fcc3a8982c76d63fd1160d2c5d388a215a781c6e2c"
+      ],
+      "phases": [
+        "起始：正手悬垂、双臂伸直",
+        "关键阶段：杠上支撑、双臂伸直、杠在髋前"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0105",
+      "expectedName": "barbell standing bradford press",
+      "sourceId": "ai-generated-exdb-0105",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "23806fa983a731908600931c87a0fef935fae749dcf1fcc4c1a2028a661ad205",
+        "70b73e4e76522d209bda550c3a0dfd9eb2894c7932930d360ebdcdc332f54137"
+      ],
+      "phases": [
+        "起始：杠在下颌前、双肘屈",
+        "关键阶段：杠过顶降至颈后"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1367",
+      "expectedName": "wide grip rear pull-up",
+      "sourceId": "ai-generated-exdb-1367",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "3567cfa0b8b56e447bf47fa534b041a9457cc6d57d4b3b2908c49444a09c2fd7",
+        "0f567165e4f58e798329b2db9560a5a11878f7c3e6f45f29aa3f0c2757815fb4"
+      ],
+      "phases": [
+        "起始：正手宽握悬垂",
+        "关键阶段：杠贴颈后、头前倾"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1757",
+      "expectedName": "dumbbell single leg deadlift",
+      "sourceId": "ai-generated-exdb-1757",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "9b19ef830f7ca1b6c83dc934f3b8aaedc53cc92664442686018aedde769c7ed4",
+        "008508bef2e2c15bf451f39a3ae73a83e7347d6a4acc9828c19ec75b69a5a79e"
+      ],
+      "phases": [
+        "起始：左腿承重站立、右手持铃",
+        "关键阶段：髋铰链前屈、躯干与后腿趋近平行地面"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0410",
+      "expectedName": "dumbbell single leg split squat",
+      "sourceId": "ai-generated-exdb-0410",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "ca15d5a93cfea71071d108c66e6d5c8784a92abef9fc94af535564c50a1c6bab",
+        "e66949d89b74dd55b60406df169b90c2bf63ed09e2eac2ac70616283c0231775"
+      ],
+      "phases": [
+        "起始：后脚背搭凳、分腿站直",
+        "关键阶段：前大腿约平行地面、后膝下沉"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0466",
+      "expectedName": "gironda sternum chin",
+      "sourceId": "ai-generated-exdb-0466",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "b570ab7c25d3cebaa4dd69cf9d2bac6005fcf58dcd0b782203741af7a7084199",
+        "585653eba90b177dcdb0d9792f60b145518790b790e2cfdc494dbc5bb4ef8226"
+      ],
+      "phases": [
+        "起始：正手悬垂、身体直立",
+        "关键阶段：后仰上拉、胸骨触杠"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:2808",
+      "expectedName": "dumbbell sumo pull through",
+      "sourceId": "ai-generated-exdb-2808",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "b9f3a3fd591dd6c0bc4871edf4e30efdc18e765229e9304c8de6c4bd6fa0c140",
+        "98664123cca6ec92a11df307f52760a9797a3f0438e6c68d3edc07275181c201"
+      ],
+      "phases": [
+        "起始：宽距髋屈、双手持铃垂于腿间",
+        "关键阶段：站直伸髋、铃至体前大腿高"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
