@@ -6080,6 +6080,111 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0579",
+      "expectedName": "lever front pulldown",
+      "sourceId": "ai-generated-exdb-0579",
+      "sourceSha256": [
+        "6ffc179af1efe227543c52f223cf0cd1791c3b26ece25a4862ddf1e5147af8d8",
+        "c1ab3083c50ddf8a1ee1fed7445746ee4c6bd760406a7fe8c4356446d45566d3"
+      ],
+      "phases": [
+        "起始：坐于器械下拉机、膝下压垫，双臂上伸正手宽握把手，躯干直立",
+        "关键阶段：把手下拉至上胸，肘部下压后收，肩胛收紧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0744",
+      "expectedName": "sled lying squat",
+      "sourceId": "ai-generated-exdb-0744",
+      "sourceSha256": [
+        "d3fe4c72b52113e571ace180f9ad6cff900654d21d4a90898b0b98226a19fab7",
+        "8a23221f2e36f5ae1a441173715adbecf15484a5de4e08a806f483637c62bc54"
+      ],
+      "phases": [
+        "起始：仰卧于雪橇机、屈膝屈髋使雪橇下放，双脚与肩同宽踩踏板",
+        "关键阶段：双腿蹬伸至近直，脚位不变，手握两侧把手"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1359",
+      "expectedName": "smith bent over row",
+      "sourceId": "ai-generated-exdb-1359",
+      "sourceSha256": [
+        "754c62ea369ff762a3a07ad6811e695e89156dfbe1c44878ae5a4d19653dd8f9",
+        "fca1d889a8f641ee182b8ed867ba18f23a9c18f3161eb4e9e9d93312aec77df2"
+      ],
+      "phases": [
+        "起始：俯身髋铰链约45°、背部挺直、膝微屈，正手握杠于膝高，手臂伸直",
+        "关键阶段：杠沿导轨拉至下胸，肘部后收，肩胛收紧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0775",
+      "expectedName": "smith upright row",
+      "sourceId": "ai-generated-exdb-0775",
+      "sourceSha256": [
+        "960f0b011b707c47972d828a1c5c05ffa11893ca3e1dfbaefcf5452543fdfcad",
+        "b178d8ed38f9b3ed9699592eccd26fb5e6c230411f9bb9db3f7a8ff8e2847ec8"
+      ],
+      "phases": [
+        "起始：站立面向史密斯机，正手宽握杠于大腿前，手臂伸直",
+        "关键阶段：杠贴身拉至下巴下方，肘部高举领先，上臂近水平"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1323",
+      "expectedName": "cable rope seated row",
+      "sourceId": "ai-generated-exdb-1323",
+      "sourceSha256": [
+        "06fae9279ba18a94d9c81a38f4f61039b9bc3fae28dc6cedc6a8a15cb6b3f796",
+        "f651abba65e955c3b0ed25d6749f4cd287e29a144c5b368dcced666553a9e383"
+      ],
+      "phases": [
+        "起始：坐于划船台、双脚踩踏板、膝微屈，双手掌心相对握绳柄两端，手臂前伸",
+        "关键阶段：绳柄拉至下肋两侧，肘部后收，肩胛收紧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0603",
+      "expectedName": "lever shoulder press",
+      "sourceId": "ai-generated-exdb-0603",
+      "sourceSha256": [
+        "e8ad8cea969db9bf779c8365d4ba69d40564eac77aa51be809ddfe5ede8e1033",
+        "51e99339dd36118422a7a40b6d35f3cb69580b3c9988f86027f0408dbbb4d021"
+      ],
+      "phases": [
+        "起始：坐于器械肩推机、背靠靠背，正手握把手与肩同高",
+        "关键阶段：把手推至头顶上方，双臂伸展且肘部未锁死"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0749",
+      "expectedName": "smith bent knee good morning",
+      "sourceId": "ai-generated-exdb-0749",
+      "sourceSha256": [
+        "a6574adf908ea847b086a1360de8c2c653b77e811cbfeb9d9f0d0588678c8754",
+        "995c542beae0a5ca29a4706aa1d447d266a9c0c27baf92bf91f322bd6bf85d3c"
+      ],
+      "phases": [
+        "起始：站立于史密斯机，杠置于上背斜方肌，双手于肩侧握杠",
+        "关键阶段：髋铰链前俯至躯干与地面平行，背部挺直，膝微屈"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
@@ -8004,7 +8109,7 @@
       "reason": "照片为跪姿杠铃深蹲，条目定义为站姿徒手跳深蹲；跪姿、杠铃、无跳跃离地。"
     }
   ],
-  "batch": 41,
+  "batch": 42,
   "siteVideos": [
     {
       "key": "site-pexels-3048952",
