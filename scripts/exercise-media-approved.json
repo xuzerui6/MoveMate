@@ -9032,6 +9032,204 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1277",
+      "expectedName": "dumbbell fly on exercise ball",
+      "sourceId": "ai-generated-exdb-1277",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "45d0a64338b381712835d892df3bee8ea1e1472f1c4a59c8ac8be7e7ed67f48f",
+        "ba90c212d66d4a26c608b15b7d8ada187321ff581a9dd7794b9f6301ecda6c89"
+      ],
+      "phases": [
+        "起始：仰卧健身球，头颈上背托球、双脚平地、臀部抬起成桥，双铃中立握伸直举于胸部上方",
+        "关键：双臂以宽弧线向两侧打开放低，肘部微屈，哑铃降至与胸部同高"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1283",
+      "expectedName": "dumbbell incline press on exercise ball",
+      "sourceId": "ai-generated-exdb-1283",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "90a330d22f0985d52e9caf2312678b4fc2e70d3174fefc60fb19d133f9534e47",
+        "b529bac7b4177cab434dbe0e4b4602225af263543583af03abdfaf8dc2a44a3c"
+      ],
+      "phases": [
+        "起始：上背靠球、臀部低于肩部、躯干约 45 度上斜，双铃正握停于肩高、肘部弯曲向外",
+        "关键：双臂沿躯干斜上方推至完全伸直，哑铃收于胸部斜上方"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1290",
+      "expectedName": "dumbbell one arm press on exercise ball",
+      "sourceId": "ai-generated-exdb-1290",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "9c54b2534d32252c5e4458ccaa7fd2312c58a3909f216f33088f82d084a3b935",
+        "0d838267002825bcc1e042c3204ea20e8041531bdb8a82c9bf51a0204026784f"
+      ],
+      "phases": [
+        "起始：坐于健身球上，右手正握哑铃停于右肩外侧，左手扶髋",
+        "关键：右臂向上推至头顶、完全伸直，哑铃停于头顶上方"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0353",
+      "expectedName": "dumbbell one arm concentration curl (on stability ball)",
+      "sourceId": "ai-generated-exdb-0353",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "a46a11af5063d303af862748f0a532b4d28b81c2c8ebd0b5f7f98ca45923c68a",
+        "f3e5943cc2033d4d42b85e672e9e346de6acbbb77ed7f7fba7cff619f86aa4da"
+      ],
+      "phases": [
+        "起始：坐于健身球上，右肘抵住右大腿内侧，哑铃垂于双膝之间",
+        "关键：上臂不离大腿内侧，屈肘把哑铃弯举至接近右肩"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1668",
+      "expectedName": "dumbbell one arm seated bicep curl on exercise ball",
+      "sourceId": "ai-generated-exdb-1668",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "620c0cdde202c59b376fb73b9c2af50446d74b21d765481d56183298c9ba7c3c",
+        "63cfb9d0a30cc21c8428c17d5e411f42e325c50ce93410d911e1c8985dc6a16b"
+      ],
+      "phases": [
+        "起始：坐于健身球上，右臂伸直垂于体侧悬空，左手轻放左大腿",
+        "关键：上臂保持垂直悬空不动，屈肘把哑铃弯举至接近右肩"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1344",
+      "expectedName": "ez bar reverse grip bent over row",
+      "sourceId": "ai-generated-exdb-1344",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "49e9e017015110e971d213c360baa9551fb8719b3fc107201ae94fee3167ec74",
+        "23854654f0a7816c8044f8a7a37c09e17fc5dbb5b7ff25b6d19d6f50ec3dcc8a"
+      ],
+      "phases": [
+        "起始：俯身躯干近平行，反握（掌心向上）托握装片 EZ 杠，杠垂于胸部下方",
+        "关键：双肘向后拉起，杠拉至下胸前，肩胛骨夹紧，掌心仍朝上"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1621",
+      "expectedName": "dumbbell one arm hammer press on exercise ball",
+      "sourceId": "ai-generated-exdb-1621",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "bffebe39cbc58db0019f6f5746f275d61ffd8b88dd6d458828adce353623e6d7",
+        "14fd939a42cdb201d9007bec6369e595fa8fec1ad46637780c618fe8e250e5d1"
+      ],
+      "phases": [
+        "起始：坐于健身球上，右手中立握哑铃竖于右肩侧，肘弯约 90 度，左手扶髋",
+        "关键：右臂推至头顶完全伸直，哑铃转为前后向停于头顶上方"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1736",
+      "expectedName": "dumbbell one arm french press on exercise ball",
+      "sourceId": "ai-generated-exdb-1736",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "5436cc9a170e31de70d3fae20620dde950ef11045536c8ea05c41461a5ba0caf",
+        "7f90e332b6cbc311efc76ae062fd6466f3791ce59676c3d3869d2db28a361116"
+      ],
+      "phases": [
+        "起始：坐于健身球上，右臂伸直把哑铃举过头顶，上臂贴近耳侧保持竖直，左手扶髋",
+        "关键：上臂保持竖直不动，仅屈肘把哑铃降至脑后"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1331",
+      "expectedName": "dumbbell reverse grip incline bench two arm row",
+      "sourceId": "ai-generated-exdb-1331",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "0f8ba08a61d54495af4fbe919e932ce739739cb26c65a3e3e25823354c662986",
+        "72bdf64cca0de4fb618803e0bed07af967ec33900e34a35aaa075c28c89bade5"
+      ],
+      "phases": [
+        "起始：俯卧 45 度上斜凳、胸腹贴凳，双臂反握（掌心朝前）伸直垂悬",
+        "关键：双肘贴近身体向后拉起，哑铃拉至下胸部两侧，肩胛骨夹紧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0311",
+      "expectedName": "dumbbell full can lateral raise",
+      "sourceId": "ai-generated-exdb-0311",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "6ae2acfcaa43a489aa1732d58b8abbd41d73080b3c8314fa2fd70a3d301b9698",
+        "85f43a27da61d5e44c86a420b404929ae18b6360713fb1a076281657ceaf4ed0"
+      ],
+      "phases": [
+        "起始：站立，双手各握哑铃垂于身体两侧，拇指朝前",
+        "关键：双臂在肩胛平面内抬至与肩同高，肘部微屈，拇指朝上（满罐式）"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0812",
+      "expectedName": "triceps dip (bench leg)",
+      "sourceId": "ai-generated-exdb-0812",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "5afad4805a2163496123d53fcc6b0e7272aef0b502e46ee699b8a0540b21d7b5",
+        "fb1093aceaf1a8525f64645f7d6c71c70e22dba9d787ebe24cbb17023f71d922"
+      ],
+      "phases": [
+        "起始：双手向后撑住凳沿、双臂伸直，脚跟搭在前方同高凳面上，身体成一条斜线",
+        "关键：屈肘约 90 度下沉，上臂接近与地面平行，臀部接近地面"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
