@@ -6635,6 +6635,156 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0748",
+      "expectedName": "smith bench press",
+      "sourceId": "ai-generated-exdb-0748",
+      "sourceSha256": [
+        "c9edc5f08896f15c9dc9baeb7a7b82f946db7a3ec2ff749fdefaae8a2e407545",
+        "33bdf2e62120e124178cf1fcd78ece3841c11a9766c4f5270501bddd2a64f48e"
+      ],
+      "phases": [
+        "起始：平凳仰卧于史密斯机下，正手略宽于肩握杠，肘深屈，杠下放至上胸",
+        "关键阶段：双臂伸展，杠沿导轨推至胸部上方"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0597",
+      "expectedName": "lever seated hip abduction",
+      "sourceId": "ai-generated-exdb-0597",
+      "sourceSha256": [
+        "c61bed01d38b40dd873fdd869c2904679aead97b3ac335f296f05f5f930edf13",
+        "a52b0fdc5f5fcdc0e8102e95af6d69d952760b63cf69dbb12fb048431bc91268"
+      ],
+      "phases": [
+        "起始：坐姿背贴靠背，双腿并拢，大腿外侧贴推垫，双脚踩踏板，手握侧把",
+        "关键阶段：双腿外展将推垫推开至最开位，躯干保持端正"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0017",
+      "expectedName": "assisted pull-up",
+      "sourceId": "ai-generated-exdb-0017",
+      "sourceSha256": [
+        "ad209bb2b7ffd3dfa4d0be618a8d626172a0c5a914b3416987086340fb76ff9a",
+        "bd9fadd65c19bc8b80cd45d2a0f10999f989e6a23bfcfa9b0c7ea9ea309b9dd4"
+      ],
+      "phases": [
+        "起始：双膝跪于辅助跪垫，正手略宽于肩握杠，双臂完全伸直悬于杠下",
+        "关键阶段：屈肘上拉至下巴过杠，肘收于体侧，肩胛下沉"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0575",
+      "expectedName": "lever bicep curl",
+      "sourceId": "ai-generated-exdb-0575",
+      "sourceSha256": [
+        "f349599f7e486f1c153d66661e66a680a858d7f271bcedfc80adc6757a886afc",
+        "a481fc1d243ad13cafffd68e22d33562c1fddcd73e8c2d842819621911ac1068"
+      ],
+      "phases": [
+        "起始：坐姿背贴椅背，反手掌心向上握低位把手，双臂伸直垂下",
+        "关键阶段：屈肘将把手上卷至肩前，上臂贴体侧不动"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0160",
+      "expectedName": "cable floor seated wide-grip row",
+      "sourceId": "ai-generated-exdb-0160",
+      "sourceSha256": [
+        "dae22a6e593cb150f621185e15101d93afc17064f9084bb284e96cd0abeb338f",
+        "06e97c90ee756a5b3977742b4d167a50b04c8a86af91dc6100d10c184ded480d"
+      ],
+      "phases": [
+        "起始：坐于地板双腿伸直，面向低滑轮，正手宽握长直杆，双臂向前伸直",
+        "关键阶段：长直杆拉至腰腹前，肘后收，肩胛夹紧，上身略后倾"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1641",
+      "expectedName": "cable seated curl",
+      "sourceId": "ai-generated-exdb-1641",
+      "sourceSha256": [
+        "75e708e185cbebbdd0cf560feba5cdbdab5b3a574257bdf04ceb35f4bf48ad3f",
+        "b9f65e9e85e7cfe6e8c8e5aaf9eb62d2143352bcad6c93d3544d8c77e7de232d"
+      ],
+      "phases": [
+        "起始：坐于平凳上面向绳索机，反手掌心向上握低滑轮直杆，双臂伸直垂下",
+        "关键阶段：屈肘将直杆卷至肩前，上臂贴体侧不动"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1361",
+      "expectedName": "smith reverse grip bent over row",
+      "sourceId": "ai-generated-exdb-1361",
+      "sourceSha256": [
+        "446db6404fe642c9cae1a9c7d099a41b276ad8d179e95c122c0f45254d7fe768",
+        "3f7877de2480587286a1686195516bbbc1e0a774dd294385af95a9addfa186b2"
+      ],
+      "phases": [
+        "起始：髋铰链俯身约45度、背部平直，反手与肩同宽握史密斯杠，双臂伸直、杠垂于膝前",
+        "关键阶段：杠沿导轨拉至下胸与上腹之间，肘后收，肩胛夹紧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1615",
+      "expectedName": "lever hammer grip preacher curl",
+      "sourceId": "ai-generated-exdb-1615",
+      "sourceSha256": [
+        "56bd0d7d1069727a051187031a268b8e8b520ed156a1eb79262c409a1a246e25",
+        "98ae42c721cacda04cd333cf1d6d69234fc93e5cd8fb0ac73e9be86f8a250c9c"
+      ],
+      "phases": [
+        "起始：上臂贴牧师斜垫，锤式握竖直把手（掌心相对、拇指朝上），双臂沿垫伸直",
+        "关键阶段：屈肘将把手卷至肩前，上臂始终贴垫"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0756",
+      "expectedName": "smith hip raise",
+      "sourceId": "ai-generated-exdb-0756",
+      "sourceSha256": [
+        "e8b92e49b4365f4ab5ebfe911edacd2b940aba24bb0536aef3374f1b8711326f",
+        "b4817b8b70c6dde16c9582cc6971e7527ff1eac5bfe9a864de5b41b4b69789ad"
+      ],
+      "phases": [
+        "起始：肩胛下沿搭凳沿，躯干后倾，臀部下沉近地面，带护垫的杠横压髋部",
+        "关键阶段：臀部上顶至大腿与躯干成直线，膝、髋、肩成线"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0185",
+      "expectedName": "cable lying fly",
+      "sourceId": "ai-generated-exdb-0185",
+      "sourceSha256": [
+        "4eab256643535fc59358373c52cb700ac3b4770bf4511eb88eea64b9ce9066bb",
+        "abd33e47608d8a83aa6b7a753bb7c08afb7c4b66980434002d149d38242344a2"
+      ],
+      "phases": [
+        "起始：平凳仰卧，双手握D把合拢于胸部上方，掌心相对，双臂伸直略屈肘",
+        "关键阶段：双臂沿宽弧线向两侧下放至凳面高度，肘角保持不变"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
