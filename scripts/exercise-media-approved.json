@@ -6365,6 +6365,156 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0598",
+      "expectedName": "lever seated hip adduction",
+      "sourceId": "ai-generated-exdb-0598",
+      "sourceSha256": [
+        "b24aa02640ccc02acde83f7442a65adeab9518682ed312bbfe3119b0290a9c90",
+        "e472a7b54b370e9045d471495e142917cea51a124194f1409ff4bdd28aa8669e"
+      ],
+      "phases": [
+        "起始：坐姿背贴靠背、双腿张开，内侧压垫贴于膝内侧，双脚踩踏板",
+        "关键阶段：双腿并拢挤压大腿内侧，两压垫在膝间相合，躯干保持直立"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0199",
+      "expectedName": "cable pushdown (straight arm) v. 2",
+      "sourceId": "ai-generated-exdb-0199",
+      "sourceSha256": [
+        "0a76c370787ea59a72c89609ccd28e47bb1c99c61530d8b6d9a77afc7f395d4c",
+        "b4608977e06cddea7cad42237e08939de2cb2ef34d75785827ed663606752a15"
+      ],
+      "phases": [
+        "起始：面向高滑轮站立、正手与肩同宽握直杆，双臂伸直位于身前上方，钢索张紧",
+        "关键阶段：双臂保持伸直，把直杆沿弧线下压至大腿前方，配重片提起"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0453",
+      "expectedName": "ez barbell seated triceps extension",
+      "sourceId": "ai-generated-exdb-0453",
+      "sourceSha256": [
+        "ba1b44ac72b959994b3e8f5c40d21eb8134aacbf1373d27ed710a4c5e649d8c6",
+        "5bbfcb6385c2ebdec753187d64f499651d24cfbfc71526c5c305acf90d7e2ff0"
+      ],
+      "phases": [
+        "起始：坐凳、正手握曲杠内侧弯位，双臂伸直将杠举过头顶",
+        "关键阶段：仅屈肘将杠降至脑后，上臂保持竖直贴近耳侧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1700",
+      "expectedName": "dumbbell push press",
+      "sourceId": "ai-generated-exdb-1700",
+      "sourceSha256": [
+        "0f4d5a430d7d0b3874d800888b1b36ad13a80fce8852b861b0e969db2fc9bd8a",
+        "2bbcd2ac3026608905729eecbdeb4e13acfb7112ee11bfa4258b2b496d878647"
+      ],
+      "phases": [
+        "起始：站立、双哑铃置于肩高掌心相对，屈膝浅下沉借力",
+        "关键阶段：伸腿站直，双哑铃过顶、双臂伸直锁定"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0535",
+      "expectedName": "kettlebell hang clean",
+      "sourceId": "ai-generated-exdb-0535",
+      "sourceSha256": [
+        "938636d0c7d057a786509a4993e612ea05e1884077ce3ff90b7a72b581b5f61e",
+        "354105ef261097505013cf9ebb6da25037094b5819cf669fe454ef50a32d2018"
+      ],
+      "phases": [
+        "起始：单手握壶铃悬于两腿之间，髋铰链后移、背平、膝微屈",
+        "关键阶段：站直成架位，壶铃靠在前臂背侧、手在肩前，肘内收贴肋"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0673",
+      "expectedName": "reverse grip machine lat pulldown",
+      "sourceId": "ai-generated-exdb-0673",
+      "sourceSha256": [
+        "ed3516c7a42f58e14e70a63fab09dd3a571f0a3dcf0e76368a18296b8e51888b",
+        "dd3fc17bf4a178b3a892324ed63a2c1e812d83a2ab8fe0b77ec8f304dc3d3b87"
+      ],
+      "phases": [
+        "起始：坐姿压腿垫固定，反手（掌心向上朝己）略宽于肩握把，双臂上伸",
+        "关键阶段：把手下拉至上胸，肘部下压后收，握法保持反手"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0228",
+      "expectedName": "cable standing hip extension",
+      "sourceId": "ai-generated-exdb-0228",
+      "sourceSha256": [
+        "2d3988e8a3e236b4f52734293f653bb8e38ede4ebc5e91dc52241ec0a75231d0",
+        "5c22e2949172afb507ef7426eb710c41c2485c07acf452778ff66766851e05f4"
+      ],
+      "phases": [
+        "起始：背对低滑轮站立，踝带固定工作腿脚踝，钢索在身后张紧，双脚着地",
+        "关键阶段：整条腿保持伸直从髋部后摆约 35 度，脚尖绷直，躯干直立"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0086",
+      "expectedName": "barbell seated behind head military press",
+      "sourceId": "ai-generated-exdb-0086",
+      "sourceSha256": [
+        "49b89c9111eb0802478ba23b24b41aca6a301d812d7fbd104552ecabc5dd4c83",
+        "5aa9df106641122a44e8bda8cacfa171a6ae1c3a3a3166c4d4052a0530861ace"
+      ],
+      "phases": [
+        "起始：坐凳、正手略宽握，杠铃置于颈后肩高",
+        "关键阶段：杠铃垂直上推至头顶上方，双臂伸展"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0573",
+      "expectedName": "lever back extension",
+      "sourceId": "ai-generated-exdb-0573",
+      "sourceSha256": [
+        "091a2903e7a5838a337bd4b56695cef17ec726478ad4769f803b87b623be86f2",
+        "7a7b60f9af49e9c6c9ccd8752f084627388175e046ab4a17b642211b9f6c7010"
+      ],
+      "phases": [
+        "起始：坐姿背伸机上躯干前屈约 45 度，上背贴背垫，双脚踩踏板固定",
+        "关键阶段：躯干后伸至直立，上背压紧背垫"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:2741",
+      "expectedName": "ez-barbell standing wide grip biceps curl",
+      "sourceId": "ai-generated-exdb-2741",
+      "sourceSha256": [
+        "849a999f0119b9e39501bf0242ebdba816e17e41df195a73d89818888765779d",
+        "48e8e0ba5c75668d43aa36a2ebcd5a92c28edb6b6c8694531dfb4f9ff73d9d5d"
+      ],
+      "phases": [
+        "起始：站立、反手握曲杠外侧宽位（宽于肩），双臂伸直、杠悬于大腿前",
+        "关键阶段：屈肘弯举至肩高，肘贴体侧，掌心向上、握位不变"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
