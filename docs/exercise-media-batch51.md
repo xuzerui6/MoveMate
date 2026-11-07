@@ -47,9 +47,9 @@
 ## 验证与部署记录
 
 - 构建：`build-exercise-media.py --staging generated-batch14 --only <11 条>`——Published 574 image entries；发布链 `publish-media-metadata`（574 条懒加载记录）→ `publish-exercise-documentation` → `report-exercise-media.ts` 依次执行。
-- 测试（串行）：
-- CI：
-- 部署：
+- 测试（串行，全绿）：client `test:repository` 341/341（合入当日最新 main 后复测 360/360）、server 103/103 + build、cloudflare 34/34 + typecheck。本批台账 `expectedName` 全部取目录英文原文，未重演批次 50 的中文名教训。
+- CI：分支 `media/exercise-media-batch51` workflow_dispatch 绿；快进合入 main（4bac260）后 main CI 绿。本批基点为 dba228c，合入前已先同步当日 main 的分享卡提交（fe86da9/d40d040）并复测。
+- 部署：基于最新 main 双站部署——生产 Version `65cf53d9-bb45-48a0-ad97-7e5cda66d25d`，预览 Version `620211c3-e28f-4728-8548-a50913abc8ae`。双站 `/health` 均 200；本批 22 张 WebP 逐图自双站下载与本地发布物 sha256 比对 44/44 一致；exdb:0631 详情 JSON 双站与本地逐字节一致。
 
 ## 口径与后续
 
