@@ -7680,22 +7680,37 @@
     {
       "id": "exdb:0157",
       "originalName": "cable deadlift",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源面向绳索机，候选为背向绳索机的胯下绳索动作。 当前不发布此候选，不计完整覆盖。",
+      "reason": "AI 生成双帧（2026-11-07 按条目定义逐张核对后采用）：起始髋铰链前倾、背平、双臂伸直正手握低位滑轮直杆把手、钢索连线清楚；关键阶段站直锁定、把手于大腿前、钢索张紧（首版头部出框已重生成替换），两帧同机同景。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "86d797a2dc452c44e657d0aa882a67a80f80e66a6a473272859ba88c2da30da2",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0157",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch43.md",
+          "version": "2026-11-07 · 生成批次 43",
+          "sourceSha256": [
+            "3bdeeb248156d9f786c8170f7e9c82976a81a5a6bfee6dec9529166debac949a",
+            "6219fa68cfd620138abe3c29280ba18bbafb44ae716b974597c9e91afec2e6fc"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0158",
@@ -9205,22 +9220,37 @@
     {
       "id": "exdb:0197",
       "originalName": "cable pulldown (pro lat bar)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：名称pro lat bar，但正文未说明专用杆弯角/握部，不能套普通直杆图片。",
+      "reason": "AI 生成双帧（2026-11-07 按条目定义逐张核对后采用）：坐姿压腿垫、正手宽握长横杆（专业背阔杆，杆端下弯）清楚，起始双臂上伸、关键阶段横杆至上胸且配重片提起，两帧一次通过。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "7e7978adee93d0a853b1673e960c820a063e294aab5d1cbfb20391b119530c56",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0197",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch43.md",
+          "version": "2026-11-07 · 生成批次 43",
+          "sourceSha256": [
+            "8b03dea349c96ae914a6a95d53a2328c64b2228c9273785354f433dcb1470aa4",
+            "99c8aa293d2b84fc50bb3aec81e7dad1a9ff4a15ab0829293b6eb405b3ec46fa"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1638",
@@ -25307,22 +25337,37 @@
     {
       "id": "exdb:0577",
       "originalName": "lever chest press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：与0576同名同文，坐姿双柄推明确，但无法确认独立机型/握法差异，保留ID。",
+      "reason": "AI 生成双帧（2026-11-07 按条目定义逐张核对后采用）：首版起始把手近耳侧、与肩推机难分被废弃，定版机身自带「坐姿推胸机」标识、把手于胸侧、肘屈约90度，关键阶段双臂前推伸展、杠杆臂前摆，两帧同机。与 0576 同名的问题按 ID 独立保留的原口径处理，机型已由定版图证确认。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "d2a5c174bcf2cc8deb371e12f07b1d4af76a8ea25f93819ef82300eaeb0fd35c",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0577",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch43.md",
+          "version": "2026-11-07 · 生成批次 43",
+          "sourceSha256": [
+            "8af3e8b32f6fc859640ccee421865d1e83bfa6dc3c8a97ccb3391a15645d2b91",
+            "784bf082c79836f206092d1ab10875f279b680a064961ad2c65031eda927df99"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0576",
@@ -30886,22 +30931,37 @@
     {
       "id": "exdb:0741",
       "originalName": "sled closer hack squat",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题closer，正文肩宽站距，窄距区别未说明，机架接触也不完整。",
+      "reason": "AI 生成双帧（2026-11-07 按条目定义逐张核对后采用）：哈克深蹲机靠垫与肩垫、双脚窄距全掌踩板、双腿伸直的起始位与滑轨下放、膝深屈、脚位不变的关键阶段均清楚，两帧一次通过。名称（closer）与原文站距措辞不一致，按既定口径以名称为准并已在本记录注明。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a6819df4688fa6a9dfec10b4d91ad9e9f561e2df6e83c4bb4fcac6ec6c86f30c",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0741",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch43.md",
+          "version": "2026-11-07 · 生成批次 43",
+          "sourceSha256": [
+            "46bf85d93a032cd15719257b4686efb472bc6aad67d53c61c6fb457d47588239",
+            "b3643e15ebfb719ea4424c221f0c19ce90729d00b530740e2ac1b46a1e0e16f6"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0742",
@@ -31241,22 +31301,37 @@
     {
       "id": "exdb:0752",
       "originalName": "smith deadlift",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：设杠髋高却描述像地面起拉，没有下限位/起点，导轨与脚位需核对。",
+      "reason": "AI 生成双帧（2026-11-07 按条目定义逐张核对器械、握法、体位与动作阶段后采用）：首版起始帧画成地面自由杠铃被废弃，定版杠身与史密斯导轨明确相连，起始髋膝弯曲、背平、正手握杠于小腿高度，关键阶段站直锁定、杠于大腿前，两帧同机位同器械。原 needs_review 顾虑（导轨与脚位）已由定版图证解决。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "928a3557436fd06c7cc43ccce1d03df6d4fdc19262c3c104e8381306418af1ee",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0752",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch43.md",
+          "version": "2026-11-07 · 生成批次 43",
+          "sourceSha256": [
+            "3399c8fd1b92f3de7c4d99680afa52354b9e25cbdf176e6cbfe160e3a9e763b8",
+            "e62aec59bc025824d572d8da64685bdebaa1e9e4300698e63464987dc0bf94b5"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0753",
@@ -31781,22 +31856,37 @@
     {
       "id": "exdb:0765",
       "originalName": "smith seated shoulder press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文握独立手柄而非横杆，缺导轨与凳角，需确认机器种类。",
+      "reason": "AI 生成双帧（2026-11-07 按条目定义逐张核对后采用）：坐姿靠背、杠身与史密斯导轨相连、起始杠于肩高正手握、关键阶段杠推至头顶上方双臂伸展，两帧一次通过。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "8a386b6cc729f5fd5b88abf91ae3ffa626d5632ffca9c5e92643c5857182276e",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0765",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch43.md",
+          "version": "2026-11-07 · 生成批次 43",
+          "sourceSha256": [
+            "d5d3793ff1981d564404fded330d526463c3c4342fecb9414ec2c5fb58928033",
+            "dabf361e77968b41d98a16b8b59f2ba76113aa1fe1d5ff724e987f58bbbabe6c"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1426",
