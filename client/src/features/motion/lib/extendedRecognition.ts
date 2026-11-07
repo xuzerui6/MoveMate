@@ -128,6 +128,11 @@ export class ExtendedExerciseTracker {
   private worlds:Point[][]=[];
   private last:number|null=null;
   private calibration:number|null=null;
+  /** Start-pose hold time banked across interruptions of the hold itself: calibration
+   * progress is latched (pause, never rewind) so a user who starts moving mid-calibration
+   * — e.g. following a stray hint — no longer loses the 42%→13% they had earned. Only a
+   * real tracking loss (interrupt) clears the bank. */
+  private calibrationBank=0;
   private baseline:Measurement|null=null;
   private ready=false;
   private times:number[]=[];
@@ -175,7 +180,7 @@ export class ExtendedExerciseTracker {
     return this.upperArmDevAt!==null&&now-this.upperArmDevAt>=UPPER_ARM_SUSTAIN_MS;
   }
   interrupt(reason='已暂停，继续后重新校准'){
-    this.frames=[];this.worlds=[];this.last=null;this.calibration=null;this.baseline=null;this.ready=false;this.side=null;this.times=[];this.previous=null;this.resetCycle();
+    this.frames=[];this.worlds=[];this.last=null;this.calibration=null;this.calibrationBank=0;this.baseline=null;this.ready=false;this.side=null;this.times=[];this.previous=null;this.resetCycle();
     this.diagnostics={...this.diagnostics,stage:'tracking_lost',fps:0,calibrationProgress:0,lastResetReason:reason};
     this.metrics={...this.metrics,phase:'standing',feedback:reason,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:false,message:reason}};
     return this.metrics;
@@ -279,7 +284,24 @@ export class ExtendedExerciseTracker {
       const face=dot(vector(a[0],shoulder),forward);
       if(Math.abs(face)<dist(shoulder,pelvis)*.06||dist(a[11],a[12])<.05)return '前举方向不清晰，请调整为斜侧面并让头部入镜';
       if(face<0)forward=forward.map(v=>-v);
-      const raised=[angle(a[13],a[11],a[23]),angle(a[14],a[12],a[24])];
+      // Raised angle (2026-11-07 round 2): the shoulder→wrist direction projected
+      // onto the body sagittal plane (torso-down axis × forward axis), NOT the 3D
+      // elbow angle against the same-side hip. Replaying the production model over
+      // the failed retest's footage showed the world-landmark ELBOW is the weak
+      // link for a toward-camera raise: its forward extent recovers only ~50–65%
+      // of the anatomical upper-arm length with a spurious downward pull, so the
+      // elbow-based angle under-reads a shoulder-height raise by up to ~20° on
+      // individual frames (worse side). The wrist vector spans both segments, so
+      // the same absolute distortion is a far smaller angular error: on the same
+      // straight-arm peak frames its sagittal angle read median 91° (p25 84°)
+      // against the elbow channel's 88° (p25 80°) — and with exact synthetic
+      // landmarks both definitions read exactly the true angle, so the gate band
+      // below is unchanged. Form is still guarded by the elbow ≥140° peak rule:
+      // the wrist line may only stand in for the upper arm while the arm is near
+      // straight. A lateral raise now fails twice — its wrist vector has almost
+      // no sagittal projection (angle ≈0–30°) AND it is not forward-dominant.
+      const down=norm(vector(pelvis,shoulder));
+      const raised=[0,1].map(i=>{const v=vector(a[15+i],a[11+i]);return Math.max(0,Math.min(180,Math.atan2(dot(v,forward),dot(v,down))*180/Math.PI));});
       // Direction is judged per arm and must be forward-DOMINANT: the wrist vector
       // clears the forward cone (dot > 0.6|v|) and its forward component beats its
       // lateral component, so a diagonal-forward raise passes while a true lateral
@@ -290,7 +312,7 @@ export class ExtendedExerciseTracker {
       raiseData=[0,1].map(i=>{const v=vector(a[15+i],a[11+i]),n=Math.hypot(...v),f=dot(v,forward);return {raised:raised[i],forward:f>n*.6&&f>Math.abs(dot(v,lateral)),elbow:elbows[i]};}) as [RaiseSide,RaiseSide];
       const direction=raiseData.every(s=>s.forward);
       start=Math.max(...raised)<=25;peak=Math.min(...raised)>=65&&Math.max(...raised)<=115&&direction&&Math.min(...elbows)>=140;
-      measured=mean(raised[0],raised[1]);amplitude=cap(Math.min(...raised)/90*100);symmetry=cap(100-Math.abs(raised[0]-raised[1])*1.5);basis='逐侧抬举角＋前向主导方向';motion=`抬臂 ${Math.round(raised[0])}° / ${Math.round(raised[1])}°；${direction?'双臂前举方向已确认':raiseData.some(s=>s.forward)?'单臂前举方向已确认':'尚未确认前举方向，侧举不计数'}`;
+      measured=mean(raised[0],raised[1]);amplitude=cap(Math.min(...raised)/90*100);symmetry=cap(100-Math.abs(raised[0]-raised[1])*1.5);basis='逐侧矢状面抬举角（肩→腕）＋前向主导方向';motion=`抬臂 ${Math.round(raised[0])}° / ${Math.round(raised[1])}°；${direction?'双臂前举方向已确认':raiseData.some(s=>s.forward)?'单臂前举方向已确认':'尚未确认前举方向，侧举不计数'}`;
       controlPenalty=Math.max(0,170-Math.min(...elbows))*1.5;
       if(!start&&!direction)hint='尚未确认前举方向；请向身体前方抬臂，侧平举不计入';
     }else if(this.type==='triceps_kickback'){
@@ -501,8 +523,13 @@ export class ExtendedExerciseTracker {
     this.last=now;this.times=[...this.times,now].filter(t=>now-t<=2000);
     this.diagnostics={...this.diagnostics,fps:this.times.length>1?Math.round((this.times.length-1)*1000/(now-this.times[0])):0,confidence:f.confidence,side:f.side||null,angle:f.angle,basis:f.basis,motion:f.motion};
     if(!this.ready){
-      if(!f.start){this.calibration=null;this.baseline=null;}else{if(this.calibration===null)this.calibration=now;this.baseline=f;if(this.armOnStart||now-this.calibration>=2000)this.ready=true;}
-      const progress=this.ready?1:this.calibration===null?0:Math.min(1,(now-this.calibration)/2000);this.diagnostics={...this.diagnostics,stage:this.ready?'ready':'calibrating',calibrationProgress:progress};
+      // Latched calibration: a non-start frame PAUSES the 2 s hold and banks the time
+      // already held instead of zeroing it (the 2026-11-07 front-raise retest showed
+      // progress falling 42%→26%→13% as the user raised their arms to test). Once the
+      // banked + current hold reaches 2 s the tracker is ready and stays ready until
+      // a real tracking loss interrupts it.
+      if(!f.start){if(this.calibration!==null){this.calibrationBank+=now-this.calibration;this.calibration=null;}this.baseline=null;}else{if(this.calibration===null)this.calibration=now;this.baseline=f;if(this.armOnStart||this.calibrationBank+(now-this.calibration)>=2000)this.ready=true;}
+      const progress=this.ready?1:Math.min(1,(this.calibrationBank+(this.calibration===null?0:now-this.calibration))/2000);this.diagnostics={...this.diagnostics,stage:this.ready?'ready':'calibrating',calibrationProgress:progress};
       // Front raise must not surface its direction hint before calibration completes:
       // at rest the direction test is always false, so the hint kept ordering the user
       // to raise an arm — and raising it zeroed the calibration they were holding.
