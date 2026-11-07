@@ -6515,6 +6515,126 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0774",
+      "expectedName": "smith standing military press",
+      "sourceId": "ai-generated-exdb-0774",
+      "sourceSha256": [
+        "41a5f3161d5fb3961f38d147ce59ffcfc8f959fb1d899399ea8a01076d599416",
+        "fbf24e31b58b8bac2da8021d63de685701579b32af774505c6d7cae9337becce"
+      ],
+      "phases": [
+        "起始：站立于史密斯机内，正手略宽于肩握杠，杠置于肩高锁骨前，肘屈向下",
+        "关键阶段：杠铃垂直上推至头顶上方，双臂伸直锁定"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1308",
+      "expectedName": "smith wide grip bench press",
+      "sourceId": "ai-generated-exdb-1308",
+      "sourceSha256": [
+        "0c01dfa82f573a6db18ba5a05c8b28466f3d35c5dfab1288c50c4f1bd25e15da",
+        "8c3886c15627c863a225db2bb9d685952729338c73af0d9b5bb3f6ea341062ae"
+      ],
+      "phases": [
+        "起始：平凳仰卧，宽握（明显宽于肩），杠铃降下触及上胸，肘部外展",
+        "关键阶段：双臂伸展，将杠铃推至胸部上方"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:2285",
+      "expectedName": "lever pullover",
+      "sourceId": "ai-generated-exdb-2285",
+      "sourceSha256": [
+        "ddf7d22fedb8945cc4b264eca5970d31c3e26acb6ab6eb534aff60bd1e77cfa4",
+        "86a8447f162d7fe3ea2a5baa25d704d891f09e97d060a9b7c941716f736e083f"
+      ],
+      "phases": [
+        "起始：坐姿背贴靠背，双臂上伸近直，握住头顶上方把手，肘部微屈",
+        "关键阶段：双臂沿弧线下拉至大腿前方，肘部保持微屈，背阔肌收紧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0592",
+      "expectedName": "lever preacher curl",
+      "sourceId": "ai-generated-exdb-0592",
+      "sourceSha256": [
+        "2ff728d0b45d40fb6cd9ded4ef69ca15e75074b173ce81ab01d53c0b28b18489",
+        "48133e6f9c0d9b57dd328bf749bacfca1de56291ee6d043138eb68f595a57244"
+      ],
+      "phases": [
+        "起始：坐姿、上臂贴住斜托垫，掌心向上握把，前臂下放近伸直",
+        "关键阶段：前臂上卷至贴近上臂，肘尖保持抵住托垫"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0601",
+      "expectedName": "lever seated reverse fly (parallel grip)",
+      "sourceId": "ai-generated-exdb-0601",
+      "sourceSha256": [
+        "3314177fa298f8941e8f5d0859dcdf85d753f9577daac00de309162ed87e83a9",
+        "8d573076b26bb58d11ad36b5aa6859f40cf613e18bffe3b1a3c2462e6d2133b6"
+      ],
+      "phases": [
+        "起始：面向机器坐姿，胸部贴垫，双手平行握竖把（掌心相对），双臂前伸",
+        "关键阶段：双臂向两侧后展开至与肩成一线，肩胛骨夹紧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0161",
+      "expectedName": "cable forward raise",
+      "sourceId": "ai-generated-exdb-0161",
+      "sourceSha256": [
+        "dae3e0b0840161d941b716ad2578f8b05a6d2b30472f91d90834bcbdecc30970",
+        "37e630b1c4b0ede4b45cc002a25f15fc3e8ee5f9857eb8c74292af3ddd3e0979"
+      ],
+      "phases": [
+        "起始：面向绳索机站立，双手正手握低滑轮 D 形把，双臂伸直垂于大腿前",
+        "关键阶段：双臂保持伸直前举至肩高，掌心保持向下"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1324",
+      "expectedName": "cable upper row",
+      "sourceId": "ai-generated-exdb-1324",
+      "sourceSha256": [
+        "628332446c21974c8b165aa15054b75c61365275565fb3396aaff98f36de8c6f",
+        "0f501aa63575ebe7df486b1b93de12dd7fb9a95e5aa783ac140a18eab085dc89"
+      ],
+      "phases": [
+        "起始：面向机器站立，正手略宽于肩握胸高直杆，双臂向前伸直",
+        "关键阶段：直杆拉至上胸，肘部向两侧打开，肩胛骨夹紧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0451",
+      "expectedName": "ez barbell reverse grip curl",
+      "sourceId": "ai-generated-exdb-0451",
+      "sourceSha256": [
+        "6eb57d3dc3afca59ab37a4144d9e47121353dc8bae2055d7fcac0b5867797ee3",
+        "e454a873bf397e6dc4ff923bc68cf8b3ef4a12f2ad877c1d75a0068a25cebba7"
+      ],
+      "phases": [
+        "起始：站立，掌心向下反握曲杠弯折位，双臂伸直、杠悬于大腿前",
+        "关键阶段：屈肘弯举至肩高，肘贴体侧，反握保持不变"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
