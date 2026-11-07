@@ -5,6 +5,7 @@ import { pool, withTransaction } from '../../server/src/db/pool';
 export { default, MoveMateBackend } from '../src/worker';
 import { MoveMateBackend } from '../src/worker';
 import { VoicePool } from '../src/voice-pool';
+import { PitrOps, PitrError } from '../src/pitr';
 
 export class TestBackend extends MoveMateBackend {
   async voiceMode(mode: string) { process.env.XIAOZHI_IDENTITY_MODE = mode; }
@@ -29,6 +30,36 @@ export class TestBackend extends MoveMateBackend {
     const since = new Date(Date.now() - seconds * 1000).toISOString();
     this.ctx.storage.sql.exec('UPDATE sport_sessions SET active_since=? WHERE id=?', since, id);
     this.ctx.storage.sql.exec('UPDATE sport_intervals SET started_at=? WHERE session_id=? AND ended_at IS NULL', since, id);
+  }
+  /** PITR unit cases against a mock storage: exercises PitrOps without platform PITR. */
+  async pitrUnitCase(instance: string) {
+    const calls: string[] = [];
+    const storage: any = {
+      sql: {
+        databaseSize: 12345,
+        exec: (query: string) => ({
+          toArray: () => query.includes('sqlite_master') ? [{ name: 'users' }, { name: '_cf_INTERNAL' }] : query.includes('foreign_key_check') ? [] : [{ n: 7 }],
+        }),
+      },
+      getCurrentBookmark: async () => 'bm-current',
+      getBookmarkForTime: async () => 'bm-at-time',
+      onNextSessionRestoreBookmark: async (bookmark: string) => { calls.push(bookmark); return 'bm-undo'; },
+    };
+    const ops = new PitrOps(storage, instance);
+    const status = await ops.status();
+    const atTime = await ops.bookmarkForTime(Date.now());
+    let invalidTs: any = null;
+    try { await ops.bookmarkForTime(-1); } catch (error) { invalidTs = { status: (error as PitrError).status }; }
+    let restoreResult: any = null, restoreError: any = null;
+    try { restoreResult = await ops.restore('bm-target'); } catch (error) { restoreError = { status: (error as PitrError).status, message: (error as Error).message }; }
+    let badBookmark: any = null;
+    try { await ops.restore(''); } catch (error) { badBookmark = { status: (error as PitrError).status }; }
+    return { status, atTime, invalidTs, restoreResult, restoreError, badBookmark, calls };
+  }
+  /** Probe how the local runtime answers a real getCurrentBookmark() call. */
+  async pitrRealBookmark() {
+    try { return { ok: true, bookmark: await this.ctx.storage.getCurrentBookmark() }; }
+    catch (error) { return { ok: false, error: error instanceof Error ? error.message : String(error) }; }
   }
   async pendingEvents() { return this.ctx.storage.sql.exec('SELECT COUNT(*) AS n FROM event_outbox').one().n; }
   async brokenOutbox(repair = false) {

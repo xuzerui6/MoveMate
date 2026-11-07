@@ -38,6 +38,29 @@ await test('Workers runtime migration and business regression', async t=>{
  await t.test('unimported instance stays closed and migration endpoint requires a secret',async()=>{
  assert.equal((await call('/health')).status,503);assert.equal((await call('/api/migration/status')).status,401);
  });
+ await t.test('PITR endpoints require the migration secret and the restore guard rejects non-preview instances',async()=>{
+ assert.equal((await call('/api/migration/pitr/status')).status,401);
+ assert.equal((await call('/api/migration/pitr/bookmark-for-time?ts=1')).status,401);
+ assert.equal((await call('/api/migration/pitr/restore',{method:'POST',body:{bookmark:'bm-x'}})).status,401);
+ assert.equal((await call('/api/migration/pitr/status',{headers:{Authorization:'Bearer '+'w'.repeat(64)}})).status,401);
+ // This runtime runs with INSTANCE=test: the restore guard must refuse before touching storage.
+ const refused=await call('/api/migration/pitr/restore',{method:'POST',body:{bookmark:'bm-x'},migration:true});
+ assert.equal(refused.status,403);assert.match(String(refused.data.error),/only be scheduled on the preview instance/);
+ });
+ await t.test('PITR ops unit behaviour: guard, status snapshot, bookmark lookup and validation',async()=>{
+ const namespace=await mf.getDurableObjectNamespace('BACKEND');const actor=namespace.get(namespace.idFromName('test'));
+ const prod=await actor.pitrUnitCase('production');
+ assert.equal(prod.restoreResult,null);assert.equal(prod.restoreError.status,403);assert.match(prod.restoreError.message,/preview instance/);
+ assert.deepEqual(prod.calls,[]); // guard fired before any storage restore call
+ assert.equal(prod.status.instance,'production');assert.equal(prod.status.bookmark,'bm-current');
+ assert.equal(prod.status.databaseSize,12345);assert.deepEqual(prod.status.tables,{users:7});assert.equal(prod.status.foreignKeyViolations,0);
+ assert.equal(prod.atTime.bookmark,'bm-at-time');assert.equal(prod.invalidTs.status,400);
+ const prev=await actor.pitrUnitCase('preview');
+ assert.equal(prev.restoreError,null);assert.equal(prev.restoreResult.undoBookmark,'bm-undo');assert.deepEqual(prev.calls,['bm-target']);
+ assert.equal(prev.badBookmark.status,400); // empty bookmark rejected once the guard passes
+ const undef=await actor.pitrUnitCase('test');
+ assert.equal(undef.restoreError.status,403);assert.deepEqual(undef.calls,[]);
+ });
  const {manifest,parts}=fixture({largeAvatar:true});
  await t.test('snapshot import resumes, validates checkpoints and preserves hashes',async()=>{
  assert.equal((await migrate('begin',manifest)).status,200);

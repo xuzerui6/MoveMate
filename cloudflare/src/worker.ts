@@ -11,6 +11,7 @@ import { runCronTick } from '../../server/src/cron/state-machine';
 import { ActorDatabase } from './db';
 import { withEvents, type EventSink } from './events';
 import { Migration, authorized } from './migration';
+import { PitrOps, PitrError } from './pitr';
 import { bridgeXiaozhi } from './xiaozhi';
 import { VoicePool, VoiceError, LEASE_MS } from './voice-pool';
 import { getIdentityMode } from '../../server/src/xiaozhi/identity';
@@ -87,6 +88,35 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
         // Migration commands share the actor's database operation queue.
         if (path === '/api/migration/diagnostics') return Response.json((await pool.query("SELECT value FROM actor_meta WHERE key='voice_diagnostic'")).rows.map(row => JSON.parse(row.value)));
         if (path === '/api/migration/gym-backup') return Response.json({backup:this.migration.meta('pre_gym_bookmark')||null,stage2:this.migration.meta('pre_gym_stage2_bookmark')||null});
+        if (path.startsWith('/api/migration/pitr/')) {
+          const ops = new PitrOps(this.ctx.storage, this.env.INSTANCE);
+          try {
+            if (path === '/api/migration/pitr/status' && request.method === 'GET') {
+              const status = await ops.status();
+              const lastUndo = this.migration.meta('pitr_last_undo_bookmark');
+              return Response.json({ ...status, lastUndoBookmark: lastUndo ? JSON.parse(lastUndo) : null });
+            }
+            if (path === '/api/migration/pitr/bookmark-for-time' && request.method === 'GET') {
+              return Response.json(await ops.bookmarkForTime(Number(new URL(request.url).searchParams.get('ts'))));
+            }
+            if (path === '/api/migration/pitr/restore' && request.method === 'POST') {
+              const body = await request.json().catch(() => null) as { bookmark?: unknown } | null;
+              const result = await ops.restore(body?.bookmark);
+              // Persist the undo bookmark before the restart so it survives even
+              // if the HTTP response is lost when the object aborts. (The record
+              // itself sits inside the restored data and rolls back with it; the
+              // response below is the primary channel, this is a pre-restart copy.)
+              this.migration.set('pitr_last_undo_bookmark', JSON.stringify({ undoBookmark: result.undoBookmark, targetBookmark: result.targetBookmark, at: new Date().toISOString() }));
+              // Let the response flush before the scheduled restore takes effect.
+              this.ctx.waitUntil(new Promise(resolve => setTimeout(resolve, 500)).then(() => this.ctx.abort()));
+              return Response.json({ ok: true, ...result, restart: 'scheduled' });
+            }
+            return Response.json({ error: 'Unknown PITR action' }, { status: 404 });
+          } catch (error) {
+            if (error instanceof PitrError) return Response.json({ error: error.message }, { status: error.status });
+            return Response.json({ error: error instanceof Error ? error.message : 'PITR operation failed' }, { status: 500 });
+          }
+        }
         const result = await withTransaction(() => this.migration.handle(request));
         await this.schedule(); return result;
       }
