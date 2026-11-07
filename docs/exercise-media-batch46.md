@@ -95,6 +95,20 @@ needs_review 待核对条目，本批逐项定版）。
 
 ## 验证
 
-- client `test:repository` 串行全量、server 测试（见提交记录）；
-- 构建产物中 8 条新条目的详情 JSON、索引与 WebP 均已生成，哈希与台账一致；
-- 部署后线上抽查新条目图片 200 且字节与本地一致（见提交记录）。
+- 本地测试（干净 worktree 内串行运行，避开并行调参任务的工作区改动）：
+  client `test:repository` **334/334**（基线随并入的识别调参提交 f8d357d
+  新增测试由 327 上升为 334）、server **103/103**；
+- CI：分支 run 42339736543 绿；合并后 main run 42339848315 绿；
+- 合并注意：本批开发期间识别调参任务在同一工作区并行（其提交 f8d357d
+  已先行合入 main）；本批分支基于 f8d357d、暂存时逐文件隔离，未混入对方
+  3 个未提交文件（extendedRecognition.ts、Workout.tsx、其测试文件）；
+  合并为快进至 7cf76b4。其后前平举修复（PR #1，0571908）合入 main，
+  本批按「部署以最新 main 为准」从 0571908 重新构建并双站重部署收敛，
+  两个任务的成果同时在线；
+- 部署：独立 worktree 构建（MOVEMATE_MEDIA_DIR=~/workspace/movemate-media），
+  构建后直接 `wrangler deploy` 两边——生产 Version
+  **4164a7bc-ee8f-4198-b85c-5051f5ec027d**、预览 Version
+  **81d171d8-46a4-419f-80d3-d06582d26641**（均为 main 0571908 构建）；
+- 线上抽查：双站 `/health` 200；本批 16 张新图在双站逐张抓取与本地
+  dist 的 sha256 **32/32 字节一致**（收敛重部署后复验仍 32/32）；
+  新条目详情 JSON（exdb:0451）双站 200 且内容正确。
