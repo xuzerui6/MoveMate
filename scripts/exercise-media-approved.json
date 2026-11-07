@@ -7073,7 +7073,7 @@
     },
     {
       "exerciseId": "exdb:3017",
-      "expectedName": "杠铃潘德雷划船",
+      "expectedName": "barbell pendlay row",
       "sourceId": "ai-generated-exdb-3017",
       "sourceUrl": "",
       "license": "AI-generated",
@@ -7091,7 +7091,7 @@
     },
     {
       "exerciseId": "exdb:0648",
-      "expectedName": "力量翻举",
+      "expectedName": "power clean",
       "sourceId": "ai-generated-exdb-0648",
       "sourceUrl": "",
       "license": "AI-generated",
@@ -7109,7 +7109,7 @@
     },
     {
       "exerciseId": "exdb:0593",
-      "expectedName": "器械反向背伸",
+      "expectedName": "lever reverse hyperextension",
       "sourceId": "ai-generated-exdb-0593",
       "sourceUrl": "",
       "license": "AI-generated",
@@ -7127,7 +7127,7 @@
     },
     {
       "exerciseId": "exdb:0472",
-      "expectedName": "悬垂举腿",
+      "expectedName": "hanging leg raise",
       "sourceId": "ai-generated-exdb-0472",
       "sourceUrl": "",
       "license": "AI-generated",
@@ -7145,7 +7145,7 @@
     },
     {
       "exerciseId": "exdb:0857",
-      "expectedName": "跪姿健腹轮前滚",
+      "expectedName": "wheel rollerout",
       "sourceId": "ai-generated-exdb-0857",
       "sourceUrl": "",
       "license": "AI-generated",
@@ -7163,7 +7163,7 @@
     },
     {
       "exerciseId": "exdb:2963",
-      "expectedName": "肘撑直腿举腿",
+      "expectedName": "captains chair straight leg raise",
       "sourceId": "ai-generated-exdb-2963",
       "sourceUrl": "",
       "license": "AI-generated",
@@ -7181,7 +7181,7 @@
     },
     {
       "exerciseId": "exdb:0330",
-      "expectedName": "哑铃上斜臂屈伸",
+      "expectedName": "dumbbell incline triceps extension",
       "sourceId": "ai-generated-exdb-0330",
       "sourceUrl": "",
       "license": "AI-generated",
