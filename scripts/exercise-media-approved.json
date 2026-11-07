@@ -8816,6 +8816,222 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0421",
+      "expectedName": "dumbbell standing one arm concentration curl",
+      "sourceId": "ai-generated-exdb-0421",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "a1d15ac0d876ef9ac50290418006c66dcd5c668ce4461e3ac17655f4b463d364",
+        "07fabc190712c39a4965af8aa42c513505234b6102b495572b2ba49a04921d78"
+      ],
+      "phases": [
+        "起始：站立，左手空手轻扶左大腿，右手旋后握哑铃垂于右腿外侧，工作臂悬空不支靠",
+        "关键：右臂屈肘弯举至哑铃到右肩高，上臂贴近躯干保持静止"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1399",
+      "expectedName": "bench dip on floor",
+      "sourceId": "ai-generated-exdb-1399",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "ab392f5290f060277a1d21761f406ebf56e2f03245d1d053dfabedf6b36e35b5",
+        "ceb5503bf99276c2545fb6669475f6d547b7d498666b2cddfa337cf631699d2c"
+      ],
+      "phases": [
+        "起始（顶位）：双手在身后抓凳边、双臂伸直撑起，臀部离凳面，双腿伸直、脚跟着地",
+        "关键（底位）：屈肘约90度下放，上臂与地面平行，臀部接近地面，双腿仍伸直、脚跟着地"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0271",
+      "expectedName": "crunch (on stability ball)",
+      "sourceId": "ai-generated-exdb-0271",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "34ad342b512caee799319d0a24a33cf9ae6cdb3180d8c3715b7a2b981e49a5fa",
+        "a97c25040a42c5c817f131c5e5cbef3fbe26178cc66ef12648f1fc0f6e60eeac"
+      ],
+      "phases": [
+        "起始：仰卧于健身球上，下背部贴球面，上身顺球面后仰，双手交叉抱在胸前，屈膝踩地",
+        "关键：上身向前卷起，肩背离开球面，下背仍贴球，双手仍抱胸"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1333",
+      "expectedName": "exercise ball back extension with arms extended",
+      "sourceId": "ai-generated-exdb-1333",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "3c5bcbbadd828f97acd8d568417a57c5dcbb4e7bc620dcdbd4c7f06900725eb3",
+        "c0d7f995ff95fdc4aef8ddbff984af2880825088d7f0356aa10a2e426b6c8408"
+      ],
+      "phases": [
+        "起始：俯卧于健身球上，髋腹压球，双脚抵墙，上身顺球面垂下，双臂伸直向头顶前方伸展垂下",
+        "关键：躯干抬起至头、背、腿成一条直线，双臂沿躯干方向向前伸展"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0675",
+      "expectedName": "reverse hyper extension (on stability ball)",
+      "sourceId": "ai-generated-exdb-0675",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "36d716e0e9a6b393be30d4a347b6f9e34557b3ca2f57814f7597465df4a50d43",
+        "6b3a44ff2acc8c6ce6680d5b1471f052df7528aa2f23846dc08d56fb1e1f2b7a"
+      ],
+      "phases": [
+        "起始：俯卧于健身球上，髋部压球，双手平放球前方地面支撑，双腿垂下、脚尖接近地面",
+        "关键：双腿向上抬起至与躯干成一条直线，不高于该线"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0058",
+      "expectedName": "barbell lying lifting (on hip)",
+      "sourceId": "ai-generated-exdb-0058",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "332e83fa7f58ee8299a4f9049db95ccf6a66ac73d813a0bf6f4f3edd31f5d2fc",
+        "fb8cb1b532cfd2bdf7e16dc6fedfe62df3e961058e8d150051e9a0cb3a300e0f"
+      ],
+      "phases": [
+        "起始（底位）：头、肩、上背躺于凳面，髋部在凳端外侧下沉至低于凳面，杠铃横放髋上、双手扶杠，屈膝踩地",
+        "关键（顶位）：臀部上抬至膝、髋、肩成一条直线，杠铃随髋升至最高点"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1682",
+      "expectedName": "ez bar seated close grip concentration curl",
+      "sourceId": "ai-generated-exdb-1682",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "f55d487da33f8bf2457a1c698d607f2b0e66f7b0abe81928d6808a7f9d0c0319",
+        "be0a217b2532750b64c6fbb0b1113dca5b37bbd82e6a87f9f52996ddbe106c5e"
+      ],
+      "phases": [
+        "起始：坐于凳上，双肘抵在双大腿内侧，反手窄握EZ杠中段波浪握位，杠垂于双腿之间，双臂伸直",
+        "关键：双肘不离开大腿内侧，屈肘弯举至杠到肩高，上臂保持静止"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1296",
+      "expectedName": "exercise ball pike push up",
+      "sourceId": "ai-generated-exdb-1296",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "17f7b7af4e2a80a121539b2b77b9731a8099220c233b6673f1f307af4b0e37e5",
+        "58272ad9a7f49ef3814069d90662f834c1ad9bf59f442a2ca8e12ec9cff953fb"
+      ],
+      "phases": [
+        "起始：俯卧撑平板，双手撑地、双臂伸直，小腿置于健身球上，身体成一条直线",
+        "关键（屈体位）：臀部上抬成倒V，球随小腿滚向双手，双腿伸直，双臂保持伸直；屈肘下放阶段见正文"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1747",
+      "expectedName": "ez bar french press on exercise ball",
+      "sourceId": "ai-generated-exdb-1747",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "6d08773934f70a2b02de709e4e0905abb49a78b141475ba3938e9d71306eb8d6",
+        "28c8d1d4375fd3e86496df62716209b97acd5fa6075e4b698b63c7d9f723b0f7"
+      ],
+      "phases": [
+        "起始：坐于健身球上，双脚踩地，正手握EZ杠中段波浪握位举过头顶，双臂伸直，肘近头部两侧",
+        "关键：上臂保持竖直，屈肘将杠铃降至脑后接近颈部高度"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1665",
+      "expectedName": "dumbbell one arm prone curl",
+      "sourceId": "ai-generated-exdb-1665",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "8aeb1cd713a307b1b6d1cb4cbf95ac2183cce7fca517124a3f4e9fadeeafbaad",
+        "173d8a20795c286fee0f1a98613d20d8550fcc88e6e852f3316533b490e43361"
+      ],
+      "phases": [
+        "起始：俯卧于平凳上，工作臂垂直悬垂于凳边，旋前握哑铃，另一臂空手垂放",
+        "关键：上臂悬垂保持不动，屈肘约80度、前臂上翻；完整幅度见正文"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0850",
+      "expectedName": "weighted side bend (on stability ball)",
+      "sourceId": "ai-generated-exdb-0850",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "68f6d27db55f6d02eb03e69c5578949feca814b49fc889c54604c4ac062c1229",
+        "1b6cbec5a62a574512f4b75355aa857f13d0bf761329d0a8aa3f73dc3f9ed0f7"
+      ],
+      "phases": [
+        "起始：坐于健身球上，躯干直立，镜头侧手握一只哑铃垂于体侧，另一手轻放大腿",
+        "关键：躯干向持铃侧侧屈，哑铃沿球侧下滑接近地面，髋部不旋转"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0103",
+      "expectedName": "barbell standing ab rollerout",
+      "sourceId": "ai-generated-exdb-0103",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "07d4485ea750ab64d808e9ca8055958bc644fd7dadca9c4308f3210ddaf515cc",
+        "f831c3252414e50f233fb6311e32abee19bf8ac9e38bca9dec9434fe513f27a7"
+      ],
+      "phases": [
+        "起始：站立，双手握杠、杠铃贴于大腿前方，双臂伸直",
+        "关键：杠铃沿地面向前滚至最远，身体以前倾斜直线伸展，仅脚尖触地，双臂与躯干成一直线"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
