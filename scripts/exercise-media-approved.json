@@ -8312,6 +8312,186 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0537",
+      "expectedName": "kettlebell one arm clean and jerk",
+      "sourceId": "ai-generated-exdb-0537",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "c88aca5af2b9e073977e51d7f98d5114ebc06ac60dc546898674b0c22642e9b4",
+        "72a725fd38a5eadd597199baf17847bb1aad1a37d83a5f8d37072e9f824eb344"
+      ],
+      "phases": [
+        "起始：屈髋约45度，右手握壶铃垂于两腿之间，背部挺直",
+        "关键阶段：站直并将右臂伸直锁定在头顶正上方，壶铃贴于前臂后侧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0538",
+      "expectedName": "kettlebell one arm jerk",
+      "sourceId": "ai-generated-exdb-0538",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "cc4a1a0905f211507612fca16a82d84aaf68db1328c050d321571266b1ba68d2",
+        "4eba94b1a321554dbed014c04735a27f0a663197ae0d1d82af00d39060f05432"
+      ],
+      "phases": [
+        "起始：右手握壶铃抵于右肩前，铃体靠前臂，肘在铃下",
+        "关键阶段：站直并将右臂伸直锁定在头顶正上方，壶铃贴于前臂后侧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3217",
+      "expectedName": "modified hindu push-up (male)",
+      "sourceId": "ai-generated-exdb-3217",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "756d54abdce32045f639582016eabd9af314ad5c2a006a829f794bcd1aa12169",
+        "e30ce1e223befee7e9a81f6be4c12cb6a404f2edeb5e9255117b5d68669f57d0"
+      ],
+      "phases": [
+        "起始：双手略宽于肩撑地成高位平板，身体成一条直线",
+        "关键阶段：俯冲下潜，臀部抬高，头部与胸部向双手之间下降"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1281",
+      "expectedName": "dumbbell incline one arm press",
+      "sourceId": "ai-generated-exdb-1281",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "7f5a7fcc4571017ef3f8275128fc80934910e477cb21f155423b210c03177bfb",
+        "d8710a4ccaa6ea27a147c1e635bb6de3771335023fc09a8714633c1a3cc1b0b9"
+      ],
+      "phases": [
+        "起始：仰卧上斜凳，左手握哑铃置于左肩同高，掌心朝前",
+        "关键阶段：左臂完全伸直，将哑铃推举至左肩正上方锁定"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1306",
+      "expectedName": "plyo push up",
+      "sourceId": "ai-generated-exdb-1306",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "5f97aaa0544da5dc72072bf3537b0d98811fd8a4c52b4c6dc1a35b891b52a932",
+        "c91b380be23623d69611587a6fede1a9527afebeaeaef66844d90611ca26411c"
+      ],
+      "phases": [
+        "起始：双手略宽于肩撑地成高位平板，身体成一条直线",
+        "关键阶段：爆发推起腾空，双手与双脚完全离开地面，身体保持一条直线"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0075",
+      "expectedName": "barbell rear delt raise",
+      "sourceId": "ai-generated-exdb-0075",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "2a93609b39c37713bda246950f806da9a7809505130c0110c627b835364437e3",
+        "e1a68a1902b25b052694f7fdea61198434567afa1c456c9d21fc8ed77c303909"
+      ],
+      "phases": [
+        "起始：屈髋前倾，宽握杠铃垂于胸部下方，背部挺直",
+        "关键阶段：双臂伸直向两侧平举，杠铃横于胸前与肩线齐平"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3582",
+      "expectedName": "lunge with jump",
+      "sourceId": "ai-generated-exdb-3582",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "038c2545b6b66e27d49c75ca384bd9b9c64f092a952f27ca172636c42bc4df2f",
+        "06d843664d05c5735fa3cbcfaa272461ca2f344a9b457594acfb769b97ff6211"
+      ],
+      "phases": [
+        "起始：弓步底位，右腿在前屈膝约90度，左腿在后、膝接近地面",
+        "关键阶段：蹬地跳起腾空并在空中交换双腿，双脚完全离地"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0545",
+      "expectedName": "kettlebell plyo push-up",
+      "sourceId": "ai-generated-exdb-0545",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "1eefbc288441d1224dc57923241efb8b0b1f758982af5741f13245525535fbb1",
+        "d2c3acaa28ffec76d5b7ee270229453c73fc62b145d1e5a931ff1d57868f9492"
+      ],
+      "phases": [
+        "起始：双手各握一只壶铃把手成高位平板，身体成一条直线",
+        "关键阶段：爆发推起腾空，双手离开壶铃把手，身体在空中保持一条直线"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0551",
+      "expectedName": "kettlebell turkish get up (squat style)",
+      "sourceId": "ai-generated-exdb-0551",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "8709b4efae7919533bcb46aa4c74f6e5918d56ad4962b069ec4b78aae38ce16f",
+        "0d9f8bb06bc982a2cc1fa40b8a52c24edbc0210fefd9da7932aade435940f5b7"
+      ],
+      "phases": [
+        "起始：仰卧，右臂伸直将壶铃竖举于右肩上方，右膝弯曲、右脚平放地面",
+        "关键阶段：完全站直，右臂伸直将壶铃锁定在头顶正上方"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:2189",
+      "expectedName": "dumbbells seated triceps extension",
+      "sourceId": "ai-generated-exdb-2189",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "07d7e58cf6d2b00054e63aa3b23096b83157d8e581b01ca15b1b1d9dcae2a6b9",
+        "253d2e6a7927ef31ac613a5d7e7038a41e8933c9718413f5e67bcfceeca52ed5"
+      ],
+      "phases": [
+        "起始：坐姿挺直，双手各握一只哑铃举过头顶，双臂伸直",
+        "关键阶段：上臂竖直贴近头部，屈肘将两只哑铃降至脑后"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
