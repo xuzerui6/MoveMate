@@ -51,9 +51,9 @@
 
 - 构建：`build-exercise-media.py --staging generated-batch19 --only <11 条>`——Published 625 image entries / 15 video entries；发布链 `publish-media-metadata`（625 条懒加载记录）→ `publish-exercise-documentation` → `report-exercise-media.ts`（complete 625、photos 512、illustrations 113、videos 15、pending 704）依次执行。本批台账 `expectedName` 全部取目录英文原文；编辑稿 11 条步骤数均在 3–5 内，一次通过校验。
 - 测试（串行，全绿）：client `test:repository` 369/369 + tsc、server 103/103 + build、cloudflare 34/34 + typecheck。
-- CI：（待回填）
-- 部署：（待回填）
-- 抽查：（待回填）
+- CI：分支 `media/exercise-media-batch56` workflow_dispatch 绿（run 42361114426）；合入前核对 main 未漂移（4bd8b36），以引用直推快进合入 main（20c3176），main CI 绿（run 42361225014）。
+- 部署：基于最新 main（20c3176）双站部署——生产 Version `bc96a3ab-3ef4-43b3-a235-bcf90e8cebf8`，预览 Version `b1116706-4de0-4b8c-b4e4-ccdb3b9c55eb`。构建走 `build:web` + `bundle` 后以 `npx wrangler@4.158.0` 直发两站（仓库锁定版 4.151.0 的 manifest POST 已知故障不重试，两站均一次成功）。
+- 抽查：本批 6 张 WebP（1473 双帧、0068 关键帧、0525 关键帧、0637 起始帧、3219 关键帧）自双站下载与本地发布物 sha256 比对 12/12 一致；exdb:1473 详情 JSON 双站与本地逐字节一致。
 
 ## 口径与后续
 
