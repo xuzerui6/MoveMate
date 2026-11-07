@@ -12777,22 +12777,37 @@
     {
       "id": "exdb:0272",
       "originalName": "crunch (on stability ball, arms straight)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤、支撑和器械：标题直臂，正文却双手脑后或交叉胸前，与目标变式冲突；不套用普通球卷腹。",
+      "reason": "2026-11-07 AI 生成双帧已逐帧对照：种子意见指出标题为直臂、正文却写双手脑后或交叉胸前，与目标变式冲突——按名称为准定版并改写正文：双臂伸直并拢上举、掌心相对，不放脑后、不交叉胸前（与抱胸版以手位区分）；起始帧仰卧球上、下背由球面支撑、躯干接近与地面平行、双臂竖直指向天花板，关键帧腹部收紧卷起上半身约45度、双臂保持伸直随躯干前倾指向前上方。两帧同场景续接。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "9dff22c81906a14f28e9753c25700da12105815a3a404a36f161996023aa9f01",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0272",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "3a8c688529d332b58556162c7426b6f0787e1da3e2a0b01f284f5f533f36c020",
+            "9da8e083b50654a90c4d00da4f595ab9fb12bb1736c9ec2ee5bad189fc4053d0"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0274",
@@ -13648,22 +13663,37 @@
     {
       "id": "exdb:1652",
       "originalName": "dumbbell bicep curl on exercise ball with leg raised",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：坐球一腿离地双臂弯举明确，需要悬腿、球面与另一脚支撑专门图。",
+      "reason": "2026-11-07 AI 生成双帧已逐帧对照：种子意见要求悬腿、球面与另一脚支撑的专门图——本条定版：坐健身球、背部挺直，一条腿向前伸直抬离地面（定版图为左腿，正文不分左右、完成后换腿），另一脚平放支撑；起始帧双手各握哑铃垂于体侧、掌心朝前、手臂伸直，关键帧双肘贴近体侧将哑铃弯举至肩前、掌心朝前，抬起的腿全程保持离地。两帧同场景续接。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "b85121e01e492dbcc8405705b96e6a4105d6615666fe055b67a7226aedec7e10",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1652",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "b64793a19451e3e430b9cb425d1f68fc000945d6916898bd0e8b41eaf914f860",
+            "23ad608d3627f23b0bdf5be01699bd8996461e989ece70e2b8b5b5b73d12da34"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1653",
@@ -15174,22 +15204,37 @@
     {
       "id": "exdb:1619",
       "originalName": "dumbbell incline one arm hammer press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：背靠上斜凳、单手掌心向内推明确，需另一手支撑和凳角示范。",
+      "reason": "2026-11-07 AI 生成双帧已逐帧对照：种子意见要求背靠上斜凳、单手掌心向内推举与另一手支撑示范——本条定版（图示右臂）：仰卧约45度上斜凳、双脚平放，左手扶凳面；锤式握法以铃体朝向定版：纯右侧面机位下铃片侧棱对着镜头、握把沿身体前后方向、掌心向内、拇指朝上，与旋前握版的铃片正面朝向镜头的面貌可辨；起始帧右臂伸直上举，关键帧右肘弯曲将哑铃降至右胸外侧、握法不变。两帧同场景续接。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "8dc5f3be6cf95e99c3c40462099f05f0221aa34fec241a9ff534145f2e485412",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1619",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "036d24ace8922af3bf3f514798e5160708d585a2c20355895db436eeb9657eda",
+            "bf851913f4b46e6b0b0440cc055afd5a79ee7a63b918d82ea227b68a989fd233"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1620",
@@ -15760,22 +15805,37 @@
     {
       "id": "exdb:1734",
       "originalName": "dumbbell kickbacks on exercise ball",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：坐球直背、肘90度后伸可辨，但上臂角度和是否前倾未明确，不能用俯身凳撑版。",
+      "reason": "2026-11-07 AI 生成双帧已逐帧对照：种子意见指出上臂角度与是否前倾未明确、不能用俯身凳撑版——本条定版：坐健身球、背部挺直不前倾，双脚平放；起始帧双手各握哑铃、掌心相对，上臂竖直贴在体侧、肘屈90度、前臂水平向前；关键帧仅肘部伸直后伸，双臂伸直到哑铃位于臀部后方，上臂保持竖直不动。两帧同场景续接。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "d6a475379249acbbd046c901e7a040bcfaa2f71adec7bab0f94bd1f714ee5b65",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1734",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "f7a6809486a9ed8e6174f38b197c01f0b1b0f8cc76b5c4d93a9d290ca7e35ce5",
+            "5c272a6a74fa8b942670e2112ff3e42e9a172e7135396c93b2d31a28fbe941ba"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1660",
@@ -18059,22 +18119,37 @@
     {
       "id": "exdb:0373",
       "originalName": "dumbbell pronate-grip triceps extension",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：坐凳双手握哑铃掌心向下过顶降脑后可辨，铃数、握法和掌向需要近景核验。",
+      "reason": "2026-11-07 AI 生成双帧已逐帧对照：种子意见要求近景核验铃数、握法与掌向——本条定版：坐平凳、背部挺直，全程只有一只哑铃、双手并排握住同一只哑铃的握把；起始帧正面近景清楚显示旋前握法（手背朝向镜头一侧、掌心朝前），双臂伸直举过头顶、上臂贴近耳朵；关键帧上臂不动、双肘弯曲将哑铃降至脑后，握法与掌向不变。关键帧由起始帧同场景续接。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "c3e046eb89e4fd28da73487539a60572659f0ccd84f60f3e0260e12d4ce55026",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0373",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "a8d9b20bb65cbb65d66a3cc9a1ae37858315b2b70396ba80c3f2db4b74c324d6",
+            "9e9b59a4bbb2a75ceb7807062f2e9c34208521eb1db280c3ba5a871dbb277197"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0374",
@@ -19700,22 +19775,37 @@
     {
       "id": "exdb:1738",
       "originalName": "dumbbell seated reverse grip one arm overhead tricep extension",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：单手反握过顶屈伸可读，但掌向和头后铃体位置需近景确认。",
+      "reason": "2026-11-07 AI 生成双帧已逐帧对照：种子意见要求近景确认掌向与头后铃体位置——本条定版（图示右臂）：坐平凳、背部挺直，左手扶左大腿；起始帧右前方近景显示右臂伸直举过头顶、右手反握一只哑铃（掌心朝后）；关键帧右上臂贴耳不动、右肘弯曲把哑铃横降至脑后，右手掌心朝上反握托住握把。如实说明：关键帧为全新生成（反握在续接中有系统性回翻正握的既往信号，故不采用续接），与起始帧背景略有差异；两帧的反握掌向经逐帧核验一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "9589733356e913940af1d7541961f79e2481340ec6ee584ce61728d3231252fd",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1738",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "f716181b56e1bacb89dadc847345351212c8df0eedc7976731cfd01472471ea9",
+            "6230ac0f9a8c19f055bd0409a584a388b32db3fbeb3b58746bc4b7452e49aded"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0405",
@@ -19944,42 +20034,72 @@
     {
       "id": "exdb:3664",
       "originalName": "dumbbell side plank with rear fly",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：前臂侧撑、另一手铃从下方开至天花板明确，需肩髋抗旋转与双脚叠放接触图。",
+      "reason": "2026-11-07 AI 生成双帧已逐帧对照：种子意见要求前臂侧撑、上手持铃从下方开至天花板，并核验双脚叠放接触——本条定版：右侧前臂侧平板（右肘弯曲90度位于右肩正下方、整条前臂贴地，双腿伸直、双脚叠放，身体从头到脚跟成一条直线）；起始帧左臂伸直垂于体侧下方、左手握哑铃（起始帧经三稿定版，上手不弯曲停在腰侧），关键帧侧平板不变、左臂伸直举向天花板至左肩正上方。定版图为右侧支撑，正文不分左右、完成后换边。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "88e3500cc2574f6ce5520699a5af893a2bead11df2f0aadc5331912cded4ae97",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-3664",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "78f60b37af38d0bc6a707e445dca82c59d9f8516186551c33f725581ff3aa295",
+            "3ce60745a81c4a8e173fb3ee70aeeb4b9dd1b7e0e07ad5e3d29cd9fcf1f26c72"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3548",
       "originalName": "dumbbell single arm overhead carry",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：单手过顶伸臂持续行走明确，仍需左右步态、肩部稳定和换手起落的完整示意，不能以站定推举代替。",
+      "reason": "2026-11-07 AI 生成双帧已逐帧对照：种子意见强调单手过顶伸臂持续行走、不能以站定推举代替——本条定版（图示右臂）：右臂完全伸直锁定举过头顶、右手握哑铃于头顶正上方、躯干挺直，双帧为行走步态的两个交替相位（一腿向前迈出落脚、对侧腿随后跟进迈出），手臂位置全程不变；正文保留换手说明。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "37e0f9ae981322297c44872d2bfc8dcdc2f843bc91df4d04e8203534220d01dc",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-3548",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "e889d736c7234a4b91742fc40c1c0e0465797c14f8c6b20801c09b4714186068",
+            "6aabe5e2989ba1169b3175bb29177a067daefaa14000c26290bfafcba5a5d22d"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0409",
@@ -29534,22 +29654,37 @@
     {
       "id": "exdb:2328",
       "originalName": "narrow push-up on exercise ball",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤、支撑和器械：双手撑球窄距形式明确，但球的接触稳定与手距需要对应示范；不采用双脚撑球的变式。",
+      "reason": "2026-11-07 AI 生成双帧已逐帧对照：种子意见要求双手撑球窄距形式与球面接触示范、不采用双脚撑球变式——本条定版：双手并拢撑在健身球顶部、间距明显窄于肩宽、手指扣住球面；起始帧高位平板、身体从头到脚跟成一条直线；关键帧双肘深度弯曲、胸口下降接近球顶。如实说明：底位帧为全新生成（俯卧撑底位有顶位默认偏置，全新生成一次成立），与起始帧背景不同。正文已修正原稿一处重复表述。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "42e54b77d4555dd723727eca5081417fa4e11d41f62b8323638397b925040b9b",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-2328",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "224cb273057dcab7094fa990bdc462f0fa749057917ce92c1b5b44c2b092555b",
+            "87163d3afe8db43170bed1a20f0f6d32d53af1b7d06e31215e578ca8d89dfdb1"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1403",
@@ -31116,22 +31251,37 @@
     {
       "id": "exdb:0670",
       "originalName": "rear pull-up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称后侧引体，步骤却要求下巴超过横杆，未说明横杆到颈后的形式；不能采用普通胸前引体图。",
+      "reason": "2026-11-07 AI 生成双帧已逐帧对照：种子意见指出名称为颈后、正文却写下巴超过横杆，未说明横杆到颈后的形式——按名称为准定版并改写正文：正握、握距略宽于肩（与宽握版以握距区分），拉至横杆位于后颈后方、轻触上背部斜方肌，头在横杆前方略前倾，不采用下巴过杆的普通胸前引体图；起始帧身后机位悬垂（双臂伸直、双腿伸直并拢）。两帧同场景续接，身后3/4机位。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "1e0cf8c51553bf51bf61a4ed6f8bdf563da75186c445ffd0cbcedccc943d0aec",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0670",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "c23b025bfdf6305cdc3c358b1755757953dd60d915e0e80c7df25648aa85229e",
+            "ebac522a727e78c6db7dc648c1adcb3d42ba68ca4f345b56b010f143d68fbced"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1582",

@@ -26879,6 +26879,376 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:1652": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-generated-exdb-1652-0.e729f422995d.webp",
+          "sha256": "e729f422995dc7f526cc8d9cc136ba6478b71029b288ca6f3f8e0f1a9252ac80",
+          "bytes": 61202,
+          "distribution": "repository",
+          "phase": "起始：坐健身球、左腿向前伸直抬离地面、右脚支撑，双手各握哑铃垂于体侧、掌心朝前",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-generated-exdb-1652-1.208d424bd55c.webp",
+          "sha256": "208d424bd55c1c41ee3af1ea70a812ba7a5845894492673d83e1f58abb65a8ed",
+          "bytes": 62106,
+          "distribution": "repository",
+          "phase": "关键：双肘贴近体侧，双手将哑铃弯举至肩前、掌心朝前，左腿保持抬起",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1652",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "b64793a19451e3e430b9cb425d1f68fc000945d6916898bd0e8b41eaf914f860",
+            "23ad608d3627f23b0bdf5be01699bd8996461e989ece70e2b8b5b5b73d12da34"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1734": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-generated-exdb-1734-0.8bc8d0c213d5.webp",
+          "sha256": "8bc8d0c213d55260e66f82519a38621f79139c6f7b4d8291bbf1916d33bfbab9",
+          "bytes": 42522,
+          "distribution": "repository",
+          "phase": "起始：坐健身球、背部挺直不前倾，双手各握哑铃，上臂竖直贴体侧、肘屈90度、前臂水平向前，掌心相对",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-generated-exdb-1734-1.7ad9fc222d1c.webp",
+          "sha256": "7ad9fc222d1cbcba82c7ecc843a02d86b0bb202135a35e00529b1262b0bcfbdf",
+          "bytes": 44022,
+          "distribution": "repository",
+          "phase": "关键：上臂保持竖直不动，双肘伸直后伸，双臂伸直至哑铃位于臀部后方",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1734",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "f7a6809486a9ed8e6174f38b197c01f0b1b0f8cc76b5c4d93a9d290ca7e35ce5",
+            "5c272a6a74fa8b942670e2112ff3e42e9a172e7135396c93b2d31a28fbe941ba"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0272": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-generated-exdb-0272-0.d877cf577a47.webp",
+          "sha256": "d877cf577a4776c48f47aa4249dc0eb650a0ef83ba0e8aa260bfa24ffaf500aa",
+          "bytes": 47494,
+          "distribution": "repository",
+          "phase": "起始：仰卧健身球、下背由球面支撑、躯干接近与地面平行，双臂伸直并拢上举指向天花板、掌心相对",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-generated-exdb-0272-1.d46d9075ea48.webp",
+          "sha256": "d46d9075ea48db43de9592f62d43db59a1c07ca03e8f075d054feb4ec70c8081",
+          "bytes": 47446,
+          "distribution": "repository",
+          "phase": "关键：腹部收紧卷起上半身约45度，双臂保持伸直随躯干前倾、指向前上方",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0272",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "3a8c688529d332b58556162c7426b6f0787e1da3e2a0b01f284f5f533f36c020",
+            "9da8e083b50654a90c4d00da4f595ab9fb12bb1736c9ec2ee5bad189fc4053d0"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0373": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-generated-exdb-0373-0.5f6a7bed586a.webp",
+          "sha256": "5f6a7bed586a59606bea0a7d674a286031b16a5771e8926e40eface690771443",
+          "bytes": 68074,
+          "distribution": "repository",
+          "phase": "起始：坐平凳，双手并握一只哑铃于头顶、双臂伸直，旋前握法（手背朝向镜头一侧、掌心朝前）",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-generated-exdb-0373-1.719709618c00.webp",
+          "sha256": "719709618c0097c02d7ffb2ed6e1304824696986371560e1278ce0ed71d287b4",
+          "bytes": 69822,
+          "distribution": "repository",
+          "phase": "关键：上臂贴耳不动，双肘弯曲将哑铃降至脑后，旋前握法不变",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0373",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "a8d9b20bb65cbb65d66a3cc9a1ae37858315b2b70396ba80c3f2db4b74c324d6",
+            "9e9b59a4bbb2a75ceb7807062f2e9c34208521eb1db280c3ba5a871dbb277197"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:3664": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-generated-exdb-3664-0.db77fcd9f727.webp",
+          "sha256": "db77fcd9f727e01aa7b8706638dd095ede51186ce4aba29c0434ee2df5b07420",
+          "bytes": 45502,
+          "distribution": "repository",
+          "phase": "起始：右前臂侧平板支撑（右肘在右肩正下方、双脚叠放、身体成一条直线），左臂伸直垂于体侧下方、左手握哑铃",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-generated-exdb-3664-1.ffa05f1fd9ea.webp",
+          "sha256": "ffa05f1fd9ea2d2afd2d4ff6554585425c0142bf2b3a127d1b7e55e82fd3a591",
+          "bytes": 46016,
+          "distribution": "repository",
+          "phase": "关键：侧平板保持不变，左臂伸直举向天花板，哑铃至左肩正上方、肩胛收紧",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-3664",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "78f60b37af38d0bc6a707e445dca82c59d9f8516186551c33f725581ff3aa295",
+            "3ce60745a81c4a8e173fb3ee70aeeb4b9dd1b7e0e07ad5e3d29cd9fcf1f26c72"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0670": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-generated-exdb-0670-0.2c8c134f84e1.webp",
+          "sha256": "2c8c134f84e10f6fefac608cd984eb6cfeb57e5927a83c8e6390e201049220fe",
+          "bytes": 53394,
+          "distribution": "repository",
+          "phase": "起始：正握单杠悬垂，握距略宽于肩，双臂完全伸直，双腿伸直并拢、双脚离地",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-generated-exdb-0670-1.1e7e9a0b8d5f.webp",
+          "sha256": "1e7e9a0b8d5fce868ec38f1c588eba04194973e5267a1f8940499a83f678c26b",
+          "bytes": 56680,
+          "distribution": "repository",
+          "phase": "关键：拉至横杆位于后颈后方、轻触上背部斜方肌，头在横杆前方、略微前倾",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0670",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "c23b025bfdf6305cdc3c358b1755757953dd60d915e0e80c7df25648aa85229e",
+            "ebac522a727e78c6db7dc648c1adcb3d42ba68ca4f345b56b010f143d68fbced"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1738": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-generated-exdb-1738-0.89d4ea52bbdc.webp",
+          "sha256": "89d4ea52bbdc0f7e7853cf192b75e8af3f63b48e883b162f1867e14c41a0d6a9",
+          "bytes": 46754,
+          "distribution": "repository",
+          "phase": "起始：坐平凳，右臂伸直举过头顶、右手反握一只哑铃（掌心朝后），左手扶左大腿",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-generated-exdb-1738-1.dc09aa3e08f4.webp",
+          "sha256": "dc09aa3e08f4261daa9c432fdc4d83142ddc02cd7432660acf4a213edae0d5ae",
+          "bytes": 46126,
+          "distribution": "repository",
+          "phase": "关键：右上臂贴耳不动，右肘弯曲将哑铃横降至脑后，右手掌心朝上反握托住握把",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1738",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "f716181b56e1bacb89dadc847345351212c8df0eedc7976731cfd01472471ea9",
+            "6230ac0f9a8c19f055bd0409a584a388b32db3fbeb3b58746bc4b7452e49aded"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:2328": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-generated-exdb-2328-0.88feeeec059b.webp",
+          "sha256": "88feeeec059ba7ba79039b6ee3f9f1edce41d6c27316f9200031a6bc2873b0d9",
+          "bytes": 47406,
+          "distribution": "repository",
+          "phase": "起始：高位平板，双手并拢撑于健身球顶部（间距窄于肩宽）、手指扣住球面，身体从头到脚跟成一条直线",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-generated-exdb-2328-1.19ad3a0d7b9b.webp",
+          "sha256": "19ad3a0d7b9bb22964fe12ed18f33c2cb83429e1cc55540848df9885fc621557",
+          "bytes": 47572,
+          "distribution": "repository",
+          "phase": "关键：双肘深度弯曲，身体下降至胸口接近球顶，双手仍窄距撑球、身体保持直线",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-2328",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "224cb273057dcab7094fa990bdc462f0fa749057917ce92c1b5b44c2b092555b",
+            "87163d3afe8db43170bed1a20f0f6d32d53af1b7d06e31215e578ca8d89dfdb1"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:3548": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-generated-exdb-3548-0.db92ab1bdf60.webp",
+          "sha256": "db92ab1bdf60f64846537145526d27f5806395802f1873588301430cfdd6f181",
+          "bytes": 55616,
+          "distribution": "repository",
+          "phase": "步态一：右臂伸直锁定举过头顶、右手握哑铃于头顶正上方，行走中一腿向前迈出落脚",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-generated-exdb-3548-1.b540ac4daf5b.webp",
+          "sha256": "b540ac4daf5b5701859a947848f70461f27967f6897c41dd5ad4a622c084667a",
+          "bytes": 59988,
+          "distribution": "repository",
+          "phase": "步态二：右臂过顶锁定不变，对侧腿向前迈出行走的下一步，躯干挺直",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-3548",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "e889d736c7234a4b91742fc40c1c0e0465797c14f8c6b20801c09b4714186068",
+            "6aabe5e2989ba1169b3175bb29177a067daefaa14000c26290bfafcba5a5d22d"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1619": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-generated-exdb-1619-0.45436f327e94.webp",
+          "sha256": "45436f327e94eb7cab1a7f96394799ec869b6d77616ef115b599d3040ae58696",
+          "bytes": 41104,
+          "distribution": "repository",
+          "phase": "起始：仰卧约45度上斜凳，右臂伸直上举、锤式握哑铃（掌心向内、拇指朝上，铃体沿身体前后方向），左手扶凳面",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-generated-exdb-1619-1.f373371973f0.webp",
+          "sha256": "f373371973f00dd434071f441e11f227219fed5001790589a938510e6551b9b1",
+          "bytes": 41382,
+          "distribution": "repository",
+          "phase": "关键：右肘弯曲将哑铃降至右胸外侧，锤式握法不变",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1619",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch62.md",
+          "version": "2026-11-07 · 生成批次 62",
+          "sourceSha256": [
+            "036d24ace8922af3bf3f514798e5160708d585a2c20355895db436eeb9657eda",
+            "bf851913f4b46e6b0b0440cc055afd5a79ee7a63b918d82ea227b68a989fd233"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }
