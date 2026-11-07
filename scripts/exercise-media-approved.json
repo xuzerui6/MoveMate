@@ -9626,6 +9626,204 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0766",
+   "expectedName": "smith shoulder press",
+   "sourceId": "ai-chatgpt-exdb-0766",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate ChatGPT generation",
+   "sourceSha256": [
+    "7015a896ca27bf72a9a03e3f6dd9b9f7acbc0622edb5b2c733b4d547050f21d0",
+    "7163593b0a349f051c0f05429be4db614f12b1755c923b2f8ad27121297df116"
+   ],
+   "phases": [
+    "起始：坐于史密斯机内训练凳、双脚平放，杠铃挂在双竖轨滑座上停于肩高，双手正握杠铃于肩部两侧、肘屈约 90 度",
+    "关键：双臂沿双竖轨向上推直、杠铃升至头顶上方，杠身保持在导轨上、杠铃片在导轨外侧"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0178",
+   "expectedName": "cable lateral raise",
+   "sourceId": "ai-chatgpt-exdb-0178",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate ChatGPT generation",
+   "sourceSha256": [
+    "eb7f8b239ec584bd9bbcc726cd826ff278b07864e945d1b2d945087caa631b59",
+    "7fe90d48db8552220e9bff7600c232b43e49dd4d2c8280cf84e5c4b2bd2293cc"
+   ],
+   "phases": [
+    "起始：站立于双滑轮龙门架两立柱之间，双手各握同侧低位滑轮的把手垂于体侧，两根拉索自低位滑轮直线绷紧连至双手",
+    "关键：双臂向两侧抬起至与地面平行（肩高），双手仍各握同侧把手，两根拉索仍自低位滑轮直线绷紧连至双手"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0218",
+   "expectedName": "cable seated wide-grip row",
+   "sourceId": "ai-chatgpt-exdb-0218",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate ChatGPT generation",
+   "sourceSha256": [
+    "c6180cd6e63d281afffeffb3280057294419bf84b1fb32f72067aa1f0436bfca",
+    "367e26b83621df6391055a6c3186ef2bfe8eda0e90ed4b7a36238efea9d1714f"
+   ],
+   "phases": [
+    "起始：坐在坐姿划船凳上、双脚平踏前方脚踏板、膝微屈，躯干直立、双臂向前伸直，以宽距正握握住直杠，拉索自直杠向前下方连至脚踏板高度的低位滑轮",
+    "关键：将直杠拉至下肋处、双肘后收过躯干、肩胛收紧，双脚仍平踏脚踏板，拉索仍连至同一低位滑轮"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3281",
+   "expectedName": "smith full squat",
+   "sourceId": "ai-chatgpt-exdb-3281",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate ChatGPT generation",
+   "sourceSha256": [
+    "c8e1eaad48059f49d1368c23599925f50a17ed85fd733c076638cc5aded62e32",
+    "ecc7cf4a32b8c1f5b99dce11ea05183dd7b03d9d11485dee2ef737537ab90c81"
+   ],
+   "phases": [
+    "起始：站立于史密斯机内，杠铃置于上背斜方肌、双手于肩外侧握杠，杠身挂于双竖轨滑座、杠铃片在导轨外侧，双脚与肩同宽平踏于杠正下方、膝伸直、胸挺起",
+    "关键：下蹲至底位——髋低于膝、大腿过平行，膝盖朝向脚尖、脚跟保持贴地，躯干挺直，杠铃仍置于上背并挂在双竖轨上"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0772",
+   "expectedName": "smith standing behind head military press",
+   "sourceId": "ai-chatgpt-exdb-0772",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate ChatGPT generation",
+   "sourceSha256": [
+    "bca1e8e1269037e9552283617a886d3df51644df0a2976758dc3b158082dc911",
+    "e26b0a3ac5f7402cfc41c7bde8bdaa3b211636050d17abc0ce1106c479c8e5d7"
+   ],
+   "phases": [
+    "起始：站立于史密斯机内，杠铃在颈后落于上斜方肌，双手以宽于肩的正握握杠、肘屈向下，杠身挂于双竖轨滑座，双脚与肩同宽位于杠正下方，无座椅",
+    "关键：双臂伸直将杠铃沿双竖轨推至头顶上方，身体站立位置与双脚不动"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0192",
+   "expectedName": "cable one arm lateral raise",
+   "sourceId": "ai-chatgpt-exdb-0192",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate ChatGPT generation",
+   "sourceSha256": [
+    "73da66b19e6c52a2241686eba08f755f76e34435f9ea88884b6b7d7ed7286f31",
+    "7f5b4e5ed4544f00b4045bbbf3430623fd56bdb627bb10c71eff4a4919bf02d1"
+   ],
+   "phases": [
+    "起始：面向绳索机站立，右手掌心向下握单把手、右臂伸直垂于体侧；拉索自正前方地面低位滑轮沿双腿前方斜行、直线绷紧连至右手，左臂放松垂于体侧",
+    "关键：右臂向右侧伸直抬起至与地面平行（肩高），掌心仍朝下；拉索仍自同一前方低位滑轮沿腿前直线连至抬起的右手，未绕至身后"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3563",
+   "expectedName": "cable one arm pulldown",
+   "sourceId": "ai-chatgpt-exdb-3563",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate ChatGPT generation",
+   "sourceSha256": [
+    "271c6f2084af433099db232003de8089658362536d7b79bcd33855464a50e278",
+    "b42b945b2946d5ab5788c597872593268f6ce3438566a1dae91bbe3f4711ace3"
+   ],
+   "phases": [
+    "起始：面向绳索机站立，左臂完全伸直上举、正手握住上方高滑轮的单把手，拉索自高滑轮直线绷紧连至左手；右手扶髋、双脚与肩同宽，周围无座椅",
+    "关键：单把手下拉至左肋旁，左肘屈曲贴紧身体、肘尖朝下，拉索仍自同一高滑轮直线连至左手；右手仍扶髋、保持站立"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1722",
+   "expectedName": "cable high pulley overhead tricep extension",
+   "sourceId": "ai-chatgpt-exdb-1722",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate ChatGPT generation",
+   "sourceSha256": [
+    "198cad7252dce656aaa96196f85cc5e85b600af58d8ce5d2f4d103d650b605f0",
+    "21be3cbcfa493861b86587aeeb6ce106269334f46a3e14d317b50e9cd21f6fa8"
+   ],
+   "phases": [
+    "起始：背对绳索机站立，双手各握绳柄一端于头后，上臂竖直紧贴头部两侧、肘屈使前臂与绳柄垂于头后；拉索自双手向后上方连至身后高滑轮",
+    "关键：双臂向上完全伸直过顶、绳柄两端举至头顶上方，上臂仍竖直贴近头部两侧、肘锁直，拉索仍连至身后同一高滑轮"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0860",
+   "expectedName": "cable kickback",
+   "sourceId": "ai-chatgpt-exdb-0860",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate ChatGPT generation",
+   "sourceSha256": [
+    "4f99dce6c473201829ed63cab38ce6b59ac7bfe5836221e5b529c9613026b437",
+    "5812a1cc827731cd3bd7ddac8ae354e1da222c913825bb38fb63c5716215c0e6"
+   ],
+   "phases": [
+    "起始：面向绳索机髋铰链俯身、背平、膝微屈，右手握单把手于体侧，右上臂贴紧躯干、右肘屈约 90 度；拉索自右手向前下方直线绷紧连至正前方地面低位滑轮，左手撑于左大腿前侧",
+    "关键：右前臂向后伸直至整臂伸直并与躯干成一直线，右上臂仍贴身不动；拉索仍自右手向前下方连至同一低位滑轮，左手仍撑左大腿"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1413",
+   "expectedName": "cable reverse one arm curl",
+   "sourceId": "ai-chatgpt-exdb-1413",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate ChatGPT generation",
+   "sourceSha256": [
+    "8d1e51b729e28b23780d64e295cec184dabfda146fe63f7b85e78ae022206dec",
+    "0fe1eb0bf880af9e8552b44efa6d053747f71a0a20ceb3ed92ae1c8802c649c1"
+   ],
+   "phases": [
+    "起始：面向绳索机站立，右手以旋前握（掌心朝下、指节朝上）握单把手，右臂伸直垂于体侧、肘贴肋；拉索自右手向前下方直线绷紧连至正前方地面低位滑轮",
+    "关键：右前臂上卷至肩前，肘仍贴肋；握法保持旋前——掌心仍朝下向前、指节朝向面部，把手未翻转为掌心向上；拉索仍连至同一前方低位滑轮"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1452",
+   "expectedName": "lever seated crunch",
+   "sourceId": "ai-chatgpt-exdb-1452",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate ChatGPT generation",
+   "sourceSha256": [
+    "9c8302b57fe9f7b6053b24e84987c322cbd417430b513e83ab34272046161ebd",
+    "5de91ac53ff457db8dfd7b6a2f1a1818f944a7adf438c98bc585a7336c98af75"
+   ],
+   "phases": [
+    "起始：坐在片加载坐姿卷腹机上，背部靠住身后大靠垫、双脚平放地面，双手扶座椅旁侧柄；躯干随后倾约 45 度，靠垫绕座椅旁髋高转轴随后倾，配重片挂于座后杠杆臂",
+    "关键：卷腹前屈、胸部卷向膝部，躯干明显前屈过竖直位，靠垫绕同一髋高转轴随背部前摆，双脚仍平放、手仍扶侧柄"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [

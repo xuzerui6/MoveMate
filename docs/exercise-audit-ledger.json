@@ -8455,22 +8455,37 @@
     {
       "id": "exdb:1722",
       "originalName": "cable high pulley overhead tricep extension",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：高位后方绳柄、背对机器、上臂靠头明确，但手肘与头后索路需对应图像。",
+      "reason": "2026-11-08 ChatGPT 生成双帧已逐帧对照：种子意见关切手肘与头后索路需对应图像——定版背对机器站立：起始帧上臂竖直紧贴头部两侧、肘屈使双手与绳柄垂于头后，拉索自双手向后上方连续连至身后高滑轮；关键帧双臂过顶完全伸直，上臂仍竖直贴头、肘未外翻或漂移，索路不变。若面对机器或绳在头前即废的门槛未触发。双帧首稿过门。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "aa099598ae5d7d99b18b13707ca2068d0843e58ed3f81332ed004b8ffb52ce4d",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-chatgpt-exdb-1722",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch66.md",
+          "version": "2026-11-08 · 生成批次 66",
+          "sourceSha256": [
+            "198cad7252dce656aaa96196f85cc5e85b600af58d8ce5d2f4d103d650b605f0",
+            "21be3cbcfa493861b86587aeeb6ce106269334f46a3e14d317b50e9cd21f6fa8"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0167",
@@ -8785,22 +8800,37 @@
     {
       "id": "exdb:0860",
       "originalName": "cable kickback",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：单手俯身、上臂靠身、伸肘明确，但低滑轮位置和另一手支撑需核对。",
+      "reason": "2026-11-08 ChatGPT 生成双帧已逐帧对照：种子意见关切低滑轮位置与另一手支撑原文未说明——口径裁决（编辑决定，此处披露）：低滑轮在人物正前方地面、自由手撑在同侧大腿前侧。定版成帧：起始帧髋铰链俯身、背平、左手撑左大腿前侧，右上臂贴紧躯干、右肘屈约 90 度，拉索自右手向前下方直线连至前方低位滑轮；关键帧仅右前臂后伸至整臂伸直并与躯干成一直线，右上臂两帧保持贴身同位，未以整臂后摆冒充后伸。双帧首稿过门。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "e3469600e368e82b24e16019e595ad4901220ecc49dc30e175169afeb28dbeb7",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-chatgpt-exdb-0860",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch66.md",
+          "version": "2026-11-08 · 生成批次 66",
+          "sourceSha256": [
+            "4f99dce6c473201829ed63cab38ce6b59ac7bfe5836221e5b529c9613026b437",
+            "5812a1cc827731cd3bd7ddac8ae354e1da222c913825bb38fb63c5716215c0e6"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0175",
@@ -8955,22 +8985,37 @@
     {
       "id": "exdb:0178",
       "originalName": "cable lateral raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：双臂侧举至肩高可读，但完全没有滑轮位置及双索/单索说明，不能据此配置器械。",
+      "reason": "2026-11-08 ChatGPT 生成双帧已逐帧对照：种子意见关切原文完全没有滑轮位置及双索/单索说明——定版双低滑轮双索构型：站立于龙门架两立柱之间，双手各握同侧低位滑轮把手垂于体侧，两根拉索自低位滑轮直线绷紧连至双手；关键帧双臂侧举至与地面平行，拉索端点与走向不变、仍全程绷紧。双帧首稿过门（ChatGPT 路线试点条）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "115ba91168e01f1f83474f04ad240c50cff7b44cbb62daf671425972534217b4",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-chatgpt-exdb-0178",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch66.md",
+          "version": "2026-11-08 · 生成批次 66",
+          "sourceSha256": [
+            "eb7f8b239ec584bd9bbcc726cd826ff278b07864e945d1b2d945087caa631b59",
+            "7fe90d48db8552220e9bff7600c232b43e49dd4d2c8280cf84e5c4b2bd2293cc"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0179",
@@ -9415,22 +9460,37 @@
     {
       "id": "exdb:0192",
       "originalName": "cable one arm lateral raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：单手掌心向下侧举到肩高可读，但未说明滑轮方位与索是否跨身，不能任意配图。",
+      "reason": "2026-11-08 ChatGPT 生成双帧已逐帧对照：种子意见关切原文未说明滑轮方位与索是否跨身——按正文「面向机器」裁决为前方低滑轮、索行于腿前并定版：起始帧拉索自正前方地面低位滑轮沿双腿前方斜行连至右手，右手掌心向下、右臂伸直垂于体侧；关键帧右臂侧举至与地面平行，掌心仍朝下，拉索仍在腿前成一直线连至右手、未绕背、未跨身后。双帧首稿过门。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "146e407f097d649501de5002b33ec8433c4c43932ba91af66cac5ac310eb430e",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-chatgpt-exdb-0192",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch66.md",
+          "version": "2026-11-08 · 生成批次 66",
+          "sourceSha256": [
+            "73da66b19e6c52a2241686eba08f755f76e34435f9ea88884b6b7d7ed7286f31",
+            "7f5b4e5ed4544f00b4045bbbf3430623fd56bdb627bb10c71eff4a4919bf02d1"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1633",
@@ -9475,22 +9535,37 @@
     {
       "id": "exdb:3563",
       "originalName": "cable one arm pulldown",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：高滑轮站姿单手正握下拉明确；需要对应手臂下降方向和躯干支撑的图核验。",
+      "reason": "2026-11-08 ChatGPT 生成双帧已逐帧对照：种子意见关切需要手臂下降方向与躯干支撑的图核验——定版站姿（无座椅、无大腿垫）：起始帧左臂完全伸直上举、正手握高滑轮单把手，拉索自高滑轮直线绷紧连至左手，右手扶髋支撑躯干；关键帧把手下拉至左肋旁、左肘贴身且肘尖朝下，右手仍扶髋。成帧工作侧为左手，条目为单臂动作、名称与正文不限定侧，双帧同侧一致。正文以成帧左侧为示范侧并注明换边。双帧首稿过门。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "895881350826a57d2689f85cc84e4690571036a16b774972d75e7d47a759f14b",
-        "steps": 9
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-chatgpt-exdb-3563",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch66.md",
+          "version": "2026-11-08 · 生成批次 66",
+          "sourceSha256": [
+            "271c6f2084af433099db232003de8089658362536d7b79bcd33855464a50e278",
+            "b42b945b2946d5ab5788c597872593268f6ce3438566a1dae91bbe3f4711ace3"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1635",
@@ -10165,22 +10240,37 @@
     {
       "id": "exdb:1413",
       "originalName": "cable reverse one arm curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文掌心向下可辨但又称反手，需实图核对旋前握法和低位索，不用掌心向上图。",
+      "reason": "2026-11-08 ChatGPT 生成双帧已逐帧对照（握法探针条）：种子意见关切正文「反手」与「掌心向下」并存易混、明言不用掌心向上图——口径以名称加正文掌向为准取旋前握。定版双帧经手部放大逐帧核：起始帧右手在把手上方覆握、掌心朝下、指节朝上，肘贴肋、右臂垂于体侧；关键帧前臂上卷至肩前，掌心仍朝下向前、指节朝向面部，把手未翻转为掌心向上，肘仍贴肋；拉索两帧自右手向前下方连至前方低位滑轮。旧生成器在案的握法翻转病（批次 48 续接翻手、批次 49 正手默认偏向）在本路线未复现，探针通过。双帧首稿过门。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "1456c8864f0f803196477e529b8b1b391aa2e978acb0cfb05c6ac0d3d3ec4cae",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-chatgpt-exdb-1413",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch66.md",
+          "version": "2026-11-08 · 生成批次 66",
+          "sourceSha256": [
+            "8d1e51b729e28b23780d64e295cec184dabfda146fe63f7b85e78ae022206dec",
+            "0fe1eb0bf880af9e8552b44efa6d053747f71a0a20ceb3ed92ae1c8802c649c1"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0209",
@@ -10860,22 +10950,37 @@
     {
       "id": "exdb:0218",
       "originalName": "cable seated wide-grip row",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：脚踏支撑、正手宽握拉下胸明确；仍需直杆宽度和拉索高度示范。",
+      "reason": "2026-11-08 ChatGPT 生成双帧已逐帧对照：种子意见关切需直杆宽度与拉索高度示范——定版宽距正握直杠：起始帧双脚平踏前方脚踏板、躯干直立、双臂前伸，拉索自直杠向前下方连至脚踏板高度的低位滑轮；关键帧直杠拉至下肋、双肘后收过躯干、肩胛收紧，双脚仍与脚踏板贴合。坐凳相位、脚踏贴合与滑轮高度三要素同帧成立——此合取构型旧生成器（批次 65）与扁平插画试点均未通过，本路线首稿通过。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "c6551efb248d2a916a5d1640b65d712161b223ae8b9e3baf7ce61c19d9433238",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-chatgpt-exdb-0218",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch66.md",
+          "version": "2026-11-08 · 生成批次 66",
+          "sourceSha256": [
+            "c6180cd6e63d281afffeffb3280057294419bf84b1fb32f72067aa1f0436bfca",
+            "367e26b83621df6391055a6c3186ef2bfe8eda0e90ed4b7a36238efea9d1714f"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0219",
@@ -28367,22 +28472,37 @@
     {
       "id": "exdb:1452",
       "originalName": "lever seated crunch",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：背垫随躯干后倾再前卷可读，但转轴与阻力接触方向需专门器械图核验。",
+      "reason": "2026-11-08 ChatGPT 生成双帧已逐帧对照：种子意见关切转轴与阻力接触方向需专门器械图核验——定版成帧为片加载坐姿卷腹机（机身标识 seated crunch）：起始帧躯干随后倾约 45 度、背部贴住身后大靠垫，靠垫绕座椅旁髋高转轴随后倾，配重片挂于座后杠杆臂，双手扶侧柄、双脚平放；关键帧卷腹前屈、胸部卷向膝部，靠垫绕同一髋高转轴随背部前摆至同角度，垫人未分离，双脚仍平放。已知风险「卷腹机机型形态差异」在本条未出现，两帧机型与转轴一致。双帧首稿过门。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "9e01c11cbf6d541d977ca099762938c02ded5f3ab05ac531b3cfa4430f31bbb5",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-chatgpt-exdb-1452",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch66.md",
+          "version": "2026-11-08 · 生成批次 66",
+          "sourceSha256": [
+            "9c8302b57fe9f7b6053b24e84987c322cbd417430b513e83ab34272046161ebd",
+            "5de91ac53ff457db8dfd7b6a2f1a1818f944a7adf438c98bc585a7336c98af75"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0595",
@@ -34021,22 +34141,37 @@
     {
       "id": "exdb:3281",
       "originalName": "smith full squat",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：背部斜方肌托杠可辨，但松杠后退一步的自由杠流程不适用导轨，不能照搬。",
+      "reason": "2026-11-08 ChatGPT 生成双帧已逐帧对照：种子意见关切正文「松杠后退一步」是自由杠流程、不适用导轨——定版按导轨口径呈现：双脚始终在杠正下方、无后退步，杠全程挂于双竖轨滑座、置于上背斜方肌；深度按名称「全蹲」严核，关键帧髋低于膝、大腿过平行、脚跟贴地、膝朝脚尖，非半蹲偷换（旧生成器的深度封顶病未复现）。正文同步删去后退步步骤。双帧首稿过门。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "c4e95d37ed15bddb385d0926e568eddeaf9f658e09c9c6d7d5ed80aa40a0b5e3",
-        "steps": 9
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-chatgpt-exdb-3281",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch66.md",
+          "version": "2026-11-08 · 生成批次 66",
+          "sourceSha256": [
+            "c8e1eaad48059f49d1368c23599925f50a17ed85fd733c076638cc5aded62e32",
+            "ecc7cf4a32b8c1f5b99dce11ea05183dd7b03d9d11485dee2ef737537ab90c81"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0755",
@@ -34566,22 +34701,37 @@
     {
       "id": "exdb:0766",
       "originalName": "smith shoulder press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：调整座椅但脚肩宽的站/坐姿不明确，需要明确支撑体位与杆轨。",
+      "reason": "2026-11-08 ChatGPT 生成双帧已逐帧对照：种子意见关切站/坐姿不明确、需明确支撑体位与杆轨——定版坐姿：坐于机内训练凳、杠挂双竖轨滑座停于肩高、双手正握于肩部两侧、肘屈约 90 度为起始；关键帧双臂沿轨推直过顶，杠身全程在轨、杠铃片在导轨外侧，体位与杆轨均可核。双帧首稿过门（ChatGPT 路线试点条）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "60a81cb9df79b1b8f4cd6b8af6906e94bee85ef0fde1e267617f3f1e3878e683",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-chatgpt-exdb-0766",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch66.md",
+          "version": "2026-11-08 · 生成批次 66",
+          "sourceSha256": [
+            "7015a896ca27bf72a9a03e3f6dd9b9f7acbc0622edb5b2c733b4d547050f21d0",
+            "7163593b0a349f051c0f05429be4db614f12b1755c923b2f8ad27121297df116"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0767",
@@ -34726,22 +34876,37 @@
     {
       "id": "exdb:0772",
       "originalName": "smith standing behind head military press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：颈后支撑可辨，但调座椅又站立、从导轨提杠后退的流程错误，不能直接配普通站姿图。",
+      "reason": "2026-11-08 ChatGPT 生成双帧已逐帧对照：种子意见关切正文「调座椅又站立、从导轨提杠后退」流程错误——定版站姿直接在导轨下完成：无座椅、不后退，杠落于颈后上斜方肌（非压颈、非颈前推举），宽距正手、肘屈向下为起始；关键帧双臂沿双竖轨推直过顶，身体站位与双脚不动。正文同步删去调座椅与后退步步骤。双帧首稿过门。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "5145060d285fc3be969cd6dc167034d8e8db9cd4dfeca2b49bb67d5f48307d6a",
-        "steps": 9
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-chatgpt-exdb-0772",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch66.md",
+          "version": "2026-11-08 · 生成批次 66",
+          "sourceSha256": [
+            "bca1e8e1269037e9552283617a886d3df51644df0a2976758dc3b158082dc911",
+            "e26b0a3ac5f7402cfc41c7bde8bdaa3b211636050d17abc0ce1106c479c8e5d7"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0773",
