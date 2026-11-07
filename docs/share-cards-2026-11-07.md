@@ -140,4 +140,11 @@ Edward 真机截图（B 卡未评分组）暴露两处与定版不符，本轮�
 
 - client `test:repository` 360/360、`tsc -b` 通过（基线 360 不降；其中 1 条既有断言
   由「B 卡不叠 motif」改为正向断言，与本轮定版变更对应）。
-- 部署与线上版本见随附提交记录（合并时基于最新 main 双站部署，双站 /health 抽查 200）。
+- 提交：main `e540b08`（分支 fix/share-card-visuals；分支 CI run 42350626249 绿、
+  快进合入时 main 已含批次 51 记录 a677a0c；main CI run 42350732683 绿）。
+- 部署：基于 main e540b08 双站上线——生产（dongban.xyz）
+  Version `d8ae092d-f45c-4a22-9184-cad6c22f2674`、预览（preview.dongban.xyz）
+  Version `5c18d336-7751-4c39-8fff-cc81d091e119`。
+- 线上抽查：双站 `/health`、`/` 均 200，入口 chunk 哈希与本地构建一致；
+  分享卡懒加载 chunk（cardData-BNhE0nrg.js，含本轮新代码）双站下载 sha256
+  与本地构建逐字一致。
