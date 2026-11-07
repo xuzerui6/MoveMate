@@ -6275,6 +6275,96 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0198",
+      "expectedName": "cable pulldown",
+      "sourceId": "ai-generated-exdb-0198",
+      "sourceSha256": [
+        "ae8b68e8ff6fc2af1f37fdb5677667ad84441a65deac3509ad7b3d2817d099d7",
+        "931357fd551df821f7d4a9f1afc5917ef030e4031874279ba5652b4f7f994579"
+      ],
+      "phases": [
+        "起始：坐于绳索下拉机、大腿压于压腿垫下，正手握直杆、握距略宽于肩，双臂上伸",
+        "关键阶段：横杆下拉至下颌下方、上胸上方，肘部下压后收，配重片提起"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0180",
+      "expectedName": "cable low seated row",
+      "sourceId": "ai-generated-exdb-0180",
+      "sourceSha256": [
+        "dc6bd80ee0d63465359121f36007956e4e7660d5585c03243447349fc6738098",
+        "2accbb130c0246ff78fa9d14ded1e53de9eb049047e5bf2d374a67c8b10c6e8d"
+      ],
+      "phases": [
+        "起始：坐于低位划船机、双脚踩稳脚踏板、膝微屈，正手握直杆把手、双臂前伸，钢索水平张紧",
+        "关键阶段：把手拉至下腹，肘部贴身后收、肩胛夹紧，躯干保持直立"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0549",
+      "expectedName": "kettlebell swing",
+      "sourceId": "ai-generated-exdb-0549",
+      "sourceSha256": [
+        "10a59040f26db4b9c701e8ca7425c018a6ba452fb07b96ac58f6c25afd4dc4db",
+        "9557de841f2f82074d659879fb63644ed3fda31c051156e4d62549d3c203fd50"
+      ],
+      "phases": [
+        "起始（下摆位）：髋铰链后移、背部平直、膝微屈，双手握壶铃摆至两腿之间",
+        "关键阶段（顶位）：髋部前顶站直、夹臀，双臂伸直，壶铃摆至胸高"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1479",
+      "expectedName": "lever incline chest press v. 2",
+      "sourceId": "ai-generated-exdb-1479",
+      "sourceSha256": [
+        "363421139b50c024a245a879b92a1d7f1f591f8ca6ec30e49d9647d8708f4bd6",
+        "2411284b7e67751659be06181d1c2bbd9e2e4ed699b321d2d1b83e0dda10edb4"
+      ],
+      "phases": [
+        "起始：坐于器械上斜推胸机、背贴约45度靠背，正手握把手于上胸两侧，肘屈约90度",
+        "关键阶段：把手沿上斜方向前推至双臂伸展但不锁肘，杠杆臂前摆"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0009",
+      "expectedName": "assisted chest dip (kneeling)",
+      "sourceId": "ai-generated-exdb-0009",
+      "sourceSha256": [
+        "c540e6e2571ced3084b33b1de2d59c771ab20ab3f80d9a80c9bf956cc706b221",
+        "be09601a50afde7bedb5d2a55a9fbdfe70d37eeb810731c7a61b795fa6619193"
+      ],
+      "phases": [
+        "起始：跪于辅助臂屈伸机跪垫、躯干直立，双手对握两侧平行把手、双臂伸直支撑",
+        "关键阶段：屈肘下降至上臂约与地面平行，躯干略前倾，膝盖仍跪于垫上"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0119",
+      "expectedName": "barbell upright row v. 2",
+      "sourceId": "ai-generated-exdb-0119",
+      "sourceSha256": [
+        "a60ee93034ddb2176bdc8cda65a97f075776697d261196ab09d4d1e6e67d33e3",
+        "53ed0cd32ed5420f2667ce4fddbf1cc4c9a5a53836ea764eee2e9fbf12abd791"
+      ],
+      "phases": [
+        "起始：站立、正手握杠、握距略宽于肩，杠铃悬于大腿前、双臂伸直",
+        "关键阶段：杠铃沿身体上提至下颌下方，肘部抬高引领，握法保持正手"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
