@@ -87,6 +87,118 @@ test('front raises calibrate and count with kneeling-level hip visibility',()=>{
   assert.equal(r.tracker.metrics.scoreAccumulator.count,0);
   assert.equal(r.tracker.metrics.lastRepScore,null);
 });
+/** Geometrically exact front-raise world landmarks (demo-pose convention: y down,
+ * forward = −z), parameterised by the TRUE shoulder-flexion angle. The optional
+ * `model` mode rebuilds the arm segment-wise with the distortion signature
+ * measured from the production model's output on the 2026-11-07 retest footage:
+ * at a true 90° raise the world elbow sits along a ≈70° flexion direction on a
+ * compressed 0.17 m segment with a ≈32° apparent elbow bend, while the wrist
+ * line still recovers ≈90° — the elbow channel is the weak link, not the wrist. */
+function frontRaiseWorld(thetaDeg:number,opts:{left?:boolean;right?:boolean;lateral?:boolean;model?:{flex:number;bend:number}}={}){
+  const {left=true,right=true,lateral=false,model}=opts;
+  const world:Point[]=Array.from({length:33},()=>({x:0,y:0,z:0,visibility:1}));
+  const w=(i:number,x:number,y:number,z:number)=>{world[i]={x,y,z,visibility:1};};
+  w(0,0,-.15,-.1);
+  for(const o of [0,1]){
+    const sx=o?.2:-.2,raising=(o?right:left),th=(raising?thetaDeg:5)*Math.PI/180;
+    w(11+o,sx,0,0);w(23+o,sx,.4,0);w(25+o,sx,.85,0);w(27+o,sx,1.28,0);
+    if(model&&raising&&!lateral){
+      // Segment-wise model signature: the elbow lands along a flexion direction of
+      // only flex·(θ−5°)+5° at 0.17 m (compressed segment), and the forearm continues
+      // with an apparent bend, so the wrist line still recovers ≈θ.
+      const ef=(5+(thetaDeg-5)*model.flex)*Math.PI/180,bend=model.bend*((thetaDeg-5)/85)*Math.PI/180;
+      const ex=sx,ey=Math.cos(ef)*.17,ez=-Math.sin(ef)*.17;
+      w(13+o,ex,ey,ez);
+      w(15+o,ex,ey+Math.cos(ef+bend)*.26,ez-Math.sin(ef+bend)*.26);
+    }else{
+      const dir=lateral?[Math.sign(sx)*Math.sin(th),Math.cos(th),0]:[0,Math.cos(th),-Math.sin(th)];
+      w(13+o,sx+dir[0]*.28,dir[1]*.28,dir[2]*.28);
+      w(15+o,sx+dir[0]*.54,dir[1]*.54,dir[2]*.54);
+    }
+  }
+  return world;
+}
+function feedWorld(r:ReturnType<typeof run>,world:Point[],duration:number){
+  r.feed('neutral',duration,(p,w)=>{if(w)world.forEach((v,i)=>{w[i]={...v};});});
+}
+function frontRaiseImage():Point[]{
+  const p:Point[]=Array.from({length:33},()=>({x:.5,y:.5,z:0,visibility:.95}));
+  const put=(i:number,x:number,y:number)=>{p[i]={x,y,z:0,visibility:.95};};
+  put(0,.5,.14);
+  for(const o of [0,1]){const sx=.40+o*.20;put(11+o,sx,.28);put(13+o,sx,.44);put(15+o,sx,.62);put(23+o,.44+o*.12,.55);put(25+o,.44+o*.12,.74);put(27+o,.44+o*.12,.92);}
+  return p;
+}
+/** Raised-cosine front-raise trajectories at 24 FPS into a prefiltered tracker —
+ * the same fixture style as the tempo-tuning tests, parameterised by peak angle,
+ * optional world-landmark distortion, and which sides raise. */
+function raiseTrajectory(peak:number,reps:number,opts:{model?:{flex:number;bend:number};left?:boolean;right?:boolean}={}){
+  const tracker=new ExtendedExerciseTracker('front_raise',reps,{},true);
+  const img=frontRaiseImage(),step=1000/24;let t=0;
+  const feed=(v:number)=>{tracker.update(structuredClone(img),t,1,frontRaiseWorld(v,opts));t+=step;};
+  for(let c=0;c<63;c++)feed(5);
+  const cycles=Math.round(0.9*24);
+  for(let r=0;r<reps;r++)for(let k=0;k<cycles;k++){const u=k/cycles;feed(5+(peak-5)*(1-Math.cos(2*Math.PI*u))/2);}
+  for(let c=0;c<34;c++)feed(5);
+  return tracker;
+}
+test('front raises count a true 110° raise and reject an over-head 130° raise',()=>{
+  assert.equal(raiseTrajectory(110,2).metrics.reps,2);
+  assert.equal(raiseTrajectory(130,2).metrics.reps,0);
+  // A held true 110° reads back as ≈110° on the diagnostics channel.
+  const tracker=new ExtendedExerciseTracker('front_raise',20,{},true);let t=0;const img=frontRaiseImage();
+  for(let c=0;c<63;c++){tracker.update(structuredClone(img),t,1,frontRaiseWorld(5));t+=1000/24;}
+  for(let c=0;c<12;c++){tracker.update(structuredClone(img),t,1,frontRaiseWorld(110));t+=1000/24;}
+  assert.match(tracker.diagnostics.motion||'',/抬臂 1\d\d° \/ 1\d\d°/);
+});
+test('front raises still reject a held 45° half raise',()=>{
+  const r=run('front_raise');r.feed('neutral',3000);
+  feedWorld(r,frontRaiseWorld(45),1200);r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,0);
+});
+test('front raises count a shoulder-height raise under the measured world-landmark distortion',()=>{
+  // Segment-wise signature from the production model's output on the retest
+  // footage (worst straight-arm peak frame, t≈46.5 s): at a true 90° raise the
+  // elbow sits along a ≈70° flexion direction (flex ratio 65/85) on a 0.17 m
+  // segment, with a ≈32° apparent elbow bend; the wrist line still reads ≈90°.
+  const MODEL={flex:65/85,bend:32};
+  const angleOld=(world:Point[],s:number)=>{
+    const sub=(a:Point,b:Point)=>[a.x-b.x,a.y-b.y,(a.z||0)-(b.z||0)],dot=(a:number[],b:number[])=>a.reduce((n,x,i)=>n+x*b[i],0),nrm=(v:number[])=>v.map(x=>x/(Math.hypot(...v)||1));
+    return Math.acos(Math.max(-1,Math.min(1,dot(nrm(sub(world[13+s],world[11+s])),nrm(sub(world[23+s],world[11+s]))))))*180/Math.PI;
+  };
+  // Counterfactual with the pre-round-2 formula (3D elbow angle vs the hip): the
+  // same landmarks read ≈70° — a 20° under-read on the elbow channel.
+  const distorted=frontRaiseWorld(90,{model:MODEL});
+  assert.ok(Math.abs(angleOld(distorted,0)-70)<3,`counterfactual elbow angle ${angleOld(distorted,0).toFixed(1)}° should read ≈70°`);
+  // The measured frame itself, rebuilt landmark-for-landmark from the model's
+  // output on Edward's video (sagittal components, metres; elbow angles implied
+  // 142°/149°): the old formula read 73°/86°, the sagittal wrist angle ≈92°/92°.
+  const measured:Point[]=Array.from({length:33},()=>({x:0,y:0,z:0,visibility:1}));
+  const mw=(i:number,x:number,y:number,z:number)=>{measured[i]={x,y,z,visibility:1};};
+  mw(0,0,-.15,-.1);
+  mw(11,-.2,0,0);mw(23,-.2,.4,0);mw(13,-.2,.056,-.149);mw(15,-.2,-.010,-.357);
+  mw(12,.2,0,0);mw(24,.2,.4,0);mw(14,.2,.023,-.228);mw(16,.2,-.016,-.427);
+  const tracker=new ExtendedExerciseTracker('front_raise',20,{},true);let t=0;const img=frontRaiseImage();
+  for(let c=0;c<63;c++){tracker.update(structuredClone(img),t,1,frontRaiseWorld(5));t+=1000/24;}
+  for(let c=0;c<12;c++){tracker.update(structuredClone(img),t,1,structuredClone(measured));t+=1000/24;}
+  const m=/抬臂 (\d+)° \/ (\d+)°/.exec(tracker.diagnostics.motion||'');assert.ok(m,`motion readout missing: ${tracker.diagnostics.motion}`);
+  assert.ok(Number(m[1])>=85&&Number(m[1])<=98&&Number(m[2])>=85&&Number(m[2])<=98,`measured frame should read ≈92°, got ${m[1]}°/${m[2]}°`);
+  // …and full distorted cycles count, bilaterally and one arm at a time.
+  assert.equal(raiseTrajectory(90,2,{model:MODEL}).metrics.reps,2);
+  assert.equal(raiseTrajectory(90,1,{model:MODEL,left:false}).metrics.reps,1);
+  assert.equal(raiseTrajectory(90,1,{model:MODEL,right:false}).metrics.reps,1);
+});
+test('calibration progress is latched: leaving the start pose pauses the hold instead of rewinding it',()=>{
+  const r=run('front_raise');
+  r.feed('neutral',1200);const earned=r.tracker.diagnostics.calibrationProgress;
+  assert.ok(earned>=.5&&earned<1,`expected banked progress ≈0.55–0.6, got ${earned}`);
+  assert.equal(r.tracker.diagnostics.stage,'calibrating');
+  // Raising the arms (the exact behaviour the old reset punished) must not rewind it.
+  r.feed('peak',600);assert.ok(r.tracker.diagnostics.calibrationProgress>=earned,`progress rewound: ${earned} → ${r.tracker.diagnostics.calibrationProgress}`);
+  assert.equal(r.tracker.diagnostics.stage,'calibrating');
+  // The remaining hold accumulates on top of the banked time and latches ready.
+  r.feed('neutral',1000);assert.equal(r.tracker.diagnostics.stage,'ready');assert.equal(r.tracker.diagnostics.calibrationProgress,1);
+  // A tracker that never sees the start pose still never calibrates.
+  const fresh=run('front_raise');fresh.feed('peak',3000);assert.equal(fresh.tracker.diagnostics.calibrationProgress,0);assert.equal(fresh.tracker.diagnostics.stage,'calibrating');
+});
 test('Romanian deadlifts reject squats and translating the whole frame',()=>{
   const r=run('romanian_deadlift');r.feed('neutral',3000);r.feed('peak',1200,p=>{for(const o of [0,1]){p[23+o].y=.70;p[25+o].x=.76+o*.06;p[25+o].y=.73;}});r.feed('neutral',3000);assert.equal(r.tracker.metrics.reps,0);
   r.feed('peak',1200,p=>p.forEach(x=>x.x+=.15));r.feed('neutral',3000);assert.equal(r.tracker.metrics.reps,0);

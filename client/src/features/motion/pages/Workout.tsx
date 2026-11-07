@@ -69,10 +69,17 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const heartRef = useRef(heartRate); heartRef.current = heartRate
   useEffect(() => () => heartRef.current.disconnect(), [])
   const record = sessions.find(item => item.id === serverId.current) || restored
-  const seconds = useSessionClock(record, paused || busy || ending)
   const { metrics, diagnostics, demoLandmarks } = useExerciseMetrics(exerciseType, pose.landmarks, simulatedPose, active, paused || busy || ending,
     pose.videoRef.current?.videoWidth && pose.videoRef.current.videoHeight ? pose.videoRef.current.videoWidth / pose.videoRef.current.videoHeight : 1,
     restored ? { ...restored.metrics, reps: restored.reps } : {},20,'standalone',pose.worldLandmarks,pose.engine)
+  // The session clock does not run before the first completed calibration: until the
+  // tracker has latched its start pose the user is still setting up, and a ticking
+  // timer over a 0 count reads as if the set had already started (2026-11-07 front-
+  // raise retest). The latch is once per page mount — a later recalibration after a
+  // tracking loss keeps the clock running, exactly like resuming from pause does.
+  const calibratedOnce = useRef(false)
+  if (metrics.poseFeedback.calibrated) calibratedOnce.current = true
+  const seconds = useSessionClock(record, paused || busy || ending || !calibratedOnce.current)
   const workout = useWorkoutSession(metrics, heartRate, active, paused || busy || ending, undefined, restored?.effectiveSeconds || 0, exerciseType, seconds, restored?.metrics)
   const session = workout.session
   const progress = useRef<Record<string, unknown>>({})
