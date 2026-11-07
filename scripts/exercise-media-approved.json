@@ -6785,6 +6785,156 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1432",
+      "expectedName": "assisted standing pull-up",
+      "sourceId": "ai-generated-exdb-1432",
+      "sourceSha256": [
+        "48460972b8c1693459a5c42c4f09ce97b8290c0514548fa2c7c0cac7e2e9a262",
+        "045aa92b23790dd3f490d1ef51566400bd4998466d06f971408f3386d152f23c"
+      ],
+      "phases": [
+        "起始：双脚站立于辅助引体机活动踏板，正手略宽于肩握杠，双臂伸直",
+        "关键阶段：上拉至下巴明显高过杠，踏板随身体升起"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3142",
+      "expectedName": "smith sumo squat",
+      "sourceId": "ai-generated-exdb-3142",
+      "sourceSha256": [
+        "e8c67159fc67e12ed341ecb07f3623b879470543ca7c508abedc1e76bd4a477a",
+        "0514f929527d17dfde00ee2cd2cf6a6992e0d0a1293ae3600b3b073026e0ced4"
+      ],
+      "phases": [
+        "起始：杠置上背，双脚约1.5倍肩宽站立，脚尖外转，躯干直立",
+        "关键阶段：下蹲至大腿与地面平行，膝朝脚尖方向外张"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0757",
+      "expectedName": "smith incline bench press",
+      "sourceId": "ai-generated-exdb-0757",
+      "sourceSha256": [
+        "62d4d3d616e878190514e67c1bf6ce2226160bfac956778aaeb3e93b2dfe46c8",
+        "c8b7b7fac873d17ad20ab15a7bd6921731fc3930597b168bd15677894c7d885d"
+      ],
+      "phases": [
+        "起始：30–45度上斜凳仰卧，正手略宽于肩，肘深屈，杠沿导轨下放至上胸",
+        "关键阶段：双臂伸展，杠沿导轨推至上胸上方"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0287",
+      "expectedName": "dumbbell arnold press v. 2",
+      "sourceId": "ai-generated-exdb-0287",
+      "sourceSha256": [
+        "452de2ffb3309827941d33e8f85dbeba133ff6892ad675b5dfd81cca8e542770",
+        "a1d527f232370684494ffa6072bc4253250b87f97bd1722b61f601383228f9ee"
+      ],
+      "phases": [
+        "起始：坐姿背贴靠背，双哑铃置于肩前，掌心朝向自己",
+        "关键阶段：双臂过顶完全伸展，掌心已转向前方"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0208",
+      "expectedName": "cable reverse-grip straight back seated high row",
+      "sourceId": "ai-generated-exdb-0208",
+      "sourceSha256": [
+        "1f980cb43b28f2668cdba9b89cf162d2c1f419e6611f76cf94166209b537872b",
+        "ce3e42ec676b3d7d26de9b38092dda285d62e6d9c5be51f5deca821a955db3b3"
+      ],
+      "phases": [
+        "起始：坐姿脚踩踏板，反手与肩同宽握低位滑轮直杆（掌心向上、手指自下卷握），双臂前伸",
+        "关键阶段：直杆拉至下胸/上腹前，肘后收贴体侧，反手保持"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0550",
+      "expectedName": "kettlebell thruster",
+      "sourceId": "ai-generated-exdb-0550",
+      "sourceSha256": [
+        "b5858835bd8cd0aa89ab11f8b089b0a763913edfea824fe653270d9634b881ad",
+        "bb1cef917cbefddc86ae11911377ee6fff975456a7a0cb6be4052c4e4085e623"
+      ],
+      "phases": [
+        "起始：深蹲底部，双手抱单个壶铃于胸前，掌心相对",
+        "关键阶段：站直将壶铃推举过顶，双臂锁定"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3305",
+      "expectedName": "barbell thruster",
+      "sourceId": "ai-generated-exdb-3305",
+      "sourceSha256": [
+        "008131e90c0fee7c68e1ba9ab907c9ed354ba7157d4de35ce55e310c93387ceb",
+        "204980672848d8f7e1b0e42c90db9dd88ac4c74dd666fc5eceb13a66ba363b81"
+      ],
+      "phases": [
+        "起始：深蹲底部，杠正手架于前肩锁骨前（前架位、肘抬高朝前）",
+        "关键阶段：站直将杠推举过顶，双臂锁定"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0528",
+      "expectedName": "kettlebell double push press",
+      "sourceId": "ai-generated-exdb-0528",
+      "sourceSha256": [
+        "4c03f6cfab0f267c2b1cf80f0b74348eb27c481c48ffdcfefdae8d7def7eca12",
+        "2c921064d98cd134ff314b3b54926086a0afab07360628952b5f81c680e1a89a"
+      ],
+      "phases": [
+        "起始：双壶铃架于肩前胸侧（铃靠前臂外侧），膝浅屈预蹲",
+        "关键阶段：双腿站直，双壶铃推举过顶锁定"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0590",
+      "expectedName": "lever one arm shoulder press",
+      "sourceId": "ai-generated-exdb-0590",
+      "sourceSha256": [
+        "de98ddccb3367ad3191dbeb86188cc9a5ce1ed7763a52a1516002b916dca858b",
+        "4480307fd0a392fce7d83b3a9ec465c190f2fb421112347f38edeadd93d67dd7"
+      ],
+      "phases": [
+        "起始：坐姿背贴靠背，右手握单侧把手，肘屈约90度、把手在肩侧，左手放松置于大腿",
+        "关键阶段：右臂上推至完全伸展过顶，左臂不动"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0189",
+      "expectedName": "cable one arm bent over row",
+      "sourceId": "ai-generated-exdb-0189",
+      "sourceSha256": [
+        "4b70aa4d771ec462c53bdec811857bb000f4666c721a3dac59ff3a887f82c114",
+        "37ead279ed5325cb0bb81e574758c564c6eb1cfc61a46bf980642e1479e88a1b"
+      ],
+      "phases": [
+        "起始：髋铰链俯身约45度，右手中立握低位滑轮D把，手臂伸直，左手扶左大腿",
+        "关键阶段：把手拉至下肋侧，肘过躯干贴体侧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
