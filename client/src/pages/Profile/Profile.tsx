@@ -3,6 +3,7 @@
  * 弱化资料，突出“我的局”
  */
 import {Link} from 'react-router-dom';
+import AnimatedNumber from '../../components/AnimatedNumber';
 import {Icon} from '../../features/motion/components/Icons';
 import {AvatarFigure} from '../../features/motion/components/AvatarFigure';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
@@ -556,7 +557,7 @@ const Profile: React.FC = () => {
           <div className="profile-xp-line">
             <div>
               <span className="profile-xp-lab">当前经验</span>
-              <div className="profile-xp-num"><b>{motion.xp}</b> / {300 + (motion.level - 1) * 100} XP</div>
+              <div className="profile-xp-num"><b><AnimatedNumber value={motion.xp}/></b> / {300 + (motion.level - 1) * 100} XP</div>
             </div>
             <div className="profile-xp-next">再积累 {Math.max(0, 300 + (motion.level - 1) * 100 - motion.xp)} XP<br />即可升级</div>
           </div>
@@ -564,7 +565,7 @@ const Profile: React.FC = () => {
           <div className="profile-growth-stats">
             <div><small>累计 XP</small><strong>{motion.totalXp}</strong></div>
             <div><small>有效训练</small><strong>{motion.completedWorkoutCount}</strong></div>
-            <div><small>连续运动天数</small><strong>{motion.streakDays}</strong></div>
+            <div><small>连续运动天数</small><strong><AnimatedNumber value={motion.streakDays}/></strong></div>
           </div>
         </> : <p>正在读取成长数据…</p>}
       </div>

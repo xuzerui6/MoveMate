@@ -23,6 +23,7 @@ import {
   reconcileNetworkRecovery,
 } from "./workoutSync";
 import Dialog from "../../components/Dialog";
+import AnimatedNumber from "../../components/AnimatedNumber";
 import {ExerciseDemo} from './ExerciseMedia';
 import { isUnreviewedOfficialExercise, workoutGuideInstruction } from './exerciseGuidance';
 import { WeightInput } from "./WeightInput";
@@ -599,7 +600,7 @@ export default function PlanWorkout() {
             <p className="gym-muted">
               计划每有效分钟 1 XP，摄像头计数不额外发放 XP。
             </p>
-            {row.sets.some((s:any)=>s.inputMode === "camera" && s.score?.count > 0) && <p>训练识别均分 {Math.round(row.sets.reduce((sum:number,s:any)=>sum+(s.inputMode === "camera" ? s.score?.total || 0 : 0),0)/row.sets.reduce((sum:number,s:any)=>sum+(s.inputMode === "camera" ? s.score?.count || 0 : 0),0))} 分 · 仅统计可评分的完整动作</p>}
+            {row.sets.some((s:any)=>s.inputMode === "camera" && s.score?.count > 0) && <p>训练识别均分 <AnimatedNumber value={Math.round(row.sets.reduce((sum:number,s:any)=>sum+(s.inputMode === "camera" ? s.score?.total || 0 : 0),0)/row.sets.reduce((sum:number,s:any)=>sum+(s.inputMode === "camera" ? s.score?.count || 0 : 0),0))} fromZero/> 分 · 仅统计可评分的完整动作</p>}
             <Link className="primary" to="/train/records">
               查看逐组记录
             </Link>
@@ -704,7 +705,7 @@ export default function PlanWorkout() {
               {camera && (
                 <div className="gym-recognition">
                   <strong>
-                    {metrics.reps} / {current?.targetReps}{" "}
+                    <span key={metrics.reps} className="motion-rep-num">{metrics.reps}</span> / {current?.targetReps}{" "}
                     {type === "high_knees" ? "对" : "次"}
                   </strong>
                   <p>

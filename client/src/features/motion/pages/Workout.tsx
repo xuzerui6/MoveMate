@@ -303,7 +303,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
       </div>
       {preparing&&adaptive&&<section className="training-calibration-guidance" role="status"><b>让动作所需关节完整入镜</b><p>{pose.telemetry?.reason}</p>{!creating&&<button type="button" className="secondary" onClick={cancelPrepare}>取消准备</button>}</section>}
       {active && <section className="training-live-info" aria-label="本组训练数据">
-        <div className="training-numbers"><div className="training-reps"><strong>{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}</span></div><div><strong>{format(seconds)}</strong><span>有效时长</span></div><div><strong>{metrics.scoreAccumulator.count ? metrics.formScore : '—'}</strong><span>{adaptive&&exerciseType==='squat'?'训练均分':'动作评分'}</span></div></div>
+        <div className="training-numbers"><div className={"training-reps"+(metrics.reps>0&&metrics.reps>=metrics.targetReps?" motion-set-done":"")}><strong key={metrics.reps} className="motion-rep-num">{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}</span></div><div><strong>{format(seconds)}</strong><span>有效时长</span></div><div><strong>{metrics.scoreAccumulator.count ? metrics.formScore : '—'}</strong><span>{adaptive&&exerciseType==='squat'?'训练均分':'动作评分'}</span></div></div>
         <div className={'training-hint' + (paused ? ' paused' : '')} role="status"><Icon name={paused ? 'pause' : 'spark'}/><p>{hint}</p></div>
         {adaptive&&exerciseType==='squat'&&metrics.reps>0&&metrics.lastRepScore===null&&<p className="muted">本次无法评分</p>}
         <RecognitionStatus type={exerciseType} diagnostics={diagnostics} paused={paused || busy || ending} demo={simulatedPose}/>

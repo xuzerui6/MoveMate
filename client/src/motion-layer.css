@@ -1,0 +1,203 @@
+/* ============================================================================
+   动伴 · 全局动效层（设计 v1，2026-11-07 Edward 批准，规格见 motion-design-board.html）
+   纪律：本文件只新增 animation / transition 属性（以及动效所需的全新伪元素、
+   个别新引入 class 的 position 锚点），不改动任何既有布局 / 颜色声明的胜负；
+   时长与缓动全部取自 design-system.css 的动效令牌（--dur-1..4 / --ease-*）。
+   性能红线：只动 transform / opacity（原生 <progress> 的 value 由 JS 驱动除外，
+   与设计板对环形 stroke 的例外同理）；转场 ≤ 480ms；高频操作不加动效。
+   引入位置：main.tsx 中 design-system.css / training.css 之后。
+   ============================================================================ */
+
+/* ================= S1 视图转场 =================
+   Layout 在 <main class="motion-screen"> 上写 data-enter（page / fade / tab-next / tab-prev），
+   新路由的页面根节点挂载时自动播放对应入场动画（旧节点卸载，无退出动画）。 */
+@keyframes motion-page-in { from { opacity: 0; transform: translateY(16px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes motion-page-in-sm { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes motion-tab-next { from { opacity: 0; transform: translateX(26px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes motion-tab-prev { from { opacity: 0; transform: translateX(-26px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes motion-tab-next-sm { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes motion-tab-prev-sm { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes motion-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.motion-screen[data-enter="page"] > div:last-of-type { animation: motion-page-in var(--dur-3) var(--ease-out); }
+.motion-screen[data-enter="tab-next"] > div:last-of-type { animation: motion-tab-next var(--dur-3) var(--ease-io); }
+.motion-screen[data-enter="tab-prev"] > div:last-of-type { animation: motion-tab-prev var(--dur-3) var(--ease-io); }
+.motion-screen[data-enter="fade"] > div:last-of-type { animation: motion-fade-in var(--dur-3) var(--ease-out); }
+@media (min-width: 700px) {
+  /* 桌面差异：位移减半、不做缩放 */
+  .motion-screen[data-enter="page"] > div:last-of-type { animation-name: motion-page-in-sm; }
+  .motion-screen[data-enter="tab-next"] > div:last-of-type { animation-name: motion-tab-next-sm; }
+  .motion-screen[data-enter="tab-prev"] > div:last-of-type { animation-name: motion-tab-prev-sm; }
+}
+
+/* ================= S3 列表入场 =================
+   主要列表 / 货架 / 瓷砖的卡片逐张上浮淡入（stagger 仅覆盖前 10 个，
+   长列表后续项直接出现，避免拖沓与无谓重绘）。 */
+@keyframes motion-rise-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes motion-rise-in-sm { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.ui-pages-lobby-lobby-list > :nth-child(-n+10),
+.gym-exercise-list > article:nth-child(-n+10),
+.ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(-n+10),
+.ui-pages-leaderboard-leaderboard-list > :nth-child(-n+10),
+.gym-shortcuts > a:nth-child(-n+10),
+.gym-mini-tiles > a:nth-child(-n+10),
+.camera-exercise-grid > button:nth-child(-n+10),
+.history-item:nth-of-type(-n+10) {
+  animation: motion-rise-in var(--dur-2) var(--ease-out) backwards;
+}
+.ui-pages-lobby-lobby-list > :nth-child(2), .gym-exercise-list > article:nth-child(2),
+.ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(2),
+.ui-pages-leaderboard-leaderboard-list > :nth-child(2), .gym-shortcuts > a:nth-child(2),
+.gym-mini-tiles > a:nth-child(2), .camera-exercise-grid > button:nth-child(2), .history-item:nth-of-type(2) { animation-delay: 70ms; }
+.ui-pages-lobby-lobby-list > :nth-child(3), .gym-exercise-list > article:nth-child(3),
+.ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(3),
+.ui-pages-leaderboard-leaderboard-list > :nth-child(3), .gym-shortcuts > a:nth-child(3),
+.gym-mini-tiles > a:nth-child(3), .camera-exercise-grid > button:nth-child(3), .history-item:nth-of-type(3) { animation-delay: 140ms; }
+.ui-pages-lobby-lobby-list > :nth-child(4), .gym-exercise-list > article:nth-child(4),
+.ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(4),
+.ui-pages-leaderboard-leaderboard-list > :nth-child(4), .gym-shortcuts > a:nth-child(4),
+.gym-mini-tiles > a:nth-child(4), .camera-exercise-grid > button:nth-child(4), .history-item:nth-of-type(4) { animation-delay: 210ms; }
+.ui-pages-lobby-lobby-list > :nth-child(5), .gym-exercise-list > article:nth-child(5),
+.ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(5),
+.ui-pages-leaderboard-leaderboard-list > :nth-child(5), .gym-shortcuts > a:nth-child(5),
+.gym-mini-tiles > a:nth-child(5), .camera-exercise-grid > button:nth-child(5), .history-item:nth-of-type(5) { animation-delay: 280ms; }
+.ui-pages-lobby-lobby-list > :nth-child(6), .gym-exercise-list > article:nth-child(6),
+.ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(6),
+.ui-pages-leaderboard-leaderboard-list > :nth-child(6), .gym-shortcuts > a:nth-child(6),
+.gym-mini-tiles > a:nth-child(6), .camera-exercise-grid > button:nth-child(6), .history-item:nth-of-type(6) { animation-delay: 350ms; }
+.ui-pages-lobby-lobby-list > :nth-child(7), .gym-exercise-list > article:nth-child(7),
+.ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(7),
+.ui-pages-leaderboard-leaderboard-list > :nth-child(7), .gym-shortcuts > a:nth-child(7),
+.gym-mini-tiles > a:nth-child(7), .camera-exercise-grid > button:nth-child(7), .history-item:nth-of-type(7) { animation-delay: 420ms; }
+.ui-pages-lobby-lobby-list > :nth-child(8), .gym-exercise-list > article:nth-child(8),
+.ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(8),
+.ui-pages-leaderboard-leaderboard-list > :nth-child(8), .gym-shortcuts > a:nth-child(8),
+.gym-mini-tiles > a:nth-child(8), .camera-exercise-grid > button:nth-child(8), .history-item:nth-of-type(8) { animation-delay: 490ms; }
+.ui-pages-lobby-lobby-list > :nth-child(9), .gym-exercise-list > article:nth-child(9),
+.ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(9),
+.ui-pages-leaderboard-leaderboard-list > :nth-child(9), .gym-shortcuts > a:nth-child(9),
+.gym-mini-tiles > a:nth-child(9), .camera-exercise-grid > button:nth-child(9), .history-item:nth-of-type(9) { animation-delay: 560ms; }
+.ui-pages-lobby-lobby-list > :nth-child(10), .gym-exercise-list > article:nth-child(10),
+.ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(10),
+.ui-pages-leaderboard-leaderboard-list > :nth-child(10), .gym-shortcuts > a:nth-child(10),
+.gym-mini-tiles > a:nth-child(10), .camera-exercise-grid > button:nth-child(10), .history-item:nth-of-type(10) { animation-delay: 630ms; }
+@media (min-width: 700px) {
+  /* 桌面差异：位移 8px、错开收紧为 60ms */
+  .ui-pages-lobby-lobby-list > :nth-child(-n+10), .gym-exercise-list > article:nth-child(-n+10),
+  .ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(-n+10),
+  .ui-pages-leaderboard-leaderboard-list > :nth-child(-n+10), .gym-shortcuts > a:nth-child(-n+10),
+  .gym-mini-tiles > a:nth-child(-n+10), .camera-exercise-grid > button:nth-child(-n+10),
+  .history-item:nth-of-type(-n+10) { animation-name: motion-rise-in-sm; }
+  .ui-pages-lobby-lobby-list > :nth-child(2), .gym-exercise-list > article:nth-child(2),
+  .ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(2),
+  .ui-pages-leaderboard-leaderboard-list > :nth-child(2), .gym-shortcuts > a:nth-child(2),
+  .gym-mini-tiles > a:nth-child(2), .camera-exercise-grid > button:nth-child(2), .history-item:nth-of-type(2) { animation-delay: 60ms; }
+  .ui-pages-lobby-lobby-list > :nth-child(3), .gym-exercise-list > article:nth-child(3),
+  .ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(3),
+  .ui-pages-leaderboard-leaderboard-list > :nth-child(3), .gym-shortcuts > a:nth-child(3),
+  .gym-mini-tiles > a:nth-child(3), .camera-exercise-grid > button:nth-child(3), .history-item:nth-of-type(3) { animation-delay: 120ms; }
+  .ui-pages-lobby-lobby-list > :nth-child(4), .gym-exercise-list > article:nth-child(4),
+  .ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(4),
+  .ui-pages-leaderboard-leaderboard-list > :nth-child(4), .gym-shortcuts > a:nth-child(4),
+  .gym-mini-tiles > a:nth-child(4), .camera-exercise-grid > button:nth-child(4), .history-item:nth-of-type(4) { animation-delay: 180ms; }
+  .ui-pages-lobby-lobby-list > :nth-child(5), .gym-exercise-list > article:nth-child(5),
+  .ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(5),
+  .ui-pages-leaderboard-leaderboard-list > :nth-child(5), .gym-shortcuts > a:nth-child(5),
+  .gym-mini-tiles > a:nth-child(5), .camera-exercise-grid > button:nth-child(5), .history-item:nth-of-type(5) { animation-delay: 240ms; }
+  .ui-pages-lobby-lobby-list > :nth-child(6), .gym-exercise-list > article:nth-child(6),
+  .ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(6),
+  .ui-pages-leaderboard-leaderboard-list > :nth-child(6), .gym-shortcuts > a:nth-child(6),
+  .gym-mini-tiles > a:nth-child(6), .camera-exercise-grid > button:nth-child(6), .history-item:nth-of-type(6) { animation-delay: 300ms; }
+  .ui-pages-lobby-lobby-list > :nth-child(7), .gym-exercise-list > article:nth-child(7),
+  .ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(7),
+  .ui-pages-leaderboard-leaderboard-list > :nth-child(7), .gym-shortcuts > a:nth-child(7),
+  .gym-mini-tiles > a:nth-child(7), .camera-exercise-grid > button:nth-child(7), .history-item:nth-of-type(7) { animation-delay: 360ms; }
+  .ui-pages-lobby-lobby-list > :nth-child(8), .gym-exercise-list > article:nth-child(8),
+  .ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(8),
+  .ui-pages-leaderboard-leaderboard-list > :nth-child(8), .gym-shortcuts > a:nth-child(8),
+  .gym-mini-tiles > a:nth-child(8), .camera-exercise-grid > button:nth-child(8), .history-item:nth-of-type(8) { animation-delay: 420ms; }
+  .ui-pages-lobby-lobby-list > :nth-child(9), .gym-exercise-list > article:nth-child(9),
+  .ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(9),
+  .ui-pages-leaderboard-leaderboard-list > :nth-child(9), .gym-shortcuts > a:nth-child(9),
+  .gym-mini-tiles > a:nth-child(9), .camera-exercise-grid > button:nth-child(9), .history-item:nth-of-type(9) { animation-delay: 480ms; }
+  .ui-pages-lobby-lobby-list > :nth-child(10), .gym-exercise-list > article:nth-child(10),
+  .ui-pages-notifications-notifications-list > .ui-pages-notifications-notifications-item:nth-child(10),
+  .ui-pages-leaderboard-leaderboard-list > :nth-child(10), .gym-shortcuts > a:nth-child(10),
+  .gym-mini-tiles > a:nth-child(10), .camera-exercise-grid > button:nth-child(10), .history-item:nth-of-type(10) { animation-delay: 540ms; }
+}
+
+/* 加载占位：产品没有骨架屏组件，加载态是 .motion-loading 文字占位，
+   以同周期的呼吸式透明度脉动替代设计板 S3 的 shimmer 扫光（等待有交代）。 */
+@keyframes motion-loading-pulse { from { opacity: .55; } to { opacity: 1; } }
+.motion-loading { animation: motion-loading-pulse 1.1s ease-in-out infinite alternate; }
+
+/* ================= S4 计数反馈（仅 UI 层，不碰 PoseCanvas） ================= */
+@keyframes motion-pulse { 0% { transform: scale(1); } 38% { transform: scale(1.16); } 100% { transform: scale(1); } }
+.motion-rep-num { display: inline-block; animation: motion-pulse var(--dur-3) var(--ease-spring); }
+
+/* 一组达标：计数区一圈克制光晕（全新伪元素，不改既有声明）。
+   .training-reps 原无 position 声明，这里仅为伪元素锚点补 position: relative，无布局变化。 */
+@keyframes motion-halo { 0% { opacity: .55; transform: scale(1); } 100% { opacity: 0; transform: scale(1.45); } }
+.training-reps.motion-set-done { position: relative; }
+.training-reps.motion-set-done::after {
+  content: ""; position: absolute; inset: -6px; border-radius: 16px; pointer-events: none;
+  border: 2px solid var(--color-primary-light); opacity: 0;
+  animation: motion-halo var(--dur-4) var(--ease-out);
+}
+/* 结算页对勾标记：对勾是填充式图标无法描边描绘，代以弹性浮现 + 同款光晕（参数按板：≤480ms）。 */
+.training-summary-mark { position: relative; animation: motion-mark-in var(--dur-4) var(--ease-spring); }
+@keyframes motion-mark-in { 0% { opacity: 0; transform: scale(.6); } 60% { opacity: 1; transform: scale(1.06); } 100% { opacity: 1; transform: scale(1); } }
+.training-summary-mark::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+  border: 2px solid var(--color-primary-light); opacity: 0;
+  animation: motion-halo var(--dur-4) var(--ease-out) 100ms;
+}
+
+/* ================= S5 进度与成长 =================
+   经验条 / 属性条（.progress > i）以既有 width 承接数值，补 transition 让变化时可见生长。
+   等级环、连续天数数字分别由页面既有数字元素 + AnimatedNumber 承接（无新造 UI）。 */
+.progress > i { transition: width var(--dur-4) var(--ease-out); }
+
+/* ================= S6 微交互 ================= */
+/* 按钮按压：.btn 既有 transition: all 与主要变体的 :active 缩放保持不变，这里补齐通用 :active。 */
+.btn:active { transform: scale(.97); }
+.motion-view .primary, .motion-view .secondary { transition: transform var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out); }
+.motion-view .primary:active, .motion-view .secondary:active { transform: scale(.97); }
+/* 瓷砖 / 货架 / 选动作格 / 分段控件：按下回弹（这些元素原无 transition 声明，新增不改变任何既有胜负）。 */
+.gym-mini-tiles > a, .gym-shortcuts > a, .gym-shelf, .camera-exercise-grid > button,
+.gender-switch button, .segmented > button, .training-camera-groups button {
+  transition: transform var(--dur-1) var(--ease-out), background-color var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out);
+}
+.gym-mini-tiles > a:active, .gym-shortcuts > a:active, .gym-shelf:active, .camera-exercise-grid > button:active,
+.gender-switch button:active, .segmented > button:active, .training-camera-groups button:active { transform: scale(.97); }
+/* 主导航：状态切换平滑 + 按压反馈（原无 transition 声明）。 */
+.motion-nav a { transition: transform var(--dur-1) var(--ease-out), background-color var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out); }
+.motion-nav a:active { transform: scale(.96); }
+/* 桌面 hover 浮起：仅限整卡可点的 .card--clickable（其 transition 已由 .card 既有声明提供）。 */
+@media (hover: hover) and (pointer: fine) {
+  .card--clickable:hover { transform: translateY(-4px); }
+}
+
+/* ================= S7 弹层 =================
+   产品弹层统一为共享 Dialog（.ui-dialog + .ui-dialog-backdrop），无底部 Sheet 组件：
+   对话框缩放淡入 200ms、背景同步渐暗（fade），与设计板桌面形态一致。 */
+@keyframes motion-dialog-in { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }
+.ui-dialog-backdrop { animation: motion-fade-in var(--dur-2) var(--ease-out); }
+.ui-dialog { animation: motion-dialog-in var(--dur-2) var(--ease-out); }
+
+/* ================= 减动效（设计板红线，全局执行） =================
+   系统开启减弱动态效果时：全站新增动效降级——视图切换与弹层仅保留 120ms 简单淡入，
+   其余动效与过渡一律瞬时。（.motion-view 内已有同类规则，本块把覆盖面扩到全站。） */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01s !important;
+  }
+  .motion-screen[data-enter] > div:last-of-type {
+    animation-name: motion-fade-in; animation-duration: var(--dur-1) !important; animation-timing-function: linear;
+  }
+  .ui-dialog { animation-name: motion-fade-in; animation-duration: var(--dur-1) !important; }
+  .ui-dialog-backdrop { animation-duration: var(--dur-1) !important; }
+}

@@ -8,6 +8,7 @@ import App from './App';
 import '@fontsource-variable/noto-sans-sc';
 import './design-system.css';
 import './training.css';
+import './motion-layer.css';
 
 // 挂载前恢复登录态（从 localStorage 读取 token + user）
 import { useAuthStore } from './stores/authStore';
