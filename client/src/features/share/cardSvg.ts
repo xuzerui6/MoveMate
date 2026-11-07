@@ -66,8 +66,19 @@ function brandRow(opts: { dark: boolean; dateText: string }): string {
 <text x="${RIGHT}" y="102" text-anchor="end" font-family="${FONT}" font-size="30" font-weight="600" letter-spacing="1.2" fill="${dateFill}">${escapeXml(opts.dateText)}</text>`
 }
 
-/** V4-B 星座数据版 · 绿带白线版（与 v2 板 v4b-band-mini 符号逐字一致，无角度标签）。 */
-const BAND_MOTIF = `<g stroke="#c9f5da" stroke-width="1" opacity=".55" fill="none"><path d="M158 112 L170 60 L186 98"/><path d="M42 92 L66 52" stroke-dasharray="3 4"/><path d="M88 118 L158 112" stroke-dasharray="3 4" opacity=".7"/></g><path d="M30 190 A95 95 0 0 1 66 52" fill="none" stroke="#c9f5da" stroke-width="1.3" stroke-dasharray="2.5 4" opacity=".85"/><g stroke="#c9f5da" stroke-width="1.3" stroke-linecap="round"><path d="M11 140 L19 140 M15 136 L15 144"/><path d="M21 82 L29 82 M25 78 L25 86"/></g><path d="M30 190 L88 118 L66 52" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M150 150 L146 205 L152 252" fill="none" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><g><circle cx="66" cy="52" r="9.5" fill="none" stroke="#ffffff" stroke-width="1.4"/><circle cx="66" cy="52" r="4.6" fill="#ffffff"/><circle cx="66" cy="52" r="1.4" fill="#08783b"/><circle cx="88" cy="118" r="9" fill="none" stroke="#ffffff" stroke-width="1.4"/><circle cx="88" cy="118" r="4.6" fill="#ffffff"/><circle cx="88" cy="118" r="1.4" fill="#08783b"/><circle cx="30" cy="190" r="3.4" fill="#ffffff"/><circle cx="150" cy="150" r="3.4" fill="#ffffff"/><circle cx="146" cy="205" r="3" fill="#ffffff"/><circle cx="152" cy="252" r="3" fill="#ffffff"/></g><circle cx="170" cy="60" r="5.5" fill="none" stroke="#c9f5da" stroke-width="1"/><g fill="#ffffff"><circle cx="170" cy="60" r="2.4"/><circle cx="186" cy="98" r="1.8"/><circle cx="158" cy="112" r="1.8"/><circle cx="42" cy="92" r="1.8"/><circle cx="182" cy="182" r="1.8"/><circle cx="112" cy="228" r="1.8"/></g><g stroke="#8fdcae" stroke-width="1.4" stroke-linecap="round"><path d="M168 226 L180 226 M174 220 L174 232"/><path d="M24 140 L34 140 M29 135 L29 145"/></g>`
+/**
+ * V4-B 星座数据版 · 绿带白线版（几何与 v2 板 v4b-band-mini 符号逐字一致，无角度标签）。
+ * 2026-11-07 真机修正：板面在 1:3 缩放下成立的细线（1–2 单位）+ 低透明浅绿，
+ * 在 1080 真尺寸 + 亮绿带右段上几乎溶掉（像素实测 A 卡带内差异覆盖仅 3.5%、B 卡为 0），
+ * 故几何不动、只加强呈现：主链 2→3.4、次链 1.7→2.6、虚线链 1→1.8 且颜色
+ * #c9f5da→#eafff2、不透明度 .55→.85，节点环线宽 1.4→2.2，达到板样「白线近全显成片呈现」。
+ */
+const BAND_MOTIF = `<g stroke="#eafff2" stroke-width="1.8" opacity=".85" fill="none"><path d="M158 112 L170 60 L186 98"/><path d="M42 92 L66 52" stroke-dasharray="3.5 4"/><path d="M88 118 L158 112" stroke-dasharray="3.5 4" opacity=".8"/></g><path d="M30 190 A95 95 0 0 1 66 52" fill="none" stroke="#eafff2" stroke-width="2.2" stroke-dasharray="3 4.5" opacity=".95"/><g stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity=".95"><path d="M11 140 L19 140 M15 136 L15 144"/><path d="M21 82 L29 82 M25 78 L25 86"/></g><path d="M30 190 L88 118 L66 52" fill="none" stroke="#ffffff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M150 150 L146 205 L152 252" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><g><circle cx="66" cy="52" r="10" fill="none" stroke="#ffffff" stroke-width="2.2"/><circle cx="66" cy="52" r="5" fill="#ffffff"/><circle cx="66" cy="52" r="1.6" fill="#08783b"/><circle cx="88" cy="118" r="9.5" fill="none" stroke="#ffffff" stroke-width="2.2"/><circle cx="88" cy="118" r="5" fill="#ffffff"/><circle cx="88" cy="118" r="1.6" fill="#08783b"/><circle cx="30" cy="190" r="3.8" fill="#ffffff"/><circle cx="150" cy="150" r="3.8" fill="#ffffff"/><circle cx="146" cy="205" r="3.4" fill="#ffffff"/><circle cx="152" cy="252" r="3.4" fill="#ffffff"/></g><circle cx="170" cy="60" r="6" fill="none" stroke="#eafff2" stroke-width="1.8"/><g fill="#ffffff"><circle cx="170" cy="60" r="2.8"/><circle cx="186" cy="98" r="2.2"/><circle cx="158" cy="112" r="2.2"/><circle cx="42" cy="92" r="2.2"/><circle cx="182" cy="182" r="2.2"/><circle cx="112" cy="228" r="2.2"/></g><g stroke="#b6ffd2" stroke-width="2" stroke-linecap="round"><path d="M168 226 L180 226 M174 220 L174 232"/><path d="M24 140 L34 140 M29 135 L29 145"/></g>`
+
+/** 英雄带星图（三卡共用带组件的统一落点：定版强度、锚定带内右区）。 */
+function bandMotif(tx: number, ty: number, scale: number): string {
+  return `<g transform="translate(${tx},${ty}) scale(${scale})">${BAND_MOTIF}</g>`
+}
 
 function defs(): string {
   return `<defs>
@@ -95,7 +106,7 @@ function svgRoot(body: string): string {
 export function workoutCardSvg(data: WorkoutCardData): string {
   const band = `<clipPath id="bandClipA"><polygon points="0,0 ${CARD_WIDTH},0 ${CARD_WIDTH},592 0,640"/></clipPath>
 <polygon points="0,0 ${CARD_WIDTH},0 ${CARD_WIDTH},592 0,640" fill="url(#bandGrad)"/>
-<g clip-path="url(#bandClipA)"><g transform="translate(742,150) scale(1.9)" opacity="0.95">${BAND_MOTIF}</g>
+<g clip-path="url(#bandClipA)">${bandMotif(742, 150, 1.9)}
 ${brandRow({ dark: true, dateText: data.date.full })}
 <text x="${PAD}" y="238" font-family="${FONT}" font-size="30" font-weight="700" letter-spacing="9.6" fill="${BAND_KICKER}">WORKOUT COMPLETE</text>
 <text x="${PAD}" y="330" font-family="${FONT}" font-size="81" font-weight="800" fill="#ffffff">训练完成</text>
@@ -110,12 +121,16 @@ ${heroDuration(data)}
   if (data.avgScore != null) cells.push({ v: String(data.avgScore), u: '分', l: '平均分 AVG SCORE' })
   cells.push({ v: String(data.totalSets), u: '组', l: '总组数 SETS' })
   const cellW = 453
-  const cellH = 160
+  // 无连续徽章时（streakDays=0，含 3 格降级版式）网格下移并加高，填掉网格底
+  // 与落款线之间的尾部空档（原 130px）；有徽章时保持原几何——徽章正好补位该空档。
+  const bare = data.streakDays <= 0
+  const cellH = bare ? 172 : 160
+  const gridTop = bare ? 724 : 700
   const grid = cells
     .map((cell, i) => {
       const wide = cells.length === 3 && i === 2
       const x = wide ? PAD : PAD + (i % 2) * (cellW + 30)
-      const y = 700 + Math.floor(i / 2) * (cellH + 30)
+      const y = gridTop + Math.floor(i / 2) * (cellH + 30)
       const w = wide ? RIGHT - PAD : cellW
       return `<g><rect x="${x}" y="${y}" width="${w}" height="${cellH}" rx="12" fill="#ffffff" stroke="${LINE}" filter="url(#cellShadow)"/>
 <text x="${x + 42}" y="${y + 92}" font-family="${FONT}" font-size="69" font-weight="800" fill="${INK}">${escapeXml(cell.v)}<tspan dx="6" font-size="33" font-weight="700" fill="${MUTED}">${escapeXml(cell.u)}</tspan></text>
@@ -163,7 +178,11 @@ export function setCardSvg(data: SetCardData): string {
     )
     .join('')
   const enY = 196 + (nameLines.length - 1) * 74 + 54
-  const band = `<polygon points="0,0 ${CARD_WIDTH},0 ${CARD_WIDTH},${bandBottom - 30} 0,${bandBottom}" fill="url(#bandGrad)"/>
+  // 星图与 A 卡共用同一组件：v2 板 B 小样注「不叠 motif」，但 Edward 真机截图
+  // 明确判 B 卡带右半部是纯绿空带——以真机定版为准，头部带同样带星图（裁剪在带形内、文字在其上）。
+  const band = `<clipPath id="bandClipB"><polygon points="0,0 ${CARD_WIDTH},0 ${CARD_WIDTH},${bandBottom - 30} 0,${bandBottom}"/></clipPath>
+<polygon points="0,0 ${CARD_WIDTH},0 ${CARD_WIDTH},${bandBottom - 30} 0,${bandBottom}" fill="url(#bandGrad)"/>
+<g clip-path="url(#bandClipB)">${bandMotif(770, 4, 1.15)}</g>
 <text x="${PAD}" y="112" font-family="${FONT}" font-size="27" font-weight="700" letter-spacing="8.6" fill="${BAND_KICKER}">SET HIGHLIGHT</text>
 ${nameSvg}
 <text x="${PAD}" y="${enY}" font-family="${FONT}" font-size="27" font-weight="700" letter-spacing="7.6" fill="${MINT_PALE}"${fitAttrs(data.nameEn, 27, RIGHT - PAD, 7.6)}>${escapeXml(data.nameEn)}</text>`
@@ -203,10 +222,10 @@ function scoredBody(data: SetCardData, bandBottom: number): string {
   if (data.setIndex != null) chips.push({ pre: '第 ', val: String(data.setIndex), post: ' 组' })
   if (data.personalBest) chips.push({ pre: '个人最佳' })
   const chipsY = scoreBaseline + 54
-  const axesTop = chipsY + 62 + 78
+  const axesTop = chipsY + 62 + 88
   const axes = (data.axes || [])
     .map((axis, i) => {
-      const y = axesTop + i * 80
+      const y = axesTop + i * 92
       const fillW = Math.round(672 * Math.min(100, Math.max(0, axis.value)) / 100)
       return `<text x="${PAD}" y="${y + 10}" font-family="${FONT}" font-size="32" font-weight="700" fill="${INK}">${escapeXml(axis.label)}</text>
 <rect x="216" y="${y - 11}" width="672" height="21" rx="10.5" fill="${SOFT}"/>
@@ -221,13 +240,20 @@ ${axes}`
 }
 
 function unscoredBody(data: SetCardData, bandBottom: number): string {
-  const labelY = bandBottom + 96
-  const numBaseline = bandBottom + 336
-  const noteY = bandBottom + 432
   const chips: Chip[] = []
   if (data.setIndex != null) chips.push({ pre: '第 ', val: String(data.setIndex), post: ' 组' })
+  // 未评分版式内容少：内容块（标签→主数字→说明→chip）在「带底→落款线 1180」区间内
+  // 垂直居中，上下留白对称，主数字放大到 300——纯版式平衡，不加任何数据元素。
+  // 原版式内容全挤在上半部，说明文字下方留 408px 连续空白（真机截图反馈）。
+  const numFont = 300
+  const numCap = Math.round(numFont * 0.72)
+  const blockH = 30 + 56 + numCap + 64 + 38 + (chips.length ? 44 + 62 : 0)
+  const topPad = Math.max(48, Math.round((1180 - bandBottom - blockH) / 2))
+  const labelY = bandBottom + topPad + 30
+  const numBaseline = labelY + 56 + numCap
+  const noteY = numBaseline + 64 + 38
   return `<text x="${PAD}" y="${labelY}" font-family="${FONT}" font-size="30" font-weight="700" letter-spacing="5.4" fill="${MUTED}">本组完成次数</text>
-<text x="${PAD}" y="${numBaseline}" font-family="${FONT}" font-size="246" font-weight="800" fill="${INK}">${data.reps}<tspan dx="10" font-size="72" font-weight="700" fill="${MUTED}">${escapeXml(data.unit)}</tspan></text>
+<text x="${PAD}" y="${numBaseline}" font-family="${FONT}" font-size="${numFont}" font-weight="800" fill="${INK}">${data.reps}<tspan dx="12" font-size="84" font-weight="700" fill="${MUTED}">${escapeXml(data.unit)}</tspan></text>
 <text x="${PAD}" y="${noteY}" font-family="${FONT}" font-size="36" fill="${MUTED}">本组未评分，下次把全身放进画面试试</text>
 ${chips.length ? chipsSvg(chips, noteY + 44) : ''}`
 }

@@ -244,11 +244,12 @@ test("set card svg renders scored axes and the unscored degradation", () => {
   assert.ok(scoredSvg.includes("/ 100 · 本组得分"));
   assert.ok(scoredSvg.includes("稳定性"));
   assert.ok(scoredSvg.includes("SET 03 · 2026.11.07"));
+  assert.ok(scoredSvg.includes("M30 190 L88 118 L66 52")); // B 卡带内星图，与 A 卡共用组件
   const unscored = buildGymSetCard({ reps: 12, exercise: { nameZh: "深蹲", name: "squat" }, score: null }, 0, new Date(2026, 10, 7));
   const unscoredSvg = setCardSvg(unscored);
   assert.ok(unscoredSvg.includes("本组未评分，下次把全身放进画面试试"));
   assert.ok(!unscoredSvg.includes("本组得分"));
-  assert.ok(!unscoredSvg.includes("M30 190 L88 118 L66 52")); // R2 的 B 卡不叠 motif
+  assert.ok(unscoredSvg.includes("M30 190 L88 118 L66 52")); // 2026-11-07 真机修正推翻 v2 板 B 小样「不叠 motif」注记：带右半部不得为空带
 });
 
 test("set card svg wraps long exercise names instead of truncating", () => {
