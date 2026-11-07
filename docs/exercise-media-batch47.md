@@ -86,8 +86,17 @@ needs_review 待核对条目，本批逐项定版，先前各自的待核对疑�
 滑轮位、1361 反握手部、1615 托垫与竖柄、0756 杠位与靠垫位、0185 双侧滑轮——
 均在 reviewReason 中逐项回应）。
 
-## 验证
+## 验证与部署记录
 
-- client `test:repository` 串行全量、server 测试（见提交记录）；
-- 构建产物中 10 条新条目的详情 JSON、索引与 WebP 均已生成，哈希与台账一致；
-- 部署后线上抽查新条目图片 200 且字节与本地一致（见提交记录）。
+- 本地：client `test:repository` 串行 **338/338**（基线持平）、server **103/103**、
+  cloudflare **34/34**；构建产物中 10 条新条目的详情 JSON、索引与 20 张 WebP
+  均已生成，哈希与台账一致。
+- CI：分支 `media/exercise-media-batch47`（提交 70ce90d）run 42341921771 绿；
+  快进合入 main 后主线 run 42342034098 绿。本批全程在独立 worktree
+  （`~/workspace/movemate-batch47-wt`）内完成，未与并行调参任务共用检出。
+- 部署：生产 Version **9b3f787c-9bc3-43b2-b06f-88d33a4cb21c**、预览 Version
+  **40759086-cca9-4eb8-8f57-982a3f51bd2b**（fresh surrogate +
+  `MOVEMATE_MEDIA_DIR=~/workspace/movemate-media`，构建后直接 wrangler deploy
+  双站）。
+- 线上抽查：dongban.xyz 与 preview.dongban.xyz 的 /health 均 200；20 张新图在
+  双站逐张下载，sha256 与本地 dist 全部一致（40/40）。
