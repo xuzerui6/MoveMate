@@ -7574,6 +7574,168 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3297",
+      "expectedName": "back lever",
+      "sourceId": "ai-generated-exdb-3297",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "e736bbccf7ca9a27fd8c373ec8a77f6fb0b33ef759c4ec28520348ec5dd2abdb",
+        "40efa40cd8401b325d98a0826bdfe0a36eefd88e6734c6bffd02749c1852ab75"
+      ],
+      "phases": [
+        "起始：正手握杠死悬垂，双臂伸直，身体竖直静止",
+        "关键阶段：后水平——身体成一条水平直线，面朝下、后背朝上，双腿伸直并拢"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0196",
+      "expectedName": "cable pull through (with rope)",
+      "sourceId": "ai-generated-exdb-0196",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "a248f65979955d90d277c1d310a1b31bd042e02e24768c0194c10bdc6720a980",
+        "c0a877c3df01c4810a9354ee42291a089f80b915f4b2b10fffcb652c6578d638"
+      ],
+      "phases": [
+        "起始：背对低位滑轮屈髋前倾，双手在双腿之间握住绳柄，绳索从胯下穿过",
+        "关键阶段：站直锁定，髋完全伸展，双手握绳停在髋前"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1274",
+      "expectedName": "deep push up",
+      "sourceId": "ai-generated-exdb-1274",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "05c5f7fb683a1600ffdebb9c9a65aeaf08c984c9a17ee7b64676b0cda9b70968",
+        "b75e94cbb34ff9ec17817a3270787027567a1187436dae370ee28706ca2670ee"
+      ],
+      "phases": [
+        "起始：双手各握一只六角哑铃高位平板，双臂伸直",
+        "关键阶段：屈肘下沉至最低点，胸部低于双手握柄高度"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0239",
+      "expectedName": "cable straight back seated row",
+      "sourceId": "ai-generated-exdb-0239",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "fcfc29762b4d35423b09ee014db964f6c0aea39f8a4caa50650fd60c48b11fa3",
+        "7762f9779a2e8ac326ba90b4ab8ebda29cef812d5061e9d588cc0ebe29d64480"
+      ],
+      "phases": [
+        "起始：坐于划船机凳，双脚踏板，双臂伸直正握直杆",
+        "关键阶段：直杆拉至下腹前，双肘贴身后收，躯干保持直立"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1764",
+      "expectedName": "hanging leg hip raise",
+      "sourceId": "ai-generated-exdb-1764",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "7ae85acb269d8e6f2deb34c85889b25f66b9a457eb6f74c881f21cf96659079d",
+        "5cfc15c33b25c214a9d33b9d1e4161e7bf660f5f7b4921844f3a9065e6f64c3d"
+      ],
+      "phases": [
+        "起始：正手握杠悬垂，双臂伸直，双腿伸直下垂",
+        "关键阶段：双膝收向胸前，骨盆后卷、臀部前送，大腿抬过水平"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0102",
+      "expectedName": "barbell squat (on knees)",
+      "sourceId": "ai-generated-exdb-0102",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "df9e97651e03a8196c8841040ed7f882b09efaffb8dd88709d28180b04346834",
+        "97f036e690f31d63f546a6cdbb2050c15f11cc414770f76cdc74e7f241bad13c"
+      ],
+      "phases": [
+        "起始：杠铃置于上背，双膝跪地高跪直立，髋完全伸展",
+        "关键阶段：屈髋后坐，臀部贴住脚跟，双膝始终跪地"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1701",
+      "expectedName": "medicine ball close grip push up",
+      "sourceId": "ai-generated-exdb-1701",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "a34993a6be92fa812e198071e19483cb59c60ceb40f0e1beaf3a719eb63b697d",
+        "ae2847ac6abd94964fd8513c619f0cb02daa108888b62e463cfbaa225f931725"
+      ],
+      "phases": [
+        "起始：双手并拢同撑一只药球高位平板，双臂伸直",
+        "关键阶段：屈肘下沉，双肘贴身，胸部接近药球"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3419",
+      "expectedName": "l-sit on floor",
+      "sourceId": "ai-generated-exdb-3419",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "17eb075c0eb4be5854204de7483d9797a7e514e5cad0126a2005ae064e59cc34",
+        "797a78496df74f1b74cc3d5c28ad757b22c037e6eb73313c9d30edaabc2436b1"
+      ],
+      "phases": [
+        "起始：坐于地面，双腿伸直前伸，双手撑于臀部两侧，臀与脚跟着地",
+        "关键阶段：双臂撑起成L形支撑，臀部离地，双腿伸直与地面平行"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1314",
+      "expectedName": "back extension on exercise ball",
+      "sourceId": "ai-generated-exdb-1314",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "0b6c2294239d40f8e364555cc99a8c60a7f7576c7bb7a49da14d2a4fcfb0021a",
+        "52159c7964eee8e2055b7993f62b8f19262aaff3cd0cc5a5d5a91e63b1cb5e0b"
+      ],
+      "phases": [
+        "起始：俯卧健身球上，髋腹压球，双脚抵墙，双手抱头，躯干垂向地面",
+        "关键阶段：躯干抬起，头、背、腿成一直线，双手仍抱头"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
