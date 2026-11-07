@@ -404,82 +404,142 @@
     {
       "id": "exdb:3293",
       "originalName": "archer pull up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：需要独立确认横向移动、伸直侧手的位置与下巴相对杠的位置；现有文字不足以核对完整左右阶段。",
+      "reason": "已按名称定版：弓箭手引体以一侧手臂主导拉起、对侧手臂保持伸直且手仍握杠为定义特征。本图定版左侧主导（以成图侧别为准）：左肘弯曲下压、下巴过杠靠近左手，右臂全程伸直、右手握杠于远处；原文左右交替为完成通则。生成图（AI 生成批次 52）双帧已逐张核对：起始帧正面正手略宽于肩死悬垂、双臂伸直；关键帧身体上拉并偏向左侧，下巴过杠靠近左手，右臂伸直贴杠延伸，双腿伸直并拢。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "01d4a56ee8bd6e6ea441240f3187fee984199901180996638bd9fae48534b008",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-3293",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch52.md",
+          "version": "2026-11-07 · 生成批次 52",
+          "sourceSha256": [
+            "d79aa1bb1377874566b7b91b520d351c9dc976507f6984a433447e3fbd782dfe",
+            "a2cbaaf711a8b134c4ac11860c8f6bb8e205f0055fbc72cfb1ab3e84b46ba5b3"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3294",
       "originalName": "archer push up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源让一臂伸向侧面且与地面平行，未说明该手是否着地支撑；不能据此画成标准弓箭手俯卧撑。",
+      "reason": "已按名称定版：弓箭手俯卧撑以下沉侧手臂弯曲、另一侧手臂保持伸直且手掌着地为定义特征；原文“手臂伸向侧面且与地面平行”指伸直侧手臂贴近地面高度的走向，不采用悬空侧平举的读法。本图定版右侧下沉（以成图侧别为准）：右肘弯曲、胸部移向右手，左臂伸直、左手着地于身体左侧远处。生成图（AI 生成批次 52）双帧已逐张核对：起始帧为正面宽距俯卧撑顶位、双臂伸直、双手着地；关键帧右肘深屈、胸部下沉偏向右手、左臂全程伸直且手掌着地，身体保持一条直线。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "1e57eda4605b18335421e8f5d9d23368147ed5907a083494a15b3b7c28205a5c",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-3294",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch52.md",
+          "version": "2026-11-07 · 生成批次 52",
+          "sourceSha256": [
+            "878daf3b4d5cac765c198622ed2521f37cfd9bda8273cbba13344d077fbaa6b9",
+            "c9f9d6ec0afc8ca7dbd6d4348c2967fe9fefc0d73ecfd1a84abf427784d9abc4"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2355",
       "originalName": "arm slingers hanging bent knee legs",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称包含臂吊带，步骤却是双手直臂悬杠；支撑方式矛盾，不能套用普通悬垂举腿图。",
+      "reason": "已按名称定版，与直腿版（exdb:2333）同为臂吊带支撑：双上臂置于吊带套环内承重、前臂向上握带。原文首步“膝盖弯曲成 90 度”与悬垂起始不合，据动作通行分解定版：起始为双腿伸直下垂，屈膝约 90 度呈现在收膝关键帧（大腿上提、小腿自膝部下垂）。生成图（AI 生成批次 52）双帧已逐张核对：起始帧吊带构造正确、双腿伸直下垂（第一稿起始帧屈膝仅约 15 度、与直腿起始不可分，已剔除）；关键帧双膝上提至大腿约至水平、膝部弯曲约 90 度、小腿下垂，躯干直立不摆动。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "2c38b823f8f354d643797eca11442ad1cf1f8b7da5dc2f8f8bcee930e99db6b6",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-2355",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch52.md",
+          "version": "2026-11-07 · 生成批次 52",
+          "sourceSha256": [
+            "5ba4666a8fd03d9ac39d5aea0cd5de747179a8731c0f3b5415a38ab48d46e8f2",
+            "877de442f91a3d7a3e50eb0c136a381e073a893d3cd4d499f765bc95fd044de8"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2333",
       "originalName": "arm slingers hanging straight legs",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称包含臂吊带，步骤却是双手直臂悬杠；支撑点不同，不能采用普通悬垂直腿举腿示范。",
+      "reason": "已按名称定版：本条的支撑器械是悬挂于单杠的臂吊带（腹肌吊带），不是双手握杠悬垂；原文通用的握杠悬垂写法不作图示依据。定版姿势：双上臂分别置于吊带衬垫套环内承重，肘部弯曲、前臂竖直向上、双手握住吊带上段，双手不触杠。生成图（AI 生成批次 52）双帧已逐张核对：起始帧吊带构造与承重部位正确，双腿伸直下垂、双脚离地；关键帧（一次重生成后）双腿伸直前抬至与地面平行，躯干保持直立、吊带支撑不变。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "f7e42d4c1727b6ba8f1f49826e62d9e6b617c7604b9b31e1b08c00f853e4fe98",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-2333",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch52.md",
+          "version": "2026-11-07 · 生成批次 52",
+          "sourceSha256": [
+            "ce6869ef64bac2c51466277a13bfe7b4d0203e2b066b971007ffaf252cf634d4",
+            "1b17d577f3b192f8baf7c973dd86bd294c47cb9fc136a6bada90a5fe017d08fe"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3214",
@@ -11981,22 +12041,37 @@
     {
       "id": "exdb:2462",
       "originalName": "chest dip on straight bar",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称是单根直杠，步骤却要求抓双杠；身体与杠的相对位置完全不同，不能直接采用双杠示范。",
+      "reason": "已按名称定版：本条器械是身前单根横杆（直杆臂屈伸），不是双杠；原文“来到双杠一端”为模板误述，不作图示依据。定版姿势：双手正握于身前腰高横杆上、身体在杆的正前方、双臂伸直支撑、胸部微前倾。生成图（AI 生成批次 52）双帧已逐张核对：起始帧单杆在身前、双手正握手指扣紧杆身、双臂伸直、双腿伸直微后摆且离地；关键帧双肘向后弯曲、身体下沉至上臂约与地面平行，握杆位置不变。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "dc6b741b15089e75aa52317ba5480e13a1332a6de6b4975dbac11ba4819fa281",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-2462",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch52.md",
+          "version": "2026-11-07 · 生成批次 52",
+          "sourceSha256": [
+            "3a83c8fb0409f4bc12843971e36c64a539df97c050a7a910a12f6aa52d4820f3",
+            "885888e07815064d5056736c2a8c9d703a3f2bfbdfefeac0e86457e817e8bbee"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1272",
@@ -22355,22 +22430,37 @@
     {
       "id": "exdb:3295",
       "originalName": "front lever reps",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称是重复动作，文字主段却要求水平保持10—20秒；静态与动态形式未明确，不能先定计数阶段。",
+      "reason": "已按名称定版：本条为从死悬垂到前水平位的完整上举，双帧取两端点——起始正手死悬垂、关键帧为身体成一条水平直线的前水平位；原文静态保持 10—20 秒为保持段落，不另成帧。生成图（AI 生成批次 52）双帧已逐张核对：起始帧纯侧面正手悬垂、双臂伸直、身体竖直；关键帧双臂仍伸直，头、躯干与双腿成一条水平线、面部朝上，髋膝无弯曲。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "6c420f33584f77faaa7055d0a58622e07ec2a8f462430ba89fb1c32ae52d88e5",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-3295",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch52.md",
+          "version": "2026-11-07 · 生成批次 52",
+          "sourceSha256": [
+            "0e197ebb32d9fd6e877ab1f097a1be840a97065e7dde84223489992ccc9caa1b",
+            "8e69509b7e56edeb9a59423a13a195d19924c16781cc8653842c8aecfef4406f"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0464",
@@ -28219,22 +28309,37 @@
     {
       "id": "exdb:1421",
       "originalName": "modified push up to lower arms",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源要求从屈肘下降再前臂放地，但肘手接替和是否双臂同时转换未明确；不与单臂交替上下平板混同。",
+      "reason": "已按名称与核对要求定版：转换须双臂同时完成（手掌支撑到双前臂着地），不采用左右交替的登山式转换。生成图（AI 生成批次 52）双帧已逐张核对：起始帧为纯侧面高位平板支撑，双手在肩正下方、双臂伸直、身体成一条直线；关键帧双前臂同时平贴地面、肘在肩正下方、掌心向下，身体仍成一条直线，脚尖着地。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "fc757d487ae710849b0037c39d7726c3d2d12785d9808aad4e5e06d8e4adff07",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1421",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch52.md",
+          "version": "2026-11-07 · 生成批次 52",
+          "sourceSha256": [
+            "68386e6f4a6c0bcd312d21ff8a689f1842c0d4e88aeb29e9687361bb08dd0ff3",
+            "8b05e76babadf13d64cb34b48c21e33264c561507042443c00e3f648725c461e"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0628",
@@ -30197,22 +30302,37 @@
     {
       "id": "exdb:1423",
       "originalName": "reverse hyper on flat bench",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字明确俯卧平凳、髋在边缘、双腿悬空，但又要求尽量抬向天花板；需核对可控髋伸展终点，不画成腰部过伸。",
+      "reason": "已按平凳做法核对上凳姿势与髋部位置：俯卧平凳、髋部正对凳面末端边缘、双腿自凳端垂下，双手抓凳沿固定躯干。编辑定版：双腿后抬的终点以与躯干成一直线为准，不做腰椎过度后伸；原文“尽量向上抬向天花板”为夸张表述，不作图示依据。生成图（AI 生成批次 52）双帧已逐张核对：起始帧为纯侧面俯卧、髋在凳端、双腿伸直悬空下垂、双手抓凳两侧；关键帧双腿伸直后抬至与躯干成一直线，未超伸。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "9dd96f0428d53a112246ebb9eb9c6b49f98a1b97656ba91737faa9b9d706cc6a",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1423",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch52.md",
+          "version": "2026-11-07 · 生成批次 52",
+          "sourceSha256": [
+            "ff2365a7ac6172eee870ce6696b611cc8b8cae91593ad82cf4778213e96631cb",
+            "5d4ecec63a7cfab92e8bdecd30ffba2affea88ce95d7c4165a2fe2090323346e"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3663",
@@ -30738,22 +30858,37 @@
     {
       "id": "exdb:0689",
       "originalName": "seated leg raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源从双脚平放地面转为保持双腿伸直上抬，膝伸展时序未清楚；需要起始、伸腿抬起、回位完整图。",
+      "reason": "已按正文核对：坐于平凳、双手抓凳两侧支撑、躯干直立，双腿伸直前抬。生成图（AI 生成批次 52）双帧已逐张核对：起始帧纯侧面坐于凳端、手抓凳侧支撑、双腿伸直下放至脚接近地面；关键帧双腿伸直前抬至与地面平行，双手仍抓凳、躯干直立未后仰。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "2c07c530df36e89f525a8c0e5a6d8bd8303662a368bde9644cffa234e7bd664f",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0689",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch52.md",
+          "version": "2026-11-07 · 生成批次 52",
+          "sourceSha256": [
+            "481f7b24ed7f5f2dba2528ed7fd16d39b3f0dab06e044380bc3bcf57a6532dfe",
+            "566dff2ddeb22557cd90737943aedf9d65b901d281ed2c26b1a7cd65f071907d"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0690",
@@ -33431,22 +33566,37 @@
     {
       "id": "exdb:0786",
       "originalName": "squat jerk",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源描述分腿挺举，名称却为下蹲挺举，不能自动配图。 当前不发布此候选，不计完整覆盖。",
+      "reason": "已按名称定版：下蹲挺举的上举终点以分腿下蹲接杠呈现，双帧取起始颈前架杠位与分腿接杠锁定瞬间两端点；原条待核对的发力文字问题已按送杠口径修订。生成图（AI 生成批次 52）双帧已逐张核对：起始帧杠铃带片、杠在锁骨与肩前（颈前架杠）、肘部抬高前指、指尖托杠（第一稿生成成颈后架位且为空杠，已剔除重生成）；关键帧杠铃在头顶锁定、双臂伸直、双脚前后分开呈弓步接杠位、前脚掌着地后脚跟抬起、躯干直立于杠下。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "ecd2f66af38c0445cc1e98ccc59ae01d7c6516fbd689a2a1b1278be53b87b2d4",
-        "steps": 7
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0786",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch52.md",
+          "version": "2026-11-07 · 生成批次 52",
+          "sourceSha256": [
+            "2caa9caf2ee69ba5cf028a929ab558ffc435916322e54ad1f91abed6afb1666c",
+            "c5dec798d1bc49ecbc78a29b6a41520fe5eaae7eaa5e039438bf7cf960090e79"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1705",
