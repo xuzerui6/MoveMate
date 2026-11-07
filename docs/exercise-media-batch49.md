@@ -41,8 +41,9 @@
 
 ## 验证与部署记录
 
-- 测试（串行）：client `test:repository` 338/338、server 103/103、cloudflare 34/34，均与基线持平（只增不减）。构建差异核对：`exercise-media.json` 仅新增本批 9 条，既有条目零变更。
-- CI 与部署：见本文件末尾回填行（合并与双站部署完成后补录）。
+- 测试（串行）：本批分支 client `test:repository` 338/338、server 103/103、cloudflare 34/34 + typecheck，均与基线持平；合入最新 main（含动效层 bd4ff6d）后的合并树 client 341/341（动效层新增 3 个测试，只增不减）。构建差异核对：`exercise-media.json` 仅新增本批 9 条，既有条目零变更。
+- CI：分支 workflow_dispatch 绿（run 42345473562）→ 合入 main 的动效层提交后复跑绿（run 42345574502）→ 合入 main（cd6316d）后 main CI 绿（run 42345675146）。
+- 部署：生产 Version `c756371b-3702-4e0b-9a0e-10db6f9b66c8`；预览 Version `23ef542c-8807-4f51-a6cd-3400fa4d8c14`（部署源为含动效层的最新 main，未覆盖并行任务成果）。双站 `/health` 均 200；本批 18 张新图在双站逐张下载并与本地 sha256 比对，36/36 一致；`exdb:0841` 详情 JSON 双站抽查在位（含本批阶段文案）。
 
 ## 口径与后续
 
