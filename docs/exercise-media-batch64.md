@@ -46,4 +46,7 @@
 
 ## 验证与部署记录
 
-（待测试、CI 与部署完成后回填。）
+- 本地：client `test:repository` 369/369 + tsc 通过；server 103/103 + build 通过；Cloudflare 34/34 + typecheck 通过（串行执行）。
+- CI：分支手动触发 run 42381990047 成功；合入 main（10a13af）后 push 触发 run 42382123349 成功。
+- 部署：基于 main 10a13af 构建，wrangler@4.158.0 双站部署成功——production（dongban.xyz）Version `dc4e2966-a469-4256-b54d-aadc6f50b255`；preview（preview.dongban.xyz）Version `926160f5-dc7f-4273-a4ec-0c699ba60539`。
+- 抽查：6 张新 WebP 与 exdb:1718 的 detail JSON 共 7 项，production 与 preview 两站响应体 sha256 与仓库文件逐一一致（14/14）。
