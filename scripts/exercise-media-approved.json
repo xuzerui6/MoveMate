@@ -7736,6 +7736,186 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0527",
+      "expectedName": "kettlebell double jerk",
+      "sourceId": "ai-generated-exdb-0527",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "da7f8713e0e0180821e7130d2223eefc2558ef70038c378c9bfa37ee23878c59",
+        "79397f49809ec5230467e8f22ba35f517b2bf7b8cb3ce35fe9b122e107af46e0"
+      ],
+      "phases": [
+        "起始：双壶铃架位，双手各握一铃收在下巴下方，铃贴前臂，肘贴体侧，站直",
+        "关键阶段：双铃推举至头顶正上方，双臂伸直锁定，身体站直"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0555",
+      "expectedName": "kick out sit",
+      "sourceId": "ai-generated-exdb-0555",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "f024574f6b28f70c1df76af95bed694a46e905c0414d5c6fbbeec7e4151459b5",
+        "d5640b53f4b369fc302fe323513e517ace954c06ab8e8baf5ffc1712230670e9"
+      ],
+      "phases": [
+        "起始：坐在凳子前端边缘，双手在臀后撑凳沿，双膝弯曲，双脚点地",
+        "关键阶段：双腿向前伸直踢出，双脚离地与凳面齐平，躯干后仰"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0664",
+      "expectedName": "push-up to side plank",
+      "sourceId": "ai-generated-exdb-0664",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "8b3ceb06e8ff5d8716c6acbbdcc38c5d88e226d9cf04147dbef496e8a085292b",
+        "22914e56c0fddc3fe280acda1e726076050107c754a78ee0562a5688df592d97"
+      ],
+      "phases": [
+        "起始：俯卧撑顶位，双手与肩同宽撑地，双臂伸直，身体成一条直线",
+        "关键阶段：向右侧转体成侧平板，左手撑地，右臂伸直指向天花板，身体侧向成直线"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0699",
+      "expectedName": "shoulder tap push-up",
+      "sourceId": "ai-generated-exdb-0699",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "3f3237455a7d8b20aca10870e1134ded9c7dbfbb2a004cf660db7b7dd6d2dcbd",
+        "3576b8d6837204f3772545225f598c01c1d12a90a4622c7a5e48d18799816192"
+      ],
+      "phases": [
+        "起始：俯卧撑底位，双手撑地屈肘，胸部接近地面，身体成一条直线",
+        "关键阶段：推起至顶位，右手离地轻拍左肩，左臂伸直撑地，身体保持直线"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1354",
+      "expectedName": "medicine ball overhead slam",
+      "sourceId": "ai-generated-exdb-1354",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "5894bc2e4a5896b82d95bc687dc9d3cc88ef7ea7298f8e8ce4d95018310e4735",
+        "6b4baa11f77c848b4eaa0968342ddd4b3b0a5840136343d33db029a5ec56961d"
+      ],
+      "phases": [
+        "起始：双手抱药球举过头顶，双臂伸直，踮脚蓄势",
+        "关键阶段：屈髋前俯挥臂下砸，药球落在双脚前方地面"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1425",
+      "expectedName": "sled 45 degrees one leg press",
+      "sourceId": "ai-generated-exdb-1425",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "52c1cdeb2dfd19a422969e422bdc8de499ad73d48d1415fa54181f789c86dee2",
+        "dea1fec75e90324654bfde41d8fe41feac0b3cec6cb5d7b5f009ac9e4004e81d"
+      ],
+      "phases": [
+        "起始：坐于45度腿举机，右脚单脚踩踏板中央，膝屈约90度，雪橇在低位，左脚放在地面",
+        "关键阶段：右腿伸直把雪橇推至高位，左脚仍在地面不发力"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1467",
+      "expectedName": "push-up on lower arms",
+      "sourceId": "ai-generated-exdb-1467",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "096b47808185bc7c6d2fb92cf26b833aded8432fa9b62f6e440b8e338783a666",
+        "872e775186085802ac727c2251ee23e45a68654e48808b3987de51a4716a1702"
+      ],
+      "phases": [
+        "起始：前臂平板，双前臂平贴地面，肘在肩膀正下方，身体成一条直线",
+        "关键阶段：双臂伸直撑起至高位平板，双手在肩膀正下方，身体保持直线"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1756",
+      "expectedName": "barbell single leg deadlift",
+      "sourceId": "ai-generated-exdb-1756",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "7bc691701ca95b855bfbb3a31dccca06283739e0b8d35e76c3d09ddb99ec9ce2",
+        "2a563af32faa9b3bbb7f0933ff9252eeef44ed33f15e463f4a4876412da7a1ed"
+      ],
+      "phases": [
+        "起始：站立，双手正握杠铃垂于大腿前方，双臂伸直",
+        "关键阶段：左腿支撑髋铰链到底，躯干近水平，右腿向后伸直与躯干成一直线，杠铃降至左小腿中段前方"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1774",
+      "expectedName": "side bridge hip abduction",
+      "sourceId": "ai-generated-exdb-1774",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "0a81a88005de10fc3135b21915b5c2241c8604d2e7223b2dd1c1e81fd5131fa3",
+        "a41d0074ee1e5d2953012b84847ff76b8b97545e4f6eacc74e1b44adab989467"
+      ],
+      "phases": [
+        "起始：左侧前臂侧桥，肘在肩膀正下方，身体成一条直线，双腿伸直叠放",
+        "关键阶段：保持侧桥，上方右腿伸直外展抬起约45度"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3420",
+      "expectedName": "v-sit on floor",
+      "sourceId": "ai-generated-exdb-3420",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "169b49df73b8cd40c711c49e493d0e733cda4585f0a12d936ebfb9dca5571c5c",
+        "3dc393a3bae042de468218457ddd243811ed162a95f3dc8281c5ac4fdba10e56"
+      ],
+      "phases": [
+        "起始：坐于地面，双腿伸直并拢在前，双手撑于臀后地面，躯干直立",
+        "关键阶段：V形平衡，仅臀部着地，双腿伸直抬起约45度，双臂离地向前伸直"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [

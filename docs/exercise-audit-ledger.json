@@ -5582,22 +5582,37 @@
     {
       "id": "exdb:1756",
       "originalName": "barbell single leg deadlift",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：单脚支撑、另一腿后伸、双手正握明确；仍需左右支撑与杠路分解，不采用双腿硬拉图。",
+      "reason": "编辑定版取左腿支撑：与正文「左脚站稳、右腿后伸」一致，纯侧面机位下近侧腿为支撑腿。与已完成的哑铃版（exdb:1757）以双手握杠区分。逐帧核对：phase0 站立双手正握杠铃垂于大腿前、双臂伸直；phase1 左腿微屈支撑、躯干前俯近水平背挺直、右腿向后伸直与躯干成一直线、杠铃降至左小腿中段前方贴腿，同一人同一杠，3:2 画幅。phase1 首稿只到半程（躯干约45度）未采用，定版为加深到底的续接稿。AI 生成批次 54。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "bc7542fc1427e9212e8c559c224d910dfdd54625b025b777c008db81311af6b3",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1756",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch54.md",
+          "version": "2026-11-07 · 生成批次 54",
+          "sourceSha256": [
+            "7bc691701ca95b855bfbb3a31dccca06283739e0b8d35e76c3d09ddb99ec9ce2",
+            "2a563af32faa9b3bbb7f0933ff9252eeef44ed33f15e463f4a4876412da7a1ed"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0099",
@@ -24624,22 +24639,37 @@
     {
       "id": "exdb:0527",
       "originalName": "kettlebell double jerk",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：两帧都在肩前与预蹲阶段，缺少挺举过顶关键位置。 当前不发布此候选，不计完整覆盖。",
+      "reason": "按名称与正文定版：双铃挺举以胸前架位起始、双铃同时推举至头顶锁定为关键帧，不取半蹲接铃的中间帧（挺举下蹲幅度个体差异大，锁定帧是唯一无歧义的终点）。逐帧核对：phase0 双手各握一铃收于下巴下方、铃体贴前臂、双肘贴体侧、双脚与肩同宽站直；phase1 双铃在头顶正上方、双臂伸直锁定、身体站直，同一人同一服装，3:2 画幅。AI 生成批次 54。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "f360c18e7bc4a8bb8bee1dc5d059deecc30c1c63eef412732a82200f20de6667",
-        "steps": 8
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0527",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch54.md",
+          "version": "2026-11-07 · 生成批次 54",
+          "sourceSha256": [
+            "da7f8713e0e0180821e7130d2223eefc2558ef70038c378c9bfa37ee23878c59",
+            "79397f49809ec5230467e8f22ba35f517b2bf7b8cb3ce35fe9b122e107af46e0"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0528",
@@ -25606,22 +25636,37 @@
     {
       "id": "exdb:0555",
       "originalName": "kick out sit",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：步骤坐凳后双腿伸膝，目标却为腘绳肌，名称可能指地面坐姿踢出；支撑、动作目的与肌群需核对。",
+      "reason": "按名称定版：坐姿踢腿是坐于凳沿、手撑凳沿、屈膝收腿与伸直踢出的腹部动作；正文关于髋屈肌与平衡的描述与图一致。逐帧核对：phase0 坐在平板凳前端边缘、双手在臀后撑凳沿、双膝弯约90度、双脚点地；phase1 双腿向前完全伸直、双脚离地与凳面齐平、躯干后仰、手仍撑凳沿，同一人同一凳，3:2 画幅。AI 生成批次 54。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "962bd302d3d4bc12db5e140099d2cc4e6c6f6e6be5217b4ac877347525e06fed",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0555",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch54.md",
+          "version": "2026-11-07 · 生成批次 54",
+          "sourceSha256": [
+            "f024574f6b28f70c1df76af95bed694a46e905c0414d5c6fbbeec7e4151459b5",
+            "d5640b53f4b369fc302fe323513e517ace954c06ab8e8baf5ffc1712230670e9"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0558",
@@ -28349,22 +28394,37 @@
     {
       "id": "exdb:1354",
       "originalName": "medicine ball overhead slam",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤、支撑和器械：过顶砸球清楚，但正文要求接弹跳，球是否可反弹及场地未确认；不能把不反弹砸球示范当同一流程。",
+      "reason": "按名称定版：双手抱球过顶砸地，与已完成的单手药球砸地（exdb:0640）以双手抱球区分。逐帧核对：phase0 双手抱一只药球举过头顶、双臂伸直、踮脚蓄势，纯侧面；phase1 屈髋前俯约45度、双臂向下挥落、药球已落在双脚前方地面、膝微屈背挺直，同一人同一球，3:2 画幅。AI 生成批次 54。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "9ca4a06d4b263c3ec791fe0db87e2be2d83c2361b2a27cfa94028b0cc42d8429",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1354",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch54.md",
+          "version": "2026-11-07 · 生成批次 54",
+          "sourceSha256": [
+            "5894bc2e4a5896b82d95bc687dc9d3cc88ef7ea7298f8e8ce4d95018310e4735",
+            "6b4baa11f77c848b4eaa0968342ddd4b3b0a5840136343d33db029a5ec56961d"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1750",
@@ -29885,22 +29945,37 @@
     {
       "id": "exdb:1467",
       "originalName": "push-up on lower arms",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：步骤起始前臂已着地，随后又要求弯肘降低胸部，未说明从前臂到手掌的承重转换；动作不完整。",
+      "reason": "按名称与正文第一步定版：起始为前臂平板（前臂贴地、肘在肩正下方），与普通俯卧撑以起始支撑方式区分；正文后段措辞含混，不采用。正文回避说明：源正文把动作写成前臂平板推起，图中两帧与之对应。逐帧核对：phase0 双前臂平贴地面、手掌平放、肘在肩下、身体成一条直线；phase1 双臂完全伸直成高位平板、手在肩正下方、身体仍成直线，同一人同一场地，3:2 画幅。AI 生成批次 54。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "2e9fd456d32e26380449a6d3c51b5fdab755353729b1483f693946d35718ac15",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1467",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch54.md",
+          "version": "2026-11-07 · 生成批次 54",
+          "sourceSha256": [
+            "096b47808185bc7c6d2fb92cf26b833aded8432fa9b62f6e440b8e338783a666",
+            "872e775186085802ac727c2251ee23e45a68654e48808b3987de51a4716a1702"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3145",
@@ -29925,22 +30000,37 @@
     {
       "id": "exdb:0664",
       "originalName": "push-up to side plank",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：图片没有侧平板阶段，不能当作完整组合动作。 当前不发布此候选，不计完整覆盖。",
+      "reason": "编辑定版取右侧：正文先述重心移至左手、身体右转、右臂指天花板，交替为整组通则。逐帧核对：phase0 俯卧撑顶位、双手与肩同宽、双臂伸直、身体成一条直线；phase1 左手撑地、右臂伸直指向天花板、身体侧向成直线、双脚侧叠，同一人同一场地，3:2 画幅。本条为生成批次 53 的储备条目，本批转正。AI 生成批次 54。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "12bffa3c8b53f80dde79e04af39a893365750491a0bc1b7ce4c80002f446fa5f",
-        "steps": 7
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0664",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch54.md",
+          "version": "2026-11-07 · 生成批次 54",
+          "sourceSha256": [
+            "8b3ceb06e8ff5d8716c6acbbdcc38c5d88e226d9cf04147dbef496e8a085292b",
+            "22914e56c0fddc3fe280acda1e726076050107c754a78ee0562a5688df592d97"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3533",
@@ -31264,42 +31354,72 @@
     {
       "id": "exdb:0699",
       "originalName": "shoulder tap push-up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字明确每次推起后交替触对侧肩；需完整下压、推起、单手触肩和回掌阶段，普通俯卧撑视频没有全部组合。",
+      "reason": "编辑定版取右手拍左肩：正文为左右交替的通则。逐帧核对：phase0 俯卧撑底位、双手撑地屈肘、胸部接近地面、身体成直线；phase1 已推至顶位、左臂伸直撑地、右手掌轻拍左肩、髋部无旋转、身体保持直线，同一人同一场地，3:2 画幅。AI 生成批次 54。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "7ee32682176dfd7f7ded28b9a6c76adf0487cf614194f8b10c9c539fb7a8e758",
-        "steps": 7
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0699",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch54.md",
+          "version": "2026-11-07 · 生成批次 54",
+          "sourceSha256": [
+            "3f3237455a7d8b20aca10870e1134ded9c7dbfbb2a004cf660db7b7dd6d2dcbd",
+            "3576b8d6837204f3772545225f598c01c1d12a90a4622c7a5e48d18799816192"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1774",
       "originalName": "side bridge hip abduction",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源明确前臂侧支撑后上侧腿抬起；需要同时展示侧桥承重与上侧腿外展，普通侧平板图片不足以表达。",
+      "reason": "编辑定版取左侧支撑：与已完成的侧桥 v.2（exdb:0705，只有侧躺到侧桥的保持帧）以「上方腿外展抬起」为定义区分。逐帧核对：phase0 左前臂平贴地面侧桥、肘在肩正下方、身体成一条直线、双腿伸直叠放；phase1 保持侧桥、上方右腿伸直外展抬起约45度、身体不旋转，同一人同一场地，3:2 画幅。AI 生成批次 54。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "b0585615bd0ec64a664cb6bec71c399badc09191a1511c2b517bd9d81e027585",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1774",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch54.md",
+          "version": "2026-11-07 · 生成批次 54",
+          "sourceSha256": [
+            "0a81a88005de10fc3135b21915b5c2241c8604d2e7223b2dd1c1e81fd5131fa3",
+            "a41d0074ee1e5d2953012b84847ff76b8b97545e4f6eacc74e1b44adab989467"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0705",
@@ -31901,22 +32021,37 @@
     {
       "id": "exdb:1425",
       "originalName": "sled 45 degrees one leg press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：单腿推斜平台明确，但另一脚去向、靠背和安全架支点尚需专门示范。",
+      "reason": "编辑定版取右腿发力：正文「交替」是组次安排通则；单腿定义要求另一脚不承重，图中左脚轻放地面只作平衡，与已完成的双腿腿举（0739/1463）区分。逐帧核对：phase0 标准45度斜轨雪橇腿举机、右脚单脚踩踏板中央、膝屈约90度、雪橇在低位、左脚放地面、手握座侧把手；phase1 右腿近伸直把雪橇推至高位、左脚仍在地面，同一人同一器械，3:2 画幅。AI 生成批次 54。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "fbeff17eb9821442eb4f02050f6357aca23b8df11e8823a37be9ff10b6e7e91e",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1425",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch54.md",
+          "version": "2026-11-07 · 生成批次 54",
+          "sourceSha256": [
+            "52c1cdeb2dfd19a422969e422bdc8de499ad73d48d1415fa54181f789c86dee2",
+            "dea1fec75e90324654bfde41d8fe41feac0b3cec6cb5d7b5f009ac9e4004e81d"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0738",
@@ -34997,22 +35132,37 @@
     {
       "id": "exdb:3420",
       "originalName": "v-sit on floor",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字先坐姿再说抬上半身离地，保持后又下放躯干双腿，混有静态V坐和动态V字起坐；静态/重复形式尚未明确。",
+      "reason": "按名称定版：地面 V 形支撑的关键帧是仅臀部着地、双手离地的 V 形平衡（手撑地只是起始位，不能当作支撑帧）。逐帧核对：phase0 坐于地面、双腿伸直并拢在前、双手撑于臀后地面、躯干直立；phase1 仅臀部着地、双腿伸直抬起约45度、躯干后仰、双臂离地向前伸直、上身与腿成清晰 V 形，同一人同一场地，3:2 画幅。本条为储备转正。AI 生成批次 54。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "5ee5d7bb4df17c6be51754db66ec84a741c024714f1c63adab1451dce7e009b0",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-3420",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch54.md",
+          "version": "2026-11-07 · 生成批次 54",
+          "sourceSha256": [
+            "169b49df73b8cd40c711c49e493d0e733cda4585f0a12d936ebfb9dca5571c5c",
+            "3dc393a3bae042de468218457ddd243811ed162a95f3dc8281c5ac4fdba10e56"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0826",

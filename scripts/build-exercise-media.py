@@ -50,8 +50,8 @@ for row in approved['stills']:
  if row.get('generated'):
   source_block={'name':'AI 生成 / '+source,'author':'MoveMate 项目（AI 生成图片，无摄影师）',
    'license':'Unlicense','licenseUrl':'/exercise-media/UNLICENSE.txt',
-   'url':'https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch53.md',
-   'version':'2026-11-07 · 生成批次 53','sourceSha256':row['sourceSha256'],
+   'url':'https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch54.md',
+   'version':'2026-11-07 · 生成批次 54','sourceSha256':row['sourceSha256'],
    'changes':'本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。',
   'distribution':'repository'}
  else:
