@@ -24,6 +24,9 @@ import {
 } from "./workoutSync";
 import Dialog from "../../components/Dialog";
 import AnimatedNumber from "../../components/AnimatedNumber";
+import ShareCardButton from "../share/ShareCardButton";
+import { buildGymSetCard, buildRecordCard, buildWorkoutCardData } from "../share/cardData";
+import { milestoneCardSvg, setCardSvg, workoutCardSvg } from "../share/cardSvg";
 import {ExerciseDemo} from './ExerciseMedia';
 import { isUnreviewedOfficialExercise, workoutGuideInstruction } from './exerciseGuidance';
 import { WeightInput } from "./WeightInput";
@@ -534,6 +537,8 @@ export default function PlanWorkout() {
   const rest =
     Math.max(0, Math.ceil((Date.parse(row.restUntil || "") - tick) / 1000)) ||
     0;
+  const recordCard = buildRecordCard(row);
+  const shareDateInput = row.session?.startTime || row.createdAt || new Date();
   return (
     <div
       data-phase={row.phase}
@@ -604,6 +609,29 @@ export default function PlanWorkout() {
             <Link className="primary" to="/train/records">
               查看逐组记录
             </Link>
+            <ShareCardButton
+              label="分享训练卡"
+              makeCard={() => {
+                const data = buildWorkoutCardData(row, store.state.streakDays);
+                return data
+                  ? {
+                      svg: workoutCardSvg(data),
+                      fileName: `movemate-workout-${data.date.short.replace(/\./g, "")}.png`,
+                      title: "动伴 · 训练完成",
+                    }
+                  : null;
+              }}
+            />
+            {recordCard && (
+              <ShareCardButton
+                label="分享个人纪录"
+                makeCard={() => ({
+                  svg: milestoneCardSvg(recordCard),
+                  fileName: `movemate-record-${recordCard.date.short.replace(/\./g, "")}.png`,
+                  title: "动伴 · 个人纪录",
+                })}
+              />
+            )}
             <SaveAsPlan id={row.id} />
             <Link className="secondary" to="/train/stats">
               查看训练分析
@@ -1062,6 +1090,20 @@ export default function PlanWorkout() {
                 )[s.status]
               }
             </b>
+            {s.status === "completed" && (
+              <ShareCardButton
+                className="text-btn"
+                label="分享"
+                makeCard={() => {
+                  const data = buildGymSetCard(s, i, shareDateInput);
+                  return {
+                    svg: setCardSvg(data),
+                    fileName: `movemate-set-${data.date.short.replace(/\./g, "")}-${i + 1}.png`,
+                    title: "动伴 · 单组高光",
+                  };
+                }}
+              />
+            )}
           </div>
         ))}
       </details>

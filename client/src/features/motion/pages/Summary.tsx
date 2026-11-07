@@ -9,6 +9,9 @@ import { outfitLabels } from '../lib/outfits'
 import { POSE_ISSUE_COPY } from '../lib/poseFeedback'
 import { SPORT_LABELS } from '../../../types'
 import type { PoseIssue, WorkoutSession } from '../types'
+import ShareCardButton from '../../share/ShareCardButton'
+import { buildLevelCard, buildMotionSetCard, buildStreakCard } from '../../share/cardData'
+import { milestoneCardSvg, setCardSvg } from '../../share/cardSvg'
 const fmt = (seconds:number) => `${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`
 export function Summary({result,avatar,home}:{result:WorkoutSession;avatar:()=>void;home:()=>void}) {
   const {state,error,loading,refresh,setActiveOutfit,markOutfitsSeen}=useStore()
@@ -19,6 +22,8 @@ export function Summary({result,avatar,home}:{result:WorkoutSession;avatar:()=>v
   const axes=exercise.axes
   const breakdown=[result.formBreakdown?.depth,result.formBreakdown?.stability,result.formBreakdown?.trunk,result.formBreakdown?.symmetry]
   const [saveError,setSaveError]=useState('')
+  const levelCard=(!demo&&result.levelAfter!=null&&result.levelBefore!=null&&result.levelAfter>result.levelBefore)?buildLevelCard({level:result.levelAfter,xp:state.xp,date:result.startTime||new Date()}):null
+  const streakCard=!demo?buildStreakCard(state.history,state.streakDays):null
   const wear=async(outfit:typeof state.activeOutfit)=>{if(await setActiveOutfit(outfit)){await markOutfitsSeen([outfit]);setSaveError('')}else setSaveError('穿戴未保存，请重试。')}
   return <div className="page training-summary">
     <div className="training-summary-mark"><Icon name="check" size={30}/></div>
@@ -36,6 +41,9 @@ export function Summary({result,avatar,home}:{result:WorkoutSession;avatar:()=>v
       {result.exerciseType==='standing_leg_curl'&&<p>左侧 {(result as any).scoreAccumulator?.leftReps||0} 次 · 右侧 {(result as any).scoreAccumulator?.rightReps||0} 次</p>}<p>陪练对话 {result.conversationTurnCount||0} 轮</p>
       {result.heartRateSource==='ble'&&<p>平均心率 {result.averageBpm??'—'} BPM · 最高 {result.maxBpm??'—'} BPM</p>}
     </details>}
+    {!timer&&!demo&&<ShareCardButton label="分享本组高光" makeCard={()=>{const data=buildMotionSetCard(result,state.history);return {svg:setCardSvg(data),fileName:`movemate-set-${data.date.short.replace(/\./g,'')}.png`,title:'动伴 · 单组高光'}}}/>}
+    {levelCard&&<ShareCardButton label="分享等级里程碑" makeCard={()=>({svg:milestoneCardSvg(levelCard),fileName:`movemate-level-${levelCard.date.short.replace(/\./g,'')}.png`,title:'动伴 · 等级提升'})}/>}
+    {streakCard&&<ShareCardButton label="分享连续打卡里程碑" makeCard={()=>({svg:milestoneCardSvg(streakCard),fileName:`movemate-streak-${streakCard.date.short.replace(/\./g,'')}.png`,title:'动伴 · 连续打卡'})}/>}
     <button className="primary" onClick={home}>返回训练<Icon name="arrow"/></button><button className="text-btn" onClick={avatar}>查看我的形象</button>
   </div>
 }
