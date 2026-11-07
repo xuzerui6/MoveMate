@@ -7916,6 +7916,204 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1273",
+      "expectedName": "clap push up",
+      "sourceId": "ai-generated-exdb-1273",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "6aaa5d72bdc0f83fabe96f387408f9f113cb0fc12744019ef56f41c0b18b4178",
+        "dfac1836f00ad9864cf42814df0a4d8f989d52a2d6a4dab51d29274475df7eec"
+      ],
+      "phases": [
+        "起始：高位平板支撑，双手略宽于肩撑地，身体从头到脚跟成一条直线",
+        "关键阶段：爆发性推离地面，身体在空中保持直线，双手离地在胸前击掌"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1201",
+      "expectedName": "dumbbell burpee",
+      "sourceId": "ai-generated-exdb-1201",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "f8b73c18abc5ffa9936e87d77f436a651a2d61c25b584909efbe4a8f45c42b76",
+        "8c03b6f0f65a3e30bd59ddb01ca59a3455670f5f04d1f8117138354ea25b244b"
+      ],
+      "phases": [
+        "起始：双手各握一只哑铃撑地成高位平板，身体成一条直线",
+        "关键阶段：站立终点，双臂完全伸直将双哑铃锁定在头顶正上方"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1489",
+      "expectedName": "sissy squat",
+      "sourceId": "ai-generated-exdb-1489",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "946c2cabcfb28e024afabb76930f48689feb0dff6486b1f8c1a1d9ce8da214ef",
+        "9da833858e998a914dda733d647ad9d0bd8911a97df2a6c23c3f07ba2c423264"
+      ],
+      "phases": [
+        "起始：双脚与肩同宽站立，躯干直立，双臂自然下垂",
+        "关键阶段：脚跟抬起、膝盖大幅前移，躯干与大腿保持接近一条直线向后倾斜下降"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3888",
+      "expectedName": "dumbbell one arm snatch",
+      "sourceId": "ai-generated-exdb-3888",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "c785d1cfc964b7ac09a18ae155bfb0bc38d3829e33171155e65a1172f7051e27",
+        "e64840bcbd4750ea0514c26163107a1c3c024ef470acb252163517d772aa05f8"
+      ],
+      "phases": [
+        "起始：悬垂提拉位，右手正握哑铃垂于两腿之间，屈膝屈髋、背部挺直",
+        "关键阶段：身体完全站直，右臂伸直将哑铃锁定在头顶正上方"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3643",
+      "expectedName": "weighted cossack squats (male)",
+      "sourceId": "ai-generated-exdb-3643",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "38ebb2c398121ac18cccbf0757faec5c6df01f1fd7e66e5cdd583f550a074a47",
+        "afd85dc3092f9b73d31b06411f6479d9fc35860c531768787319ea16a9f3e04a"
+      ],
+      "phases": [
+        "起始：宽站距站立，脚尖略向外，双手抱一只哑铃于胸前",
+        "关键阶段：重心移至右腿深蹲到底，左腿完全伸直向侧伸展、脚跟着地且脚尖上勾，哑铃仍抱于胸前"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3662",
+      "expectedName": "pike-to-cobra push-up",
+      "sourceId": "ai-generated-exdb-3662",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "f5a447ab6539c8579e34b57a340d16577df8567637c4adaa617172f7f8789e81",
+        "b7aeadc640bb8705d1180fc67ffda65ce241081cdbc6753dbad6584dd665adf7"
+      ],
+      "phases": [
+        "起始：倒V位，臀部高抬，双臂与躯干成一线，双腿伸直",
+        "关键阶段：眼镜蛇位，双臂伸直撑起上身、挺胸抬头，髋部与大腿贴近地面"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1472",
+      "expectedName": "forward jump",
+      "sourceId": "ai-generated-exdb-1472",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "93dbc7a14dcb1a37f3768c5330a997c987ae33c314427a7899a2755216e1bce8",
+        "acf329dc6527a53db8c6d14477046fe9ecf30771711c6e96ed5397d90a344e26"
+      ],
+      "phases": [
+        "起始：蓄势下蹲，屈膝半蹲、躯干前倾，双臂向后摆，双脚贴地",
+        "关键阶段：腾空前跃，双脚完全离地，双臂向前摆起，身体在空中前倾"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0099",
+      "expectedName": "barbell single leg split squat",
+      "sourceId": "ai-generated-exdb-0099",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "a49d808e575136c0f823e42816f307503901847090605144d8b5473222d0504b",
+        "5d6a9096e3fe7b3c51cde486086c5179ffd3e31d5f502e4a737e3a299c3504ca"
+      ],
+      "phases": [
+        "起始：分腿站立，杠铃置于上背部，右腿在前、左腿向后伸直且脚跟抬起，双膝伸直",
+        "关键阶段：下沉至右大腿与地面平行，左腿保持伸直向后，躯干直立，杠铃仍稳在上背部"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3663",
+      "expectedName": "reverse plank with leg lift",
+      "sourceId": "ai-generated-exdb-3663",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "f769e96fee2b08a8fd74978adf49c1cdcacc5b529293878b8f0e2c64655b2f70",
+        "a82cd2ed0c5840b128f389776c1ed14c142c35dfbd57bfabc8a942480e30558d"
+      ],
+      "phases": [
+        "起始：反向平板，双手撑于臀后、手指指向脚尖，臀部抬离地面，身体从头到脚跟成一条直线",
+        "关键阶段：保持反向平板，一腿伸直向上抬起至接近垂直，另一脚脚跟仍着地"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0053",
+      "expectedName": "barbell jump squat",
+      "sourceId": "ai-generated-exdb-0053",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "cc2a75f9a2e8f05148db95b25591a7b65743ccab9b073806f291b573a0fc3fda",
+        "4df22c90e356cb45995e2b3f9baadcda5fa0b7cdfbbf637ffd469aa0edd8a676"
+      ],
+      "phases": [
+        "起始：深蹲底位，杠铃置于上背部，下蹲至大腿与地面平行，躯干直立",
+        "关键阶段：腾空跃起，双脚完全离地，杠铃仍稳压在上背部"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3211",
+      "expectedName": "kneeling push-up (male)",
+      "sourceId": "ai-generated-exdb-3211",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "04d9aab0e7efe54fe8a792396ac6b47beb1ad01dcf528a682f5fbb4156fefc53",
+        "3e01813424c1b8bc62cb8d8a5928e75767bce6e1c81136845882c8a838bee873"
+      ],
+      "phases": [
+        "起始：跪姿平板顶位，双膝跪地为支点，双臂伸直撑地，身体从头到膝成一条直线",
+        "关键阶段：跪姿底位，屈肘下降至胸部接近地面，保持头到膝的直线"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
