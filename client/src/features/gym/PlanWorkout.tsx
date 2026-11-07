@@ -724,7 +724,7 @@ export default function PlanWorkout() {
                 />
                 {camera && pose.status === "ready" && (
                   <>
-                    <div className={`gym-hud-capsule${planUnclear ? " amber" : ""}`}><span className="gym-hud-dot" />{planCapsule}</div>
+                    <div className={`gym-hud-capsule${planUnclear ? " amber" : ""}`}><span className="gym-hud-dot" /><span className="gym-hud-capsule-text">{planCapsule}</span></div>
                     <button type="button" className="gym-hud-voice" aria-pressed={voiceOn} onClick={() => { if (!voiceOn) { voice.prepareAudio(); setVoiceOn(true); } else setVoiceOn(false); }}>语音陪练 · {voiceOn ? "开" : "关"}</button>
                   </>
                 )}

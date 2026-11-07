@@ -316,7 +316,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
       <div className="camera-card training-camera" hidden={!active && !preparing}>
         <PoseCanvas keepVideoRendering={adaptive} videoRef={pose.videoRef} landmarks={simulatedPose ? demoLandmarks : pose.landmarks} demo={simulatedPose} phase={metrics.phase} fit={cameraFit} affectedJoints={paused ? [] : metrics.poseFeedback.affectedJoints} frame={simulatedPose ? null : pose.frame}/>
         {active&&!paused&&!ending&&!pendingAction&&<div className="training-hud" aria-live="polite">
-          <div className={`training-hud-capsule${unclear?' amber':''}`}><span className="training-hud-dot"/>{capsuleText}</div>
+          <div className={`training-hud-capsule${unclear?' amber':''}`}><span className="training-hud-dot"/><span className="training-hud-capsule-text">{capsuleText}</span></div>
           {!simulatedPose&&<button type="button" className="training-hud-voice" aria-pressed={voiceEnabled} onClick={toggleVoice}>语音陪练 · {voiceEnabled?'开':'关'}</button>}
           <div className="training-hud-bottom">
             {!metrics.poseFeedback.calibrated?<div className="training-hud-calib">

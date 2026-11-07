@@ -39,7 +39,8 @@
 @media(max-width:699px){
   .motion-view .training-workout.live .training-camera{height:clamp(320px,56svh,600px);width:calc(100% + 24px);margin-left:-12px}
   .training-camera .pose-canvas{display:block;object-fit:fill!important}
-  .training-camera-tools{position:absolute;top:10px;right:10px;z-index:2;display:flex;gap:6px}
+  /* top 留在 HUD 顶带（胶囊/语音开关，top:12、高约 42px）之下，避免三层浮层同行相压。 */
+  .training-camera-tools{position:absolute;top:60px;right:10px;z-index:2;display:flex;gap:6px}
   .motion-view .training-camera-tools>button{min-height:44px;border:1px solid var(--line);background:rgba(255,255,255,.96);color:var(--ink);border-radius:24px;font-size:12px;font-weight:650;padding:8px 12px;display:flex;align-items:center;gap:6px;box-shadow:0 2px 8px #00000008}
   .training-camera-crop-note{position:absolute;bottom:12px;left:12px;right:12px;display:block;text-align:center;font-size:12px;color:white;background:#15251dcc;border-radius:8px;padding:8px;pointer-events:none}
   .app-shell:has(.training-workout.camera-expanded) .app-sidebar{display:none}
@@ -68,7 +69,7 @@
 @media(max-width:699px) and (max-height:560px){
   .camera-expanded .training-live-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:12px;align-items:stretch}
   .camera-expanded .training-live-info{overflow:auto;min-height:0}
-  .camera-expanded .training-camera-tools{top:6px;right:6px;gap:4px}
+  .camera-expanded .training-camera-tools{top:56px;right:6px;gap:4px}
   .motion-view .camera-expanded .training-camera-tools>button{padding:6px 8px}
 }
 
@@ -91,7 +92,11 @@
 .training-hud{position:absolute;inset:0;pointer-events:none;z-index:3}
 .training-hud::before{content:"";position:absolute;left:0;right:0;top:0;height:64px;background:linear-gradient(rgba(10,26,17,.38),transparent)}
 .training-hud::after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(transparent,rgba(10,26,17,.45))}
-.training-hud-capsule{position:absolute;top:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;background:rgba(16,32,22,.82);color:#fff;font-size:13px;font-weight:600;padding:8px 16px;border-radius:999px;white-space:nowrap}
+/* 胶囊在左缘与右侧语音开关之间的可用带内居中：中心左移 76px、最大宽度 = 宽-176px，
+   右缘恒 ≤ 宽-164px；开关实测最宽约 127px、右距 12px（左缘最浅在宽-139px），恒留 ≥25px 间隔。
+   文字超长在 span 内省略，任何宽度下不与开关重叠。 */
+.training-hud-capsule{position:absolute;top:12px;left:calc(50% - 76px);transform:translateX(-50%);max-width:calc(100% - 176px);display:flex;align-items:center;gap:8px;background:rgba(16,32,22,.82);color:#fff;font-size:13px;font-weight:600;padding:8px 16px;border-radius:999px;white-space:nowrap}
+.training-hud-capsule-text{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .training-hud-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex:none;animation:motion-pulse 1.6s ease-in-out infinite}
 .training-hud-capsule.amber .training-hud-dot{background:#f5b93f;animation:none}
 .training-hud-voice{position:absolute;top:12px;right:12px;pointer-events:auto;background:rgba(16,32,22,.82);color:#fff;border:0;font-size:12px;font-weight:600;padding:8px 12px;border-radius:999px;min-height:36px;cursor:pointer}
