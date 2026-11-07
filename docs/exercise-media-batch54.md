@@ -45,7 +45,10 @@
 
 ## 验证与部署记录
 
-（待回填：测试、CI、合并、双站部署版本与抽查结果。）
+- 构建：`build-exercise-media.py --staging generated-batch17 --only <10 条>`——Published 603 image entries / 15 video entries；发布链 `publish-media-metadata`（603 条懒加载记录）→ `publish-exercise-documentation`（complete 603、photos 490、illustrations 113、videos 15、pending 726）→ `report-exercise-media.ts` 依次执行。
+- 测试（串行，全绿）：client `test:repository` 369/369 + tsc、server 103/103 + build、cloudflare 34/34 + typecheck。本批台账 `expectedName` 全部取目录英文原文。
+- CI：分支 `media/exercise-media-batch54` workflow_dispatch 绿（run 42355854196）；main 未移动（仍为批次 53 的 fb86829），分支以引用直推快进合入 main（072a731；因 main 被旧 worktree 占用检出，未走本地 checkout 合并），main CI 绿（run 42355953822）。
+- 部署：基于最新 main（072a731）双站部署——生产 Version `1a11d0f7-0a03-435a-be5b-42f5a88b185b`，预览 Version `f0eac323-7a50-401a-aecb-eddf7b903cf5`。抽查：本批 5 张 WebP（0664 双帧、1756 关键帧、1425 起始帧、3420 关键帧）自双站下载与本地发布物 sha256 比对 10/10 一致；exdb:0527 详情 JSON 双站与本地逐字节一致。
 
 ## 口径与后续
 
