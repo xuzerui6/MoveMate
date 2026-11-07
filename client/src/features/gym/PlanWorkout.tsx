@@ -10,7 +10,6 @@ import type {PoseModelPreference} from '../motion/lib/poseCompatibility';
 import {PoseDiagnostics,PoseModelExperimentSelect,RecognitionOverride} from '../motion/components/PoseDiagnostics';
 import { isRecognitionType } from '../motion/lib/recognition';
 import { PlanRecognitionStatus } from "./PlanRecognitionStatus";
-import { isNewPlanProfile } from "./planRecognition";
 import { exerciseInfo,isCameraExercise } from "../motion/lib/exercises";
 import { useXiaozhiCoach } from "../motion/hooks/useXiaozhiCoach";
 import { useSessionClock } from "../motion/hooks/useSessionClock";
@@ -24,6 +23,8 @@ import {
 } from "./workoutSync";
 import Dialog from "../../components/Dialog";
 import AnimatedNumber from "../../components/AnimatedNumber";
+import AnimatedProgress from "../../components/AnimatedProgress";
+import { buildSetReveal } from "../motion/lib/companionCopy";
 import ShareCardButton from "../share/ShareCardButton";
 import { buildGymSetCard, buildRecordCard, buildWorkoutCardData } from "../share/cardData";
 import { milestoneCardSvg, setCardSvg, workoutCardSvg } from "../share/cardSvg";
@@ -220,6 +221,17 @@ export default function PlanWorkout() {
   const restSeconds =
     Math.max(0, Math.ceil((Date.parse(row?.restUntil || "") - tick) / 1000)) ||
     0;
+  // 组间揭晓（识别页 v2 §03）：用已完成相机组的评分累加器还原四轴均值
+  // （acc[轴]/count 即组均值，与结算口径一致），先报进步、再四轴、只给一个目标。
+  const planUnclear = camera && working && metrics.poseFeedback.calibrated && (diagnostics.stage === "tracking_lost" || metrics.poseFeedback.status === "uncertain");
+  const planCapsule = !working ? "已暂停 · 休息不计时" : !metrics.poseFeedback.calibrated ? "正在找你 · 站好就行" : planUnclear ? "我有点看不清" : `陪你练 · ${current?.exercise.nameZh || ""}`;
+  const axisKeys = ["depth", "stability", "trunk", "symmetry"] as const;
+  const setBreakdownOf = (set: any) => set?.score?.count ? { depth: Math.round((set.score.depth || 0) / set.score.count), stability: Math.round((set.score.stability || 0) / set.score.count), trunk: Math.round((set.score.trunk || 0) / set.score.count), symmetry: Math.round((set.score.symmetry || 0) / set.score.count) } : null;
+  const completedCameraSets = (row?.sets || []).filter((set: any) => set.status === "completed" && set.inputMode === "camera" && set.exercise?.id === current?.exercise?.id && set.score?.count > 0);
+  const lastCameraSet = completedCameraSets[completedCameraSets.length - 1];
+  const prevCameraSet = completedCameraSets[completedCameraSets.length - 2];
+  const lastBreakdown = lastCameraSet ? setBreakdownOf(lastCameraSet) : null;
+  const restReveal = row?.phase === "resting" && lastCameraSet && lastBreakdown ? buildSetReveal(lastBreakdown, prevCameraSet ? setBreakdownOf(prevCameraSet) : null, { reps: lastCameraSet.reps || 0, unit: current ? repUnit(current.exercise) : "次", scored: true, axisLabels: capability?.axes ? { depth: capability.axes[0], stability: capability.axes[1], trunk: capability.axes[2], symmetry: capability.axes[3] } : undefined }) : null;
   const options = useWorkoutPreferences(!!row && !finished, restSeconds);
   const snapshot = useRef<any>({});
   snapshot.current = camera
@@ -710,11 +722,17 @@ export default function PlanWorkout() {
                   fit={fit}
                   frame={pose.frame}
                 />
+                {camera && pose.status === "ready" && (
+                  <>
+                    <div className={`gym-hud-capsule${planUnclear ? " amber" : ""}`}><span className="gym-hud-dot" />{planCapsule}</div>
+                    <button type="button" className="gym-hud-voice" aria-pressed={voiceOn} onClick={() => { if (!voiceOn) { voice.prepareAudio(); setVoiceOn(true); } else setVoiceOn(false); }}>语音陪练 · {voiceOn ? "开" : "关"}</button>
+                  </>
+                )}
                 {pose.status !== "ready" && (
                   <p className={'gym-camera-overlay'+(adaptive?' adaptive-calibration-hint':'')}>
                     {pose.status === "loading"
                       ? pose.telemetry?.reason||"正在准备摄像头与模型…"
-                      : "摄像头自动计数 · 全身入镜"}
+                      : "摄像头陪你数 · 全身入镜"}
                   </p>
                 )}
                 <div className="gym-camera-tools">
@@ -737,18 +755,9 @@ export default function PlanWorkout() {
                     {type === "high_knees" ? "对" : "次"}
                   </strong>
                   <p>
-                    {!working ? (adaptive ? "已暂停识别" : "已暂停识别；继续后重新校准") : metrics.feedback}
+                    {!working ? (adaptive ? "已暂停识别" : "已暂停识别，继续时重新校准") : metrics.poseFeedback.primaryIssue ? metrics.poseFeedback.message : metrics.feedback}
                   </p>
-                  <small>
-                    {isNewPlanProfile(type) && <>本次评分 {metrics.lastRepScore == null ? "无法判断／待完成" : metrics.lastRepScore + " 分"} · </>}
-                    {metrics.scoreAccumulator.count
-                      ? `训练均分 ${metrics.formScore}`
-                      : "尚无完整动作评分"}
-                  </small>
-                  {adaptive&&type==='squat'&&metrics.reps>0&&metrics.lastRepScore===null&&<p className="gym-muted">本次无法评分</p>}
-                  {capability && metrics.scoreAccumulator.count > 0 && <p className="gym-muted">{capability.axes.map((name:string,i:number)=>name+" "+metrics.formBreakdown[(["depth","stability","trunk","symmetry"] as const)[i]]).join(" · ")}（已评分 {metrics.scoreAccumulator.count} 次）</p>}
                   {type === "reverse_lunge" && <p>左侧 {metrics.scoreAccumulator.leftReps || 0} 次 · 右侧 {metrics.scoreAccumulator.rightReps || 0} 次 · 每侧完成计一次</p>}
-                  <p>{metrics.poseFeedback.primaryIssue ? metrics.poseFeedback.message : ""}</p>
                   {type==='standing_leg_curl'&&<p className="recognition-side-count">左侧 {metrics.scoreAccumulator.leftReps||0} 次 · 右侧 {metrics.scoreAccumulator.rightReps||0} 次 · 左右合计</p>}
                   <PlanRecognitionStatus
                     type={type}
@@ -802,6 +811,19 @@ export default function PlanWorkout() {
                       跳过休息
                     </button>
                   </div>
+                </div>
+              )}
+              {restReveal && lastBreakdown && (
+                <div className="gym-reveal">
+                  <p className="gym-reveal-lead">{restReveal.progressLine}</p>
+                  {capability?.axes?.map((name: string, i: number) => (
+                    <div className="gym-reveal-axis" key={name}>
+                      <span>{name}</span>
+                      <AnimatedProgress value={lastBreakdown[axisKeys[i]] || 0} delay={i * 120} />
+                      <b>{lastBreakdown[axisKeys[i]] || 0}</b>
+                    </div>
+                  ))}
+                  {restReveal.goalLine && <p className="gym-reveal-goal">{restReveal.goalLine}</p>}
                 </div>
               )}
               {current?.targetSeconds > 0 && (

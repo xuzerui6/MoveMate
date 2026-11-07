@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision'
 import { usesMainThreadLite } from '../lib/poseCompatibility'
 import { cameraFrame, cameraPoint, type CameraFit } from '../lib/cameraFrame'
-import { DisplayPoseFilter, extrapolateDisplayPoints, type DisplayPoint, type DisplayVelocity } from '../lib/displayPose'
+import { DisplayPoseFilter, extrapolateDisplayPoints, segmentGrade, jointTier, JOINT_MIN_VISIBILITY, type DisplayPoint, type DisplayVelocity } from '../lib/displayPose'
 import type { PoseFrame } from '../lib/poseProtocol'
 
 const connections = [[11,12],[11,13],[13,15],[12,14],[14,16],[11,23],[12,24],[23,24],[23,25],[25,27],[24,26],[26,28]]
@@ -63,18 +63,37 @@ export function PoseCanvas({ videoRef, landmarks, demo, phase, affectedJoints = 
         const g = ctx.createLinearGradient(0,0,w,h); g.addColorStop(0,'#111814'); g.addColorStop(1,'#26332d'); ctx.fillStyle=g; ctx.fillRect(0,0,w,h)
         ctx.fillStyle='rgba(255,255,255,.04)'; for(let x=0;x<w;x+=28) for(let y=0;y<h;y+=28) ctx.fillRect(x,y,1,1)
       }
-      let pts: {x:number;y:number}[] = []
+      let pts: {x:number;y:number;visibility:number}[] = []
       const display = displayRef.current
-      if (!demo && display) pts = extrapolateDisplayPoints(display.points, display.velocities, performance.now() - display.capturedAt).map(p => cameraPoint(p, frame))
+      if (!demo && display) pts = extrapolateDisplayPoints(display.points, display.velocities, performance.now() - display.capturedAt).map(p => ({ ...cameraPoint(p, frame), visibility: p.visibility }))
       else if(demo) {
         const down = phase === 'bottom'; const cx=w/2, hip=down?h*.60:h*.48, knee=down?h*.70:h*.67
-        pts=Array.from({length:29},()=>({x:cx,y:h*.4})); Object.assign(pts[11],{x:cx-34,y:h*.3}); Object.assign(pts[12],{x:cx+34,y:h*.3}); Object.assign(pts[13],{x:cx-55,y:h*.43}); Object.assign(pts[14],{x:cx+55,y:h*.43}); Object.assign(pts[15],{x:cx-70,y:h*.35}); Object.assign(pts[16],{x:cx-70,y:h*.35}); Object.assign(pts[23],{x:cx-28,y:hip}); Object.assign(pts[24],{x:cx+28,y:hip}); Object.assign(pts[25],{x:cx-58,y:knee}); Object.assign(pts[26],{x:cx+58,y:knee}); Object.assign(pts[27],{x:cx-70,y:h*.88}); Object.assign(pts[28],{x:cx+70,y:h*.88})
+        pts=Array.from({length:29},()=>({x:cx,y:h*.4,visibility:1})); Object.assign(pts[11],{x:cx-34,y:h*.3}); Object.assign(pts[12],{x:cx+34,y:h*.3}); Object.assign(pts[13],{x:cx-55,y:h*.43}); Object.assign(pts[14],{x:cx+55,y:h*.43}); Object.assign(pts[15],{x:cx-70,y:h*.35}); Object.assign(pts[16],{x:cx-70,y:h*.35}); Object.assign(pts[23],{x:cx-28,y:hip}); Object.assign(pts[24],{x:cx+28,y:hip}); Object.assign(pts[25],{x:cx-58,y:knee}); Object.assign(pts[26],{x:cx+58,y:knee}); Object.assign(pts[27],{x:cx-70,y:h*.88}); Object.assign(pts[28],{x:cx+70,y:h*.88})
       }
       ctx.save()
       if (surface.mobile) { ctx.beginPath(); ctx.rect(Math.max(0,frame.x),Math.max(0,frame.y),Math.min(w,frame.width),Math.min(h,frame.height)); ctx.clip() }
-      ctx.strokeStyle='#21ed80'; ctx.lineWidth=5; ctx.lineCap='round'; ctx.shadowColor='#21ed80'; ctx.shadowBlur=8
-      for (const [a,b] of connections) if (pts[a]&&pts[b]) { ctx.beginPath(); ctx.moveTo(pts[a].x,pts[a].y); ctx.lineTo(pts[b].x,pts[b].y); ctx.stroke() }
-      ctx.shadowBlur=0; for (const i of [11,12,13,14,15,16,23,24,25,26,27,28]) if(pts[i]) {ctx.fillStyle=affectedJoints.includes(i)?'#ffbe3d':'#36f093';ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,affectedJoints.includes(i)?8:6,0,Math.PI*2);ctx.fill()}
+      // V4-B drawing language (display only; grading in displayPose.ts): solid
+      // brand green when both endpoints are clearly seen, amber dashed when a
+      // segment is half-seen, nothing when it is effectively unseen. No glow —
+      // bright-light readability comes from the white joint rings, not bloom.
+      ctx.lineCap='round'
+      for (const [a,b] of connections) {
+        if (!pts[a] || !pts[b]) continue
+        const grade = segmentGrade(pts[a].visibility, pts[b].visibility)
+        if (grade === 'hidden') continue
+        ctx.beginPath(); ctx.moveTo(pts[a].x, pts[a].y); ctx.lineTo(pts[b].x, pts[b].y)
+        if (grade === 'solid') { ctx.strokeStyle='#00c65e'; ctx.lineWidth=4.5; ctx.setLineDash([]) }
+        else { ctx.strokeStyle='#f5b93f'; ctx.lineWidth=3.5; ctx.setLineDash([7,6]) }
+        ctx.stroke()
+      }
+      ctx.setLineDash([])
+      for (const i of [11,12,13,14,15,16,23,24,25,26,27,28]) {
+        const point = pts[i]; if (!point || point.visibility < JOINT_MIN_VISIBILITY) continue
+        const affected = affectedJoints.includes(i)
+        ctx.beginPath(); ctx.arc(point.x, point.y, affected ? 8 : jointTier(i) === 'primary' ? 6 : 4, 0, Math.PI*2)
+        ctx.fillStyle = affected ? '#ffbe3d' : '#00c65e'; ctx.fill()
+        if (affected || jointTier(i) === 'primary') { ctx.beginPath(); ctx.arc(point.x, point.y, affected ? 8 : 6, 0, Math.PI*2); ctx.strokeStyle='rgba(255,255,255,.9)'; ctx.lineWidth=2; ctx.stroke() }
+      }
       ctx.restore()
     }
     raf = requestAnimationFrame(draw)
