@@ -1265,22 +1265,37 @@
     {
       "id": "exdb:0020",
       "originalName": "balance board",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：说明为单脚平衡，候选为双脚站板。 当前不发布此候选，不计完整覆盖。",
+      "reason": "2026-11-07 AI 生成双帧已逐帧对照：种子关切仅为旧候选图双脚站板与正文单脚不符，正文本身自洽——本条按正文定版单脚平衡：木质圆形摇摆平衡板置平地，起始帧一只脚踩板面正中、另一只脚平放板旁地面、重心向踩板脚转移；关键帧单脚在板上保持平衡（板体在支点上倾斜）、另一只脚离地屈膝悬于板旁，双臂张开。正面 3/4、两帧同场景续接。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "1616094ecd74d74bcdf057432e8bfd95d2a930ec281ea036c3f17ae8b18ff76a",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0020",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch63.md",
+          "version": "2026-11-07 · 生成批次 63",
+          "sourceSha256": [
+            "e40dcdae3a9ccd457d9a539653b1d98ae1df06e046872de06f104df88aadddf8",
+            "023db8b4def83c355aae3542e76d736a92f6e3718cb7c70d30870cef7baafa5f"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0968",
@@ -15084,22 +15099,37 @@
     {
       "id": "exdb:1618",
       "originalName": "dumbbell incline hammer press on exercise ball",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：头颈上背托球、中立握可读，但标题上斜与实际躯干角度未确认，不能套水平球推图。",
+      "reason": "2026-11-07 AI 生成双帧已逐帧对照：种子意见关切上斜角度未定——本条沿 1283 定版：头颈上背托球、髋下沉使躯干约 45° 上斜、双脚平地；双手各握一铃、中立握（掌心相对），起始帧肘屈约 90° 铃在肩高，关键帧双臂伸直推至胸上方略内收、掌心保持相对。机位定版右前 3/4：纯侧面下双臂中立握的两铃几何叠读为单杠（两稿废），3/4 机位双铃分离可核，且与 1283 正握版以掌向区分（本条掌心相对、铃体长轴沿头脚方向）。两帧同场景续接。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a75ad7f33f011acb6f7a17ab0a5dfe272cdd732653b8db74dd281f280e1b2aa4",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1618",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch63.md",
+          "version": "2026-11-07 · 生成批次 63",
+          "sourceSha256": [
+            "093e80928e80361ea0f919064d1560301206daff2abe54f75f9c49d9f781429b",
+            "61bff6503bbcb8391159f10d9a6925c22ccb2755c8f6c135e06dec3fb75c73a9"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0322",
@@ -21991,22 +22021,37 @@
     {
       "id": "exdb:1744",
       "originalName": "exercise ball dip",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤、支撑和器械：双手撑球、臀部离球屈肘的说明明确，但不稳定球上的手部支撑和足距需专门完整示范，不用凳上图替代。",
+      "reason": "2026-11-07 AI 生成双帧已逐帧对照：种子意见关切球上手部支撑与足距——本条定版：坐球后双手在臀部两侧按住球面、手指朝前，双脚平地、膝约 90°；顶位帧双臂伸直把臀部撑离球面，底位帧屈肘约 90°、臀部降至球面前方低位。底位续接被顶位锚定（一稿废），按凳式/双杠底位先例改全新生成，底位帧与顶位帧背景不同，如实披露；阶段真实性优先。批次 61 曾以手撑球面与底位双重锚定排除，本批凭批次 62 的 2328（双手撑球成帧、底位全新生成一次成立）新证据重新评估后定版。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "58c45d90f4ae9a0b9eb458cbb21eb6f84cc4b076ce1b4f59cd56f0ca08dfada9",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1744",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch63.md",
+          "version": "2026-11-07 · 生成批次 63",
+          "sourceSha256": [
+            "44cf52c196d8a237992b1afd4ae58ce6e533f7d748fb04cbc5544a2b46c66ef1",
+            "2a88372552905d74f8776b63db3e0a7d814ed70fda0242c28c52555260ae3cb7"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1559",
@@ -34876,22 +34921,37 @@
     {
       "id": "exdb:1362",
       "originalName": "sphinx",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源要求前臂及脚趾触地、抬胸，未明确髋是否持续贴地，可能混入前臂平板；需确认支撑点。",
+      "reason": "2026-11-07 AI 生成双帧已逐帧对照：种子意见关切髋是否持续贴地、恐混前臂平板——本条以名称与正文定版：俯卧地面、前臂平放贴地、肘在肩正下方，髋与大腿全程贴地（与前臂平板的髋离地明确区分）；起始帧前臂就位、胸部尚未抬起，关键帧前臂撑地将胸部抬起、脊柱后伸、颈部中立。正文的脚趾触地按双脚贴地成帧。纯侧面、两帧同场景续接（本条为正选 1366 整条剔除后按序启用的储备）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "615cfba6285f917c5066153f61f8a3199248a78bb4c14976cf88728c97d09183",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-1362",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch63.md",
+          "version": "2026-11-07 · 生成批次 63",
+          "sourceSha256": [
+            "b6c796011c10650fc6d26ac79a05bbdda9a110a6708f617b7d56948cd0386cb8",
+            "1c12ff5f3eec8eab7e1bf679b34e48ae80ca317cc076857cd7199487a56210c2"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0778",
@@ -36917,22 +36977,37 @@
     {
       "id": "exdb:0840",
       "originalName": "weighted overhead crunch (on stability ball)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：坐球双手负重过顶可辨，但未写球托下背和仰卧准备，实际支撑需核对。",
+      "reason": "2026-11-07 AI 生成双帧已逐帧对照：种子意见关切支撑不明——正文首步即明示坐球直坐（双脚平地、膝约 90°）、双手握负重举过头顶，本条按正文定版坐姿式，不作仰卧球托下背：起始帧直坐球顶、双手共握一块杠铃片、双臂伸直举过头顶；关键帧躯干前屈约 45°、胸部靠向膝盖，双臂保持伸直随躯干前倾、杠铃片在头前上方。纯侧面、两帧同场景续接。正文不改。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "3cbdffa4915f588ebf93e9cdb54964d86270b2ed9654f6473d5ff0dd79e9cd49",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-generated-exdb-0840",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch63.md",
+          "version": "2026-11-07 · 生成批次 63",
+          "sourceSha256": [
+            "ef03ada7d3c1cd313f26e2b75715a64e897edf8b5e201196261f55a44ae987b5",
+            "77af2cbb2f20dc923804b967f531befb49c8376ae490119ce6db73ed05759aae"
+          ],
+          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0841",

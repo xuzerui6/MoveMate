@@ -9410,6 +9410,96 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1618",
+   "expectedName": "dumbbell incline hammer press on exercise ball",
+   "sourceId": "ai-generated-exdb-1618",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate AI generation",
+   "sourceSha256": [
+    "093e80928e80361ea0f919064d1560301206daff2abe54f75f9c49d9f781429b",
+    "61bff6503bbcb8391159f10d9a6925c22ccb2755c8f6c135e06dec3fb75c73a9"
+   ],
+   "phases": [
+    "起始：仰卧健身球上、头颈上背托球，髋下沉躯干约 45 度上斜，双手各握哑铃在肩高、掌心相对（中立握），肘屈约 90 度",
+    "关键：双臂伸直将哑铃推至胸上方、略向内收，掌心保持相对"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0840",
+   "expectedName": "weighted overhead crunch (on stability ball)",
+   "sourceId": "ai-generated-exdb-0840",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate AI generation",
+   "sourceSha256": [
+    "ef03ada7d3c1cd313f26e2b75715a64e897edf8b5e201196261f55a44ae987b5",
+    "77af2cbb2f20dc923804b967f531befb49c8376ae490119ce6db73ed05759aae"
+   ],
+   "phases": [
+    "起始：直坐健身球顶部、双脚平地膝约 90 度，双手共握杠铃片、双臂伸直举过头顶",
+    "关键：躯干前屈约 45 度、胸部靠向膝盖，双臂保持伸直随躯干前倾，杠铃片在头前上方"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1744",
+   "expectedName": "exercise ball dip",
+   "sourceId": "ai-generated-exdb-1744",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate AI generation",
+   "sourceSha256": [
+    "44cf52c196d8a237992b1afd4ae58ce6e533f7d748fb04cbc5544a2b46c66ef1",
+    "2a88372552905d74f8776b63db3e0a7d814ed70fda0242c28c52555260ae3cb7"
+   ],
+   "phases": [
+    "起始（顶位）：双手在臀侧按住健身球面、手指朝前，双臂伸直把臀部撑离球面，双脚平地膝约 90 度",
+    "关键（底位）：屈肘约 90 度，臀部降至球面前方低位，双手仍按球面"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0020",
+   "expectedName": "balance board",
+   "sourceId": "ai-generated-exdb-0020",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate AI generation",
+   "sourceSha256": [
+    "e40dcdae3a9ccd457d9a539653b1d98ae1df06e046872de06f104df88aadddf8",
+    "023db8b4def83c355aae3542e76d736a92f6e3718cb7c70d30870cef7baafa5f"
+   ],
+   "phases": [
+    "起始：一只脚踩在摇摆平衡板正中央，另一只脚平放在板旁地面，重心向踩板脚转移，双臂微张",
+    "关键：单脚在平衡板上保持平衡，另一只脚离地屈膝悬于板旁，双臂张开"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1362",
+   "expectedName": "sphinx",
+   "sourceId": "ai-generated-exdb-1362",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate AI generation",
+   "sourceSha256": [
+    "b6c796011c10650fc6d26ac79a05bbdda9a110a6708f617b7d56948cd0386cb8",
+    "1c12ff5f3eec8eab7e1bf679b34e48ae80ca317cc076857cd7199487a56210c2"
+   ],
+   "phases": [
+    "起始：俯卧地面，前臂平放、肘在肩正下方，髋与大腿贴地，胸部尚未抬起",
+    "关键：前臂撑地将胸部抬起、脊柱后伸，髋与大腿保持贴地，颈部中立"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
