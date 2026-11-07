@@ -8114,6 +8114,204 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1473",
+      "expectedName": "backward jump",
+      "sourceId": "ai-generated-exdb-1473",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "5a02e71c30a66078c2a6ddf8cc9798a9f3373293e3a1a2cda6b0447874de49dd",
+        "f82fd98b847af1567a190010c7a8455f96b59b43d8a0e808ce6e982749d72986"
+      ],
+      "phases": [
+        "起始：双脚与肩同宽站立，屈膝下蹲蓄势，双臂向后摆",
+        "关键阶段：蹬地向后跳起腾空，双脚离地，双臂上摆"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1420",
+      "expectedName": "kneeling jump squat",
+      "sourceId": "ai-generated-exdb-1420",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "3fdf3fcfdfd005811eed9542359d7911230823b8d949bd08303f93115406f30a",
+        "d766515b1b4c8896a2680045d3e86f048ffa8551dee63b299ba829b75f89ac24"
+      ],
+      "phases": [
+        "起始：双膝跪地高跪位，杠铃置于上背部，双手握杠",
+        "关键阶段：爆发跳起腾空，双膝离地，髋部伸展，杠铃稳在上背部"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3220",
+      "expectedName": "astride jumps (male)",
+      "sourceId": "ai-generated-exdb-3220",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "20d064738f3dac865633bb8de478d2ed2f044b03e5ed271c6e38bdcb29770ac4",
+        "c59b4176bbd10779fb38437bf0b8c6291052e7ac46adcf3707afecc6aae6f18c"
+      ],
+      "phases": [
+        "起始：双脚与肩同宽，屈膝半蹲蓄势",
+        "关键阶段：跳起腾空，双腿向两侧分开，双臂向两侧伸展"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0501",
+      "expectedName": "jack burpee",
+      "sourceId": "ai-generated-exdb-0501",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "2a7fcf734167c258bd315beea466f5adcf81c3afdb51c53a9fee85a05a8e4b36",
+        "b95eef6d5591b8d10393309f90b36834e4e19f9b683e1d8ee43b605a005ef694"
+      ],
+      "phases": [
+        "起始：双手撑地成高位平板，身体成一条直线",
+        "关键阶段：爆发跳起腾空，双腿分开，双臂上举过顶完成开合跳"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0542",
+      "expectedName": "kettlebell one arm snatch",
+      "sourceId": "ai-generated-exdb-0542",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "8fb64a37f900f1117b2bc2ca833a42a8c7de5aefa266876fc95782631889dad3",
+        "63beb49ba6600a2559561ffa225f1426b579ab44dc5d9b1f1dafe77a8adec784"
+      ],
+      "phases": [
+        "起始：屈髋约45度，右手握壶铃垂于两腿之间，背部挺直",
+        "关键阶段：站直并将右臂伸直锁定在头顶正上方，壶铃贴于前臂后侧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0068",
+      "expectedName": "barbell one leg squat",
+      "sourceId": "ai-generated-exdb-0068",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "0587d35504d26789182654d14a6f42c6925ae1b94705682bc6be3e0b1323b2cc",
+        "a3011558fab6cf6d13e4610fe7d8ec235821e873af0d32336bf34c29db8bebad"
+      ],
+      "phases": [
+        "起始：杠铃置于上背部站立，双手握杠",
+        "关键阶段：右腿支撑下蹲至大腿与地面平行，左腿伸直前伸与地面平行"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0558",
+      "expectedName": "kipping muscle up",
+      "sourceId": "ai-generated-exdb-0558",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "fda00a0640f0753649b8cdd50809771d9fd8cf26f1a23e84692596c939786621",
+        "63d734598a38b173ed15083ba234f44100d353bf44409143095460f84f31a79e"
+      ],
+      "phases": [
+        "起始：正握悬挂于单杠，摆动呈弓形，双腿向后摆",
+        "关键阶段：翻上杠后双臂伸直支撑，身体位于杠上方，杠在髋部高度"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0637",
+      "expectedName": "olympic barbell triceps extension",
+      "sourceId": "ai-generated-exdb-0637",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "a91772934097cb2b1a702bcc91fc8e96e0710764e5fedfed87e07b392a153227",
+        "bfc598aa9cf418fdd1cce75a1132ad9fd11a607ec2e72737dd176b1dc5e970a4"
+      ],
+      "phases": [
+        "起始：双手在杠身中段并拢握杠，举过头顶，双臂完全伸直",
+        "关键阶段：上臂竖直贴近头部，屈肘将杠铃降至脑后"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3361",
+      "expectedName": "skater hops",
+      "sourceId": "ai-generated-exdb-3361",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "9de8137beb75f7d5b38a9262ff4c62501136759d535825be85f97b6c8a22ba10",
+        "203a163ff471c027db6f2b9e4f823de8e054494309e153b01191a0ae83e013d6"
+      ],
+      "phases": [
+        "起始：双脚与肩同宽站立，膝盖微屈",
+        "关键阶段：向一侧跳后单脚落地屈膝，另一腿摆至身后脚趾点地，双臂侧展"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0525",
+      "expectedName": "kettlebell bottoms up clean from the hang position",
+      "sourceId": "ai-generated-exdb-0525",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "9c915fb73c8a118bebbce930b8a7bfa59f0b219eb4115c8f6c30e40eff1c4c8b",
+        "0046ba69ae9c68f0b97fa7ce681e8e84a67d2ace0af785f1238dc7ad7c7abcf1"
+      ],
+      "phases": [
+        "起始：微屈髋，右手握壶铃垂于两腿之间，手臂伸直",
+        "关键阶段：翻举至肩前架位，壶铃倒置，底部朝上，五指环握把手"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3219",
+      "expectedName": "scissor jumps (male)",
+      "sourceId": "ai-generated-exdb-3219",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "af54517eba5fce95cddfe71c98171393bfde1fbcb1d504ee8a6ca5a46cb0e079",
+        "3b11431c5b56641005d8112d35bb939f4988f1013e8e97a902a27e2df1c9dce8"
+      ],
+      "phases": [
+        "起始：双脚并拢站立，膝盖微屈",
+        "关键阶段：跳起腾空，双腿在身前左右交叉，两脚同高"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
