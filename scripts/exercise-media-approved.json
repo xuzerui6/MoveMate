@@ -8654,6 +8654,168 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3541",
+      "expectedName": "dumbbell incline y-raise",
+      "sourceId": "ai-generated-exdb-3541",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "a6089856ca77062b88e4e06536460bfd06194614ab5e63c6920aee3b66f9457d",
+        "a88c474f1a010eae7a5ff70534a6e561c4f5e70ebcf3fe66f9558fdbde714f3a"
+      ],
+      "phases": [
+        "起始：坐在45度上斜凳的座面上，上身前倾，双臂下垂各握一只哑铃，掌心相对",
+        "关键阶段：沿体前斜上方向举起双臂，过肩构成Y字，肘部微屈，肩胛收紧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0335",
+      "expectedName": "dumbbell lateral to front raise",
+      "sourceId": "ai-generated-exdb-0335",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "7540526addab8706c1433a980cda167fca7479f848671ad64a2c20c4f060ee4d",
+        "1019e762d0f9ef4247e59dbf4bd9f6b78a5d6939179740fde05b29d4ed5be2b7"
+      ],
+      "phases": [
+        "关键位置一：双臂向身体两侧平举至与地面平行，掌心向下，肘部微屈（侧平举位）",
+        "关键位置二：双臂向前平举至与地面平行，掌心相对，肘部微屈（前平举位）"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:3312",
+      "expectedName": "weighted muscle up (on bar)",
+      "sourceId": "ai-generated-exdb-3312",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "10c0106741a97d6b83db065cd509fc036aa237a0212aba6edf58232603f039e2",
+        "2658f658a7b32f844b0bf5388bd33a02c9f0ba7c4f75bd5199f0a92fbe680096"
+      ],
+      "phases": [
+        "起始：正握直杠全身悬垂，手臂伸直，腰间负重带经链条悬挂杠铃片，铃片离地",
+        "关键阶段：翻杠后身体撑于杠上，双臂伸直锁定支撑，负重带与杠铃片仍悬空离地"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0072",
+      "expectedName": "barbell prone incline curl",
+      "sourceId": "ai-generated-exdb-0072",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "620a1a6d6c9cb67d000ea287cbabcc8e4cda5335f2321e64c2455c35921a0bff",
+        "4b211c659442150c6fa0909a72bdabb2bf82a1f4115855a68cc72be4b8c90ccb"
+      ],
+      "phases": [
+        "起始：俯卧于45度上斜凳，胸腹贴凳，双臂自凳面前方垂直下垂，反握与肩同宽握杠，杠铃悬空于凳架前方",
+        "关键阶段：上臂保持垂下不动，屈肘将杠铃弯举至与肩齐平，肱二头肌充分收缩"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:2470",
+      "expectedName": "dumbbell lying on floor rear delt raise",
+      "sourceId": "ai-generated-exdb-2470",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "38ea0a67d482247261988658f7cdd86dfe9a729be15944c761be06d4f8d75f1c",
+        "5aa7065b4cc2b1aaee70ac5edc1b8951c27c95a3696dc376e7204f8c343c70eb"
+      ],
+      "phases": [
+        "起始：俯卧于地面，双腿伸直，双臂向前伸展贴地，掌心相对各握一只哑铃",
+        "关键阶段：胸腹与骨盆保持贴地，双臂离地向上并向两侧打开，肩胛后缩夹紧"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1674",
+      "expectedName": "dumbbell prone incline hammer curl",
+      "sourceId": "ai-generated-exdb-1674",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "2e601db8a719a293ff443381511353a80e23b07fd3485ba050a3d57c8478f37a",
+        "ef1381cf4211e810b23f1147d5f6aea74aa21169b23562f9b7e15a9b473af793"
+      ],
+      "phases": [
+        "起始：俯卧于45度上斜凳，胸腹贴凳，双臂垂直下垂，中立握各握一只哑铃",
+        "关键阶段：上臂保持垂直悬垂，屈肘将哑铃弯举至肩部前方高度，中立握不变"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1669",
+      "expectedName": "dumbbell one arm seated hammer curl",
+      "sourceId": "ai-generated-exdb-1669",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "0e21d17014fe2e0e46c5ea2ad4ea51c9ad7916536b91f9ae5c58861e80992c88",
+        "d2b9a88354b8c5c1281c85d35ba9f968ef382cea3a0139569fdec70ed6279221"
+      ],
+      "phases": [
+        "起始：坐凳上微前倾，右肘托于右大腿内侧，右臂伸直垂下，中立握握一只哑铃（右臂）",
+        "关键阶段：右肘保持托于右大腿内侧，屈肘将哑铃弯举至右肩高度，中立握不变（右臂）"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:1735",
+      "expectedName": "dumbbell lying single extension",
+      "sourceId": "ai-generated-exdb-1735",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "0379d60c7a875d718bee80bf7108246e051982e1ab9bba155076fdc8e7fefa25",
+        "2fae0d9fc1b8c5fd0ad3e7d1a7caa1582c69f6b36618add431b85b01c8932d7b"
+      ],
+      "phases": [
+        "起始：仰卧平凳，右臂伸直举于胸上方，中立握握一只哑铃，左手平放腹部（右臂）",
+        "关键阶段：右上臂保持竖直，屈肘将哑铃降至前额右侧旁、与额同高，不越至脑后（右臂）"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0457",
+      "expectedName": "flexion leg sit up (straight arm)",
+      "sourceId": "ai-generated-exdb-0457",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate AI generation",
+      "sourceSha256": [
+        "95f67d80a1a3dd26fdaa4582bbcd76760252d2b3a09fb04171a0a5d164172126",
+        "08cfaedbfa0ebbbb0946224421231cf9aaa232331a0db699c5426a49f21963f2"
+      ],
+      "phases": [
+        "起始：仰卧于垫上，身体完全伸直，双腿伸直贴地，双臂伸直伸过头顶贴地",
+        "关键阶段：以臀部为支点卷起上身，同时屈膝收腿向胸，双手前伸触向脚尖"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
