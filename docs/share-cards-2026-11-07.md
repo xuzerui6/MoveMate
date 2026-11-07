@@ -78,6 +78,13 @@ A 训练完成卡为主推，不放二维码。本文记录实现与定版的对
 
 ## 验证
 
+- 提交：main `fe86da9`（分支 feat/share-cards 开发，CI run 42349134345 绿后快进合入；
+  main CI run 42349237473 绿）。
+- 部署：基于 main fe86da9 构建双站上线——生产（dongban.xyz）
+  Version `92606160-46a3-4b8f-b75e-f4050b84a228`、预览（preview.dongban.xyz）
+  Version `78bee537-a4ad-4255-8da8-1ccc7547ab15`。
+- 线上抽查：双站 `/health`、`/`、`/train` 均 200；双站入口 chunk 哈希与本地构建一致，
+  分享卡懒加载 chunk（cardData）双站可达且含卡面代码。
 - client `test:repository` 360/360（基线 341 + 新增 19），`tsc -b` 通过；无服务端改动。
 - 三卡 SVG 已用 CairoSVG 离线渲染目检（该渲染器无中文字体，中文以方框占位，
   仅核版式/对齐/溢出）：英雄带斜切、星图裁切、四轴条、进度环弧长、长名两行、
