@@ -39,7 +39,9 @@
 
 ## 验证与部署记录
 
-（待回填：测试、CI、合并、双站 Version 与线上抽查结果。）
+- 测试（串行）：client `test:repository` 341/341、server 103/103 + build、cloudflare 34/34 + typecheck，均与基线持平（只平不降）。首轮 client 曾 1 例失败：台账 `expectedName` 误填中文名，与目录英文名校验不一致，已按前批口径改回目录名（weighted pull-up 先例）后复跑全绿；`exercise-media.json` 仅新增本批 7 条，既有条目零变更。
+- CI：分支 workflow_dispatch 绿（run 42347595919）→ 快进合入 main（8ee4cac + 7a309be，main 未有并行新提交）→ main CI 绿（run 42347713915）。
+- 部署：生产 Version `42241069-cecb-4d50-b5c4-67c7291a0d23`；预览 Version `360a7b6d-867d-4b2a-b3ba-132c0c4ac0d1`（部署源为最新 main）。双站 `/health` 均 200；本批 14 张新图在双站逐张下载并与本地 sha256 比对，28/28 一致；`exdb:3017` 详情 JSON 双站字节级一致且含本批阶段文案。
 
 ## 口径与后续
 
