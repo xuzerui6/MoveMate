@@ -136,6 +136,78 @@ test('hammer curl returns still confirm when the elbow jitters around the start 
   for(let i=0;i<8;i++){r.feed('peak',50,inZone);r.feed('peak',50,dip);}
   assert.equal(r.tracker.metrics.reps,1);
 });
+// --- Fast-tempo synthetic trajectories (2026-11-07 tempo tuning) -------------------
+// Independent parametric fixtures: both elbows follow a raised-cosine angle
+// trajectory sampled at a fixed FPS, fed to the tracker built the way the production
+// adaptive path builds it (prefiltered). Not model predictions or camera recordings.
+function elbowPose(deg:number):Point[]{
+  const p:Point[]=Array.from({length:33},()=>({x:.5,y:.5,z:0,visibility:1}));
+  const put=(i:number,x:number,y:number)=>{p[i]={x,y,z:0,visibility:1};};
+  put(0,.5,.16);
+  for(const o of [0,1]){
+    const sx=.40+o*.20,hx=.43+o*.14;
+    put(11+o,sx,.30);put(23+o,hx,.56);put(25+o,hx,.74);put(27+o,hx,.92);put(13+o,sx,.48);
+    const f=(180-deg)*Math.PI/180,dir=o?-1:1;
+    put(15+o,sx+dir*.18*Math.sin(f),.48+.18*Math.cos(f));
+  }
+  return p;
+}
+function curlTrajectory(fps:number,period:number,peak:number,reps:number,phase=0,rest=160){
+  const tracker=new ExtendedExerciseTracker('hammer_curl',reps,{},true);
+  const step=1000/fps;let t=phase*step;
+  const feed=(deg:number)=>{const raw=elbowPose(deg);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
+  for(let c=0;c<2.6*fps;c++)feed(rest);
+  const cycles=Math.round(period*fps);
+  for(let r=0;r<reps;r++)for(let k=0;k<cycles;k++){const u=k/cycles;feed(rest-(rest-peak)*(1-Math.cos(2*Math.PI*u))/2);}
+  for(let c=0;c<1.4*fps;c++)feed(rest);
+  return tracker;
+}
+test('hammer curls count fast tempos completely at 24 and 15 FPS (synthetic trajectories)',()=>{
+  for(const fps of [24,15])for(const period of [1.0,0.7])for(const peak of [65,75])for(const phase of [0,0.37]){
+    assert.equal(curlTrajectory(fps,period,peak,6,phase).metrics.reps,6,`${fps} FPS, ${period}s/rep, peak ${peak}°, phase ${phase}`);
+  }
+});
+test('hammer curls still reject half-range cycles at fast tempos',()=>{
+  for(const fps of [24,15])for(const period of [1.0,0.7])assert.equal(curlTrajectory(fps,period,100,6).metrics.reps,0,`${fps} FPS, ${period}s/rep`);
+});
+test('hammer curls reject a one-frame peak spike at rest and mid-excursion',()=>{
+  const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);let t=0;const step=1000/24;
+  const feed=(deg:number,n=1)=>{for(let i=0;i<n;i++){const raw=elbowPose(deg);tracker.update(raw,t,1,structuredClone(raw));t+=step;}};
+  feed(160,63);
+  feed(70,1);feed(160,24);
+  assert.equal(tracker.metrics.reps,0);
+  feed(120,6);feed(70,1);feed(120,6);feed(160,24);
+  assert.equal(tracker.metrics.reps,0);
+});
+function raiseWorld(v:number):Point[]{
+  const w:Point[]=Array.from({length:33},()=>({x:0,y:0,z:0,visibility:1}));
+  const put=(i:number,x:number,y:number,z:number)=>{w[i]={x,y,z,visibility:1};};
+  put(0,0,-.15,-.1);
+  for(const o of [0,1]){
+    const sx=o?.2:-.2,rad=v*Math.PI/180,cy=Math.cos(rad),sz=-Math.sin(rad);
+    put(11+o,sx,0,0);put(23+o,sx,.4,0);put(13+o,sx,.2*cy,.2*sz);put(15+o,sx,.45*cy,.45*sz);put(25+o,sx,.75,0);put(27+o,sx,1.05,0);
+  }
+  return w;
+}
+function raiseImage():Point[]{
+  const p:Point[]=Array.from({length:33},()=>({x:.5,y:.5,z:0,visibility:1}));
+  const put=(i:number,x:number,y:number)=>{p[i]={x,y,z:0,visibility:1};};
+  put(0,.5,.14);
+  for(const o of [0,1]){const sx=.40+o*.20;put(11+o,sx,.28);put(13+o,sx,.44);put(15+o,sx,.62);put(23+o,.44+o*.12,.55);put(25+o,.44+o*.12,.74);put(27+o,.44+o*.12,.92);}
+  return p;
+}
+test('front raises count fast tempos completely (synthetic trajectories)',()=>{
+  for(const fps of [24,15]){
+    const tracker=new ExtendedExerciseTracker('front_raise',6,{},true);
+    const step=1000/fps;let t=0;const img=raiseImage();
+    const feed=(v:number)=>{tracker.update(structuredClone(img),t,1,raiseWorld(v));t+=step;};
+    for(let c=0;c<2.6*fps;c++)feed(10);
+    const cycles=Math.round(0.8*fps);
+    for(let r=0;r<6;r++)for(let k=0;k<cycles;k++){const u=k/cycles;feed(10+85*(1-Math.cos(2*Math.PI*u))/2);}
+    for(let c=0;c<1.4*fps;c++)feed(10);
+    assert.equal(tracker.metrics.reps,6,`${fps} FPS`);
+  }
+});
 test('hammer curl upper-arm hint needs a sustained deviation and never blocks the rep',()=>{
   const r=run('hammer_curl',undefined,1,100);r.feed('neutral',3000);
   // Translate elbows and wrists outward together: upper-arm angle ≈40° (raw hint fires,

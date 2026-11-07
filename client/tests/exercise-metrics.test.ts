@@ -146,6 +146,31 @@ test('a complete movement with a low form score still counts once',()=>{
   p.hold(bad);p.hold(frame('push_up'));assert.equal(p.tracker.metrics.reps,1)
   assert.ok(p.tracker.metrics.formScore<90);assert.equal(p.tracker.metrics.perfectReps,0)
 })
+// --- Fast-tempo cycles (2026-11-07 tempo tuning) -----------------------------------
+// Interpolated rest↔peak landmark trajectories at 20 FPS into a prefiltered tracker
+// (the production adaptive build): brisk push-up cycles must count completely, while
+// a single-frame peak blip during a stationary hold must still count nothing.
+test('push-ups count brisk interpolated cycles completely at 20 FPS',()=>{
+  const tracker=new ExerciseTracker('push_up',5,{},true);let now=0;const step=50
+  const rest=frame('push_up'),peak=frame('push_up','peak')
+  const send=(u:number)=>{now+=step;tracker.update(rest.map((v,i)=>({...v,x:v.x+(peak[i].x-v.x)*u,y:v.y+(peak[i].y-v.y)*u})),now,1)}
+  for(let t=0;t<2600;t+=step)send(0)
+  assert.ok(tracker.metrics.poseFeedback.calibrated)
+  for(let cycle=0;cycle<5;cycle++)for(let t=0;t<800;t+=step)send((1-Math.cos(2*Math.PI*t/800))/2)
+  for(let t=0;t<800;t+=step)send(0)
+  assert.equal(tracker.metrics.reps,5)
+})
+test('a single-frame peak blip during a stationary hold counts nothing',()=>{
+  for(const type of ['push_up','squat'] as const){
+    const tracker=new ExerciseTracker(type,20,{},true);let now=0;const step=50
+    const rest=frame(type),peak=frame(type,'peak')
+    for(let t=0;t<2600;t+=step){now+=step;tracker.update(rest,now,1)}
+    assert.ok(tracker.metrics.poseFeedback.calibrated)
+    now+=step;tracker.update(peak,now,1)
+    for(let t=0;t<1500;t+=step){now+=step;tracker.update(rest,now,1)}
+    assert.equal(tracker.metrics.reps,0,type)
+  }
+})
 test('legacy squat statistics and local coach distinguish actions and units',()=>{
   const context={exerciseType:'high_knees' as const,countUnit:'组',reps:2,targetReps:20,phase:'standing',durationSeconds:20,bpm:null,active:true}
   assert.match(localReply('多少',context),/2 组/);assert.match(localReply('怎么做',context),/左右/);assert.match(buildSystemPrompt(context),/高抬腿/)

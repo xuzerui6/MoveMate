@@ -32,6 +32,37 @@ test('unscored lunge side counts restore without inventing scored repetitions',(
  const score={count:0,total:0,depth:0,stability:0,trunk:0,symmetry:0,leftReps:1,rightReps:0};
  const r=replay('reverse_lunge',10,1,restoredSetMetrics({reps:1,score}));r.calibrate();r.cycle(planPose('reverse_lunge','right'));assert.equal(r.tracker.metrics.reps,2);assert.equal(r.tracker.metrics.scoreAccumulator.count,1);assert.equal(r.tracker.metrics.scoreAccumulator.leftReps,1);assert.equal(r.tracker.metrics.scoreAccumulator.rightReps,1);
 });
+// --- Fast-tempo synthetic trajectories (2026-11-07 tempo tuning) -------------------
+// Parametric elbow-angle fixtures like the extended-recognition ones: a raised-cosine
+// trajectory sampled at a fixed FPS into a prefiltered tracker (the production build).
+function elbowPose(deg:number){
+  const p=Array.from({length:33},()=>({x:.5,y:.5,z:0,visibility:1}));
+  const put=(i:number,x:number,y:number)=>{p[i]={x,y,z:0,visibility:1};};
+  put(0,.5,.16);
+  for(const o of [0,1]){
+    const sx=.40+o*.20,hx=.43+o*.14;
+    put(11+o,sx,.30);put(23+o,hx,.56);put(25+o,hx,.74);put(27+o,hx,.92);put(13+o,sx,.48);
+    const f=(180-deg)*Math.PI/180,dir=o?-1:1;
+    put(15+o,sx+dir*.18*Math.sin(f),.48+.18*Math.cos(f));
+  }
+  return p as ReturnType<typeof planPose>;
+}
+function curlTrajectory(fps:number,period:number,peak:number,reps:number){
+  const tracker=new PlanExerciseTracker('biceps_curl',reps,{},true);
+  const step=1000/fps;let t=0;const rest=160;
+  const feed=(deg:number)=>{tracker.update(elbowPose(deg),t,1,null);t+=step;};
+  for(let c=0;c<2.6*fps;c++)feed(rest);
+  const cycles=Math.round(period*fps);
+  for(let r=0;r<reps;r++)for(let k=0;k<cycles;k++){const u=k/cycles;feed(rest-(rest-peak)*(1-Math.cos(2*Math.PI*u))/2);}
+  for(let c=0;c<1.4*fps;c++)feed(rest);
+  return tracker;
+}
+test('biceps curls count fast tempos and reject half-range cycles (synthetic trajectories)',()=>{
+  for(const peak of [65,75])assert.equal(curlTrajectory(24,0.7,peak,6).metrics.reps,6,`24 FPS peak ${peak}°`);
+  for(const [period,peak] of [[0.7,75],[1.0,75],[1.0,65],[1.5,75]] as const)assert.equal(curlTrajectory(15,period,peak,6).metrics.reps,6,`15 FPS, ${period}s/rep, peak ${peak}°`);
+  assert.equal(curlTrajectory(24,0.7,100,6).metrics.reps,0);
+  assert.equal(curlTrajectory(15,1.0,100,6).metrics.reps,0);
+});
 test('short visibility noise is smoothed before reset; frame stalls and invalid input cannot complete a half rep',()=>{
  for(const type of PLAN_PROFILES){const r=replay(type);r.calibrate();r.hold(r.neutral.map(p=>({...p,visibility:.5})),100);assert.ok(r.tracker.metrics.poseFeedback.calibrated);r.cycle();assert.equal(r.tracker.metrics.reps,1);r.hold(r.peak);r.tracker.update(null,100000,1);r.hold(r.neutral,3000);assert.equal(r.tracker.metrics.reps,1);assert.equal(r.tracker.update(r.neutral,NaN,1).reps,1);}
 });

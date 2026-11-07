@@ -19,14 +19,98 @@ type Measurement={start:boolean;peak:boolean;amplitude:number;angle:number;confi
 /** Per-arm front-raise channel: shoulder-flexion angle, whether that arm's wrist
  * direction is forward-dominant, and that arm's elbow angle. */
 type RaiseSide={raised:number;forward:boolean;elbow:number};
-type SideCycle={movingAt:number|null;peakAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;returnSince:number|null;returnAccum:number;returnPrevAt:number|null;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number};
+type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;peakOk:boolean;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number};
 type SideCompletion={side:number;at:number;peakStart:number;peakEnd:number;peakAmp:number;peakPosture:number;peakOther:number;peakElbow:number;duration:number;scoring:boolean;control:number;shift:number;speed:number};
-const freshSideCycle=():SideCycle=>({movingAt:null,peakAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,returnSince:null,returnAccum:0,returnPrevAt:null,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180});
-/** Hammer-curl tuning from the 2026-11-06 on-device retest (counting worked but undercounted):
- * the return confirmation accumulates 150 ms at/above the start angle inside a 500 ms window,
- * so elbow jitter around the threshold can no longer stall a rep at the confirm stage.
- * Per-frame credit is capped so a stalled frame stream cannot manufacture hold time. */
-const HAMMER_RETURN_HOLD_MS=150,HAMMER_RETURN_WINDOW_MS=500,HAMMER_RETURN_FRAME_CAP_MS=100;
+const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,peakOk:true,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180});
+/** In-zone dwell of one frame interval under linear interpolation between samples:
+ * the interpolated entry time and how many ms of [prevAt, now] the signal spent
+ * inside the zone. Crediting frames by whole intervals undercounts at low frame
+ * rates (a true 200 ms dwell sampled at 15 FPS yields only 2 intervals = 133 ms),
+ * which is the same sampling leak as the peak side, one gate later. */
+function zonePortion(prev:number,cur:number,threshold:number,above:boolean,prevAt:number,now:number):{start:number;ms:number}{
+  const dt=now-prevAt;if(dt<=0)return {start:now,ms:0};
+  const inPrev=above?prev>=threshold:prev<=threshold,inCur=above?cur>=threshold:cur<=threshold;
+  if(inPrev&&inCur)return {start:prevAt,ms:dt};
+  if(!inPrev&&!inCur)return {start:now,ms:0};
+  const tc=prevAt+dt*((threshold-prev)/(cur-prev));
+  return inCur?{start:tc,ms:now-tc}:{start:prevAt,ms:tc-prevAt};
+}
+/** Return confirmation (hammer-curl tuning from the 2026-11-06 on-device retest):
+ * accumulate 150 ms at/above the start angle inside a 500 ms window, so elbow jitter
+ * around the threshold can no longer stall a rep at the confirm stage. Per-frame credit
+ * is capped so a stalled frame stream cannot manufacture hold time. The generic cycle
+ * in this file and the plan tracker reuse the same rule since 2026-11-07. */
+const RETURN_HOLD_MS=150,RETURN_WINDOW_MS=500,RETURN_FRAME_CAP_MS=100;
+/** Fast-tempo peak confirmation (2026-11-07 on-device report: counting is right at a
+ * normal tempo but fast reps are missed). The old rule demanded sampled frames dwell
+ * inside the peak zone for 120 ms; on a raised-cosine trajectory a 75° peak dwells
+ * ≤80° for only 0.156·T (≈109 ms at 0.7 s/rep, before sampling phase eats up to two
+ * frame intervals), so fast reps were structurally uncountable — synthetic-trajectory
+ * replay measured 0/10 at 1.0 s/rep, 75° peak, 24 FPS. Peaks are now confirmed by the
+ * sub-frame interpolated zone crossing: entry/exit times and the extremum come from
+ * linear crossing interpolation plus a parabola through the samples bracketing the
+ * extremum. Angle thresholds are unchanged; only the time/sampling layer moved.
+ * One guard keeps the crossing rule from trusting noise: the interpolated dwell must
+ * reach PEAK_MIN_DWELL_MS — a one-frame landmark spike interpolates to ≲21 ms of
+ * dwell at ≥15 FPS, while a genuine 0.7 s/rep curl dwells ≥50 ms even with a 79°
+ * peak. (Upstream, the production paths always pre-filter landmarks — TimeFilter in
+ * the adaptive path, median-of-5 in the legacy path — so a raw one-frame spike does
+ * not reach this code intact anyway.) Interpolation is only trusted across sample
+ * gaps ≤ PEAK_GAP_MS; wider (freeze-bridged) gaps fall back to the sampled extremum. */
+const PEAK_MIN_DWELL_MS=25,PEAK_GAP_MS=150;
+/** Generic-cycle anti-fabrication guard: a latched peak only completes when the whole
+ * excursion (leaving the start pose → first frame back at it) lasted at least this
+ * long, so a brief peak blip during an otherwise stationary hold still counts
+ * nothing. Mirrors the jumping-jack 250 ms motion guard in exerciseMetrics. */
+const MIN_EXCURSION_MS=250;
+/** Sub-frame peak-episode tracker over a depth signal (depth ≥ 0 = inside the peak
+ * zone, larger = deeper). Feed every frame; `best` fires on the frame that is the
+ * deepest sample so far (callers snapshot that frame's posture/validity), and
+ * `closed` reports the episode's interpolated entry/exit times and refined extremum
+ * when the signal leaves the zone. */
+type PeakTrack={prevAt:number|null;prevDepth:number;open:boolean;start:number;best:number;bestAt:number;beforeAt:number;beforeDepth:number;afterAt:number|null;afterDepth:number;gap:boolean};
+function freshPeakTrack():PeakTrack{return {prevAt:null,prevDepth:0,open:false,start:0,best:-Infinity,bestAt:0,beforeAt:0,beforeDepth:0,afterAt:null,afterDepth:0,gap:false};}
+type PeakClose={start:number;end:number;depth:number;valid:boolean};
+function feedPeakTrack(tr:PeakTrack,now:number,depth:number):{best:boolean;closed:PeakClose|null}{
+  let best=false,closed:PeakClose|null=null;
+  const prevAt=tr.prevAt,prevDepth=tr.prevDepth;
+  if(prevAt!==null&&now-prevAt>PEAK_GAP_MS&&tr.open)tr.gap=true;
+  if(!tr.open&&depth>=0){
+    if(prevAt!==null&&prevDepth<0){
+      const span=depth-prevDepth;
+      tr.start=prevAt+(now-prevAt)*(span>0?(0-prevDepth)/span:0);
+      tr.beforeAt=prevAt;tr.beforeDepth=prevDepth;
+    }else{tr.start=now;tr.beforeAt=now;tr.beforeDepth=depth;}
+    tr.open=true;tr.gap=false;tr.best=-Infinity;tr.bestAt=now;tr.afterAt=null;
+  }
+  if(tr.open){
+    if(depth>tr.best){
+      if(prevAt!==null){tr.beforeAt=prevAt;tr.beforeDepth=prevDepth;}
+      tr.best=depth;tr.bestAt=now;tr.afterAt=null;best=true;
+    }else if(tr.afterAt===null&&now>tr.bestAt){tr.afterAt=now;tr.afterDepth=depth;}
+  }
+  if(tr.open&&prevAt!==null&&prevDepth>=0&&depth<0){
+    const span=prevDepth-depth,end=prevAt+(now-prevAt)*(span>0?prevDepth/span:0);
+    let depthEst=tr.best;
+    if(!tr.gap&&tr.best>-Infinity){
+      // Parabola through the samples bracketing the extremum (the closing frame is
+      // the after-sample when none was recorded) refines the extremum depth.
+      const t2=tr.afterAt??now,y2=tr.afterAt!==null?tr.afterDepth:depth;
+      const h1=tr.bestAt-tr.beforeAt,h2=t2-tr.bestAt;
+      if(h1>0&&h2>0){
+        const y0=tr.beforeDepth,y1=tr.best,a=((y2-y1)+(h2/h1)*(y0-y1))/(h2*(h1+h2));
+        if(a<0){
+          const b=a*h1-(y0-y1)/h1,u=Math.max(-h1,Math.min(h2,-b/(2*a)));
+          depthEst=Math.max(y1,y1+b*u+a*u*u);
+        }
+      }
+    }
+    closed={start:tr.start,end,depth:depthEst,valid:end-tr.start>=PEAK_MIN_DWELL_MS};
+    tr.open=false;
+  }
+  tr.prevAt=now;tr.prevDepth=depth;
+  return {best,closed};
+}
 /** The upper-arm form hint is advisory only; it is shown after a sustained deviation and the
  * sustain timer restarts only after the arms have been back at the sides briefly (hysteresis),
  * so a seated low-camera setup cannot make it flap. It never gates cycle progression. */
@@ -52,6 +136,9 @@ export class ExtendedExerciseTracker {
   private peak:Measurement|null=null;
   private peakAt:number|null=null;
   private returnAt:number|null=null;
+  private retSince:number|null=null;
+  private retAccum=0;
+  private retPrevAt:number|null=null;
   private movingAt:number|null=null;
   private scoring=true;
   private previous:Measurement|null=null;
@@ -74,7 +161,7 @@ export class ExtendedExerciseTracker {
     this.updateAverage();
   }
   private updateAverage(){const a=this.metrics.scoreAccumulator,b=emptyFormBreakdown();for(const k of axes)b[k]=a.count?Math.round(a[k]/a.count):0;this.metrics.formBreakdown=b;}
-  private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;this.hammerSides=[freshSideCycle(),freshSideCycle()];this.hammerPending=null;this.raiseSides=[freshSideCycle(),freshSideCycle()];this.raisePending=null;this.upperArmDevAt=null;this.upperArmClearAt=null;this.freezeBridged=false;}
+  private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.retSince=null;this.retAccum=0;this.retPrevAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;this.hammerSides=[freshSideCycle(),freshSideCycle()];this.hammerPending=null;this.raiseSides=[freshSideCycle(),freshSideCycle()];this.raisePending=null;this.upperArmDevAt=null;this.upperArmClearAt=null;this.freezeBridged=false;}
   /** The adaptive wrapper deliberately froze frames during a hammer-curl evidence freeze
    * (see AdaptiveRecognition); the next frame gap is therefore known-benign and must not be
    * read as a tracking loss. Only arms when the pending gap actually exceeds the guard. */
@@ -262,44 +349,47 @@ export class ExtendedExerciseTracker {
     if(this.hammerPending&&now-this.hammerPending.at>600){const pending=this.hammerPending;this.hammerPending=null;if(this.emitHammerRep([pending],f))completed=true;}
     for(const s of [0,1] as const){
       const cyc=this.hammerSides[s],e=elbows[s],other=elbows[1-s];
-      if(e>=145){
-        if(cyc.peakStart!==null){
-          // Return confirmation: accumulate time at/above the start angle inside a window
-          // instead of demanding one unbroken hold, which elbow jitter kept resetting.
-          if(cyc.returnSince===null||now-cyc.returnSince>HAMMER_RETURN_WINDOW_MS){cyc.returnSince=now;cyc.returnAccum=0;}
-          else if(cyc.returnPrevAt!==null)cyc.returnAccum+=Math.min(HAMMER_RETURN_FRAME_CAP_MS,now-cyc.returnPrevAt);
-          cyc.returnPrevAt=now;
-          if(cyc.returnAccum>=HAMMER_RETURN_HOLD_MS){
-            const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:cyc.controlMax,shift:cyc.shiftMax,speed:cyc.speedMax};
-            this.hammerSides[s]=freshSideCycle();
-            if(this.hammerPending){
-              const pending=this.hammerPending;
-              const overlap=done.peakStart<=pending.peakEnd+150&&pending.peakStart<=done.peakEnd+150;
-              if(pending.side!==s&&overlap){this.hammerPending=null;if(this.emitHammerRep([pending,done],f))completed=true;}
-              else{this.hammerPending=null;if(this.emitHammerRep([pending],f))completed=true;this.hammerPending=done;}
-            }else this.hammerPending=done;
-          }
-        }else if(cyc.movingAt!==null)this.hammerSides[s]=freshSideCycle();
-      }else{
-        if(cyc.movingAt===null)cyc.movingAt=now;
-        if(cyc.peakStart!==null)cyc.returnPrevAt=now;
-        cyc.scoring=cyc.scoring&&f.scorable;
-        cyc.controlMax=Math.max(cyc.controlMax,f.controlPenalty);
-        cyc.shiftMax=Math.max(cyc.shiftMax,Math.abs(f.tilt-this.baseline!.tilt));
-        if(cyc.sampleAt===null){cyc.sampleAt=now;cyc.sampleAngle=e;}
-        else if(now-cyc.sampleAt>=100){cyc.speedMax=Math.max(cyc.speedMax,Math.abs(e-cyc.sampleAngle)*1000/(now-cyc.sampleAt));cyc.sampleAt=now;cyc.sampleAngle=e;}
-        if(e<=80){
-          if(cyc.peakAt===null)cyc.peakAt=now;
-          if(now-cyc.peakAt>=120){
-            if(cyc.peakStart===null)cyc.peakStart=cyc.peakAt;
-            cyc.peakEnd=now;
-            const amp=cap((160-e)/95*100);
-            if(amp>=cyc.peakAmp){cyc.peakAmp=amp;cyc.peakElbow=e;cyc.peakPosture=f.posture;cyc.peakOther=other;}
-          }
-        }else cyc.peakAt=null;
+      // Peak confirmation by sub-frame crossing (depth ≥ 0 ⇔ elbow ≤80°): the episode
+      // refines the true peak between samples, so a fast rep whose sampled frames
+      // merely clip the zone still confirms — with its interpolated depth scored.
+      const ev=feedPeakTrack(cyc.track,now,80-e);
+      if(ev.best){cyc.peakPosture=f.posture;cyc.peakOther=other;}
+      if(ev.closed?.valid){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=80-ev.closed.depth;cyc.peakAmp=cap((160-cyc.peakElbow)/95*100);}
+      // Return confirmation: accumulate the interpolated in-zone dwell (≥145°) inside
+      // a 500 ms window, so elbow jitter cannot stall the rep and coarse sampling
+      // cannot shrink a genuine dwell below the hold (see zonePortion).
+      const portion=cyc.prevAt===null?{start:now,ms:0}:zonePortion(cyc.prevAngle,e,145,true,cyc.prevAt,now);
+      let replaced=false;
+      if(cyc.peakStart!==null&&portion.ms>0){
+        if(cyc.returnSince===null||portion.start-cyc.returnSince>RETURN_WINDOW_MS){cyc.returnSince=portion.start;cyc.returnAccum=0;}
+        cyc.returnAccum+=Math.min(RETURN_FRAME_CAP_MS,portion.ms);
+        if(cyc.returnAccum>=RETURN_HOLD_MS){
+          const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:cyc.controlMax,shift:cyc.shiftMax,speed:cyc.speedMax};
+          this.hammerSides[s]=freshSideCycle();replaced=true;
+          if(this.hammerPending){
+            const pending=this.hammerPending;
+            const overlap=done.peakStart<=pending.peakEnd+150&&pending.peakStart<=done.peakEnd+150;
+            if(pending.side!==s&&overlap){this.hammerPending=null;if(this.emitHammerRep([pending,done],f))completed=true;}
+            else{this.hammerPending=null;if(this.emitHammerRep([pending],f))completed=true;this.hammerPending=done;}
+          }else this.hammerPending=done;
+        }
       }
+      if(!replaced){
+        if(e>=145){if(cyc.peakStart===null&&cyc.movingAt!==null){this.hammerSides[s]=freshSideCycle();replaced=true;}}
+        else{
+          if(cyc.movingAt===null)cyc.movingAt=now;
+          cyc.scoring=cyc.scoring&&f.scorable;
+          cyc.controlMax=Math.max(cyc.controlMax,f.controlPenalty);
+          cyc.shiftMax=Math.max(cyc.shiftMax,Math.abs(f.tilt-this.baseline!.tilt));
+          if(cyc.sampleAt===null){cyc.sampleAt=now;cyc.sampleAngle=e;}
+          else if(now-cyc.sampleAt>=100){cyc.speedMax=Math.max(cyc.speedMax,Math.abs(e-cyc.sampleAngle)*1000/(now-cyc.sampleAt));cyc.sampleAt=now;cyc.sampleAngle=e;}
+        }
+      }
+      const cur=this.hammerSides[s];
+      cur.prevAt=now;cur.prevAngle=e;
+      if(replaced){cur.track.prevAt=now;cur.track.prevDepth=80-e;}
     }
-    const anyPeak=this.hammerSides.some(c=>c.peakStart!==null)||this.hammerPending!==null;
+    const anyPeak=this.hammerSides.some(c=>c.peakStart!==null||c.track.open)||this.hammerPending!==null;
     const stage=this.metrics.reps>=this.metrics.targetReps?'complete':anyPeak?(f.start?'returning':'peak'):f.start?'ready':'moving';
     const copy=definitions[this.type].stages;
     const nearPeak=stage==='moving'&&elbows.every(e=>e>80)&&elbows.some(e=>e<=105);
@@ -342,44 +432,47 @@ export class ExtendedExerciseTracker {
     if(this.raisePending&&now-this.raisePending.at>600){const pending=this.raisePending;this.raisePending=null;if(this.emitFrontRaiseRep([pending],f))completed=true;}
     for(const s of [0,1] as const){
       const cyc=this.raiseSides[s],side=sides[s],other=sides[1-s],v=side.raised;
-      if(v<=25){
-        if(cyc.peakStart!==null){
-          // Return confirmation accumulates like hammer curl's: 150 ms at/below the
-          // start angle inside a 500 ms window, so jitter at the bottom cannot stall it.
-          if(cyc.returnSince===null||now-cyc.returnSince>HAMMER_RETURN_WINDOW_MS){cyc.returnSince=now;cyc.returnAccum=0;}
-          else if(cyc.returnPrevAt!==null)cyc.returnAccum+=Math.min(HAMMER_RETURN_FRAME_CAP_MS,now-cyc.returnPrevAt);
-          cyc.returnPrevAt=now;
-          if(cyc.returnAccum>=HAMMER_RETURN_HOLD_MS){
-            const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:cyc.controlMax,shift:cyc.shiftMax,speed:cyc.speedMax};
-            this.raiseSides[s]=freshSideCycle();
-            if(this.raisePending){
-              const pending=this.raisePending;
-              const overlap=done.peakStart<=pending.peakEnd+150&&pending.peakStart<=done.peakEnd+150;
-              if(pending.side!==s&&overlap){this.raisePending=null;if(this.emitFrontRaiseRep([pending,done],f))completed=true;}
-              else{this.raisePending=null;if(this.emitFrontRaiseRep([pending],f))completed=true;this.raisePending=done;}
-            }else this.raisePending=done;
-          }
-        }else if(cyc.movingAt!==null)this.raiseSides[s]=freshSideCycle();
-      }else{
-        if(cyc.movingAt===null)cyc.movingAt=now;
-        if(cyc.peakStart!==null)cyc.returnPrevAt=now;
-        cyc.scoring=cyc.scoring&&f.scorable;
-        cyc.controlMax=Math.max(cyc.controlMax,Math.max(0,170-side.elbow)*1.5);
-        cyc.shiftMax=Math.max(cyc.shiftMax,Math.abs(f.tilt-this.baseline!.tilt));
-        if(cyc.sampleAt===null){cyc.sampleAt=now;cyc.sampleAngle=v;}
-        else if(now-cyc.sampleAt>=100){cyc.speedMax=Math.max(cyc.speedMax,Math.abs(v-cyc.sampleAngle)*1000/(now-cyc.sampleAt));cyc.sampleAt=now;cyc.sampleAngle=v;}
-        if(v>=65&&v<=115&&side.elbow>=140&&side.forward){
-          if(cyc.peakAt===null)cyc.peakAt=now;
-          if(now-cyc.peakAt>=120){
-            if(cyc.peakStart===null)cyc.peakStart=cyc.peakAt;
-            cyc.peakEnd=now;
-            const amp=cap(v/90*100);
-            if(amp>=cyc.peakAmp){cyc.peakAmp=amp;cyc.peakElbow=v;cyc.peakPosture=f.posture;cyc.peakOther=other.raised;}
-          }
-        }else cyc.peakAt=null;
+      // Crossing confirmation like hammer curl's (depth ≥ 0 ⇔ raised ≥65°). The band
+      // conditions (elbow ≥140°, forward-dominant) and the 115° band cap are judged at
+      // the interpolated extremum instead of across a 120 ms sampled hold, which a
+      // fast raise — or one flickering condition frame — could never satisfy.
+      const ev=feedPeakTrack(cyc.track,now,v-65);
+      if(ev.best){cyc.peakPosture=f.posture;cyc.peakOther=other.raised;cyc.peakOk=side.elbow>=140&&side.forward;}
+      if(ev.closed?.valid&&cyc.peakOk&&65+ev.closed.depth<=115){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=65+ev.closed.depth;cyc.peakAmp=cap(cyc.peakElbow/90*100);}
+      // Return confirmation accumulates the interpolated in-zone dwell (raised ≤25°)
+      // inside a 500 ms window, like hammer curl's (see zonePortion).
+      const portion=cyc.prevAt===null?{start:now,ms:0}:zonePortion(cyc.prevAngle,v,25,false,cyc.prevAt,now);
+      let replaced=false;
+      if(cyc.peakStart!==null&&portion.ms>0){
+        if(cyc.returnSince===null||portion.start-cyc.returnSince>RETURN_WINDOW_MS){cyc.returnSince=portion.start;cyc.returnAccum=0;}
+        cyc.returnAccum+=Math.min(RETURN_FRAME_CAP_MS,portion.ms);
+        if(cyc.returnAccum>=RETURN_HOLD_MS){
+          const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:cyc.controlMax,shift:cyc.shiftMax,speed:cyc.speedMax};
+          this.raiseSides[s]=freshSideCycle();replaced=true;
+          if(this.raisePending){
+            const pending=this.raisePending;
+            const overlap=done.peakStart<=pending.peakEnd+150&&pending.peakStart<=done.peakEnd+150;
+            if(pending.side!==s&&overlap){this.raisePending=null;if(this.emitFrontRaiseRep([pending,done],f))completed=true;}
+            else{this.raisePending=null;if(this.emitFrontRaiseRep([pending],f))completed=true;this.raisePending=done;}
+          }else this.raisePending=done;
+        }
       }
+      if(!replaced){
+        if(v<=25){if(cyc.peakStart===null&&cyc.movingAt!==null){this.raiseSides[s]=freshSideCycle();replaced=true;}}
+        else{
+          if(cyc.movingAt===null)cyc.movingAt=now;
+          cyc.scoring=cyc.scoring&&f.scorable;
+          cyc.controlMax=Math.max(cyc.controlMax,Math.max(0,170-side.elbow)*1.5);
+          cyc.shiftMax=Math.max(cyc.shiftMax,Math.abs(f.tilt-this.baseline!.tilt));
+          if(cyc.sampleAt===null){cyc.sampleAt=now;cyc.sampleAngle=v;}
+          else if(now-cyc.sampleAt>=100){cyc.speedMax=Math.max(cyc.speedMax,Math.abs(v-cyc.sampleAngle)*1000/(now-cyc.sampleAt));cyc.sampleAt=now;cyc.sampleAngle=v;}
+        }
+      }
+      const cur=this.raiseSides[s];
+      cur.prevAt=now;cur.prevAngle=v;
+      if(replaced){cur.track.prevAt=now;cur.track.prevDepth=v-65;}
     }
-    const anyPeak=this.raiseSides.some(c=>c.peakStart!==null)||this.raisePending!==null;
+    const anyPeak=this.raiseSides.some(c=>c.peakStart!==null||c.track.open)||this.raisePending!==null;
     const stage=this.metrics.reps>=this.metrics.targetReps?'complete':anyPeak?(f.start?'returning':'peak'):f.start?'ready':'moving';
     const copy=definitions[this.type].stages;
     const nearPeak=stage==='moving'&&sides.every(s=>s.raised<65)&&sides.some(s=>s.raised>=45);
@@ -425,12 +518,26 @@ export class ExtendedExerciseTracker {
       this.controlPenalty=Math.max(this.controlPenalty,f.controlPenalty);
       if(this.controlAt===null){this.controlAt=now;this.controlAngle=f.angle;}else if(now-this.controlAt>=100){this.speed=Math.max(this.speed,Math.abs(f.angle-this.controlAngle)*1000/(now-this.controlAt));this.controlAt=now;this.controlAngle=f.angle;}
     }
-    if(f.peak){if(this.peakAt===null)this.peakAt=now;if(now-this.peakAt>=120&&(!this.peak||f.amplitude>this.peak.amplitude))this.peak=f;}else this.peakAt=null;
+    // Returning to the start pose with no peak latched ends the excursion, so a later
+    // brief peak is measured against its own excursion, not an earlier half rep.
+    if(f.start&&!this.peak)this.movingAt=null;
+    // Peak latching (2026-11-07 fast-tempo fix): the first frame inside the peak zone
+    // latches the peak and the best-amplitude frame is retained while the zone lasts.
+    // The old 120 ms sampled dwell made fast reps uncountable (see feedPeakTrack note);
+    // fabrication is still impossible because completion additionally requires the
+    // MIN_EXCURSION_MS excursion and the accumulated return below.
+    if(f.peak){if(this.peakAt===null)this.peakAt=now;if(!this.peak||f.amplitude>this.peak.amplitude)this.peak=f;}else this.peakAt=null;
     let completed=false;
     if(this.peak&&f.start){
       if(this.returnAt===null)this.returnAt=now;
-      if(now-this.returnAt>=150){
-        if(this.metrics.reps<this.metrics.targetReps){
+      // Return confirmation accumulates like the per-side cycles (150 ms inside a
+      // 500 ms window) instead of one unbroken 150 ms hold.
+      if(this.retSince===null||now-this.retSince>RETURN_WINDOW_MS){this.retSince=now;this.retAccum=this.retPrevAt!==null?Math.min(RETURN_FRAME_CAP_MS,now-this.retPrevAt)/2:0;}
+      else if(this.retPrevAt!==null)this.retAccum+=Math.min(RETURN_FRAME_CAP_MS,now-this.retPrevAt);
+      this.retPrevAt=now;
+      if(this.retAccum>=RETURN_HOLD_MS){
+        if(this.returnAt-(this.movingAt??this.returnAt)<MIN_EXCURSION_MS){this.resetCycle();}
+        else if(this.metrics.reps<this.metrics.targetReps){
           const acc={...this.metrics.scoreAccumulator},duration=(now-(this.movingAt??now))/1000;
           if(this.type==='standing_leg_curl'){const key=this.peak.side==='left'?'leftReps':'rightReps';acc[key]=(acc[key]||0)+1;}
           const breakdown={depth:this.peak.amplitude,stability:cap(100-Math.max(0,this.speed-260)*.08-Math.max(0,.6-duration)*70-this.controlPenalty),trunk:cap(this.peak.posture-(this.type==='romanian_deadlift'||this.type==='glute_bridge'||this.type==='barbell_deadlift'?0:this.shift*1.5)),symmetry:this.peak.symmetry};
@@ -440,7 +547,7 @@ export class ExtendedExerciseTracker {
           this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`已记录第 ${this.metrics.reps+1} 次 · 本次 ${score} 分`:`已记录第 ${this.metrics.reps+1} 次 · 本次无法评分`};this.updateAverage();completed=true;
         }this.resetCycle();
       }
-    }else this.returnAt=null;
+    }else{this.returnAt=null;if(this.peak)this.retPrevAt=now;}
     const stage=this.metrics.reps>=this.metrics.targetReps?'complete':this.peak?(f.start?'returning':'peak'):f.start?'ready':'moving';
     const copy=definitions[this.type].stages,message=stage==='complete'?'已完成本组目标':f.hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 幅度尚未确认':'');
     const issue:PoseIssue|null=f.controlPenalty>30?'unstable_movement':f.posture<70?'body_alignment':f.symmetry<70?'poor_coordination':null;

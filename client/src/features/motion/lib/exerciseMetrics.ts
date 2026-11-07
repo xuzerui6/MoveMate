@@ -49,6 +49,12 @@ function rejectedFrameReason(type: CameraExerciseType, points: NormalizedLandmar
   return '请从侧面拍摄伸臂支撑，让肩到脚踝的身体连线清晰可见'
 }
 const clamp = (n: number) => Math.min(100, Math.max(0, n))
+/** Fast-tempo cycle rules (2026-11-07, shared with extendedRecognition/planRecognition):
+ * peaks latch on the first in-zone frame instead of dwelling for the hold time
+ * (sampled dwell made fast reps uncountable), returns accumulate the hold inside a
+ * 500 ms window instead of one unbroken hold, and a latched peak only completes when
+ * the excursion lasted at least MIN_EXCURSION_MS so a brief peak blip counts nothing. */
+const RETURN_WINDOW_MS=500,RETURN_FRAME_CAP_MS=100,MIN_EXCURSION_MS=250
 const mean = (a: number, b: number) => (a + b) / 2
 const angle = (a: NormalizedLandmark, b: NormalizedLandmark, c: NormalizedLandmark) => {
   let n = Math.abs((Math.atan2(a.y-b.y,a.x-b.x)-Math.atan2(c.y-b.y,c.x-b.x))*180/Math.PI)
@@ -137,6 +143,10 @@ export class ExerciseTracker {
   private peakAt:number|null=null
   private peak:Frame|null=null
   private returnAt:number|null=null
+  private movingAt:number|null=null
+  private retAnchor:number|null=null
+  private retAccum=0
+  private retPrevAt:number|null=null
   private pair=new Map<string,Frame>()
   private issues=new Set<PoseIssue>()
   private consecutive:Partial<Record<PoseIssue,number>>={}
@@ -171,7 +181,7 @@ export class ExerciseTracker {
     return {status:!frame||!calibrated?'uncertain':primaryIssue?'adjust':'stable',confidence:frame?.confidence||0,issues,primaryIssue,affectedJoints:primaryIssue?POSE_ISSUE_COPY[primaryIssue].joints:[],calibrated,message:!frame?exerciseInfo(this.type).placement:!calibrated?(this.type==='push_up'?'保持伸臂支撑，正在校准':'保持自然站姿，正在校准'):primaryIssue?POSE_ISSUE_COPY[primaryIssue].action:'姿势稳定，保持这个节奏'}
   }
   interrupt(reason = '训练暂停或已停止，继续后重新校准') {
-    this.frames=[];this.calibrationAt=null;this.calibrated=false;this.armed=false;this.peakAt=null;this.peak=null;this.returnAt=null;this.pair.clear();this.issues.clear();this.consecutive={}
+    this.frames=[];this.calibrationAt=null;this.calibrated=false;this.armed=false;this.peakAt=null;this.peak=null;this.returnAt=null;this.movingAt=null;this.retAnchor=null;this.retAccum=0;this.retPrevAt=null;this.pair.clear();this.issues.clear();this.consecutive={}
     this.trackingSide=undefined;this.lastFrameAt=null;this.frameTimes=[]
     this.worldFrames=[];this.squatSide=undefined;this.squatCycle=null;this.squatBaseline=null;this.jackBaseline=null;this.armsAt=null;this.legsAt=null;this.motionAt=null
     this.diagnostics={...this.diagnostics,fps:0,confidence:0,side:null,angle:null,stage:'tracking_lost',calibrationProgress:0,pairedSides:[],lastResetReason:reason}
@@ -248,10 +258,12 @@ export class ExerciseTracker {
     }
     const feedback=this.feedback(frame,true)
     let phase:WorkoutPhase=frame.start?'standing':this.peak?'ascending':'descending'
+    if(!frame.start){if(this.movingAt===null)this.movingAt=now}
+    else if(!this.peak)this.movingAt=null
     if(this.armed && frame.peak) {
       phase='bottom'
       if(this.peakAt===null)this.peakAt=now
-      if(now-this.peakAt>=(this.type==='jumping_jack'?60:150) && (!this.peak || frame.score>=this.peak.score))this.peak=frame
+      if(!this.peak || frame.score>=this.peak.score)this.peak=frame
     } else this.peakAt=null
     if(this.armed && !frame.start)frame.issues.forEach(i=>this.issues.add(i))
     if(this.adaptiveSquat&&(!frame.start||this.peak)){
@@ -267,7 +279,11 @@ export class ExerciseTracker {
     let unscored=false
     if(this.peak && frame.start) {
       if(this.returnAt===null)this.returnAt=now
-      if(now-this.returnAt>=(this.type==='jumping_jack'?60:150)) {
+      if(this.retAnchor===null||now-this.retAnchor>RETURN_WINDOW_MS){this.retAnchor=now;this.retAccum=this.retPrevAt!==null?Math.min(RETURN_FRAME_CAP_MS,now-this.retPrevAt)/2:0}
+      else if(this.retPrevAt!==null)this.retAccum+=Math.min(RETURN_FRAME_CAP_MS,now-this.retPrevAt)
+      this.retPrevAt=now
+      if(this.retAccum>=(this.type==='jumping_jack'?60:150)) {
+        if(this.returnAt-(this.movingAt??this.returnAt)>=MIN_EXCURSION_MS) {
         let completed:Frame|null=this.peak
         if(this.type==='high_knees') {
           this.pair.set(this.peak.side!,this.peak)
@@ -304,11 +320,12 @@ export class ExerciseTracker {
           completedRep=true
           this.issues.clear()
         }
-        this.peak=null;this.peakAt=null;this.returnAt=null
+        }
+        this.peak=null;this.peakAt=null;this.returnAt=null;this.retAnchor=null;this.retAccum=0;this.retPrevAt=null
         this.trackingSide=undefined
         this.armsAt=null;this.legsAt=null;this.motionAt=null
       }
-    } else this.returnAt=null
+    } else {this.returnAt=null;if(this.peak)this.retPrevAt=now}
     const stage=this.metrics.reps>=this.metrics.targetReps?'complete':this.peak?(frame.start?'returning':'peak'):frame.peak?'peak':frame.start?'ready':'moving'
     this.diagnostics={...this.diagnostics,stage,pairedSides:[...this.pair.keys()] as TrackingSide[],calibrationProgress:1}
     const instructions = {

@@ -7,6 +7,15 @@ export const PLAN_PROFILES = ['biceps_curl','lateral_raise','shoulder_press','be
 export type NewPlanProfile = typeof PLAN_PROFILES[number];
 export const isNewPlanProfile = (value: string): value is NewPlanProfile => PLAN_PROFILES.includes(value as NewPlanProfile);
 const axes = ['depth','stability','trunk','symmetry'] as const;
+/** Fast-tempo cycle rules (2026-11-07, shared with extendedRecognition): peaks latch
+ * on the first in-zone frame instead of dwelling 120 ms (sampled dwell made fast
+ * reps uncountable), returns accumulate 150 ms inside a 500 ms window instead of one
+ * unbroken hold — seeded with half the entry interval, the unbiased estimate of the
+ * interpolated crossing, so frame-credit accounting does not lose a whole interval
+ * per dwell at low frame rates — and a latched peak only completes when the
+ * excursion lasted at least MIN_EXCURSION_MS so a brief peak blip still counts
+ * nothing. */
+const RETURN_HOLD_MS=150,RETURN_WINDOW_MS=500,RETURN_FRAME_CAP_MS=100,MIN_EXCURSION_MS=250;
 const zero = (): FormBreakdown => ({depth:0,stability:0,trunk:0,symmetry:0});
 const average = (acc:ScoreAccumulator):FormBreakdown => ({depth:Math.round(acc.depth/acc.count),stability:Math.round(acc.stability/acc.count),trunk:Math.round(acc.trunk/acc.count),symmetry:Math.round(acc.symmetry/acc.count)});
 const clamp = (v:number) => Math.max(0,Math.min(100,v));
@@ -42,6 +51,9 @@ export class PlanExerciseTracker {
   private peakSince:number|null=null;
   private peak:Sample|null=null;
   private returnSince:number|null=null;
+  private retAnchor:number|null=null;
+  private retAccum=0;
+  private retPrevAt:number|null=null;
   private movementSince:number|null=null;
   private scoring=true;
   private maxTrunkShift=0;
@@ -61,7 +73,7 @@ export class PlanExerciseTracker {
     this.metrics={...this.metrics,phase:'standing',feedback:reason,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:false,message:reason}};
     return this.metrics;
   }
-  private resetCycle(){this.peakSince=null;this.peak=null;this.returnSince=null;this.movementSince=null;this.scoring=true;this.maxTrunkShift=0;this.maxStep=0;this.controlAt=null;this.issues.clear();}
+  private resetCycle(){this.peakSince=null;this.peak=null;this.returnSince=null;this.retAnchor=null;this.retAccum=0;this.retPrevAt=null;this.movementSince=null;this.scoring=true;this.maxTrunkShift=0;this.maxStep=0;this.controlAt=null;this.issues.clear();}
   private sample(raw:Point[],aspect:number,world:Point[]|null):Sample|null {
     const p=raw.map(v=>({...v,x:v.x*aspect,z:0}));
     const a=world?.length===raw.length&&world.every(v=>v&&[v.x,v.y,v.z].every(Number.isFinite))?world:p;
@@ -132,12 +144,19 @@ export class PlanExerciseTracker {
       if(f.posture<70)this.issues.add('body_alignment');
       if(f.symmetry<70)this.issues.add('poor_coordination');
     }
-    if(f.peak){if(this.peakSince===null)this.peakSince=now;if(now-this.peakSince>=120&&(!this.peak||f.amplitude>this.peak.amplitude))this.peak=f;}else this.peakSince=null;
+    // Returning to the start pose with no peak latched ends the excursion, so a later
+    // brief peak is measured against its own excursion, not an earlier half rep.
+    if(f.start&&!this.peak)this.movementSince=null;
+    if(f.peak){if(this.peakSince===null)this.peakSince=now;if(!this.peak||f.amplitude>this.peak.amplitude)this.peak=f;}else this.peakSince=null;
     let completed=false;
     if(this.peak&&f.start){
       if(this.returnSince===null)this.returnSince=now;
-      if(now-this.returnSince>=150){
-        if(this.metrics.reps<this.metrics.targetReps){
+      if(this.retAnchor===null||now-this.retAnchor>RETURN_WINDOW_MS){this.retAnchor=now;this.retAccum=this.retPrevAt!==null?Math.min(RETURN_FRAME_CAP_MS,now-this.retPrevAt)/2:0;}
+      else if(this.retPrevAt!==null)this.retAccum+=Math.min(RETURN_FRAME_CAP_MS,now-this.retPrevAt);
+      this.retPrevAt=now;
+      if(this.retAccum>=RETURN_HOLD_MS){
+        if(this.returnSince-(this.movementSince??this.returnSince)<MIN_EXCURSION_MS){this.resetCycle();}
+        else if(this.metrics.reps<this.metrics.targetReps){
           const peak=this.peak,acc={...this.metrics.scoreAccumulator},counts={...this.metrics.correctionCounts};
           if(this.type==='reverse_lunge'){const k=peak.side==='left'?'leftReps':'rightReps';acc[k]=(acc[k]||0)+1;}
           const duration=(now-(this.movementSince??now))/1000;
@@ -152,7 +171,7 @@ export class PlanExerciseTracker {
         }
         this.resetCycle();
       }
-    }else this.returnSince=null;
+    }else{this.returnSince=null;if(this.peak)this.retPrevAt=now;}
     const stage=this.metrics.reps>=this.metrics.targetReps?'complete':this.peak?(f.start?'returning':'peak'):f.start?'ready':f.peak?'peak':'moving';
     this.diagnostics={...this.diagnostics,stage,calibrationProgress:1};
     const issue=[...this.issues][0]||null;
