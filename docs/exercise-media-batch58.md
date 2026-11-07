@@ -55,7 +55,11 @@
 
 ## 验证与部署记录
 
-（待回填：测试、CI、双站版本与抽查结果。）
+- 构建与发布链：构建脚本输出 `Published 644 image entries; 15 video entries`；`publish-media-metadata` 输出 644 条懒加载记录；`publish-exercise-documentation` 输出 `{total:1329, complete:644, photos:531, illustrations:113, videos:15, pending:685}`；覆盖报告 total 1329 / images 644 / missing 685 / camera 43/43。
+- 测试（串行，基线不变全绿）：client `test:repository` 369/369 + tsc；server 103/103 + build；cloudflare 34/34 + typecheck。
+- CI：分支 `media/exercise-media-batch58` run 42365737147 绿；合入前拉取确认 main 未漂移（仍为 24d889b），快进合入 main 至 99e76a5；main CI run 42365843096 绿。
+- 部署：基于 main 99e76a5，`build:web` + `bundle` 后以 `npx wrangler@4.158.0` 双站部署，一次成功——生产 `dongban.xyz` Version `dc86bb1e-1200-4dd0-924b-07742c04c620`，预览 `preview.dongban.xyz` Version `32cfcdb1-e547-4f1b-bb06-fc5eee526aff`。
+- 抽查：新 WebP 抽 6 张（0084-0、0338-1、0709-0、1767-1、3542-0、2133-1）双站共 12 次 sha256 与本地发布文件全部一致；exdb:0084 详情 JSON 双站与本地逐字节一致。
 
 ## 口径与后续
 
