@@ -99,6 +99,13 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
             if (path === '/api/migration/pitr/bookmark-for-time' && request.method === 'GET') {
               return Response.json(await ops.bookmarkForTime(Number(new URL(request.url).searchParams.get('ts'))));
             }
+            if (path === '/api/migration/pitr/drill-marker' && request.method === 'POST') {
+              const body = await request.json().catch(() => null) as { batch?: unknown } | null;
+              return Response.json({ ok: true, ...(await ops.writeDrillMarker(body?.batch)) });
+            }
+            if (path === '/api/migration/pitr/drill-marker' && request.method === 'DELETE') {
+              return Response.json({ ok: true, ...(await ops.deleteDrillMarker()) });
+            }
             if (path === '/api/migration/pitr/restore' && request.method === 'POST') {
               const body = await request.json().catch(() => null) as { bookmark?: unknown } | null;
               const result = await ops.restore(body?.bookmark);

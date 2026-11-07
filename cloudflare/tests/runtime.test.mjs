@@ -42,10 +42,40 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.equal((await call('/api/migration/pitr/status')).status,401);
  assert.equal((await call('/api/migration/pitr/bookmark-for-time?ts=1')).status,401);
  assert.equal((await call('/api/migration/pitr/restore',{method:'POST',body:{bookmark:'bm-x'}})).status,401);
+ assert.equal((await call('/api/migration/pitr/drill-marker',{method:'POST',body:{batch:'restore-drill-20261107'}})).status,401);
+ assert.equal((await call('/api/migration/pitr/drill-marker',{method:'DELETE'})).status,401);
  assert.equal((await call('/api/migration/pitr/status',{headers:{Authorization:'Bearer '+'w'.repeat(64)}})).status,401);
  // This runtime runs with INSTANCE=test: the restore guard must refuse before touching storage.
  const refused=await call('/api/migration/pitr/restore',{method:'POST',body:{bookmark:'bm-x'},migration:true});
  assert.equal(refused.status,403);assert.match(String(refused.data.error),/only be scheduled on the preview instance/);
+ // Drill-marker writes/deletes carry the same preview-only guard.
+ const refusedWrite=await call('/api/migration/pitr/drill-marker',{method:'POST',body:{batch:'restore-drill-20261107'},migration:true});
+ assert.equal(refusedWrite.status,403);assert.match(String(refusedWrite.data.error),/preview instance/);
+ const refusedDelete=await call('/api/migration/pitr/drill-marker',{method:'DELETE',migration:true});
+ assert.equal(refusedDelete.status,403);assert.match(String(refusedDelete.data.error),/preview instance/);
+ });
+ await t.test('PITR drill marker: guarded round trip on preview, zero storage contact elsewhere',async()=>{
+ const namespace=await mf.getDurableObjectNamespace('BACKEND');const actor=namespace.get(namespace.idFromName('test'));
+ for(const instance of ['production','test']){
+ const c=await actor.pitrDrillCase(instance);
+ assert.equal(c.write.result,null);assert.equal(c.write.error.status,403);assert.match(c.write.error.message,/preview instance/);
+ assert.equal(c.writeDelta,0); // guard fired before any storage call
+ assert.equal(c.del.result,null);assert.equal(c.del.error.status,403);assert.equal(c.deleteDelta,0);
+ assert.equal(c.schools.length,0);
+ }
+ const p=await actor.pitrDrillCase('preview');
+ assert.equal(p.before.drillMarker,null);assert.equal(p.before.drillSchoolRows,0);
+ assert.equal(p.write.error,null);assert.equal(p.write.result.schoolCode,'restore-drill-20261107');
+ assert.match(p.write.result.marker,/^restore-drill-20261107\+/);
+ assert.equal(p.duplicate.error.status,409); // a planted marker is never silently overwritten
+ assert.equal(p.badBatch.error.status,400);
+ assert.equal(p.afterWrite.drillMarker,p.write.result.marker);assert.equal(p.afterWrite.drillSchoolRows,1);
+ assert.equal(p.afterWrite.tables.schools,p.before.tables.schools+1);
+ assert.equal(p.schoolRowsAfterWrite[0].name,'恢复演练标记（勿用）');assert.equal(p.schoolRowsAfterWrite[0].is_active,0);
+ assert.equal(p.del.error,null);assert.equal(p.del.result.removedMarker,p.write.result.marker);assert.equal(p.del.result.removedSchoolRows,1);
+ assert.equal(p.delAgain.error,null);assert.equal(p.delAgain.result.removedSchoolRows,0); // delete is idempotent
+ assert.equal(p.afterDelete.drillMarker,null);assert.equal(p.afterDelete.drillSchoolRows,0);
+ assert.equal(p.afterDelete.tables.schools,p.before.tables.schools);
  });
  await t.test('PITR ops unit behaviour: guard, status snapshot, bookmark lookup and validation',async()=>{
  const namespace=await mf.getDurableObjectNamespace('BACKEND');const actor=namespace.get(namespace.idFromName('test'));

@@ -56,6 +56,57 @@ export class TestBackend extends MoveMateBackend {
     try { await ops.restore(''); } catch (error) { badBookmark = { status: (error as PitrError).status }; }
     return { status, atTime, invalidTs, restoreResult, restoreError, badBookmark, calls };
   }
+  /**
+   * Drill-marker cases against a stateful fake SQL store. Records every exec
+   * call so the guard tests can prove non-preview instances touch zero storage.
+   */
+  async pitrDrillCase(instance: string) {
+    const meta = new Map<string, string>();
+    const schools: { code: string; name: string; is_active: number }[] = [];
+    let execCalls = 0;
+    const storage: any = {
+      sql: {
+        databaseSize: 12345,
+        exec: (query: string, ...params: any[]) => {
+          execCalls++;
+          const q = query.trim();
+          let rows: Record<string, any>[] = [];
+          if (q.includes('sqlite_master')) rows = [{ name: 'actor_meta' }, { name: 'schools' }, { name: 'users' }, { name: '_cf_INTERNAL' }];
+          else if (q.includes('foreign_key_check')) rows = [];
+          else if (q.startsWith('SELECT value FROM actor_meta')) { const v = meta.get(String(params[0])); rows = v === undefined ? [] : [{ value: v }]; }
+          else if (q.startsWith('INSERT INTO actor_meta')) meta.set(String(params[0]), String(params[1]));
+          else if (q.startsWith('DELETE FROM actor_meta')) meta.delete(String(params[0]));
+          else if (q.startsWith('INSERT INTO schools')) schools.push({ code: String(params[0]), name: String(params[1]), is_active: Number(params[2] ?? 0) });
+          else if (q.startsWith('DELETE FROM schools')) { for (let i = schools.length - 1; i >= 0; i--) if (schools[i].code.startsWith('restore-drill-')) schools.splice(i, 1); }
+          else if (q.includes("code LIKE 'restore-drill-%'")) rows = [{ n: schools.filter(s => s.code.startsWith('restore-drill-')).length }];
+          else if (q.includes('COUNT(*)')) {
+            const table = /FROM "(\w+)"/.exec(q)?.[1];
+            rows = [{ n: table === 'actor_meta' ? meta.size : table === 'schools' ? schools.length : 7 }];
+          }
+          return { toArray: () => rows };
+        },
+      },
+      getCurrentBookmark: async () => 'bm-current',
+      getBookmarkForTime: async () => 'bm-at-time',
+      onNextSessionRestoreBookmark: async () => 'bm-undo',
+    };
+    const ops = new PitrOps(storage, instance);
+    const attempt = async (fn: () => Promise<any>) => { try { return { result: await fn(), error: null as any }; } catch (error) { return { result: null, error: { status: (error as PitrError).status, message: (error as Error).message } }; } };
+    const before = await ops.status();
+    const callsBeforeWrite = execCalls;
+    const write = await attempt(() => ops.writeDrillMarker('restore-drill-20261107'));
+    const writeDelta = execCalls - callsBeforeWrite;
+    const duplicate = await attempt(() => ops.writeDrillMarker('restore-drill-20261107'));
+    const badBatch = await attempt(() => ops.writeDrillMarker('bad batch!'));
+    const afterWrite = await ops.status();
+    const schoolRowsAfterWrite = schools.map(s => ({ ...s }));
+    const callsBeforeDelete = execCalls;
+    const del = await attempt(() => ops.deleteDrillMarker());
+    const deleteDelta = execCalls - callsBeforeDelete;
+    const delAgain = await attempt(() => ops.deleteDrillMarker());
+    const afterDelete = await ops.status();
+    return { before, write, writeDelta, duplicate, badBatch, afterWrite, schoolRowsAfterWrite, del, deleteDelta, delAgain, afterDelete, schools };
+  }
   /** Probe how the local runtime answers a real getCurrentBookmark() call. */
   async pitrRealBookmark() {
     try { return { ok: true, bookmark: await this.ctx.storage.getCurrentBookmark() }; }
