@@ -3,6 +3,7 @@ import {FrameOrder,TimeFilter,type PoseFrame} from './poseProtocol';
 import type {ExerciseMetrics} from './exerciseMetrics';
 import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
 import {framingFeedback} from './framingFeedback';
+import {COPY_BASIS_UNSTABLE,COPY_HALF_REP,COPY_NOT_SEEN,COPY_UNCLEAR} from './companionCopy';
 import type {PoseModelPreference} from './poseCompatibility';
 import {analyzeSquatFrame,squatSideVisible} from './squatMetrics';
 export const adaptiveEligible=(type:string)=>['squat','jumping_jack','push_up','high_knees','biceps_curl','hammer_curl','barbell_curl','reverse_barbell_curl','seated_curl','shoulder_press','neutral_seated_press','bent_over_row','barbell_row','bench_press','incline_bench_press','barbell_deadlift','romanian_deadlift','goblet_squat','barbell_back_squat','barbell_front_squat'].includes(type);
@@ -67,24 +68,24 @@ export class AdaptiveRecognition {
  private freezeHammer(capturedAt:number,message:string,expiredReason:string){
   if(this.frozenAt===null){this.frozenAt=capturedAt;this.lastFreezeAt=capturedAt;}
   if(capturedAt-this.frozenAt>HAMMER_FREEZE_GRACE_MS){this.frozenAt=null;return this.reject(expiredReason);}
-  const frozen=message+'，已冻结计数';
+  const frozen=message;
   this.base.metrics={...this.metrics,feedback:frozen,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',message:frozen}};
   return this.metrics;
  }
  private reject(reason:string){this.interrupt(reason);return this.metrics;}
- private freezeSquat(capturedAt:number,message:string,affectedJoints:number[]=[]){
+ private freezeSquat(capturedAt:number,_message:string,affectedJoints:number[]=[]){
   this.weak??=capturedAt;
-  if(capturedAt-this.weak>200)return this.reject(message+'，半程动作已丢弃');
+  if(capturedAt-this.weak>200)return this.reject(COPY_HALF_REP);
   this.scoring=false;
-  this.base.metrics={...this.metrics,feedback:message+'，已冻结计数',poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',message,affectedJoints}};
+  this.base.metrics={...this.metrics,feedback:COPY_UNCLEAR,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',message:COPY_UNCLEAR,affectedJoints}};
   return this.metrics;
  }
  update(f:PoseFrame,count=true){
   this.usableFrame=false;
   if(!this.order.accept(f))return this.metrics;
-  if(this.width&&(f.width!==this.width||f.height!==this.height))this.interrupt('画面尺寸改变，请回到起始姿势');this.width=f.width;this.height=f.height;
+  if(this.width&&(f.width!==this.width||f.height!==this.height))this.interrupt('画面变了一下，回到起始姿势，我们重新开始');this.width=f.width;this.height=f.height;
   const raw=f.landmarks;
-  if(!raw||raw.length!==33||raw.some(p=>!p||![p.x,p.y,p.visibility??0].every(Number.isFinite)))return this.type==='squat'?this.freezeSquat(f.capturedAt,'未检测到可用的深蹲关节'):this.reject('未检测到完整人体，请调整入镜范围');
+  if(!raw||raw.length!==33||raw.some(p=>!p||![p.x,p.y,p.visibility??0].every(Number.isFinite)))return this.type==='squat'?this.freezeSquat(f.capturedAt,'未检测到可用的深蹲关节'):this.reject(COPY_NOT_SEEN);
   const needed=this.base.requiredIndices(raw);
   const framing=framingFeedback(raw,needed);
   if(this.type==='squat'){
@@ -92,28 +93,28 @@ export class AdaptiveRecognition {
    if(!squatSideVisible(raw,side)){
     // Start-up guidance can immediately name the missing joints; only an armed cycle gets a grace period.
     if(this.ready)return this.freezeSquat(f.capturedAt,framing?.message||'跟踪侧关节不够清晰',framing?.affected);
-    if(!framing)return this.reject('请让同一侧的肩、髋、膝和脚踝清晰入镜');
+    if(!framing)return this.reject('让我看清你同一侧的肩、髋、膝和脚踝');
    }
   }
   if(framing){this.reject(framing.message);this.base.metrics.poseFeedback={...this.metrics.poseFeedback,affectedJoints:framing.affected};return this.metrics;}
   if(needed.some(i=>(raw[i].visibility??0)<.55)){
-   if(this.type==='hammer_curl')return this.freezeHammer(f.capturedAt,'关节暂时不清晰','必要关节持续不清晰，半程动作已丢弃');
-   this.weak??=f.capturedAt;if(f.capturedAt-this.weak>200)return this.reject('必要关节持续不清晰，半程动作已丢弃');
-   this.base.metrics={...this.metrics,feedback:'关节暂时不清晰，已冻结计数',poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',message:'关节暂时不清晰，已冻结计数'}};return this.metrics;
+   if(this.type==='hammer_curl')return this.freezeHammer(f.capturedAt,COPY_UNCLEAR,COPY_HALF_REP);
+   this.weak??=f.capturedAt;if(f.capturedAt-this.weak>200)return this.reject(COPY_HALF_REP);
+   this.base.metrics={...this.metrics,feedback:COPY_UNCLEAR,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',message:COPY_UNCLEAR}};return this.metrics;
   }
-  if(this.weak!==null&&f.capturedAt-this.weak>200)this.interrupt('跟踪中断，半程动作已丢弃');this.weak=null;
+  if(this.weak!==null&&f.capturedAt-this.weak>200)this.interrupt(COPY_HALF_REP);this.weak=null;
   const shoulder=this.type==='squat'&&needed.includes(12)?12:11,hip=shoulder+12;
   const aspect=f.width/f.height,scale=Math.hypot((raw[shoulder].x-raw[hip].x)*aspect,raw[shoulder].y-raw[hip].y);
-  if(scale<.06)return this.reject('人体在画面中过小，请靠近摄像头并保持必要关节入镜');
-  if(this.previous&&this.previousShoulder===shoulder){const last=this.previous,old=Math.max(.04,Math.hypot((last[shoulder].x-last[hip].x)*aspect,last[shoulder].y-last[hip].y));if(Math.hypot((raw[hip].x-last[hip].x)*aspect,raw[hip].y-last[hip].y)>old*.5||scale/old<.75||scale/old>1.25)return this.reject('人体位置或尺度突变，请回到起始姿势');}
+  if(scale<.06)return this.reject('画面里你显得有点小，靠近一点点，让我看清楚你');
+  if(this.previous&&this.previousShoulder===shoulder){const last=this.previous,old=Math.max(.04,Math.hypot((last[shoulder].x-last[hip].x)*aspect,last[shoulder].y-last[hip].y));if(Math.hypot((raw[hip].x-last[hip].x)*aspect,raw[hip].y-last[hip].y)>old*.5||scale/old<.75||scale/old>1.25)return this.reject('位置变了一下，回到起始姿势，我们重新来');}
   const w=f.worldLandmarks,pairs=[[11,13],[13,15],[12,14],[14,16],[23,25],[25,27],[24,26],[26,28]].filter(pair=>pair.every(i=>needed.includes(i)));
   let world=w?.length===33&&w.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))&&needed.every(i=>(raw[i].visibility??0)>=.7&&(w[i].visibility??raw[i].visibility??0)>=.7)?w:null;
   if(world){const torso=distance(world[shoulder],world[hip]),ratios=pairs.map(([a,b])=>distance(world![a],world![b])/torso);if(torso<.04||torso>1.5||ratios.some((r,i)=>r<.15||r>2.5||this.shape&&Math.abs(r/this.shape[i]-1)>.25))world=null;else this.shape=ratios;}
   if(['jumping_jack','push_up','high_knees'].includes(this.type))world=null;
   if(world&&['goblet_squat','barbell_back_squat','barbell_front_squat'].includes(this.type)&&analyzeSquatFrame(raw,aspect,world)?.angleSource!=='world')world=null;
   if(this.source===true&&!world){
-   if(this.type==='hammer_curl')return this.freezeHammer(f.capturedAt,'三维依据暂不可靠','二维／三维判断依据改变，请回到起始姿势');
-   this.weakWorld??=f.capturedAt;if(f.capturedAt-this.weakWorld<=200){this.base.metrics={...this.metrics,feedback:'三维依据暂不可靠，已冻结计数',poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',message:'三维依据暂不可靠，已冻结计数'}};return this.metrics;}
+   if(this.type==='hammer_curl')return this.freezeHammer(f.capturedAt,COPY_BASIS_UNSTABLE,'光线有点欺负人，先回到起始姿势，我们重新稳一稳');
+   this.weakWorld??=f.capturedAt;if(f.capturedAt-this.weakWorld<=200){this.base.metrics={...this.metrics,feedback:COPY_BASIS_UNSTABLE,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',message:COPY_BASIS_UNSTABLE}};return this.metrics;}
   }
   else this.weakWorld=null;
   const source=!!world;
@@ -121,7 +122,7 @@ export class AdaptiveRecognition {
    // Within a hammer-curl freeze episode (or its grace tail) a basis flip is the freeze
    // resolving, not a tracking change: accept it and let the preserved cycle continue.
    const tolerated=this.type==='hammer_curl'&&(this.frozenAt!==null||(this.lastFreezeAt!==null&&f.capturedAt-this.lastFreezeAt<=HAMMER_FREEZE_GRACE_MS));
-   if(!tolerated)this.interrupt('二维／三维判断依据改变，请回到起始姿势');
+   if(!tolerated)this.interrupt('光线有点欺负人，先回到起始姿势，我们重新稳一稳');
   }
   this.source=source;
   this.previousShoulder=shoulder;
@@ -129,7 +130,7 @@ export class AdaptiveRecognition {
   if(this.type==='hammer_curl'&&this.frozenAt!==null){
    const gap=f.capturedAt-this.frozenAt;this.frozenAt=null;
    // No frames at all arrived during the freeze and it outlasted the grace: void as usual.
-   if(gap>HAMMER_FREEZE_GRACE_MS)return this.reject('跟踪中断，半程动作已丢弃');
+   if(gap>HAMMER_FREEZE_GRACE_MS)return this.reject(COPY_HALF_REP);
    // The base tracker's own frame-gap guard must not void what the freeze preserved.
    (this.base as {bridgeFreezeGap?:(now:number)=>void}).bridgeFreezeGap?.(f.capturedAt);
   }
@@ -142,8 +143,8 @@ export class AdaptiveRecognition {
     : needed.some(i=>(raw[i].visibility??0)<.7);
    if(weakScore)this.scoring=false;
   }
-  if(this.metrics.reps>before.reps){if(!this.scoring){const sides=this.metrics.scoreAccumulator;this.base.metrics={...this.metrics,scoreAccumulator:{...before.scoreAccumulator,...(sides.leftReps!==undefined?{leftReps:sides.leftReps,rightReps:sides.rightReps}: {})},formScore:before.formScore,formBreakdown:before.formBreakdown,perfectReps:before.perfectReps,correctionCounts:before.correctionCounts,lastRepScore:null,lastRepIssues:[],feedback:'完整动作已记录，本次画面数据不足，无法评分'};}this.scoring=true;}
-  if(!count&&this.metrics.reps>before.reps){this.base=createRecognitionTracker(this.type,this.target,before,true,true);this.interrupt('准备阶段不计次数，请重新保持起始姿势');return this.metrics;}
+  if(this.metrics.reps>before.reps){if(!this.scoring){const sides=this.metrics.scoreAccumulator;this.base.metrics={...this.metrics,scoreAccumulator:{...before.scoreAccumulator,...(sides.leftReps!==undefined?{leftReps:sides.leftReps,rightReps:sides.rightReps}: {})},formScore:before.formScore,formBreakdown:before.formBreakdown,perfectReps:before.perfectReps,correctionCounts:before.correctionCounts,lastRepScore:null,lastRepIssues:[],feedback:'记下啦 · 刚才有点没看清，这次不评分'};}this.scoring=true;}
+  if(!count&&this.metrics.reps>before.reps){this.base=createRecognitionTracker(this.type,this.target,before,true,true);this.interrupt('刚才还在准备阶段，先回到起始姿势，我们正式开始');return this.metrics;}
   return this.metrics;
  }
 }

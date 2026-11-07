@@ -327,12 +327,12 @@ test('hammer curl upper-arm hint needs a sustained deviation and never blocks th
   const drift=(p:Point[])=>{p[13]={...p[13],x:p[13].x-.1};p[15]={...p[15],x:p[15].x-.1};p[14]={...p[14],x:p[14].x+.1};p[16]={...p[16],x:p[16].x+.1};};
   // A brief 300 ms drift must not raise the hint (the retest's seated setup flapped it).
   r.feed('peak',300,drift);
-  assert.doesNotMatch(r.tracker.metrics.feedback,/上臂靠近体侧/);
-  assert.doesNotMatch(r.tracker.metrics.poseFeedback.message,/上臂靠近体侧/);
+  assert.doesNotMatch(r.tracker.metrics.feedback,/上臂贴紧一点点/);
+  assert.doesNotMatch(r.tracker.metrics.poseFeedback.message,/上臂贴紧一点点/);
   // Clear long enough for the sustain timer to reset, then drift sustained past 1 s.
   r.feed('peak',500);
   r.feed('peak',1300,drift);
-  assert.match(r.tracker.metrics.feedback,/上臂靠近体侧/);
+  assert.match(r.tracker.metrics.feedback,/上臂贴紧一点点/);
   // The hint is advisory only: the rep still counts when the arms return.
   r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,1);
 });

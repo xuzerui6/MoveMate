@@ -1052,3 +1052,14 @@ fieldset.gym-settings-equipment{padding:24px}
   flex-wrap: wrap;
   margin: 0.4rem 0;
 }
+
+/* 识别页 v2：计划训练相机胶囊/语音 chip 与组间揭晓（设计方案 §01/§03）。 */
+.gym-hud-capsule{position:absolute;top:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;background:rgba(16,32,22,.82);color:#fff;font-size:13px;font-weight:600;padding:8px 16px;border-radius:999px;white-space:nowrap;z-index:3}
+.gym-hud-dot{width:8px;height:8px;border-radius:50%;background:var(--green,#00c65e);flex:none}
+.gym-hud-capsule.amber .gym-hud-dot{background:#f5b93f}
+.gym-hud-voice{position:absolute;top:12px;right:12px;background:rgba(16,32,22,.82);color:#fff;border:0;font-size:12px;font-weight:600;padding:8px 12px;border-radius:999px;min-height:36px;cursor:pointer;z-index:3}
+.gym-reveal{border:1px solid var(--line,#e3e9e6);background:#e5faee;border-radius:16px;padding:14px 16px;margin-top:12px}
+.gym-reveal-lead{font-weight:700;font-size:15px;line-height:1.6;margin:0 0 8px}
+.gym-reveal-axis{display:grid;grid-template-columns:64px 1fr 28px;align-items:center;gap:10px;font-size:13px;margin:6px 0}
+.gym-reveal-axis b{text-align:right}
+.gym-reveal-goal{margin:8px 0 0;font-size:14px;line-height:1.6}

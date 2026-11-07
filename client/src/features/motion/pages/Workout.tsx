@@ -20,6 +20,7 @@ import { useStore, type SportSession } from '../lib/store'
 import type { WorkoutContext, WorkoutSession, XiaozhiState } from '../types'
 import { ExerciseDemo } from '../../gym/ExerciseMedia'
 
+import {COPY_CALIBRATED,COPY_FRAMING,COPY_PREPARE,milestoneLine} from '../lib/companionCopy'
 import {adaptiveEligible,loadPoseModelPreference,loadRecognitionPreference,savePoseModelPreference,saveRecognitionPreference,selectNewRecognitionStrategy,selectRecognitionStrategy,type RecognitionPreference} from '../lib/adaptiveRecognition'
 import type {PoseModelPreference} from '../lib/poseCompatibility'
 import {PoseDiagnostics,PoseModelExperimentSelect,RecognitionOverride} from '../components/PoseDiagnostics'
@@ -264,9 +265,29 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   useEffect(() => {
     if (failure || poseFailed) document.querySelector('.training-workout .training-error')?.scrollIntoView({ block: 'center' })
   }, [failure, poseFailed])
-  const statusLabel = ending ? '正在确认结束' : pendingAction ? '状态待确认' : paused ? '已暂停' : simulatedPose ? '演示 · 不计 XP' : (adaptive || metrics.poseFeedback.calibrated) ? '识别中' : '保持起始姿势，准备校准'
+  const statusLabel = ending ? '正在确认结束' : pendingAction ? '状态待确认' : paused ? '已暂停' : simulatedPose ? '演示 · 不计 XP' : metrics.poseFeedback.calibrated ? '识别中' : '正在找你'
   const preparedToResume=pose.engine?.diagnostics.stage==='ready'&&pose.engine.metrics.poseFeedback.calibrated&&(pose.telemetry?.fps||0)>=8;
-  const hint = ending ? '本组数据已冻结，正在确认保存结果。' : pendingAction ? '本地识别已停止，服务端状态待确认；时长以服务端为准。' : paused ? adaptive?(preparedToResume?'休息不计时，起始姿势已准备好，可直接继续。':'休息不计时，继续后识别下一个完整动作。'): '休息不计时，继续后重新校准起始姿势。' : metrics.reps >= metrics.targetReps ? '目标已完成，可以结束并保存这一组。' : metrics.feedback
+  const hint = ending ? '这一组就到这里，正在帮你保存。' : pendingAction ? '本地识别先停住，正在和服务器对一下状态。' : paused ? adaptive?(preparedToResume?'休息不计时，起始姿势已准备好，可直接继续。':'休息不计时，继续后识别下一个完整动作。'): '休息不计时，继续时先回到起始姿势。' : metrics.reps >= metrics.targetReps ? '目标完成啦，可以结束这一组了。' : metrics.feedback
+  // 陪伴句（识别页 v2）：同一时刻只留一句。事件句（校准完成、里程碑）短暂优先，
+  // 其次是最要紧的一条姿势提示（poseFeedback 主问题），其余时候用引擎反馈。
+  const [coachEvent, setCoachEvent] = useState<{ text: string; at: number } | null>(null)
+  const wasCalibrated = useRef(false)
+  useEffect(() => {
+    if (!active || paused || busy || ending) return
+    if (!wasCalibrated.current && metrics.poseFeedback.calibrated) { wasCalibrated.current = true; setCoachEvent({ text: COPY_CALIBRATED, at: Date.now() }) }
+    if (!metrics.poseFeedback.calibrated) wasCalibrated.current = false
+  }, [active, paused, busy, ending, metrics.poseFeedback.calibrated])
+  const prevReps = useRef(metrics.reps)
+  useEffect(() => {
+    const before = prevReps.current; prevReps.current = metrics.reps
+    if (!active || paused || busy || ending || simulatedPose || metrics.reps <= before) return
+    const line = milestoneLine(metrics.reps, metrics.targetReps)
+    if (line) setCoachEvent({ text: line, at: Date.now() })
+  }, [active, paused, busy, ending, simulatedPose, metrics.reps, metrics.targetReps])
+  const unclear = active && !paused && metrics.poseFeedback.calibrated && (diagnostics.stage === 'tracking_lost' || metrics.poseFeedback.status === 'uncertain')
+  const eventLine = coachEvent && Date.now() - coachEvent.at < 3000 ? coachEvent.text : null
+  const coachLine = paused || ending || pendingAction ? hint : eventLine || (metrics.poseFeedback.primaryIssue ? metrics.poseFeedback.message : metrics.feedback)
+  const capsuleText = ending ? '正在确认结束' : paused ? '已暂停 · 休息不计时' : !metrics.poseFeedback.calibrated ? '正在找你 · 站好就行' : unclear ? '我有点看不清' : `陪你练 · ${exercise.name}`
   return <div className={`page workout-page training-workout ${active ? 'live' : 'setup'}${cameraExpanded ? ' camera-expanded' : ''}`}>
     <Header title={exercise.name + '训练'} back={leave} action={active ? <span className={'training-status' + (paused ? ' paused' : '')}>{statusLabel}</span> : <span className="muted">目标 20 {exercise.unit}</span>}/>
     {!active && <section className="training-prep">
@@ -288,12 +309,23 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
         {restored && <button className="text-btn" disabled={busy} onClick={() => void done()}>{busy && ending ? '正在保存…' : ending ? '重试结束' : '结束并保存已有记录'}</button>}
         {preparing && !creating && !adaptive && <button className="text-btn" onClick={cancelPrepare}>取消准备</button>}
       </div>
-      <p className="prep-privacy">{restored?.source === 'demo' ? '演示不访问摄像头，不增加 XP。' : '摄像头就绪后才开始记录。'}语音陪练在训练中按需开启。</p>
+      <p className="prep-privacy">{restored?.source === 'demo' ? '演示不访问摄像头，不增加 XP。' : COPY_PREPARE + '。'}语音陪练在训练中按需开启。</p>
       <details className="training-accessory"><summary><Icon name="heart"/>心率设备（可选）</summary><p>{heartRate.connected ? `${heartRate.deviceName} · ${heartRate.currentBpm || '等待'} BPM` : heartRate.errorMessage || '不连接设备也能正常训练。支持标准蓝牙心率带。'}</p><button className="secondary" disabled={heartRate.connected || ['connecting', 'unsupported'].includes(heartRate.status)} onClick={heartRate.connect}>{heartRate.status === 'unsupported' ? '请在 Chrome 或 Edge 连接' : heartRate.connected ? '已连接' : '连接心率带'}</button></details>
     </section>}
     <div className="training-live-grid">
       <div className="camera-card training-camera" hidden={!active && !preparing}>
         <PoseCanvas keepVideoRendering={adaptive} videoRef={pose.videoRef} landmarks={simulatedPose ? demoLandmarks : pose.landmarks} demo={simulatedPose} phase={metrics.phase} fit={cameraFit} affectedJoints={paused ? [] : metrics.poseFeedback.affectedJoints} frame={simulatedPose ? null : pose.frame}/>
+        {active&&!paused&&!ending&&!pendingAction&&<div className="training-hud" aria-live="polite">
+          <div className={`training-hud-capsule${unclear?' amber':''}`}><span className="training-hud-dot"/>{capsuleText}</div>
+          {!simulatedPose&&<button type="button" className="training-hud-voice" aria-pressed={voiceEnabled} onClick={toggleVoice}>语音陪练 · {voiceEnabled?'开':'关'}</button>}
+          <div className="training-hud-bottom">
+            {!metrics.poseFeedback.calibrated?<div className="training-hud-calib">
+              <svg className="training-hud-ring" viewBox="0 0 64 64" aria-hidden="true"><circle className="ring-bg" cx="32" cy="32" r="26"/><circle className="ring-fg" cx="32" cy="32" r="26" strokeDasharray="163.4" strokeDashoffset={163.4*(1-Math.min(1,Math.max(0,diagnostics.calibrationProgress)))}/><text x="32" y="37" textAnchor="middle">找你</text></svg>
+              <div><b>{metrics.feedback}</b><span>计时还没开始 · 计数也是</span></div>
+            </div>:<><div className="training-hud-count"><strong key={metrics.reps} className="motion-rep-num">{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}<br/>这一组的目标</span></div>
+            <p className={`training-hud-coach${unclear?' amber':''}`}><span>陪练说</span>{coachLine}</p></>}
+          </div>
+        </div>}
         {paused && <div className="camera-paused"><Icon name="pause" size={30}/><b>{ending ? '正在保存' : pendingAction ? '等待状态确认' : '已暂停'}</b><span>已完成 {metrics.reps} {exercise.unit}</span>{adaptive&&!ending&&!pendingAction&&<small>{preparedToResume?'起始姿势已准备好，可直接继续':'休息不计数、不计时'}</small>}</div>}
         {preparing && !adaptive && <div className="camera-paused"><Icon name="camera"/><b>正在准备摄像头与模型</b><span>此时尚未开始新记录</span></div>}
         {active && <div className="training-camera-tools"><button ref={cameraExpandButton} type="button" aria-pressed={cameraExpanded} onClick={() => setCameraExpanded(value => !value)}><Icon name={cameraExpanded ? 'collapse' : 'expand'} size={18}/>{cameraExpanded ? '收起画面' : '放大画面'}</button>
@@ -301,11 +333,10 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
         </div>}
         {active && !simulatedPose && cameraFit === 'cover' && <span className="training-camera-crop-note">画面已裁切 · 请确认全身可见</span>}
       </div>
-      {preparing&&adaptive&&<section className="training-calibration-guidance" role="status"><b>让动作所需关节完整入镜</b><p>{pose.telemetry?.reason}</p>{!creating&&<button type="button" className="secondary" onClick={cancelPrepare}>取消准备</button>}</section>}
+      {preparing&&adaptive&&<section className="training-calibration-guidance" role="status"><b>{COPY_FRAMING}</b><p>{pose.telemetry?.reason}</p>{!creating&&<button type="button" className="secondary" onClick={cancelPrepare}>取消准备</button>}</section>}
       {active && <section className="training-live-info" aria-label="本组训练数据">
-        <div className="training-numbers"><div className={"training-reps"+(metrics.reps>0&&metrics.reps>=metrics.targetReps?" motion-set-done":"")}><strong key={metrics.reps} className="motion-rep-num">{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}</span></div><div><strong>{format(seconds)}</strong><span>有效时长</span></div><div><strong>{metrics.scoreAccumulator.count ? metrics.formScore : '—'}</strong><span>{adaptive&&exerciseType==='squat'?'训练均分':'动作评分'}</span></div></div>
-        <div className={'training-hint' + (paused ? ' paused' : '')} role="status"><Icon name={paused ? 'pause' : 'spark'}/><p>{hint}</p></div>
-        {adaptive&&exerciseType==='squat'&&metrics.reps>0&&metrics.lastRepScore===null&&<p className="muted">本次无法评分</p>}
+        <div className="training-numbers"><div className={"training-reps"+(metrics.reps>0&&metrics.reps>=metrics.targetReps?" motion-set-done":"")}><strong key={metrics.reps} className="motion-rep-num">{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}</span></div>{calibratedOnce.current&&<div><strong>{format(seconds)}</strong><span>有效时长</span></div>}</div>
+        <p className="training-coach" role="status"><span>{paused ? '已暂停' : '陪练说'}</span>{coachLine}</p>
         <RecognitionStatus type={exerciseType} diagnostics={diagnostics} paused={paused || busy || ending} demo={simulatedPose}/>
         {exerciseType==='standing_leg_curl'&&<p className="recognition-side-count">左侧 {metrics.scoreAccumulator.leftReps||0} 次 · 右侧 {metrics.scoreAccumulator.rightReps||0} 次 · 左右合计</p>}
         <div className="training-voice"><Icon name="mic" size={26}/><span><b>{voiceEnabled ? VOICE_LABEL[voice.state] : '语音陪练'}</b><small>{voiceEnabled ? voice.errorMessage || (voice.state === 'speaking' ? voice.reply : voice.transcript) || '连接后点击对话' : '语音指导你的动作节奏与要点'}</small></span>
