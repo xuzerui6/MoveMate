@@ -18,6 +18,9 @@ import type { Game, Campus } from '../../types';
 import GameCard from '../Lobby/GameCard';
 import SportIcon from '../../components/SportIcon';
 import Avatar from '../../components/Avatar';
+import ShareCardButton from '../../features/share/ShareCardButton';
+import { buildStreakCard } from '../../features/share/cardData';
+import { milestoneCardSvg } from '../../features/share/cardSvg';
 import './Profile.css';
 
 function getColor(name: string): string {
@@ -567,6 +570,7 @@ const Profile: React.FC = () => {
             <div><small>有效训练</small><strong>{motion.completedWorkoutCount}</strong></div>
             <div><small>连续运动天数</small><strong><AnimatedNumber value={motion.streakDays}/></strong></div>
           </div>
+          {(()=>{const streakCard=buildStreakCard(motion.history,motion.streakDays);return streakCard?<ShareCardButton className="btn btn--secondary" label="分享连续打卡里程碑" makeCard={()=>({svg:milestoneCardSvg(streakCard),fileName:`movemate-streak-${streakCard.date.short.replace(/\./g,'')}.png`,title:'动伴 · 连续打卡'})}/>:null})()}
         </> : <p>正在读取成长数据…</p>}
       </div>
 

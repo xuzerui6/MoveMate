@@ -1,0 +1,28 @@
+.share-card-preview {
+  display: block;
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+  border: 1px solid #e3e9e6;
+  border-radius: 12px;
+}
+.share-card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+.share-card-actions > button {
+  flex: 1;
+}
+.share-card-note {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #68767e;
+  text-align: center;
+}
+.share-card-error {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #c63636;
+  text-align: center;
+}
