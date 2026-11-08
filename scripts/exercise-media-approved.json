@@ -9968,6 +9968,24 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0602",
+   "expectedName": "lever seated reverse fly",
+   "sourceId": "ai-chatgpt-exdb-0602",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate ChatGPT generation",
+   "sourceSha256": [
+    "ac887049abc9372f87bbe67109db3aff3828b8d05c11cc455038dfdf91559543",
+    "4c4c31e2ce44229da02f06555414ad5a13e388ff657527f85a411dbda3adc856"
+   ],
+   "phases": [
+    "起始：面向反向飞鸟机坐姿、胸贴胸垫、双脚平放，双手正手（掌心向下）握住两侧横把、双臂在体前合拢前伸，杠杆臂前合、双手同高",
+    "关键：双臂向两侧后展开至与肩成一线、肩胛夹紧，双手仍正手握横把，胸仍贴垫、双脚平放"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [

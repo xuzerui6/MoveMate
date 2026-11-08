@@ -28396,6 +28396,43 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:0602": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-chatgpt-exdb-0602-0.868e5f0dfc34.webp",
+          "sha256": "868e5f0dfc3418b940c28a9674243f5fafe5c43ae4dfc5333513c7809610f875",
+          "bytes": 58758,
+          "distribution": "repository",
+          "phase": "起始：面向反向飞鸟机坐姿、胸贴胸垫、双脚平放，双手正手（掌心向下）握住两侧横把、双臂在体前合拢前伸，杠杆臂前合、双手同高",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-chatgpt-exdb-0602-1.db1c291e88e9.webp",
+          "sha256": "db1c291e88e984c550ceb24134485dabbb3013e6e0151bf7c1e1eb30c93a3154",
+          "bytes": 60936,
+          "distribution": "repository",
+          "phase": "关键：双臂向两侧后展开至与肩成一线、肩胛夹紧，双手仍正手握横把，胸仍贴垫、双脚平放",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-chatgpt-exdb-0602",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch68.md",
+          "version": "2026-11-08 · 生成批次 68",
+          "sourceSha256": [
+            "ac887049abc9372f87bbe67109db3aff3828b8d05c11cc455038dfdf91559543",
+            "4c4c31e2ce44229da02f06555414ad5a13e388ff657527f85a411dbda3adc856"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }

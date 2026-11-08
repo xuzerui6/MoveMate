@@ -28837,22 +28837,37 @@
     {
       "id": "exdb:0602",
       "originalName": "lever seated reverse fly",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：胸托正握、手柄外展明确；需专门手柄朝向、胸垫与水平轴点图，不用中立握版。",
+      "reason": "2026-11-08 生成双帧已逐帧对照：种子意见关切胸托正握、手柄外展明确，需手柄朝向、胸垫与水平轴点专门图、不用中立握版——定版双帧：面向机器坐姿、胸贴胸垫、双脚平放；双手正手（掌心向下）握两侧横把，起始帧双臂在体前合拢前伸、杠杆臂前合、双手同高，关键帧双臂向两侧后展开至肩线、肩胛夹紧，横把与水平转轴全程可核，与 0601 竖把平行握版可辨区分。两帧来源分开记录：关键帧为批次 66 ChatGPT（浏览器会话）定版帧；起始帧经浏览器参考图锚定与纯文字两路失败后，改由 Codex CLI 图像生成以定版关键帧为参考锚定生成，首稿自检发现多手后自行重打，定版稿经双侧相位 5 项检查点（含手部放大裁切）逐项核过。正文与成帧一致，未作口径修订。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "f31f249de5760edb3918b5480a416695e254aa1e7c74e38432dbe2ec0ab8a8cc",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-chatgpt-exdb-0602",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch68.md",
+          "version": "2026-11-08 · 生成批次 68",
+          "sourceSha256": [
+            "ac887049abc9372f87bbe67109db3aff3828b8d05c11cc455038dfdf91559543",
+            "4c4c31e2ce44229da02f06555414ad5a13e388ff657527f85a411dbda3adc856"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0601",
