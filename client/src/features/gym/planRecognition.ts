@@ -1,8 +1,8 @@
 import type { NormalizedLandmark as Point } from '@mediapipe/tasks-vision';
 import type { ExerciseMetrics, RecognitionDiagnostics } from '../motion/lib/exerciseMetrics';
 import type { FormBreakdown, PoseIssue, ScoreAccumulator } from '../motion/types';
-import { medianLandmarks, POSE_ISSUE_COPY } from '../motion/lib/poseFeedback';
-import { COPY_CALIBRATED, COPY_HALF_REP, COPY_NOT_SEEN, COPY_OUT_OF_FRAME } from '../motion/lib/companionCopy';
+import { medianLandmarks, poseIssueCopy } from '../motion/lib/poseFeedback';
+import { COPY_CALIBRATED, COPY_HALF_REP, COPY_OUT_OF_FRAME, notSeenCopyFor } from '../motion/lib/companionCopy';
 
 export const PLAN_PROFILES = ['biceps_curl','lateral_raise','shoulder_press','bent_over_row','reverse_lunge','calf_raise'] as const;
 export type NewPlanProfile = typeof PLAN_PROFILES[number];
@@ -112,7 +112,7 @@ export class PlanExerciseTracker {
     return {start,peak,amplitude,symmetry,posture,confidence,side,angle:measured,basis,motion,hip,torso,tilt,points:p,footScale,heels,forward};
   }
   update(raw:Point[]|null,now:number,aspect=1,world:Point[]|null=null):ExerciseMetrics {
-    if(!raw||raw.length<33||!Number.isFinite(now)||!Number.isFinite(aspect)||aspect<=0||raw.some(p=>!p||![p.x,p.y,p.visibility??0].every(Number.isFinite)))return this.interrupt('未检测到完整人体关键点',COPY_NOT_SEEN);
+    if(!raw||raw.length<33||!Number.isFinite(now)||!Number.isFinite(aspect)||aspect<=0||raw.some(p=>!p||![p.x,p.y,p.visibility??0].every(Number.isFinite)))return this.interrupt('未检测到完整人体关键点',notSeenCopyFor(this.type));
     if(this.at!==null&&now<=this.at)return this.metrics;
     if(this.at!==null&&now-this.at>750)this.interrupt('画面中断',COPY_HALF_REP);
     const indices=needed(this.type);
@@ -177,7 +177,7 @@ export class PlanExerciseTracker {
     this.diagnostics={...this.diagnostics,stage,calibrationProgress:1};
     const issue=[...this.issues][0]||null;
     const message=stage==='complete'?'目标完成啦，漂亮':PLAN_STAGE_COPY[this.type][stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3];
-    this.metrics={...this.metrics,phase:f.start?'standing':this.peak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:f.confidence<.7?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?POSE_ISSUE_COPY[issue].joints:[],calibrated:true,message:issue?POSE_ISSUE_COPY[issue].action:message}};
+    this.metrics={...this.metrics,phase:f.start?'standing':this.peak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:f.confidence<.7?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?poseIssueCopy(issue,this.type).joints:[],calibrated:true,message:issue?poseIssueCopy(issue,this.type).action:message}};
     this.previous=f;return this.metrics;
   }
 }

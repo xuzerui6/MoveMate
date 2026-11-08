@@ -56,6 +56,24 @@ export const COPY_WORKOUT_DONE = '今天陪你练完啦'
 /** 还没看到人（无帧 / 人体不完整）时的陪伴句，与文案表 2 同调。 */
 export const COPY_NOT_SEEN = '我还没看到你——站到画面里，让我从头看到脚'
 
+/** 上肢类动作的必需关节只有头与上半身（各 tracker 的 needed 集合，如前平举是
+ * [11,12,13,14,15,16,23,24,0]，没有膝、踝），入镜话术不许夸大成「从头看到脚」。 */
+export const COPY_FRAMING_UPPER = '往后退一点点，让我看到你的头和上半身'
+export const COPY_NOT_SEEN_UPPER = '我还没看到你——站到画面里，让我看到你的头和上半身'
+
+/** 上肢主导的动作族：入镜要求与问题文案（poseFeedback.poseIssueCopy）都按上肢
+ * 口径说，不套下肢话术。名单取自各 tracker 的动作类型全集（extended / plan /
+ * library 路由后的类型名都覆盖，因为路由发生在 tracker 构造之前）。 */
+export const UPPER_BODY_EXERCISE_TYPES: ReadonlySet<string> = new Set([
+  'biceps_curl', 'hammer_curl', 'barbell_curl', 'reverse_barbell_curl', 'seated_curl',
+  'front_raise', 'seated_lateral_raise', 'lateral_raise', 'shoulder_press', 'neutral_seated_press',
+  'bent_over_row', 'barbell_row', 'bench_press', 'incline_bench_press',
+  'triceps_kickback', 'seated_triceps_extension', 'lying_triceps_extension', 'reverse_fly',
+])
+export const isUpperBodyExercise = (type: string): boolean => UPPER_BODY_EXERCISE_TYPES.has(type)
+export const framingCopyFor = (type: string): string => isUpperBodyExercise(type) ? COPY_FRAMING_UPPER : COPY_FRAMING
+export const notSeenCopyFor = (type: string): string => isUpperBodyExercise(type) ? COPY_NOT_SEEN_UPPER : COPY_NOT_SEEN
+
 /** 红线词表：陪伴文案与引擎反馈中禁止出现的打击性措辞。 */
 export const BANNED_COPY_WORDS = ['下降', '变差', '失败', '丢弃', '无效', '冻结', '已丢弃'] as const
 

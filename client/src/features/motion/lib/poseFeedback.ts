@@ -1,6 +1,7 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision'
 import type { PoseFeedback, PoseIssue, WorkoutPhase } from '../types'
 import type { SquatFrameAnalysis } from './squatMetrics'
+import { isUpperBodyExercise } from './companionCopy'
 
 // 陪伴口吻（识别页设计 v2，热度「适中」）：纠正只递最要紧的一句、给好处不给
 // 压力；标准句式见 companionCopy.ts，这里是按问题类型分发的具体提示。
@@ -14,6 +15,25 @@ export const POSE_ISSUE_COPY: Record<PoseIssue, { label: string; action: string;
   knee_instability: { label: '膝盖轨迹不稳', action: '膝盖跟着脚尖走，脚掌踩稳', joints: [25, 26, 27, 28] },
   excessive_trunk_lean: { label: '躯干前倾偏多', action: '胸口抬一点点，核心收住再起身', joints: [11, 12, 23, 24] },
   asymmetry: { label: '左右发力不均', action: '重心回到两脚中间，左右一起使劲', joints: [23, 24, 25, 26, 27, 28] },
+}
+
+/** 上肢动作的问题文案（2026-11-08 round 3）：不稳与不协调发生在手臂上，文案与
+ * 高亮关节按上肢说。此前 unstable_movement 的下肢文案（支撑/落地、髋膝踝）会原样
+ * 出现在弯举的实时提示与结算「下一个小目标」里，与问题本身无关。名单外的动作与
+ * 其余问题类型沿用 POSE_ISSUE_COPY 原文，一字不改。 */
+const UPPER_BODY_ISSUE_COPY: Partial<Record<PoseIssue, { label: string; action: string; joints: number[] }>> = {
+  unstable_movement: { label: '手臂摆动偏大', action: '慢一点，肘贴紧身体，把这一下做稳', joints: [11, 12, 13, 14] },
+  poor_coordination: { label: '两边节奏没对齐', action: '慢一点，让两只手一起起、一起落', joints: [15, 16] },
+}
+
+/** 按动作族取问题文案：上肢动作的 unstable_movement / poor_coordination 用上肢
+ * 版本，其余情况（含未传 type）与 POSE_ISSUE_COPY 完全一致。 */
+export function poseIssueCopy(issue: PoseIssue, type?: string): { label: string; action: string; joints: number[] } {
+  if (type && isUpperBodyExercise(type)) {
+    const upper = UPPER_BODY_ISSUE_COPY[issue]
+    if (upper) return upper
+  }
+  return POSE_ISSUE_COPY[issue]
 }
 
 const median = (values: number[]) => {
@@ -75,6 +95,7 @@ export function decideCorrectionCue(
   issues: PoseIssue[],
   now: number,
   state: CorrectionGateState,
+  type?: string,
 ): { text: string; issue: PoseIssue | null; improved: boolean } | null {
   const current = new Set(issues)
   const improved = [...state.activeLastRep].find(issue => !current.has(issue))
@@ -86,5 +107,5 @@ export function decideCorrectionCue(
   const issue = issues.find(item => (state.consecutive[item] || 0) >= 2 && now - (state.lastSpokenAt[item] || 0) >= 12_000)
   if (!issue) return null
   state.lastSpokenAt[issue] = now
-  return { text: POSE_ISSUE_COPY[issue].action, issue, improved: false }
+  return { text: poseIssueCopy(issue, type).action, issue, improved: false }
 }
