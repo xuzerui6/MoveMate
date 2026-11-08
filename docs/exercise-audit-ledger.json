@@ -8230,22 +8230,37 @@
     {
       "id": "exdb:1260",
       "originalName": "cable decline one arm press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文先站立再背靠下斜凳，滑轮只称下降位置，入位与阻力路径不清。",
+      "reason": "2026-11-08 Codex CLI 图像生成双帧已逐帧对照（本批探针条 · 下斜簇重建）：种子意见点名正文入位自相矛盾（先背对机器站立、再背靠下斜凳）、滑轮只称下降位置、阻力路径不清。本批按下斜簇重建口径执行并披露：凳面几何以已定版 1262 成帧为据（下斜凳置于机器前、头在近机器的低端、双脚勾于远端高处滚轴垫下、低滑轮在他头端右侧旁），不再另行发明；推举相位按名称为准（press 的定义性相位：起始屈肘、手在胸侧，峰值伸展至手臂充分伸直）；正文两处模板残留已删——第 2 步「背对机器站立，用一只手抓住手柄」系站立绳索推举模板入位步（0151 全文同型），与凳面入位互斥；第 4 步「保持上臂静止」系弯举/伸肘模板残留，推举中上臂必然绕肩转动，仅删此四字，其余屈肘降柄表述保留。工作侧取右臂（与 1262 同侧，簇内一致，此处披露）；左手轻置腹前同 1262 编辑定义（正文未写，全程不动）。探针执行：首稿双判定全守——第一判定相位类型：起始帧右肘弯曲约 90 度、右手在右胸侧方，关键帧右臂向胸上方推至充分伸展，肘角显著变化、是推举而非飞鸟肩弧（kill 条件「两稿皆成飞鸟」未触发）；第二判定凳面几何与 1262 逐项一致（kill 条件「皆弃凳面几何」未触发）。下斜绳索簇自此以 1262（飞鸟）+ 本条（推举）两条收官，簇内剩余 1261（面向机器的索力线与推举相悖、几何不自洽）/ 0158（全文无凳、下斜零落点）维持排除、不受本探针影响。与 1262 以推举肘角变化对飞鸟肘角冻结可辨区分。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "cd6d24548d640c2eed16219d144fdfb2159ae049504fa90883ddeec527ef403b",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-1260",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch74.md",
+          "version": "2026-11-08 · 生成批次 74",
+          "sourceSha256": [
+            "f8cfefa22b03b1c5e2ad61deb63f8def57086f9b8bb89424cb0f24efb81ff559",
+            "72035eb44791ee3dc207bcd1e7accd39a38f621c994ea59231dc6c8461e92710"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1261",
@@ -9465,22 +9480,37 @@
     {
       "id": "exdb:1263",
       "originalName": "cable one arm fly on exercise ball",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文坐球侧臂水平合拢，没有明确卧姿，滑轮位置也缺失，不能用仰卧球飞鸟图。",
+      "reason": "2026-11-08 Codex CLI 图像生成双帧已逐帧对照（球类续作 · 编辑定义条）：正文骨架完整有据（坐在健身球上、双脚平放、背部挺直、一只手握手柄、手臂向一侧伸出与地面平行、肘部稍微弯曲、手掌朝前、慢慢将手臂带过身前挤压胸部、换边），其形式即直坐位单臂水平内收飞鸟；种子意见明示不得以仰卧球飞鸟图代替——本条成帧为直坐、无仰卧，与正文及种子一致。种子的唯一缺项（滑轮位置）由编辑定义正面回答并披露（与 1268/1267 同型处理）：滑轮在他右手一侧、约肩高处（略在额状面之后，使索在整个内收弧中保持绷紧）；工作侧取右臂（正文未指定侧，编辑定义选定，与 1267 同侧口径，此处披露）；自由手（左）轻放左大腿为编辑定义补足（正文未写，全程不动）。定版双帧：直坐大健身球球面、球体完整可见、躯干直立无支撑、双脚平地膝约 90 度，起始帧右臂向右侧伸展至与地面平行、肘微屈、掌心朝前持柄，索水平连至同侧肩高滑轮；关键帧右臂以同一肘角横过身前、右手抵至胸前偏左、手位仍约肩高，坐位、脚位、自由手不变。背景远处训练凳为环境家具、未构成支撑，裁断沿批次 73 的 1268/1267 口径（红线意图是支撑物只能是球）。与 1267/1268（同球推胸：起始屈肘于胸侧、向前推）以起始侧展、横过身前的飞鸟弧可辨区分。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "46a56a1429f825a588b7416c8cf4560ada88d8fb05cf1b2410cb25bd4b4c87f5",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-1263",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch74.md",
+          "version": "2026-11-08 · 生成批次 74",
+          "sourceSha256": [
+            "b1bbe9ea5dd162689e3c20ae232de3604ebc9e678eafbdff9a5544505e476442",
+            "5599a91b64586c9db15eb359273131377f3fa2056ed2346ae788a5955881a4fc"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1264",
@@ -29377,22 +29407,37 @@
     {
       "id": "exdb:1385",
       "originalName": "lever seated squat calf raise on leg press machine",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：腿举平台前脚掌支撑后踝屈伸可读，但原文要求完全伸膝，需核对可控膝位和边缘脚接触，不沿用锁膝指令。",
+      "reason": "2026-11-08 Codex CLI 图像生成双帧已逐帧对照（相位裁决条 · 杠杆类本批唯一入选）：正文为序列式步骤——第 4 步伸展膝盖将踏板推离是一次性入位，第 5–6 步（膝伸展后降脚跟、再以小腿推回）才是重复相位本体；按步骤序列裁决（与 1717 的同型收敛）：执行口径为膝位冻结的踝相位提踵，双帧膝角一致、只有脚跟高度变化。种子异议「原文要求完全伸膝……不沿用锁膝指令」按其字面执行：膝位取接近伸直但保留微屈（不锁死）；种子另两项核对点同步落实——前脚掌与脚趾压踏板下缘、脚跟悬于踏板边缘之外。定版双帧：坐姿腿举机、背靠靠垫、双手握侧把手，起始帧双膝近伸展带微屈、前脚掌压踏板下缘、脚跟悬于踏板下缘之下（踝背屈、小腿拉伸位）；关键帧膝角与起始目视一致（膝位冻结、无腿举相位）、脚跟显著抬高（踝跖屈）、前脚掌推压踏板——只有踝相位动。与 1391（正文令膝踝同时屈伸、混入腿举相位而被排除）恰成对照，1391 的排除不受本条影响；与已定版 1392（单腿提踵、自由脚搭机架）以双腿同步、与 0738（45 度雪橇提踵）以坐姿腿举机几何可辨区分。披露小注：双帧为赤足执行——与库内其他条目的穿鞋口径不一致，但双帧对内一致，且属该动作的合法执行变式，如实记录（同 0738/2334 既往披露情形）。正文已按相位口径修订（伸膝仅为入位、膝位近伸展微屈、踝相位为本体）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "e88c8e0f6bbffd22e8d4e8fc28bb30f76d63ac86c02a162920c9c7414e91151b",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-1385",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch74.md",
+          "version": "2026-11-08 · 生成批次 74",
+          "sourceSha256": [
+            "304c350e73b75deaa0a5653ac09b2b1b9030ed1677b44bf4f74fabab7d4c24e4",
+            "9f814e89088a6e8951ff197bade78005370c5e35b7dce8a6dd9a8f4b7c463d67"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0603",
@@ -35166,22 +35211,37 @@
     {
       "id": "exdb:1626",
       "originalName": "smith machine reverse decline close grip bench press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题反握，正文只有紧握没有掌向，反握特征缺失。",
+      "reason": "2026-11-08 Codex CLI 图像生成双帧已逐帧对照（握法裁决条 · 史密斯下斜推举家族收官）：种子意见点名标题反握、正文只有「紧握」未述掌向——正文是沉默而非反述（不同于 0764 的正面冲突），按名称为准取反握，形态与 0754/0758/0764 定版同构（双掌朝向自己头部一侧、手指自远侧绕过杠上、拇指相对），正文已按名称补入反握并披露。握距按正文明文取略窄于肩宽（与 0754 正文「略宽于肩宽」双侧明文对照，是本条与 0754 的可辨区分点）；凳面与脚固定按正文（史密斯调至下降位、躺下斜凳、双脚固定于凳脚垫下；与 1625 的双脚踩地口径不同，从各自正文，此处披露）；双肘内收为正文有据。定版双帧（双红线手部放大逐指核验）：起始帧双手掌心朝上朝向面部、指尖自杠顶勾回头部一侧、掌根托杠，与 0754 定版反握起始同构；关键帧双拳自杠下托握、掌心朝头部一侧、指背在杠上远侧，全伸位反握保持；两帧双手均落在双肩竖线之内、明显窄于肩宽。下斜推举家族矩阵四格就此完整（0753 宽正手 / 1625 窄正手 / 0754 宽反握 / 本条窄反握），与 0754 以握距、与 1625 以掌向双向互查成立。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "34b6baf43dae0a4ba1cb629d104068833ded0e7fb851dc8ffd3050f272356ecd",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-1626",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch74.md",
+          "version": "2026-11-08 · 生成批次 74",
+          "sourceSha256": [
+            "3696a7ae6ef9521657dbcda946da8f9e512386f907d08de97e26981faa84a82e",
+            "8eac3537609a1af42cea83e0ed955701af1b6bc7fa6191fc1784e5c79a2ce729"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0761",
