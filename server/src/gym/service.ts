@@ -628,6 +628,9 @@ const actionSchema = z.object({
       symmetry: z.number().min(0),
       leftReps: z.number().int().min(0).max(100000).optional(),
       rightReps: z.number().int().min(0).max(100000).optional(),
+      /** Per-rep symmetry values (hammer curls): kept with the score so a
+       * restored set can aggregate symmetry by median, as the tracker does. */
+      symmetryValues: z.array(z.number().min(0).max(100)).max(100000).optional(),
     })
     .optional(),
 });

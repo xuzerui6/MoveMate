@@ -2,7 +2,7 @@ import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
 import type {ExerciseMetrics,RecognitionDiagnostics} from './exerciseMetrics';
 import {medianLandmarks,poseIssueCopy} from './poseFeedback';
 import { COPY_CALIBRATED, COPY_HALF_REP, COPY_OUT_OF_FRAME, notSeenCopyFor } from './companionCopy';
-import {emptyCorrectionCounts,emptyFormBreakdown} from './sessionMigration';
+import {emptyCorrectionCounts,emptyFormBreakdown,medianOf} from './sessionMigration';
 import {NEW_EXERCISES,type NewExerciseType} from './newExercises';
 import {LIBRARY_RECOGNITION} from '../../gym/libraryRecognition';
 import type {PoseIssue} from '../types';
@@ -29,6 +29,8 @@ type RaiseSample={t:number;raised:number;elbow:number;fwd:boolean;lat:boolean};
 type SustainRun={start:number;last:number;n:number}|null;
 type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number;controlSamples:TimedValue[];speedSpans:TimedSpan[];samples:RaiseSample[];overshoot:boolean;dirLatched:boolean;dirMixed:boolean;dirTurned:boolean;fwdRun:SustainRun;latRun:SustainRun};
 type SideCompletion={side:number;at:number;peakStart:number;peakEnd:number;peakAmp:number;peakPosture:number;peakOther:number;peakElbow:number;duration:number;scoring:boolean;control:number;shift:number;speed:number};
+/** One side's confirmed peak: midpoint time + peak value in the movement's peak units (see lastPeak). */
+type PeakMark={at:number;value:number};
 const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180,controlSamples:[],speedSpans:[],samples:[],overshoot:false,dirLatched:false,dirMixed:false,dirTurned:false,fwdRun:null,latRun:null});
 /** Timestamped stability evidence: a point sample of the control penalty (held
  * until the next sample) or one angular-velocity window with its true span. */
@@ -164,7 +166,10 @@ const PEAK_EVIDENCE_WINDOW_MS=300,PEAK_EVIDENCE_BAND_DEG=10,EVIDENCE_MIN_SPAN_MS
  * killing hole measured ≈0.8 s; a longer interruption voids the cycle exactly
  * as before. Preservation never fabricates: feedPeakTrack's gap rule disables
  * the parabola across holes, evidence runs break on gaps > PEAK_GAP_MS, and
- * return credit stays capped per interval. */
+ * return credit stays capped per interval. The hammer-curl peer-peak memory
+ * (below) reuses the same bound and the same hole clock: 2000 ms is also the
+ * adaptive wrapper's hammer evidence-freeze grace (HAMMER_FREEZE_GRACE_MS), so
+ * both layers agree on how long a hole may last before state is void. */
 const CYCLE_PRESERVE_MS=2000;
 export type PeakEvidenceVerdict='qualified'|'revoked'|'insufficient';
 /** Judges one closed front-raise peak episode from its sampled evidence.
@@ -320,11 +325,15 @@ export class ExtendedExerciseTracker {
   /** Each side's most recent confirmed peak (midpoint time + peak value in the
    * movement's peak units: elbow angle for hammer curls, raised angle for front
    * raises). Lets a rep that emits as a single still score symmetry peak-to-peak
-   * when the other side peaked at nearly the same time (round 3). */
-  private lastPeak:[{at:number;value:number}|null,{at:number;value:number}|null]=[null,null];
-  /** When the current front-raise detection hole began (the last measured
-   * frame's time). Drives cycle preservation in softInterrupt (round 4);
-   * cleared by the next successfully measured frame or any hard interrupt. */
+   * when the other side peaked at nearly the same time (round 3). For hammer
+   * curls this record is the peer-peak memory: soft interrupts preserve it
+   * (folded with any peak evidence the open cycles hold) while the hole is
+   * short — see peerPeakSnapshot and softInterrupt. */
+  private lastPeak:[PeakMark|null,PeakMark|null]=[null,null];
+  /** When the current detection hole began (the last measured frame's time).
+   * Drives cycle preservation in softInterrupt (round 4, front raise) and
+   * peer-peak preservation (hammer curl); cleared by the next successfully
+   * measured frame or any hard interrupt. */
   private cycleHoleStart:number|null=null;
   /** Generic-path stability evidence, aggregated by sustainedPeak at completion. */
   private controlSamples:TimedValue[]=[];
@@ -338,7 +347,15 @@ export class ExtendedExerciseTracker {
     this.metrics={...restored,reps:Math.max(0,restored.reps||0),targetReps,perfectReps:restored.perfectReps||0,formScore:acc.count?Math.round(acc.total/acc.count):0,phase:'standing',feedback:definitions[type].placement,scoreAccumulator:acc,formBreakdown:emptyFormBreakdown(),correctionCounts:{...emptyCorrectionCounts(),...restored.correctionCounts},lastRepIssues:[],repeatedIssue:null,poseFeedback:{status:'uncertain',confidence:0,issues:[],primaryIssue:null,affectedJoints:[],calibrated:false,message:'站到起始姿势，陪我停两秒'}};
     this.updateAverage();
   }
-  private updateAverage(){const a=this.metrics.scoreAccumulator,b=emptyFormBreakdown();for(const k of axes)b[k]=a.count?Math.round(a[k]/a.count):0;this.metrics.formBreakdown=b;}
+  private updateAverage(){const a=this.metrics.scoreAccumulator,b=emptyFormBreakdown();for(const k of axes)b[k]=a.count?Math.round(a[k]/a.count):0;
+    // Symmetry is the one axis that does not aggregate by mean when per-rep
+    // values were recorded (hammer curls record them in emitHammerRep): the
+    // set value is the median of the per-rep symmetry values, so one rep whose
+    // elbow channel was struck by episodic noise cannot drag the whole set.
+    // Accumulators without recorded values (every other movement, and hammer
+    // sets restored from before this field existed) keep the mean above.
+    const values=a.symmetryValues;if(values&&values.length)b.symmetry=Math.round(medianOf(values));
+    this.metrics.formBreakdown=b;}
   private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.retSince=null;this.retAccum=0;this.retPrevAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;this.hammerSides=[freshSideCycle(),freshSideCycle()];this.hammerPending=null;this.raiseSides=[freshSideCycle(),freshSideCycle()];this.raisePending=null;this.lastPeak=[null,null];this.controlSamples=[];this.speedSpans=[];this.upperArmDevAt=null;this.upperArmClearAt=null;this.freezeBridged=false;}
   /** The adaptive wrapper deliberately froze frames during a hammer-curl evidence freeze
    * (see AdaptiveRecognition); the next frame gap is therefore known-benign and must not be
@@ -352,7 +369,7 @@ export class ExtendedExerciseTracker {
     else{if(this.upperArmClearAt===null)this.upperArmClearAt=now;if(now-this.upperArmClearAt>=UPPER_ARM_CLEAR_MS)this.upperArmDevAt=null;}
     return this.upperArmDevAt!==null&&now-this.upperArmDevAt>=UPPER_ARM_SUSTAIN_MS;
   }
-  interrupt(reason='先停一下，继续时重新校准',feedback=reason,opts?:{preserveCalibration?:boolean;preserveReady?:boolean;preserveCycle?:boolean}){
+  interrupt(reason='先停一下，继续时重新校准',feedback=reason,opts?:{preserveCalibration?:boolean;preserveReady?:boolean;preserveCycle?:boolean;preservePeerPeak?:boolean}){
     // preserveCalibration (round 3): the calibration bank, the open hold segment
     // and the calibration baseline survive. The baseline is calibration state
     // too — the per-side updaters dereference it unconditionally once ready, so
@@ -366,13 +383,20 @@ export class ExtendedExerciseTracker {
     // CYCLE_PRESERVE_MS): the per-side raise cycles, a pending completion and
     // the last-peak record additionally survive, so a short hole cannot kill
     // an open, already-qualified segment.
+    // preservePeerPeak (hammer curl, soft interrupts within the same bound):
+    // only the peer-peak memory survives — the snapshot folds each side's
+    // completed record together with whatever peak evidence its still-open
+    // cycle holds, so a hole cannot erase a peak the peer already produced.
+    // The cycles and any pending completion still reset exactly as before.
     const preserve=!!opts?.preserveCalibration;
     const bank=preserve?this.calibrationBank:0,segment=preserve?this.calibration:null,ready=preserve&&opts?.preserveReady?this.ready:false,baseline=preserve?this.baseline:null,progress=preserve?this.diagnostics.calibrationProgress:0;
     const keepCycle=!!opts?.preserveCycle;
     const raiseSides=keepCycle?this.raiseSides:null,raisePending=keepCycle?this.raisePending:null,lastPeak=keepCycle?this.lastPeak:null;
+    const peerPeaks=opts?.preservePeerPeak?this.peerPeakSnapshot():null;
     this.frames=[];this.worlds=[];this.last=null;this.calibration=segment;this.calibrationBank=bank;this.baseline=baseline;this.ready=ready;this.side=null;this.times=[];this.previous=null;this.resetCycle();
     if(keepCycle&&raiseSides&&lastPeak){this.raiseSides=raiseSides;this.raisePending=raisePending;this.lastPeak=lastPeak;}
-    if(!keepCycle)this.cycleHoleStart=null;
+    if(peerPeaks)this.lastPeak=peerPeaks;
+    if(!keepCycle&&!peerPeaks)this.cycleHoleStart=null;
     this.diagnostics={...this.diagnostics,stage:'tracking_lost',fps:0,calibrationProgress:progress,lastResetReason:reason};
     this.metrics={...this.metrics,phase:'standing',feedback,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:ready,message:feedback}};
     return this.metrics;
@@ -393,14 +417,18 @@ export class ExtendedExerciseTracker {
     // Round 4: for front raise, a transient gate also preserves the in-flight
     // cycle while the hole is short (CYCLE_PRESERVE_MS from the last measured
     // frame). A longer hole — or any non-soft interrupt — voids the cycle
-    // exactly as before.
-    let preserveCycle=false;
-    if(this.type==='front_raise'){
+    // exactly as before. Hammer curls preserve only the peer-peak memory over
+    // the same hole and bound (the diagnosis: resetCycle wiping lastPeak on
+    // every transient gate is what starved the round-3 peak-to-peak rescue);
+    // their cycles still reset, so no rep can be fabricated across a hole.
+    let preserveCycle=false,preservePeerPeak=false;
+    if(this.type==='front_raise'||this.type==='hammer_curl'){
       if(this.cycleHoleStart===null)this.cycleHoleStart=this.last??now;
-      preserveCycle=now-this.cycleHoleStart<=CYCLE_PRESERVE_MS;
-      if(!preserveCycle)this.cycleHoleStart=null;
+      const withinHole=now-this.cycleHoleStart<=CYCLE_PRESERVE_MS;
+      if(this.type==='front_raise')preserveCycle=withinHole;else preservePeerPeak=withinHole;
+      if(!withinHole)this.cycleHoleStart=null;
     }
-    return this.interrupt(reason,feedback,{preserveCalibration:true,preserveReady:true,preserveCycle});
+    return this.interrupt(reason,feedback,{preserveCalibration:true,preserveReady:true,preserveCycle,preservePeerPeak});
   }
   /** Form-rejection interrupt: measure() judged the pose itself invalid (wrong
    * posture family, direction unconfirmed, baseline moved, side switched
@@ -582,6 +610,32 @@ export class ExtendedExerciseTracker {
     const scorable=confidence>=.7&&[11,12,23,24,...(this.type==='romanian_deadlift'||this.type==='glute_bridge'||this.type==='barbell_deadlift'?[25,26,27,28]:[])].every(i=>(points[i].visibility??0)>=.7);
     return {start,peak,amplitude,angle:measured,confidence,scorable,posture,symmetry,controlPenalty,hint,side,basis,motion,points:p,torso,tilt,elbows:perSide,raiseSides:raiseData,framing};
   }
+  /** The peer-peak memory as it stands just before a cycle reset: each side's
+   * completed peak record (lastPeak), superseded by fresher peak evidence its
+   * still-open cycle holds — a locked peak (peakStart set by a valid closed
+   * episode) that never reached completion, or an open peak episode whose
+   * deepest sample already clears the same dwell floor a closed episode must
+   * clear (PEAK_MIN_DWELL_MS in-zone up to the last measured frame). Spent only
+   * through interrupt()'s preservePeerPeak path, so a soft interrupt cannot
+   * erase a peak the peer already produced; peerPeakFor still applies its own
+   * PEAK_PAIR_WINDOW_MS check when the memory is used, so a snapshot can never
+   * pair two peaks that were not actually close in time. Hammer peak units:
+   * the depth signal is 80 − elbow, so an open track's peak value is
+   * 80 − track.best (a closed episode's interpolated refinement is unknowable
+   * for an episode that never closed; the sampled extremum is the honest
+   * record, and it is what the track itself would have closed on had the
+   * signal left the zone on the next frame). */
+  private peerPeakSnapshot():[PeakMark|null,PeakMark|null]{
+    const snap:[PeakMark|null,PeakMark|null]=[this.lastPeak[0],this.lastPeak[1]];
+    for(const s of [0,1] as const){
+      const cyc=this.hammerSides[s];
+      let cand:PeakMark|null=null;
+      if(cyc.peakStart!==null)cand={at:(cyc.peakStart+cyc.peakEnd)/2,value:cyc.peakElbow};
+      else if(cyc.track.open&&cyc.track.best>-Infinity&&(this.last??cyc.track.bestAt)-cyc.track.start>=PEAK_MIN_DWELL_MS)cand={at:cyc.track.bestAt,value:80-cyc.track.best};
+      if(cand&&(!snap[s]||cand.at>=snap[s].at))snap[s]=cand;
+    }
+    return snap;
+  }
   /** The other side's confirmed peak for peak-to-peak symmetry (round 3): its last
    * completion's peak if that peaked within PEAK_PAIR_WINDOW_MS of this rep's
    * peak, else its still-open cycle's confirmed peak under the same window. */
@@ -610,7 +664,10 @@ export class ExtendedExerciseTracker {
     const score=Math.round(breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2+breakdown.symmetry*.2),scored=parts.every(p=>p.scoring)&&f.scorable,issues:PoseIssue[]=[];
     if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(breakdown.symmetry<70)issues.push('poor_coordination');
     const acc={...this.metrics.scoreAccumulator},counts={...this.metrics.correctionCounts};
-    if(scored){acc.count++;acc.total+=score;axes.forEach(k=>acc[k]+=breakdown[k]);issues.forEach(k=>counts[k]++);}
+    // Hammer curls record each scored rep's symmetry value: the set-level axis
+    // aggregates them by median (see updateAverage). This is the only emit path
+    // that records values, which is what scopes the median to hammer curls.
+    if(scored){acc.count++;acc.total+=score;axes.forEach(k=>acc[k]+=breakdown[k]);acc.symmetryValues=[...(acc.symmetryValues??[]),breakdown.symmetry];issues.forEach(k=>counts[k]++);}
     this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`:`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};
     this.updateAverage();
     return true;

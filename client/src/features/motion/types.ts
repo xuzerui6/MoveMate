@@ -105,7 +105,7 @@ export interface Equipment {
   owned: boolean
 }
 
-export interface ScoreAccumulator extends FormBreakdown { count: number; total: number; leftReps?: number; rightReps?: number }
+export interface ScoreAccumulator extends FormBreakdown { count: number; total: number; leftReps?: number; rightReps?: number; /** Per-rep symmetry values in emit order (hammer curls, 2026-11-08): the set's symmetry axis aggregates these by median instead of the mean of `symmetry` sums. Absent on accumulators written before this field existed — consumers fall back to the mean. The `symmetry` sum itself is still maintained for that fallback. */ symmetryValues?: number[] }
 
 export interface WorkoutMetrics {
   lastRepScore?: number | null

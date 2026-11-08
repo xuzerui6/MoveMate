@@ -1,3 +1,5 @@
+import { medianOf } from "../motion/lib/sessionMigration";
+
 export function restoredSetMetrics(set: any) {
   const score = set?.score || {},
     count = score.count || 0,
@@ -10,7 +12,14 @@ export function restoredSetMetrics(set: any) {
       depth: mean(score.depth),
       stability: mean(score.stability),
       trunk: mean(score.trunk),
-      symmetry: mean(score.symmetry),
+      // Symmetry follows the tracker's aggregation: when the set recorded
+      // per-rep symmetry values (hammer curls), the set value is their median,
+      // not the mean of the symmetry sum — otherwise restoring a synced set
+      // would silently revert the median the live tracker reported.
+      symmetry:
+        Array.isArray(score.symmetryValues) && score.symmetryValues.length
+          ? Math.round(medianOf(score.symmetryValues))
+          : mean(score.symmetry),
     },
   };
 }
