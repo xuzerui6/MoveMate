@@ -214,10 +214,10 @@ function chipsSvg(chips: Chip[], y: number): string {
   return parts.join('')
 }
 
-function axesSvg(data: SetCardData, axesTop: number): string {
+function axesSvg(data: SetCardData, axesTop: number, step = 92): string {
   return (data.axes || [])
     .map((axis, i) => {
-      const y = axesTop + i * 92
+      const y = axesTop + i * step
       const fillW = axis.text ? 0 : Math.round(672 * Math.min(100, Math.max(0, axis.value)) / 100)
       const valueSvg = axis.text
         ? `<text x="${RIGHT}" y="${y + 11}" text-anchor="end" font-family="${FONT}" font-size="30" font-weight="700" fill="${MUTED}">${escapeXml(axis.text)}</text>`
@@ -238,17 +238,30 @@ function scoredBody(data: SetCardData, bandBottom: number): string {
   if (data.setIndex != null) chips.push({ pre: '第 ', val: String(data.setIndex), post: ' 组' })
   if (data.personalBest) chips.push({ pre: '个人最佳' })
   const chipsY = scoreBaseline + 54
-  const axesTop = chipsY + 62 + 88
+  // Scope label (Codex round-5): a subset-scoped total names its axes on
+  // the card too, directly under the chips and above the axis rows it
+  // refers to. With no note the geometry is byte-identical to before;
+  // with a note the axes block reclaims the note's height from its top
+  // gap, and two-line name bands (the tightest case) also tighten the
+  // axis row step so the last row stays clear of the footer rule.
+  const note = data.scoreNote || ''
+  const noteY = chipsY + 62 + 42
+  const axesTop = note ? noteY + 46 : chipsY + 62 + 88
+  const axesStep = note && bandBottom > 340 ? 84 : 92
+  const noteSvg = note
+    ? `<text x="${PAD}" y="${noteY}" font-family="${FONT}" font-size="29" font-weight="600" fill="${MUTED}"${fitAttrs(note, 29, RIGHT - PAD)}>${escapeXml(note)}</text>`
+    : ''
   return `<text x="${PAD}" y="${scoreBaseline}" font-family="${FONT}" font-size="246" font-weight="800" fill="${PRIMARY}">${escapeXml(scoreText)}</text>
 <text x="${Math.round(ofX)}" y="${scoreBaseline - 16}" font-family="${FONT}" font-size="39" font-weight="700" fill="${MUTED}">/ 100 · 本组得分</text>
 ${chipsSvg(chips, chipsY)}
-${axesSvg(data, axesTop)}`
+${noteSvg}
+${axesSvg(data, axesTop, axesStep)}`
 }
 
-/** Coverage rule (2026-11-09): the set was scored on its assessable axes
- * but the total is withheld — the hero slot carries the pause itself
- * (never a number, never the unscored body's framing copy), over the
- * same chips + axis rows the scored body uses. */
+/** Minimum-axis contract (2026-11-09): the set was scored on its
+ * assessable axes but the total is withheld — the hero slot carries the
+ * pause itself (never a number, never the unscored body's framing
+ * copy), over the same chips + axis rows the scored body uses. */
 function withheldBody(data: SetCardData, bandBottom: number): string {
   const heroBaseline = bandBottom + 215
   const chips: Chip[] = [{ pre: '完成 ', val: String(data.reps), post: ` ${data.unit}` }]

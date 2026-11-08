@@ -1,7 +1,7 @@
 import { exerciseInfo } from '../motion/lib/exercises'
 import { requiredXp } from '../motion/lib/rewards'
 import type { WorkoutSession } from '../motion/types'
-import { assessmentFromScore, axisStateText, totalWithheld, type AxisAssessments } from '../motion/lib/axisAssessment'
+import { assessmentFromScore, axisStateText, totalScopeNote, totalWithheld, type AxisAssessments } from '../motion/lib/axisAssessment'
 
 /**
  * 分享卡数据层（纯函数，无 DOM）。
@@ -64,7 +64,7 @@ export function buildWorkoutCardData(row: any, streakDays: number): WorkoutCardD
   const exerciseIds = new Set(completed.map((s) => s.exercise?.id).filter(Boolean))
   // 板上字段定义：平均分 = 各已评分组得分的平均值（组得分 = 该组 total/count）。
   // 与完成页按次加权的「训练识别均分」口径不同，以板为准（差异已记入实现文档）。
-  // 覆盖率规则（2026-11-09）：总分被暂停的组不进入平均分——把暂停的总分
+  // 最低轴契约（2026-11-09）：总分被暂停的组不进入平均分——把暂停的总分
   // 混进平均值等于换个地方把它印出来；其余已评分组照常平均。
   const scoredSets = completed.filter((s) => (s.score?.count || 0) > 0 && !totalWithheld(assessmentFromScore(s.score)))
   const avgScore =
@@ -98,12 +98,17 @@ export interface SetCardData {
   nameZh: string
   nameEn: string
   scored: boolean
-  /** Coverage rule (2026-11-09): the set was scored, but its total is
-   * withheld (numeric axes cover <60% of the nominal weight) — the card
-   * renders the withheld body (axes + reps, no total) instead of either
-   * the score body or the unscored body. */
+  /** Minimum-axis contract (2026-11-09): the set was scored, but its
+   * total is withheld — the card renders the withheld body (axes + reps,
+   * no total) instead of either the score body or the unscored body. */
   totalWithheld?: boolean
   score: number | null
+  /** Scope label (Codex round-5): when the presented total is computed
+   * over a subset of the applicable axes (another applicable axis is
+   * bands/category), the card names the axes the total covers — in the
+   * card's own axis labels — next to the total. Null when the total
+   * covers every applicable axis, and never set for a withheld total. */
+  scoreNote?: string | null
   /** 板上固定四轴：幅度 / 稳定性 / 躯干 / 对称（FormBreakdown 语义） */
   axes: SetCardAxis[] | null
   reps: number
@@ -115,6 +120,7 @@ export interface SetCardData {
 
 const AXIS_LABELS = ['幅度', '稳定性', '躯干', '对称'] as const
 const AXIS_KEYS = ['depth', 'stability', 'trunk', 'symmetry'] as const
+const AXIS_LABEL_RECORD = { depth: '幅度', stability: '稳定性', trunk: '躯干', symmetry: '对称' } as const
 
 function axesFrom(breakdown: { depth: number; stability: number; trunk: number; symmetry: number }, assessment?: AxisAssessments): SetCardAxis[] {
   return AXIS_KEYS.map((key, i) => {
@@ -150,6 +156,7 @@ export function buildGymSetCard(set: any, index: number, dateInput: Date | strin
     scored,
     totalWithheld: withheld,
     score: scored && !withheld ? Math.round((set.score.total || 0) / count) : null,
+    scoreNote: scored && !withheld ? totalScopeNote(assessment, AXIS_LABEL_RECORD) : null,
     axes: breakdown ? axesFrom(breakdown, assessment) : null,
     reps: set?.reps || 0,
     unit: '次',
@@ -165,9 +172,9 @@ export function buildMotionSetCard(result: WorkoutSession, history: WorkoutSessi
   const info = exerciseInfo(result.exerciseType)
   const count = (result as any).scoreAccumulator?.count ?? 0
   const scored = count > 0 || result.formScore > 0
-  // Coverage rule (2026-11-09): a withheld total is not printed on the
-  // card and cannot set a 「个人最佳」 — the comparison itself would
-  // publish the number. Historical bests stay as recorded (not recomputed).
+  // Minimum-axis contract (2026-11-09): a withheld total is not printed
+  // on the card and cannot set a 「个人最佳」 — the comparison itself
+  // would publish the number. Historical bests stay as recorded.
   const withheld = scored && totalWithheld((result as any).axisAssessment)
   const previousBest = history
     .filter((s) => s.id !== result.id && s.exerciseType === result.exerciseType && s.source !== 'demo')
@@ -182,6 +189,7 @@ export function buildMotionSetCard(result: WorkoutSession, history: WorkoutSessi
     scored,
     totalWithheld: withheld,
     score: scored && !withheld ? Math.round(result.formScore || 0) : null,
+    scoreNote: scored && !withheld ? totalScopeNote((result as any).axisAssessment, AXIS_LABEL_RECORD) : null,
     axes: scored ? axesFrom(result.formBreakdown, (result as any).axisAssessment) : null,
     reps: result.reps || 0,
     unit: info.unit,

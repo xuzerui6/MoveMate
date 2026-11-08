@@ -25,7 +25,7 @@ import Dialog from "../../components/Dialog";
 import AnimatedNumber from "../../components/AnimatedNumber";
 import AnimatedProgress from "../../components/AnimatedProgress";
 import { buildSetReveal } from "../motion/lib/companionCopy";
-import { assessmentFromScore, axisStateText, totalWithheld, TOTAL_WITHHELD_NOTE } from "../motion/lib/axisAssessment";
+import { assessmentFromScore, axisStateText, totalScopeNote, totalWithheld, TOTAL_WITHHELD_NOTE } from "../motion/lib/axisAssessment";
 import ShareCardButton from "../share/ShareCardButton";
 import { buildGymSetCard, buildRecordCard, buildWorkoutCardData } from "../share/cardData";
 import { milestoneCardSvg, setCardSvg, workoutCardSvg } from "../share/cardSvg";
@@ -236,6 +236,11 @@ export default function PlanWorkout() {
   const lastAssessment = lastCameraSet ? assessmentFromScore(lastCameraSet.score) : undefined;
   const prevAssessment = prevCameraSet ? assessmentFromScore(prevCameraSet.score) : undefined;
   const restNumericAxes = axisKeys.filter(k => (!lastAssessment || lastAssessment[k].kind === "numeric") && (!prevAssessment || prevAssessment[k].kind === "numeric"));
+  // Scope label (Codex round-5): when the last set's presented total is
+  // computed over a subset of the applicable axes (another applicable axis
+  // is bands/category), the reveal names the axes it covers — in the
+  // profile's own axis names — instead of the generic subset note.
+  const restScopeNote = lastAssessment && capability?.axes ? totalScopeNote(lastAssessment, { depth: capability.axes[0], stability: capability.axes[1], trunk: capability.axes[2], symmetry: capability.axes[3] }) : null;
   const restReveal = row?.phase === "resting" && lastCameraSet && lastBreakdown ? buildSetReveal(lastBreakdown, prevCameraSet ? setBreakdownOf(prevCameraSet) : null, { reps: lastCameraSet.reps || 0, unit: current ? repUnit(current.exercise) : "次", scored: true, axisLabels: capability?.axes ? { depth: capability.axes[0], stability: capability.axes[1], trunk: capability.axes[2], symmetry: capability.axes[3] } : undefined, numericAxes: [...restNumericAxes] }) : null;
   const options = useWorkoutPreferences(!!row && !finished, restSeconds);
   const snapshot = useRef<any>({});
@@ -837,7 +842,7 @@ export default function PlanWorkout() {
                       </div>
                     );
                   })}
-                  {lastAssessment && axisKeys.some(k => lastAssessment[k].kind !== "numeric") && <p>{totalWithheld(lastAssessment) ? TOTAL_WITHHELD_NOTE : "总分只按能评的项目算——评不了的不会算成低分"}</p>}
+                  {lastAssessment && axisKeys.some(k => lastAssessment[k].kind !== "numeric") && <p>{totalWithheld(lastAssessment) ? TOTAL_WITHHELD_NOTE : restScopeNote ?? "总分只按能评的项目算——评不了的不会算成低分"}</p>}
                   {restReveal.goalLine && <p className="gym-reveal-goal">{restReveal.goalLine}</p>}
                 </div>
               )}
