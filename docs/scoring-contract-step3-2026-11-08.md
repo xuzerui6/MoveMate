@@ -232,5 +232,7 @@ protocol (it feeds only measurable frames by construction).
   (entry at 3 s, exit on a measurable frame, short bursts unaffected),
   restore/card/reveal consumers, and server round-trips.
 
-Deploy: production `dongban.xyz` Version `<filled on deploy>`, preview
-`preview.dongban.xyz` Version `<filled on deploy>`.
+Deploy: production `dongban.xyz` Version `467ba0b5-8521-4017-91d0-5dc9757ed23b`, preview
+`preview.dongban.xyz` Version `c2af4539-af33-45c7-a695-59cd052c3bcf`
+(main `9ffec27`, CI run 42491445264 green; live bundles verified to contain
+the new copy). No bcrypt fallback was needed in the deploy worktree.
