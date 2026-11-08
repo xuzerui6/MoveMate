@@ -22,6 +22,10 @@ const slots: Record<string, string[]> = { head: ['penguin_hood','sunset_bandana'
 const defaultEquipment = { head:'penguin_hood', top:'ocean_wave_top', bottom:'purple_star_shorts', shoes:'comet_running_shoes', prop:'shiba_bottle', badge:'emerald_star_medal' };
 export interface SessionRow { id:string; user_id:number; game_id:number|null; sport_type:string; source:string; status:string; active_since:string|null; effective_ms:number; reps:number; metrics:string; xp:number; settled:number; created_at:string; ended_at:string|null; workout_id?:string }
 function elapsed(row: SessionRow, now = Date.now()) { return Number(row.effective_ms) + (row.status === 'running' && row.active_since ? Math.max(0, onlineCutoff(row,now) - Date.parse(row.active_since)) : 0); }
+/** Median of per-rep values (middle value; mean of the two middle values for an
+ * even count). Mirrors the client tracker: a hammer-curl set's symmetry axis
+ * aggregates its recorded per-rep symmetry values by median, not by mean. */
+function medianOf(values: number[]): number { const sorted=[...values].sort((a,b)=>a-b);const mid=Math.floor(sorted.length/2);return sorted.length%2?sorted[mid]:(sorted[mid-1]+sorted[mid])/2; }
 function decode<T>(raw: string, fallback: T): T { try { return JSON.parse(raw); } catch { return fallback; } }
 export function sessionView(row: SessionRow) {
   return { id:row.id, workoutId:row.workout_id||undefined, gameId:row.game_id, sportType:row.sport_type, source:row.source, status:row.status, effectiveSeconds:Math.floor(elapsed(row)/1000), reps:row.reps, xpEarned:row.xp, settled:Boolean(row.settled), startTime:row.created_at, endTime:row.ended_at, metrics:decode(row.metrics,{}) };
@@ -101,8 +105,18 @@ function cleanMetrics(data:any, previous:any={}) {
       if(typeof n!=='number'||!Number.isFinite(n)||n<0||n>acc.count*100)throw new ValidationError('评分累计值无效');
       out.scoreAccumulator[key]=n;
     }
+    // Per-rep symmetry values (hammer curls, recorded by the client tracker):
+    // validated and stored with the accumulator, and the set symmetry below is
+    // their median — without this the stored record would silently revert the
+    // axis to the mean of the symmetry sum on every sync.
+    let symmetryMedian:number|null=null;
+    if(acc.symmetryValues!==undefined){
+      if(!Array.isArray(acc.symmetryValues)||acc.symmetryValues.length>acc.count||acc.symmetryValues.some((n:unknown)=>typeof n!=='number'||!Number.isFinite(n)||n<0||n>100))throw new ValidationError('评分累计值无效');
+      out.scoreAccumulator.symmetryValues=[...acc.symmetryValues];
+      if(acc.symmetryValues.length)symmetryMedian=Math.round(medianOf(acc.symmetryValues));
+    }
     out.formScore=acc.count?Math.round(acc.total/acc.count):0;
-    out.formBreakdown=Object.fromEntries(['depth','stability','trunk','symmetry'].map(k=>[k,acc.count?Math.round(acc[k]/acc.count):0]));
+    out.formBreakdown=Object.fromEntries(['depth','stability','trunk','symmetry'].map(k=>[k,k==='symmetry'&&symmetryMedian!==null?symmetryMedian:acc.count?Math.round(acc[k]/acc.count):0]));
   }
   return out;
 }

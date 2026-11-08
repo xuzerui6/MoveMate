@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {ExtendedExerciseTracker,sustainedPeak,evaluatePeakEvidence,type TimedSpan} from '../src/features/motion/lib/extendedRecognition';
+import {medianOf} from '../src/features/motion/lib/sessionMigration';
 import {newDemonstrationPose,createRecognitionTracker} from '../src/features/motion/lib/recognition';
 import {poseIssueCopy} from '../src/features/motion/lib/poseFeedback';
 import {COPY_FRAMING,COPY_FRAMING_UPPER,COPY_NOT_SEEN,COPY_NOT_SEEN_UPPER,framingCopyFor,notSeenCopyFor} from '../src/features/motion/lib/companionCopy';
@@ -429,6 +430,122 @@ test('hammer curls keep the peakOther penalty when the resting arm is held half-
   assert.equal(tracker.metrics.reps,2);
   const sym=tracker.metrics.formBreakdown.symmetry;
   assert.ok(sym>=43&&sym<=49,`symmetry ${sym} should stay ≈46 where peakOther legitimately applies`);
+});
+// --- Hammer symmetry round (2026-11-08): peer-peak memory across soft interrupts + set median ---
+/** Choreographed split bilateral effort for the peer-peak fixtures: the left
+ * arm peaks (79°) and its peak episode CLOSES — the peak is locked in its
+ * cycle — then it descends only to a 110° hover and never completes. The right
+ * arm is mid-rise when a blind burst (visibility .1, no world) interrupts;
+ * after the burst it finishes its rise, peaks ≈600 ms after the left peak's
+ * midpoint (inside the 800 ms pairing window), returns and completes. The
+ * left arm stays at 110° past the right's deepest frame, so the instantaneous
+ * fallback would read peakOther=110° → symmetry 64: the two paths are cleanly
+ * separable. With `blindFrames` beyond the 2000 ms preservation bound, the
+ * memory is wiped mid-burst (and the pairing window would reject a peak that
+ * old anyway — the bound is what guarantees no stale state is carried). */
+function splitEffort(blindFrames:number){
+  const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
+  const step=1000/24;let t=0;
+  const feed=(l:number,r:number)=>{const raw=curlPose(l,r);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
+  const blind=()=>{const raw=curlPose(160,160);raw.forEach(p=>p.visibility=.1);tracker.update(raw,t,1,null);t+=step;};
+  const glide=(a:number,b:number,n:number)=>Array.from({length:n},(_,k)=>{const u=(1-Math.cos(Math.PI*(k+1)/n))/2;return a+(b-a)*u;});
+  for(let c=0;c<63;c++)feed(160,160);
+  assert.equal(tracker.diagnostics.stage,'ready');
+  // Left: rise 8, hold 4 (episode locks on the descent's first frame), descend
+  // to a 110° hover. Right: rests 6 frames, then a slow rise (14-frame glide;
+  // the samples seen before the burst reach only ≈94°, never the peak zone).
+  const leftRise=glide(160,79,8),rightRise=glide(160,79,14);
+  for(let k=0;k<8;k++)feed(leftRise[k],k<6?160:rightRise[k-6]);
+  for(let k=0;k<4;k++)feed(79,rightRise[2+k]);
+  const leftDown=glide(79,110,4);
+  for(let k=0;k<4;k++)feed(leftDown[k],rightRise[6+k]);
+  // Both arms hold while the right's slow rise is interrupted mid-flight.
+  for(let b=0;b<blindFrames;b++)blind();
+  // Right finishes its rise from ≈94° (its last pre-burst sample), peaks,
+  // returns; left keeps hovering at 110° until the right's peak is well past,
+  // then both settle back to rest.
+  for(const e of [90,84])feed(110,e);
+  for(let k=0;k<4;k++)feed(110,79);
+  const rightDown=glide(79,160,8);
+  for(let k=0;k<8;k++)feed(110,rightDown[k]);
+  for(let c=0;c<6;c++)feed(110,160);
+  const leftDown2=glide(110,160,6);
+  for(let k=0;k<6;k++)feed(leftDown2[k],160);
+  for(let c=0;c<40;c++)feed(160,160);
+  return tracker;
+}
+test('hammer peer-peak memory survives a short soft interrupt and rescues a split bilateral rep',()=>{
+  const tracker=splitEffort(5); // ≈208 ms hole, inside the 2000 ms bound
+  assert.equal(tracker.metrics.reps,1);
+  const values=tracker.metrics.scoreAccumulator.symmetryValues;
+  assert.equal(values?.length,1);
+  // Peak-to-peak against the left arm's preserved locked peak (≈79° vs ≈79°).
+  // Before this round the interrupt wiped lastPeak and the same rep fell to
+  // the instantaneous formula (peakOther 110° → ≈64).
+  assert.ok(values![0]>=90,`symmetry ${values![0]} should be peak-to-peak (≥90), not instantaneous (≈64)`);
+  assert.ok(tracker.metrics.formBreakdown.symmetry>=90);
+});
+test('hammer peer-peak memory does not survive a hole past the preservation bound',()=>{
+  const tracker=splitEffort(60); // ≈2500 ms hole: the bound expires mid-burst
+  assert.equal(tracker.metrics.reps,1);
+  const values=tracker.metrics.scoreAccumulator.symmetryValues;
+  assert.equal(values?.length,1);
+  // No rescue: the rep lands on the instantaneous path (peakOther 110° → ≈64).
+  assert.ok(values![0]>=50&&values![0]<=80,`symmetry ${values![0]} should be the instantaneous ≈64 after expiry, not peak-to-peak`);
+});
+test('medianOf takes the middle value, averaging the two middles on even counts',()=>{
+  assert.equal(medianOf([]),0);
+  assert.equal(medianOf([46]),46);
+  assert.equal(medianOf([100,46,100]),100);
+  assert.equal(medianOf([40,60]),50);
+  assert.equal(medianOf([37,50,63,100]),56.5);
+  assert.equal(medianOf([90,10,80,20]),50);
+});
+test('hammer set symmetry is the median of per-rep values, so one outlier rep cannot convict the set',()=>{
+  const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
+  const step=1000/24;let t=0;
+  const feed=(l:number,r:number)=>{const raw=curlPose(l,r);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
+  for(let c=0;c<63;c++)feed(160,160);
+  const P=48;
+  const wave=(k:number)=>{const u=(k%P)/P;return 160-85*(1-Math.cos(2*Math.PI*u))/2;};
+  // Rep A: true single-arm, resting arm fully extended → peakOther 160 → 100.
+  for(let k=0;k<P;k++)feed(wave(k),160);
+  for(let c=0;c<40;c++)feed(160,160);
+  assert.equal(tracker.metrics.reps,1);
+  assert.equal(tracker.metrics.formBreakdown.symmetry,100);
+  // Rep B: resting arm held half-bent → peakOther 95 → 46 (the outlier).
+  for(let c=0;c<6;c++)feed(160,95);
+  for(let k=0;k<P;k++)feed(wave(k),95);
+  for(let c=0;c<40;c++)feed(160,95);
+  assert.equal(tracker.metrics.reps,2);
+  // Even count: the set value is the mean of the two middle values.
+  assert.equal(tracker.metrics.formBreakdown.symmetry,73);
+  // Rep C: extended again → 100. Median of [100, 46, 100] is 100; the old
+  // mean would report 82 — one half-bent-resting-arm rep convicted the set.
+  for(let c=0;c<6;c++)feed(160,160);
+  for(let k=0;k<P;k++)feed(wave(k),160);
+  for(let c=0;c<40;c++)feed(160,160);
+  assert.equal(tracker.metrics.reps,3);
+  assert.deepEqual(tracker.metrics.scoreAccumulator.symmetryValues,[100,46,100]);
+  assert.equal(tracker.metrics.formBreakdown.symmetry,100);
+});
+test('hammer true single-arm sets record only peakOther symmetry — no phantom peer values',()=>{
+  const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
+  const step=1000/24;let t=0;
+  const feed=(l:number,r:number)=>{const raw=curlPose(l,r);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
+  for(let c=0;c<63;c++)feed(160,160);
+  const P=48;
+  const wave=(k:number)=>{const u=(k%P)/P;return 160-85*(1-Math.cos(2*Math.PI*u))/2;};
+  for(let rep=0;rep<2;rep++)for(let k=0;k<P;k++)feed(wave(k),95);
+  for(let c=0;c<40;c++)feed(160,95);
+  assert.equal(tracker.metrics.reps,2);
+  const values=tracker.metrics.scoreAccumulator.symmetryValues;
+  assert.equal(values?.length,2);
+  // Both values stay on the instantaneous path (≈46): a peak-to-peak rescue
+  // would read ≥85, and the median of equals changes nothing in character.
+  assert.ok(values!.every(v=>v>=43&&v<=49),`values ${values} should both be ≈46`);
+  const sym=tracker.metrics.formBreakdown.symmetry;
+  assert.ok(sym>=43&&sym<=49,`set symmetry ${sym} should stay ≈46`);
 });
 test('sustainedPeak credits only deviations sustained for at least 150 ms',()=>{
   const win=(start:number,v:number):TimedSpan=>({start,end:start+100,v});
