@@ -114,4 +114,10 @@ Serial, from baselines client 473 / server 129 / cloudflare 34:
 
 ## Deploy
 
-(Backfilled after deploy.)
+- Merged to main: `e12e857` (feature `a8356ea`); CI run 42492684612 success.
+- Production (dongban.xyz): Version `2cd6898a-0e3c-41a4-a5ce-2329dccfc4ba`.
+- Preview (preview.dongban.xyz): Version `e765635d-9eca-4ce2-8771-eb84c0e146f3`.
+- Live bundles on both hosts verified to contain `carryToRun` /
+  `bridgeFreezeGap` (the `useXiaozhiCoach` chunk, byte-identical build).
+- No bcrypt fallback was needed this round: the deploy worktree's
+  `npm ci --prefix server` succeeded through the proxy.
