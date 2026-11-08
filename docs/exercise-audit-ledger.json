@@ -25717,7 +25717,7 @@
       },
       "photo": true,
       "illustration": false,
-      "video": false,
+      "video": true,
       "complete": true,
       "sources": [
         {
@@ -25733,6 +25733,18 @@
           ],
           "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
+        },
+        {
+          "name": "AI 生成 / ai-generated-exdb:0514（示范视频）",
+          "author": "MoveMate 项目（AI 生成视频，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/demo-video-carveout-2026-11-08.md",
+          "version": "2026-11-08 · 示范视频窄口批次",
+          "changes": "以本条目现有真人起始帧为锚图生视频，经逐帧审核后接入；不替代、不修改原图片来源。",
+          "sourceSha256": [
+            "a539ac97ecddf9451dc1e4fba787a8b7a8aecbbde2ed5ff439ee4f7a9f1daa57"
+          ]
         }
       ]
     },
@@ -30462,7 +30474,7 @@
       },
       "photo": true,
       "illustration": false,
-      "video": false,
+      "video": true,
       "complete": true,
       "sources": [
         {
@@ -30478,6 +30490,18 @@
           ],
           "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。",
           "distribution": "repository"
+        },
+        {
+          "name": "AI 生成 / ai-generated-exdb:0630（示范视频）",
+          "author": "MoveMate 项目（AI 生成视频，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/demo-video-carveout-2026-11-08.md",
+          "version": "2026-11-08 · 示范视频窄口批次",
+          "changes": "以本条目现有真人起始帧为锚图生视频，经逐帧审核后接入；不替代、不修改原图片来源。",
+          "sourceSha256": [
+            "e7973d2a6ab00cfb9446ca12e12de846c88fcab9509aec5c0b0c0fc553ef409e"
+          ]
         }
       ]
     },
@@ -34024,7 +34048,7 @@
       },
       "photo": true,
       "illustration": false,
-      "video": false,
+      "video": true,
       "complete": true,
       "sources": [
         {
@@ -34040,6 +34064,18 @@
           ],
           "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"
+        },
+        {
+          "name": "AI 生成 / ai-generated-exdb:3361（示范视频）",
+          "author": "MoveMate 项目（AI 生成视频，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/demo-video-carveout-2026-11-08.md",
+          "version": "2026-11-08 · 示范视频窄口批次",
+          "changes": "文字生成视频（无锚图，背景为生成场景），经逐帧审核后接入；不替代、不修改原图片来源。",
+          "sourceSha256": [
+            "add962ebb4d165977e70d24c622a2bfe3e0eb75f560a21f481752c5b46fe248b"
+          ]
         }
       ]
     },
