@@ -49,7 +49,7 @@ export function Summary({result,avatar,home}:{result:WorkoutSession;avatar:()=>v
     {!timer&&<details className="training-result-details"><summary>查看动作与训练详情</summary>
       {(!scored||demo)&&<>{!scored&&<p>本次没有可靠的完整动作评分；次数与结算结果仍以服务器记录为准。</p>}<h3>动作维度{demo?'（演示）':''}</h3>{axes.map((label,index)=><div className="training-breakdown" key={label}><span>{label}</span><AnimatedProgress value={breakdown[index]||0} delay={index*120}/><b>{scored?breakdown[index]||0:'—'}</b></div>)}</>}
       <h3>下次可以关注</h3>{corrections.length?corrections.slice(0,3).map(([issue,count])=><p key={issue}>{poseIssueCopy(issue,result.exerciseType).label} · {count} 次</p>):<p>{result.reps?'保持稳定的动作节奏。':'未完成完整动作，暂无评分线索。'}</p>}
-      {result.exerciseType==='standing_leg_curl'&&<p>左侧 {(result as any).scoreAccumulator?.leftReps||0} 次 · 右侧 {(result as any).scoreAccumulator?.rightReps||0} 次</p>}<p>陪练对话 {result.conversationTurnCount||0} 轮</p>
+      {['standing_leg_curl','one_arm_row','mountain_climber','split_squat'].includes(result.exerciseType)&&<p>左侧 {(result as any).scoreAccumulator?.leftReps||0} 次 · 右侧 {(result as any).scoreAccumulator?.rightReps||0} 次</p>}<p>陪练对话 {result.conversationTurnCount||0} 轮</p>
       {result.heartRateSource==='ble'&&<p>平均心率 {result.averageBpm??'—'} BPM · 最高 {result.maxBpm??'—'} BPM</p>}
     </details>}
     {!timer&&!demo&&<ShareCardButton label="分享本组高光" makeCard={()=>{const data=buildMotionSetCard(result,state.history);return {svg:setCardSvg(data),fileName:`movemate-set-${data.date.short.replace(/\./g,'')}.png`,title:'动伴 · 单组高光'}}}/>}

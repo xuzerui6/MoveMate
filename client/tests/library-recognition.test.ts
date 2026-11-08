@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {createRecognitionTracker,isRecognitionType} from '../src/features/motion/lib/recognition';
 import {LIBRARY_RECOGNITION,type LibraryRecognitionType} from '../src/features/gym/libraryRecognition';
 import {isCameraExercise} from '../src/features/motion/lib/exercises';
+import {isNewExercise} from '../src/features/motion/lib/newExercises';
 import {libraryPose} from './fixtures/library-camera';
 function run(type:LibraryRecognitionType,aspect=1,step=100,restored:any={}){
  const tracker=createRecognitionTracker(type,20,restored);let now=0;
@@ -13,7 +14,11 @@ function run(type:LibraryRecognitionType,aspect=1,step=100,restored:any={}){
 }
 for(const type of Object.keys(LIBRARY_RECOGNITION) as LibraryRecognitionType[]){
  test(`${type}: full cycles at 5/10 FPS and portrait/landscape aspect`,()=>{
-  assert.ok(isRecognitionType(type));assert.equal(isCameraExercise(type),false);
+  assert.ok(isRecognitionType(type));
+  // A library profile is also a standalone camera (picker) exercise exactly
+  // when it is registered in the standalone registry — true for the tier 1-2
+  // profiles since the picker fix, false for the plan-only profiles.
+  assert.equal(isCameraExercise(type),isNewExercise(type));
   for(const aspect of [9/16,16/9])for(const step of [100,200]){
    const r=run(type,aspect,step);r.feed('neutral',3200);assert.ok(r.tracker.metrics.poseFeedback.calibrated,r.tracker.metrics.feedback);
    for(let i=0;i<3;i++){r.feed('peak');r.feed('neutral');assert.equal(r.tracker.metrics.reps,i+1,r.tracker.metrics.feedback);}

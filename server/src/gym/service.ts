@@ -724,7 +724,7 @@ export async function actWorkout(uid: number, id: string, input: any, recognitio
             : data.score.count !== (data.reps ?? set.reps)) ||
           [data.score.total, data.score.depth, data.score.stability, data.score.trunk, data.score.symmetry].some((n) => n > data.score!.count * 100) ||
           ((data.score.leftReps !== undefined || data.score.rightReps !== undefined) &&
-            (!["reverse_lunge","standing_leg_curl"].includes(snapshotCameraProfile(set.exercise)||'') ||
+            (!["reverse_lunge","standing_leg_curl","one_arm_row","mountain_climber","split_squat"].includes(snapshotCameraProfile(set.exercise)||'') ||
               (data.score.leftReps || 0) + (data.score.rightReps || 0) !== (data.reps ?? set.reps))))
       )
         throw new ValidationError("识别评分与次数不一致");

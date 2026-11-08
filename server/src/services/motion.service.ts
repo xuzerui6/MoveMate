@@ -7,6 +7,10 @@ import extended from '../gym/new-recognition.json';
 import {isExtendedRecognition,requireRecognitionVersion,requireStrategyVersion} from '../gym/recognition-version';
 
 export const CAMERA_TYPES = new Set(['squat','jumping_jack','high_knees','push_up',...Object.keys(extended)]);
+// Types whose trackers count every rep on exactly one side and report
+// leftReps/rightReps in the score accumulator (their sum always equals reps).
+// Side counts are accepted — and required to add up — only for these types.
+export const SIDE_COUNT_TYPES = new Set(['standing_leg_curl','one_arm_row','mountain_climber','split_squat']);
 export const SPORT_RATES: Record<string, number> = { running: 3, swimming: 3, basketball: 2, badminton: 2, soccer: 2, volleyball: 2, tennis: 2, table_tennis: 2 };
 export function calculateXp(type: string, seconds: number, reps: number, source: string): number {
   if (source === 'demo') return 0;
@@ -164,8 +168,8 @@ export async function sessionAction(id:string,userId:number,action:'pause'|'resu
       const cleaned=stale?oldMetrics:cleanMetrics(data,oldMetrics);
       if(cleaned.scoreAccumulator && (isExtendedRecognition(row.sport_type)||cleaned.recognitionStrategy==='adaptive-v1'?cleaned.scoreAccumulator.count>reps:cleaned.scoreAccumulator.count!==reps))throw new ValidationError('评分累计次数与动作次数不一致');
       const acc=cleaned.scoreAccumulator;
-      if(row.sport_type==='standing_leg_curl'&&reps>0&&(!acc||(acc.leftReps||0)+(acc.rightReps||0)!==reps))throw new ValidationError('左右次数与总次数不一致');
-      if(row.sport_type!=='standing_leg_curl'&&(acc?.leftReps!==undefined||acc?.rightReps!==undefined))throw new ValidationError('该动作不支持左右计数');
+      if(SIDE_COUNT_TYPES.has(row.sport_type)&&reps>0&&(!acc||(acc.leftReps||0)+(acc.rightReps||0)!==reps))throw new ValidationError('左右次数与总次数不一致');
+      if(!SIDE_COUNT_TYPES.has(row.sport_type)&&(acc?.leftReps!==undefined||acc?.rightReps!==undefined))throw new ValidationError('该动作不支持左右计数');
       if(fromPlan && data.planSquatReps!=null)cleaned.planSquatReps=data.planSquatReps;
       const metrics=JSON.stringify(cleaned);
       if (action !== 'finish') row = (await pool.query<SessionRow>('UPDATE sport_sessions SET reps=$2,metrics=$3 WHERE id=$1 RETURNING *',[id,reps,metrics])).rows[0];

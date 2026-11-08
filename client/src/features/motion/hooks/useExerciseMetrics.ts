@@ -24,7 +24,7 @@ export function useExerciseMetrics(type:CameraExerciseType, landmarks:Normalized
     const start=performance.now()
     const tick=()=>{
       const now=performance.now(),elapsed=now-start
-      const stages: Array<'neutral'|'peak'|'left'|'right'>=type==='high_knees'||type==='standing_leg_curl'?['left','neutral','right','neutral']:['peak','neutral']
+      const stages: Array<'neutral'|'peak'|'left'|'right'>=type==='high_knees'||type==='standing_leg_curl'||type==='one_arm_row'||type==='mountain_climber'?['left','neutral','right','neutral']:['peak','neutral']
       const stage=elapsed<2600?'neutral':stages[Math.floor((elapsed-2600)/1000)%stages.length]
       const frame=recognitionDemonstration(type,stage);setDemoLandmarks(frame.landmarks);setMetrics({...tracker.current!.update(frame.landmarks,now,1,frame.worldLandmarks)})
     }

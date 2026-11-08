@@ -10,7 +10,11 @@ import {exerciseInfo} from '../src/features/motion/lib/exercises';
 import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
 const types=Object.keys(NEW_EXERCISES) as NewExerciseType[];
 const copy=<T,>(p:T):T=>structuredClone(p);
-function run(type:NewExerciseType,tracker=new ExtendedExerciseTracker(type,20),aspect=1,step=100){
+// Trackers are built through the production factory, not the Extended class
+// directly: tier 1-2 picker entries (e.g. dumbbell_standing_press) route to
+// PlanExerciseTracker / remapped Extended types exactly as the plan path does,
+// and this loop must exercise that routing rather than bypass it.
+function run(type:NewExerciseType,tracker=createRecognitionTracker(type,20),aspect=1,step=100){
   let now=0;
   const feed=(stage:'neutral'|'peak'|'left'|'right',duration:number,change?:(p:Point[],w:Point[]|null)=>void)=>{
     const input=newDemonstrationPose(type,stage),scale=Math.min(1,aspect);input.landmarks.forEach(p=>{p.x=.5+(p.x-.5)*scale/aspect;p.y=.5+(p.y-.5)*scale;});change?.(input.landmarks,input.worldLandmarks);
@@ -33,7 +37,7 @@ for(const type of types){
     r.feed('neutral',1000,(p)=>{p.forEach(x=>x.visibility=.65)});assert.notEqual(r.tracker.diagnostics.stage,'tracking_lost');
     r.feed('peak',900);r.tracker.interrupt('暂停');r.feed('neutral',3000);assert.equal(r.tracker.metrics.reps,0);
     r.feed('peak',1000);r.feed('neutral',1000);assert.equal(r.tracker.metrics.reps,1);
-    const saved=copy(r.tracker.metrics),restored=run(type,new ExtendedExerciseTracker(type,20,saved));restored.feed('peak',1200);assert.equal(restored.tracker.metrics.reps,1);restored.feed('neutral',3000);restored.feed('peak',1000);restored.feed('neutral',1000);assert.equal(restored.tracker.metrics.reps,2);
+    const saved=copy(r.tracker.metrics),restored=run(type,createRecognitionTracker(type,20,saved));restored.feed('peak',1200);assert.equal(restored.tracker.metrics.reps,1);restored.feed('neutral',3000);restored.feed('peak',1000);restored.feed('neutral',1000);assert.equal(restored.tracker.metrics.reps,2);
     r.feed('peak',1000);r.feed('peak',700,(p)=>p.forEach(x=>x.visibility=.1));r.feed('neutral',3000);
     // Round 4 (front raise only): a short obstruction (700 ms ≤ the 2000 ms
     // preservation bound) no longer voids a cycle whose peak was already fully

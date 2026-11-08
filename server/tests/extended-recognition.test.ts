@@ -12,22 +12,27 @@ let uid:number,other:number;
 before(async()=>{await pool.query('SELECT 1');for(const email of ['new-camera@qa.local','other-camera@qa.local']){const r=await pool.query('INSERT INTO users(email,nickname,password_hash,email_verified,campus_id,student_id) VALUES($1,$1,$2,1,1,$1) RETURNING id',[email,'unused']);if(!uid)uid=r.rows[0].id;else other=r.rows[0].id;}});
 const zero={count:0,total:0,depth:0,stability:0,trunk:0,symmetry:0};
 const score={count:1,total:85,depth:80,stability:90,trunk:80,symmetry:90};
+const sideCounted=(type:string)=>['standing_leg_curl','one_arm_row','mountain_climber','split_squat'].includes(type);
 for(const type of Object.keys(definitions))test(`${type}: new protocol, unscored reps, source lock, isolation and one XP settlement`,async()=>{
+  // Standalone entries that are also library profiles (the tier 1-2 picker
+  // entries) inherit the library protocol gate: exactly their profile
+  // recognitionVersion (6). The original six standalone types accept v2.
+  const v=(definitions as any)[type]?.recognitionVersion??2;
   await assert.rejects(motion.createSession(uid,{sportType:type,source:'camera'}),/刷新/);
-  const s=await motion.createSession(uid,{id:randomUUID(),sportType:type,source:'camera'},2);
-  await assert.rejects(motion.sessionAction(s.id,other,'progress',{reps:2},false,2));
+  const s=await motion.createSession(uid,{id:randomUUID(),sportType:type,source:'camera'},v);
+  await assert.rejects(motion.sessionAction(s.id,other,'progress',{reps:2},false,v));
   await assert.rejects(motion.sessionAction(s.id,uid,'progress',{reps:2}),/刷新/);
-  await assert.rejects(motion.createSession(uid,{id:s.id,sportType:'squat',source:'camera'},2));
-  const acc={...score,...(type==='standing_leg_curl'?{leftReps:1,rightReps:1}:{})};
-  const p=await motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:acc},false,2);assert.equal(p.metrics.scoreAccumulator.count,1);
-  await assert.rejects(motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:{...acc,count:3}},false,2));
-  const paused=await motion.sessionAction(s.id,uid,'pause',{},false,2);assert.equal(paused.reps,2);assert.deepEqual(paused.metrics.scoreAccumulator,acc);
+  await assert.rejects(motion.createSession(uid,{id:s.id,sportType:'squat',source:'camera'},v));
+  const acc={...score,...(sideCounted(type)?{leftReps:1,rightReps:1}:{})};
+  const p=await motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:acc},false,v);assert.equal(p.metrics.scoreAccumulator.count,1);
+  await assert.rejects(motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:{...acc,count:3}},false,v));
+  const paused=await motion.sessionAction(s.id,uid,'pause',{},false,v);assert.equal(paused.reps,2);assert.deepEqual(paused.metrics.scoreAccumulator,acc);
   const restored=await motion.activeSession(uid);assert.equal(restored.sportType,type);assert.equal(restored.reps,2);
-  await motion.sessionAction(s.id,uid,'resume',{},false,2);
-  const done=await motion.sessionAction(s.id,uid,'finish',{reps:2,scoreAccumulator:acc},false,2);assert.equal(done.xpEarned,4);assert.equal((await motion.sessionAction(s.id,uid,'finish',{},false,2)).xpEarned,4);
+  await motion.sessionAction(s.id,uid,'resume',{},false,v);
+  const done=await motion.sessionAction(s.id,uid,'finish',{reps:2,scoreAccumulator:acc},false,v);assert.equal(done.xpEarned,4);assert.equal((await motion.sessionAction(s.id,uid,'finish',{},false,v)).xpEarned,4);
   assert.equal((await pool.query('SELECT COUNT(*) n FROM xp_ledger WHERE session_id=$1',[s.id])).rows[0].n,1);
-  const demo=await motion.createSession(uid,{sportType:type,source:'demo'},2);assert.equal((await motion.sessionAction(demo.id,uid,'finish',{reps:3,scoreAccumulator:{...zero,...(type==='standing_leg_curl'?{leftReps:2,rightReps:1}:{})}},false,2)).xpEarned,0);
-  const empty=await motion.createSession(uid,{sportType:type,source:'camera'},2);assert.equal((await motion.sessionAction(empty.id,uid,'finish',{},false,2)).xpEarned,0);
+  const demo=await motion.createSession(uid,{sportType:type,source:'demo'},v);assert.equal((await motion.sessionAction(demo.id,uid,'finish',{reps:3,scoreAccumulator:{...zero,...(sideCounted(type)?{leftReps:2,rightReps:1}:{})}},false,v)).xpEarned,0);
+  const empty=await motion.createSession(uid,{sportType:type,source:'camera'},v);assert.equal((await motion.sessionAction(empty.id,uid,'finish',{},false,v)).xpEarned,0);
 });
 test('standing side counts are validated independently from score count and survive partial updates',async()=>{
   const s=await motion.createSession(uid,{sportType:'standing_leg_curl',source:'camera'},2);
@@ -38,7 +43,7 @@ test('standing side counts are validated independently from score count and surv
   const state=await motion.trainingState(uid);assert.equal(state.totalSquats,0);assert.ok(state.totalXp>0);
   await assert.rejects(motion.createSession(uid,{sportType:'unknown_camera',source:'camera'},2));
 });
-test('explicit nine library mappings, unchanged total IDs, no custom capability and plan time-only XP',async()=>{
+test('explicit standalone-to-library mappings for every standalone definition, unchanged total IDs, no custom capability and plan time-only XP',async()=>{
   const all=await gym.library(uid,{camera:'1',limit:50});assert.equal(all.total,56);
   // The camera list exceeds one hard-capped 50-item page since tier 2;
   // fetch the definition IDs explicitly (ids route cap is 500).
@@ -46,10 +51,12 @@ test('explicit nine library mappings, unchanged total IDs, no custom capability 
   for(const [type,definition]of Object.entries(definitions))for(const id of definition.exerciseIds){
     const exercise=byId.items.find((x:any)=>x.id===id);assert.equal(exercise.planCamera.profile,type);
     let w=await gym.startWorkout(uid,{id:randomUUID(),free:{exercises:[{exerciseId:id,sets:[{reps:3}]}]}});
-    const act=(action:string,extra:any={},version:any=2)=>gym.actWorkout(uid,w.id,{operationId:randomUUID(),version:w.version,action,setId:w.sets[w.cursor]?.id,...extra},version);
+    // Tier 1-2 definitions carry their library recognitionVersion (6); the
+    // original standalone definitions start plan sets at v2.
+    const act=(action:string,extra:any={},version:any=(definition as any).recognitionVersion??2)=>gym.actWorkout(uid,w.id,{operationId:randomUUID(),version:w.version,action,setId:w.sets[w.cursor]?.id,...extra},version);
     await assert.rejects(act('start',{inputMode:'camera'},null),/刷新/); // Explicit missing header below; default parameters are not a browser capability.
     w=await act('start',{inputMode:'camera'});
-    const acc={...zero,...(type==='standing_leg_curl'?{leftReps:2,rightReps:0}:{})};
+    const acc={...zero,...(type==='standing_leg_curl'?{leftReps:2,rightReps:0}:sideCounted(type)?{leftReps:1,rightReps:1}:{})};
     w=await act('progress',{reps:2,score:acc});w=await act('pause');assert.equal(w.sets[0].reps,2);w=await act('resume');
     const at=new Date(Date.now()-62000).toISOString();await pool.query('UPDATE sport_sessions SET active_since=$2 WHERE id=$1',[w.session.id,at]);await pool.query('UPDATE sport_intervals SET started_at=$2 WHERE session_id=$1 AND ended_at IS NULL',[w.session.id,at]);
     w=await act('complete',{reps:2,score:acc});w=await act('finish');assert.equal(w.session.xpEarned,1);assert.equal(w.session.metrics.planSquatReps,0);
