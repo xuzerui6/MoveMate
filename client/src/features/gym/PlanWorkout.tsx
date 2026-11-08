@@ -25,7 +25,7 @@ import Dialog from "../../components/Dialog";
 import AnimatedNumber from "../../components/AnimatedNumber";
 import AnimatedProgress from "../../components/AnimatedProgress";
 import { buildSetReveal } from "../motion/lib/companionCopy";
-import { assessmentFromScore, axisStateText } from "../motion/lib/axisAssessment";
+import { assessmentFromScore, axisStateText, totalWithheld, TOTAL_WITHHELD_NOTE } from "../motion/lib/axisAssessment";
 import ShareCardButton from "../share/ShareCardButton";
 import { buildGymSetCard, buildRecordCard, buildWorkoutCardData } from "../share/cardData";
 import { milestoneCardSvg, setCardSvg, workoutCardSvg } from "../share/cardSvg";
@@ -837,7 +837,7 @@ export default function PlanWorkout() {
                       </div>
                     );
                   })}
-                  {lastAssessment && axisKeys.some(k => lastAssessment[k].kind !== "numeric") && <p>总分只按能评的项目算——评不了的不会算成低分</p>}
+                  {lastAssessment && axisKeys.some(k => lastAssessment[k].kind !== "numeric") && <p>{totalWithheld(lastAssessment) ? TOTAL_WITHHELD_NOTE : "总分只按能评的项目算——评不了的不会算成低分"}</p>}
                   {restReveal.goalLine && <p className="gym-reveal-goal">{restReveal.goalLine}</p>}
                 </div>
               )}

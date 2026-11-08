@@ -11,6 +11,14 @@
  * earns a number, reports a category, or declares itself unassessable —
  * and an axis without a number NEVER silently averages into a total.
  * Totals renormalize over the numeric axes only. Counting is untouched.
+ *
+ * Axis-validity suspension (2026-11-09, Codex round-3 consultation,
+ * docs/axis-validity-suspension-2026-11-09.md): step 3's renormalization
+ * concentrated the hammer total onto the stability axis, whose control
+ * term reads the same noisy elbow channel — so for the hammer family the
+ * whole stability axis is now unassessable ('control'), and a minimum-
+ * coverage rule (below) decides whether a set total may be presented at
+ * all. Internal score computation is unchanged; only presentation moves.
  */
 
 export type AxisKey = 'depth' | 'stability' | 'trunk' | 'symmetry'
@@ -93,8 +101,37 @@ export const allNumericAssessments = (): AxisAssessments => ({
  * and measured on one side by design; no-bilateral-evidence — a bilateral
  * axis whose set produced no bilateral evidence (e.g. pure single-arm
  * hammer sets); framing — degraded framing, the cannot-assess session
- * state (no axis could be evidenced at all). */
-export const UNASSESSABLE_REASONS = ['view', 'single-side', 'no-bilateral-evidence', 'framing'] as const
+ * state (no axis could be evidenced at all); control — the axis-validity
+ * suspension (2026-11-09, Codex round-3): the hammer family's stability
+ * number is dominated by a control term read off the elbow-dependent
+ * upper-arm angle, the same world channel already shown to carry per-rep
+ * sign-flipping noise, so upper-arm control cannot be judged reliably
+ * from this view yet and the whole stability axis is withheld rather
+ * than rebranded from its speed/duration remainder. */
+export const UNASSESSABLE_REASONS = ['view', 'single-side', 'no-bilateral-evidence', 'framing', 'control'] as const
+
+/** Nominal axis weights of the set total (the weights every emit site
+ * renormalizes over). Coverage of a total = the share of this nominal
+ * weight carried by axes that still present a number. */
+export const AXIS_WEIGHTS: Record<AxisKey, number> = { depth: .35, stability: .25, trunk: .20, symmetry: .20 }
+/** Minimum-coverage rule (2026-11-09, Codex round-3 amendment: an axis
+ * being numeric does not establish the remaining total is meaningful, so
+ * renormalization alone no longer presents a total). A set's total is
+ * presented only when its numeric axes cover at least this share of the
+ * nominal weight; below it the total is withheld and the assessable axes
+ * present alone. Hammer frontal after the control suspension covers
+ * depth + trunk = .55 → withheld, as decided; front raise covers
+ * stability + trunk = .45 → withheld; the single-side family covers
+ * .80 → still presented. */
+export const MIN_TOTAL_COVERAGE = .6
+export const numericCoverageOf = (a?: AxisAssessments | null): number =>
+  !a ? 1 : AXIS_KEYS.reduce((sum, k) => sum + (a[k].kind === 'numeric' ? AXIS_WEIGHTS[k] : 0), 0)
+export const totalWithheld = (a?: AxisAssessments | null): boolean =>
+  numericCoverageOf(a) < MIN_TOTAL_COVERAGE - 1e-9
+/** Companion-tone note shown wherever a set total is withheld: brief, no
+ * score language, the pause framed as waiting for more evidence — never
+ * as a failure of the set. */
+export const TOTAL_WITHHELD_NOTE = '这一组能评的项目还不够多，总分先暂停——等能看清的部分更多了，再一起算'
 
 /** Axes that carry a number under an assessment map (absent map = all). */
 export const numericAxesOf = (a?: AxisAssessments | null): AxisKey[] =>
@@ -121,6 +158,11 @@ export function assessmentFromScore(score: any): AxisAssessments | undefined {
     const median = sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2
     const out = allNumericAssessments()
     out.symmetry = { kind: 'category', category: syncCategoryForOffset(median) }
+    // Recorded peak-timing offsets exist only for hammer-family sets, and
+    // those sets' stability was computed by the suspended control channel
+    // (see UNASSESSABLE_REASONS 'control') — the same evidence-based
+    // derivation as the category above, extended to the suspended axis.
+    out.stability = { kind: 'unassessable', reason: 'control' }
     return out
   }
   if (bands && (bands.left || bands.right)) {
@@ -145,6 +187,6 @@ export function axisStateText(a: AxisAssessment): string | null {
     if (a.right) parts.push(`右 ${DEPTH_BAND_LABELS[a.right]}`)
     return parts.join(' · ') || null
   }
-  if (a.kind === 'unassessable') return '这个角度评不了'
+  if (a.kind === 'unassessable') return a.reason === 'control' ? '暂时评不了' : '这个角度评不了'
   return null
 }

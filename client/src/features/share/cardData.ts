@@ -1,7 +1,7 @@
 import { exerciseInfo } from '../motion/lib/exercises'
 import { requiredXp } from '../motion/lib/rewards'
 import type { WorkoutSession } from '../motion/types'
-import { assessmentFromScore, axisStateText, type AxisAssessments } from '../motion/lib/axisAssessment'
+import { assessmentFromScore, axisStateText, totalWithheld, type AxisAssessments } from '../motion/lib/axisAssessment'
 
 /**
  * 分享卡数据层（纯函数，无 DOM）。
@@ -64,7 +64,9 @@ export function buildWorkoutCardData(row: any, streakDays: number): WorkoutCardD
   const exerciseIds = new Set(completed.map((s) => s.exercise?.id).filter(Boolean))
   // 板上字段定义：平均分 = 各已评分组得分的平均值（组得分 = 该组 total/count）。
   // 与完成页按次加权的「训练识别均分」口径不同，以板为准（差异已记入实现文档）。
-  const scoredSets = completed.filter((s) => (s.score?.count || 0) > 0)
+  // 覆盖率规则（2026-11-09）：总分被暂停的组不进入平均分——把暂停的总分
+  // 混进平均值等于换个地方把它印出来；其余已评分组照常平均。
+  const scoredSets = completed.filter((s) => (s.score?.count || 0) > 0 && !totalWithheld(assessmentFromScore(s.score)))
   const avgScore =
     scoredSets.length > 0
       ? Math.round(scoredSets.reduce((sum, s) => sum + (s.score.total || 0) / s.score.count, 0) / scoredSets.length)
@@ -96,6 +98,11 @@ export interface SetCardData {
   nameZh: string
   nameEn: string
   scored: boolean
+  /** Coverage rule (2026-11-09): the set was scored, but its total is
+   * withheld (numeric axes cover <60% of the nominal weight) — the card
+   * renders the withheld body (axes + reps, no total) instead of either
+   * the score body or the unscored body. */
+  totalWithheld?: boolean
   score: number | null
   /** 板上固定四轴：幅度 / 稳定性 / 躯干 / 对称（FormBreakdown 语义） */
   axes: SetCardAxis[] | null
@@ -134,13 +141,16 @@ export function buildGymSetCard(set: any, index: number, dateInput: Date | strin
         symmetry: (set.score.symmetry || 0) / count,
       }
     : null
+  const assessment = assessmentFromScore(set?.score)
+  const withheld = scored && totalWithheld(assessment)
   return {
     date: formatCardDate(dateInput),
     nameZh: set?.exercise?.nameZh || '训练',
     nameEn: gymExerciseEn(set?.exercise?.name),
     scored,
-    score: scored ? Math.round((set.score.total || 0) / count) : null,
-    axes: breakdown ? axesFrom(breakdown, assessmentFromScore(set?.score)) : null,
+    totalWithheld: withheld,
+    score: scored && !withheld ? Math.round((set.score.total || 0) / count) : null,
+    axes: breakdown ? axesFrom(breakdown, assessment) : null,
     reps: set?.reps || 0,
     unit: '次',
     setIndex: index + 1,
@@ -155,6 +165,10 @@ export function buildMotionSetCard(result: WorkoutSession, history: WorkoutSessi
   const info = exerciseInfo(result.exerciseType)
   const count = (result as any).scoreAccumulator?.count ?? 0
   const scored = count > 0 || result.formScore > 0
+  // Coverage rule (2026-11-09): a withheld total is not printed on the
+  // card and cannot set a 「个人最佳」 — the comparison itself would
+  // publish the number. Historical bests stay as recorded (not recomputed).
+  const withheld = scored && totalWithheld((result as any).axisAssessment)
   const previousBest = history
     .filter((s) => s.id !== result.id && s.exerciseType === result.exerciseType && s.source !== 'demo')
     .reduce((best, s) => {
@@ -166,13 +180,14 @@ export function buildMotionSetCard(result: WorkoutSession, history: WorkoutSessi
     nameZh: info.name,
     nameEn: info.english,
     scored,
-    score: scored ? Math.round(result.formScore || 0) : null,
+    totalWithheld: withheld,
+    score: scored && !withheld ? Math.round(result.formScore || 0) : null,
     axes: scored ? axesFrom(result.formBreakdown, (result as any).axisAssessment) : null,
     reps: result.reps || 0,
     unit: info.unit,
     setIndex: null,
     // 「个人最佳」chip：与该动作历史最佳组分比较，仅当刷新时出现。
-    personalBest: scored && result.reps > 0 && previousBest > 0 && (result.formScore || 0) > previousBest,
+    personalBest: !withheld && scored && result.reps > 0 && previousBest > 0 && (result.formScore || 0) > previousBest,
   }
 }
 

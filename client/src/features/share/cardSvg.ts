@@ -188,7 +188,7 @@ ${nameSvg}
 <text x="${PAD}" y="${enY}" font-family="${FONT}" font-size="27" font-weight="700" letter-spacing="7.6" fill="${MINT_PALE}"${fitAttrs(data.nameEn, 27, RIGHT - PAD, 7.6)}>${escapeXml(data.nameEn)}</text>`
 
   const footNote = data.setIndex != null ? `SET ${String(data.setIndex).padStart(2, '0')} · ${data.date.short}` : data.date.short
-  return svgRoot(`${band}${data.scored ? scoredBody(data, bandBottom) : unscoredBody(data, bandBottom)}${footer(footNote)}`)
+  return svgRoot(`${band}${data.scored ? (data.totalWithheld ? withheldBody(data, bandBottom) : scoredBody(data, bandBottom)) : unscoredBody(data, bandBottom)}${footer(footNote)}`)
 }
 
 interface Chip {
@@ -214,16 +214,8 @@ function chipsSvg(chips: Chip[], y: number): string {
   return parts.join('')
 }
 
-function scoredBody(data: SetCardData, bandBottom: number): string {
-  const scoreText = String(data.score ?? 0)
-  const scoreBaseline = bandBottom + 240
-  const ofX = PAD + estTextWidth(scoreText, 246) + 26
-  const chips: Chip[] = [{ pre: '完成 ', val: String(data.reps), post: ` ${data.unit}` }]
-  if (data.setIndex != null) chips.push({ pre: '第 ', val: String(data.setIndex), post: ' 组' })
-  if (data.personalBest) chips.push({ pre: '个人最佳' })
-  const chipsY = scoreBaseline + 54
-  const axesTop = chipsY + 62 + 88
-  const axes = (data.axes || [])
+function axesSvg(data: SetCardData, axesTop: number): string {
+  return (data.axes || [])
     .map((axis, i) => {
       const y = axesTop + i * 92
       const fillW = axis.text ? 0 : Math.round(672 * Math.min(100, Math.max(0, axis.value)) / 100)
@@ -236,10 +228,37 @@ function scoredBody(data: SetCardData, bandBottom: number): string {
 ${valueSvg}`
     })
     .join('')
+}
+
+function scoredBody(data: SetCardData, bandBottom: number): string {
+  const scoreText = String(data.score ?? 0)
+  const scoreBaseline = bandBottom + 240
+  const ofX = PAD + estTextWidth(scoreText, 246) + 26
+  const chips: Chip[] = [{ pre: '完成 ', val: String(data.reps), post: ` ${data.unit}` }]
+  if (data.setIndex != null) chips.push({ pre: '第 ', val: String(data.setIndex), post: ' 组' })
+  if (data.personalBest) chips.push({ pre: '个人最佳' })
+  const chipsY = scoreBaseline + 54
+  const axesTop = chipsY + 62 + 88
   return `<text x="${PAD}" y="${scoreBaseline}" font-family="${FONT}" font-size="246" font-weight="800" fill="${PRIMARY}">${escapeXml(scoreText)}</text>
 <text x="${Math.round(ofX)}" y="${scoreBaseline - 16}" font-family="${FONT}" font-size="39" font-weight="700" fill="${MUTED}">/ 100 · 本组得分</text>
 ${chipsSvg(chips, chipsY)}
-${axes}`
+${axesSvg(data, axesTop)}`
+}
+
+/** Coverage rule (2026-11-09): the set was scored on its assessable axes
+ * but the total is withheld — the hero slot carries the pause itself
+ * (never a number, never the unscored body's framing copy), over the
+ * same chips + axis rows the scored body uses. */
+function withheldBody(data: SetCardData, bandBottom: number): string {
+  const heroBaseline = bandBottom + 215
+  const chips: Chip[] = [{ pre: '完成 ', val: String(data.reps), post: ` ${data.unit}` }]
+  if (data.setIndex != null) chips.push({ pre: '第 ', val: String(data.setIndex), post: ' 组' })
+  const chipsY = bandBottom + 294
+  const axesTop = chipsY + 62 + 88
+  return `<text x="${PAD}" y="${heroBaseline}" font-family="${FONT}" font-size="138" font-weight="800" fill="${PRIMARY}">总分先暂停</text>
+<text x="${PAD}" y="${bandBottom + 266}" font-family="${FONT}" font-size="34" font-weight="700" fill="${MUTED}">本组得分 · 能评的项目还不够多，单项都记好了</text>
+${chipsSvg(chips, chipsY)}
+${axesSvg(data, axesTop)}`
 }
 
 function unscoredBody(data: SetCardData, bandBottom: number): string {
