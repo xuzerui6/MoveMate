@@ -10832,6 +10832,78 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1260",
+   "expectedName": "cable decline one arm press",
+   "sourceId": "ai-codex-exdb-1260",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f8cfefa22b03b1c5e2ad61deb63f8def57086f9b8bb89424cb0f24efb81ff559",
+    "72035eb44791ee3dc207bcd1e7accd39a38f621c994ea59231dc6c8461e92710"
+   ],
+   "phases": [
+    "起始：仰卧下斜凳、头在近机器的低端，双脚勾于远端高端的凳脚垫下；右肘弯曲约 90 度、右手握 D 柄位于右胸侧方，索自右手向头端右侧旁的地面低滑轮绷紧；左手轻置腹前",
+    "关键：右臂向胸上方推至充分伸展，肘角显著变化（推举非飞鸟）；头位、背位与双脚固定不变，左手仍置腹前"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1626",
+   "expectedName": "smith machine reverse decline close grip bench press",
+   "sourceId": "ai-codex-exdb-1626",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "3696a7ae6ef9521657dbcda946da8f9e512386f907d08de97e26981faa84a82e",
+    "8eac3537609a1af42cea83e0ed955701af1b6bc7fa6191fc1784e5c79a2ce729"
+   ],
+   "phases": [
+    "起始：仰卧于史密斯机框架内的下斜凳上，双脚固定于凳脚垫下；双手反手握杠（掌心朝向自己头部一侧、手指自远侧绕过杠上、拇指相对）、握距略窄于肩宽且双手在双肩竖线之内，杠降至轻触胸部，双肘屈而内收",
+    "关键：沿双竖导轨将杠推至双臂充分伸展，反握与窄距握法保持不变；凳位与双脚固定不动"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1263",
+   "expectedName": "cable one arm fly on exercise ball",
+   "sourceId": "ai-codex-exdb-1263",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b1bbe9ea5dd162689e3c20ae232de3604ebc9e678eafbdff9a5544505e476442",
+    "5599a91b64586c9db15eb359273131377f3fa2056ed2346ae788a5955881a4fc"
+   ],
+   "phases": [
+    "起始：直坐大健身球球面、球体完整可见，躯干直立无支撑，双脚平地、膝约 90 度；右臂向右侧伸展至与地面平行、肘微屈、掌心朝前，右手握柄，索自右手水平向右连至同侧肩高滑轮；左手轻置左大腿",
+    "关键：右臂以同一肘角横过身前、右手抵至胸前偏左，手位仍约肩高（飞鸟水平内收）；坐位、脚位与左手不变"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1385",
+   "expectedName": "lever seated squat calf raise on leg press machine",
+   "sourceId": "ai-codex-exdb-1385",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "304c350e73b75deaa0a5653ac09b2b1b9030ed1677b44bf4f74fabab7d4c24e4",
+    "9f814e89088a6e8951ff197bade78005370c5e35b7dce8a6dd9a8f4b7c463d67"
+   ],
+   "phases": [
+    "起始：坐在坐姿腿举机上、背靠靠垫、双手握侧把手；双膝近伸展保留微屈（不锁死），前脚掌与脚趾压住踏板下缘、与肩同宽，脚跟悬于踏板边缘之外并降至最低，踝背屈、小腿拉伸",
+    "关键：膝角与起始一致（膝位冻结），仅脚跟尽可能抬高、踝跖屈，前脚掌推压踏板；背位与手位不变"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
