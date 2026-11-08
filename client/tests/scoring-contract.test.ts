@@ -137,6 +137,10 @@ test('restored sets present step-3 states instead of reverting them to numbers',
   // No stored map: rebuilt from the recorded offsets (median 400 → 略有错峰).
   const fromOffsets = restoredSetMetrics({ reps: 3, score: { count: 3, total: 270, depth: 280, stability: 260, trunk: 270, symmetry: 0, symmetryOffsetsMs: [900, 100, 400] } });
   assert.deepEqual(fromOffsets.axisAssessment?.symmetry, { kind: 'category', category: 'slight' });
+  // Axis-validity suspension (2026-11-09): offsets exist only for hammer
+  // sets, whose stability came from the suspended control channel — the
+  // rebuilt map carries the suspension too (see axis-validity.test.ts).
+  assert.deepEqual(fromOffsets.axisAssessment?.stability, { kind: 'unassessable', reason: 'control' });
   // Front-raise tallies rebuild bands + unassessable symmetry.
   const fromBands = restoredSetMetrics({ reps: 2, score: { count: 2, total: 160, depth: 0, stability: 170, trunk: 150, symmetry: 0, depthBandCounts: { left: { shoulder: 2, below: 1 }, right: { below: 1 } } } });
   assert.deepEqual(fromBands.axisAssessment?.depth, { kind: 'bands', left: 'shoulder', right: 'below' });

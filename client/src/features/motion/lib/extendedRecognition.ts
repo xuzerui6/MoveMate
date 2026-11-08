@@ -2,11 +2,11 @@ import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
 import type {ExerciseMetrics,RecognitionDiagnostics} from './exerciseMetrics';
 import {medianLandmarks,poseIssueCopy} from './poseFeedback';
 import { COPY_CALIBRATED, COPY_HALF_REP, COPY_OUT_OF_FRAME, cannotAssessCopyFor, notSeenCopyFor } from './companionCopy';
-import { allNumericAssessments, frontRaiseBandFor, modalBand, syncCategoryForOffset, type AxisAssessments, type DepthBandCounts } from './axisAssessment';
+import { allNumericAssessments, frontRaiseBandFor, modalBand, syncCategoryForOffset, totalWithheld, type AxisAssessments, type DepthBandCounts } from './axisAssessment';
 import {emptyCorrectionCounts,emptyFormBreakdown,medianOf} from './sessionMigration';
 import {NEW_EXERCISES,type NewExerciseType} from './newExercises';
 import {LIBRARY_RECOGNITION} from '../../gym/libraryRecognition';
-import type {PoseIssue} from '../types';
+import type {PoseIssue, ScoreAccumulator} from '../types';
 
 const cap=(n:number)=>Math.max(0,Math.min(100,n));
 const dist=(a:Point,b:Point)=>Math.hypot(a.x-b.x,a.y-b.y,(a.z||0)-(b.z||0));
@@ -404,11 +404,30 @@ export class ExtendedExerciseTracker {
    * cannot-assess override: a session that ends inside the degraded-framing
    * state without one scored rep presents every axis as unassessable —
    * scored reps keep the axes they honestly earned before the degradation. */
-  private assessments():AxisAssessments{
-    const a=this.metrics.scoreAccumulator,out=allNumericAssessments();
+  private assessments():AxisAssessments{return this.assessmentsFor(this.metrics.scoreAccumulator);}
+  /** The assessability map for a given accumulator (the emit sites consult
+   * the post-increment accumulator to decide whether the rep's aggregate
+   * may be presented — see totalWithheld). */
+  private assessmentsFor(a:ScoreAccumulator):AxisAssessments{
+    const out=allNumericAssessments();
     if(this.cannotAssess&&a.count===0){for(const k of axes)out[k]={kind:'unassessable',reason:'framing'};return out;}
     if(a.count===0)return out;
     if(this.type==='hammer_curl'){
+      // Axis-validity suspension (2026-11-09, Codex round-3): the control
+      // term of this family's stability is read off the elbow-dependent
+      // upper-arm angle — the world channel whose per-rep noise the
+      // Phase-0 labels could not clear (HC-A stability read 15 against an
+      // 'adequate' label, and step 3's renormalization raised its weight
+      // in the total). The whole stability axis is unassessable here: the
+      // speed/duration remainder is not presented as "stability" either.
+      // The internal breakdown keeps computing exactly as before (XP is
+      // rep-derived and the internal formScore is not a presentation);
+      // only the axis state — and through the coverage rule, the total —
+      // is withheld. A restored pre-contract set (it recorded symmetry
+      // values and no offsets) keeps its historical numbers, as with
+      // symmetry below.
+      const preContract=!!(a.symmetryValues&&a.symmetryValues.length)&&!(a.symmetryOffsetsMs&&a.symmetryOffsetsMs.length);
+      if(!preContract)out.stability={kind:'unassessable',reason:'control'};
       if(a.symmetryOffsetsMs&&a.symmetryOffsetsMs.length)out.symmetry={kind:'category',category:syncCategoryForOffset(medianOf(a.symmetryOffsetsMs))};
       else if(!(a.symmetryValues&&a.symmetryValues.length))out.symmetry={kind:'unassessable',reason:'no-bilateral-evidence'};
       // else: a restored pre-contract set — its median number stands.
@@ -860,7 +879,13 @@ export class ExtendedExerciseTracker {
     // the category to hammer curls. The numeric symmetry sum is no longer
     // maintained for new sets; restored pre-contract sets keep theirs.
     if(scored){acc.count++;acc.total+=score;acc.depth+=breakdown.depth;acc.stability+=breakdown.stability;acc.trunk+=breakdown.trunk;if(offsetMs!==null)acc.symmetryOffsetsMs=[...(acc.symmetryOffsetsMs??[]),Math.round(offsetMs)];issues.forEach(k=>counts[k]++);}
-    this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`:`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};
+    // Coverage rule (2026-11-09): the per-rep aggregate is a total too —
+    // while the set's numeric axes cover <60% of the nominal weight it is
+    // computed internally (formScore, perfectReps) but not printed, here
+    // or in the set summary. For hammer curls the suspended stability axis
+    // leaves depth + trunk = .55, so the print is withheld.
+    const withheld=scored&&totalWithheld(this.assessmentsFor(acc));
+    this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?(withheld?`好，第 ${this.metrics.reps+1} 次记下啦`:`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`):`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};
     this.updateAverage();
     return true;
   }
@@ -1188,7 +1213,12 @@ export class ExtendedExerciseTracker {
       const bands:DepthBandCounts={left:{...(acc.depthBandCounts?.left??{})},right:{...(acc.depthBandCounts?.right??{})}};
       for(const part of parts){const sideKey=part.side===0?'left':'right';const tally={...(bands[sideKey]??{})};const band=frontRaiseBandFor(part.peakElbow);tally[band]=(tally[band]||0)+1;bands[sideKey]=tally;}
       acc.depthBandCounts=bands;issues.forEach(k=>counts[k]++);}
-    this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`:`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};
+    // Coverage rule (2026-11-09): front raise's numeric axes (stability +
+    // trunk) cover .45 of the nominal weight, below the 60% minimum — the
+    // per-rep aggregate is computed internally but not printed (see
+    // emitHammerRep's note).
+    const withheld=scored&&totalWithheld(this.assessmentsFor(acc));
+    this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?(withheld?`好，第 ${this.metrics.reps+1} 次记下啦`:`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`):`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};
     this.updateAverage();
     return true;
   }

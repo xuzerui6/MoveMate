@@ -37,7 +37,7 @@ function decode<T>(raw: string, fallback: T): T { try { return JSON.parse(raw); 
  * unassessable with a whitelisted reason; anything else is rejected like
  * any other malformed score field, so a stored record can never smuggle a
  * presentation the consumers do not know how to render. */
-const AXIS_STATE_REASONS = ['view','single-side','no-bilateral-evidence','framing'];
+const AXIS_STATE_REASONS = ['view','single-side','no-bilateral-evidence','framing','control'];
 const SYNC_CATEGORIES = ['sync','slight','alternating'];
 const DEPTH_BANDS = ['below','shoulder','over'];
 export function cleanAxisAssessment(value:any) {

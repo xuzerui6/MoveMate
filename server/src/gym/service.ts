@@ -592,7 +592,7 @@ export async function startWorkout(uid: number, input: any) {
  * depth bands, or unassessable with a whitelisted reason. */
 const axisStateSchema = z.union([
   z.object({ kind: z.literal("numeric") }),
-  z.object({ kind: z.literal("unassessable"), reason: z.enum(["view", "single-side", "no-bilateral-evidence", "framing"]) }),
+  z.object({ kind: z.literal("unassessable"), reason: z.enum(["view", "single-side", "no-bilateral-evidence", "framing", "control"]) }),
   z.object({ kind: z.literal("category"), category: z.enum(["sync", "slight", "alternating"]) }),
   z.object({ kind: z.literal("bands"), left: z.enum(["below", "shoulder", "over"]).optional(), right: z.enum(["below", "shoulder", "over"]).optional() }),
 ]);

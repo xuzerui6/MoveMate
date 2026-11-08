@@ -130,6 +130,26 @@ test('step-3 axis assessments and per-rep evidence survive standalone sync and r
  await motion.sessionAction(s.id,uid,'finish',{},false,2);
 });
 
+test('axis-validity suspension (control) survives standalone + plan sync; XP stays rep-derived',async()=>{
+ const s=await motion.createSession(uid,{id:randomUUID(),sportType:'hammer_curl',source:'camera'},2);
+ const assessment={depth:{kind:'numeric'},stability:{kind:'unassessable',reason:'control'},trunk:{kind:'numeric'},symmetry:{kind:'category',category:'sync'}};
+ const acc={count:2,total:150,depth:185,stability:60,trunk:180,symmetry:0,symmetryOffsetsMs:[90,110]};
+ const p=await motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:acc,axisAssessment:assessment},false,2);
+ assert.deepEqual(p.metrics.axisAssessment,assessment);assert.deepEqual(p.metrics.scoreAccumulator.symmetryOffsetsMs,[90,110]);
+ // The withheld total changes presentation only: settlement still pays
+ // reps × 2 XP for the camera session, exactly as for any scored set.
+ const done=await motion.sessionAction(s.id,uid,'finish',{},false,2);assert.equal(done.xpEarned,4);
+ const exerciseId=(definitions as any).hammer_curl.exerciseIds[0];
+ let w=await gym.startWorkout(uid,{id:randomUUID(),free:{exercises:[{exerciseId,sets:[{reps:3}]}]}});
+ const act=(action:string,extra:any={})=>gym.actWorkout(uid,w.id,{operationId:randomUUID(),version:w.version,action,setId:w.sets[w.cursor]?.id,...extra},2);
+ w=await act('start',{inputMode:'camera'});
+ const pacc={...acc,axisAssessment:assessment};
+ w=await act('progress',{reps:2,score:pacc});
+ assert.deepEqual(w.sets[0].score,pacc);
+ await assert.rejects(act('progress',{reps:2,score:{...pacc,axisAssessment:{...assessment,stability:{kind:'unassessable',reason:'everything'}}}}),/axisAssessment|无效|不合法|参数/);
+ w=await act('complete',{reps:2,score:pacc});w=await act('finish');assert.equal(w.phase,'finished');
+});
+
 test('step-3 front-raise band tallies and assessments survive plan-set sync and reject malformed states',async()=>{
  const exerciseId=(definitions as any).front_raise.exerciseIds[0];
  let w=await gym.startWorkout(uid,{id:randomUUID(),free:{exercises:[{exerciseId,sets:[{reps:3}]}]}});
