@@ -10130,6 +10130,168 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0210",
+   "expectedName": "cable reverse wrist curl",
+   "sourceId": "ai-codex-exdb-0210",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b56e4b9fcde2e4a8c2f863daefd871367b40b581892c3f34f87bcc9153485c0c",
+    "b52613d501bf0a2d338a478b532e0af323d2718b66fc38a80ec8bf0fe5a2b908"
+   ],
+   "phases": [
+    "起始：坐在面向绳索机的长凳上，双前臂平放在大腿上、双手正手（掌心向下）握住低滑轮的短直杆，双腕完全下屈、杆降至膝下最低位，拉索自杆心向前下方连至低滑轮",
+    "关键：双前臂仍平放在大腿上不动，仅双腕背伸上抬至最高位、杆随之上提；坐姿、机位与起始帧一致，相位差只来自腕角"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1351",
+   "expectedName": "lever t-bar reverse grip row",
+   "sourceId": "ai-codex-exdb-1351",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "872ce2c9cf0625efda71ff6cee64ca08ffb8e47f758295db37d3dca8167872a3",
+    "b5559679f81d3097de2a40eeb00567940a5f89088703896d8688e48edd8dfd25"
+   ],
+   "phases": [
+    "起始：坐在胸托式T杠划船机上、胸部贴紧斜置胸垫，双脚平放在地板上，双臂向前下方伸出，双手以反手（掌心向上、指节朝下）各握T形横把一端，握距略宽于肩，长杠在地面铰链上处于低位",
+    "关键：整根长杠绕地面铰链单弧上摆，横把拉近至胸腹前（落点在腰带线高度），双肘同相位后收、肩胛挤紧；双手仍以反手握住横把两端，胸仍贴垫、双脚仍平放地板"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1356",
+   "expectedName": "lever one arm lateral high row",
+   "sourceId": "ai-codex-exdb-1356",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "6effa80ef9e9ec8f63ea67e5658cce2d4baf38da3ec656d4c80ec72a978b9d63",
+    "d9a3317919c80f6e4d453be68f43e04da45bc02e5f8b4171a4b195b8ecb7bc39"
+   ],
+   "phases": [
+    "起始：坐在杠杆划船机上、胸部贴紧胸垫，双脚平放在地板上，右臂向右上宽位伸出、正手握住高位转轴单杠杆臂的把手（约头部高度），左手置于左大腿上、不碰器械",
+    "关键：右把沿杠杆弧线向后下方拉至肋侧、右肘后收至躯干后方，终点明显高于髋部；左手仍置于大腿，胸仍贴垫、躯干不旋转"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3200",
+   "expectedName": "lever bent-over row with v-bar",
+   "sourceId": "ai-codex-exdb-3200",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d93b62c34d30f853a18e4d6fd2aa716039661207f2a303ee9075dec61e54b5e1",
+    "fd6730cb916570c250a56e7cd7408e7286f7f167b38f37632d8fdef672e7b99c"
+   ],
+   "phases": [
+    "起始：站立于地面低位转轴的杠杆划船台前（无座椅、无胸垫），髋部前倾约45度、平背、膝微屈，双臂向下伸直，双手各握V柄一侧竖直握把、中立握（双掌相对），杠杆臂在低位、配重片在臂上",
+    "关键：V柄拉至下腹、双肘同相位后收、肩胛挤紧，杠杆臂绕低位转轴上摆；躯干保持同一前倾角度未直立，双手仍为中立握"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0234",
+   "expectedName": "cable standing row (v-bar)",
+   "sourceId": "ai-codex-exdb-0234",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "6ecaf474eed5ba774544a0236048a5de6262c0a257f1e8b2f91e08823fa0c15d",
+    "fa149398b6522543cbf9366171aac934692daf6179380c5d7bcdc1234a248205"
+   ],
+   "phases": [
+    "起始：面对绳索机站立、双脚与肩同宽、躯干直立，双臂在腰高向前伸直，双手各握V柄一侧、中立握（双掌相对），拉索自把心水平连至腰高位滑轮并绷紧",
+    "关键：V柄拉至腹部、双肘同相位后收过躯干、肩胛挤紧；躯干保持直立未后仰，拉索仍保持水平，双手仍为中立握"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1309",
+   "expectedName": "smith wide grip decline bench press",
+   "sourceId": "ai-codex-exdb-1309",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "836269fc2018d4a7e94ffec6f5d54b041023b48396e0dca1fe735632665be369",
+    "82b741c2af31b98870a6b4622680a0f54a67e3846a6e080b0967586ccb39736d"
+   ],
+   "phases": [
+    "起始：仰卧于史密斯机内的下斜凳上（头低臀高），双脚钩于高端脚垫下，双手宽正握（明显宽于肩）杠身，肘屈使杠轻触下胸，杠在双竖轨内",
+    "关键：杠沿双竖轨竖直推至双臂伸直，宽正握握距不变；下斜角度、脚位与体位两帧一致，相位差只来自杠位与肘角"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0738",
+   "expectedName": "sled 45в° calf press",
+   "sourceId": "ai-codex-exdb-0738",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "af66ae82319fce2fc39ffb2e432b5bc7f021c9622ee6a6e778995aa702da606a",
+    "5813db7f4643a0347bca13c5d903f8c3ac3f6e6f474d5ccf2d0c6e2567a95058"
+   ],
+   "phases": [
+    "起始：坐在45度腿举机靠背座椅上、双手握侧把，前脚掌落在雪橇踏板下缘、双脚跟悬于踏板下缘之外，膝保持伸直固定，踝背屈、雪橇在最近位（双帧均为赤足）",
+    "关键：仅靠踝跖屈伸将雪橇沿45度滑轨推离数厘米，脚跟仍悬于踏板下缘外、膝角与起始帧一致，小腿收缩可见"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2288",
+   "expectedName": "lever gripper hands",
+   "sourceId": "ai-codex-exdb-2288",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "274f28d4e9fc33fa66f12444ee4091d3ec540d1fb81e5c0e143b1c42c049b6ba",
+    "4b237b2470fda09449f0717b616262286f639b40b520bde77b374e03a9e9eb74"
+   ],
+   "phases": [
+    "起始：近景——坐在杠杆握力机上，双手手指全程包握两侧竖直柄身、拇指对侧，双柄处于分开的静止位，前臂放松，杠杆臂两侧配重在位",
+    "关键：双柄被挤至中央近乎相触，手指仍全程包握、腕保持中立，靠拢由握力机杠杆臂内收实现，柄距差与起始帧可辨区分"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2611",
+   "expectedName": "lever horizontal one leg press",
+   "sourceId": "ai-codex-exdb-2611",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d0f72a7019d2c032b6f203f579900592c4e67250810cb7c46dfb33e65fc531a8",
+    "b2b614674e7f881a2923b4db781eea97a2fa1ea0316da62bf04b19e5ccaa612c"
+   ],
+   "phases": [
+    "起始：坐在水平腿举机直立座椅上、背贴近垂直靠背，双手握侧把，仅右脚踏在雪橇踏板中央、右膝屈约90度、雪橇在最近位；左脚落在座椅下方休息踏台上不受力",
+    "关键：右腿伸至近直、雪橇沿水平轨道推至远端，臀仍贴座、背仍贴靠背，左脚仍在同一休息位，双帧不换侧"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
