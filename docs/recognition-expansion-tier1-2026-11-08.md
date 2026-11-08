@@ -40,4 +40,7 @@
 
 ## 部署记录
 
-（部署后回填：提交、双站 Version、线上核验。）
+- 提交：功能 `6afd5b5` → 文档 `c396b5e` → 合入 main `bc7409c`（经临时 detached 工作树推送 HEAD:main；本地 main 仍被旧 batch47 工作树占用，未动）。
+- 部署：生产 `dongban.xyz` Version **`27f69dec-5231-481b-83a5-4adb5def508c`**；预览 `preview.dongban.xyz` Version **`83ed904c-7df4-4f9d-9f2e-700227ed346f`**（wrangler@4.158.0 直调，令牌为保险库动态代理）。
+- 线上核验：双站入口包 `index-BBxobbsx.js` sha256 `aa31974d…` 与本地构建逐字节一致；识别分包 `useXiaozhiCoach-BJVuowFE.js`（含 `one_arm_row`）sha256 `4781921e…` 双站一致。
+- 部署偏离（如实）：部署工作树 `npm ci --prefix server` 再次命中 bcrypt 预编译下载失败（与批次 73/74 同一故障），按既有回退方案复制功能工作树的 server/node_modules（package-lock md5 逐字节一致、该树已通过 server 全量 108/108），bundle 构建正常。
