@@ -78,9 +78,19 @@ fixture modified):
 
 ## Deploy record
 
-- Merged to main as `__MERGE_SHA__`; CI run __CI_RUN__.
-- Production (dongban.xyz): Version `__PROD_VERSION__`.
-- Preview (preview.dongban.xyz): Version `__PREVIEW_VERSION__`.
+- Merged to main as `368684c` (feature `9b0acae` on
+  `fix/inline-average-withheld`); CI run 42520643812 **success**.
+- Production (dongban.xyz): Version
+  `1ec12120-4aa6-4f78-9126-51c86ea43bdf`.
+- Preview (preview.dongban.xyz): Version
+  `b11523dd-b6dc-4e6e-85a6-b4aa445d4d7f`.
+- Deployed with `npx wrangler@4.158.0 deploy` directly (production,
+  then `--env preview`) from a main worktree; server `npm ci`
+  succeeded in both worktrees — the bcrypt node_modules-copy fallback
+  was not needed this round.
+- Live verification: the `axisAssessment`, `cardData` and
+  `PlanWorkout` chunks fetched from both hosts are sha256-identical
+  to the deployed build.
 - 动伴进度 space: checked — no displayed fact changed (library /
   recognition counts untouched; the space displays no workout-average
   facts), so no sync was needed.
