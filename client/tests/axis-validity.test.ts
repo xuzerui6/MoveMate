@@ -5,12 +5,18 @@ import { createRecognitionTracker, newDemonstrationPose } from '../src/features/
 import { numericCoverageOf, totalWithheld, type AxisAssessments } from '../src/features/motion/lib/axisAssessment';
 import { restoredSetMetrics } from '../src/features/gym/workoutSync';
 import { buildGymSetCard, buildMotionSetCard, buildWorkoutCardData } from '../src/features/share/cardData';
+import { libraryPose } from './fixtures/library-camera';
 import type { NormalizedLandmark as Point } from '@mediapipe/tasks-vision';
 
-/** Axis-validity suspension fixtures (2026-11-09, Codex round-3):
- * the hammer family's stability axis is unassessable ('control'), set
- * totals are presented only at ≥60% numeric coverage, and the internal
- * score computation (formScore / breakdown / XP inputs) is untouched. */
+/** Axis-validity suspension fixtures (2026-11-09, Codex rounds 3–4):
+ * the suspended profiles' stability axis is unassessable ('control'),
+ * set totals follow the minimum-axis contract (a total is presented
+ * iff no axis is unassessable for a validity reason and every
+ * by-design-applicable axis is assessed in some form — the ≥60%
+ * coverage gate of the suspension round was replaced per Codex
+ * round-4), suspended constructs stop generating corrective output,
+ * and the internal score computation (formScore / breakdown / XP
+ * inputs) is untouched. */
 
 const rot2 = (x: number, y: number, rad: number): [number, number] => [x * Math.cos(rad) - y * Math.sin(rad), x * Math.sin(rad) + y * Math.cos(rad)];
 function curlPose(leftElbow: number, rightElbow: number, upperDeg = 0): Point[] {
@@ -29,21 +35,35 @@ function curlPose(leftElbow: number, rightElbow: number, upperDeg = 0): Point[] 
   return p;
 }
 
-test('coverage rule: totals present only at ≥60% numeric weight', () => {
+test('minimum-axis contract: validity reasons and unassessed applicable axes withhold; by-design axes never do', () => {
   const map = (depth: any, stability: any, trunk: any, symmetry: any): AxisAssessments => ({ depth, stability, trunk, symmetry });
   const num = { kind: 'numeric' } as const;
-  assert.equal(numericCoverageOf(undefined), 1);
   assert.equal(totalWithheld(undefined), false);
   assert.equal(totalWithheld(map(num, num, num, num)), false);
-  // Exactly 60% (depth + stability): presented.
-  assert.equal(numericCoverageOf(map(num, num, { kind: 'unassessable', reason: 'view' }, { kind: 'category', category: 'sync' })), .6);
-  assert.equal(totalWithheld(map(num, num, { kind: 'unassessable', reason: 'view' }, { kind: 'category', category: 'sync' })), false);
-  // Hammer frontal after the suspension (depth + trunk = .55): withheld.
+  // Coverage is diagnostic metadata only now — it is still computed
+  // (front raise renormalizes over .45 of the nominal weight) but it no
+  // longer gates anything, in either direction.
+  assert.equal(numericCoverageOf(undefined), 1);
+  assert.equal(numericCoverageOf(map({ kind: 'bands', left: 'shoulder' }, num, num, { kind: 'unassessable', reason: 'view' })), .45);
+  // Front raise: every applicable axis is assessed (depth as bands,
+  // stability + trunk numeric) and symmetry is unassessable BY DESIGN
+  // ('view') → the total is presented again, despite .45 coverage.
+  assert.equal(totalWithheld(map({ kind: 'bands', left: 'shoulder' }, num, num, { kind: 'unassessable', reason: 'view' })), false);
+  // A validity suspension withholds at ANY coverage — this map covers
+  // .75 numerically and still withholds ('control' blocks).
+  assert.equal(numericCoverageOf(map(num, { kind: 'unassessable', reason: 'control' }, num, num)), .75);
+  assert.equal(totalWithheld(map(num, { kind: 'unassessable', reason: 'control' }, num, num)), true);
+  // Hammer frontal after the suspension: withheld (the 'control' axis).
   assert.equal(totalWithheld(map(num, { kind: 'unassessable', reason: 'control' }, num, { kind: 'category', category: 'sync' })), true);
-  // Front raise (stability + trunk = .45): withheld.
-  assert.equal(totalWithheld(map({ kind: 'bands', left: 'shoulder' }, num, num, { kind: 'unassessable', reason: 'view' })), true);
-  // Single-side family (depth + stability + trunk = .80): presented.
+  // The session-level framing state blocks, as it did before.
+  assert.equal(totalWithheld(map({ kind: 'unassessable', reason: 'framing' }, { kind: 'unassessable', reason: 'framing' }, { kind: 'unassessable', reason: 'framing' }, { kind: 'unassessable', reason: 'framing' })), true);
+  // An applicable axis that went unassessed in this set blocks (clause
+  // ii): symmetry was applicable but produced no bilateral evidence.
+  assert.equal(totalWithheld(map(num, num, num, { kind: 'unassessable', reason: 'no-bilateral-evidence' })), true);
+  // Single-side family: symmetry is non-applicable by design → presented.
   assert.equal(totalWithheld(map(num, num, num, { kind: 'unassessable', reason: 'single-side' })), false);
+  // Mixed: a by-design axis alongside assessed forms never blocks.
+  assert.equal(totalWithheld(map(num, num, { kind: 'unassessable', reason: 'view' }, { kind: 'category', category: 'sync' })), false);
 });
 
 test('hammer curls: stability is unassessable (control), the total is withheld, internal scoring is unchanged', () => {
@@ -64,7 +84,8 @@ test('hammer curls: stability is unassessable (control), the total is withheld, 
   // The axis presents as cannot-assess with the suspension reason.
   assert.deepEqual(tracker.metrics.axisAssessment?.stability, { kind: 'unassessable', reason: 'control' });
   assert.deepEqual(tracker.metrics.axisAssessment?.symmetry, { kind: 'category', category: 'sync' });
-  // Coverage .55 → the total is withheld at presentation level...
+  // The suspended stability axis withholds the total at presentation
+  // level (numeric coverage .55 is recorded as a diagnostic only)...
   assert.equal(numericCoverageOf(tracker.metrics.axisAssessment), .55);
   assert.equal(totalWithheld(tracker.metrics.axisAssessment), true);
   // ...while the internal computation is byte-identical to step 3: the
@@ -79,7 +100,13 @@ test('hammer curls: stability is unassessable (control), the total is withheld, 
 test('hammer curls: sustained upper-arm drift still computes internally, but the axis stays unassessable', () => {
   const tracker = new ExtendedExerciseTracker('hammer_curl', 20, {}, true);
   const step = 1000 / 24; let t = 0;
-  const feed = (e: number, u: number) => { const raw = curlPose(e, e, u); tracker.update(raw, t, 1, structuredClone(raw)); t += step; };
+  const seenText: string[] = [];
+  let liveIssueSeen = false;
+  const feed = (e: number, u: number) => {
+    const raw = curlPose(e, e, u); tracker.update(raw, t, 1, structuredClone(raw)); t += step;
+    seenText.push(tracker.metrics.feedback, tracker.metrics.poseFeedback.message);
+    if (tracker.metrics.poseFeedback.primaryIssue === 'unstable_movement') liveIssueSeen = true;
+  };
   for (let c = 0; c < 63; c++) feed(160, 22);
   const P = 58;
   for (let k = 0; k < P; k++) { const u = k / P; feed(160 - 85 * (1 - Math.cos(2 * Math.PI * u)) / 2, 42); }
@@ -91,6 +118,37 @@ test('hammer curls: sustained upper-arm drift still computes internally, but the
   const s = tracker.metrics.formBreakdown.stability;
   assert.ok(s >= 54 && s <= 66, `internal stability ${s} should be ≈60, as before`);
   assert.deepEqual(tracker.metrics.axisAssessment?.stability, { kind: 'unassessable', reason: 'control' });
+  // Workstream C (round 5): the suspended construct stops correcting.
+  // The drift above is a sustained 42° upper-arm excursion — the exact
+  // input that used to fire the live upper-arm hint, the live issue and
+  // the per-rep unstable_movement correction. None may surface now:
+  // the rep's shortfall is entirely control-manufactured (its
+  // speed/duration evidence is clean), so the correction is suppressed.
+  assert.ok(!seenText.some(m => m.includes('上臂贴紧')), 'the live upper-arm hint must not surface for a suspended movement');
+  assert.equal(liveIssueSeen, false, 'the live control-derived issue must not fire for a suspended movement');
+  assert.equal(tracker.metrics.correctionCounts.unstable_movement, 0);
+  assert.deepEqual(tracker.metrics.lastRepIssues, []);
+});
+
+test('seated curls: a shortfall the speed/duration evidence produces on its own still corrects', () => {
+  const tracker = new ExtendedExerciseTracker('seated_curl', 20, {}, true);
+  const step = 1000 / 30; let t = 0;
+  const feed = (elbow: number, upper: number) => { const raw = seatedCurlPose(elbow, upper); tracker.update(raw, t, 1, structuredClone(raw)); t += step; };
+  for (let c = 0; c < 70; c++) feed(170, 0);
+  // Fast reps (0.47 s) WITH the same 40° upper-arm excursion as the
+  // suppression fixture above: the control term contributes its 37.5,
+  // but the speed/duration evidence alone already costs ≈32 points —
+  // the counterfactual (stability without control ≈ 67) is below the
+  // issue line, so the correction stands. Suspension of the axis does
+  // not blanket-suppress corrections the unsuspended evidence earns.
+  const P = 14;
+  for (let r = 0; r < 2; r++) for (let k = 0; k < P; k++) { const e = 170 - 92 * (1 - Math.cos(2 * Math.PI * (k / P))) / 2; feed(e, e < 145 ? 40 : 0); }
+  for (let c = 0; c < 45; c++) feed(170, 0);
+  assert.equal(tracker.metrics.reps, 2);
+  assert.deepEqual(tracker.metrics.axisAssessment?.stability, { kind: 'unassessable', reason: 'control' });
+  assert.ok(tracker.metrics.formBreakdown.stability < 70, `internal stability ${tracker.metrics.formBreakdown.stability} should show the combined shortfall`);
+  assert.equal(tracker.metrics.correctionCounts.unstable_movement, 2);
+  assert.ok(tracker.metrics.lastRepIssues.includes('unstable_movement'));
 });
 
 test('a restored pre-contract hammer set keeps its historical numbers', () => {
@@ -103,7 +161,7 @@ test('a restored pre-contract hammer set keeps its historical numbers', () => {
   assert.equal(totalWithheld(tracker.metrics.axisAssessment), false);
 });
 
-test('front raise: the set total is withheld by coverage (.45) while bands and internal score stand', () => {
+test('front raise: the set total returns under the minimum-axis contract, bands and internal score stand', () => {
   const tracker = createRecognitionTracker('front_raise', 20);
   let now = 0; const step = 100;
   let feedbackAtRep = '';
@@ -118,8 +176,15 @@ test('front raise: the set total is withheld by coverage (.45) while bands and i
   feed('neutral', 3000);
   feed('peak', 1200); feed('neutral', 1200);
   assert.equal(tracker.metrics.reps, 1);
-  assert.equal(totalWithheld(tracker.metrics.axisAssessment), true);
-  assert.equal(feedbackAtRep, '好，第 1 次记下啦');
+  // Revised (round 5): the suspension round withheld this total under
+  // the ≥60% coverage gate (.45 < .60). Under the minimum-axis contract
+  // the total is presented: every applicable axis is assessed
+  // (stability + trunk numeric, depth as bands) and the only
+  // unassessable axis is by design ('view'). Coverage .45 remains as
+  // diagnostic metadata.
+  assert.equal(numericCoverageOf(tracker.metrics.axisAssessment), .45);
+  assert.equal(totalWithheld(tracker.metrics.axisAssessment), false);
+  assert.match(feedbackAtRep, /^好，第 1 次记下啦 · 本次 \d+ 分$/);
   assert.ok(tracker.metrics.formScore > 0, 'internal formScore still computed');
 });
 
@@ -154,6 +219,133 @@ test('motion set card: withheld total prints no score and cannot claim a persona
   const shown = buildMotionSetCard({ ...result, axisAssessment: undefined }, history);
   assert.equal(shown.score, 95);
   assert.equal(shown.personalBest, true);
+});
+
+/** Round-5 scope-review fixtures: seated_curl and triceps_kickback
+ * share hammer's control construction (identical formula, identical
+ * channel), so their stability axes join the suspension; the suspended
+ * constructs stop correcting; a non-suspended profile keeps its
+ * control-derived correction. */
+function seatedCurlPose(elbowDeg: number, upperDeg: number): Point[] {
+  const p: Point[] = Array.from({ length: 33 }, () => ({ x: .5, y: .5, z: 0, visibility: 1 }));
+  const put = (i: number, x: number, y: number) => { p[i] = { x, y, z: 0, visibility: 1 }; };
+  put(0, .5, .16);
+  for (const o of [0, 1]) {
+    const sx = .43 + o * .06, dir = o ? -1 : 1, phi = upperDeg * Math.PI / 180;
+    put(11 + o, sx, .30); put(23 + o, sx, .57); put(25 + o, .65 + o * .06, .57); put(27 + o, .65 + o * .06, .85);
+    const [ux, uy] = rot2(0, 1, dir * phi);
+    const ex = sx + ux * .16, ey = .30 + uy * .16; put(13 + o, ex, ey);
+    const [fx, fy] = rot2(ux, uy, -dir * (180 - elbowDeg) * Math.PI / 180);
+    put(15 + o, ex + fx * .16, ey + fy * .16);
+  }
+  return p;
+}
+
+test('seated curls: the shared control construction suspends the stability axis, withholds the total, and stops correcting', () => {
+  const tracker = new ExtendedExerciseTracker('seated_curl', 20, {}, true);
+  const step = 1000 / 24; let t = 0;
+  let liveIssueSeen = false;
+  let feedbackAtRep = '';
+  const feed = (elbow: number, upper: number) => {
+    const before = tracker.metrics.reps;
+    const raw = seatedCurlPose(elbow, upper); tracker.update(raw, t, 1, structuredClone(raw)); t += step;
+    if (tracker.metrics.poseFeedback.primaryIssue === 'unstable_movement') liveIssueSeen = true;
+    if (tracker.metrics.reps > before) feedbackAtRep = tracker.metrics.feedback;
+  };
+  for (let c = 0; c < 63; c++) feed(170, 0);
+  // One slow rep with a sustained 40° upper-arm excursion while the arm
+  // is flexed: the control term alone manufactures the stability
+  // shortfall (speed/duration evidence is clean at this tempo).
+  const P = 70;
+  for (let k = 0; k < P; k++) { const e = 170 - 92 * (1 - Math.cos(2 * Math.PI * (k / P))) / 2; feed(e, e < 145 ? 40 : 0); }
+  for (let c = 0; c < 40; c++) feed(170, 0);
+  assert.equal(tracker.metrics.reps, 1);
+  assert.deepEqual(tracker.metrics.axisAssessment?.stability, { kind: 'unassessable', reason: 'control' });
+  assert.equal(totalWithheld(tracker.metrics.axisAssessment), true);
+  // The internal computation is untouched (≈62 from the control term).
+  const s = tracker.metrics.formBreakdown.stability;
+  assert.ok(s >= 55 && s <= 70, `internal stability ${s} should be ≈62, computed as before`);
+  assert.ok(tracker.metrics.formScore > 0, 'internal formScore still computed');
+  // The per-rep aggregate print follows the withheld set total.
+  assert.equal(feedbackAtRep, '好，第 1 次记下啦');
+  // Workstream C: no control-derived correction anywhere — not the
+  // per-rep issue (the shortfall is control-manufactured), not the live
+  // issue (the raw penalty is >30 throughout the excursion).
+  assert.equal(tracker.metrics.correctionCounts.unstable_movement, 0);
+  assert.deepEqual(tracker.metrics.lastRepIssues, []);
+  assert.equal(liveIssueSeen, false);
+});
+
+test('seated curls: the >45° upper-arm form rejection is a measurement gate and still operates', () => {
+  const tracker = new ExtendedExerciseTracker('seated_curl', 20, {}, true);
+  const step = 1000 / 24; let t = 0;
+  const feed = (elbow: number, upper: number) => { const raw = seatedCurlPose(elbow, upper); tracker.update(raw, t, 1, structuredClone(raw)); t += step; };
+  for (let c = 0; c < 63; c++) feed(170, 0);
+  // Workstream C suppresses score-derived corrections and the advisory
+  // hint — not measure()'s form gates, which are part of counting.
+  feed(170, 50);
+  assert.ok(tracker.metrics.feedback.includes('上臂贴紧一点点，别让肩膀跟着抬'), `gate copy should surface, got: ${tracker.metrics.feedback}`);
+  assert.equal(tracker.metrics.reps, 0);
+});
+
+function kickbackPose(elbowDeg: number, upperDeg = 0): Point[] {
+  const p: Point[] = Array.from({ length: 33 }, () => ({ x: .5, y: .5, z: 0, visibility: 1 }));
+  const put = (i: number, x: number, y: number) => { p[i] = { x, y, z: 0, visibility: 1 }; };
+  put(0, .55, .18);
+  for (const o of [0, 1]) {
+    const d = o * .06, dy = o * .02;
+    const sx = .65 + d, sy = .28 + dy, hx = .42 + d, hy = .52 + dy;
+    put(11 + o, sx, sy); put(23 + o, hx, hy); put(25 + o, .40 + d, .74 + dy); put(27 + o, .40 + d, .90);
+    const base = Math.atan2(hy - sy, hx - sx);
+    const ua = base + upperDeg * Math.PI / 180;
+    const ex = sx + Math.cos(ua) * .17, ey = sy + Math.sin(ua) * .17; put(13 + o, ex, ey);
+    const fa = ua + (180 - elbowDeg) * Math.PI / 180;
+    put(15 + o, ex + Math.cos(fa) * .17, ey + Math.sin(fa) * .17);
+  }
+  return p;
+}
+
+test('triceps kickbacks: the shared control construction suspends the stability axis and withholds the total', () => {
+  const tracker = new ExtendedExerciseTracker('triceps_kickback', 20, {}, true);
+  const step = 1000 / 24; let t = 0;
+  let feedbackAtRep = '';
+  const feed = (elbow: number) => {
+    const before = tracker.metrics.reps;
+    const raw = kickbackPose(elbow); tracker.update(raw, t, 1, structuredClone(raw)); t += step;
+    if (tracker.metrics.reps > before) feedbackAtRep = tracker.metrics.feedback;
+  };
+  for (let c = 0; c < 63; c++) feed(95);
+  const P = 58;
+  for (let k = 0; k < P; k++) feed(95 + 73 * (1 - Math.cos(2 * Math.PI * (k / P))) / 2);
+  for (let c = 0; c < 40; c++) feed(95);
+  assert.equal(tracker.metrics.reps, 1);
+  assert.deepEqual(tracker.metrics.axisAssessment?.stability, { kind: 'unassessable', reason: 'control' });
+  assert.equal(totalWithheld(tracker.metrics.axisAssessment), true);
+  assert.equal(feedbackAtRep, '好，第 1 次记下啦');
+  assert.ok(tracker.metrics.formScore > 0, 'internal formScore still computed');
+});
+
+test('seated lateral raise (not suspended): the elbow-extension control term still raises its live correction', () => {
+  const tracker = createRecognitionTracker('seated_lateral_raise', 20);
+  let now = 0; const step = 100;
+  const neutral = libraryPose('seated_lateral_raise', 'neutral');
+  for (let c = 0; c < 30; c++) { tracker.update(structuredClone(neutral.landmarks), now, 1, structuredClone(neutral.worldLandmarks)); now += step; }
+  assert.ok(tracker.metrics.poseFeedback.calibrated);
+  // Peak geometry with the elbows dropped to ≈107°: the extension
+  // control penalty reads ≈58 (>30). This profile's construct was
+  // reviewed and KEPT (elbow-extension shortfall, gate-bounded), so
+  // its live unstable_movement correction must still fire — the
+  // contrast direction of workstream C.
+  const peak = libraryPose('seated_lateral_raise', 'peak');
+  const bentWorld = peak.worldLandmarks!.map(v => ({ ...v }));
+  bentWorld[13] = { ...bentWorld[13], x: -.2, y: .12, z: 0 };
+  bentWorld[14] = { ...bentWorld[14], x: .2, y: .12, z: 0 };
+  let issueSeen = false;
+  for (let c = 0; c < 10; c++) {
+    tracker.update(structuredClone(peak.landmarks), now, 1, structuredClone(bentWorld)); now += step;
+    if (tracker.metrics.poseFeedback.primaryIssue === 'unstable_movement') issueSeen = true;
+  }
+  assert.equal(issueSeen, true, 'the non-suspended profile keeps its control-derived live correction');
 });
 
 test('workout completion card: withheld sets stay out of the average score', () => {

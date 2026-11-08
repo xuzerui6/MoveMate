@@ -16,9 +16,22 @@
  * docs/axis-validity-suspension-2026-11-09.md): step 3's renormalization
  * concentrated the hammer total onto the stability axis, whose control
  * term reads the same noisy elbow channel — so for the hammer family the
- * whole stability axis is now unassessable ('control'), and a minimum-
- * coverage rule (below) decides whether a set total may be presented at
- * all. Internal score computation is unchanged; only presentation moves.
+ * whole stability axis is now unassessable ('control'). Internal score
+ * computation is unchanged; only presentation moves.
+ *
+ * Minimum-axis contract (2026-11-09, Codex round-4,
+ * docs/minimum-axis-contract-2026-11-09.md) replaces the suspension
+ * round's ≥60% numeric-coverage gate: Codex accepted the hammer
+ * no-total outcome but not the percentage rationale — equal weight
+ * coverage need not preserve equal meaning, so no percentage can
+ * establish that a remainder supports a total. The contract below
+ * (totalWithheld) is per movement×view by construction: a total is
+ * presented iff no axis is unassessable for a validity reason and
+ * every by-design-applicable axis is assessed in some form. The
+ * control-construct scope review in the same round extended the
+ * 'control' suspension from hammer_curl to every profile sharing the
+ * unresolved assumption (see CONTROL_SUSPENDED_TYPES in
+ * extendedRecognition.ts).
  */
 
 export type AxisKey = 'depth' | 'stability' | 'trunk' | 'symmetry'
@@ -102,32 +115,58 @@ export const allNumericAssessments = (): AxisAssessments => ({
  * axis whose set produced no bilateral evidence (e.g. pure single-arm
  * hammer sets); framing — degraded framing, the cannot-assess session
  * state (no axis could be evidenced at all); control — the axis-validity
- * suspension (2026-11-09, Codex round-3): the hammer family's stability
- * number is dominated by a control term read off the elbow-dependent
- * upper-arm angle, the same world channel already shown to carry per-rep
- * sign-flipping noise, so upper-arm control cannot be judged reliably
- * from this view yet and the whole stability axis is withheld rather
- * than rebranded from its speed/duration remainder. */
+ * suspension (2026-11-09, Codex rounds 3–4): the suspended profiles'
+ * stability number is dominated by a control term read off the
+ * elbow-dependent upper-arm angle, the same world channel already shown
+ * to carry per-rep sign-flipping noise, so upper-arm control cannot be
+ * judged reliably from this view yet and the whole stability axis is
+ * withheld rather than rebranded from its speed/duration remainder. */
 export const UNASSESSABLE_REASONS = ['view', 'single-side', 'no-bilateral-evidence', 'framing', 'control'] as const
 
 /** Nominal axis weights of the set total (the weights every emit site
  * renormalizes over). Coverage of a total = the share of this nominal
- * weight carried by axes that still present a number. */
+ * weight carried by axes that still present a number. Since the
+ * minimum-axis contract (below) this is DIAGNOSTIC METADATA ONLY — it
+ * is reported in docs and tests to describe how much of the nominal
+ * construct a presented total renormalizes over, and it must never
+ * gate presentation again. */
 export const AXIS_WEIGHTS: Record<AxisKey, number> = { depth: .35, stability: .25, trunk: .20, symmetry: .20 }
-/** Minimum-coverage rule (2026-11-09, Codex round-3 amendment: an axis
- * being numeric does not establish the remaining total is meaningful, so
- * renormalization alone no longer presents a total). A set's total is
- * presented only when its numeric axes cover at least this share of the
- * nominal weight; below it the total is withheld and the assessable axes
- * present alone. Hammer frontal after the control suspension covers
- * depth + trunk = .55 → withheld, as decided; front raise covers
- * stability + trunk = .45 → withheld; the single-side family covers
- * .80 → still presented. */
-export const MIN_TOTAL_COVERAGE = .6
 export const numericCoverageOf = (a?: AxisAssessments | null): number =>
   !a ? 1 : AXIS_KEYS.reduce((sum, k) => sum + (a[k].kind === 'numeric' ? AXIS_WEIGHTS[k] : 0), 0)
-export const totalWithheld = (a?: AxisAssessments | null): boolean =>
-  numericCoverageOf(a) < MIN_TOTAL_COVERAGE - 1e-9
+/** Unassessable reasons that mark an axis NON-APPLICABLE for the
+ * movement×view by design: the view cannot evidence a bilateral
+ * judgment (front-raise symmetry, 'view'), or the movement is performed
+ * and measured on one side by design ('single-side'). A non-applicable
+ * axis is not a gap in the set's evidence — the applicable axes are
+ * assessed in other forms (front-raise depth as bands) — so these
+ * reasons never withhold a total by themselves. */
+export const BY_DESIGN_UNASSESSABLE_REASONS: readonly string[] = ['view', 'single-side']
+/** Minimum-axis contract (2026-11-09, Codex round-4 — replaces the
+ * suspension round's ≥60% coverage gate, whose rationale Codex rejected:
+ * a presentation gate and a scoring weight differ in purpose, but
+ * neither supplies evidence for a percentage, and equal weight coverage
+ * need not preserve equal meaning). A set total is presented iff BOTH:
+ *  (i) no axis is unassessable for a VALIDITY reason — the 'control'
+ *      suspension (an axis whose construct failed its validity review)
+ *      and the session-level 'framing' cannot-assess state (no axis
+ *      could be evidenced at all) both block; and
+ *  (ii) every by-design-applicable axis for the movement×view is
+ *      assessed in SOME form — numeric, category, or bands. An
+ *      applicable axis that went unassessed in this set (e.g. symmetry
+ *      with 'no-bilateral-evidence') blocks: the set did not produce
+ *      the evidence its total claims to summarize.
+ * Axes unassessable BY DESIGN (BY_DESIGN_UNASSESSABLE_REASONS) are
+ * non-applicable and never block. Outcomes: hammer frontal → withheld
+ * (control suspension); front raise → total returns (stability+trunk
+ * renormalized per step 3, depth as bands alongside); single-side
+ * family → presented; degraded framing → withheld. */
+export const totalWithheld = (a?: AxisAssessments | null): boolean => {
+  if (!a) return false
+  return AXIS_KEYS.some(k => {
+    const ax = a[k]
+    return ax.kind === 'unassessable' && !BY_DESIGN_UNASSESSABLE_REASONS.includes(ax.reason)
+  })
+}
 /** Companion-tone note shown wherever a set total is withheld: brief, no
  * score language, the pause framed as waiting for more evidence — never
  * as a failure of the set. */
