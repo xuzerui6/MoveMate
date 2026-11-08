@@ -383,5 +383,126 @@
       "好，落稳啦，我确认一下"
     ],
     "recognitionVersion": 5
+  },
+  "dumbbell_standing_press": {
+    "name": "站姿双哑铃肩推",
+    "english": "DUMBBELL STANDING OVERHEAD PRESS",
+    "exerciseIds": [
+      "exdb:0426"
+    ],
+    "placement": "正面略侧身，肩、肘、手腕和髋入镜，举过头顶的双手不能出画。",
+    "instruction": "站稳，双手在肩部高度保持两秒；同时推起，再放回。",
+    "joints": "双肩、双肘、双手腕、双髋",
+    "unit": "次",
+    "axes": [
+      "推举幅度",
+      "推举控制",
+      "躯干控制",
+      "双臂协调"
+    ],
+    "stages": [
+      "肩部起始位就绪",
+      "推举中",
+      "推到位啦——慢慢放回",
+      "好，放回啦，我确认一下"
+    ],
+    "recognitionVersion": 6
+  },
+  "barbell_military_press": {
+    "name": "杠铃站姿军事推举",
+    "english": "BARBELL STANDING MILITARY PRESS",
+    "exerciseIds": [
+      "exdb:1456",
+      "exdb:1457"
+    ],
+    "placement": "斜侧面拍摄，肩、肘、手腕和髋入镜，举过头顶的双手不能出画。",
+    "instruction": "站稳，杠在肩部高度保持两秒；推起至双臂伸直，再放回。宽窄握均可，摄像头不验证握法。",
+    "joints": "双肩、双肘、双手腕、双髋",
+    "unit": "次",
+    "axes": [
+      "推举幅度",
+      "推举控制",
+      "躯干控制",
+      "双臂协调"
+    ],
+    "stages": [
+      "肩部起始位就绪",
+      "推举中",
+      "推到位啦——慢慢放回",
+      "好，放回啦，我确认一下"
+    ],
+    "recognitionVersion": 6
+  },
+  "dumbbell_reverse_lunge": {
+    "name": "哑铃后撤弓步",
+    "english": "DUMBBELL REAR LUNGE",
+    "exerciseIds": [
+      "exdb:0381"
+    ],
+    "placement": "斜侧面全身拍摄，双脚后撤仍在画面内，肩、髋、膝和脚踝清晰可见。",
+    "instruction": "站稳两秒；一侧向后撤并下沉，再回到并脚站立；每侧完成计一次。",
+    "joints": "双肩、双髋、双膝、双脚踝",
+    "unit": "次",
+    "axes": [
+      "弓步幅度",
+      "支撑控制",
+      "躯干控制",
+      "左右协调"
+    ],
+    "stages": [
+      "并脚站立就绪",
+      "后撤下沉中",
+      "到位啦——回到站立",
+      "好，站稳，我确认一下"
+    ],
+    "recognitionVersion": 6
+  },
+  "dumbbell_deadlift": {
+    "name": "哑铃传统硬拉",
+    "english": "DUMBBELL DEADLIFT",
+    "exerciseIds": [
+      "exdb:0300"
+    ],
+    "placement": "斜侧面全身，至少一侧肩、肘、腕、髋、膝和脚踝连续清晰，哑铃不可遮挡关节。",
+    "instruction": "双手持铃于体侧，先在屈髋屈膝、双臂伸直且手接近小腿的起始位保持两秒；伸髋伸膝站直，再控制返回起始位，完整往返计一次。",
+    "joints": "肩、肘、腕、髋、膝、脚踝",
+    "unit": "次",
+    "axes": [
+      "动作幅度",
+      "稳定控制",
+      "身体姿态",
+      "动作协调"
+    ],
+    "stages": [
+      "低位起始就绪",
+      "伸髋伸膝拉起中",
+      "站直啦——控制着慢慢放回",
+      "好，放稳啦，我确认一下"
+    ],
+    "recognitionVersion": 6
+  },
+  "one_arm_row": {
+    "name": "哑铃单臂俯身划船",
+    "english": "DUMBBELL ONE ARM BENT-OVER ROW",
+    "exerciseIds": [
+      "exdb:0292"
+    ],
+    "placement": "从斜侧面朝向工作侧拍摄，工作侧肩、肘、手腕和双髋、双膝清晰可见。",
+    "instruction": "保持俯身，工作侧手臂垂下两秒；肘向后拉起，再放回；支撑侧保持不动，换侧先完成本侧再开始。",
+    "joints": "双肩、双肘、双手腕、双髋、双膝",
+    "unit": "次",
+    "axes": [
+      "划船幅度",
+      "手臂控制",
+      "俯身稳定",
+      "支撑稳定"
+    ],
+    "stages": [
+      "俯身垂臂就绪",
+      "单臂拉起中",
+      "拉到位啦——慢慢放下来",
+      "好，放回啦，我确认一下"
+    ],
+    "recognitionVersion": 6
   }
 }

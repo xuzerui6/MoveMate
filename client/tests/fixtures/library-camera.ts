@@ -7,6 +7,8 @@ export function libraryPose(type:LibraryRecognitionType,stage:'neutral'|'peak'='
   if(type==='goblet_squat'||type==='barbell_back_squat'||type==='barbell_front_squat')return {landmarks:demonstrationPose('squat',stage),worldLandmarks:null};
   if(type==='barbell_row')return {landmarks:planPose('bent_over_row',stage),worldLandmarks:null};
   if(type==='neutral_seated_press')return {landmarks:planPose('shoulder_press',stage),worldLandmarks:null};
+  if(type==='dumbbell_standing_press'||type==='barbell_military_press')return {landmarks:planPose('shoulder_press',stage),worldLandmarks:null};
+  if(type==='dumbbell_reverse_lunge')return {landmarks:planPose('reverse_lunge',stage),worldLandmarks:null};
   if(type==='dumbbell_calf_raise')return {landmarks:planPose('calf_raise',stage),worldLandmarks:null};
   if(type==='barbell_curl'||type==='reverse_barbell_curl')return {landmarks:planPose('biceps_curl',stage),worldLandmarks:null};
   const p:Point[]=Array.from({length:33},()=>({x:.5,y:.2,z:0,visibility:1}));
@@ -20,7 +22,12 @@ export function libraryPose(type:LibraryRecognitionType,stage:'neutral'|'peak'='
       put(15+o,type==='seated_lateral_raise'&&stage==='peak'?(o?.9:.1):(stage==='peak'?.48:.43)+d,type==='seated_lateral_raise'&&stage==='peak'?.3:stage==='peak'?.32:.54);
     }else if(type==='lying_triceps_extension'){
       put(11+o,.25+d,.5);put(23+o,.65+d,.55);put(25+o,.78+d,.72);put(27+o,.88+d,.9);put(13+o,.25+d,.35);put(15+o,(stage==='peak'?.13:.25)+d,stage==='peak'?.37:.2);
-    }else if(type==='barbell_deadlift'){
+    }else if(type==='one_arm_row'){
+      // Bent over (plan bent_over_row torso geometry); both arms hang at neutral,
+      // the left arm pulls at peak while the right arm keeps hanging as support.
+      put(11+o,.58+d,.38+o*.02);put(23+o,.40+d,.55+o*.02);put(25+o,.40+d,.74+o*.02);put(27+o,.40+d,.90);
+      if(stage==='peak'&&o===0){put(13+o,.46,.37);put(15+o,.55,.43);}else{put(13+o,.58+d,.52+o*.02);put(15+o,.58+d,.66+o*.02);}
+    }else if(type==='barbell_deadlift'||type==='dumbbell_deadlift'){
       const down=stage==='neutral';put(11+o,(down?.61:.52)+d,down?.40:.25);put(23+o,(down?.42:.52)+d,down?.60:.53);put(25+o,(down?.60:.52)+d,down?.73:.72);put(27+o,.52+d,.90);put(13+o,(down?.60:.52)+d,down?.60:.45);put(15+o,(down?.59:.52)+d,down?.83:.65);
     }else if(type==='bench_press'||type==='incline_bench_press'){
       put(11+o,type==='incline_bench_press'?.35+d:.25+d,type==='incline_bench_press'?.25:.50);put(23+o,.65+d,.55);put(25+o,.78+d,.72);put(27+o,.88+d,.90);

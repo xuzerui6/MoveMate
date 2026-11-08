@@ -27,11 +27,11 @@ type RaiseSide={raised:number;forward:boolean;latDom:boolean;elbow:number};
 type RaiseSample={t:number;raised:number;elbow:number;fwd:boolean;lat:boolean};
 /** A run of consecutive same-verdict direction samples (direction latch). */
 type SustainRun={start:number;last:number;n:number}|null;
-type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number;controlSamples:TimedValue[];speedSpans:TimedSpan[];samples:RaiseSample[];overshoot:boolean;dirLatched:boolean;dirMixed:boolean;dirTurned:boolean;fwdRun:SustainRun;latRun:SustainRun};
+type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;otherBase:number;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number;controlSamples:TimedValue[];speedSpans:TimedSpan[];samples:RaiseSample[];overshoot:boolean;dirLatched:boolean;dirMixed:boolean;dirTurned:boolean;fwdRun:SustainRun;latRun:SustainRun};
 type SideCompletion={side:number;at:number;peakStart:number;peakEnd:number;peakAmp:number;peakPosture:number;peakOther:number;peakElbow:number;duration:number;scoring:boolean;control:number;shift:number;speed:number};
 /** One side's confirmed peak: midpoint time + peak value in the movement's peak units (see lastPeak). */
 type PeakMark={at:number;value:number};
-const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180,controlSamples:[],speedSpans:[],samples:[],overshoot:false,dirLatched:false,dirMixed:false,dirTurned:false,fwdRun:null,latRun:null});
+const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,otherBase:180,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180,controlSamples:[],speedSpans:[],samples:[],overshoot:false,dirLatched:false,dirMixed:false,dirTurned:false,fwdRun:null,latRun:null});
 /** Timestamped stability evidence: a point sample of the control penalty (held
  * until the next sample) or one angular-velocity window with its true span. */
 type TimedValue={t:number;v:number};
@@ -277,7 +277,7 @@ function feedPeakTrack(tr:PeakTrack,now:number,depth:number):{best:boolean;close
  * so a seated low-camera setup cannot make it flap. It never gates cycle progression. */
 const UPPER_ARM_SUSTAIN_MS=1000,UPPER_ARM_CLEAR_MS=300;
 const axes=['depth','stability','trunk','symmetry'] as const;
-type ExtendedType=NewExerciseType|'bench_press'|'reverse_fly'|'seated_triceps_extension'|'barbell_deadlift'|'incline_bench_press'|'seated_curl'|'seated_lateral_raise'|'lying_triceps_extension';
+type ExtendedType=NewExerciseType|'bench_press'|'reverse_fly'|'seated_triceps_extension'|'barbell_deadlift'|'incline_bench_press'|'seated_curl'|'seated_lateral_raise'|'lying_triceps_extension'|'one_arm_row';
 const definitions={...NEW_EXERCISES,...LIBRARY_RECOGNITION};
 const sideJoints=(s:Side)=>s==='left'?[11,23,25,27]:[12,24,26,28];
 
@@ -320,6 +320,7 @@ export class ExtendedExerciseTracker {
   private controlPenalty=0;
   private hammerSides:[SideCycle,SideCycle]=[freshSideCycle(),freshSideCycle()];
   private hammerPending:SideCompletion|null=null;
+  private rowSides:[SideCycle,SideCycle]=[freshSideCycle(),freshSideCycle()];
   private raiseSides:[SideCycle,SideCycle]=[freshSideCycle(),freshSideCycle()];
   private raisePending:SideCompletion|null=null;
   /** Each side's most recent confirmed peak (midpoint time + peak value in the
@@ -356,7 +357,7 @@ export class ExtendedExerciseTracker {
     // sets restored from before this field existed) keep the mean above.
     const values=a.symmetryValues;if(values&&values.length)b.symmetry=Math.round(medianOf(values));
     this.metrics.formBreakdown=b;}
-  private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.retSince=null;this.retAccum=0;this.retPrevAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;this.hammerSides=[freshSideCycle(),freshSideCycle()];this.hammerPending=null;this.raiseSides=[freshSideCycle(),freshSideCycle()];this.raisePending=null;this.lastPeak=[null,null];this.controlSamples=[];this.speedSpans=[];this.upperArmDevAt=null;this.upperArmClearAt=null;this.freezeBridged=false;}
+  private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.retSince=null;this.retAccum=0;this.retPrevAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;this.hammerSides=[freshSideCycle(),freshSideCycle()];this.hammerPending=null;this.rowSides=[freshSideCycle(),freshSideCycle()];this.raiseSides=[freshSideCycle(),freshSideCycle()];this.raisePending=null;this.lastPeak=[null,null];this.controlSamples=[];this.speedSpans=[];this.upperArmDevAt=null;this.upperArmClearAt=null;this.freezeBridged=false;}
   /** The adaptive wrapper deliberately froze frames during a hammer-curl evidence freeze
    * (see AdaptiveRecognition); the next frame gap is therefore known-benign and must not be
    * read as a tracking loss. Only arms when the pending gap actually exceeds the guard. */
@@ -455,6 +456,7 @@ export class ExtendedExerciseTracker {
       return sideJoints(this.side);
     }
     if(this.type==='standing_leg_curl')return [11,12,23,24,25,26,27,28];
+    if(this.type==='one_arm_row')return [11,12,13,14,15,16,23,24,25,26];
     return [11,12,13,14,15,16,23,24,...(this.type==='front_raise'?[0]:[]),...(this.type==='triceps_kickback'?[25,26]:[])];
   }
   private measure(points:Point[],aspect:number,world:Point[]|null,required:number[]):Measurement|string{
@@ -597,6 +599,19 @@ export class ExtendedExerciseTracker {
       if(b&&[11+o,27+o].some(i=>dist(p[i],b.points[i])>b.torso*.14))return '肩部、脚位或画面移动，请恢复支撑后重新校准';
       const rise=b?(b.points[23+o].y-p[23+o].y)/b.torso:0;
       start=hinge<=145&&Math.abs(rise)<=.07;peak=!!b&&hinge>=155&&rise>=.18;measured=hinge;amplitude=cap((hinge-95)/75*100);posture=cap(100-Math.abs(175-hinge)*2);symmetry=b?cap(100-Math.max(dist(p[11+o],b.points[11+o]),dist(p[27+o],b.points[27+o]))/b.torso*200):100;basis='肩与脚部固定支撑＋髋部抬起＋肩髋膝连线';motion=`髋角 ${Math.round(hinge)}°，抬髋 ${Math.round(rise*100)}% 躯干长`;
+    }else if(this.type==='one_arm_row'){
+      // One-arm bent-over row (tier-1 expansion, 2026-11-08): the bent_over_row
+      // pattern's gates applied to a single working arm — torso tilt 25–85°,
+      // elbow start ≥145°, peak ≤100°, the same amplitude formula
+      // ((160 − elbow)/90) and baseline-relative posture. Counting runs per
+      // side in updateOneArmRow (the hammer-curl cycle machinery), so this
+      // aggregate only serves calibration and diagnostics: start is the
+      // working arm hanging free — the support arm rests on a bench or the
+      // knee and is never required to extend — and peak marks the extended
+      // side having pulled. No gate value is new; the per-side split is.
+      if(tilt<25||tilt>85)return '请屈髋俯身并保持稳定，从斜侧面朝向工作侧拍摄；直立不计入';
+      start=Math.max(...elbows)>=145;peak=Math.max(...elbows)<=100;measured=mean(elbows[0],elbows[1]);amplitude=cap((160-Math.max(...elbows))/90*100);symmetry=cap(100-Math.abs(elbows[0]-elbows[1])*1.5);posture=this.baseline?cap(100-Math.abs(tilt-this.baseline.tilt)*3):100;perSide=[elbows[0],elbows[1]];
+      basis='俯身姿势＋单侧肘屈伸，逐侧计数';motion=`双肘 ${Math.round(elbows[0])}° / ${Math.round(elbows[1])}°；拉起 ≤100°，放回 ≥145°`;
     }else{
       if(tilt>30)return '请保持直立，避免俯身或抬起大腿代替后屈腿';
       const candidate:Side=knees[0]<=knees[1]?'left':'right';side=this.cycleSide||candidate;const k=side==='left'?0:1,support=1-k;
@@ -732,6 +747,91 @@ export class ExtendedExerciseTracker {
     const issue:PoseIssue|null=f.controlPenalty>30?'unstable_movement':f.posture<70?'body_alignment':null;
     this.diagnostics={...this.diagnostics,stage};
     this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?poseIssueCopy(issue,this.type).joints:[],calibrated:true,message:hint||(issue?poseIssueCopy(issue,this.type).action:message)}};
+    return this.metrics;
+  }
+  private emitOneArmRowRep(done:SideCompletion,otherBase:number,f:Measurement):boolean{
+    if(this.metrics.reps>=this.metrics.targetReps)return false;
+    // The fourth axis of a unilateral row is support-side discipline (the
+    // standing-leg-curl precedent: for a one-sided movement the non-working
+    // side is what gets judged): how far the support elbow drifted from where
+    // it rested when this rep left the start pose, at the symmetry slope used
+    // throughout this file (1.5 points per degree). The support arm has no
+    // absolute angle standard — bench support rests near 90°, knee support
+    // higher, a straight support arm near 160° — so only its stillness is
+    // scored, never its position.
+    const symmetry=cap(100-Math.abs(done.peakOther-otherBase)*1.5);
+    const breakdown={depth:done.peakAmp,stability:cap(100-Math.max(0,done.speed-260)*.08-Math.max(0,.6-done.duration)*70-done.control),trunk:cap(done.peakPosture-done.shift*1.5),symmetry};
+    const score=Math.round(breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2+breakdown.symmetry*.2),scored=done.scoring&&f.scorable,issues:PoseIssue[]=[];
+    if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(breakdown.symmetry<70)issues.push('poor_coordination');
+    const acc={...this.metrics.scoreAccumulator},counts={...this.metrics.correctionCounts};
+    const key=done.side===0?'leftReps':'rightReps';acc[key]=(acc[key]||0)+1;
+    if(scored){acc.count++;acc.total+=score;axes.forEach(k=>acc[k]+=breakdown[k]);issues.forEach(k=>counts[k]++);}
+    this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`:`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};
+    this.updateAverage();
+    return true;
+  }
+  /** One-arm rows count per side like hammer curls, minus the pairing: the two
+   * sides are independent efforts (one works, one supports), so a completion
+   * emits immediately — nothing ever merges, and a side that never leaves the
+   * start pose (the support) can never produce a rep, while switching the
+   * working side between reps needs no re-locking. The peak zone is the
+   * bent_over_row peak (elbow ≤100°) carried on the depth signal 100 − elbow;
+   * peak amplitude reuses that pattern's formula; the return gate is the
+   * shared ≥145° accumulation. */
+  private updateOneArmRow(f:Measurement,now:number):ExerciseMetrics{
+    const elbows=f.elbows!;
+    let completed=false;
+    for(const s of [0,1] as const){
+      const cyc=this.rowSides[s],e=elbows[s],other=elbows[1-s];
+      const ev=feedPeakTrack(cyc.track,now,100-e);
+      if(ev.best){cyc.peakPosture=f.posture;cyc.peakOther=other;}
+      if(ev.closed?.valid){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=100-ev.closed.depth;cyc.peakAmp=cap((160-cyc.peakElbow)/90*100);}
+      const portion=cyc.prevAt===null?{start:now,ms:0}:zonePortion(cyc.prevAngle,e,145,true,cyc.prevAt,now);
+      let replaced=false;
+      if(cyc.peakStart!==null&&portion.ms>0){
+        if(cyc.returnSince===null||portion.start-cyc.returnSince>RETURN_WINDOW_MS){cyc.returnSince=portion.start;cyc.returnAccum=0;}
+        cyc.returnAccum+=Math.min(RETURN_FRAME_CAP_MS,portion.ms);
+        if(cyc.returnAccum>=RETURN_HOLD_MS){
+          const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax)};
+          const otherBase=cyc.otherBase;
+          this.rowSides[s]=freshSideCycle();replaced=true;
+          if(this.emitOneArmRowRep(done,otherBase,f))completed=true;
+        }
+      }
+      if(!replaced){
+        if(e>=145){
+          if(cyc.peakStart===null&&cyc.movingAt!==null){this.rowSides[s]=freshSideCycle();this.rowSides[s].otherBase=other;replaced=true;}
+          // Idle at the start pose: keep refreshing the support arm's resting
+          // angle, so otherBase names where the support rested just before the
+          // rep departed — a support that starts drifting in the same smoothed
+          // frames as the pull itself must not move its own reference.
+          else if(cyc.peakStart===null&&cyc.movingAt===null)cyc.otherBase=other;
+        }
+        else{
+          if(cyc.movingAt===null){cyc.movingAt=now;
+            // No idle frame refreshed this cycle (a pull on the first frame
+            // after calibration): fall back to the calibrated rest pose.
+            if(cyc.otherBase===180&&this.baseline?.elbows)cyc.otherBase=this.baseline.elbows[1-s];}
+          cyc.scoring=cyc.scoring&&f.scorable;
+          cyc.controlMax=Math.max(cyc.controlMax,f.controlPenalty);
+          cyc.controlSamples.push({t:now,v:f.controlPenalty});
+          cyc.shiftMax=Math.max(cyc.shiftMax,Math.abs(f.tilt-this.baseline!.tilt));
+          if(cyc.sampleAt===null){cyc.sampleAt=now;cyc.sampleAngle=e;}
+          else if(now-cyc.sampleAt>=100){const v=Math.abs(e-cyc.sampleAngle)*1000/(now-cyc.sampleAt);cyc.speedMax=Math.max(cyc.speedMax,v);cyc.speedSpans.push({start:cyc.sampleAt,end:now,v});cyc.sampleAt=now;cyc.sampleAngle=e;}
+        }
+      }
+      const cur=this.rowSides[s];
+      cur.prevAt=now;cur.prevAngle=e;
+      if(replaced){cur.track.prevAt=now;cur.track.prevDepth=100-e;}
+    }
+    const anyPeak=this.rowSides.some(c=>c.peakStart!==null||c.track.open);
+    const stage=this.metrics.reps>=this.metrics.targetReps?'complete':anyPeak?(f.start?'returning':'peak'):f.start?'ready':'moving';
+    const copy=definitions[this.type].stages;
+    const nearPeak=stage==='moving'&&elbows.some(e=>e>100&&e<=125);
+    const message=stage==='complete'?'目标完成啦，漂亮':completed?this.metrics.feedback:nearPeak?'接近啦，再往后拉一点点，肘贴近躯干再放回':copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 继续，保持住':'');
+    const issue:PoseIssue|null=f.posture<70?'body_alignment':null;
+    this.diagnostics={...this.diagnostics,stage};
+    this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?poseIssueCopy(issue,this.type).joints:[],calibrated:true,message:issue?poseIssueCopy(issue,this.type).action:message}};
     return this.metrics;
   }
   private emitFrontRaiseRep(parts:SideCompletion[],f:Measurement,peer?:{at:number;value:number}):boolean{
@@ -924,6 +1024,7 @@ export class ExtendedExerciseTracker {
     }
     if(this.type==='hammer_curl')return this.updateHammerCurl(f,now);
     if(this.type==='front_raise')return this.updateFrontRaise(f,now);
+    if(this.type==='one_arm_row')return this.updateOneArmRow(f,now);
     if(!f.start){
       if(this.movingAt===null){this.movingAt=now;if(this.type==='standing_leg_curl')this.cycleSide=f.side||null;}
       this.scoring=this.scoring&&f.scorable;this.shift=Math.max(this.shift,Math.abs(f.tilt-this.baseline!.tilt));
