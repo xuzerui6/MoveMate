@@ -31,6 +31,52 @@ function elapsed(row: SessionRow, now = Date.now()) { return Number(row.effectiv
  * aggregates its recorded per-rep symmetry values by median, not by mean. */
 function medianOf(values: number[]): number { const sorted=[...values].sort((a,b)=>a-b);const mid=Math.floor(sorted.length/2);return sorted.length%2?sorted[mid]:(sorted[mid-1]+sorted[mid])/2; }
 function decode<T>(raw: string, fallback: T): T { try { return JSON.parse(raw); } catch { return fallback; } }
+/** Step-3 scoring contract: per-axis assessability states the client may
+ * attach to a session (top level) or a plan set score. Validated strictly —
+ * an axis is numeric, a timing category, per-side depth bands, or
+ * unassessable with a whitelisted reason; anything else is rejected like
+ * any other malformed score field, so a stored record can never smuggle a
+ * presentation the consumers do not know how to render. */
+const AXIS_STATE_REASONS = ['view','single-side','no-bilateral-evidence','framing'];
+const SYNC_CATEGORIES = ['sync','slight','alternating'];
+const DEPTH_BANDS = ['below','shoulder','over'];
+export function cleanAxisAssessment(value:any) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new ValidationError('评分轴状态无效');
+  const out:any = {};
+  for (const key of ['depth','stability','trunk','symmetry']) {
+    const state = value[key];
+    if (!state || typeof state !== 'object') throw new ValidationError('评分轴状态无效');
+    if (state.kind === 'numeric') out[key] = { kind: 'numeric' };
+    else if (state.kind === 'unassessable' && AXIS_STATE_REASONS.includes(state.reason)) out[key] = { kind: 'unassessable', reason: state.reason };
+    else if (state.kind === 'category' && SYNC_CATEGORIES.includes(state.category)) out[key] = { kind: 'category', category: state.category };
+    else if (state.kind === 'bands') {
+      const bands:any = { kind: 'bands' };
+      for (const side of ['left','right']) if (state[side] !== undefined) { if (!DEPTH_BANDS.includes(state[side])) throw new ValidationError('评分轴状态无效'); bands[side] = state[side]; }
+      out[key] = bands;
+    } else throw new ValidationError('评分轴状态无效');
+  }
+  return out;
+}
+/** Step-3 front-raise evidence: per-side tallies of scored reps per depth
+ * band. Counts are bounded by the set's scored rep count, like every other
+ * accumulator sum. */
+export function cleanDepthBandCounts(value:any, count:number) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new ValidationError('评分累计值无效');
+  const out:any = {};
+  for (const side of ['left','right']) {
+    if (value[side] === undefined) continue;
+    if (!value[side] || typeof value[side] !== 'object' || Array.isArray(value[side])) throw new ValidationError('评分累计值无效');
+    const tally:any = {};
+    for (const band of DEPTH_BANDS) {
+      const n = value[side][band];
+      if (n === undefined) continue;
+      if (!Number.isInteger(n) || n < 0 || n > count) throw new ValidationError('评分累计值无效');
+      tally[band] = n;
+    }
+    out[side] = tally;
+  }
+  return out;
+}
 export function sessionView(row: SessionRow) {
   return { id:row.id, workoutId:row.workout_id||undefined, gameId:row.game_id, sportType:row.sport_type, source:row.source, status:row.status, effectiveSeconds:Math.floor(elapsed(row)/1000), reps:row.reps, xpEarned:row.xp, settled:Boolean(row.settled), startTime:row.created_at, endTime:row.ended_at, metrics:decode(row.metrics,{}) };
 }
@@ -91,6 +137,7 @@ function cleanMetrics(data:any, previous:any={}) {
     else if (typeof value === 'number' && Number.isFinite(value) && value >= 0) out[key] = key === 'formScore' ? Math.min(100,value) : Math.min(100000,value);
   }
   if ('heartRateSource' in data) out.heartRateSource = data.heartRateSource === 'ble' ? 'ble' : null;
+  if (data.axisAssessment != null) out.axisAssessment = cleanAxisAssessment(data.axisAssessment);
   for(const key of ['formBreakdown','correctionCounts']) {
     if (!data?.[key] || typeof data[key] !== 'object') continue;
     out[key] = { ...previous[key] };
@@ -119,6 +166,16 @@ function cleanMetrics(data:any, previous:any={}) {
       out.scoreAccumulator.symmetryValues=[...acc.symmetryValues];
       if(acc.symmetryValues.length)symmetryMedian=Math.round(medianOf(acc.symmetryValues));
     }
+    // Step-3 evidence fields (hammer peak-timing offsets, front-raise band
+    // tallies): stored verbatim with the accumulator so a restored set can
+    // present the timing category / per-side bands the live tracker showed,
+    // instead of silently reverting those axes to numbers.
+    if(acc.symmetryOffsetsMs!==undefined){
+      if(!Array.isArray(acc.symmetryOffsetsMs)||acc.symmetryOffsetsMs.length>acc.count||acc.symmetryOffsetsMs.some((n:unknown)=>typeof n!=='number'||!Number.isFinite(n)||n<0||n>10000))throw new ValidationError('评分累计值无效');
+      out.scoreAccumulator.symmetryOffsetsMs=[...acc.symmetryOffsetsMs];
+    }
+    if(acc.depthBandCounts!==undefined)out.scoreAccumulator.depthBandCounts=cleanDepthBandCounts(acc.depthBandCounts,acc.count);
+    if(acc.axisAssessment!==undefined)out.scoreAccumulator.axisAssessment=cleanAxisAssessment(acc.axisAssessment);
     out.formScore=acc.count?Math.round(acc.total/acc.count):0;
     out.formBreakdown=Object.fromEntries(['depth','stability','trunk','symmetry'].map(k=>[k,k==='symmetry'&&symmetryMedian!==null?symmetryMedian:acc.count?Math.round(acc[k]/acc.count):0]));
   }

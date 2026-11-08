@@ -1,6 +1,7 @@
 import { exerciseInfo } from '../motion/lib/exercises'
 import { requiredXp } from '../motion/lib/rewards'
 import type { WorkoutSession } from '../motion/types'
+import { assessmentFromScore, axisStateText, type AxisAssessments } from '../motion/lib/axisAssessment'
 
 /**
  * 分享卡数据层（纯函数，无 DOM）。
@@ -84,6 +85,10 @@ export function buildWorkoutCardData(row: any, streakDays: number): WorkoutCardD
 export interface SetCardAxis {
   label: string
   value: number
+  /** Step-3 contract: a non-numeric axis renders this text instead of a
+   * number (timing category, per-side bands, or 这个角度评不了） — the card
+   * never prints a fabricated 0 for an axis that carries no number. */
+  text?: string
 }
 
 export interface SetCardData {
@@ -104,8 +109,12 @@ export interface SetCardData {
 const AXIS_LABELS = ['幅度', '稳定性', '躯干', '对称'] as const
 const AXIS_KEYS = ['depth', 'stability', 'trunk', 'symmetry'] as const
 
-function axesFrom(breakdown: { depth: number; stability: number; trunk: number; symmetry: number }): SetCardAxis[] {
-  return AXIS_KEYS.map((key, i) => ({ label: AXIS_LABELS[i], value: Math.round(breakdown[key] || 0) }))
+function axesFrom(breakdown: { depth: number; stability: number; trunk: number; symmetry: number }, assessment?: AxisAssessments): SetCardAxis[] {
+  return AXIS_KEYS.map((key, i) => {
+    const state = assessment?.[key]
+    if (state && state.kind !== 'numeric') return { label: AXIS_LABELS[i], value: 0, text: axisStateText(state) || '这个角度评不了' }
+    return { label: AXIS_LABELS[i], value: Math.round(breakdown[key] || 0) }
+  })
 }
 
 /** gym 动作英文名：目录 name 字段（核心动作是类型 id，下划线转空格后大写）。 */
@@ -131,7 +140,7 @@ export function buildGymSetCard(set: any, index: number, dateInput: Date | strin
     nameEn: gymExerciseEn(set?.exercise?.name),
     scored,
     score: scored ? Math.round((set.score.total || 0) / count) : null,
-    axes: breakdown ? axesFrom(breakdown) : null,
+    axes: breakdown ? axesFrom(breakdown, assessmentFromScore(set?.score)) : null,
     reps: set?.reps || 0,
     unit: '次',
     setIndex: index + 1,
@@ -158,7 +167,7 @@ export function buildMotionSetCard(result: WorkoutSession, history: WorkoutSessi
     nameEn: info.english,
     scored,
     score: scored ? Math.round(result.formScore || 0) : null,
-    axes: scored ? axesFrom(result.formBreakdown) : null,
+    axes: scored ? axesFrom(result.formBreakdown, (result as any).axisAssessment) : null,
     reps: result.reps || 0,
     unit: info.unit,
     setIndex: null,

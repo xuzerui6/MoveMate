@@ -143,7 +143,7 @@ export class AdaptiveRecognition {
     : needed.some(i=>(raw[i].visibility??0)<.7);
    if(weakScore)this.scoring=false;
   }
-  if(this.metrics.reps>before.reps){if(!this.scoring){const sides=this.metrics.scoreAccumulator;this.base.metrics={...this.metrics,scoreAccumulator:{...before.scoreAccumulator,...(sides.leftReps!==undefined?{leftReps:sides.leftReps,rightReps:sides.rightReps}: {})},formScore:before.formScore,formBreakdown:before.formBreakdown,perfectReps:before.perfectReps,correctionCounts:before.correctionCounts,lastRepScore:null,lastRepIssues:[],feedback:'记下啦 · 刚才有点没看清，这次不评分'};}this.scoring=true;}
+  if(this.metrics.reps>before.reps){if(!this.scoring){const sides=this.metrics.scoreAccumulator;this.base.metrics={...this.metrics,scoreAccumulator:{...before.scoreAccumulator,...(sides.leftReps!==undefined?{leftReps:sides.leftReps,rightReps:sides.rightReps}: {})},formScore:before.formScore,formBreakdown:before.formBreakdown,axisAssessment:before.axisAssessment,perfectReps:before.perfectReps,correctionCounts:before.correctionCounts,lastRepScore:null,lastRepIssues:[],feedback:'记下啦 · 刚才有点没看清，这次不评分'};}this.scoring=true;}
   if(!count&&this.metrics.reps>before.reps){this.base=createRecognitionTracker(this.type,this.target,before,true,true);this.interrupt('刚才还在准备阶段，先回到起始姿势，我们正式开始');return this.metrics;}
   return this.metrics;
  }

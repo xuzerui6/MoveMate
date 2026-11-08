@@ -284,7 +284,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     const line = milestoneLine(metrics.reps, metrics.targetReps)
     if (line) setCoachEvent({ text: line, at: Date.now() })
   }, [active, paused, busy, ending, simulatedPose, metrics.reps, metrics.targetReps])
-  const unclear = active && !paused && metrics.poseFeedback.calibrated && (diagnostics.stage === 'tracking_lost' || metrics.poseFeedback.status === 'uncertain')
+  const unclear = active && !paused && metrics.poseFeedback.calibrated && (diagnostics.stage === 'tracking_lost' || diagnostics.stage === 'cannot_assess' || metrics.poseFeedback.status === 'uncertain')
   const eventLine = coachEvent && Date.now() - coachEvent.at < 3000 ? coachEvent.text : null
   const coachLine = paused || ending || pendingAction ? hint : eventLine || (metrics.poseFeedback.primaryIssue ? metrics.poseFeedback.message : metrics.feedback)
   const capsuleText = ending ? '正在确认结束' : paused ? '已暂停 · 休息不计时' : !metrics.poseFeedback.calibrated ? '正在找你 · 站好就行' : unclear ? '我有点看不清' : `陪你练 · ${exercise.name}`

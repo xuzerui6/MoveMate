@@ -22,7 +22,7 @@ export interface RecognitionDiagnostics {
   confidence: number
   side: TrackingSide | null
   angle: number | null
-  stage: 'calibrating' | 'ready' | 'moving' | 'peak' | 'returning' | 'tracking_lost' | 'complete'
+  stage: 'calibrating' | 'ready' | 'moving' | 'peak' | 'returning' | 'tracking_lost' | 'cannot_assess' | 'complete'
   calibrationProgress: number
   pairedSides: TrackingSide[]
   lastResetReason: string | null
