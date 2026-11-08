@@ -38,4 +38,8 @@
 
 ## 验证与部署记录
 
-- 接入提交与合并提交、串行全套测试、CI、双站 Version 与 sha256 抽查结果在收尾时回填本节。
+- 接入提交 `33c34e8`（分支 `media/exercise-media-batch71`）；合入 main 提交 `e1bdfa9`。
+- 串行全套测试（2026-11-08 本地）：client `test:repository` **369/369** + `tsc -b` 通过；server **103/103** + build 通过；cloudflare **34/34** + typecheck 通过。测试数与批次 70 后基线一致（新增条目不改变测试计数口径）。本地三套首轮均一次通过，无子进程偶发失败。
+- CI：分支手动触发 run `42456927265` 绿；main 推送 run `42457041645` 绿。
+- 双站部署（2026-11-08，wrangler@4.158.0）：生产 `dongban.xyz` Version `81d5d3fe-9cfb-4020-98ed-0d213ce0f4b6`；预览 `preview.dongban.xyz` Version `c289e984-8022-4c0f-9e4d-7d3ca05555aa`。
+- sha256 抽查（浏览器 UA，双站各 7 件：本批 1313 双帧、0773 双帧、0754 关键帧、3758 关键帧与 1313 详情 JSON）：14/14 与仓库文件一致。
