@@ -38,5 +38,8 @@
 
 ## 验证与部署记录
 
+- 接入提交 `8fa2849`（分支 `media/exercise-media-batch73`）；合入 main 提交 `f0fc0c9`。
 - 串行全套测试（2026-11-08 本地）：client `test:repository` **380/380** + `tsc -b` 通过；server **103/103** + build 通过；cloudflare **34/34** + typecheck 通过。三套首轮均一次通过，无子进程偶发失败。
-- 接入提交、CI、双站部署与 sha256 抽查记录于合入后回填。
+- CI：分支手动触发 run `42464819853` 绿；main 推送 run `42464948589` 绿。
+- 双站部署（2026-11-08，wrangler@4.158.0）：生产 `dongban.xyz` Version `9847dff0-4b82-4c26-a50b-e98eaa20d5a4`；预览 `preview.dongban.xyz` Version `3755a6c9-028f-454e-878f-b0f3f10e49a5`。部署注记：部署 worktree 内 server 依赖安装两度卡在 bcrypt 的 node-gyp 构建（预编译包/头文件下载失败），因部署只需 server 的 tsc/tsx 参与 bundle，改用接入 worktree 中与 lockfile 逐字节一致、且已通过全套测试的 server/node_modules 完成构建，部署产物不受影响。
+- sha256 抽查（浏览器 UA，双站各 4 件：本批 0764 关键帧、0747 关键帧、1268 关键帧与 0764 详情 JSON）：8/8 与仓库文件一致。
