@@ -209,4 +209,17 @@ carve-out is unchanged in shape.
 
 ## Deploy record
 
-- (backfilled after deploy)
+- Feature commit `c50fa1b` on `feat/channel-suspensions`; merge commit
+  **`ac3ac35`** on main. CI run **42522332480** green (Source checks,
+  1m22s).
+- Deployed with `npx wrangler@4.158.0 deploy` directly (both stations):
+  production Version **`31c480f9-2d1e-497b-96de-4882b061c147`**,
+  preview Version **`11df04b2-0a02-4e39-affe-2f6c9123cc3c`**. No
+  bcrypt/node_modules fallback was needed (server `npm ci` installed
+  cleanly in the deploy worktree).
+- Live verification: the `axisAssessment`, `Summary` and `PlanWorkout`
+  chunks fetched from dongban.xyz and preview.dongban.xyz are
+  sha256-identical to the deployed build.
+- The 「动伴进度」 space was checked: this round changes no displayed count
+  (library 769/1,329 and the recognition surface are untouched), so no
+  sync was needed.
