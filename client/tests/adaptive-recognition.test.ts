@@ -189,6 +189,65 @@ test('hammer curl: a freeze outlasting the grace still voids the half rep',()=>{
  r.feed('peak',1200);r.feed('neutral',1600);
  assert.equal(r.tracker.metrics.reps,1);
 });
+function stepDownRig(type:string,aspect=.75){
+ const tracker=new AdaptiveRecognition(type,20,{},1);let now=0,id=0,run=1,previous=fixture(type);
+ const build=(pose:ReturnType<typeof fixture>,runId:number,frameId:number,capturedAt:number):PoseFrame=>{const scale=Math.min(1,aspect)*.7;return {runId,frameId,capturedAt,receivedAt:capturedAt+10,width:aspect*960,height:960,landmarks:pose.landmarks.map(p=>({...p,x:.5+(p.x-.5)*scale/aspect,y:.5+(p.y-.5)*scale})),worldLandmarks:pose.worldLandmarks,model:runId===1?'full':'lite',mode:'worker-gpu'};};
+ const send=(pose:ReturnType<typeof fixture>,count=true)=>{tracker.update(build(pose,run,++id,now+=50),count);};
+ const feed=(stage:string,ms=1600,count=true)=>{const next=fixture(type,stage),start=previous;for(let t=0;t<ms;t+=50){const u=Math.min(1,t/600);send({landmarks:start.landmarks.map((p,i)=>({...p,x:p.x+(next.landmarks[i].x-p.x)*u,y:p.y+(next.landmarks[i].y-p.y)*u})),worldLandmarks:next.worldLandmarks},count);}previous=next;};
+ /** What useAdaptivePose.stepDown does since the continuity fix: time passes
+  * while the new rung's model loads (no frames at all), frame ids restart
+  * under a new run, and the engine carries over via carryToRun. */
+ const stepDown=(gapMs=1600)=>{now+=gapMs;run+=1;id=0;tracker.carryToRun(run);};
+ return {tracker,feed,send,stepDown,frameAt:(capturedAt:number,runId:number,frameId:number)=>build(fixture(type),runId,frameId,capturedAt),now:()=>now,run:()=>run};
+}
+for(const type of ['squat','biceps_curl','hammer_curl'])test(`${type}: a ladder step-down between reps is measurement-transparent`,()=>{
+ const control=stepDownRig(type);control.feed('neutral',1200,false);control.feed('peak');control.feed('neutral');control.feed('peak');control.feed('neutral');
+ const r=stepDownRig(type);r.feed('neutral',1200,false);r.feed('peak');r.feed('neutral');assert.equal(r.tracker.metrics.reps,1);
+ r.stepDown();
+ r.send(fixture(type));
+ assert.equal(r.tracker.ready,true,'calibration must stay latched across the switch');
+ r.feed('peak');r.feed('neutral');
+ assert.equal(r.tracker.metrics.reps,2);
+ assert.deepEqual({reps:r.tracker.metrics.reps,count:r.tracker.metrics.scoreAccumulator.count,formScore:r.tracker.metrics.formScore,formBreakdown:r.tracker.metrics.formBreakdown},{reps:control.tracker.metrics.reps,count:control.tracker.metrics.scoreAccumulator.count,formScore:control.tracker.metrics.formScore,formBreakdown:control.tracker.metrics.formBreakdown});
+});
+for(const type of ['squat','biceps_curl','hammer_curl'])test(`${type}: a ladder step-down mid-rep preserves the open rep`,()=>{
+ const r=stepDownRig(type);r.feed('neutral',1200,false);r.feed('peak');
+ r.stepDown();
+ r.send(fixture(type,'peak'));
+ assert.equal(r.tracker.ready,true,'calibration must stay latched across the switch');
+ r.feed('neutral');
+ assert.equal(r.tracker.metrics.reps,1);
+ assert.equal(r.tracker.metrics.scoreAccumulator.count,1);
+});
+test('contrast: the pre-fix engine rebuild lost calibration and the open rep',()=>{
+ const r=stepDownRig('hammer_curl');r.feed('neutral',1200,false);r.feed('peak');
+ const rebuilt=new AdaptiveRecognition('hammer_curl',20,structuredClone(r.tracker.metrics),2);
+ assert.equal(rebuilt.ready,false);
+ assert.equal(rebuilt.metrics.reps,0);
+});
+test('frames from before a step-down stay rejected after the carry',()=>{
+ const r=stepDownRig('squat');r.feed('neutral',1200,false);assert.ok(r.tracker.ready);
+ const lastAccepted=r.now();
+ r.stepDown();
+ r.tracker.update(r.frameAt(r.now()+50,r.run()-1,999));
+ assert.equal(r.tracker.ready,true);assert.equal(r.tracker.metrics.reps,0);
+ r.tracker.update(r.frameAt(lastAccepted-50,r.run(),1));
+ assert.equal(r.tracker.ready,true);assert.equal(r.tracker.metrics.reps,0);
+ r.send(fixture('squat'));assert.equal(r.tracker.ready,true);
+});
+test('time filter carries across a step-down gap without overshooting the raw sample',()=>{
+ const pose=fixture('squat').landmarks,moved=pose.map(p=>({...p,x:p.x+.04,y:p.y-.03}));
+ for(const gap of [50,1600]){
+  const filter=new TimeFilter(),first=filter.apply(pose,1000),out=filter.apply(moved,1000+gap);
+  for(const i of [11,12,15,16,23,27]){
+   assert.ok(Math.abs(out[i].x-first[i].x)<=Math.abs(moved[i].x-first[i].x)+1e-9,'filtered x must stay between the previous output and the raw sample');
+   assert.ok(Math.abs(out[i].y-first[i].y)<=Math.abs(moved[i].y-first[i].y)+1e-9,'filtered y must stay between the previous output and the raw sample');
+  }
+ }
+ // The state demonstrably carried: a reset filter passes its first sample through untouched.
+ const carried=new TimeFilter();carried.apply(pose,1000);const afterGap=carried.apply(moved,2600);
+ assert.ok(afterGap[11].x>pose[11].x&&afterGap[11].x<moved[11].x);
+});
 test('device preference can force legacy for new records only and persists best-effort',()=>{
  assert.equal(selectNewRecognitionStrategy('squat','legacy',true),'legacy');
  assert.equal(selectNewRecognitionStrategy('squat','auto',true),'adaptive-v1');

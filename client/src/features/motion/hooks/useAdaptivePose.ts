@@ -70,12 +70,15 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
   persistVerdict(r);
   frameDeadline(r);
  };
- /** Move one rung down the ladder, preserving the set in progress through the
-  * same engine-reset the Lite recovery always used. During preparation the
-  * next rung is probed before it is trusted; mid-session the next rung simply
-  * takes over (degradation watching will step down again if it also fails).
-  * A stall/init/inference failure on a non-floor rung lands here too — falling
-  * back is a normal outcome, never a frozen workout. */
+ /** Move one rung down the ladder. Only the pose model changes: the
+  * recognition engine carries over wholesale (see
+  * AdaptiveRecognition.carryToRun), so calibration, the open cycle and the
+  * landmark filters survive the swap and the set in progress never notices.
+  * During preparation the next rung is probed before it is trusted;
+  * mid-session the next rung simply takes over (degradation watching will
+  * step down again if it also fails). A stall/init/inference failure on a
+  * non-floor rung lands here too — falling back is a normal outcome, never a
+  * frozen workout. */
  const stepDown=async(r:Runtime,reason:ProbeFailureReason)=>{
   if(runtime.current!==r||r.controller.signal.aborted||r.stepping)return;
   const from=r.ladder[r.rungIndex],next=r.ladder[r.rungIndex+1];
@@ -88,8 +91,7 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
   const wasPreparing=r.preparing;
   r.runId=++serial.current;
   r.frameId=0;
-  const completed=r.engine.metrics;
-  r.engine=new AdaptiveRecognition(opts.current.type,opts.current.target,completed,r.runId);
+  r.engine.carryToRun(r.runId);
   r.transport?.close();
   r.transport=null;
   r.inFlight=false;
