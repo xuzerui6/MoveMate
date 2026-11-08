@@ -250,7 +250,7 @@ await test('Workers runtime migration and business regression', async t=>{
  const exported=(await call('/api/v1/training-export',{token})).data.data;assert.equal(exported.workouts.filter(w=>w.imported).length,1);assert.ok(!JSON.stringify(exported).includes('password_hash'));
  });
  await t.test('six plan-only camera families persist scores and side counts without extending standalone reward types',async()=>{
-  const token=tokens[0];const catalog=await call('/api/v1/exercises?camera=1&limit=50',{token});assert.equal(catalog.data.data.total,49);
+  const token=tokens[0];const catalog=await call('/api/v1/exercises?camera=1&limit=50',{token});assert.equal(catalog.data.data.total,56);
   for(const id of ['exdb:0294','exdb:0334','exdb:0405','exdb:0293','movemate:reverse_lunge','exdb:1373']){
    let r=await call('/api/v1/workout-sessions',{method:'POST',token,body:{id:crypto.randomUUID(),free:{exercises:[{exerciseId:id,sets:[{reps:2}]}]}}});assert.equal(r.status,200,JSON.stringify(r.data));let w=r.data.data;
    const act=async(action,extra={})=>{r=await call('/api/v1/workout-sessions/'+w.id+'/actions',{method:'POST',token,body:{operationId:crypto.randomUUID(),version:w.version,setId:w.sets[w.cursor]?.id,action,...extra}});assert.equal(r.status,200,JSON.stringify(r.data));w=r.data.data;};

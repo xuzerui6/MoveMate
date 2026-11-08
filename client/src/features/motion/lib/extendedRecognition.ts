@@ -16,7 +16,13 @@ const cross=(a:number[],b:number[])=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[
 const angle=(a:Point,b:Point,c:Point)=>Math.acos(Math.max(-1,Math.min(1,dot(norm(vector(a,b)),norm(vector(c,b))))))*180/Math.PI;
 const mean=(a:number,b:number)=>(a+b)/2;
 type Side='left'|'right';
-type Measurement={start:boolean;peak:boolean;amplitude:number;angle:number;confidence:number;scorable:boolean;posture:number;symmetry:number;controlPenalty:number;hint?:string;side?:Side;basis:string;motion:string;points:Point[];torso:number;tilt:number;elbows?:[number,number];raiseSides?:[RaiseSide,RaiseSide];framing?:'ok'|'weak'};
+type Measurement={start:boolean;peak:boolean;amplitude:number;angle:number;confidence:number;scorable:boolean;posture:number;symmetry:number;controlPenalty:number;hint?:string;side?:Side;basis:string;motion:string;points:Point[];torso:number;tilt:number;elbows?:[number,number];raiseSides?:[RaiseSide,RaiseSide];legSides?:[LegSide,LegSide];framing?:'ok'|'weak'};
+/** Per-leg channels for the tier-2 leg movements: hip and knee angles plus,
+ * for the split squat, the ankle's forward projection relative to its hip
+ * along the feet's facing direction (leg-length units) — the front leg is
+ * the one whose ankle sits forward, the rear foot rests back (and elevated
+ * on a bench), so stance geometry rather than motion picks the front side. */
+type LegSide={hip:number;knee:number;proj:number};
 /** Per-arm front-raise channel: shoulder-flexion angle, whether that arm's wrist
  * direction is forward-dominant, whether it is lateral-dominant (the lateral
  * component at least the forward one — the mirror image of the forward test),
@@ -27,11 +33,11 @@ type RaiseSide={raised:number;forward:boolean;latDom:boolean;elbow:number};
 type RaiseSample={t:number;raised:number;elbow:number;fwd:boolean;lat:boolean};
 /** A run of consecutive same-verdict direction samples (direction latch). */
 type SustainRun={start:number;last:number;n:number}|null;
-type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;otherBase:number;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number;controlSamples:TimedValue[];speedSpans:TimedSpan[];samples:RaiseSample[];overshoot:boolean;dirLatched:boolean;dirMixed:boolean;dirTurned:boolean;fwdRun:SustainRun;latRun:SustainRun};
+type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;otherBase:number;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number;controlSamples:TimedValue[];speedSpans:TimedSpan[];samples:RaiseSample[];overshoot:boolean;dirLatched:boolean;dirMixed:boolean;dirTurned:boolean;fwdRun:SustainRun;latRun:SustainRun;supportBase:Point|null;supportPeak:Point|null};
 type SideCompletion={side:number;at:number;peakStart:number;peakEnd:number;peakAmp:number;peakPosture:number;peakOther:number;peakElbow:number;duration:number;scoring:boolean;control:number;shift:number;speed:number};
 /** One side's confirmed peak: midpoint time + peak value in the movement's peak units (see lastPeak). */
 type PeakMark={at:number;value:number};
-const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,otherBase:180,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180,controlSamples:[],speedSpans:[],samples:[],overshoot:false,dirLatched:false,dirMixed:false,dirTurned:false,fwdRun:null,latRun:null});
+const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,otherBase:180,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180,controlSamples:[],speedSpans:[],samples:[],overshoot:false,dirLatched:false,dirMixed:false,dirTurned:false,fwdRun:null,latRun:null,supportBase:null,supportPeak:null});
 /** Timestamped stability evidence: a point sample of the control penalty (held
  * until the next sample) or one angular-velocity window with its true span. */
 type TimedValue={t:number;v:number};
@@ -277,7 +283,7 @@ function feedPeakTrack(tr:PeakTrack,now:number,depth:number):{best:boolean;close
  * so a seated low-camera setup cannot make it flap. It never gates cycle progression. */
 const UPPER_ARM_SUSTAIN_MS=1000,UPPER_ARM_CLEAR_MS=300;
 const axes=['depth','stability','trunk','symmetry'] as const;
-type ExtendedType=NewExerciseType|'bench_press'|'reverse_fly'|'seated_triceps_extension'|'barbell_deadlift'|'incline_bench_press'|'seated_curl'|'seated_lateral_raise'|'lying_triceps_extension'|'one_arm_row';
+type ExtendedType=NewExerciseType|'bench_press'|'reverse_fly'|'seated_triceps_extension'|'barbell_deadlift'|'incline_bench_press'|'seated_curl'|'seated_lateral_raise'|'lying_triceps_extension'|'one_arm_row'|'lying_leg_raise'|'upright_row'|'mountain_climber'|'split_squat'|'bench_dip';
 const definitions={...NEW_EXERCISES,...LIBRARY_RECOGNITION};
 const sideJoints=(s:Side)=>s==='left'?[11,23,25,27]:[12,24,26,28];
 
@@ -323,6 +329,13 @@ export class ExtendedExerciseTracker {
   private rowSides:[SideCycle,SideCycle]=[freshSideCycle(),freshSideCycle()];
   private raiseSides:[SideCycle,SideCycle]=[freshSideCycle(),freshSideCycle()];
   private raisePending:SideCompletion|null=null;
+  private climberSides:[SideCycle,SideCycle]=[freshSideCycle(),freshSideCycle()];
+  private squatSides:[SideCycle,SideCycle]=[freshSideCycle(),freshSideCycle()];
+  /** Which side's split-squat cycle is currently being fed: the front side,
+   * re-derived from stance geometry every frame; a mid-cycle flip voids the
+   * abandoned side's half cycle rather than letting it complete as the other
+   * leg's rep. */
+  private squatFront:number|null=null;
   /** Each side's most recent confirmed peak (midpoint time + peak value in the
    * movement's peak units: elbow angle for hammer curls, raised angle for front
    * raises). Lets a rep that emits as a single still score symmetry peak-to-peak
@@ -357,7 +370,7 @@ export class ExtendedExerciseTracker {
     // sets restored from before this field existed) keep the mean above.
     const values=a.symmetryValues;if(values&&values.length)b.symmetry=Math.round(medianOf(values));
     this.metrics.formBreakdown=b;}
-  private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.retSince=null;this.retAccum=0;this.retPrevAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;this.hammerSides=[freshSideCycle(),freshSideCycle()];this.hammerPending=null;this.rowSides=[freshSideCycle(),freshSideCycle()];this.raiseSides=[freshSideCycle(),freshSideCycle()];this.raisePending=null;this.lastPeak=[null,null];this.controlSamples=[];this.speedSpans=[];this.upperArmDevAt=null;this.upperArmClearAt=null;this.freezeBridged=false;}
+  private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.retSince=null;this.retAccum=0;this.retPrevAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;this.hammerSides=[freshSideCycle(),freshSideCycle()];this.hammerPending=null;this.rowSides=[freshSideCycle(),freshSideCycle()];this.raiseSides=[freshSideCycle(),freshSideCycle()];this.raisePending=null;this.climberSides=[freshSideCycle(),freshSideCycle()];this.squatSides=[freshSideCycle(),freshSideCycle()];this.squatFront=null;this.lastPeak=[null,null];this.controlSamples=[];this.speedSpans=[];this.upperArmDevAt=null;this.upperArmClearAt=null;this.freezeBridged=false;}
   /** The adaptive wrapper deliberately froze frames during a hammer-curl evidence freeze
    * (see AdaptiveRecognition); the next frame gap is therefore known-benign and must not be
    * read as a tracking loss. Only arms when the pending gap actually exceeds the guard. */
@@ -451,12 +464,14 @@ export class ExtendedExerciseTracker {
       if(!this.side){const confidence=(s:Side)=>Math.min(...joints(s).map(i=>raw[i]?.visibility||0));this.side=confidence('left')>=confidence('right')?'left':'right';}
       return joints(this.side);
     }
-    if(this.type==='romanian_deadlift'||this.type==='glute_bridge'){
+    if(this.type==='romanian_deadlift'||this.type==='glute_bridge'||this.type==='lying_leg_raise'){
       if(!this.side){const confidence=(s:Side)=>Math.min(...sideJoints(s).map(i=>raw[i]?.visibility||0));this.side=confidence('left')>=confidence('right')?'left':'right';}
       return sideJoints(this.side);
     }
     if(this.type==='standing_leg_curl')return [11,12,23,24,25,26,27,28];
     if(this.type==='one_arm_row')return [11,12,13,14,15,16,23,24,25,26];
+    if(this.type==='mountain_climber')return [11,12,13,14,15,16,23,24,25,26,27,28];
+    if(this.type==='split_squat')return [11,12,23,24,25,26,27,28,29,30,31,32];
     return [11,12,13,14,15,16,23,24,...(this.type==='front_raise'?[0]:[]),...(this.type==='triceps_kickback'?[25,26]:[])];
   }
   private measure(points:Point[],aspect:number,world:Point[]|null,required:number[]):Measurement|string{
@@ -471,6 +486,7 @@ export class ExtendedExerciseTracker {
     let start=false,peak=false,amplitude=0,measured=0,posture=cap(100-Math.max(0,tilt-12)*2),symmetry=100,controlPenalty=0,side:Side|undefined=this.side||undefined,basis='',motion='',hint:string|undefined;
     let perSide:[number,number]|undefined;
     let raiseData:[RaiseSide,RaiseSide]|undefined;
+    let legData:[LegSide,LegSide]|undefined;
     let framing:'ok'|'weak'|undefined;
     if(this.type==='seated_curl'||this.type==='seated_lateral_raise'){
       const hips=[angle(a[11],a[23],a[25]),angle(a[12],a[24],a[26])];
@@ -612,6 +628,77 @@ export class ExtendedExerciseTracker {
       if(tilt<25||tilt>85)return '请屈髋俯身并保持稳定，从斜侧面朝向工作侧拍摄；直立不计入';
       start=Math.max(...elbows)>=145;peak=Math.max(...elbows)<=100;measured=mean(elbows[0],elbows[1]);amplitude=cap((160-Math.max(...elbows))/90*100);symmetry=cap(100-Math.abs(elbows[0]-elbows[1])*1.5);posture=this.baseline?cap(100-Math.abs(tilt-this.baseline.tilt)*3):100;perSide=[elbows[0],elbows[1]];
       basis='俯身姿势＋单侧肘屈伸，逐侧计数';motion=`双肘 ${Math.round(elbows[0])}° / ${Math.round(elbows[1])}°；拉起 ≤100°，放回 ≥145°`;
+    }else if(this.type==='lying_leg_raise'){
+      // Lying leg raise (tier-2 expansion, exdb:0620): the glute-bridge
+      // pattern (G) re-aimed at hip flexion — supine support points pinned
+      // while the hip angle (shoulder–hip–knee) travels the cycle. Survey
+      // draft thresholds: start hip ≥160° (legs flat), peak ≤100°. A sit-up
+      // moves the shoulder support, so shoulder/hip drift against the
+      // calibration baseline rejects it (the bridge's support-stability
+      // check); bent vs straight knees share the same hip trace and are
+      // deliberately not distinguished (the survey's non-exclusion note).
+      const hips=[angle(a[11],a[23],a[25]),angle(a[12],a[24],a[26])],hinge=hips[o];
+      if(tilt<45)return '请仰卧在凳面或地面、双腿伸直，摄像头降低并侧面拍摄；坐起或站立不计入';
+      if(this.baseline&&[11+o,23+o].some(i=>dist(p[i],this.baseline!.points[i])>this.baseline!.torso*.14))return '肩部、髋部或画面移动，请恢复支撑后重新校准';
+      start=hinge>=160;peak=hinge<=100;measured=hinge;amplitude=cap((170-hinge)/85*100);posture=this.baseline?cap(100-Math.abs(tilt-this.baseline.tilt)*3):100;symmetry=cap(100-Math.abs(hips[0]-hips[1])*1.5);
+      basis='仰卧支撑稳定＋髋屈伸（肩–髋–膝）';motion=`髋角 ${Math.round(hinge)}°；放平 ≥160°，举至 ≤100°`;
+    }else if(this.type==='upright_row'){
+      // Upright row (tier-2 expansion, exdb:0437): two existing channels
+      // combined — the curl family's bilateral elbow angle plus the press
+      // family's hand-height channel ((shoulder − wrist) / torso). The pair
+      // is what separates a row from a shrug, which moves neither channel.
+      // Survey draft: start elbows ≥160° with the hands at/below the hip
+      // line; peak elbows ≤80° AND both hands at/above the shoulder line.
+      if(tilt>35)return '请直立站稳、双臂自然垂下；俯身或侧倾提拉不计入';
+      const rise=[(p[11].y-p[15].y)/torso,(p[12].y-p[16].y)/torso];
+      start=Math.min(...elbows)>=160&&[0,1].every(i=>p[15+i].y>=p[23+i].y-torso*.1);
+      peak=Math.max(...elbows)<=80&&Math.min(...rise)>=0;
+      measured=mean(elbows[0],elbows[1]);amplitude=cap((170-Math.max(...elbows))/90*100);symmetry=cap(100-Math.abs(elbows[0]-elbows[1])*1.5);
+      basis='双肘屈伸＋双手相对肩高（双通道互证）';motion=`双肘 ${Math.round(elbows[0])}° / ${Math.round(elbows[1])}°，手高 ${Math.round(Math.min(...rise)*100)}% 躯干长；垂臂 ≥160°，提至肘 ≤80° 且手过肩线`;
+      if(!start&&Math.max(...elbows)>140&&Math.min(...rise)>=-.9)hint='手再提起来一点，肘屈起来向外打开——只耸肩不算哦';
+    }else if(this.type==='bench_dip'){
+      // Bench dip (tier-2 expansion, exdb:0129): elbow angle plus shoulder
+      // descent against the calibrated support pose. The two channels
+      // cross-check: sitting down without bending the elbows earns no
+      // flexion, and bending the elbows while propped up earns no descent.
+      // Survey draft: start elbows ≥155° at support height; peak elbows
+      // ≤105° with the shoulder midpoint dropped ≥ 0.12 torso lengths.
+      const drop=this.baseline?(mean(p[11].y,p[12].y)-mean(this.baseline.points[11].y,this.baseline.points[12].y))/torso:0;
+      start=Math.min(...elbows)>=155&&drop<=.04;
+      peak=Math.max(...elbows)<=105&&!!this.baseline&&drop>=.12;
+      measured=mean(elbows[0],elbows[1]);amplitude=cap((170-Math.max(...elbows))/80*100);symmetry=cap(100-Math.abs(elbows[0]-elbows[1])*1.5);posture=this.baseline?cap(100-Math.abs(tilt-this.baseline.tilt)*3):100;
+      basis='双肘屈伸＋肩部下降位移（双通道互证）';motion=`双肘 ${Math.round(elbows[0])}° / ${Math.round(elbows[1])}°，肩降 ${Math.round(drop*100)}% 躯干长；伸臂 ≥155°，下沉肘 ≤105° 且肩降 ≥12%`;
+    }else if(this.type==='mountain_climber'){
+      // Mountain climber (tier-2 expansion, exdb:0630): the high-knees
+      // alternation transplanted into a plank — the posture gate comes
+      // first (torso near-horizontal, hands supporting), then per-side
+      // hip+knee cycles run in updateMountainClimber. Survey draft:
+      // extended side hip ≥150° and knee ≥150°; tucked side hip ≤100°
+      // and knee ≤110°.
+      if(tilt<55)return '请保持俯撑：双手撑地、身体成一条直线，斜侧面拍摄；站立抬腿不计入';
+      const hips=[angle(a[11],a[23],a[25]),angle(a[12],a[24],a[26])];
+      legData=[{hip:hips[0],knee:knees[0],proj:0},{hip:hips[1],knee:knees[1],proj:0}];
+      start=legData.every(l=>l.hip>=150&&l.knee>=150);peak=legData.some(l=>l.hip<=100&&l.knee<=110);
+      measured=mean(hips[0],hips[1]);amplitude=cap((170-Math.min(...hips))/85*100);posture=this.baseline?cap(100-Math.abs(tilt-this.baseline.tilt)*3):100;symmetry=cap(100-Math.abs(hips[0]-hips[1])*1.5);
+      basis='俯撑姿态＋双腿交替髋膝回收';motion=`髋 ${Math.round(hips[0])}° / ${Math.round(hips[1])}°，膝 ${Math.round(knees[0])}° / ${Math.round(knees[1])}°；回收 髋 ≤100° 且膝 ≤110°，蹬回 ≥150°`;
+    }else if(this.type==='split_squat'){
+      // Split squat (tier-2 expansion, exdb:0410): the squat family's knee
+      // cycle measured on the FRONT leg only (updateSplitSquat). Front and
+      // rear come from stance geometry, not from motion: facing is the
+      // feet's own heel→toe direction, the front ankle projects forward of
+      // its hip along it, and the rear ankle projects backward (its foot
+      // rests elevated behind). Thresholds are the squat family's own:
+      // start knee ≥150°, peak ≤125°.
+      const fx=mean(p[31].x-p[29].x,p[32].x-p[30].x),fy=mean(p[31].y-p[29].y,p[32].y-p[30].y),flen=Math.hypot(fx,fy)||1;
+      legData=[0,1].map(i=>{const leg=Math.max(.05,dist(p[23+i],p[25+i])+dist(p[25+i],p[27+i]));return {hip:180,knee:knees[i],proj:((p[27+i].x-p[23+i].x)*fx+(p[27+i].y-p[23+i].y)*fy)/flen/leg};}) as [LegSide,LegSide];
+      // Start and peak judge the FRONT knee only: the rear knee is
+      // structurally bent in an elevated split stance (its shin rests back
+      // on the bench), so requiring both knees straight would make the
+      // start pose unreachable and calibration impossible.
+      const frontKnee=knees[legData[0].proj>=legData[1].proj?0:1];
+      start=frontKnee>=150;peak=frontKnee<=125;
+      measured=frontKnee;amplitude=cap((170-measured)/80*100);symmetry=cap(100-Math.abs(knees[0]-knees[1])*1.5);
+      basis='分腿站姿＋前腿膝屈伸（前/后由站姿几何判定）';motion=`双膝 ${Math.round(knees[0])}° / ${Math.round(knees[1])}°；站立 ≥150°，前腿下沉 ≤125°`;
     }else{
       if(tilt>30)return '请保持直立，避免俯身或抬起大腿代替后屈腿';
       const candidate:Side=knees[0]<=knees[1]?'left':'right';side=this.cycleSide||candidate;const k=side==='left'?0:1,support=1-k;
@@ -622,8 +709,8 @@ export class ExtendedExerciseTracker {
       symmetry=cap(100-Math.max(0,165-knees[support])*3-(this.baseline?dist(p[27+support],this.baseline.points[27+support])/torso*120:0));
       if(!start&&hips<150)hint='请让大腿保持向下，脚跟向后抬起，向前抬膝不计入';
     }
-    const scorable=confidence>=.7&&[11,12,23,24,...(this.type==='romanian_deadlift'||this.type==='glute_bridge'||this.type==='barbell_deadlift'?[25,26,27,28]:[])].every(i=>(points[i].visibility??0)>=.7);
-    return {start,peak,amplitude,angle:measured,confidence,scorable,posture,symmetry,controlPenalty,hint,side,basis,motion,points:p,torso,tilt,elbows:perSide,raiseSides:raiseData,framing};
+    const scorable=confidence>=.7&&[11,12,23,24,...(this.type==='romanian_deadlift'||this.type==='glute_bridge'||this.type==='barbell_deadlift'||this.type==='lying_leg_raise'?[25,26,27,28]:[])].every(i=>(points[i].visibility??0)>=.7);
+    return {start,peak,amplitude,angle:measured,confidence,scorable,posture,symmetry,controlPenalty,hint,side,basis,motion,points:p,torso,tilt,elbows:perSide,raiseSides:raiseData,legSides:legData,framing};
   }
   /** The peer-peak memory as it stands just before a cycle reset: each side's
    * completed peak record (lastPeak), superseded by fresher peak evidence its
@@ -834,6 +921,158 @@ export class ExtendedExerciseTracker {
     this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?poseIssueCopy(issue,this.type).joints:[],calibrated:true,message:issue?poseIssueCopy(issue,this.type).action:message}};
     return this.metrics;
   }
+  private emitClimberRep(done:SideCompletion,f:Measurement):boolean{
+    if(this.metrics.reps>=this.metrics.targetReps)return false;
+    // Fourth axis （左右协调）: the other leg's discipline at this rep's peak —
+    // it should be back at extension while this side drives (the one-arm-row
+    // support-axis logic at this file's symmetry slope of 1.5 points/degree).
+    const symmetry=cap(100-Math.max(0,150-done.peakOther)*1.5);
+    // Stability deliberately drops the shared formula's duration term and
+    // raises its speed threshold: this is a rhythm movement, so cadence is
+    // the point rather than a fault. A drive sweeps the hip ≈70°; even at
+    // two drives per second that averages ≈300°/s, so the elbow-scale
+    // 260°/s threshold would tax every honest rep — 420°/s only taxes
+    // flailing. (New-movement scoring definition, per the tier-2 survey:
+    // slow countable reps are the acceptance line.)
+    const breakdown={depth:done.peakAmp,stability:cap(100-Math.max(0,done.speed-420)*.08-done.control),trunk:cap(done.peakPosture-done.shift*1.5),symmetry};
+    const score=Math.round(breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2+breakdown.symmetry*.2),scored=done.scoring&&f.scorable,issues:PoseIssue[]=[];
+    if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(breakdown.symmetry<70)issues.push('poor_coordination');
+    const acc={...this.metrics.scoreAccumulator},counts={...this.metrics.correctionCounts};
+    const key=done.side===0?'leftReps':'rightReps';acc[key]=(acc[key]||0)+1;
+    if(scored){acc.count++;acc.total+=score;axes.forEach(k=>acc[k]+=breakdown[k]);issues.forEach(k=>counts[k]++);}
+    this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`:`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};
+    this.updateAverage();
+    return true;
+  }
+  /** Mountain climbers count per side like one-arm rows: each leg runs its own
+   * extended (hip ≥150° and knee ≥150°) → tucked (hip ≤100° and knee ≤110°) →
+   * extended cycle on the depth signal min(100 − hip, 110 − knee), and a
+   * completion emits immediately for that side. One alternation rule from the
+   * survey draft （左右交替）: a completion only counts when the OTHER side was
+   * back at extension (hip ≥135°) at this side's peak — both legs tucked
+   * together is a frog tuck, not a climber drive, and is discarded for both
+   * sides alike. There is no pairing and no pending window. */
+  private updateMountainClimber(f:Measurement,now:number):ExerciseMetrics{
+    const legs=f.legSides!;
+    let completed=false;
+    for(const s of [0,1] as const){
+      const cyc=this.climberSides[s],leg=legs[s],other=legs[1-s];
+      const depth=Math.min(100-leg.hip,110-leg.knee);
+      const ev=feedPeakTrack(cyc.track,now,depth);
+      if(ev.best){cyc.peakPosture=f.posture;cyc.peakOther=other.hip;cyc.peakElbow=leg.hip;cyc.peakAmp=cap((170-leg.hip)/85*100);}
+      if(ev.closed?.valid){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;}
+      const ext=Math.min(leg.hip-150,leg.knee-150);
+      const portion=cyc.prevAt===null?{start:now,ms:0}:zonePortion(cyc.prevAngle,ext,0,true,cyc.prevAt,now);
+      let replaced=false;
+      if(cyc.peakStart!==null&&portion.ms>0){
+        if(cyc.returnSince===null||portion.start-cyc.returnSince>RETURN_WINDOW_MS){cyc.returnSince=portion.start;cyc.returnAccum=0;}
+        cyc.returnAccum+=Math.min(RETURN_FRAME_CAP_MS,portion.ms);
+        if(cyc.returnAccum>=RETURN_HOLD_MS){
+          const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax)};
+          const alternated=done.peakOther>=135;
+          this.climberSides[s]=freshSideCycle();replaced=true;
+          if(alternated&&this.emitClimberRep(done,f))completed=true;
+        }
+      }
+      if(!replaced){
+        if(ext>=0){if(cyc.peakStart===null&&cyc.movingAt!==null){this.climberSides[s]=freshSideCycle();replaced=true;}}
+        else{
+          if(cyc.movingAt===null)cyc.movingAt=now;
+          cyc.scoring=cyc.scoring&&f.scorable;
+          cyc.controlMax=Math.max(cyc.controlMax,f.controlPenalty);
+          cyc.controlSamples.push({t:now,v:f.controlPenalty});
+          cyc.shiftMax=Math.max(cyc.shiftMax,Math.abs(f.tilt-this.baseline!.tilt));
+          if(cyc.sampleAt===null){cyc.sampleAt=now;cyc.sampleAngle=leg.hip;}
+          else if(now-cyc.sampleAt>=100){const v=Math.abs(leg.hip-cyc.sampleAngle)*1000/(now-cyc.sampleAt);cyc.speedMax=Math.max(cyc.speedMax,v);cyc.speedSpans.push({start:cyc.sampleAt,end:now,v});cyc.sampleAt=now;cyc.sampleAngle=leg.hip;}
+        }
+      }
+      const cur=this.climberSides[s];
+      cur.prevAt=now;cur.prevAngle=ext;
+      if(replaced){cur.track.prevAt=now;cur.track.prevDepth=depth;}
+    }
+    const anyPeak=this.climberSides.some(c=>c.peakStart!==null||c.track.open);
+    const stage=this.metrics.reps>=this.metrics.targetReps?'complete':anyPeak?(f.start?'returning':'peak'):f.start?'ready':'moving';
+    const copy=definitions[this.type].stages;
+    const nearTuck=stage==='moving'&&legs.some(l=>l.hip<=130&&l.knee<=135);
+    const message=stage==='complete'?'目标完成啦，漂亮':completed?this.metrics.feedback:nearTuck?'接近啦，再往胸口收一点点':copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 继续，保持住':'');
+    const issue:PoseIssue|null=f.posture<70?'body_alignment':null;
+    this.diagnostics={...this.diagnostics,stage};
+    this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?poseIssueCopy(issue,this.type).joints:[],calibrated:true,message:issue?poseIssueCopy(issue,this.type).action:message}};
+    return this.metrics;
+  }
+  private emitSplitSquatRep(done:SideCompletion,rearDrift:number,f:Measurement):boolean{
+    if(this.metrics.reps>=this.metrics.targetReps)return false;
+    // Fourth axis （后脚稳定）: the rear foot rests planted on its bench for
+    // the whole rep; how far its ankle wandered between this rep's departure
+    // and its peak is the discipline being scored — the glute bridge's
+    // support-drift definition (drift / torso × 200), applied to the rear
+    // ankle instead of the support shoulder/ankle pair.
+    const symmetry=cap(100-rearDrift/f.torso*200);
+    const breakdown={depth:done.peakAmp,stability:cap(100-Math.max(0,done.speed-260)*.08-Math.max(0,.6-done.duration)*70-done.control),trunk:cap(done.peakPosture-done.shift*1.5),symmetry};
+    const score=Math.round(breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2+breakdown.symmetry*.2),scored=done.scoring&&f.scorable,issues:PoseIssue[]=[];
+    if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(breakdown.symmetry<70)issues.push('poor_coordination');
+    const acc={...this.metrics.scoreAccumulator},counts={...this.metrics.correctionCounts};
+    const key=done.side===0?'leftReps':'rightReps';acc[key]=(acc[key]||0)+1;
+    if(scored){acc.count++;acc.total+=score;axes.forEach(k=>acc[k]+=breakdown[k]);issues.forEach(k=>counts[k]++);}
+    this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`:`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};
+    this.updateAverage();
+    return true;
+  }
+  /** Split squats run the squat family's knee cycle on the front leg only.
+   * Only the front side's cycle is fed; the rear side never accumulates a
+   * cycle, so its (also flexing) knee can never produce a rep. The front
+   * side is re-derived from stance geometry every frame (see measure), the
+   * feet stay planted throughout a rep so the derivation is stable, and
+   * swapping stance between reps simply feeds the other side's fresh cycle —
+   * a mid-cycle flip voids the abandoned half cycle instead of completing
+   * it as the wrong leg. */
+  private updateSplitSquat(f:Measurement,now:number):ExerciseMetrics{
+    const legs=f.legSides!;
+    const front=(legs[0].proj>=legs[1].proj?0:1) as 0|1,rear=(1-front) as 0|1;
+    if(this.squatFront!==null&&this.squatFront!==front)this.squatSides[this.squatFront]=freshSideCycle();
+    this.squatFront=front;
+    const cyc=this.squatSides[front],knee=legs[front].knee;
+    let completed=false;
+    const ev=feedPeakTrack(cyc.track,now,125-knee);
+    if(ev.best){cyc.peakPosture=f.posture;cyc.supportPeak={...f.points[27+rear]};}
+    if(ev.closed?.valid){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=125-ev.closed.depth;cyc.peakAmp=cap((170-cyc.peakElbow)/80*100);}
+    const portion=cyc.prevAt===null?{start:now,ms:0}:zonePortion(cyc.prevAngle,knee,150,true,cyc.prevAt,now);
+    let replaced=false;
+    if(cyc.peakStart!==null&&portion.ms>0){
+      if(cyc.returnSince===null||portion.start-cyc.returnSince>RETURN_WINDOW_MS){cyc.returnSince=portion.start;cyc.returnAccum=0;}
+      cyc.returnAccum+=Math.min(RETURN_FRAME_CAP_MS,portion.ms);
+      if(cyc.returnAccum>=RETURN_HOLD_MS){
+        const done:SideCompletion={side:front,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:legs[rear].knee,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax)};
+        const drift=cyc.supportBase&&cyc.supportPeak?dist(cyc.supportPeak,cyc.supportBase):0;
+        this.squatSides[front]=freshSideCycle();replaced=true;
+        if(this.emitSplitSquatRep(done,drift,f))completed=true;
+      }
+    }
+    if(!replaced){
+      if(knee>=150){if(cyc.peakStart===null&&cyc.movingAt!==null){this.squatSides[front]=freshSideCycle();replaced=true;}}
+      else{
+        if(cyc.movingAt===null){cyc.movingAt=now;cyc.supportBase={...f.points[27+rear]};}
+        cyc.scoring=cyc.scoring&&f.scorable;
+        cyc.controlMax=Math.max(cyc.controlMax,f.controlPenalty);
+        cyc.controlSamples.push({t:now,v:f.controlPenalty});
+        cyc.shiftMax=Math.max(cyc.shiftMax,Math.abs(f.tilt-this.baseline!.tilt));
+        if(cyc.sampleAt===null){cyc.sampleAt=now;cyc.sampleAngle=knee;}
+        else if(now-cyc.sampleAt>=100){const v=Math.abs(knee-cyc.sampleAngle)*1000/(now-cyc.sampleAt);cyc.speedMax=Math.max(cyc.speedMax,v);cyc.speedSpans.push({start:cyc.sampleAt,end:now,v});cyc.sampleAt=now;cyc.sampleAngle=knee;}
+      }
+    }
+    const cur=this.squatSides[front];
+    cur.prevAt=now;cur.prevAngle=knee;
+    if(replaced){cur.track.prevAt=now;cur.track.prevDepth=125-knee;}
+    const anyPeak=cur.peakStart!==null||cur.track.open;
+    const stage=this.metrics.reps>=this.metrics.targetReps?'complete':anyPeak?(f.start?'returning':'peak'):f.start?'ready':'moving';
+    const copy=definitions[this.type].stages;
+    const nearPeak=stage==='moving'&&knee<=145&&knee>125;
+    const message=stage==='complete'?'目标完成啦，漂亮':completed?this.metrics.feedback:nearPeak?'接近啦，再往下沉一点点':copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 继续，保持住':'');
+    const issue:PoseIssue|null=f.posture<70?'body_alignment':null;
+    this.diagnostics={...this.diagnostics,stage};
+    this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?poseIssueCopy(issue,this.type).joints:[],calibrated:true,message:issue?poseIssueCopy(issue,this.type).action:message}};
+    return this.metrics;
+  }
   private emitFrontRaiseRep(parts:SideCompletion[],f:Measurement,peer?:{at:number;value:number}):boolean{
     if(this.metrics.reps>=this.metrics.targetReps)return false;
     const pair=parts.length===2;
@@ -1025,6 +1264,8 @@ export class ExtendedExerciseTracker {
     if(this.type==='hammer_curl')return this.updateHammerCurl(f,now);
     if(this.type==='front_raise')return this.updateFrontRaise(f,now);
     if(this.type==='one_arm_row')return this.updateOneArmRow(f,now);
+    if(this.type==='mountain_climber')return this.updateMountainClimber(f,now);
+    if(this.type==='split_squat')return this.updateSplitSquat(f,now);
     if(!f.start){
       if(this.movingAt===null){this.movingAt=now;if(this.type==='standing_leg_curl')this.cycleSide=f.side||null;}
       this.scoring=this.scoring&&f.scorable;this.shift=Math.max(this.shift,Math.abs(f.tilt-this.baseline!.tilt));

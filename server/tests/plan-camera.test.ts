@@ -13,11 +13,18 @@ const ids=['exdb:0294','exdb:0334','exdb:0405','exdb:0293','movemate:reverse_lun
 const action=(w:any,kind:string,extra:any={})=>gym.actWorkout(uid,w.id,{operationId:randomUUID(),version:w.version,setId:w.sets[w.cursor]?.id,action:kind,...extra});
 const begin=(exerciseId:string,sets:any[]=[{reps:3}])=>gym.startWorkout(uid,{id:randomUUID(),free:{exercises:[{exerciseId,sets}]}});
 test('camera filter exposes explicit standard IDs, never variants or user-supplied capability',async()=>{
- const all=await gym.library(uid,{camera:'1',limit:50});assert.equal(all.total,49);assert.ok(all.items.every((e:any)=>e.cameraType||e.planCamera));
- for(const id of ids)assert.equal(all.items.find((e:any)=>e.id===id).planCamera.profile,planCameraFor(id).profile);
+ const all=await gym.library(uid,{camera:'1',limit:50});assert.equal(all.total,56);assert.ok(all.items.every((e:any)=>e.cameraType||e.planCamera));
+ // The full camera list now exceeds one 50-item page (tier 2) and the page
+ // limit is hard-capped at 50, so presence checks fetch by explicit IDs
+ // (the ids route raises the cap to 500).
+ const allT2=await gym.library(uid,{camera:'1',ids:[...ids,'exdb:0426','exdb:1456','exdb:1457','exdb:0381','exdb:0300','exdb:0292','exdb:0620','exdb:0437','exdb:0630','exdb:0410','exdb:1379','exdb:0044','exdb:0129'].join(',')});
+ for(const id of ids)assert.equal(allT2.items.find((e:any)=>e.id===id).planCamera.profile,planCameraFor(id).profile);
  // Tier-1 expansion (2026-11-08): five direct binds/clones plus the one-arm row.
  const tier1:Record<string,string>={'exdb:0426':'dumbbell_standing_press','exdb:1456':'barbell_military_press','exdb:1457':'barbell_military_press','exdb:0381':'dumbbell_reverse_lunge','exdb:0300':'dumbbell_deadlift','exdb:0292':'one_arm_row'};
- for(const [id,profile] of Object.entries(tier1)){const cam=planCameraFor(id);assert.equal(cam?.profile,profile);assert.equal(cam?.status,'trial');assert.equal(all.items.find((e:any)=>e.id===id).planCamera.profile,profile);}
+ for(const [id,profile] of Object.entries(tier1)){const cam=planCameraFor(id);assert.equal(cam?.profile,profile);assert.equal(cam?.status,'trial');assert.equal(allT2.items.find((e:any)=>e.id===id).planCamera.profile,profile);}
+ // Tier-2 expansion (2026-11-08): seven new cycle definitions.
+ const tier2:Record<string,string>={'exdb:0620':'lying_leg_raise','exdb:0437':'upright_row','exdb:0630':'mountain_climber','exdb:0410':'split_squat','exdb:1379':'seated_calf_raise','exdb:0044':'barbell_good_morning','exdb:0129':'bench_dip'};
+ for(const [id,profile] of Object.entries(tier2)){const cam=planCameraFor(id);assert.equal(cam?.profile,profile);assert.equal(cam?.status,'trial');assert.equal(allT2.items.find((e:any)=>e.id===id).planCamera.profile,profile);}
  for(const id of ['exdb:0285','exdb:0361','exdb:3470','exdb:1386'])assert.equal(planCameraFor(id),undefined);
  const custom=await gym.saveExercise(uid,{nameZh:'伪造摄像头动作',bodyPart:'chest',equipment:'body weight',target:'chest',instructions:['仅手动'],planCamera:{profile:'biceps_curl'},cameraType:'squat'});assert.equal((await gym.allExercises(uid)).find((e:any)=>e.id===custom.id).planCamera,undefined);
  let w=await begin(custom.id);await assert.rejects(action(w,'start',{inputMode:'camera'}));w=await action(w,'start',{inputMode:'manual'});await action(w,'finish');

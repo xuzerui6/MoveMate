@@ -5,6 +5,13 @@ export function planPose(type:NewPlanProfile,stage:'neutral'|'peak'|'right'='neu
   const p=Array.from({length:33},()=>({x:.5,y:.2,z:0,visibility:1}));
   const put=(i:number,x:number,y:number)=>{p[i]={x,y,z:0,visibility:1};};
   for(const o of [0,1]){const x=o?.57:.43;put(11+o,x,.28);put(13+o,x,.42);put(15+o,x,.56);put(23+o,o?.55:.45,.53);put(25+o,o?.55:.45,.72);put(27+o,o?.55:.45,.90);put(29+o,o?.54:.44,.92);put(31+o,o?.58:.48,.94);}
+  if(type==='seated_calf_raise'){
+    // Seated figure in both stages: thigh horizontal, shin vertical (knee
+    // ≈97°, inside the seated gate), feet flat; the peak raises the heels
+    // while the toes stay planted.
+    for(const o of [0,1]){const x=o?.68:.62;put(11+o,o?.57:.43,.16);put(13+o,o?.55:.41,.30);put(15+o,o?.61:.49,.38);put(23+o,o?.56:.44,.40);put(25+o,x,.42);put(27+o,x,.76);put(29+o,x-.025,.86);put(31+o,x+.065,.86);}
+    if(stage!=='neutral')for(const o of [0,1]){const x=o?.68:.62;put(27+o,x,.735);put(29+o,x-.025,.825);}
+  }
   if(type==='shoulder_press')for(const o of [0,1]){put(13+o,o?.71:.29,.37);put(15+o,o?.71:.29,.19);}
   if(type==='bent_over_row')for(const o of [0,1]){const shift=o*.07;put(11+o,.58+shift,.38+o*.02);put(23+o,.4+shift,.55+o*.02);put(13+o,.58+shift,.52+o*.02);put(15+o,.58+shift,.65+o*.02);}
   if(stage!=='neutral'){

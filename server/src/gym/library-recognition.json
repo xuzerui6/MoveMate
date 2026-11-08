@@ -504,5 +504,173 @@
       "好，放回啦，我确认一下"
     ],
     "recognitionVersion": 6
+  },
+  "lying_leg_raise": {
+    "name": "平凳仰卧举腿",
+    "english": "LYING LEG RAISE FLAT BENCH",
+    "exerciseIds": [
+      "exdb:0620"
+    ],
+    "placement": "侧面拍摄并降低机位，全身入镜，肩、髋、膝和脚踝清晰可见。",
+    "instruction": "仰卧、双腿伸直贴住凳面，停稳两秒；双腿一起举至接近垂直，再缓慢放回。屈膝举腿按同一条目计，不做区分；起坐不计入。",
+    "joints": "双肩、双髋、双膝、双脚踝",
+    "unit": "次",
+    "axes": [
+      "举腿幅度",
+      "腿部控制",
+      "躯干稳定",
+      "双腿协调"
+    ],
+    "stages": [
+      "平躺伸腿就绪",
+      "举腿中",
+      "举到位啦——慢慢放回",
+      "好，放回啦，我确认一下"
+    ],
+    "recognitionVersion": 6
+  },
+  "upright_row": {
+    "name": "哑铃直立划船",
+    "english": "DUMBBELL UPRIGHT ROW",
+    "exerciseIds": [
+      "exdb:0437"
+    ],
+    "placement": "正面略侧身，上半身入镜，双肩、双肘、双手腕和髋清晰可见。",
+    "instruction": "双臂垂下站稳两秒；沿身体前提至胸口以上、双肘向外打开，再缓慢放回。只耸肩不计入。",
+    "joints": "双肩、双肘、双手腕、双髋",
+    "unit": "次",
+    "axes": [
+      "提拉幅度",
+      "手臂控制",
+      "躯干稳定",
+      "双臂协调"
+    ],
+    "stages": [
+      "垂臂就绪",
+      "提拉中",
+      "拉到位啦——慢慢放下来",
+      "好，放回啦，我确认一下"
+    ],
+    "recognitionVersion": 6
+  },
+  "mountain_climber": {
+    "name": "登山跑",
+    "english": "MOUNTAIN CLIMBER",
+    "exerciseIds": [
+      "exdb:0630"
+    ],
+    "placement": "斜侧面全身拍摄，双手撑地，肩、肘、手腕、髋、膝和脚踝清晰可见。",
+    "instruction": "俯撑伸腿停稳两秒；左右腿交替向胸口回收再蹬回。慢速也能计，先把交替节奏做稳；双腿同时回收不计入。",
+    "joints": "双肩、双肘、双手腕、双髋、双膝、双脚踝",
+    "unit": "次",
+    "axes": [
+      "回收幅度",
+      "腿部控制",
+      "俯撑稳定",
+      "左右协调"
+    ],
+    "stages": [
+      "俯撑就绪",
+      "交替回收中",
+      "回收到位——蹬回去",
+      "好，回到俯撑，我确认一下"
+    ],
+    "recognitionVersion": 6
+  },
+  "split_squat": {
+    "name": "哑铃单腿分腿蹲",
+    "english": "DUMBBELL SINGLE LEG SPLIT SQUAT",
+    "exerciseIds": [
+      "exdb:0410"
+    ],
+    "placement": "斜侧面全身拍摄，前腿一侧朝向镜头，前脚落地、后脚抬高放在凳上，肩、髋、膝和脚踝清晰可见。",
+    "instruction": "分腿站稳两秒；垂直下沉至前腿到位，再站起。换侧时先站稳，再开始下一侧。",
+    "joints": "双肩、双髋、双膝、双脚踝、双脚跟、双脚尖",
+    "unit": "次",
+    "axes": [
+      "下沉幅度",
+      "支撑控制",
+      "躯干稳定",
+      "后脚稳定"
+    ],
+    "stages": [
+      "分腿站立就绪",
+      "下沉中",
+      "沉到位啦——慢慢站起",
+      "好，站稳啦，我确认一下"
+    ],
+    "recognitionVersion": 6
+  },
+  "seated_calf_raise": {
+    "name": "坐姿哑铃提踵",
+    "english": "DUMBBELL SEATED CALF RAISE",
+    "exerciseIds": [
+      "exdb:1379"
+    ],
+    "placement": "从斜侧面拍摄小腿和双脚，髋、膝、脚踝、脚跟和前脚掌清晰可见。",
+    "instruction": "坐稳、双膝弯曲、双脚平放，脚跟落地停稳两秒；双脚同时提踵，再缓慢落回。",
+    "joints": "双髋、双膝、双脚踝、双脚跟、双前脚掌",
+    "unit": "次",
+    "axes": [
+      "提踵幅度",
+      "落跟控制",
+      "坐姿稳定",
+      "双脚协调"
+    ],
+    "stages": [
+      "脚跟落地就绪",
+      "提踵中",
+      "提到位啦——慢慢落跟",
+      "好，落稳，我确认一下"
+    ],
+    "recognitionVersion": 6
+  },
+  "barbell_good_morning": {
+    "name": "杠铃早安式",
+    "english": "BARBELL GOOD MORNING",
+    "exerciseIds": [
+      "exdb:0044"
+    ],
+    "placement": "斜侧面全身拍摄，杠铃位于上背，不可遮挡肩、髋、膝与脚踝。",
+    "instruction": "杠铃位于上背，站直停稳两秒；膝盖保持微屈、髋向后折叠俯身，再回到站直。请自行确认保护条件。与罗马尼亚硬拉的区别在铃位（背上 vs 手持下垂），识别不做互斥判别。",
+    "joints": "双肩、双髋、双膝、双脚踝",
+    "unit": "次",
+    "axes": [
+      "俯身幅度",
+      "动作控制",
+      "躯干姿态",
+      "左右协调"
+    ],
+    "stages": [
+      "站直就绪",
+      "俯身中",
+      "俯到位啦——慢慢站直",
+      "好，站稳啦，我确认一下"
+    ],
+    "recognitionVersion": 6
+  },
+  "bench_dip": {
+    "name": "屈膝凳上臂屈伸",
+    "english": "BENCH DIP (KNEES BENT)",
+    "exerciseIds": [
+      "exdb:0129"
+    ],
+    "placement": "侧面拍摄，上半身和凳面入镜，肩、肘、手腕和髋清晰可见。",
+    "instruction": "双手在身后撑住凳沿、伸直手臂停稳两秒；屈肘下沉身体，再推回伸直。只坐下不屈肘不计入。",
+    "joints": "双肩、双肘、双手腕、双髋",
+    "unit": "次",
+    "axes": [
+      "下沉幅度",
+      "手臂控制",
+      "躯干稳定",
+      "双臂协调"
+    ],
+    "stages": [
+      "伸臂支撑就绪",
+      "下沉中",
+      "沉到位啦——慢慢推起",
+      "好，推回来啦，我确认一下"
+    ],
+    "recognitionVersion": 6
   }
 }
