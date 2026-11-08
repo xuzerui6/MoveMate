@@ -13,8 +13,11 @@ const ids=['exdb:0294','exdb:0334','exdb:0405','exdb:0293','movemate:reverse_lun
 const action=(w:any,kind:string,extra:any={})=>gym.actWorkout(uid,w.id,{operationId:randomUUID(),version:w.version,setId:w.sets[w.cursor]?.id,action:kind,...extra});
 const begin=(exerciseId:string,sets:any[]=[{reps:3}])=>gym.startWorkout(uid,{id:randomUUID(),free:{exercises:[{exerciseId,sets}]}});
 test('camera filter exposes explicit standard IDs, never variants or user-supplied capability',async()=>{
- const all=await gym.library(uid,{camera:'1',limit:50});assert.equal(all.total,43);assert.ok(all.items.every((e:any)=>e.cameraType||e.planCamera));
+ const all=await gym.library(uid,{camera:'1',limit:50});assert.equal(all.total,49);assert.ok(all.items.every((e:any)=>e.cameraType||e.planCamera));
  for(const id of ids)assert.equal(all.items.find((e:any)=>e.id===id).planCamera.profile,planCameraFor(id).profile);
+ // Tier-1 expansion (2026-11-08): five direct binds/clones plus the one-arm row.
+ const tier1:Record<string,string>={'exdb:0426':'dumbbell_standing_press','exdb:1456':'barbell_military_press','exdb:1457':'barbell_military_press','exdb:0381':'dumbbell_reverse_lunge','exdb:0300':'dumbbell_deadlift','exdb:0292':'one_arm_row'};
+ for(const [id,profile] of Object.entries(tier1)){const cam=planCameraFor(id);assert.equal(cam?.profile,profile);assert.equal(cam?.status,'trial');assert.equal(all.items.find((e:any)=>e.id===id).planCamera.profile,profile);}
  for(const id of ['exdb:0285','exdb:0361','exdb:3470','exdb:1386'])assert.equal(planCameraFor(id),undefined);
  const custom=await gym.saveExercise(uid,{nameZh:'伪造摄像头动作',bodyPart:'chest',equipment:'body weight',target:'chest',instructions:['仅手动'],planCamera:{profile:'biceps_curl'},cameraType:'squat'});assert.equal((await gym.allExercises(uid)).find((e:any)=>e.id===custom.id).planCamera,undefined);
  let w=await begin(custom.id);await assert.rejects(action(w,'start',{inputMode:'camera'}));w=await action(w,'start',{inputMode:'manual'});await action(w,'finish');

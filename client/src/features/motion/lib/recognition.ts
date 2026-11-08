@@ -13,6 +13,9 @@ export function createRecognitionTracker(type:string,target=20,restored:Partial<
     if(type==='barbell_curl'||type==='reverse_barbell_curl')return new PlanExerciseTracker('biceps_curl',target,restored,prefiltered,armOnStart);
     if(type==='barbell_row')return new PlanExerciseTracker('bent_over_row',target,restored,prefiltered,armOnStart);
     if(type==='neutral_seated_press')return new PlanExerciseTracker('shoulder_press',target,restored,prefiltered,armOnStart);
+    if(type==='dumbbell_standing_press'||type==='barbell_military_press')return new PlanExerciseTracker('shoulder_press',target,restored,prefiltered,armOnStart);
+    if(type==='dumbbell_reverse_lunge')return new PlanExerciseTracker('reverse_lunge',target,restored,prefiltered,armOnStart);
+    if(type==='dumbbell_deadlift')return new ExtendedExerciseTracker('barbell_deadlift',target,restored,prefiltered,armOnStart);
     if(type==='dumbbell_calf_raise')return new PlanExerciseTracker('calf_raise',target,restored,prefiltered,armOnStart);
     return new ExtendedExerciseTracker(type,target,restored,prefiltered,armOnStart);
   }
