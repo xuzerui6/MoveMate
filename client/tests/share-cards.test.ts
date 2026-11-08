@@ -7,6 +7,7 @@ import {
   buildRecordCard,
   buildStreakCard,
   buildWorkoutCardData,
+  completionRecognitionAverage,
   detectRecordPr,
   durationParts,
   formatCardDate,
@@ -58,6 +59,33 @@ test("workout card average is null without scored camera sets and card is null f
   assert.equal(buildWorkoutCardData(manualOnly, 0)?.avgScore, null);
   assert.equal(buildWorkoutCardData(gymRow({ session: null }), 0), null);
   assert.equal(buildWorkoutCardData(null, 0), null);
+});
+
+test("completion recognition average excludes withheld camera sets (one rule with the card average)", () => {
+  // 出分组：按次 170/2 = 85。暂停组：锤式式存量分（峰值时序偏移在账 →
+  // 稳定性轴 control 暂停、总分不呈现），其内部均值 40 不得进入任何平均。
+  // 手动组：即便带 score 也不属于摄像头识别均分。
+  const presented = { status: "completed", reps: 2, inputMode: "camera", exercise: { id: "e1" }, score: { count: 2, total: 170, depth: 170, stability: 150, trunk: 160, symmetry: 160 } };
+  const withheld = { status: "completed", reps: 2, inputMode: "camera", exercise: { id: "e2" }, score: { count: 2, total: 80, depth: 170, stability: 60, trunk: 160, symmetry: 0, symmetryOffsetsMs: [100, 120] } };
+  const manual = { status: "completed", reps: 5, inputMode: "manual", exercise: { id: "e1" }, score: { count: 5, total: 500 } };
+  // 混合：均分 = 出分组自己的按次均分（旧行内口径会把暂停组算成 (170+80)/4 = 63）
+  assert.equal(completionRecognitionAverage([presented, withheld, manual]), 85);
+  // 全部暂停：null —— 完成屏整行隐藏，绝不回退到把暂停组算进来（旧口径会显示 40）
+  assert.equal(completionRecognitionAverage([withheld]), null);
+  // 无摄像头评分组：null（与旧 some 门一致）
+  assert.equal(completionRecognitionAverage([manual]), null);
+  assert.equal(completionRecognitionAverage([]), null);
+});
+
+test("completion recognition average keeps its per-rep weighting when every camera set is presented", () => {
+  // 与改前行内公式逐字一致：Σtotal / Σcount = (1840 + 800) / (20 + 10) = 88；
+  // 手动组不计。本轮只加暂停排除，不动权重与选组口径。
+  const sets = [
+    { status: "completed", reps: 20, inputMode: "camera", exercise: { id: "e1" }, score: { count: 20, total: 1840 } },
+    { status: "completed", reps: 10, inputMode: "camera", exercise: { id: "e2" }, score: { count: 10, total: 800 } },
+    { status: "completed", reps: 15, inputMode: "manual", exercise: { id: "e1" } },
+  ];
+  assert.equal(completionRecognitionAverage(sets), 88);
 });
 
 test("gym set card folds the score accumulator into score and axes", () => {

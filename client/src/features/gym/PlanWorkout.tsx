@@ -27,7 +27,7 @@ import AnimatedProgress from "../../components/AnimatedProgress";
 import { buildSetReveal } from "../motion/lib/companionCopy";
 import { assessmentFromScore, axisStateText, totalScopeNote, totalWithheld, TOTAL_WITHHELD_NOTE } from "../motion/lib/axisAssessment";
 import ShareCardButton from "../share/ShareCardButton";
-import { buildGymSetCard, buildRecordCard, buildWorkoutCardData } from "../share/cardData";
+import { buildGymSetCard, buildRecordCard, buildWorkoutCardData, completionRecognitionAverage } from "../share/cardData";
 import { milestoneCardSvg, setCardSvg, workoutCardSvg } from "../share/cardSvg";
 import {ExerciseDemo} from './ExerciseMedia';
 import { isUnreviewedOfficialExercise, workoutGuideInstruction } from './exerciseGuidance';
@@ -560,6 +560,9 @@ export default function PlanWorkout() {
     Math.max(0, Math.ceil((Date.parse(row.restUntil || "") - tick) / 1000)) ||
     0;
   const recordCard = buildRecordCard(row);
+  // 训练识别均分与分享卡平均分共用同一条入选规则（totalEntersAverage）：
+  // 总分暂停的组不进入平均；无入选组时为 null，整行不显示。
+  const completionAverage = completionRecognitionAverage(row.sets);
   const shareDateInput = row.session?.startTime || row.createdAt || new Date();
   return (
     <div
@@ -627,7 +630,7 @@ export default function PlanWorkout() {
             <p className="gym-muted">
               计划每有效分钟 1 XP，摄像头计数不额外发放 XP。
             </p>
-            {row.sets.some((s:any)=>s.inputMode === "camera" && s.score?.count > 0) && <p>训练识别均分 <AnimatedNumber value={Math.round(row.sets.reduce((sum:number,s:any)=>sum+(s.inputMode === "camera" ? s.score?.total || 0 : 0),0)/row.sets.reduce((sum:number,s:any)=>sum+(s.inputMode === "camera" ? s.score?.count || 0 : 0),0))} fromZero/> 分 · 仅统计可评分的完整动作</p>}
+            {completionAverage !== null && <p>训练识别均分 <AnimatedNumber value={completionAverage} fromZero/> 分 · 仅统计可评分的完整动作</p>}
             <Link className="primary" to="/train/records">
               查看逐组记录
             </Link>

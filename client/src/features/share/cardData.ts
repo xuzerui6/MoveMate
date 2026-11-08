@@ -1,7 +1,7 @@
 import { exerciseInfo } from '../motion/lib/exercises'
 import { requiredXp } from '../motion/lib/rewards'
 import type { WorkoutSession } from '../motion/types'
-import { assessmentFromScore, axisStateText, totalScopeNote, totalWithheld, type AxisAssessments } from '../motion/lib/axisAssessment'
+import { assessmentFromScore, axisStateText, totalEntersAverage, totalScopeNote, totalWithheld, type AxisAssessments } from '../motion/lib/axisAssessment'
 
 /**
  * 分享卡数据层（纯函数，无 DOM）。
@@ -64,9 +64,9 @@ export function buildWorkoutCardData(row: any, streakDays: number): WorkoutCardD
   const exerciseIds = new Set(completed.map((s) => s.exercise?.id).filter(Boolean))
   // 板上字段定义：平均分 = 各已评分组得分的平均值（组得分 = 该组 total/count）。
   // 与完成页按次加权的「训练识别均分」口径不同，以板为准（差异已记入实现文档）。
-  // 最低轴契约（2026-11-09）：总分被暂停的组不进入平均分——把暂停的总分
-  // 混进平均值等于换个地方把它印出来；其余已评分组照常平均。
-  const scoredSets = completed.filter((s) => (s.score?.count || 0) > 0 && !totalWithheld(assessmentFromScore(s.score)))
+  // 最低轴契约（2026-11-09）：入选规则与完成页共用 totalEntersAverage——
+  // 总分被暂停的组不进入任何平均分；其余已评分组照常平均。
+  const scoredSets = completed.filter((s) => totalEntersAverage(s.score))
   const avgScore =
     scoredSets.length > 0
       ? Math.round(scoredSets.reduce((sum, s) => sum + (s.score.total || 0) / s.score.count, 0) / scoredSets.length)
@@ -80,6 +80,23 @@ export function buildWorkoutCardData(row: any, streakDays: number): WorkoutCardD
     avgScore,
     streakDays: Math.max(0, streakDays || 0),
   }
+}
+
+/**
+ * 完成页行内「训练识别均分」（PlanWorkout 完成屏）：按次加权
+ * （Σtotal / Σcount），与卡 A 的逐组平均口径不同（见上注，完成页口径
+ * 沿用至今）。入选规则与卡 A 共用 totalEntersAverage：只统计摄像头组，
+ * 且总分被暂停的组不进入平均——与卡 A 保持同一条规则，不再各算各的。
+ * 没有入选组时返回 null，完成屏整行不显示；绝不回退到把暂停组算进来。
+ */
+export function completionRecognitionAverage(sets: any[]): number | null {
+  const included = (Array.isArray(sets) ? sets : []).filter(
+    (s) => s?.inputMode === 'camera' && totalEntersAverage(s?.score),
+  )
+  if (!included.length) return null
+  const total = included.reduce((sum, s) => sum + (s.score.total || 0), 0)
+  const count = included.reduce((sum, s) => sum + (s.score.count || 0), 0)
+  return count > 0 ? Math.round(total / count) : null
 }
 
 /* ---------------- 卡 B · 单组高光卡 ---------------- */
