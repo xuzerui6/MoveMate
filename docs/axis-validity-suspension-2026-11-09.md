@@ -178,4 +178,11 @@ adoption remains **unmeasured**; nothing in this round changes it.
 - Cloudflare: **34/34** + typecheck clean.
 - Replay: counting identical on all 4 replayable clips (above).
 
-Deploy: _pending — filled in after the dual-station deploy below._
+Deploy: merged to main `cffa2cc` (feature `9ac266b`), CI run 42502524788
+green; production `dongban.xyz` Version
+`5d778586-7b81-417d-819e-b171acd182cf`, preview `preview.dongban.xyz`
+Version `8cb58bbd-654b-404e-b117-b57542b47588`. Live bundles on both
+hosts verified to contain the new copy （总分先暂停 / 能评的项目还不够多 /
+暂时评不了 in the `axisAssessment` and `cardData` chunks). No bcrypt
+fallback was needed in the deploy worktree (`npm ci --prefix server`
+succeeded through the proxy).
