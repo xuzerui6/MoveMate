@@ -154,6 +154,7 @@ export class ExerciseTracker {
   private trackingSide: TrackingSide | undefined
   private lastFrameAt: number | null = null
   private frameTimes: number[] = []
+  private freezeBridged=false
   private worldFrames:NormalizedLandmark[][]=[]
   private squatBaseline:SquatMotion|null=null
   private jackBaseline:number|null=null
@@ -183,17 +184,23 @@ export class ExerciseTracker {
   }
   interrupt(reason = '先停一下，继续时先回到起始姿势', feedback = reason) {
     this.frames=[];this.calibrationAt=null;this.calibrated=false;this.armed=false;this.peakAt=null;this.peak=null;this.returnAt=null;this.movingAt=null;this.retAnchor=null;this.retAccum=0;this.retPrevAt=null;this.pair.clear();this.issues.clear();this.consecutive={}
-    this.trackingSide=undefined;this.lastFrameAt=null;this.frameTimes=[]
+    this.trackingSide=undefined;this.lastFrameAt=null;this.frameTimes=[];this.freezeBridged=false
     this.worldFrames=[];this.squatSide=undefined;this.squatCycle=null;this.squatBaseline=null;this.jackBaseline=null;this.armsAt=null;this.legsAt=null;this.motionAt=null
     this.diagnostics={...this.diagnostics,fps:0,confidence:0,side:null,angle:null,stage:'tracking_lost',calibrationProgress:0,pairedSides:[],lastResetReason:reason}
     this.metrics={...this.metrics,phase:'standing',poseFeedback:{...this.feedback(null,false),message:feedback},feedback}
     return this.metrics
   }
+  /** The adaptive wrapper deliberately held frames back (a ladder step-down
+   * swapping the pose model — see AdaptiveRecognition.carryToRun); the next
+   * frame gap is therefore known-benign and must not be read as a tracking
+   * loss. Only arms when the pending gap actually exceeds the guard. Mirrors
+   * ExtendedExerciseTracker.bridgeFreezeGap. */
+  bridgeFreezeGap(now:number){if(this.lastFrameAt!==null&&now-this.lastFrameAt>750)this.freezeBridged=true;}
   update(raw:NormalizedLandmark[]|null,now:number,aspect=1,world:NormalizedLandmark[]|null=null):ExerciseMetrics {
     if(!raw)return this.interrupt('未检测到完整人体关键点',notSeenCopyFor(this.type))
     if(raw.length<29 || raw.some(p=>!p || !Number.isFinite(p.x) || !Number.isFinite(p.y) || (p.visibility!==undefined&&!Number.isFinite(p.visibility))) || !Number.isFinite(aspect) || aspect<=0 || !Number.isFinite(now))return this.interrupt('关键点数据不完整',COPY_UNCLEAR)
     if(this.lastFrameAt!==null && now<=this.lastFrameAt)return this.metrics
-    if(this.lastFrameAt!==null && now-this.lastFrameAt>750)this.interrupt('画面更新中断',COPY_HALF_REP)
+    if(this.lastFrameAt!==null && now-this.lastFrameAt>750){if(this.freezeBridged)this.freezeBridged=false;else this.interrupt('画面更新中断',COPY_HALF_REP);}
     this.lastFrameAt=now
     this.frameTimes=[...this.frameTimes,now].filter(time=>now-time<=2000).slice(-120)
     const elapsed=now-this.frameTimes[0]

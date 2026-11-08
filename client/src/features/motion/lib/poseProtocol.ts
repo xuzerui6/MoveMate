@@ -4,8 +4,13 @@ export type PoseMode='worker-gpu'|'worker-cpu'|'main-gpu'|'main-cpu';
 export type PoseFrame={runId:number;frameId:number;capturedAt:number;receivedAt:number;width:number;height:number;landmarks:Point[]|null;worldLandmarks:Point[]|null;model:PoseModel;mode:PoseMode};
 export type PoseTelemetry={model:PoseModel;mode:PoseMode|null;fps:number;latency:number;latency50:number;inference:number;experiment:PoseModel|null;recoveredFrom:PoseModel|null;reason:string;preparing:boolean;lowPerformance:boolean;rung:string|null;selection:string|null;events:string[]};
 export class FrameOrder {
- private id=-1;private time=-1;
- constructor(readonly runId:number){}
+ private id=-1;private time=-1;private runId:number;
+ constructor(runId:number){this.runId=runId;}
+ /** Rebind to a new run when a ladder step-down swaps the pose model
+  * mid-session: frame ids restart with the run, but the captured-at
+  * high-water mark is kept, so a late frame from before the swap can never
+  * be accepted after it. */
+ rebind(runId:number){this.runId=runId;this.id=-1;}
  accept(f:PoseFrame){
   if(f.runId!==this.runId||!Number.isInteger(f.frameId)||f.frameId<=this.id||!Number.isFinite(f.capturedAt)||f.capturedAt<=this.time||!Number.isFinite(f.receivedAt)||f.receivedAt<f.capturedAt||f.receivedAt-f.capturedAt>250||!Number.isFinite(f.width)||!Number.isFinite(f.height)||f.width<=0||f.height<=0)return false;
   this.id=f.frameId;this.time=f.capturedAt;return true;

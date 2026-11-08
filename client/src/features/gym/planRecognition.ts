@@ -58,6 +58,7 @@ export class PlanExerciseTracker {
   private retPrevAt:number|null=null;
   private movementSince:number|null=null;
   private scoring=true;
+  private freezeBridged=false;
   private maxTrunkShift=0;
   private previous:Sample|null=null;
   private maxStep=0;
@@ -70,11 +71,17 @@ export class PlanExerciseTracker {
     this.metrics={...restored,reps:Math.max(0,restored.reps||0),targetReps,formScore:acc.count?Math.round(acc.total/acc.count):0,perfectReps:restored.perfectReps||0,feedback:'站到起始姿势，陪我停两秒',phase:'standing',scoreAccumulator:acc,formBreakdown:acc.count?average(acc):zero(),correctionCounts:{out_of_frame:0,insufficient_depth:0,knee_instability:0,excessive_trunk_lean:0,asymmetry:0,insufficient_range:0,unstable_movement:0,body_alignment:0,poor_coordination:0,...restored.correctionCounts},lastRepIssues:[],repeatedIssue:null,poseFeedback:{status:'uncertain',confidence:0,issues:[],primaryIssue:null,affectedJoints:[],calibrated:false,message:'我在等你站好'}};
   }
   interrupt(reason='先停一下，继续时重新校准', feedback = reason) {
-    this.frames=[];this.worldFrames=[];this.at=null;this.calibration=null;this.baseline=null;this.calibrated=false;this.times=[];this.resetCycle();this.previous=null;
+    this.frames=[];this.worldFrames=[];this.at=null;this.calibration=null;this.baseline=null;this.calibrated=false;this.times=[];this.resetCycle();this.previous=null;this.freezeBridged=false;
     this.diagnostics={...this.diagnostics,fps:0,confidence:0,stage:'tracking_lost',calibrationProgress:0,lastResetReason:reason};
     this.metrics={...this.metrics,phase:'standing',feedback,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:false,message:feedback}};
     return this.metrics;
   }
+  /** The adaptive wrapper deliberately held frames back (a ladder step-down
+   * swapping the pose model — see AdaptiveRecognition.carryToRun); the next
+   * frame gap is therefore known-benign and must not be read as a tracking
+   * loss. Only arms when the pending gap actually exceeds the guard. Mirrors
+   * ExtendedExerciseTracker.bridgeFreezeGap. */
+  bridgeFreezeGap(now:number){if(this.at!==null&&now-this.at>750)this.freezeBridged=true;}
   private resetCycle(){this.peakSince=null;this.peak=null;this.returnSince=null;this.retAnchor=null;this.retAccum=0;this.retPrevAt=null;this.movementSince=null;this.scoring=true;this.maxTrunkShift=0;this.maxStep=0;this.controlAt=null;this.issues.clear();}
   private sample(raw:Point[],aspect:number,world:Point[]|null):Sample|null {
     const p=raw.map(v=>({...v,x:v.x*aspect,z:0}));
@@ -120,7 +127,7 @@ export class PlanExerciseTracker {
   update(raw:Point[]|null,now:number,aspect=1,world:Point[]|null=null):ExerciseMetrics {
     if(!raw||raw.length<33||!Number.isFinite(now)||!Number.isFinite(aspect)||aspect<=0||raw.some(p=>!p||![p.x,p.y,p.visibility??0].every(Number.isFinite)))return this.interrupt('未检测到完整人体关键点',notSeenCopyFor(this.type));
     if(this.at!==null&&now<=this.at)return this.metrics;
-    if(this.at!==null&&now-this.at>750)this.interrupt('画面中断',COPY_HALF_REP);
+    if(this.at!==null&&now-this.at>750){if(this.freezeBridged)this.freezeBridged=false;else this.interrupt('画面中断',COPY_HALF_REP);}
     const indices=needed(this.type);
     if(indices.some(i=>(raw[i].visibility??0)<.25||raw[i].x<0||raw[i].x>1||raw[i].y<0||raw[i].y>1))return this.interrupt('所需关节离开画面或被遮挡',COPY_OUT_OF_FRAME);
     this.frames=[...this.frames,raw].slice(-(this.prefiltered?1:5));const points=medianLandmarks(this.frames)!;

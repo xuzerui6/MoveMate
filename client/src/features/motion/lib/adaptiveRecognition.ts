@@ -45,6 +45,7 @@ export class AdaptiveRecognition {
  private base:ReturnType<typeof createRecognitionTracker>;
  private order:FrameOrder;private image=new TimeFilter();private world=new TimeFilter();
  private weak:number|null=null;private weakWorld:number|null=null;private source:boolean|null=null;private shape:number[]|null=null;private previous:Point[]|null=null;private previousShoulder=11;
+ private stepBridge=false;
  private frozenAt:number|null=null;private lastFreezeAt:number|null=null;
  private width=0;private height=0;private scoring=true;
  usableFrame=false;
@@ -57,6 +58,21 @@ export class AdaptiveRecognition {
   if(!this.ready||this.diagnostics.stage!=='ready')return false;
   this.order=new FrameOrder(runId);this.image.reset();this.world.reset();return true;
  }
+ /** A ladder step-down swaps only the pose model (see useAdaptivePose): this
+  * engine — the tracker with its calibration bank and open cycle, both
+  * landmark TimeFilters, and the wrapper's framing state — carries over
+  * untouched, so the switch is invisible to the measurement. Three seams are
+  * re-sewn explicitly: frame order rebinds to the new run (frame ids
+  * restart; the captured-at high-water mark survives, so pre-swap frames
+  * stay rejected); the 2D/3D basis is re-established from the new rung's
+  * first frame instead of reading the estimator change itself as a basis
+  * flip (the flip guard resumes from there); and the transport gap is
+  * bridged past the tracker's frame-gap guard on the next measured frame,
+  * the same one-shot bridge the hammer evidence freeze uses. The bridge flag
+  * is consumed only when a frame actually reaches the tracker, and a tracker
+  * interrupt in between resets its gap reference, which neutralises a stale
+  * flag on its own. */
+ carryToRun(runId:number){this.order.rebind(runId);this.source=null;this.stepBridge=true;}
 
  interrupt(reason='识别已暂停，继续后识别下一个完整动作'){
   this.usableFrame=false;
@@ -134,6 +150,7 @@ export class AdaptiveRecognition {
    // The base tracker's own frame-gap guard must not void what the freeze preserved.
    (this.base as {bridgeFreezeGap?:(now:number)=>void}).bridgeFreezeGap?.(f.capturedAt);
   }
+  if(this.stepBridge){this.stepBridge=false;(this.base as {bridgeFreezeGap?:(now:number)=>void}).bridgeFreezeGap?.(f.capturedAt);}
   const before=structuredClone(this.metrics),stage=this.diagnostics.stage;
   this.base.update(this.image.apply(raw,f.capturedAt),f.capturedAt,aspect,world?this.world.apply(world,f.capturedAt):null);
   this.usableFrame=this.diagnostics.stage!=='tracking_lost';
