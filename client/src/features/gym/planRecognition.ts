@@ -4,7 +4,7 @@ import type { FormBreakdown, PoseIssue, ScoreAccumulator } from '../motion/types
 import { medianLandmarks, poseIssueCopy } from '../motion/lib/poseFeedback';
 import { COPY_CALIBRATED, COPY_HALF_REP, COPY_OUT_OF_FRAME, notSeenCopyFor } from '../motion/lib/companionCopy';
 
-export const PLAN_PROFILES = ['biceps_curl','lateral_raise','shoulder_press','bent_over_row','reverse_lunge','calf_raise'] as const;
+export const PLAN_PROFILES = ['biceps_curl','lateral_raise','shoulder_press','bent_over_row','reverse_lunge','calf_raise','seated_calf_raise'] as const;
 export type NewPlanProfile = typeof PLAN_PROFILES[number];
 export const isNewPlanProfile = (value: string): value is NewPlanProfile => PLAN_PROFILES.includes(value as NewPlanProfile);
 const axes = ['depth','stability','trunk','symmetry'] as const;
@@ -34,8 +34,9 @@ export const PLAN_STAGE_COPY:Record<NewPlanProfile,[string,string,string,string]
   bent_over_row:['俯身垂臂就绪','双臂拉起中','拉到位啦——慢慢放下来','好，放回啦，我确认一下'],
   reverse_lunge:['并脚站立就绪','后撤下沉中','到位啦——回到站立','好，站稳，我确认一下'],
   calf_raise:['脚跟落地就绪','提踵中','提到位啦——慢慢落跟','好，落稳，我确认一下'],
+  seated_calf_raise:['脚跟落地就绪','提踵中','提到位啦——慢慢落跟','好，落稳，我确认一下'],
 };
-const needed = (type:NewPlanProfile) => type==='calf_raise' ? [11,12,23,24,25,26,27,28,29,30,31,32] : type==='reverse_lunge' ? [11,12,23,24,25,26,27,28,29,30,31,32] : type==='bent_over_row' ? [11,12,13,14,15,16,23,24,25,26] : [11,12,13,14,15,16,23,24];
+const needed = (type:NewPlanProfile) => type==='calf_raise'||type==='seated_calf_raise' ? [11,12,23,24,25,26,27,28,29,30,31,32] : type==='reverse_lunge' ? [11,12,23,24,25,26,27,28,29,30,31,32] : type==='bent_over_row' ? [11,12,13,14,15,16,23,24,25,26] : [11,12,13,14,15,16,23,24];
 type Sample = {start:boolean;peak:boolean;amplitude:number;symmetry:number;posture:number;confidence:number;side?:'left'|'right';angle:number;basis:string;motion:string;hip:Point;torso:number;tilt:number;points:Point[];footScale:number;heels:number[];forward:Point};
 
 /** Plan-only state machine. Does not alter the four standalone recognition algorithms. */
@@ -103,7 +104,12 @@ export class PlanExerciseTracker {
       start=Math.min(...knee)>=150&&Math.max(...retreat)<.15;peak=!!b&&Math.max(...retreat)>=.22&&Math.min(...knee)<=125;
       measured=Math.min(...knee);amplitude=clamp((165-measured)/75*100);symmetry=clamp(100-Math.abs(p[11].y-p[12].y)/torso*160);basis='后撤脚位移＋屈膝，再返回起始脚位';motion=`${side==='left'?'左':'右'}侧后撤 ${Math.round(Math.max(...retreat)*100)}% 腿长，膝角 ${Math.round(measured)}°`;
     }else{
-      if(footScale<torso*.06||Math.min(...knee)<150)return null;
+      // Calf raises share one heel channel; only the knee gate differs. The
+      // standing profile demands straight knees (≥150°); the seated variant
+      // (tier-2 expansion, exdb:1379) replaces that gate with the seated range
+      // used by the seated profiles elsewhere (60–130°) — the heel/forefoot
+      // geometry itself is posture-independent once normalized by foot length.
+      if(footScale<torso*.06||(this.type==='seated_calf_raise'?(Math.min(...knee)<60||Math.max(...knee)>130):Math.min(...knee)<150))return null;
       const b=this.baseline,raise=b?heels.map((v,i)=>b.heels[i]-v):[0,0];
       // Toe-to-heel displacement rejects a camera translation or whole-body jump.
       if(b&&[31,32].some(i=>distance(p[i],b.points[i])>b.footScale*.4))return null;
@@ -124,7 +130,7 @@ export class PlanExerciseTracker {
     this.worldFrames=world?.length===raw.length&&world.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))?[...this.worldFrames,world].slice(-(this.prefiltered?1:5)):[];
     const smoothedWorld=this.worldFrames.length&&indices.every(i=>(raw[i].visibility??0)>=.7)?medianLandmarks(this.worldFrames):null;
     const f=this.sample(points,aspect,smoothedWorld);
-    if(!f)return this.interrupt(this.type==='calf_raise'?'请让双脚跟和前脚掌清晰可见，保持前脚掌原位和膝盖伸直':this.type==='reverse_lunge'?'请斜侧面拍摄，让脚尖方向及后撤脚位清晰可见':'请保持斜侧面俯身姿势，让双臂清晰可见');
+    if(!f)return this.interrupt(this.type==='calf_raise'?'请让双脚跟和前脚掌清晰可见，保持前脚掌原位和膝盖伸直':this.type==='seated_calf_raise'?'请坐稳、双膝弯曲，让双脚跟和前脚掌清晰可见，保持前脚掌原位':this.type==='reverse_lunge'?'请斜侧面拍摄，让脚尖方向及后撤脚位清晰可见':'请保持斜侧面俯身姿势，让双臂清晰可见');
     const dt=this.at===null?0:now-this.at;this.at=now;this.times=[...this.times,now].filter(t=>now-t<=2000);
     this.diagnostics={...this.diagnostics,fps:this.times.length>1?Math.round((this.times.length-1)*1000/(now-this.times[0])):0,confidence:f.confidence,angle:f.angle,side:f.side||null,basis:f.basis,motion:f.motion};
     if(!this.calibrated){
