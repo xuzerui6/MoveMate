@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {ExtendedExerciseTracker,sustainedPeak,type TimedSpan} from '../src/features/motion/lib/extendedRecognition';
+import {ExtendedExerciseTracker,sustainedPeak,evaluatePeakEvidence,type TimedSpan} from '../src/features/motion/lib/extendedRecognition';
 import {newDemonstrationPose,createRecognitionTracker} from '../src/features/motion/lib/recognition';
 import {poseIssueCopy} from '../src/features/motion/lib/poseFeedback';
 import {COPY_FRAMING,COPY_FRAMING_UPPER,COPY_NOT_SEEN,COPY_NOT_SEEN_UPPER,framingCopyFor,notSeenCopyFor} from '../src/features/motion/lib/companionCopy';
@@ -33,7 +33,13 @@ for(const type of types){
     r.feed('peak',900);r.tracker.interrupt('暂停');r.feed('neutral',3000);assert.equal(r.tracker.metrics.reps,0);
     r.feed('peak',1000);r.feed('neutral',1000);assert.equal(r.tracker.metrics.reps,1);
     const saved=copy(r.tracker.metrics),restored=run(type,new ExtendedExerciseTracker(type,20,saved));restored.feed('peak',1200);assert.equal(restored.tracker.metrics.reps,1);restored.feed('neutral',3000);restored.feed('peak',1000);restored.feed('neutral',1000);assert.equal(restored.tracker.metrics.reps,2);
-    r.feed('peak',1000);r.feed('peak',700,(p)=>p.forEach(x=>x.visibility=.1));r.feed('neutral',3000);assert.equal(r.tracker.metrics.reps,1);
+    r.feed('peak',1000);r.feed('peak',700,(p)=>p.forEach(x=>x.visibility=.1));r.feed('neutral',3000);
+    // Round 4 (front raise only): a short obstruction (700 ms ≤ the 2000 ms
+    // preservation bound) no longer voids a cycle whose peak was already fully
+    // evidenced before the hole — the raise completes on the post-hole return.
+    // Every other type keeps the hard reset, and a hole past the bound still
+    // voids (see the round-4 occlusion fixtures).
+    assert.equal(r.tracker.metrics.reps,type==='front_raise'?2:1);
   });
 }
 test('front raises reject lateral raises and missing direction data',()=>{
@@ -521,8 +527,147 @@ test('front raise singles score peak-to-peak when the other side peaked within 8
   const sym=tracker.metrics.formBreakdown.symmetry;
   assert.ok(sym>=82&&sym<=94,`symmetry ${sym} should be ≈88 peak-to-peak (76° vs 68°)`);
 });
-test('issue copy resolves by movement family',()=>{
-  assert.equal(poseIssueCopy('unstable_movement','hammer_curl').label,'手臂摆动偏大');
+// --- Round 4 (2026-11-08): peak evidence, overshoot revocation, cycle preservation, blocker hints ---
+/** Parametric front-raise frame with per-side exact (raised θ, elbow E, direction
+ * λ): λ is the wrist line's azimuth from forward (0°) toward lateral (90°), so
+ * forward-dominant ⟺ λ<45° and lateral-dominant ⟺ λ≥45°. The wrist is placed so
+ * measure() reads raised=θ exactly at any λ; the elbow is built segment-wise in
+ * the sagittal plane (upper .28, forearm .26 — the δ construction of the exact
+ * builders above), so the elbow angle reads E exactly (bent fixtures are
+ * sagittal, λ=0, by construction). */
+type RaiseSpec={theta:number;elbow:number;lambda?:number};
+const RS=(theta:number,elbow=170,lambda=0):RaiseSpec=>({theta,elbow,lambda});
+const RREST=RS(10,170);
+function raiseFrame(spec:{l:RaiseSpec;r:RaiseSpec},noseZ=-.1):Point[]{
+  const w:Point[]=Array.from({length:33},()=>({x:0,y:0,z:0,visibility:1}));
+  const put=(i:number,x:number,y:number,z:number)=>{w[i]={x,y,z,visibility:1};};
+  put(0,0,-.15,noseZ);
+  const LU=.28,LF=.26;
+  for(const o of [0,1]){
+    const sx=o?.2:-.2,s=o?spec.r:spec.l,rho=s.theta*Math.PI/180,lam=(s.lambda??0)*Math.PI/180;
+    put(11+o,sx,0,0);put(23+o,sx,.4,0);put(25+o,sx,.75,0);put(27+o,sx,1.05,0);
+    if(s.elbow>=180||lam!==0){
+      const tanL=Math.tan(lam),n=1/Math.hypot(1,Math.sin(rho)*tanL);
+      const dx=Math.sign(sx)*Math.sin(rho)*tanL*n,dy=Math.cos(rho)*n,dz=-Math.sin(rho)*n;
+      put(13+o,sx+LU*dx,LU*dy,LU*dz);put(15+o,sx+(LU+LF)*dx,(LU+LF)*dy,(LU+LF)*dz);
+    }else{
+      const psi=(180-s.elbow)*Math.PI/180,delta=Math.atan2(LF*Math.sin(psi),LU+LF*Math.cos(psi)),phi=rho-delta,fa=phi+psi;
+      put(13+o,sx,LU*Math.cos(phi),-LU*Math.sin(phi));
+      put(15+o,sx,LU*Math.cos(phi)+LF*Math.cos(fa),-LU*Math.sin(phi)-LF*Math.sin(fa));
+    }
+  }
+  return w;
+}
+function driveRaise(specs:{l:RaiseSpec;r:RaiseSpec}[]){
+  const tracker=new ExtendedExerciseTracker('front_raise',20,{},true);
+  const img=frontRaiseImage(),step=1000/24;let t=0;
+  const feed=(s:{l:RaiseSpec;r:RaiseSpec})=>{tracker.update(structuredClone(img),t,1,raiseFrame(s));t+=step;};
+  for(let c=0;c<63;c++)feed({l:RREST,r:RREST});
+  for(const s of specs)feed(s);
+  return {tracker,feed,feedRaw:(raw:Point[]|null,world:Point[]|null)=>{tracker.update(raw,t,1,world);t+=step;}};
+}
+const bothR=(s:RaiseSpec)=>({l:s,r:s});
+const leftOnly=(specs:RaiseSpec[])=>specs.map(s=>({l:s,r:RREST}));
+const glideR=(a:RaiseSpec,b:RaiseSpec,n:number):RaiseSpec[]=>Array.from({length:n},(_,k)=>{const u=(1-Math.cos(Math.PI*(k+1)/n))/2;return {theta:a.theta+(b.theta-a.theta)*u,elbow:a.elbow+(b.elbow-a.elbow)*u,lambda:(a.lambda??0)+((b.lambda??0)-(a.lambda??0))*u};});
+const holdR=(s:RaiseSpec,n:number):RaiseSpec[]=>Array.from({length:n},()=>({...s}));
+const cycleR=(peak:number,elbowAt:(k:number)=>number,n=22):RaiseSpec[]=>Array.from({length:n},(_,k)=>{const u=k/n;return {theta:10+(peak-10)*(1-Math.cos(2*Math.PI*u))/2,elbow:elbowAt(k)};});
+test('peak evidence: an elbow dip on exactly the deepest frame is bridged by qualified neighbours',()=>{
+  const S=(t:number,raised:number,elbow:number,fwd=true,lat=false)=>({t,raised,elbow,fwd,lat});
+  assert.equal(evaluatePeakEvidence([S(0,80,155),S(100,95,137),S(200,94,155),S(300,90,155)],100,95),'qualified');
+  // A clearly bent deepest sample disqualifies the peak outright.
+  assert.equal(evaluatePeakEvidence([S(0,80,155),S(100,95,115),S(200,94,155),S(300,90,155)],100,95),'revoked');
+  // One good frame at the peak is not sustained evidence.
+  assert.equal(evaluatePeakEvidence([S(0,80,100),S(100,95,155),S(200,94,100)],100,95),'insufficient');
+});
+test('front raises count an in-band raise whose deepest frame dips at the elbow (and stay single-arm)',()=>{
+  // The replay's two dead raises, rebuilt exactly: elbow 137° on the max frame
+  // only, 155° on the qualified neighbours. Left arm only — the right rests.
+  const specs=[...leftOnly(cycleR(95,k=>k===11?137:155)),...leftOnly(glideR(RS(12,155),RREST,4)),...holdR(RREST,34).map(s=>bothR(s))];
+  assert.equal(driveRaise(specs).tracker.metrics.reps,1);
+});
+test('front raises reject a raise bent exactly at the peak frame, and one bent sustained around it',()=>{
+  const bentAtPeak=[...leftOnly(cycleR(95,k=>k===11?115:155)),...holdR(RREST,34).map(s=>bothR(s))];
+  assert.equal(driveRaise(bentAtPeak).tracker.metrics.reps,0);
+  const bentAround=[...leftOnly(cycleR(95,k=>k>=9&&k<=13?115:155)),...holdR(RREST,34).map(s=>bothR(s))];
+  assert.equal(driveRaise(bentAround).tracker.metrics.reps,0);
+});
+test('front raises revoke an earned peak when the same raise later overshoots',()=>{
+  const arc=(secondPeak:number)=>[
+    ...glideR(RREST,RS(100,155),11),...glideR(RS(100,155),RS(50,155),8),...holdR(RS(50,155),2),
+    ...glideR(RS(50,155),RS(secondPeak,155),10),...glideR(RS(secondPeak,155),RS(50,155),8),
+    ...glideR(RS(50,155),RREST,6),...holdR(RREST,34),
+  ].map(s=>bothR(s));
+  // First segment latches in band, dip, second segment overshoots to 125°:
+  // the whole raise is void, not just the second segment.
+  assert.equal(driveRaise(arc(125)).tracker.metrics.reps,0);
+  // Control: a second in-band segment changes nothing — the raise counts once.
+  assert.equal(driveRaise(arc(95)).tracker.metrics.reps,1);
+});
+test('front raise occlusion: a short hole preserves the open cycle, a long hole voids it',()=>{
+  const blind=frontRaiseImage().map(p=>({...p,visibility:.1}));
+  const open=[...glideR(RREST,RS(95,155),9),...holdR(RS(95,155),8)];
+  const shortHole=driveRaise(leftOnly(open));
+  for(let i=0;i<15;i++)shortHole.feedRaw(structuredClone(blind),null); // ≈625 ms
+  for(const s of leftOnly([...holdR(RS(93,155),3),...glideR(RS(93,155),RREST,9),...holdR(RREST,34)]))shortHole.feed(s);
+  assert.equal(shortHole.tracker.metrics.reps,1);
+  const longHole=driveRaise(leftOnly(open));
+  for(let i=0;i<72;i++)longHole.feedRaw(structuredClone(blind),null); // ≈3000 ms
+  for(const s of holdR(RREST,40))longHole.feed(bothR(s)); // he lowered the arm during the hole
+  assert.equal(longHole.tracker.metrics.reps,0);
+});
+test('front raises reject direction transitions through the peak and a one-frame direction spike',()=>{
+  const sweep=(from:number,to:number)=>[
+    ...glideR(RREST,RS(90,170,from),9),
+    ...Array.from({length:12},(_,k)=>RS([91,92,93,93,92,91,90,90,90,90,90,90][k],170,from+(to-from)*k/11)),
+    ...glideR(RS(90,170,to),RREST,8),...holdR(RREST,34),
+  ].map(s=>({l:s,r:RREST}));
+  // Forward at the rise, rotating to lateral across the peak plateau.
+  assert.equal(driveRaise(sweep(0,88)).tracker.metrics.reps,0);
+  // Lateral at the rise, rotating to forward across the peak plateau.
+  assert.equal(driveRaise(sweep(88,0)).tracker.metrics.reps,0);
+  // A held lateral raise with a single forward frame exactly at the peak.
+  const spike=[
+    ...glideR(RREST,RS(93,170,75),9),
+    ...Array.from({length:12},(_,k)=>RS(93,170,k===6?0:75)),
+    ...glideR(RS(93,170,75),RREST,8),...holdR(RREST,34),
+  ].map(s=>({l:s,r:RREST}));
+  assert.equal(driveRaise(spike).tracker.metrics.reps,0);
+});
+test('front raise hints name the actual blocker, and the dead zone stays quiet about direction',()=>{
+  const d=driveRaise([]);
+  const L=(s:RaiseSpec)=>({l:s,r:RREST});
+  // 25–37° is the constructed dead zone: the forward cone cannot pass there,
+  // so the hint asks for height, not direction.
+  for(let i=0;i<6;i++)d.feed(L(RS(30,170,60)));
+  assert.equal(d.tracker.metrics.feedback,'继续抬臂，方向待确认');
+  assert.doesNotMatch(d.tracker.metrics.feedback,/尚未确认前举方向/);
+  // Above the dead zone, a lateral raise hears the direction blocker.
+  for(let i=0;i<6;i++)d.feed(L(RS(60,170,60)));
+  assert.match(d.tracker.metrics.feedback,/尚未确认前举方向/);
+  // Forward but clearly bent at height: the elbow is the blocker.
+  for(let i=0;i<6;i++)d.feed(L(RS(80,110,0)));
+  assert.match(d.tracker.metrics.feedback,/手肘再伸直一点点/);
+  // Over-head: the overshoot is the blocker.
+  for(let i=0;i<3;i++)d.feed(L(RS(120,170,0)));
+  assert.match(d.tracker.metrics.feedback,/举得有点高啦/);
+});
+test('front raise calibration surfaces a weak-framing signal without changing pass conditions',()=>{
+  const tracker=new ExtendedExerciseTracker('front_raise',20,{},true);
+  const img=frontRaiseImage(),step=1000/24;let t=0;
+  // Nose barely signs the forward axis (face margin ≈1.25 of the rejection
+  // threshold): measurable, but the framing preconditions are weak.
+  const weak=raiseFrame(bothR(RS(90,170)),-.03);
+  for(let c=0;c<6;c++){tracker.update(structuredClone(img),t,1,structuredClone(weak));t+=step;}
+  assert.equal(tracker.diagnostics.stage,'calibrating');
+  assert.equal(tracker.metrics.feedback,'这个角度方向不好判断——稍微转成斜侧面，让我看清你的头和双臂');
+  assert.equal(tracker.metrics.poseFeedback.message,'这个角度方向不好判断——稍微转成斜侧面，让我看清你的头和双臂');
+  // Pass conditions unchanged: the full 2 s start-pose hold is still required.
+  for(let c=0;c<30;c++){tracker.update(structuredClone(img),t,1,raiseFrame(bothR(RREST)));t+=step;}
+  assert.equal(tracker.diagnostics.stage,'calibrating');
+  for(let c=0;c<33;c++){tracker.update(structuredClone(img),t,1,raiseFrame(bothR(RREST)));t+=step;}
+  assert.equal(tracker.diagnostics.stage,'ready');
+});
+test('issue copy resolves by movement family',()=>{  assert.equal(poseIssueCopy('unstable_movement','hammer_curl').label,'手臂摆动偏大');
   assert.equal(poseIssueCopy('unstable_movement','hammer_curl').action,'慢一点，肘贴紧身体，把这一下做稳');
   assert.deepEqual(poseIssueCopy('unstable_movement','front_raise').joints,[11,12,13,14]);
   assert.equal(poseIssueCopy('poor_coordination','seated_curl').label,'两边节奏没对齐');

@@ -16,13 +16,20 @@ const cross=(a:number[],b:number[])=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[
 const angle=(a:Point,b:Point,c:Point)=>Math.acos(Math.max(-1,Math.min(1,dot(norm(vector(a,b)),norm(vector(c,b))))))*180/Math.PI;
 const mean=(a:number,b:number)=>(a+b)/2;
 type Side='left'|'right';
-type Measurement={start:boolean;peak:boolean;amplitude:number;angle:number;confidence:number;scorable:boolean;posture:number;symmetry:number;controlPenalty:number;hint?:string;side?:Side;basis:string;motion:string;points:Point[];torso:number;tilt:number;elbows?:[number,number];raiseSides?:[RaiseSide,RaiseSide]};
+type Measurement={start:boolean;peak:boolean;amplitude:number;angle:number;confidence:number;scorable:boolean;posture:number;symmetry:number;controlPenalty:number;hint?:string;side?:Side;basis:string;motion:string;points:Point[];torso:number;tilt:number;elbows?:[number,number];raiseSides?:[RaiseSide,RaiseSide];framing?:'ok'|'weak'};
 /** Per-arm front-raise channel: shoulder-flexion angle, whether that arm's wrist
- * direction is forward-dominant, and that arm's elbow angle. */
-type RaiseSide={raised:number;forward:boolean;elbow:number};
-type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;peakOk:boolean;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number;controlSamples:TimedValue[];speedSpans:TimedSpan[]};
+ * direction is forward-dominant, whether it is lateral-dominant (the lateral
+ * component at least the forward one — the mirror image of the forward test),
+ * and that arm's elbow angle. */
+type RaiseSide={raised:number;forward:boolean;latDom:boolean;elbow:number};
+/** One measured frame's front-raise evidence for one arm (round 4): the form
+ * channels the peak-evidence rule judges, sampled while the arm is engaged. */
+type RaiseSample={t:number;raised:number;elbow:number;fwd:boolean;lat:boolean};
+/** A run of consecutive same-verdict direction samples (direction latch). */
+type SustainRun={start:number;last:number;n:number}|null;
+type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number;controlSamples:TimedValue[];speedSpans:TimedSpan[];samples:RaiseSample[];overshoot:boolean;dirLatched:boolean;dirMixed:boolean;dirTurned:boolean;fwdRun:SustainRun;latRun:SustainRun};
 type SideCompletion={side:number;at:number;peakStart:number;peakEnd:number;peakAmp:number;peakPosture:number;peakOther:number;peakElbow:number;duration:number;scoring:boolean;control:number;shift:number;speed:number};
-const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,peakOk:true,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180,controlSamples:[],speedSpans:[]});
+const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180,controlSamples:[],speedSpans:[],samples:[],overshoot:false,dirLatched:false,dirMixed:false,dirTurned:false,fwdRun:null,latRun:null});
 /** Timestamped stability evidence: a point sample of the control penalty (held
  * until the next sample) or one angular-velocity window with its true span. */
 type TimedValue={t:number;v:number};
@@ -117,6 +124,101 @@ const PEAK_MIN_DWELL_MS=25,PEAK_GAP_MS=150;
  * long, so a brief peak blip during an otherwise stationary hold still counts
  * nothing. Mirrors the jumping-jack 250 ms motion guard in exerciseMetrics. */
 const MIN_EXCURSION_MS=250;
+/** Front-raise peak evidence (round 4, 2026-11-08 — Muse×Codex converged plan,
+ * calibrated on the replay of Edward's 2026-11-08 retest recording). Rounds ≤3
+ * judged the whole peak by the single deepest sample (peakOk): the two in-band
+ * raises in that recording died exactly there — deepest frames read elbow
+ * 137°/138° while adjacent frames read 144–156° fully qualified. The elbow
+ * channel reads systematically low (≈ −20° under a loose sleeve; only 36% of
+ * raised ≥65° frames reach 140°), so qualification now comes from a peak-bound
+ * evidence segment instead of one frame — with the 140° standard itself unmoved:
+ *  (a) same-frame JOINT evidence — elbow ≥140° AND forward-dominant in one sample;
+ *  (b) bound to the peak — samples must lie within PEAK_EVIDENCE_BAND_DEG of the
+ *      sampled maximum and PEAK_EVIDENCE_WINDOW_MS of its moment, connected to
+ *      it by a chain of sample gaps no larger than the stream's cadence allows
+ *      (see evaluatePeakEvidence; no importing evidence across a hole);
+ *  (c) sustained — ≥2 joint-qualified samples spanning ≥ EVIDENCE_MIN_SPAN_MS;
+ *      no single frame, however good, extends or substitutes;
+ *  (d) revocable — the sampled-max sample itself carrying clear counter-evidence
+ *      (elbow < EVIDENCE_CLEAR_BENT_DEG or lateral-dominant) disqualifies the
+ *      peak outright, and a sustained run of clear counter-evidence inside the
+ *      neighbourhood revokes it. A lone non-max counter sample is bridged as
+ *      jitter only; wherever a short burst is indistinguishable from a glitch
+ *      and would decide alone, the rule stays conservative.
+ * Window calibration: at the replay's 10 fps sampling a ±100 ms window holds at
+ * most one sample on each side of the max, while the two proven in-band raises
+ * carry their qualified support +200/+300 ms after the max (a held plateau at
+ * 105–107°, inside the 10° band) — a ±100 ms window would encode the sampling
+ * rate rather than the movement. ±300 ms (≈ ±7 frames at the device's 21–24 fps)
+ * bounds the plateau; the angle band, the gap chain and the counter-evidence
+ * rules do the discriminating — every negative in the replay (3 overshoots, the
+ * goalpost raise, the lateral raise) is still rejected by them, not the window.
+ * EVIDENCE_CLEAR_BENT_DEG sits 10° under the standard: the observed jitter dips
+ * (137°/138°) must not read as counter-evidence, while a genuinely bent peak
+ * (≈115° in the fixtures, 88–120° sustained in the replay's goalpost raise)
+ * clears it by a wide margin. */
+const PEAK_EVIDENCE_WINDOW_MS=300,PEAK_EVIDENCE_BAND_DEG=10,EVIDENCE_MIN_SPAN_MS=50,EVIDENCE_CLEAR_BENT_DEG=130;
+/** Cycle preservation on soft interrupts (round 4, front raise only): a short
+ * detection/visibility hole keeps the open cycle and its accumulated evidence;
+ * the bound is the hammer-curl freeze-grace precedent (2000 ms). The replay's
+ * killing hole measured ≈0.8 s; a longer interruption voids the cycle exactly
+ * as before. Preservation never fabricates: feedPeakTrack's gap rule disables
+ * the parabola across holes, evidence runs break on gaps > PEAK_GAP_MS, and
+ * return credit stays capped per interval. */
+const CYCLE_PRESERVE_MS=2000;
+export type PeakEvidenceVerdict='qualified'|'revoked'|'insufficient';
+/** Judges one closed front-raise peak episode from its sampled evidence.
+ * `best`/`bestAt` are the episode's sampled maximum raised angle and its time. */
+export function evaluatePeakEvidence(samples:RaiseSample[],bestAt:number,best:number):PeakEvidenceVerdict{
+  const idx=samples.findIndex(s=>s.t===bestAt);
+  if(idx<0)return 'insufficient';
+  const band=best-PEAK_EVIDENCE_BAND_DEG;
+  // The chain break keeps evidence from being imported across a detection
+  // hole; a hole is a gap large relative to the stream's own cadence, not an
+  // absolute 150 ms — at a steady 5 fps every gap is 200 ms and the raw cap
+  // would make qualification unsatisfiable (the same sampling-rate trap as
+  // the time window). Cadence = median gap among the samples near the peak;
+  // the replay's 800 ms hole still breaks the chain at its 100 ms cadence
+  // (limit 200 ms), and device-rate streams keep the plain 150 ms cap.
+  const gaps:number[]=[];
+  for(let i=1;i<samples.length;i++){const g=samples[i].t-samples[i-1].t;if(g>0&&Math.abs(samples[i].t-bestAt)<=1000)gaps.push(g);}
+  gaps.sort((a,b)=>a-b);
+  const cadence=gaps.length?gaps[Math.floor(gaps.length/2)]:0;
+  const chainGap=Math.min(1000,Math.max(PEAK_GAP_MS,cadence*2));
+  let lo=idx,hi=idx;
+  while(lo>0){const a=samples[lo-1],b=samples[lo];if(b.t-a.t>chainGap||a.raised<band||bestAt-a.t>PEAK_EVIDENCE_WINDOW_MS)break;lo--;}
+  while(hi<samples.length-1){const a=samples[hi],b=samples[hi+1];if(b.t-a.t>chainGap||b.raised<band||b.t-bestAt>PEAK_EVIDENCE_WINDOW_MS)break;hi++;}
+  const near=samples.slice(lo,hi+1);
+  const counter=(s:RaiseSample)=>s.elbow<EVIDENCE_CLEAR_BENT_DEG||s.lat;
+  if(counter(samples[idx]))return 'revoked';
+  let runStart:number|null=null,runN=0;
+  for(const s of near){
+    if(counter(s)){if(runStart===null){runStart=s.t;runN=1;}else runN++;if(runN>=2&&s.t-runStart>=EVIDENCE_MIN_SPAN_MS)return 'revoked';}
+    else{runStart=null;runN=0;}
+  }
+  const ok=near.filter(s=>s.elbow>=140&&s.fwd);
+  return ok.length>=2&&ok[ok.length-1].t-ok[0].t>=EVIDENCE_MIN_SPAN_MS?'qualified':'insufficient';
+}
+/** Blocker-driven front-raise hints (round 4): the live hint names the gate
+ * that is actually blocking the rep, in companion voice, most-blocking first —
+ * replacing the bilateral-aggregate direction hint, which fired 112 times in
+ * the replay session including during correctly performed single-arm raises. */
+const COPY_RAISE_OVERSHOOT='举得有点高啦——到肩膀高就好';
+const COPY_RAISE_TURNED='刚刚转成侧边啦——前平举要朝正前方抬';
+const COPY_RAISE_ELBOW='手肘再伸直一点点，整条手臂一起抬';
+const COPY_RAISE_DIRECTION='尚未确认前举方向；请向身体前方抬臂，侧平举不计入';
+const COPY_RAISE_DEAD_ZONE='继续抬臂，方向待确认';
+/** Below ≈36.9° elevation the forward cone (dot > 0.6|v|) cannot pass by
+ * construction — sin θ ≤ 0.6 — so failing direction there is geometry, not user
+ * error; the hint asks for more height instead of naming a direction fault. */
+const DIRECTION_DEAD_ZONE_DEG=37;
+/** C-lite framing signal (round 4): during calibration, the face-margin ratio
+ * (how decisively the nose signs the forward axis; measure() rejects below 1)
+ * surfaces as this copy when it is thin (< 2) — the framing preconditions are
+ * weak. Calibration pass conditions are unchanged, and a comfortable margin
+ * claims nothing stronger than the ordinary start-pose copy: the signal can
+ * say 满足/不足/无法确认， never that the angle "measures accurately". */
+const COPY_FRAMING_WEAK='这个角度方向不好判断——稍微转成斜侧面，让我看清你的头和双臂';
 /** Sub-frame peak-episode tracker over a depth signal (depth ≥ 0 = inside the peak
  * zone, larger = deeper). Feed every frame; `best` fires on the frame that is the
  * deepest sample so far (callers snapshot that frame's posture/validity), and
@@ -220,6 +322,10 @@ export class ExtendedExerciseTracker {
    * raises). Lets a rep that emits as a single still score symmetry peak-to-peak
    * when the other side peaked at nearly the same time (round 3). */
   private lastPeak:[{at:number;value:number}|null,{at:number;value:number}|null]=[null,null];
+  /** When the current front-raise detection hole began (the last measured
+   * frame's time). Drives cycle preservation in softInterrupt (round 4);
+   * cleared by the next successfully measured frame or any hard interrupt. */
+  private cycleHoleStart:number|null=null;
   /** Generic-path stability evidence, aggregated by sustainedPeak at completion. */
   private controlSamples:TimedValue[]=[];
   private speedSpans:TimedSpan[]=[];
@@ -246,7 +352,7 @@ export class ExtendedExerciseTracker {
     else{if(this.upperArmClearAt===null)this.upperArmClearAt=now;if(now-this.upperArmClearAt>=UPPER_ARM_CLEAR_MS)this.upperArmDevAt=null;}
     return this.upperArmDevAt!==null&&now-this.upperArmDevAt>=UPPER_ARM_SUSTAIN_MS;
   }
-  interrupt(reason='先停一下，继续时重新校准',feedback=reason,opts?:{preserveCalibration?:boolean;preserveReady?:boolean}){
+  interrupt(reason='先停一下，继续时重新校准',feedback=reason,opts?:{preserveCalibration?:boolean;preserveReady?:boolean;preserveCycle?:boolean}){
     // preserveCalibration (round 3): the calibration bank, the open hold segment
     // and the calibration baseline survive. The baseline is calibration state
     // too — the per-side updaters dereference it unconditionally once ready, so
@@ -256,9 +362,17 @@ export class ExtendedExerciseTracker {
     // worlds, cycle state, side, diagnostics) resets exactly as a hard
     // interrupt. Session-level callers (pause/end, the adaptive wrapper) never
     // pass opts and keep the hard behaviour.
+    // preserveCycle (round 4, front raise only, soft interrupts within
+    // CYCLE_PRESERVE_MS): the per-side raise cycles, a pending completion and
+    // the last-peak record additionally survive, so a short hole cannot kill
+    // an open, already-qualified segment.
     const preserve=!!opts?.preserveCalibration;
     const bank=preserve?this.calibrationBank:0,segment=preserve?this.calibration:null,ready=preserve&&opts?.preserveReady?this.ready:false,baseline=preserve?this.baseline:null,progress=preserve?this.diagnostics.calibrationProgress:0;
+    const keepCycle=!!opts?.preserveCycle;
+    const raiseSides=keepCycle?this.raiseSides:null,raisePending=keepCycle?this.raisePending:null,lastPeak=keepCycle?this.lastPeak:null;
     this.frames=[];this.worlds=[];this.last=null;this.calibration=segment;this.calibrationBank=bank;this.baseline=baseline;this.ready=ready;this.side=null;this.times=[];this.previous=null;this.resetCycle();
+    if(keepCycle&&raiseSides&&lastPeak){this.raiseSides=raiseSides;this.raisePending=raisePending;this.lastPeak=lastPeak;}
+    if(!keepCycle)this.cycleHoleStart=null;
     this.diagnostics={...this.diagnostics,stage:'tracking_lost',fps:0,calibrationProgress:progress,lastResetReason:reason};
     this.metrics={...this.metrics,phase:'standing',feedback,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:ready,message:feedback}};
     return this.metrics;
@@ -276,7 +390,17 @@ export class ExtendedExerciseTracker {
    * session against transient gates. */
   private softInterrupt(reason:string,now:number,feedback:string=reason){
     if(!this.ready&&this.lastStartAt!==null&&now-this.lastStartAt>CALIBRATION_STALE_MS){this.calibrationBank=0;this.calibration=null;}
-    return this.interrupt(reason,feedback,{preserveCalibration:true,preserveReady:true});
+    // Round 4: for front raise, a transient gate also preserves the in-flight
+    // cycle while the hole is short (CYCLE_PRESERVE_MS from the last measured
+    // frame). A longer hole — or any non-soft interrupt — voids the cycle
+    // exactly as before.
+    let preserveCycle=false;
+    if(this.type==='front_raise'){
+      if(this.cycleHoleStart===null)this.cycleHoleStart=this.last??now;
+      preserveCycle=now-this.cycleHoleStart<=CYCLE_PRESERVE_MS;
+      if(!preserveCycle)this.cycleHoleStart=null;
+    }
+    return this.interrupt(reason,feedback,{preserveCalibration:true,preserveReady:true,preserveCycle});
   }
   /** Form-rejection interrupt: measure() judged the pose itself invalid (wrong
    * posture family, direction unconfirmed, baseline moved, side switched
@@ -317,6 +441,7 @@ export class ExtendedExerciseTracker {
     let start=false,peak=false,amplitude=0,measured=0,posture=cap(100-Math.max(0,tilt-12)*2),symmetry=100,controlPenalty=0,side:Side|undefined=this.side||undefined,basis='',motion='',hint:string|undefined;
     let perSide:[number,number]|undefined;
     let raiseData:[RaiseSide,RaiseSide]|undefined;
+    let framing:'ok'|'weak'|undefined;
     if(this.type==='seated_curl'||this.type==='seated_lateral_raise'){
       const hips=[angle(a[11],a[23],a[25]),angle(a[12],a[24],a[26])];
       if(tilt>30||hips.some(v=>v<60||v>130)||knees.some(v=>v<55||v>140))return '请坐稳、双脚支撑并调整为斜侧面，让屈膝坐姿清楚可见；站姿不计入';
@@ -388,6 +513,11 @@ export class ExtendedExerciseTracker {
       const face=dot(vector(a[0],shoulder),forward);
       if(Math.abs(face)<dist(shoulder,pelvis)*.06||dist(a[11],a[12])<.05)return '前举方向不清晰，请调整为斜侧面并让头部入镜';
       if(face<0)forward=forward.map(v=>-v);
+      // C-lite framing signal (round 4): how decisively the nose signs the
+      // forward axis, as a multiple of the rejection threshold above (which is
+      // ratio 1 — the 无法确认 state, surfaced as the string return). A thin
+      // margin (< 2) is 不足; anything above only ever reads as 满足.
+      framing=Math.abs(face)/(dist(shoulder,pelvis)*.06)>=2?'ok':'weak';
       // Raised angle (2026-11-07 round 2): the shoulder→wrist direction projected
       // onto the body sagittal plane (torso-down axis × forward axis), NOT the 3D
       // elbow angle against the same-side hip. Replaying the production model over
@@ -413,7 +543,7 @@ export class ExtendedExerciseTracker {
       // `every` test (plus a 0.55 lateral cap) made single-arm raises impossible:
       // a resting arm's downward wrist vector is never "forward". Counting is per
       // side in updateFrontRaise; the aggregate peak below is diagnostics only.
-      raiseData=[0,1].map(i=>{const v=vector(a[15+i],a[11+i]),n=Math.hypot(...v),f=dot(v,forward);return {raised:raised[i],forward:f>n*.6&&f>Math.abs(dot(v,lateral)),elbow:elbows[i]};}) as [RaiseSide,RaiseSide];
+      raiseData=[0,1].map(i=>{const v=vector(a[15+i],a[11+i]),n=Math.hypot(...v),f=dot(v,forward),l=Math.abs(dot(v,lateral));return {raised:raised[i],forward:f>n*.6&&f>l,latDom:l>=f,elbow:elbows[i]};}) as [RaiseSide,RaiseSide];
       const direction=raiseData.every(s=>s.forward);
       start=Math.max(...raised)<=25;peak=Math.min(...raised)>=65&&Math.max(...raised)<=115&&direction&&Math.min(...elbows)>=140;
       measured=mean(raised[0],raised[1]);amplitude=cap(Math.min(...raised)/90*100);symmetry=cap(100-Math.abs(raised[0]-raised[1])*1.5);basis='逐侧矢状面抬举角（肩→腕）＋前向主导方向';motion=`抬臂 ${Math.round(raised[0])}° / ${Math.round(raised[1])}°；${direction?'双臂前举方向已确认':raiseData.some(s=>s.forward)?'单臂前举方向已确认':'尚未确认前举方向，侧举不计数'}`;
@@ -450,7 +580,7 @@ export class ExtendedExerciseTracker {
       if(!start&&hips<150)hint='请让大腿保持向下，脚跟向后抬起，向前抬膝不计入';
     }
     const scorable=confidence>=.7&&[11,12,23,24,...(this.type==='romanian_deadlift'||this.type==='glute_bridge'||this.type==='barbell_deadlift'?[25,26,27,28]:[])].every(i=>(points[i].visibility??0)>=.7);
-    return {start,peak,amplitude,angle:measured,confidence,scorable,posture,symmetry,controlPenalty,hint,side,basis,motion,points:p,torso,tilt,elbows:perSide,raiseSides:raiseData};
+    return {start,peak,amplitude,angle:measured,confidence,scorable,posture,symmetry,controlPenalty,hint,side,basis,motion,points:p,torso,tilt,elbows:perSide,raiseSides:raiseData,framing};
   }
   /** The other side's confirmed peak for peak-to-peak symmetry (round 3): its last
    * completion's peak if that peaked within PEAK_PAIR_WINDOW_MS of this rep's
@@ -572,20 +702,59 @@ export class ExtendedExerciseTracker {
    * start (raised ≤25°) → peak (raised 65–115°, elbow ≥140°, that arm forward-dominant)
    * → return to start. Overlapping peaks merge into one synchronized rep; non-overlapping
    * count one per arm, so single-arm and alternating raises count — while a single-arm
-   * LATERAL raise never satisfies the forward-dominance test and stays rejected. */
+   * LATERAL raise never satisfies the forward-dominance test and stays rejected.
+   * Round 4: the peak's form conditions are judged by the peak-bound evidence
+   * segment (evaluatePeakEvidence), an overshoot segment revokes an earned
+   * latch, and short soft-interrupt holes preserve the open cycle. */
   private updateFrontRaise(f:Measurement,now:number):ExerciseMetrics{
     const sides=f.raiseSides!;
     let completed=false;
     if(this.raisePending&&now-this.raisePending.at>600){const pending=this.raisePending;this.raisePending=null;if(this.emitFrontRaiseRep([pending],f,this.peerPeakFor(pending,this.raiseSides)))completed=true;}
     for(const s of [0,1] as const){
       const cyc=this.raiseSides[s],side=sides[s],other=sides[1-s],v=side.raised;
-      // Crossing confirmation like hammer curl's (depth ≥ 0 ⇔ raised ≥65°). The band
-      // conditions (elbow ≥140°, forward-dominant) and the 115° band cap are judged at
-      // the interpolated extremum instead of across a 120 ms sampled hold, which a
-      // fast raise — or one flickering condition frame — could never satisfy.
+      // Round 4 evidence sampling: while the arm is engaged, record the form
+      // channels the peak-evidence rule judges. The buffer is short and pruned
+      // by age — evaluation only reads the peak neighbourhood, and any live
+      // episode's argmax sample is far younger than the prune horizon.
+      if(v>25||cyc.track.open||cyc.peakStart!==null){
+        cyc.samples.push({t:now,raised:v,elbow:side.elbow,fwd:side.forward,lat:side.latDom});
+        while(cyc.samples.length&&cyc.samples[0].t<now-4000)cyc.samples.shift();
+      }
+      // Direction latch (round 4): per-raise direction HISTORY from sustained
+      // evidence only — a forward run (≥2 samples spanning ≥ EVIDENCE_MIN_SPAN_MS,
+      // gaps ≤ PEAK_GAP_MS) latches the direction; a sustained lateral run
+      // clears it and marks the raise mixed, after which it cannot re-latch
+      // this raise. The latch feeds hints only; peak qualification always
+      // re-judges the peak moment itself (evaluatePeakEvidence).
+      if(v>25){
+        const chained=cyc.prevAt!==null&&now-cyc.prevAt<=PEAK_GAP_MS;
+        if(side.forward){
+          cyc.latRun=null;
+          cyc.fwdRun=chained&&cyc.fwdRun?{start:cyc.fwdRun.start,last:now,n:cyc.fwdRun.n+1}:{start:now,last:now,n:1};
+          if(!cyc.dirMixed&&cyc.fwdRun.n>=2&&cyc.fwdRun.last-cyc.fwdRun.start>=EVIDENCE_MIN_SPAN_MS)cyc.dirLatched=true;
+        }else if(side.latDom){
+          cyc.fwdRun=null;
+          cyc.latRun=chained&&cyc.latRun?{start:cyc.latRun.start,last:now,n:cyc.latRun.n+1}:{start:now,last:now,n:1};
+          if(cyc.latRun.n>=2&&cyc.latRun.last-cyc.latRun.start>=EVIDENCE_MIN_SPAN_MS){if(cyc.dirLatched)cyc.dirTurned=true;cyc.dirLatched=false;cyc.dirMixed=true;}
+        }else{cyc.fwdRun=null;cyc.latRun=null;}
+      }
+      // Crossing confirmation like hammer curl's (depth ≥ 0 ⇔ raised ≥65°): the
+      // episode's extremum and dwell come from the crossing interpolation; its
+      // form conditions (elbow ≥140°, forward-dominant) are judged by the
+      // peak-evidence rule at close, and the 115° band cap by the overshoot
+      // review below.
       const ev=feedPeakTrack(cyc.track,now,v-65);
-      if(ev.best){cyc.peakPosture=f.posture;cyc.peakOther=other.raised;cyc.peakOk=side.elbow>=140&&side.forward;}
-      if(ev.closed?.valid&&cyc.peakOk&&65+ev.closed.depth<=115){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=65+ev.closed.depth;cyc.peakAmp=cap(cyc.peakElbow/90*100);}
+      if(ev.best){cyc.peakPosture=f.posture;cyc.peakOther=other.raised;}
+      if(ev.closed?.valid){
+        const ext=65+ev.closed.depth;
+        // Overshoot review (round 4): a reliable segment whose extremum left
+        // the band voids the whole raise — including a latch an earlier
+        // segment of the same raise already earned (previously a saved
+        // peakStart was never revoked by a later failing segment). The 115°
+        // rule itself is unchanged.
+        if(ext>115){cyc.overshoot=true;cyc.peakStart=null;}
+        else if(!cyc.overshoot&&evaluatePeakEvidence(cyc.samples,cyc.track.bestAt,65+cyc.track.best)==='qualified'){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=ext;cyc.peakAmp=cap(ext/90*100);}
+      }
       // Return confirmation accumulates the interpolated in-zone dwell (raised ≤25°)
       // inside a 500 ms window, like hammer curl's (see zonePortion).
       const portion=cyc.prevAt===null?{start:now,ms:0}:zonePortion(cyc.prevAngle,v,25,false,cyc.prevAt,now);
@@ -621,16 +790,39 @@ export class ExtendedExerciseTracker {
       const cur=this.raiseSides[s];
       cur.prevAt=now;cur.prevAngle=v;
       if(replaced){cur.track.prevAt=now;cur.track.prevDepth=v-65;}
+      if(v<=25){cur.fwdRun=null;cur.latRun=null;}
     }
     const anyPeak=this.raiseSides.some(c=>c.peakStart!==null||c.track.open)||this.raisePending!==null;
     const stage=this.metrics.reps>=this.metrics.targetReps?'complete':anyPeak?(f.start?'returning':'peak'):f.start?'ready':'moving';
     const copy=definitions[this.type].stages;
     const nearPeak=stage==='moving'&&sides.every(s=>s.raised<65)&&sides.some(s=>s.raised>=45);
-    const message=stage==='complete'?'目标完成啦，漂亮':completed?this.metrics.feedback:nearPeak?'接近啦，再往上带一点点，到肩膀高再放回':(f.hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 继续，保持住':''));
+    const blocker=this.frontRaiseBlocker(sides);
+    const message=stage==='complete'?'目标完成啦，漂亮':completed?this.metrics.feedback:blocker||(nearPeak?'接近啦，再往上带一点点，到肩膀高再放回':copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 继续，保持住':''));
     const issue:PoseIssue|null=f.posture<70?'body_alignment':null;
     this.diagnostics={...this.diagnostics,stage};
-    this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?poseIssueCopy(issue,this.type).joints:[],calibrated:true,message:f.hint||(issue?poseIssueCopy(issue,this.type).action:message)}};
+    this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?poseIssueCopy(issue,this.type).joints:[],calibrated:true,message:blocker||(issue?poseIssueCopy(issue,this.type).action:message)}};
     return this.metrics;
+  }
+  /** The gate actually blocking the front-raise rep right now, named in the
+   * live hint (round 4). Judges the more-raised arm that has not yet latched a
+   * peak; returns undefined when nothing is blocking, letting the near-peak
+   * encouragement or the stage copy speak. Replaces the measure() aggregate
+   * hint in this updater: that hint required BOTH arms forward, so it fired
+   * throughout correct single-arm raises and said nothing about which gate —
+   * overshoot, a turn to the side, a bent elbow, or direction — was binding. */
+  private frontRaiseBlocker(sides:[RaiseSide,RaiseSide]):string|undefined{
+    let active=-1,top=-Infinity;
+    for(const s of [0,1] as const)if(this.raiseSides[s].peakStart===null&&sides[s].raised>25&&sides[s].raised>top){top=sides[s].raised;active=s;}
+    if(active<0)return undefined;
+    const side=sides[active],cyc=this.raiseSides[active];
+    if(side.raised>115||cyc.overshoot)return COPY_RAISE_OVERSHOOT;
+    if(cyc.dirTurned)return COPY_RAISE_TURNED;
+    if(side.forward&&side.raised>=45&&side.elbow<EVIDENCE_CLEAR_BENT_DEG)return COPY_RAISE_ELBOW;
+    if(!side.forward&&!cyc.dirLatched){
+      if(side.raised>DIRECTION_DEAD_ZONE_DEG)return COPY_RAISE_DIRECTION;
+      return COPY_RAISE_DEAD_ZONE;
+    }
+    return undefined;
   }
   update(raw:Point[]|null,now:number,aspect=1,world:Point[]|null=null):ExerciseMetrics{
     if(!raw||raw.length!==33||!Number.isFinite(now)||!Number.isFinite(aspect)||aspect<=0||raw.some(p=>!p||![p.x,p.y,p.visibility??0].every(Number.isFinite)))return this.softInterrupt('未检测到完整人体关键点',now,notSeenCopyFor(this.type));
@@ -648,7 +840,7 @@ export class ExtendedExerciseTracker {
     this.worlds=world?.length===33&&world.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))?[...this.worlds,world].slice(-(this.prefiltered?1:5)):[];
     const f=this.measure(smooth,aspect,this.worlds.length?medianLandmarks(this.worlds):null,required);
     if(typeof f==='string')return this.formInterrupt(f,now);
-    this.last=now;this.times=[...this.times,now].filter(t=>now-t<=2000);
+    this.last=now;this.cycleHoleStart=null;this.times=[...this.times,now].filter(t=>now-t<=2000);
     this.diagnostics={...this.diagnostics,fps:this.times.length>1?Math.round((this.times.length-1)*1000/(now-this.times[0])):0,confidence:f.confidence,side:f.side||null,angle:f.angle,basis:f.basis,motion:f.motion};
     if(!this.ready){
       // Latched calibration: a non-start frame PAUSES the 2 s hold and banks the time
@@ -664,7 +856,12 @@ export class ExtendedExerciseTracker {
       // Front raise must not surface its direction hint before calibration completes:
       // at rest the direction test is always false, so the hint kept ordering the user
       // to raise an arm — and raising it zeroed the calibration they were holding.
-      const calibHint=this.type==='front_raise'?undefined:f.hint;
+      // Round 4 (C-lite): what calibration CAN honestly surface is the framing
+      // signal — a weak face margin on a non-start pose earns the 不足 copy
+      // (COPY_FRAMING_WEAK); the start-pose progress copy remains the 满足
+      // surface and the direction measure() strings the 无法确认 one. Pass
+      // conditions are untouched.
+      const calibHint=this.type==='front_raise'?(!f.start&&f.framing==='weak'?COPY_FRAMING_WEAK:undefined):f.hint;
       const message=this.ready?COPY_CALIBRATED:f.start?`就快好啦，保持起始姿势（${Math.round(progress*100)}%）`:calibHint||(this.armOnStart?'先回到起始姿势，陪我停两秒':'回到起始姿势，陪我停两秒');
       this.metrics={...this.metrics,feedback:message,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:this.ready,confidence:f.confidence,message}};return this.metrics;
     }
