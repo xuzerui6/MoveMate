@@ -10652,6 +10652,186 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0764",
+   "expectedName": "smith reverse-grip press",
+   "sourceId": "ai-codex-exdb-0764",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "1fbe5f17588b63a83d1d88854e8fb7e54c73c6ee2909b63328dc4b8e01490b5a",
+    "e57ddf0eebfc4f7f1caa95cf6ec11c1de0469fb2fbcad3a7182e6f44995b882e"
+   ],
+   "phases": [
+    "起始：站立于史密斯机框架内、面向杠，双脚平放地面与肩同宽，画面中无凳；双手反手握杠（掌心自下托杠朝向头部、手指自远侧勾过杠顶、拇指相对）、握距略宽于肩，杠轻触上胸、双肘内收贴体侧",
+    "关键：沿双竖导轨将杠竖直推至头顶前方、双臂充分伸展，反握两帧保持不变；全程站立原地，双脚与站位不变"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0202",
+   "expectedName": "cable rear delt row (stirrups)",
+   "sourceId": "ai-codex-exdb-0202",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "9d6d9dc8e4106406f06785b9504c53226e8afe6815fd40a6de0fa60b1aef05a0",
+    "a0e3839223da7bf991493142972d100742e7bb3687b6d62bbdf50c0427fb4737"
+   ],
+   "phases": [
+    "起始：面向绳索机俯身平背、右脚后退一步错步站立、膝微屈，左臂向前下方伸直、掌心向下握低滑轮马镫柄，索向前下方绷紧；右手扶右大腿支撑",
+    "关键：左臂沿高肘路径将柄拉回左胸侧，左肘外展抬至约肩高、明显离开躯干，肘高于手，肩胛挤紧；俯身角、错步与扶腿手不变"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1262",
+   "expectedName": "cable one arm decline chest fly",
+   "sourceId": "ai-codex-exdb-1262",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a4fabe7af0b612eda51b2f03b56edd8d2f280409b064344341af747bd338ea7e",
+    "58571eacdf5927379096bef152b81f85b371eec7ca9d5c52ce77a25ad8baab54"
+   ],
+   "phases": [
+    "起始：仰卧下斜凳、头在近机器的低端，双脚勾于远端高端的凳脚垫下；右臂伸直竖于胸上方、肘微屈，右手握 D 柄，索自右手向头端右侧旁的地面低滑轮绷紧；左手轻置腹前",
+    "关键：右臂沿肩部弧线向右侧放低至手与肩同线，肘角与起始一致（飞鸟非推举）；头位、背位与双脚固定不变，左手仍置腹前"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1268",
+   "expectedName": "cable press on exercise ball",
+   "sourceId": "ai-codex-exdb-1268",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "53fd90e6eaf5c72ec060d5cd432718a161db60ea949a25f0b5cc9daf3c92da83",
+    "c5b027b2a17c157c600c724a6be13453e890c3ed3b544077f38fe022d22b1279"
+   ],
+   "phases": [
+    "起始：臀部坐在大健身球球面上、球体完整可见，躯干直立无支撑，双脚平放地面、膝约 90 度，画面中无凳；双肘弯曲、双手在胸侧握柄、掌心朝下，双索向身后肩高滑轮绷紧",
+    "关键：双臂同步向前推至充分伸展，掌心朝下不变；坐位、脚位与躯干直立姿态不变，双索仍向身后绷紧"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1267",
+   "expectedName": "cable one arm press on exercise ball",
+   "sourceId": "ai-codex-exdb-1267",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "330c1f2288951173c508fc0b4d1a4a72b445ff39af70f35405ec0abd14ea73f3",
+    "1189d7d34192f8cce19df8e10d9b1afff3ff5d65165362211dfc6736c05fc445"
+   ],
+   "phases": [
+    "起始：臀部坐在大健身球球面上、球体完整可见，躯干直立无支撑，双脚平放地面、膝约 90 度，画面中无凳；右肘弯曲、右手在右胸侧握柄，索向身后肩高滑轮绷紧；左手叉腰不触他物",
+    "关键：右臂向前推至充分伸展；坐位、脚位与躯干不变，左手仍在腰间，索仍向身后绷紧"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0223",
+   "expectedName": "cable side crunch",
+   "sourceId": "ai-codex-exdb-0223",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "907ed5a35371b23942ac9dd4b76b6e11a3571dd826498421075d0887498d4e63",
+    "9751b560f929ad35303bb299634264ce38cb916c6f6eef984e804050523315b2"
+   ],
+   "phases": [
+    "起始：站立于机器右侧、双脚与肩同宽、膝微屈；左手举至左耳侧持柄、肘屈约 90 度，索自左手斜跨上胸连至右侧地面低滑轮；右手叉腰",
+    "关键：躯干向左（远离机器）侧屈约 25–30 度，左肘自头侧下压向左髋、手随肘同移仍在头侧，头肩与脊柱成一线、无旋转无前屈，髋不横移、双脚不动"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0747",
+   "expectedName": "smith behind neck press",
+   "sourceId": "ai-codex-exdb-0747",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "cc3c674b7fe43b09a1427b639c4c02b4eece4c059042355e73bce8164400b355",
+    "096fd664c25881879650fd244ed197f0e9682d4650cdf55e5e532184c23355cf"
+   ],
+   "phases": [
+    "起始：坐在置于史密斯机框架内的凳上、双脚平地，杠沿双竖轨落在颈后斜方肌上部、约肩高位置；正手握杠、握距略宽于肩，双肘屈而向前",
+    "关键：沿双竖导轨将杠竖直推至头顶、双臂充分伸展，正手两帧保持不变；全程坐姿，凳位与双脚位置不变"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0769",
+   "expectedName": "smith sprint lunge",
+   "sourceId": "ai-codex-exdb-0769",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "c2a1b4044da42e308d7806d6e62d01d2fbb6d1dff90eeac580c144481505a0e9",
+    "3ea49b2a80fa1873965d7276b744b99b4557dd1b51fbcc4de4d2d7a82ceaddc3"
+   ],
+   "phases": [
+    "起始：背对史密斯机站立，杠锁定于双竖轨内约髋高；左腿伸直支撑、脚平放地面，右脚向后伸、仅脚尖搭在锁定的杠上，双臂自然垂于体侧，躯干直立",
+    "关键：左膝弯曲降至左大腿约与地面平行、左脚跟不离地，右膝下沉接近地面、右脚尖仍在杠上，躯干保持直立，双臂仍垂于体侧"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1644",
+   "expectedName": "cable squatting curl",
+   "sourceId": "ai-codex-exdb-1644",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "12ebfe2cc7ff7f78d5af7b3f45893300eac677e6a0e19d420e873a01e22a04bc",
+    "23301587c007191ae517385c70b66e86f3cd71542e5931355bfcd443c80d2325"
+   ],
+   "phases": [
+    "起始：面向绳索机站立、双脚与肩同宽，双臂充分伸直垂于大腿前、双手反手（掌心向上）同握短直杆，索自杆心连至前方最低滑轮绷紧，躯干直立",
+    "关键：同一帧内下蹲至大腿约与地面平行（臀后坐、双脚跟平地）并同时将杆卷至肩高，双肘贴体侧、掌心仍向上；双脚未移位"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1717",
+   "expectedName": "cable squat row (with rope attachment)",
+   "sourceId": "ai-codex-exdb-1717",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "16b0aee07d304b0cd008747218a8405749ad0e252a1321283459fadb7718e6a9",
+    "1c22cd31fab8247237e50dbffa4e2ae74b146fc93999ffabd1fa3830265eac0a"
+   ],
+   "phases": [
+    "起始：已在深蹲位面向绳索机，大腿约与地面平行、背平直挺胸，双脚与肩同宽、脚跟平地；双臂向前伸直至胸高、正手各握一绳端，索连至前方立柱腰高滑轮绷紧",
+    "关键：蹲深与髋膝角同起始帧一致（蹲位冻结），仅手臂变化：将绳拉至胸前、双肘收过体侧、肩胛挤紧，正手保持"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
