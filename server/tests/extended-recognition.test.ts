@@ -39,9 +39,12 @@ test('standing side counts are validated independently from score count and surv
   await assert.rejects(motion.createSession(uid,{sportType:'unknown_camera',source:'camera'},2));
 });
 test('explicit nine library mappings, unchanged total IDs, no custom capability and plan time-only XP',async()=>{
-  const all=await gym.library(uid,{camera:'1',limit:50});assert.equal(all.total,49);
+  const all=await gym.library(uid,{camera:'1',limit:50});assert.equal(all.total,56);
+  // The camera list exceeds one hard-capped 50-item page since tier 2;
+  // fetch the definition IDs explicitly (ids route cap is 500).
+  const byId=await gym.library(uid,{camera:'1',ids:Object.values(definitions).flatMap((d:any)=>d.exerciseIds).join(',')});
   for(const [type,definition]of Object.entries(definitions))for(const id of definition.exerciseIds){
-    const exercise=all.items.find((x:any)=>x.id===id);assert.equal(exercise.planCamera.profile,type);
+    const exercise=byId.items.find((x:any)=>x.id===id);assert.equal(exercise.planCamera.profile,type);
     let w=await gym.startWorkout(uid,{id:randomUUID(),free:{exercises:[{exerciseId:id,sets:[{reps:3}]}]}});
     const act=(action:string,extra:any={},version:any=2)=>gym.actWorkout(uid,w.id,{operationId:randomUUID(),version:w.version,action,setId:w.sets[w.cursor]?.id,...extra},version);
     await assert.rejects(act('start',{inputMode:'camera'},null),/刷新/); // Explicit missing header below; default parameters are not a browser capability.
