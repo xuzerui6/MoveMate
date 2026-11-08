@@ -320,3 +320,27 @@ in place, 2 revised in the extended suite).
    blinded second annotation) — now scoped to three profiles
    (hammer_curl, seated_curl, triceps_kickback) instead of one.
    Heavy recalibration remains paused, per Codex round-4.
+
+## Deploy record
+
+- Merged to main as `dcf5443` (feature `3a02f0b` on
+  `round5/minimum-axis-contract`); CI run 42504199887 **success**.
+- Production (dongban.xyz): Version
+  `29f2260f-2e24-4691-b317-547cecf02263`.
+- Preview (preview.dongban.xyz): Version
+  `8fa94279-8950-4c54-b431-b404db6b0b14`.
+- Deployed with `npx wrangler@4.158.0 deploy` directly (production,
+  then `--env preview`) from a main worktree; server `npm ci`
+  succeeded in both worktrees — the bcrypt node_modules-copy fallback
+  was not needed this round.
+- Live verification: both hosts serve byte-identical copies of the
+  built chunks carrying this round's code (sha256-verified) — the
+  tracker chunk contains
+  `new Set(["hammer_curl","seated_curl","triceps_kickback"])`
+  (CONTROL_SUSPENDED_TYPES) followed by the `stabilityWithoutControl`
+  helper, and the axisAssessment chunk contains the contract
+  (`["view","single-side"]` as the only non-blocking reasons; no
+  coverage constant remains).
+- 动伴进度 space: checked — no displayed fact changed this round
+  (library 769, camera-linked 56, videos 18 untouched; the space
+  displays no score-presentation facts), so no sync was needed.
