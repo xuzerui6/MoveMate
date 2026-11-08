@@ -33,4 +33,6 @@
 
 ## 部署记录
 
-（合并与双站部署后回填。）
+- 提交：接入 `6882d1b`（分支 `media/demo-video-carveout`）→ 合并主线 tier-2 后复验 → 回填提交 `669b830` 即主线尖端（快进合入，无冲突）。CI：main push run `42473311683` **success**。
+- 部署（wrangler@4.158.0 直调，fresh vault surrogate）：生产 `dongban.xyz` Version **`86aa35e2-0cf4-4e6e-a2c2-32795d5ede42`**；预览 `preview.dongban.xyz` Version **`ead3859b-e400-4c9f-970e-eca299dfbc86`**。本轮 server `npm ci` 正常（bcrypt 可用），未用备用拷贝路径。
+- 线上核验（浏览器 UA）：三条视频在双站均按 manifest 的 bytes/sha256 原样服务（0630 2,317,218 B / 0514 4,333,518 B / 3361 4,136,668 B，sha256 前 12 位与文件名一致），三条 detail JSON 均引用各自视频——双站 6/6 文件 + 6/6 引用全过。
