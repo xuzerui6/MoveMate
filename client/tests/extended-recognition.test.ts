@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {ExtendedExerciseTracker} from '../src/features/motion/lib/extendedRecognition';
+import {ExtendedExerciseTracker,sustainedPeak,type TimedSpan} from '../src/features/motion/lib/extendedRecognition';
 import {newDemonstrationPose,createRecognitionTracker} from '../src/features/motion/lib/recognition';
+import {poseIssueCopy} from '../src/features/motion/lib/poseFeedback';
+import {COPY_FRAMING,COPY_FRAMING_UPPER,COPY_NOT_SEEN,COPY_NOT_SEEN_UPPER,framingCopyFor,notSeenCopyFor} from '../src/features/motion/lib/companionCopy';
 import {NEW_EXERCISES,type NewExerciseType} from '../src/features/motion/lib/newExercises';
 import {exerciseInfo} from '../src/features/motion/lib/exercises';
 import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
@@ -319,6 +321,230 @@ test('front raises count fast tempos completely (synthetic trajectories)',()=>{
     for(let c=0;c<1.4*fps;c++)feed(10);
     assert.equal(tracker.metrics.reps,6,`${fps} FPS`);
   }
+});
+// --- Round 3 (2026-11-08): calibration survival, peak-to-peak symmetry, sustained stability ---
+const rot2=(x:number,y:number,rad:number):[number,number]=>[x*Math.cos(rad)-y*Math.sin(rad),x*Math.sin(rad)+y*Math.cos(rad)];
+/** Parametric two-arm curl pose: per-side elbow angle plus a shared upper-arm tilt
+ * (degrees from vertical). Built by rotating the straight-down arm, so the elbow
+ * angle and the upper-arm angle are exact by construction (rotation invariance),
+ * matching what measure() reads back from the world landmarks. */
+function curlPose(leftElbow:number,rightElbow:number,upperDeg=0):Point[]{
+  const p:Point[]=Array.from({length:33},()=>({x:.5,y:.5,z:0,visibility:1}));
+  const put=(i:number,x:number,y:number)=>{p[i]={x,y,z:0,visibility:1};};
+  put(0,.5,.16);
+  const elbows=[leftElbow,rightElbow];
+  for(const o of [0,1]){
+    const sx=.40+o*.20,dir=o?-1:1,phi=upperDeg*Math.PI/180;
+    put(11+o,sx,.30);put(23+o,sx,.56);put(25+o,sx,.74);put(27+o,sx,.92);
+    const [ux,uy]=rot2(0,1,dir*phi);
+    const ex=sx+ux*.18,ey=.30+uy*.18;put(13+o,ex,ey);
+    const [fx,fy]=rot2(ux,uy,-dir*(180-elbows[o])*Math.PI/180);
+    put(15+o,ex+fx*.18,ey+fy*.18);
+  }
+  return p;
+}
+test('front raise calibration survives transient gate interrupts, and a latched ready persists',()=>{
+  const r=run('front_raise');
+  r.feed('neutral',1200);const earned=r.tracker.diagnostics.calibrationProgress;
+  assert.ok(earned>=.5&&earned<1,`expected banked progress ≈0.55, got ${earned}`);
+  // The dorm set-up failure: the nose (a required joint for front raise) leaves
+  // the frame while the user repositions — a burst of gate interrupts.
+  const outOfFrame=(p:Point[])=>{p[0]={...p[0],x:1.2};};
+  r.feed('neutral',800,outOfFrame);
+  assert.equal(r.tracker.diagnostics.stage,'tracking_lost');
+  assert.ok(r.tracker.diagnostics.calibrationProgress>=earned,`progress rewound by a gate interrupt: ${earned} → ${r.tracker.diagnostics.calibrationProgress}`);
+  // The remaining hold accumulates on top of the preserved bank and latches.
+  r.feed('neutral',900);assert.equal(r.tracker.diagnostics.stage,'ready');assert.equal(r.tracker.metrics.poseFeedback.calibrated,true);
+  // Once ready, another burst cannot un-ready the session, and a raise still counts.
+  r.feed('neutral',800,outOfFrame);r.feed('neutral',300);
+  assert.equal(r.tracker.diagnostics.stage,'ready');assert.equal(r.tracker.metrics.poseFeedback.calibrated,true);
+  r.feed('peak',1000);r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,1);
+});
+test('front raise calibration bank expires after ten seconds without a start pose',()=>{
+  const r=run('front_raise');
+  r.feed('neutral',1200);const earned=r.tracker.diagnostics.calibrationProgress;
+  assert.ok(earned>=.5,`expected banked progress ≈0.55, got ${earned}`);
+  const outOfFrame=(p:Point[])=>{p[0]={...p[0],x:1.2};};
+  r.feed('neutral',11000,outOfFrame);
+  // Back in the start pose, progress restarts from ≈0 instead of resuming at 55%.
+  r.feed('neutral',300);
+  const progress=r.tracker.diagnostics.calibrationProgress;
+  assert.ok(progress<=.2&&progress<earned,`bank should have expired, progress=${progress}`);
+  assert.equal(r.tracker.diagnostics.stage,'calibrating');
+  r.feed('neutral',2000);assert.equal(r.tracker.diagnostics.stage,'ready');
+});
+test('hammer curls score loosely synchronized bilateral peaks peak-to-peak',()=>{
+  const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
+  const step=1000/24;let t=0;
+  const feed=(l:number,r:number)=>{const raw=curlPose(l,r);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
+  for(let c=0;c<63;c++)feed(160,160);
+  assert.equal(tracker.diagnostics.stage,'ready');
+  // ≈2 s bilateral curls peaking at 79°, the right side ≈375 ms behind: outside
+  // the 150 ms merge overlap (both reps emit as singles) but inside the 800 ms
+  // peak window. The old instantaneous peakOther read the right elbow mid-flight
+  // (≈100°) and scored ≈50 for these symmetric curls.
+  const P=48,OFF=9;
+  const wave=(k:number)=>{const u=(k%P)/P;return 160-81*(1-Math.cos(2*Math.PI*u))/2;};
+  for(let rep=0;rep<3;rep++)for(let k=0;k<P;k++)feed(wave(k),wave(k-OFF));
+  for(let c=0;c<40;c++)feed(160,160);
+  assert.equal(tracker.metrics.reps,6);
+  assert.ok(tracker.metrics.formBreakdown.symmetry>=85,`symmetry ${tracker.metrics.formBreakdown.symmetry} should be peak-to-peak (≈100), not peakOther (≈50)`);
+});
+test('hammer curls keep peakOther symmetry for true alternating curls',()=>{
+  const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
+  const step=1000/24;let t=0;
+  const feed=(l:number,r:number)=>{const raw=curlPose(l,r);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
+  for(let c=0;c<63;c++)feed(160,160);
+  // Arms alternate whole cycles (≈1.2 s each): peaks land ≈1.2 s apart, far
+  // outside the 800 ms window, so the resting-arm formula still applies — and
+  // the resting arm is fully extended at the other's peak.
+  const P=29;
+  const wave=(k:number)=>{const u=(k%P)/P;return 160-85*(1-Math.cos(2*Math.PI*u))/2;};
+  for(let k=0;k<4*P;k++){
+    const leftTurn=Math.floor(k/P)%2===0;
+    feed(leftTurn?wave(k):160,leftTurn?160:wave(k));
+  }
+  for(let c=0;c<40;c++)feed(160,160);
+  assert.equal(tracker.metrics.reps,4);
+  assert.ok(tracker.metrics.formBreakdown.symmetry>=90,`alternating symmetry ${tracker.metrics.formBreakdown.symmetry} should stay high via peakOther`);
+});
+test('hammer curls keep the peakOther penalty when the resting arm is held half-bent',()=>{
+  const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
+  const step=1000/24;let t=0;
+  const feed=(l:number,r:number)=>{const raw=curlPose(l,r);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
+  for(let c=0;c<63;c++)feed(160,160);
+  assert.equal(tracker.diagnostics.stage,'ready');
+  // True single-arm work: the right arm never peaks (held at 95°), so no peer
+  // peak exists and the formula is untouched: 100 − (140−95)×1.2 = 46.
+  const P=48;
+  const wave=(k:number)=>{const u=(k%P)/P;return 160-85*(1-Math.cos(2*Math.PI*u))/2;};
+  for(let rep=0;rep<2;rep++)for(let k=0;k<P;k++)feed(wave(k),95);
+  for(let c=0;c<40;c++)feed(160,95);
+  assert.equal(tracker.metrics.reps,2);
+  const sym=tracker.metrics.formBreakdown.symmetry;
+  assert.ok(sym>=43&&sym<=49,`symmetry ${sym} should stay ≈46 where peakOther legitimately applies`);
+});
+test('sustainedPeak credits only deviations sustained for at least 150 ms',()=>{
+  const win=(start:number,v:number):TimedSpan=>({start,end:start+100,v});
+  // A lone 100 ms window at 800 amid 200s cannot prove sustainment.
+  assert.equal(sustainedPeak([win(0,200),win(100,800),win(200,200),win(300,200)],800),200);
+  // Two consecutive windows at 500 cover 200 ms ≥ 150 ms.
+  assert.equal(sustainedPeak([win(0,200),win(100,500),win(200,500),win(300,200)],500),500);
+  // A non-qualifying sample breaks the run.
+  assert.equal(sustainedPeak([win(0,500),win(100,100),win(200,500),win(300,100)],500),100);
+  // Too little evidence falls back to the raw maximum (short cycles score as before).
+  assert.equal(sustainedPeak([win(0,800),win(100,200)],800),800);
+  assert.equal(sustainedPeak([],42),42);
+  // One long span (a held level from dense control samples) proves itself.
+  assert.equal(sustainedPeak([{start:0,end:200,v:60},{start:200,end:300,v:10},{start:300,end:400,v:10}],60),60);
+});
+function controlTrajectory(upper:(k:number)=>number){
+  const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
+  const step=1000/24;let t=0;
+  const feed=(e:number,u:number)=>{const raw=curlPose(e,e,u);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
+  for(let c=0;c<63;c++)feed(160,22);
+  const P=58;
+  for(let k=0;k<P;k++){const u=k/P;feed(160-85*(1-Math.cos(2*Math.PI*u))/2,upper(k));}
+  for(let c=0;c<40;c++)feed(160,22);
+  return tracker;
+}
+test('hammer curl stability charges sustained upper-arm drift but not a 100 ms spike',()=>{
+  const sustained=controlTrajectory(()=>42);
+  assert.equal(sustained.metrics.reps,1);
+  // (42−15)×1.5 ≈ 40 of control penalty sustained for the whole cycle → stability ≈ 60.
+  const s1=sustained.metrics.formBreakdown.stability;
+  assert.ok(s1>=54&&s1<=66,`sustained-drift stability ${s1} should be ≈60, as before`);
+  assert.ok(sustained.metrics.lastRepIssues.includes('unstable_movement'));
+  const spiked=controlTrajectory(k=>k>=14&&k<=16?55:22);
+  assert.equal(spiked.metrics.reps,1);
+  // Three frames (≈125 ms) at penalty 60 cannot prove 150 ms; the sustained ≈10 stands.
+  const s2=spiked.metrics.formBreakdown.stability;
+  assert.ok(s2>=80,`spiked stability ${s2} should stay ≥80 (sustained control ≈10), not collapse to ≈40`);
+});
+test('hammer curl stability ignores a one-window angular-velocity spike but charges sustained speed',()=>{
+  const drive=(angles:number[])=>{
+    const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
+    const step=1000/24;let t=0;
+    const feed=(e:number)=>{const raw=curlPose(e,e);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
+    for(let c=0;c<63;c++)feed(160);
+    for(const e of angles)feed(e);
+    for(let c=0;c<40;c++)feed(160);
+    return tracker;
+  };
+  // Slow work down to 120°, a one-frame step to the peak (a single ≈460°/s
+  // window), a held peak, a slow return: one window cannot prove sustainment.
+  const spike:number[]=[];
+  for(let k=0;k<=12;k++)spike.push(160-k);
+  for(let k=13;k<=24;k++)spike.push(144-2*(k-12));
+  spike.push(66);
+  for(let k=0;k<11;k++)spike.push(66);
+  for(let k=1;k<=36;k++)spike.push(66+94*k/36);
+  const spiked=drive(spike);
+  assert.equal(spiked.metrics.reps,1);
+  assert.ok(spiked.metrics.formBreakdown.stability>=99,`one-window spike stability ${spiked.metrics.formBreakdown.stability} should stay ≈100`);
+  // The same travel spread steadily across two windows (≈312°/s sustained) is charged.
+  const steady:number[]=[];
+  for(let k=0;k<=12;k++)steady.push(160-k);
+  for(let k=13;k<=19;k++)steady.push(144-13*(k-13));
+  for(let k=0;k<11;k++)steady.push(66);
+  for(let k=1;k<=36;k++)steady.push(66+94*k/36);
+  const sustained=drive(steady);
+  assert.equal(sustained.metrics.reps,1);
+  const ss=sustained.metrics.formBreakdown.stability;
+  assert.ok(ss>=93&&ss<=97&&ss<spiked.metrics.formBreakdown.stability,`sustained-speed stability ${ss} should be ≈96, below the spike's ≈100`);
+});
+function raiseWorld2(l:number,r:number):Point[]{
+  const w:Point[]=Array.from({length:33},()=>({x:0,y:0,z:0,visibility:1}));
+  const put=(i:number,x:number,y:number,z:number)=>{w[i]={x,y,z,visibility:1};};
+  put(0,0,-.15,-.1);
+  for(const o of [0,1]){
+    const sx=o?.2:-.2,v=(o?r:l)*Math.PI/180,cy=Math.cos(v),sz=-Math.sin(v);
+    put(11+o,sx,0,0);put(23+o,sx,.4,0);put(13+o,sx,.2*cy,.2*sz);put(15+o,sx,.45*cy,.45*sz);put(25+o,sx,.75,0);put(27+o,sx,1.05,0);
+  }
+  return w;
+}
+test('front raise singles score peak-to-peak when the other side peaked within 800 ms',()=>{
+  const tracker=new ExtendedExerciseTracker('front_raise',20,{},true);
+  const step=1000/24;let t=0;const img=raiseImage();
+  const feed=(l:number,r:number)=>{tracker.update(structuredClone(img),t,1,raiseWorld2(l,r));t+=step;};
+  for(let c=0;c<63;c++)feed(10,10);
+  assert.equal(tracker.diagnostics.stage,'ready');
+  // One bilateral effort, loosely synchronized: left peaks at 76°, the right
+  // ≈708 ms later at 68°. The peaks miss the merge overlap, so both reps emit
+  // as singles — scored peak-to-peak (≈88), not by the other arm's height at
+  // the peak instant (which would read ≈100 and hide the real difference).
+  const P=48,OFF=17;
+  const wave=(k:number,peak:number)=>{const u=(k%P)/P;return 10+(peak-10)*(1-Math.cos(2*Math.PI*u))/2;};
+  for(let k=0;k<P;k++)feed(wave(k,76),wave(k-OFF,68));
+  for(let c=0;c<48;c++)feed(10,10);
+  assert.equal(tracker.metrics.reps,2);
+  const sym=tracker.metrics.formBreakdown.symmetry;
+  assert.ok(sym>=82&&sym<=94,`symmetry ${sym} should be ≈88 peak-to-peak (76° vs 68°)`);
+});
+test('issue copy resolves by movement family',()=>{
+  assert.equal(poseIssueCopy('unstable_movement','hammer_curl').label,'手臂摆动偏大');
+  assert.equal(poseIssueCopy('unstable_movement','hammer_curl').action,'慢一点，肘贴紧身体，把这一下做稳');
+  assert.deepEqual(poseIssueCopy('unstable_movement','front_raise').joints,[11,12,13,14]);
+  assert.equal(poseIssueCopy('poor_coordination','seated_curl').label,'两边节奏没对齐');
+  assert.equal(poseIssueCopy('poor_coordination','bench_press').action,'慢一点，让两只手一起起、一起落');
+  assert.deepEqual(poseIssueCopy('poor_coordination','hammer_curl').joints,[15,16]);
+  // Non-upper-body types and a missing type keep the long-standing text exactly.
+  assert.equal(poseIssueCopy('unstable_movement','squat').label,'支撑或落地不稳');
+  assert.equal(poseIssueCopy('unstable_movement','standing_leg_curl').action,'不赶时间，慢一点，站稳了再来');
+  assert.equal(poseIssueCopy('poor_coordination','squat').action,'慢一点，让手脚一起动');
+  assert.equal(poseIssueCopy('unstable_movement').label,'支撑或落地不稳');
+  // Other issues are family-neutral.
+  assert.equal(poseIssueCopy('insufficient_range','hammer_curl').label,'动作幅度偏小');
+});
+test('framing copy only demands what the movement actually needs in frame',()=>{
+  assert.equal(notSeenCopyFor('front_raise'),COPY_NOT_SEEN_UPPER);
+  assert.match(COPY_NOT_SEEN_UPPER,/头和上半身/);
+  assert.equal(notSeenCopyFor('squat'),COPY_NOT_SEEN);
+  assert.equal(framingCopyFor('hammer_curl'),COPY_FRAMING_UPPER);
+  assert.equal(framingCopyFor('squat'),COPY_FRAMING);
+  const tracker=new ExtendedExerciseTracker('front_raise',20);
+  tracker.update(null,0);
+  assert.equal(tracker.metrics.feedback,COPY_NOT_SEEN_UPPER);
 });
 test('hammer curl upper-arm hint needs a sustained deviation and never blocks the rep',()=>{
   const r=run('hammer_curl',undefined,1,100);r.feed('neutral',3000);

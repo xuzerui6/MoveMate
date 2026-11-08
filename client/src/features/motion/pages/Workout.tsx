@@ -20,7 +20,7 @@ import { useStore, type SportSession } from '../lib/store'
 import type { WorkoutContext, WorkoutSession, XiaozhiState } from '../types'
 import { ExerciseDemo } from '../../gym/ExerciseMedia'
 
-import {COPY_CALIBRATED,COPY_FRAMING,COPY_PREPARE,milestoneLine} from '../lib/companionCopy'
+import {COPY_CALIBRATED,COPY_PREPARE,framingCopyFor,milestoneLine} from '../lib/companionCopy'
 import {adaptiveEligible,loadPoseModelPreference,loadRecognitionPreference,savePoseModelPreference,saveRecognitionPreference,selectNewRecognitionStrategy,selectRecognitionStrategy,type RecognitionPreference} from '../lib/adaptiveRecognition'
 import type {PoseModelPreference} from '../lib/poseCompatibility'
 import {PoseDiagnostics,PoseModelExperimentSelect,RecognitionOverride} from '../components/PoseDiagnostics'
@@ -179,7 +179,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   useEffect(() => {
     if (!active || simulatedPose || metrics.reps <= correctedRepRef.current) return
     correctedRepRef.current = metrics.reps
-    const cue = decideCorrectionCue(metrics.lastRepIssues, Date.now(), correctionGateRef.current)
+    const cue = decideCorrectionCue(metrics.lastRepIssues, Date.now(), correctionGateRef.current, exerciseType)
     if (cue) voiceRef.current.say(cue.text, 'high')
   }, [active, simulatedPose, metrics.reps, metrics.lastRepIssues])
 
@@ -333,7 +333,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
         </div>}
         {active && !simulatedPose && cameraFit === 'cover' && <span className="training-camera-crop-note">画面已裁切 · 请确认全身可见</span>}
       </div>
-      {preparing&&adaptive&&<section className="training-calibration-guidance" role="status"><b>{COPY_FRAMING}</b><p>{pose.telemetry?.reason}</p>{!creating&&<button type="button" className="secondary" onClick={cancelPrepare}>取消准备</button>}</section>}
+      {preparing&&adaptive&&<section className="training-calibration-guidance" role="status"><b>{framingCopyFor(exerciseType)}</b><p>{pose.telemetry?.reason}</p>{!creating&&<button type="button" className="secondary" onClick={cancelPrepare}>取消准备</button>}</section>}
       {active && <section className="training-live-info" aria-label="本组训练数据">
         <div className="training-numbers"><div className={"training-reps"+(metrics.reps>0&&metrics.reps>=metrics.targetReps?" motion-set-done":"")}><strong key={metrics.reps} className="motion-rep-num">{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}</span></div>{calibratedOnce.current&&<div><strong>{format(seconds)}</strong><span>有效时长</span></div>}</div>
         <p className="training-coach" role="status"><span>{paused ? '已暂停' : '陪练说'}</span>{coachLine}</p>

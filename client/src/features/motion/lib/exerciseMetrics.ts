@@ -2,9 +2,9 @@ import type { NormalizedLandmark } from '@mediapipe/tasks-vision'
 import type { FormBreakdown, PoseFeedback, PoseIssue, ScoreAccumulator, WorkoutMetrics, WorkoutPhase } from '../types'
 import { exerciseInfo, type BaseCameraExerciseType as CameraExerciseType } from './exercises'
 import { analyzeSquatFrame, squatJoints, squatSideVisible } from './squatMetrics'
-import { detectPoseIssues, medianLandmarks, POSE_ISSUE_COPY } from './poseFeedback'
+import { detectPoseIssues, medianLandmarks, poseIssueCopy } from './poseFeedback'
 import { emptyCorrectionCounts, emptyFormBreakdown } from './sessionMigration'
-import { COPY_CALIBRATED, COPY_HALF_REP, COPY_NOT_SEEN, COPY_UNCLEAR, COPY_WAIT_START, COPY_WAIT_START_PLANK } from './companionCopy'
+import { COPY_CALIBRATED, COPY_HALF_REP, COPY_UNCLEAR, COPY_WAIT_START, COPY_WAIT_START_PLANK, notSeenCopyFor } from './companionCopy'
 
 export interface ExerciseMetrics extends WorkoutMetrics {
   scoreAccumulator: ScoreAccumulator
@@ -179,7 +179,7 @@ export class ExerciseTracker {
   }
   private feedback(frame:Frame|null, calibrated:boolean):PoseFeedback {
     const issues=frame?.issues||['out_of_frame'],primaryIssue=issues[0]||null
-    return {status:!frame||!calibrated?'uncertain':primaryIssue?'adjust':'stable',confidence:frame?.confidence||0,issues,primaryIssue,affectedJoints:primaryIssue?POSE_ISSUE_COPY[primaryIssue].joints:[],calibrated,message:!frame?exerciseInfo(this.type).placement:!calibrated?(this.type==='push_up'?COPY_WAIT_START_PLANK:COPY_WAIT_START):primaryIssue?POSE_ISSUE_COPY[primaryIssue].action:'姿势稳定，保持这个节奏'}
+    return {status:!frame||!calibrated?'uncertain':primaryIssue?'adjust':'stable',confidence:frame?.confidence||0,issues,primaryIssue,affectedJoints:primaryIssue?poseIssueCopy(primaryIssue,this.type).joints:[],calibrated,message:!frame?exerciseInfo(this.type).placement:!calibrated?(this.type==='push_up'?COPY_WAIT_START_PLANK:COPY_WAIT_START):primaryIssue?poseIssueCopy(primaryIssue,this.type).action:'姿势稳定，保持这个节奏'}
   }
   interrupt(reason = '先停一下，继续时先回到起始姿势', feedback = reason) {
     this.frames=[];this.calibrationAt=null;this.calibrated=false;this.armed=false;this.peakAt=null;this.peak=null;this.returnAt=null;this.movingAt=null;this.retAnchor=null;this.retAccum=0;this.retPrevAt=null;this.pair.clear();this.issues.clear();this.consecutive={}
@@ -190,7 +190,7 @@ export class ExerciseTracker {
     return this.metrics
   }
   update(raw:NormalizedLandmark[]|null,now:number,aspect=1,world:NormalizedLandmark[]|null=null):ExerciseMetrics {
-    if(!raw)return this.interrupt('未检测到完整人体关键点',COPY_NOT_SEEN)
+    if(!raw)return this.interrupt('未检测到完整人体关键点',notSeenCopyFor(this.type))
     if(raw.length<29 || raw.some(p=>!p || !Number.isFinite(p.x) || !Number.isFinite(p.y) || (p.visibility!==undefined&&!Number.isFinite(p.visibility))) || !Number.isFinite(aspect) || aspect<=0 || !Number.isFinite(now))return this.interrupt('关键点数据不完整',COPY_UNCLEAR)
     if(this.lastFrameAt!==null && now<=this.lastFrameAt)return this.metrics
     if(this.lastFrameAt!==null && now-this.lastFrameAt>750)this.interrupt('画面更新中断',COPY_HALF_REP)

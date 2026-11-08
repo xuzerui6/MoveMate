@@ -3,7 +3,7 @@ import {FrameOrder,TimeFilter,type PoseFrame} from './poseProtocol';
 import type {ExerciseMetrics} from './exerciseMetrics';
 import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
 import {framingFeedback} from './framingFeedback';
-import {COPY_BASIS_UNSTABLE,COPY_HALF_REP,COPY_NOT_SEEN,COPY_UNCLEAR} from './companionCopy';
+import {COPY_BASIS_UNSTABLE,COPY_HALF_REP,COPY_UNCLEAR,notSeenCopyFor} from './companionCopy';
 import type {PoseModelPreference} from './poseCompatibility';
 import {analyzeSquatFrame,squatSideVisible} from './squatMetrics';
 export const adaptiveEligible=(type:string)=>['squat','jumping_jack','push_up','high_knees','biceps_curl','hammer_curl','barbell_curl','reverse_barbell_curl','seated_curl','shoulder_press','neutral_seated_press','bent_over_row','barbell_row','bench_press','incline_bench_press','barbell_deadlift','romanian_deadlift','goblet_squat','barbell_back_squat','barbell_front_squat'].includes(type);
@@ -85,7 +85,7 @@ export class AdaptiveRecognition {
   if(!this.order.accept(f))return this.metrics;
   if(this.width&&(f.width!==this.width||f.height!==this.height))this.interrupt('画面变了一下，回到起始姿势，我们重新开始');this.width=f.width;this.height=f.height;
   const raw=f.landmarks;
-  if(!raw||raw.length!==33||raw.some(p=>!p||![p.x,p.y,p.visibility??0].every(Number.isFinite)))return this.type==='squat'?this.freezeSquat(f.capturedAt,'未检测到可用的深蹲关节'):this.reject(COPY_NOT_SEEN);
+  if(!raw||raw.length!==33||raw.some(p=>!p||![p.x,p.y,p.visibility??0].every(Number.isFinite)))return this.type==='squat'?this.freezeSquat(f.capturedAt,'未检测到可用的深蹲关节'):this.reject(notSeenCopyFor(this.type));
   const needed=this.base.requiredIndices(raw);
   const framing=framingFeedback(raw,needed);
   if(this.type==='squat'){
