@@ -190,6 +190,32 @@ const CYCLE_PRESERVE_MS=2000;
  * curl's support leg, mountain climber's extended partner) are not symmetry
  * judgments at all and keep their numbers — see the step-3 doc. */
 const SINGLE_SIDE_TYPES:ReadonlySet<string>=new Set(['romanian_deadlift','glute_bridge','barbell_deadlift','lying_leg_raise']);
+/** Axis-validity suspension scope (2026-11-09, Codex rounds 3–4;
+ * docs/minimum-axis-contract-2026-11-09.md carries the full per-profile
+ * mechanism review). These types' stability axis is dominated by the
+ * SAME unresolved construct the hammer evidence indicted: a control
+ * term grading the upper arm's excursion from the torso line —
+ * max(0, max(angle(elbow, shoulder, hip)) − 15°) × 1.5 — read off the
+ * elbow-dependent world channel (aspect-corrected 2D only when world
+ * landmarks are invalid), with no profile-specific validation. For
+ * these types the whole stability axis is unassessable ('control'),
+ * and the term stops generating corrective output (see the emit and
+ * live-issue sites). Profiles whose control-type term is a different
+ * construct — elbow-extension shortfall (front_raise,
+ * seated_lateral_raise, reverse_fly), a deviation from a defined hold
+ * position inside a rejection-gated band (lying_triceps_extension,
+ * seated_triceps_extension), or absent entirely — were reviewed and
+ * are NOT in this set; the doc's table states the deciding fact per
+ * profile. */
+const CONTROL_SUSPENDED_TYPES:ReadonlySet<string>=new Set(['hammer_curl','seated_curl','triceps_kickback']);
+/** The stability value the speed/duration evidence alone supports —
+ * the counterfactual the suspended types' issue derivation consults:
+ * an unstable_movement correction is suppressed only when the suspended
+ * control term is what pushed stability below the issue line (this
+ * counterfactual at ≥70 while the printed breakdown is below it); a
+ * shortfall the speed/duration terms produce on their own still
+ * corrects, because that evidence was never suspended. */
+const stabilityWithoutControl=(speed:number,duration:number):number=>cap(100-Math.max(0,speed-260)*.08-Math.max(0,.6-duration)*70);
 /** Degraded framing (step 3, matrix cell 4): how long the required joints
  * may stay unevidenced — no successful measure() — before the session
  * enters the cannot-assess state: counting is already paused by the gate
@@ -412,22 +438,27 @@ export class ExtendedExerciseTracker {
     const out=allNumericAssessments();
     if(this.cannotAssess&&a.count===0){for(const k of axes)out[k]={kind:'unassessable',reason:'framing'};return out;}
     if(a.count===0)return out;
-    if(this.type==='hammer_curl'){
-      // Axis-validity suspension (2026-11-09, Codex round-3): the control
-      // term of this family's stability is read off the elbow-dependent
-      // upper-arm angle — the world channel whose per-rep noise the
-      // Phase-0 labels could not clear (HC-A stability read 15 against an
-      // 'adequate' label, and step 3's renormalization raised its weight
-      // in the total). The whole stability axis is unassessable here: the
-      // speed/duration remainder is not presented as "stability" either.
-      // The internal breakdown keeps computing exactly as before (XP is
-      // rep-derived and the internal formScore is not a presentation);
-      // only the axis state — and through the coverage rule, the total —
-      // is withheld. A restored pre-contract set (it recorded symmetry
-      // values and no offsets) keeps its historical numbers, as with
-      // symmetry below.
-      const preContract=!!(a.symmetryValues&&a.symmetryValues.length)&&!(a.symmetryOffsetsMs&&a.symmetryOffsetsMs.length);
+    if(CONTROL_SUSPENDED_TYPES.has(this.type)){
+      // Axis-validity suspension (2026-11-09, Codex rounds 3–4): the
+      // control term of these profiles' stability is read off the
+      // elbow-dependent upper-arm angle — the world channel whose per-rep
+      // noise the Phase-0 labels could not clear (HC-A stability read 15
+      // against an 'adequate' label, and step 3's renormalization raised
+      // its weight in the total). The whole stability axis is
+      // unassessable here: the speed/duration remainder is not presented
+      // as "stability" either. The internal breakdown keeps computing
+      // exactly as before (XP is rep-derived and the internal formScore
+      // is not a presentation); only the axis state — and through the
+      // minimum-axis contract, the total — is withheld. A restored
+      // pre-contract hammer set (it recorded symmetry values and no
+      // offsets) keeps its historical numbers, as with symmetry below;
+      // the other suspended types have no pre-contract marker and their
+      // stored maps still win on the restore path, so this derivation
+      // governs live and resumed sets.
+      const preContract=this.type==='hammer_curl'&&!!(a.symmetryValues&&a.symmetryValues.length)&&!(a.symmetryOffsetsMs&&a.symmetryOffsetsMs.length);
       if(!preContract)out.stability={kind:'unassessable',reason:'control'};
+    }
+    if(this.type==='hammer_curl'){
       if(a.symmetryOffsetsMs&&a.symmetryOffsetsMs.length)out.symmetry={kind:'category',category:syncCategoryForOffset(medianOf(a.symmetryOffsetsMs))};
       else if(!(a.symmetryValues&&a.symmetryValues.length))out.symmetry={kind:'unassessable',reason:'no-bilateral-evidence'};
       // else: a restored pre-contract set — its median number stands.
@@ -871,7 +902,12 @@ export class ExtendedExerciseTracker {
     else{const lastOther=this.lastPeak[1-parts[0].side];if(lastOther)offsetMs=Math.abs(mid(parts[0])-lastOther.at);}
     const breakdown={depth,stability:cap(100-Math.max(0,speed-260)*.08-Math.max(0,.6-duration)*70-control),trunk:cap(posture-shift*1.5)};
     const score=Math.round((breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2)/.8),scored=parts.every(p=>p.scoring)&&f.scorable,issues:PoseIssue[]=[];
-    if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');
+    // Suspended constructs stop correcting (2026-11-09, Codex round-4):
+    // hammer's stability axis is suspended ('control'), so an
+    // unstable_movement correction stands only when the speed/duration
+    // evidence produces the shortfall without the control term — a
+    // shortfall the suspended term manufactured is not corrected.
+    if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70&&stabilityWithoutControl(speed,duration)<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');
     const acc={...this.metrics.scoreAccumulator},counts={...this.metrics.correctionCounts};
     // Hammer curls record each scored rep's peak-timing offset: the set-level
     // symmetry presentation derives from their median (see assessments()).
@@ -879,11 +915,10 @@ export class ExtendedExerciseTracker {
     // the category to hammer curls. The numeric symmetry sum is no longer
     // maintained for new sets; restored pre-contract sets keep theirs.
     if(scored){acc.count++;acc.total+=score;acc.depth+=breakdown.depth;acc.stability+=breakdown.stability;acc.trunk+=breakdown.trunk;if(offsetMs!==null)acc.symmetryOffsetsMs=[...(acc.symmetryOffsetsMs??[]),Math.round(offsetMs)];issues.forEach(k=>counts[k]++);}
-    // Coverage rule (2026-11-09): the per-rep aggregate is a total too —
-    // while the set's numeric axes cover <60% of the nominal weight it is
-    // computed internally (formScore, perfectReps) but not printed, here
-    // or in the set summary. For hammer curls the suspended stability axis
-    // leaves depth + trunk = .55, so the print is withheld.
+    // Minimum-axis contract (2026-11-09): the per-rep aggregate is a
+    // total too — while the set's total is withheld it is computed
+    // internally (formScore, perfectReps) but not printed, here or in
+    // the set summary. Hammer's suspended stability axis withholds it.
     const withheld=scored&&totalWithheld(this.assessmentsFor(acc));
     this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?(withheld?`好，第 ${this.metrics.reps+1} 次记下啦`:`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`):`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};
     this.updateAverage();
@@ -942,13 +977,16 @@ export class ExtendedExerciseTracker {
     const stage=this.metrics.reps>=this.metrics.targetReps?'complete':anyPeak?(f.start?'returning':'peak'):f.start?'ready':'moving';
     const copy=definitions[this.type].stages;
     const nearPeak=stage==='moving'&&elbows.every(e=>e>80)&&elbows.some(e=>e<=105);
-    // The raw per-frame hint (controlPenalty>25 in measure) is gated through the sustained-
-    // deviation hysteresis before it may surface; scoring still uses the raw penalty.
-    const hint=f.hint&&this.upperArmHintVisible(f.controlPenalty>25,now)?f.hint:undefined;
-    const message=stage==='complete'?'目标完成啦，漂亮':completed?this.metrics.feedback:nearPeak?'接近啦，再往上带一点点，到肩膀高再放回':(hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 继续，保持住':''));
-    const issue:PoseIssue|null=f.controlPenalty>30?'unstable_movement':f.posture<70?'body_alignment':null;
+    // Suspended constructs stop correcting (2026-11-09, Codex round-4):
+    // the live upper-arm hint and the control-derived live issue both
+    // read the suspended control term, so neither surfaces for hammer
+    // curls anymore. The hint machinery (upperArmHintVisible) stays for
+    // the record; the internal penalty still feeds the (unprinted)
+    // breakdown exactly as before. Posture-derived correction stands.
+    const message=stage==='complete'?'目标完成啦，漂亮':completed?this.metrics.feedback:nearPeak?'接近啦，再往上带一点点，到肩膀高再放回':copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 继续，保持住':'');
+    const issue:PoseIssue|null=f.posture<70?'body_alignment':null;
     this.diagnostics={...this.diagnostics,stage};
-    this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?poseIssueCopy(issue,this.type).joints:[],calibrated:true,message:hint||(issue?poseIssueCopy(issue,this.type).action:message)}};
+    this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?poseIssueCopy(issue,this.type).joints:[],calibrated:true,message:issue?poseIssueCopy(issue,this.type).action:message}};
     return this.metrics;
   }
   private emitOneArmRowRep(done:SideCompletion,otherBase:number,f:Measurement):boolean{
@@ -1213,10 +1251,12 @@ export class ExtendedExerciseTracker {
       const bands:DepthBandCounts={left:{...(acc.depthBandCounts?.left??{})},right:{...(acc.depthBandCounts?.right??{})}};
       for(const part of parts){const sideKey=part.side===0?'left':'right';const tally={...(bands[sideKey]??{})};const band=frontRaiseBandFor(part.peakElbow);tally[band]=(tally[band]||0)+1;bands[sideKey]=tally;}
       acc.depthBandCounts=bands;issues.forEach(k=>counts[k]++);}
-    // Coverage rule (2026-11-09): front raise's numeric axes (stability +
-    // trunk) cover .45 of the nominal weight, below the 60% minimum — the
-    // per-rep aggregate is computed internally but not printed (see
-    // emitHammerRep's note).
+    // Minimum-axis contract (2026-11-09, Codex round-4): front raise's
+    // total is presented again — every applicable axis is assessed
+    // (stability + trunk numeric, depth as bands) and its only
+    // unassessable axis is unassessable by design ('view'), so the
+    // per-rep aggregate prints with the set total (see emitHammerRep's
+    // note for the withheld case).
     const withheld=scored&&totalWithheld(this.assessmentsFor(acc));
     this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?(withheld?`好，第 ${this.metrics.reps+1} 次记下啦`:`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`):`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};
     this.updateAverage();
@@ -1427,7 +1467,8 @@ export class ExtendedExerciseTracker {
         else if(this.metrics.reps<this.metrics.targetReps){
           const acc={...this.metrics.scoreAccumulator},duration=(now-(this.movingAt??now))/1000;
           if(this.type==='standing_leg_curl'){const key=this.peak.side==='left'?'leftReps':'rightReps';acc[key]=(acc[key]||0)+1;}
-          const breakdown={depth:this.peak.amplitude,stability:cap(100-Math.max(0,sustainedPeak(this.speedSpans,this.speed)-260)*.08-Math.max(0,.6-duration)*70-sustainedPeak(controlSpans(this.controlSamples,now),this.controlPenalty)),trunk:cap(this.peak.posture-(this.type==='romanian_deadlift'||this.type==='glute_bridge'||this.type==='barbell_deadlift'?0:this.shift*1.5)),symmetry:this.peak.symmetry};
+          const sustainedSpeed=sustainedPeak(this.speedSpans,this.speed),sustainedControl=sustainedPeak(controlSpans(this.controlSamples,now),this.controlPenalty);
+          const breakdown={depth:this.peak.amplitude,stability:cap(100-Math.max(0,sustainedSpeed-260)*.08-Math.max(0,.6-duration)*70-sustainedControl),trunk:cap(this.peak.posture-(this.type==='romanian_deadlift'||this.type==='glute_bridge'||this.type==='barbell_deadlift'?0:this.shift*1.5)),symmetry:this.peak.symmetry};
           // Step 3 (matrix cell 3): single-side movements emit no symmetry
           // number — the channel is not a bilateral judgment and the view
           // cannot evidence one — so the axis leaves the total, which
@@ -1436,15 +1477,28 @@ export class ExtendedExerciseTracker {
           // keeps the four-axis total exactly as before.
           const singleSide=SINGLE_SIDE_TYPES.has(this.type);
           const score=singleSide?Math.round((breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2)/.8):Math.round(breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2+breakdown.symmetry*.2),scored=this.scoring&&f.scorable,issues:PoseIssue[]=[];
-          if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(!singleSide&&breakdown.symmetry<70)issues.push('poor_coordination');
+          // Suspended constructs stop correcting (2026-11-09, Codex
+          // round-4): for the suspended types an unstable_movement
+          // correction stands only when the speed/duration evidence
+          // produces the shortfall without the control term.
+          const stabilityIssue=breakdown.stability<70&&(!CONTROL_SUSPENDED_TYPES.has(this.type)||stabilityWithoutControl(sustainedSpeed,duration)<70);
+          if(breakdown.depth<70)issues.push('insufficient_range');if(stabilityIssue)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(!singleSide&&breakdown.symmetry<70)issues.push('poor_coordination');
           const counts={...this.metrics.correctionCounts};if(scored){acc.count++;acc.total+=score;axes.forEach(k=>{if(singleSide&&k==='symmetry')return;acc[k]+=breakdown[k];});issues.forEach(k=>counts[k]++);}
-          this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`:`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};this.updateAverage();completed=true;
+          // Minimum-axis contract: the per-rep aggregate print follows
+          // the set total — withheld while the set's total is withheld
+          // (the suspended types), computed internally either way.
+          const withheld=scored&&totalWithheld(this.assessmentsFor(acc));
+          this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?(withheld?`好，第 ${this.metrics.reps+1} 次记下啦`:`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`):`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};this.updateAverage();completed=true;
         }this.resetCycle();
       }
     }else{this.returnAt=null;if(this.peak)this.retPrevAt=now;}
     const stage=this.metrics.reps>=this.metrics.targetReps?'complete':this.peak?(f.start?'returning':'peak'):f.start?'ready':'moving';
     const copy=definitions[this.type].stages,message=stage==='complete'?'目标完成啦，漂亮':f.hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 继续，保持住':'');
-    const issue:PoseIssue|null=f.controlPenalty>30?'unstable_movement':f.posture<70?'body_alignment':!SINGLE_SIDE_TYPES.has(this.type)&&f.symmetry<70?'poor_coordination':null;
+    // Suspended constructs stop correcting (2026-11-09, Codex round-4):
+    // for the suspended types the live control-penalty branch no longer
+    // raises unstable_movement; posture/symmetry derivations stand, and
+    // non-suspended types keep the control branch exactly as before.
+    const issue:PoseIssue|null=f.controlPenalty>30&&!CONTROL_SUSPENDED_TYPES.has(this.type)?'unstable_movement':f.posture<70?'body_alignment':!SINGLE_SIDE_TYPES.has(this.type)&&f.symmetry<70?'poor_coordination':null;
     this.diagnostics={...this.diagnostics,stage};this.metrics={...this.metrics,phase:f.start?'standing':this.peak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?poseIssueCopy(issue,this.type).joints:[],calibrated:true,message:f.hint|| (issue?poseIssueCopy(issue,this.type).action:message)}};this.previous=f;return this.metrics;
   }
 }

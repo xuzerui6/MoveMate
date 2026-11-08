@@ -594,7 +594,12 @@ test('hammer curl stability charges sustained upper-arm drift but not a 100 ms s
   // (42−15)×1.5 ≈ 40 of control penalty sustained for the whole cycle → stability ≈ 60.
   const s1=sustained.metrics.formBreakdown.stability;
   assert.ok(s1>=54&&s1<=66,`sustained-drift stability ${s1} should be ≈60, as before`);
-  assert.ok(sustained.metrics.lastRepIssues.includes('unstable_movement'));
+  // Revised (round 5, workstream C): this fixture used to also pin the
+  // unstable_movement issue for the drift rep. That correction derives
+  // entirely from the suspended control term (the trajectory's
+  // speed/duration evidence is clean), so it is now suppressed; the
+  // internal stability computation above is unchanged.
+  assert.ok(!sustained.metrics.lastRepIssues.includes('unstable_movement'));
   const spiked=controlTrajectory(k=>k>=14&&k<=16?55:22);
   assert.equal(spiked.metrics.reps,1);
   // Three frames (≈125 ms) at penalty 60 cannot prove 150 ms; the sustained ≈10 stands.
@@ -830,19 +835,25 @@ test('framing copy only demands what the movement actually needs in frame',()=>{
   tracker.update(null,0);
   assert.equal(tracker.metrics.feedback,COPY_NOT_SEEN_UPPER);
 });
-test('hammer curl upper-arm hint needs a sustained deviation and never blocks the rep',()=>{
+test('hammer curl upper-arm hint is suspended with its construct; the rep still counts',()=>{
+  // Revised (round 5, workstream C): this fixture used to pin the hint's
+  // sustained-deviation hysteresis (brief drift silent, sustained drift
+  // speaks). The hint reads the suspended control term, so it no longer
+  // surfaces at ANY duration; the hysteresis machinery remains in the
+  // tracker for the record but drives no output. Counting is untouched.
   const r=run('hammer_curl',undefined,1,100);r.feed('neutral',3000);
   // Translate elbows and wrists outward together: upper-arm angle ≈40° (raw hint fires,
   // control penalty >25) while the elbow stays at the ≈25° peak flexion.
   const drift=(p:Point[])=>{p[13]={...p[13],x:p[13].x-.1};p[15]={...p[15],x:p[15].x-.1};p[14]={...p[14],x:p[14].x+.1};p[16]={...p[16],x:p[16].x+.1};};
-  // A brief 300 ms drift must not raise the hint (the retest's seated setup flapped it).
+  // A brief 300 ms drift does not raise the hint.
   r.feed('peak',300,drift);
   assert.doesNotMatch(r.tracker.metrics.feedback,/上臂贴紧一点点/);
   assert.doesNotMatch(r.tracker.metrics.poseFeedback.message,/上臂贴紧一点点/);
-  // Clear long enough for the sustain timer to reset, then drift sustained past 1 s.
+  // Neither does a sustained drift past 1 s — the construct is suspended.
   r.feed('peak',500);
   r.feed('peak',1300,drift);
-  assert.match(r.tracker.metrics.feedback,/上臂贴紧一点点/);
-  // The hint is advisory only: the rep still counts when the arms return.
+  assert.doesNotMatch(r.tracker.metrics.feedback,/上臂贴紧一点点/);
+  assert.doesNotMatch(r.tracker.metrics.poseFeedback.message,/上臂贴紧一点点/);
+  // The rep still counts when the arms return.
   r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,1);
 });
