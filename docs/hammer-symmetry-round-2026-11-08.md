@@ -167,4 +167,18 @@ server **103/103** + build ✓、cloudflare **34/34** + typecheck ✓
 
 ## 9. 部署与待 Edward 复测
 
-（部署后回填。）
+- 合并与部署：实现 `f388878`，合并 main `585dca2`；生产 Version
+  `8ec8bc1b-57d6-40fe-8274-6c6e7a2acb7c`；预览 Version
+  `ebda1d42-4c5d-4823-8aaf-1d27a158f749`（wrangler@4.158.0 直调部署）。
+  双站实测服务新包：index `index-Bf3wLwcV.js`（sha256 前 16 位
+  9dba5e98116232bc），生产 dongban.xyz 与预览 preview.dongban.xyz
+  均与本地构建逐字节一致；CI（run 42470053910）绿。本轮部署树
+  `npm ci --prefix server` 正常（bcrypt 可加载），未用 73/74 批次的
+  备用拷贝路径。
+- 待 Edward 真机复测：一组双臂同步锤式弯举——看双臂协调轴是否落在
+  「典型一条」的水平（中位数口径）、拆开 Rep 的峰对峰救济在真机软门
+  场景下是否触发。真机分支构成比仍无日志可直读，复测结论以结算页
+  四轴与主观手感为准；若对称仍显著偏低，下一证据步是形态拒绝
+  （formInterrupt）在真机当组的实际触发率——离线回放里它才是清零
+  记忆的主力（§7），是否把保留扩到该路径须由数据与 Edward 决定，
+  本轮未动。
