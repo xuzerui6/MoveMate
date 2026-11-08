@@ -10292,6 +10292,186 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1313",
+   "expectedName": "lever unilateral row",
+   "sourceId": "ai-codex-exdb-1313",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "59019eb15066f8897da7e50ee589bce53eeba357d42cd8c6d0d1d26bceb17f48",
+    "164b2a005ce4ce7c31be694a18c23cd2637ff3d7e02d4e82e26d7d3bdc79c1c8"
+   ],
+   "phases": [
+    "起始：坐于胸托式杠杆划船机、胸部贴紧斜置胸垫，双脚平放地板；左右两根杠杆臂各有独立转轴与配重、彼此无横连杆，双手正手各握一侧把手、双臂向前伸直，两把手同处前方起始位",
+    "关键：仅右臂发力将右侧把手沿其独立杠杆弧线拉至右肋侧、肘部后收，左侧把手保持在前方起始位未动、左臂仍伸直——双臂位置可辨独立；胸仍贴垫、双脚仍平放地板"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1632",
+   "expectedName": "cable drag curl",
+   "sourceId": "ai-codex-exdb-1632",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "87da92faf3c716137a091a4143e3ba9a228a57ddd00cdeb13a1829126611fa96",
+    "ab4099ba01b91a1ad362c753d5eafe87023131498afb1cca5c17294c5e9cad4d"
+   ],
+   "phases": [
+    "起始：面向绳索机站立、双脚与肩同宽，双手反手（掌心向上）握住前方低滑轮的直杆，双臂伸直、杆贴近大腿前侧",
+    "关键：直杆贴身沿躯干前侧上拖至下肋高度，近侧肘明显移至躯干平面之后，肩部几乎不前送——拖拉弯举的贴身路线与肘后移终点清楚"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1728",
+   "expectedName": "cable two arm tricep kickback",
+   "sourceId": "ai-codex-exdb-1728",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "81b7eaba9251b09e7a4785e0b6dbfc660c1d18e2d7226bdee140dc535501bc4e",
+    "9730d59adb45afd7c9966abab97929246127ff07f48bd689577df486b8744694"
+   ],
+   "phases": [
+    "起始：面向绳索机站立、髋部前倾约 45 度、背部平直，双膝微屈、无任何膝部支撑；双手各握一只 D 形把、分别连至前方低滑轮，双肘弯曲约 90 度、上臂与地面平行",
+    "关键：双臂同时向后伸直至与躯干成一条直线，上臂位置不变、仍与地面平行，仅前臂绕肘后摆；背部角度与站姿不变"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1645",
+   "expectedName": "cable two arm curl on incline bench",
+   "sourceId": "ai-codex-exdb-1645",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "433533c5eaea5c53c54b38c7e4243083abe2c74afcf877f32e474d9d23f1182f",
+    "8633985880c1d6e9eac3263bfccd037532700a7f81a845bff530cfe1bf6d0b2e"
+   ],
+   "phases": [
+    "起始：仰靠约 45 度上斜凳、背部贴紧垫子，双脚平放地板；双手反手（掌心向上）各握一侧把手，双索自把手向后下方连至凳基后方的双低滑轮，双臂在体侧伸直",
+    "关键：双臂同时屈肘将把手卷至肩前，背部仍贴垫、上臂基本保持体侧，双手保持反手握"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2334",
+   "expectedName": "sled lying calf press",
+   "sourceId": "ai-codex-exdb-2334",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "6309dd7ae3cbcd2abe2d9881789e07f6fb5db9f7387241d381c67888697d1c23",
+    "611d48383ee01cc43099340664ffc0b6411c20a8eaa586f1a0301f2cdfb57b0a"
+   ],
+   "phases": [
+    "起始：仰卧于卧式雪橇机长垫上、整个背部贴垫，前脚掌踩在踏板下缘、脚跟悬于板外，踝背屈、膝角固定（双帧赤足执行）",
+    "关键：踝充分跖屈将踏板沿轨推离，前脚掌仍压在踏板下缘、脚跟抬高，膝角与起始帧一致不变（双帧赤足执行）"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1433",
+   "expectedName": "smith front squat (clean grip)",
+   "sourceId": "ai-codex-exdb-1433",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f73242e2d08b4e5dd92c8b88bd9b393512996f4bb9ce45e9cbd4a667751ba2bc",
+    "7e335340f05f7c8f9056bed1a32bf3ad9d07e0b788815b5228fc1204da26c6b2"
+   ],
+   "phases": [
+    "起始：站于史密斯机双竖轨内，杠横置于前三角肌与锁骨上、采用交叉臂架杠（双臂交叉、双手扶住对侧肩前杠身），肘部抬高，双脚与肩同宽平放地面",
+    "关键：屈髋屈膝下蹲至大腿约与地面平行，躯干保持直立、肘仍抬高、杠仍贴在前肩架位上，双脚全脚掌着地、脚跟不离地"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1265",
+   "expectedName": "cable one arm incline press",
+   "sourceId": "ai-codex-exdb-1265",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "29f36359150b824a51557eecba50cf5a7e2ae3efcbf93b05d6963a0c86040715",
+    "3405a1bcf0c19d6669d9612eb23a51a308707f5883e8d6091d15193f4b9c5198"
+   ],
+   "phases": [
+    "起始：坐于约 45 度上斜凳、背对绳索机，背部贴垫、双脚平放地板；右手握住身后低滑轮的把手停于肩高，左手（自由手）平放在大腿上",
+    "关键：右手将把手向前上方推至手臂充分伸展，索自把手连回身后低滑轮；左手全程仍放在大腿上，背部仍贴垫"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0754",
+   "expectedName": "smith decline reverse-grip press",
+   "sourceId": "ai-codex-exdb-0754",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "40457b8731be5dcf6d7d1fb7062f4fce9ca748639c98e0c96c5467f18e658fe1",
+    "4a45d4ee09e00643915eac57382d1d0f6a78a3cf69a38d5043e084756e4ee626"
+   ],
+   "phases": [
+    "起始：仰卧于史密斯机内下斜凳上、头低臀高，双脚钩于脚垫下；双手反握（掌心向上托杠、手指自远侧扣过杠顶）杠身、握距略宽于肩，杠位于下胸上方（起始帧腕部伸展较明显）",
+    "关键：双手保持反握将杠沿双竖轨推至双臂伸直，凳角、脚位与握法不变，相位差只来自杠位与肘角"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3758",
+   "expectedName": "lever standing chest press",
+   "sourceId": "ai-codex-exdb-3758",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "8d39b33a2b9fa528c57d0466757ebe3908b5db07da6b50d1fe1cc5d15970ff70",
+    "d052560edc4726da1a28f372ce61e3f9459b9ab53950bd415cfaf4cf7b762b85"
+   ],
+   "phases": [
+    "起始：站立于无座椅结构的杠杆胸推机前、双脚平放地板，双手正手各握一侧独立杠杆把手停于胸高，双臂屈肘收于体侧",
+    "关键：双手将双侧把手向前推至双臂近伸直（把手终点约在肩高），全程保持站立、双脚不离地，机身无任何座椅结构"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0773",
+   "expectedName": "smith standing leg calf raise",
+   "sourceId": "ai-codex-exdb-0773",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e7a208a8a4d906cfb4c7658ba9c1c5c894febd2d98170eea1e1a4621257b61fc",
+    "41fe8c67688be1c525fcb196df4d51f68a31f5b45f3e57f045912d73af4696c6"
+   ],
+   "phases": [
+    "起始（批次 71 锚定生成）：站于史密斯机双竖轨内、双脚全脚掌平放地面、脚跟贴地，杠横置于肩上、双手扶杠稳定身体，双前臂完整自然——以批次 70 留档关键帧为参考图锚定生成，与关键帧同人、同机、同机位",
+    "关键（批次 70 生成、70 批亲核单帧合格）：双脚跟抬至最高、前脚掌压地，小腿充分收缩，杠沿轨略升，双手扶杠、双臂完整"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
