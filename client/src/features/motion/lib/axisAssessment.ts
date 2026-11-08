@@ -172,6 +172,38 @@ export const totalWithheld = (a?: AxisAssessments | null): boolean => {
  * as a failure of the set. */
 export const TOTAL_WITHHELD_NOTE = '这一组能评的项目还不够多，总分先暂停——等能看清的部分更多了，再一起算'
 
+/** Scope label for a PRESENTED total whose numeric axes do not cover
+ * every applicable axis (2026-11-09, Codex round-5 correction — the
+ * front-raise case: its total is computed over stability + trunk only,
+ * depth being per-side bands and symmetry unassessable by design). A
+ * bare number invites the reader to assume it summarizes all four axes,
+ * so wherever such a total is shown its scope is named: the axes it is
+ * actually computed over (in the surface's own display names), and the
+ * axes assessed in another form stay in that form — a band or a timing
+ * category is NEVER converted into a number to feed the total, and this
+ * label is where that fact is stated. Derived from the assessment map,
+ * never hardcoded per movement.
+ *
+ * Returns null when no scope label applies:
+ *  - no assessment map (legacy sets present exactly as before);
+ *  - the total is withheld (TOTAL_WITHHELD_NOTE owns that state);
+ *  - every applicable axis is numeric — by-design-unassessable axes
+ *    ('view' / 'single-side') are non-applicable, so a total over the
+ *    remaining numeric axes covers all applicable axes and keeps the
+ *    current presentation. */
+export const totalScopeNote = (
+  a: AxisAssessments | null | undefined,
+  labels: Record<AxisKey, string>,
+): string | null => {
+  if (!a || totalWithheld(a)) return null
+  const otherForm = AXIS_KEYS.filter(k => a[k].kind === 'category' || a[k].kind === 'bands')
+  if (!otherForm.length) return null
+  const included = AXIS_KEYS.filter(k => a[k].kind === 'numeric').map(k => labels[k])
+  if (!included.length) return null
+  const others = otherForm.map(k => `${labels[k]}${a[k].kind === 'bands' ? '看档位' : '看类别'}`)
+  return `总分只按 ${included.join('、')} 算；${others.join('、')}，不算进总分`
+}
+
 /** Axes that carry a number under an assessment map (absent map = all). */
 export const numericAxesOf = (a?: AxisAssessments | null): AxisKey[] =>
   AXIS_KEYS.filter(k => !a || a[k].kind === 'numeric')

@@ -17,6 +17,51 @@ import {
   label,
   formatTime,
 } from "./api";
+import {
+  assessmentFromScore,
+  axisStateText,
+  totalScopeNote,
+  totalWithheld,
+} from "../motion/lib/axisAssessment";
+const SET_AXIS_KEYS = ["depth", "stability", "trunk", "symmetry"] as const;
+/** 逐组记录的评分页（step-3 合同的还原面）：与实时结算同一口径——
+ * 被暂停的总分不印数字，非数字轴（档位 / 类别 / 评不了）按状态文字，
+ * 绝不把累加器里的占位 0 印成分数；总分只按部分可评轴算出的组，
+ * 在总分旁标明它到底按哪些轴算（scope label, Codex round-5）。 */
+function setScoreLine(set: any): string {
+  if (set?.inputMode !== "camera") return "手动记录";
+  const score = set?.score;
+  if (!score?.count) return "未产生评分";
+  return totalWithheld(assessmentFromScore(score))
+    ? "识别总分先暂停"
+    : `识别均分 ${Math.round(score.total / score.count)}`;
+}
+function setAxisLine(set: any): string | null {
+  const axes = set?.exercise?.planCamera?.axes, score = set?.score;
+  if (!axes || !(score?.count > 0)) return null;
+  const assessment = assessmentFromScore(score);
+  return axes
+    .map((name: string, i: number) => {
+      const st = assessment?.[SET_AXIS_KEYS[i]];
+      return st && st.kind !== "numeric"
+        ? `${name} ${axisStateText(st) || "这个角度评不了"}`
+        : `${name} ${Math.round((score[SET_AXIS_KEYS[i]] || 0) / score.count)}`;
+    })
+    .join(" · ");
+}
+function setScopeNoteLine(set: any): string | null {
+  const axes = set?.exercise?.planCamera?.axes, score = set?.score;
+  if (!axes || !(score?.count > 0)) return null;
+  const assessment = assessmentFromScore(score);
+  return assessment
+    ? totalScopeNote(assessment, {
+        depth: axes[0],
+        stability: axes[1],
+        trunk: axes[2],
+        symmetry: axes[3],
+      })
+    : null;
+}
 function Status({ query }: { query: ReturnType<typeof useGymQuery> }) {
   return query.error ? (
     <div className="gym-error" role="alert">
@@ -510,14 +555,9 @@ export function WorkoutRecords() {
                           × {displayWeight(s.loadKg, unit)}
                           {unit} · {s.seconds}秒
                         </b>
-                        <small>
-                          {s.inputMode === "camera"
-                            ? s.score.count
-                              ? `识别均分 ${Math.round(s.score.total / s.score.count)}`
-                              : "未产生评分"
-                            : "手动记录"}
-                        </small>
-                        {s.exercise.planCamera && s.score?.count > 0 && <small>{s.exercise.planCamera.axes.map((name:string,i:number)=>`${name} ${Math.round((s.score[["depth","stability","trunk","symmetry"][i]] || 0)/s.score.count)}`).join(" · ")}</small>}
+                        <small>{setScoreLine(s)}</small>
+                        {setAxisLine(s) && <small>{setAxisLine(s)}</small>}
+                        {setScopeNoteLine(s) && <small>{setScopeNoteLine(s)}</small>}
                         {s.inputMode === "camera" && ["reverse_lunge","standing_leg_curl"].includes(s.exercise.planCamera?.profile) && <small>左侧 {s.score?.leftReps || 0} 次 · 右侧 {s.score?.rightReps || 0} 次</small>}
                         {s.effort && (
                           <small>

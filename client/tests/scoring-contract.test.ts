@@ -5,6 +5,7 @@ import { createRecognitionTracker, newDemonstrationPose } from '../src/features/
 import { restoredSetMetrics } from '../src/features/gym/workoutSync';
 import { buildGymSetCard } from '../src/features/share/cardData';
 import { buildSetReveal } from '../src/features/motion/lib/companionCopy';
+import { totalScopeNote, type AxisAssessments } from '../src/features/motion/lib/axisAssessment';
 import type { NormalizedLandmark as Point } from '@mediapipe/tasks-vision';
 
 /** Step-3 scoring contract fixtures (2026-11-08): categorical symmetry
@@ -167,4 +168,79 @@ test('set reveal ignores non-numeric axes when comparing sets', () => {
   assert.match(r.progressLine, /一样稳/);
   const naive = buildSetReveal(fb(80, 70, 70, 0), fb(80, 70, 70, 90), { reps: 12, unit: '次', scored: true });
   assert.doesNotMatch(naive.progressLine, /一样稳/);
+});
+
+/** Scope-label fixtures (2026-11-09, Codex round-5 correction): a
+ * presented total computed over a subset of the applicable axes names
+ * the axes it covers; banded/categorical axes never enter any total
+ * through an invented numeric mapping. */
+
+test('total scope label names the axes a subset total covers, derived from the map', () => {
+  const labels = { depth: '前举幅度', stability: '手臂控制', trunk: '躯干稳定', symmetry: '双臂协调' };
+  // Front raise: depth is per-side bands, symmetry unassessable by design
+  // (view) — the presented total covers 手臂控制 + 躯干稳定 only, and the
+  // label says exactly that, in the surface's own axis names.
+  const frontRaise: AxisAssessments = {
+    depth: { kind: 'bands', left: 'shoulder', right: 'below' },
+    stability: { kind: 'numeric' },
+    trunk: { kind: 'numeric' },
+    symmetry: { kind: 'unassessable', reason: 'view' },
+  };
+  assert.equal(totalScopeNote(frontRaise, labels), '总分只按 手臂控制、躯干稳定 算；前举幅度看档位，不算进总分');
+  assert.equal(
+    totalScopeNote(frontRaise, { depth: '幅度', stability: '稳定性', trunk: '躯干', symmetry: '对称' }),
+    '总分只按 稳定性、躯干 算；幅度看档位，不算进总分',
+  );
+  // An applicable axis assessed as a timing category is named the same
+  // way — the derivation is from the map, not the movement.
+  const categorical: AxisAssessments = {
+    depth: { kind: 'numeric' },
+    stability: { kind: 'numeric' },
+    trunk: { kind: 'numeric' },
+    symmetry: { kind: 'category', category: 'sync' },
+  };
+  assert.equal(totalScopeNote(categorical, labels), '总分只按 前举幅度、手臂控制、躯干稳定 算；双臂协调看类别，不算进总分');
+  // A withheld total owns a different note (the withheld note), a total
+  // covering every applicable axis keeps the current presentation, and
+  // legacy sets without a map are untouched.
+  const hammer: AxisAssessments = {
+    depth: { kind: 'numeric' },
+    stability: { kind: 'unassessable', reason: 'control' },
+    trunk: { kind: 'numeric' },
+    symmetry: { kind: 'category', category: 'sync' },
+  };
+  assert.equal(totalScopeNote(hammer, labels), null);
+  const singleSide: AxisAssessments = {
+    depth: { kind: 'numeric' },
+    stability: { kind: 'numeric' },
+    trunk: { kind: 'numeric' },
+    symmetry: { kind: 'unassessable', reason: 'single-side' },
+  };
+  assert.equal(totalScopeNote(singleSide, labels), null);
+  const allNumeric: AxisAssessments = {
+    depth: { kind: 'numeric' },
+    stability: { kind: 'numeric' },
+    trunk: { kind: 'numeric' },
+    symmetry: { kind: 'numeric' },
+  };
+  assert.equal(totalScopeNote(allNumeric, labels), null);
+  assert.equal(totalScopeNote(undefined, labels), null);
+  assert.equal(totalScopeNote(null, labels), null);
+});
+
+test('banded axes never enter a total on the card or restore paths, even with a poisoned sum', () => {
+  // A stored front-raise accumulator whose depth/symmetry sums carry
+  // stray numbers: every presentation total still comes from the
+  // recorded per-rep totals alone — the banded axis has no numeric
+  // mapping anywhere, so there is nothing for a stray sum to feed.
+  const score = { count: 2, total: 170, depth: 9999, stability: 180, trunk: 160, symmetry: 8888, depthBandCounts: { left: { shoulder: 2 }, right: { below: 1 } } };
+  const card = buildGymSetCard({ reps: 2, exercise: { name: 'front_raise', nameZh: '哑铃前平举' }, score }, 0, new Date());
+  assert.equal(card.score, 85);
+  assert.equal(card.axes?.[0].text, '左 到达肩高 · 右 未到肩高');
+  assert.equal(card.axes?.[3].text, '这个角度评不了');
+  assert.equal(card.scoreNote, '总分只按 稳定性、躯干 算；幅度看档位，不算进总分');
+  const restored = restoredSetMetrics({ reps: 2, score });
+  assert.equal(restored.formScore, 85);
+  assert.deepEqual(restored.axisAssessment?.depth, { kind: 'bands', left: 'shoulder', right: 'below' });
+  assert.deepEqual(restored.axisAssessment?.symmetry, { kind: 'unassessable', reason: 'view' });
 });

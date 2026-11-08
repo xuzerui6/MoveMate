@@ -273,3 +273,34 @@ test("milestone card svg ring offset follows the fraction", () => {
   assert.ok(svg.includes("STREAK · 30 DAYS"));
   assert.ok(svg.includes("每次运动，都算数。"));
 });
+
+test("set card svg prints the scope note beside a subset-scoped total, and only then", () => {
+  const scoped = buildGymSetCard(
+    {
+      reps: 2,
+      exercise: { nameZh: "哑铃前平举", name: "front_raise" },
+      score: { count: 2, total: 170, depth: 0, stability: 180, trunk: 160, symmetry: 0, depthBandCounts: { left: { shoulder: 2 }, right: { below: 1 } } },
+    },
+    0,
+    new Date(2026, 10, 7),
+  );
+  assert.equal(scoped.score, 85);
+  assert.equal(scoped.scoreNote, "总分只按 稳定性、躯干 算；幅度看档位，不算进总分");
+  const scopedSvg = setCardSvg(scoped);
+  assert.ok(scopedSvg.includes("总分只按 稳定性、躯干 算；幅度看档位，不算进总分"));
+  // The banded depth stays visible alongside the total, as state text.
+  assert.ok(scopedSvg.includes("左 到达肩高 · 右 未到肩高"));
+  // A total covering every applicable axis keeps the previous card:
+  // no scope note in the data, none in the SVG.
+  const plain = buildGymSetCard(
+    {
+      reps: 20,
+      exercise: { nameZh: "哑铃锤式弯举", name: "Dumbbell Hammer Curl" },
+      score: { count: 20, total: 1840, depth: 1880, stability: 1760, trunk: 1920, symmetry: 1800 },
+    },
+    2,
+    new Date(2026, 10, 7),
+  );
+  assert.equal(plain.scoreNote, null);
+  assert.ok(!setCardSvg(plain).includes("总分只按"));
+});

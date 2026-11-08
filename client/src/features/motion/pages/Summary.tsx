@@ -8,7 +8,7 @@ import { useStore } from '../lib/store'
 import { outfitLabels } from '../lib/outfits'
 import { poseIssueCopy } from '../lib/poseFeedback'
 import { buildSetReveal, COPY_WORKOUT_DONE } from '../lib/companionCopy'
-import { axisStateText, totalWithheld, TOTAL_WITHHELD_NOTE, type AxisAssessments } from '../lib/axisAssessment'
+import { axisStateText, totalScopeNote, totalWithheld, TOTAL_WITHHELD_NOTE, type AxisAssessments } from '../lib/axisAssessment'
 import { SPORT_LABELS } from '../../../types'
 import type { PoseIssue, WorkoutSession } from '../types'
 import ShareCardButton from '../../share/ShareCardButton'
@@ -33,11 +33,15 @@ export function Summary({result,avatar,home}:{result:WorkoutSession;avatar:()=>v
     return <div className="training-breakdown" key={label}><span>{label}</span><AnimatedProgress value={breakdown[index]||0} delay={index*120}/><b>{unscoredDash?'—':breakdown[index]||0}</b></div>
   }
   const hasNonNumericAxis=Boolean(assessment&&AXIS_KEY_LIST.some(k=>assessment[k].kind!=='numeric'))
-  // Coverage rule (2026-11-09): when the numeric axes cover <60% of the
-  // nominal weight, the set total is not presented at all — the internal
-  // formScore still exists (XP is rep-derived; progression stats read it),
-  // but no surface prints it as this set's score.
+  // Minimum-axis contract (2026-11-09): when the contract withholds the
+  // total, it is not presented at all — the internal formScore still
+  // exists (XP is rep-derived; progression stats read it), but no surface
+  // prints it as this set's score.
   const withheld=scored&&!timer&&!demo&&totalWithheld(assessment)
+  // Scope label (Codex round-5): a presented total computed over a subset
+  // of the applicable axes (another applicable axis is bands/category)
+  // names the axes it covers, in this exercise's own axis names.
+  const scopeNote=scored&&!withheld?totalScopeNote(assessment,{depth:axes[0],stability:axes[1],trunk:axes[2],symmetry:axes[3]}):null
   // 组间揭晓（识别页 v2 §03）：先报进步（与同动作上一条已评分记录的真实差值），
   // 再四轴生长，最后只给一个小目标。演示不做对比断言。
   const previousSession=demo?undefined:[...state.history].reverse().find(h=>h.id!==result.id&&h.exerciseType===result.exerciseType&&h.source!=='demo'&&(h as any).formScore>0&&(h as any).formBreakdown)
@@ -59,7 +63,7 @@ export function Summary({result,avatar,home}:{result:WorkoutSession;avatar:()=>v
     <p className="muted">{timer?SPORT_LABELS[result.exerciseType]||result.exerciseType:exercise.name} · {result.settled?'已保存并结算':'已保存，等待活动结算'}</p>
     {demo&&<p className="training-demo-note">演示，不计 XP，也不解锁装备。</p>}
     <div className="training-result-main"><div><small>有效运动时长</small><strong>{fmt(result.durationSeconds)}</strong></div><div><small>{demo?'演示经验':'本次获得'}</small><strong>+<AnimatedNumber value={result.xpEarned} fromZero/><em> XP</em></strong></div></div>
-    {!timer&&!demo&&<section className="training-reveal" aria-label="这一组怎么样"><p className="training-reveal-lead">{reveal.progressLine}</p>{scored&&!demo&&<div className="training-reveal-axes">{axes.map((label,index)=>axisRow(label,index))}</div>}{scored&&withheld?<p className="muted">{TOTAL_WITHHELD_NOTE}</p>:scored&&hasNonNumericAxis&&<p className="muted">总分只按能评的项目算——评不了的不会算成低分</p>}{revealGoal&&<p className="training-reveal-goal">{revealGoal}</p>}</section>}
+    {!timer&&!demo&&<section className="training-reveal" aria-label="这一组怎么样"><p className="training-reveal-lead">{reveal.progressLine}</p>{scored&&!demo&&<div className="training-reveal-axes">{axes.map((label,index)=>axisRow(label,index))}</div>}{scored&&withheld?<p className="muted">{TOTAL_WITHHELD_NOTE}</p>:scored&&scopeNote?<p className="muted">{scopeNote}</p>:scored&&hasNonNumericAxis&&<p className="muted">总分只按能评的项目算——评不了的不会算成低分</p>}{revealGoal&&<p className="training-reveal-goal">{revealGoal}</p>}</section>}
     {!timer&&<div className="training-result-stats"><span><b>{result.reps} {exercise.unit}</b>完成动作</span><span><b>{scored&&!withheld?<AnimatedNumber value={result.formScore} fromZero/>:'—'}</b>{demo?'演示评分':'动作评分'}</span><span><b>{result.perfectReps} {exercise.unit}</b>高质量动作</span></div>}
     {pendingGrowth?<div className="training-error" role="status"><p>本次运动已保存。成长数据暂未更新，请单独重试。</p><button className="secondary" disabled={loading} onClick={()=>void refresh()}>{loading?'更新中…':'更新成长数据'}</button></div>:<div className="training-growth-row"><AvatarFigure size="small" view="front"/><span><b>Lv.{state.level} · 成长已记录</b><small>累计 {state.totalXp} XP{demo?' · 本次演示不增加经验':''}</small></span></div>}
     {(result.unlockedOutfits||[]).map(outfit=><div className="training-unlock" key={outfit}><span>新套装 · {outfitLabels[outfit]}</span><button className="secondary" disabled={state.activeOutfit===outfit} onClick={()=>void wear(outfit)}>{state.activeOutfit===outfit?'已穿戴':'立即穿戴'}</button></div>)}
