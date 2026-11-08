@@ -74,6 +74,13 @@ export const isUpperBodyExercise = (type: string): boolean => UPPER_BODY_EXERCIS
 export const framingCopyFor = (type: string): string => isUpperBodyExercise(type) ? COPY_FRAMING_UPPER : COPY_FRAMING
 export const notSeenCopyFor = (type: string): string => isUpperBodyExercise(type) ? COPY_NOT_SEEN_UPPER : COPY_NOT_SEEN
 
+/** Step-3 评分合同（2026-11-08）：某一轴在这个角度评不了时，轴位就写这句——
+ * 不给数字、不假装看清。总分只按能评的轴算（见 axisAssessment.ts）。 */
+export const COPY_AXIS_UNASSESSABLE = '这个角度评不了'
+/** 退化取景（跪姿特写那一类）持续到无法取证时的一句陪伴句：先说清状态
+ * （这个角度评不了），只给一个调整动作（按动作族取入镜话术）。 */
+export const cannotAssessCopyFor = (type: string): string => `${COPY_AXIS_UNASSESSABLE}——${framingCopyFor(type)}`
+
 /** 红线词表：陪伴文案与引擎反馈中禁止出现的打击性措辞。 */
 export const BANNED_COPY_WORDS = ['下降', '变差', '失败', '丢弃', '无效', '冻结', '已丢弃'] as const
 
@@ -109,10 +116,15 @@ export interface SetReveal {
 export function buildSetReveal(
   current: FormBreakdown,
   previous: FormBreakdown | null,
-  opts: { reps: number; unit: string; scored: boolean; axisLabels?: Record<AxisKey, string> },
+  opts: { reps: number; unit: string; scored: boolean; axisLabels?: Record<AxisKey, string>; numericAxes?: AxisKey[] },
 ): SetReveal {
   const labels = opts.axisLabels || AXIS_LABELS
-  const weakest = AXES.reduce((a, b) => (current[a] <= current[b] ? a : b))
+  // Step-3 contract: axes that carry no number in this set (category or
+  // unassessable) never enter the weakest-axis pick, the deltas or the
+  // totals — comparing a category against a number would fabricate a
+  // regression or an improvement out of a presentation change.
+  const NUM = (opts.numericAxes && opts.numericAxes.length ? opts.numericAxes : AXES)
+  const weakest = NUM.reduce((a, b) => (current[a] <= current[b] ? a : b))
   const goalLine = `下一组小目标（就一个）：${AXIS_GOALS[weakest]}`
   if (!opts.scored) {
     return { progressLine: `这一组完成 ${opts.reps} ${opts.unit}——刚才没看清，就先不评分了`, goalLine, improvedAxis: null }
@@ -120,11 +132,11 @@ export function buildSetReveal(
   if (!previous) {
     return { progressLine: `这一组完成 ${opts.reps} ${opts.unit}，记下啦`, goalLine, improvedAxis: null }
   }
-  const deltas = AXES.map(axis => ({ axis, delta: current[axis] - previous[axis] }))
+  const deltas = NUM.map(axis => ({ axis, delta: current[axis] - previous[axis] }))
   const best = deltas.reduce((a, b) => (b.delta > a.delta ? b : a))
   const worst = deltas.reduce((a, b) => (b.delta < a.delta ? b : a))
-  const totalNow = AXES.reduce((sum, axis) => sum + current[axis], 0)
-  const totalPrev = AXES.reduce((sum, axis) => sum + previous[axis], 0)
+  const totalNow = NUM.reduce((sum, axis) => sum + current[axis], 0)
+  const totalPrev = NUM.reduce((sum, axis) => sum + previous[axis], 0)
   if (best.delta >= 5) {
     return {
       progressLine: `先说进步：${labels[best.axis]}比上一组好了一截（${previous[best.axis]} → ${current[best.axis]}）——你的进步，我都记着呢`,

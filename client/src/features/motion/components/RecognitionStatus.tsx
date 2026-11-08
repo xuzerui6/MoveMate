@@ -17,7 +17,7 @@ const stages = {
  */
 export function RecognitionStatus({type,diagnostics,paused=false,demo=false}:{type:CameraExerciseType;diagnostics:RecognitionDiagnostics;paused?:boolean;demo?:boolean}) {
   const {stage}=diagnostics
-  const label=paused?'已暂停':stage==='calibrating'?'校准中':stage==='tracking_lost'?'看不清':stage==='complete'?'目标完成':isNewExercise(type)?NEW_EXERCISES[type].stages[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]:stages[type][stage]
+  const label=paused?'已暂停':stage==='calibrating'?'校准中':stage==='tracking_lost'?'看不清':stage==='cannot_assess'?'这个角度评不了':stage==='complete'?'目标完成':isNewExercise(type)?NEW_EXERCISES[type].stages[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]:stages[type][stage]
   return <div className="recognition-status">
     <details className="recognition-diagnostics"><summary>识别详情（仅本机）</summary>
       <dl><div><dt>当前阶段</dt><dd>{label}{!paused&&type==='high_knees'&&<> · 本对：左侧{diagnostics.pairedSides.includes('left')?'已完成':'待完成'}／右侧{diagnostics.pairedSides.includes('right')?'已完成':'待完成'}</>}</dd></div>

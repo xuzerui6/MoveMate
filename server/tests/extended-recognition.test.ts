@@ -112,3 +112,34 @@ test('historical sessions without a strategy remain legacy and cannot switch dur
  await assert.rejects(motion.sessionAction(s.id,uid,'progress',{reps:0,recognitionStrategy:'adaptive-v1'},false,6),/策略/);
  const done=await motion.sessionAction(s.id,uid,'finish',{},false,6);assert.equal(done.reps,0);assert.equal(done.xpEarned,0);
 });
+
+test('step-3 axis assessments and per-rep evidence survive standalone sync and reject malformed states',async()=>{
+ const s=await motion.createSession(uid,{id:randomUUID(),sportType:'hammer_curl',source:'camera'},2);
+ const assessment={depth:{kind:'numeric'},stability:{kind:'numeric'},trunk:{kind:'numeric'},symmetry:{kind:'category',category:'slight'}};
+ const acc={count:2,total:180,depth:185,stability:175,trunk:180,symmetry:0,symmetryOffsetsMs:[375,400]};
+ const p=await motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:acc,axisAssessment:assessment},false,2);
+ assert.deepEqual(p.metrics.axisAssessment,assessment);assert.deepEqual(p.metrics.scoreAccumulator.symmetryOffsetsMs,[375,400]);
+ // A partial update without the fields keeps the stored state (no silent revert).
+ const paused=await motion.sessionAction(s.id,uid,'pause',{averageBpm:100},false,2);
+ assert.deepEqual(paused.metrics.axisAssessment,assessment);assert.deepEqual(paused.metrics.scoreAccumulator.symmetryOffsetsMs,[375,400]);
+ await motion.sessionAction(s.id,uid,'resume',{},false,2);
+ await assert.rejects(motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:acc,axisAssessment:{...assessment,symmetry:{kind:'category',category:'sideways'}}},false,2),/评分轴状态无效/);
+ await assert.rejects(motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:acc,axisAssessment:{...assessment,symmetry:{kind:'unassessable',reason:' vibes '}}},false,2),/评分轴状态无效/);
+ await assert.rejects(motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:{...acc,symmetryOffsetsMs:[1,2,3]}},false,2),/评分累计值无效/);
+ await assert.rejects(motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:{...acc,symmetryOffsetsMs:[-5,400]}},false,2),/评分累计值无效/);
+ await motion.sessionAction(s.id,uid,'finish',{},false,2);
+});
+
+test('step-3 front-raise band tallies and assessments survive plan-set sync and reject malformed states',async()=>{
+ const exerciseId=(definitions as any).front_raise.exerciseIds[0];
+ let w=await gym.startWorkout(uid,{id:randomUUID(),free:{exercises:[{exerciseId,sets:[{reps:3}]}]}});
+ const act=(action:string,extra:any={})=>gym.actWorkout(uid,w.id,{operationId:randomUUID(),version:w.version,action,setId:w.sets[w.cursor]?.id,...extra},2);
+ w=await act('start',{inputMode:'camera'});
+ const assessment={depth:{kind:'bands',left:'shoulder',right:'below'},stability:{kind:'numeric'},trunk:{kind:'numeric'},symmetry:{kind:'unassessable',reason:'view'}};
+ const acc={count:2,total:170,depth:0,stability:175,trunk:165,symmetry:0,depthBandCounts:{left:{shoulder:2},right:{below:1,shoulder:1}},axisAssessment:assessment};
+ w=await act('progress',{reps:2,score:acc});
+ assert.deepEqual(w.sets[0].score,acc);
+ await assert.rejects(act('progress',{reps:2,score:{...acc,depthBandCounts:{left:{shoulder:'high'}}}}),/depthBandCounts|无效|不合法|参数/);
+ await assert.rejects(act('progress',{reps:2,score:{...acc,axisAssessment:{...assessment,symmetry:{kind:'unassessable',reason:'diagonal'}}}}),/axisAssessment|无效|不合法|参数/);
+ w=await act('pause');assert.deepEqual(w.sets[0].score,acc);
+});

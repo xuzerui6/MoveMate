@@ -587,6 +587,15 @@ export async function startWorkout(uid: number, input: any) {
     return workout(uid, data.id);
   });
 }
+/** Step-3 axis assessability state (mirrors the client contract and the
+ * motion service whitelist): numeric, a peak-timing category, per-side
+ * depth bands, or unassessable with a whitelisted reason. */
+const axisStateSchema = z.union([
+  z.object({ kind: z.literal("numeric") }),
+  z.object({ kind: z.literal("unassessable"), reason: z.enum(["view", "single-side", "no-bilateral-evidence", "framing"]) }),
+  z.object({ kind: z.literal("category"), category: z.enum(["sync", "slight", "alternating"]) }),
+  z.object({ kind: z.literal("bands"), left: z.enum(["below", "shoulder", "over"]).optional(), right: z.enum(["below", "shoulder", "over"]).optional() }),
+]);
 const actionSchema = z.object({
   operationId: z.string().min(1).max(80),
   version: z.number().int().positive(),
@@ -631,6 +640,25 @@ const actionSchema = z.object({
       /** Per-rep symmetry values (hammer curls): kept with the score so a
        * restored set can aggregate symmetry by median, as the tracker does. */
       symmetryValues: z.array(z.number().min(0).max(100)).max(100000).optional(),
+      /** Step-3 evidence (2026-11-08): hammer peak-timing offsets and
+       * front-raise per-side depth-band tallies, plus the set's axis
+       * assessability map — kept with the score so a restored set presents
+       * categories / unassessable axes instead of reverting them to numbers. */
+      symmetryOffsetsMs: z.array(z.number().min(0).max(10000)).max(100000).optional(),
+      depthBandCounts: z
+        .object({
+          left: z.object({ below: z.number().int().min(0).max(100000).optional(), shoulder: z.number().int().min(0).max(100000).optional(), over: z.number().int().min(0).max(100000).optional() }).optional(),
+          right: z.object({ below: z.number().int().min(0).max(100000).optional(), shoulder: z.number().int().min(0).max(100000).optional(), over: z.number().int().min(0).max(100000).optional() }).optional(),
+        })
+        .optional(),
+      axisAssessment: z
+        .object({
+          depth: axisStateSchema,
+          stability: axisStateSchema,
+          trunk: axisStateSchema,
+          symmetry: axisStateSchema,
+        })
+        .optional(),
     })
     .optional(),
 });

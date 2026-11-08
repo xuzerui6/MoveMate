@@ -1,4 +1,5 @@
 import { medianOf } from "../motion/lib/sessionMigration";
+import { assessmentFromScore } from "../motion/lib/axisAssessment";
 
 export function restoredSetMetrics(set: any) {
   const score = set?.score || {},
@@ -7,6 +8,11 @@ export function restoredSetMetrics(set: any) {
   return {
     reps: set?.reps || 0,
     scoreAccumulator: Number.isFinite(score.count) ? score : undefined,
+    // Step-3 contract: the set's assessability map rides along (stored map
+    // wins; otherwise it is rebuilt from the recorded offsets/band tallies),
+    // so a restored set presents categories and unassessable axes exactly
+    // as the live tracker did instead of reverting them to numbers.
+    axisAssessment: assessmentFromScore(score),
     formScore: mean(score.total),
     formBreakdown: {
       depth: mean(score.depth),

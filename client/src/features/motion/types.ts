@@ -1,4 +1,5 @@
 import type { CameraExerciseType } from './lib/exercises'
+import type { AxisAssessments, DepthBandCounts } from './lib/axisAssessment'
 export type Route = 'home' | 'workout' | 'summary' | 'avatar' | 'inventory'
 export type AvatarGender = 'male' | 'female'
 export type OutfitPreset = 'default' | 'penguin' | 'sakura' | 'sunset_sakura' | 'sea_runner' | 'violet_court' | 'sunlight_explorer'
@@ -105,11 +106,14 @@ export interface Equipment {
   owned: boolean
 }
 
-export interface ScoreAccumulator extends FormBreakdown { count: number; total: number; leftReps?: number; rightReps?: number; /** Per-rep symmetry values in emit order (hammer curls, 2026-11-08): the set's symmetry axis aggregates these by median instead of the mean of `symmetry` sums. Absent on accumulators written before this field existed — consumers fall back to the mean. The `symmetry` sum itself is still maintained for that fallback. */ symmetryValues?: number[] }
+export interface ScoreAccumulator extends FormBreakdown { count: number; total: number; leftReps?: number; rightReps?: number; /** Per-rep symmetry values in emit order (hammer curls, 2026-11-08): the set's symmetry axis aggregates these by median instead of the mean of `symmetry` sums. Absent on accumulators written before this field existed — consumers fall back to the mean. The `symmetry` sum itself is still maintained for that fallback. */ symmetryValues?: number[]; /** Step-3 contract: per-rep bilateral peak-timing offsets in ms (hammer curls). The set's symmetry presentation is the category of their median; no numeric symmetry is emitted or accumulated for new sets. */ symmetryOffsetsMs?: number[]; /** Step-3 contract: per-side tallies of scored front-raise reps per depth band; the set's depth presentation is each side's modal band. */ depthBandCounts?: DepthBandCounts }
 
 export interface WorkoutMetrics {
   lastRepScore?: number | null
   scoreAccumulator?: ScoreAccumulator
+  /** Step-3 contract: per-axis assessability for this session's scores.
+   * Absent = every axis numeric (all pre-contract sessions and movements). */
+  axisAssessment?: AxisAssessments
   reps: number
   targetReps: number
   formScore: number

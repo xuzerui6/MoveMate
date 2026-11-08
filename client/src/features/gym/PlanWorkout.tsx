@@ -25,6 +25,7 @@ import Dialog from "../../components/Dialog";
 import AnimatedNumber from "../../components/AnimatedNumber";
 import AnimatedProgress from "../../components/AnimatedProgress";
 import { buildSetReveal } from "../motion/lib/companionCopy";
+import { assessmentFromScore, axisStateText } from "../motion/lib/axisAssessment";
 import ShareCardButton from "../share/ShareCardButton";
 import { buildGymSetCard, buildRecordCard, buildWorkoutCardData } from "../share/cardData";
 import { milestoneCardSvg, setCardSvg, workoutCardSvg } from "../share/cardSvg";
@@ -231,11 +232,15 @@ export default function PlanWorkout() {
   const lastCameraSet = completedCameraSets[completedCameraSets.length - 1];
   const prevCameraSet = completedCameraSets[completedCameraSets.length - 2];
   const lastBreakdown = lastCameraSet ? setBreakdownOf(lastCameraSet) : null;
-  const restReveal = row?.phase === "resting" && lastCameraSet && lastBreakdown ? buildSetReveal(lastBreakdown, prevCameraSet ? setBreakdownOf(prevCameraSet) : null, { reps: lastCameraSet.reps || 0, unit: current ? repUnit(current.exercise) : "次", scored: true, axisLabels: capability?.axes ? { depth: capability.axes[0], stability: capability.axes[1], trunk: capability.axes[2], symmetry: capability.axes[3] } : undefined }) : null;
+  // Step-3 评分合同：组间揭晓同样只认数字轴；非数字轴在下方按状态文字渲染。
+  const lastAssessment = lastCameraSet ? assessmentFromScore(lastCameraSet.score) : undefined;
+  const prevAssessment = prevCameraSet ? assessmentFromScore(prevCameraSet.score) : undefined;
+  const restNumericAxes = axisKeys.filter(k => (!lastAssessment || lastAssessment[k].kind === "numeric") && (!prevAssessment || prevAssessment[k].kind === "numeric"));
+  const restReveal = row?.phase === "resting" && lastCameraSet && lastBreakdown ? buildSetReveal(lastBreakdown, prevCameraSet ? setBreakdownOf(prevCameraSet) : null, { reps: lastCameraSet.reps || 0, unit: current ? repUnit(current.exercise) : "次", scored: true, axisLabels: capability?.axes ? { depth: capability.axes[0], stability: capability.axes[1], trunk: capability.axes[2], symmetry: capability.axes[3] } : undefined, numericAxes: [...restNumericAxes] }) : null;
   const options = useWorkoutPreferences(!!row && !finished, restSeconds);
   const snapshot = useRef<any>({});
   snapshot.current = camera
-    ? { reps: metrics.reps, loadKg: weight, score: metrics.scoreAccumulator,recognitionStrategy:adaptive?'adaptive-v1':'legacy' }
+    ? { reps: metrics.reps, loadKg: weight, score: { ...metrics.scoreAccumulator, ...(metrics.axisAssessment ? { axisAssessment: metrics.axisAssessment } : {}) },recognitionStrategy:adaptive?'adaptive-v1':'legacy' }
     : { reps: current?.targetSeconds ? 0 : manualReps, loadKg: weight };
   snapshot.current = {
     ...snapshot.current,
@@ -816,13 +821,23 @@ export default function PlanWorkout() {
               {restReveal && lastBreakdown && (
                 <div className="gym-reveal">
                   <p className="gym-reveal-lead">{restReveal.progressLine}</p>
-                  {capability?.axes?.map((name: string, i: number) => (
-                    <div className="gym-reveal-axis" key={name}>
-                      <span>{name}</span>
-                      <AnimatedProgress value={lastBreakdown[axisKeys[i]] || 0} delay={i * 120} />
-                      <b>{lastBreakdown[axisKeys[i]] || 0}</b>
-                    </div>
-                  ))}
+                  {capability?.axes?.map((name: string, i: number) => {
+                    const st = lastAssessment?.[axisKeys[i]];
+                    return (
+                      <div className="gym-reveal-axis" key={name}>
+                        <span>{name}</span>
+                        {st && st.kind !== "numeric" ? (
+                          <b>{axisStateText(st)}</b>
+                        ) : (
+                          <>
+                            <AnimatedProgress value={lastBreakdown[axisKeys[i]] || 0} delay={i * 120} />
+                            <b>{lastBreakdown[axisKeys[i]] || 0}</b>
+                          </>
+                        )}
+                      </div>
+                    );
+                  })}
+                  {lastAssessment && axisKeys.some(k => lastAssessment[k].kind !== "numeric") && <p>总分只按能评的项目算——评不了的不会算成低分</p>}
                   {restReveal.goalLine && <p className="gym-reveal-goal">{restReveal.goalLine}</p>}
                 </div>
               )}

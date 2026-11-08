@@ -226,11 +226,14 @@ function scoredBody(data: SetCardData, bandBottom: number): string {
   const axes = (data.axes || [])
     .map((axis, i) => {
       const y = axesTop + i * 92
-      const fillW = Math.round(672 * Math.min(100, Math.max(0, axis.value)) / 100)
+      const fillW = axis.text ? 0 : Math.round(672 * Math.min(100, Math.max(0, axis.value)) / 100)
+      const valueSvg = axis.text
+        ? `<text x="${RIGHT}" y="${y + 11}" text-anchor="end" font-family="${FONT}" font-size="30" font-weight="700" fill="${MUTED}">${escapeXml(axis.text)}</text>`
+        : `<text x="${RIGHT}" y="${y + 11}" text-anchor="end" font-family="${FONT}" font-size="33" font-weight="800" fill="${INK}">${axis.value}</text>`
       return `<text x="${PAD}" y="${y + 10}" font-family="${FONT}" font-size="32" font-weight="700" fill="${INK}">${escapeXml(axis.label)}</text>
 <rect x="216" y="${y - 11}" width="672" height="21" rx="10.5" fill="${SOFT}"/>
 <rect x="216" y="${y - 11}" width="${fillW}" height="21" rx="10.5" fill="url(#axisGrad)"/>
-<text x="${RIGHT}" y="${y + 11}" text-anchor="end" font-family="${FONT}" font-size="33" font-weight="800" fill="${INK}">${axis.value}</text>`
+${valueSvg}`
     })
     .join('')
   return `<text x="${PAD}" y="${scoreBaseline}" font-family="${FONT}" font-size="246" font-weight="800" fill="${PRIMARY}">${escapeXml(scoreText)}</text>

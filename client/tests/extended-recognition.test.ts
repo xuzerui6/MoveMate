@@ -384,7 +384,7 @@ test('front raise calibration bank expires after ten seconds without a start pos
   assert.equal(r.tracker.diagnostics.stage,'calibrating');
   r.feed('neutral',2000);assert.equal(r.tracker.diagnostics.stage,'ready');
 });
-test('hammer curls score loosely synchronized bilateral peaks peak-to-peak',()=>{
+test('hammer curls record peak-timing offsets for loosely synchronized bilateral peaks (step 3: category, not a number)',()=>{
   const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
   const step=1000/24;let t=0;
   const feed=(l:number,r:number)=>{const raw=curlPose(l,r);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
@@ -392,23 +392,31 @@ test('hammer curls score loosely synchronized bilateral peaks peak-to-peak',()=>
   assert.equal(tracker.diagnostics.stage,'ready');
   // ≈2 s bilateral curls peaking at 79°, the right side ≈375 ms behind: outside
   // the 150 ms merge overlap (both reps emit as singles) but inside the 800 ms
-  // peak window. The old instantaneous peakOther read the right elbow mid-flight
-  // (≈100°) and scored ≈50 for these symmetric curls.
+  // peak window. Pre-contract this scored a numeric symmetry peak-to-peak;
+  // step 3 records the peak-timing offset (≈375 ms) instead — the evidence
+  // the category is derived from.
   const P=48,OFF=9;
   const wave=(k:number)=>{const u=(k%P)/P;return 160-81*(1-Math.cos(2*Math.PI*u))/2;};
   for(let rep=0;rep<3;rep++)for(let k=0;k<P;k++)feed(wave(k),wave(k-OFF));
   for(let c=0;c<40;c++)feed(160,160);
   assert.equal(tracker.metrics.reps,6);
-  assert.ok(tracker.metrics.formBreakdown.symmetry>=85,`symmetry ${tracker.metrics.formBreakdown.symmetry} should be peak-to-peak (≈100), not peakOther (≈50)`);
+  const offsets=tracker.metrics.scoreAccumulator.symmetryOffsetsMs;
+  assert.equal(offsets?.length,6);
+  assert.ok(offsets!.every(o=>o>=250&&o<=500),`offsets ${offsets} should all be ≈375 ms`);
+  assert.deepEqual(tracker.metrics.axisAssessment?.symmetry,{kind:'category',category:'slight'});
+  // No numeric symmetry is emitted or accumulated for new sets.
+  assert.equal(tracker.metrics.formBreakdown.symmetry,0);
+  assert.equal(tracker.metrics.scoreAccumulator.symmetry,0);
 });
-test('hammer curls keep peakOther symmetry for true alternating curls',()=>{
+test('hammer curls read true alternating curls as 明显交替 from peak timing (step 3)',()=>{
   const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
   const step=1000/24;let t=0;
   const feed=(l:number,r:number)=>{const raw=curlPose(l,r);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
   for(let c=0;c<63;c++)feed(160,160);
   // Arms alternate whole cycles (≈1.2 s each): peaks land ≈1.2 s apart, far
-  // outside the 800 ms window, so the resting-arm formula still applies — and
-  // the resting arm is fully extended at the other's peak.
+  // outside the 800 ms pairing window. Pre-contract the resting-arm formula
+  // scored these ≈90+; step 3 reads the same stream as what it is — peaks
+  // that never coincide — and records the ≈1.2 s offset per rep.
   const P=29;
   const wave=(k:number)=>{const u=(k%P)/P;return 160-85*(1-Math.cos(2*Math.PI*u))/2;};
   for(let k=0;k<4*P;k++){
@@ -417,23 +425,32 @@ test('hammer curls keep peakOther symmetry for true alternating curls',()=>{
   }
   for(let c=0;c<40;c++)feed(160,160);
   assert.equal(tracker.metrics.reps,4);
-  assert.ok(tracker.metrics.formBreakdown.symmetry>=90,`alternating symmetry ${tracker.metrics.formBreakdown.symmetry} should stay high via peakOther`);
+  const offsets=tracker.metrics.scoreAccumulator.symmetryOffsetsMs;
+  // Three of four reps record: the FIRST rep emits on the +600 ms pending
+  // flush, before the partner's first peak has locked — at emit time it
+  // genuinely has no bilateral evidence yet. Later reps read the previous
+  // partner peak (≈1.2 s away) and record it.
+  assert.equal(offsets?.length,3);
+  assert.ok(offsets!.every(o=>o>800),`offsets ${offsets} should all exceed the 800 ms pairing window`);
+  assert.deepEqual(tracker.metrics.axisAssessment?.symmetry,{kind:'category',category:'alternating'});
 });
-test('hammer curls keep the peakOther penalty when the resting arm is held half-bent',()=>{
+test('hammer curls record no bilateral evidence when the resting arm never peaks (step 3: unassessable, not a penalty)',()=>{
   const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
   const step=1000/24;let t=0;
   const feed=(l:number,r:number)=>{const raw=curlPose(l,r);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
   for(let c=0;c<63;c++)feed(160,160);
   assert.equal(tracker.diagnostics.stage,'ready');
-  // True single-arm work: the right arm never peaks (held at 95°), so no peer
-  // peak exists and the formula is untouched: 100 − (140−95)×1.2 = 46.
+  // True single-arm work: the right arm never peaks (held at 95°), so no
+  // peak-timing evidence exists for either rep. Pre-contract the peakOther
+  // formula convicted the set (≈46) for the resting arm's posture; step 3
+  // records nothing and declares the axis unassessable for this set.
   const P=48;
   const wave=(k:number)=>{const u=(k%P)/P;return 160-85*(1-Math.cos(2*Math.PI*u))/2;};
   for(let rep=0;rep<2;rep++)for(let k=0;k<P;k++)feed(wave(k),95);
   for(let c=0;c<40;c++)feed(160,95);
   assert.equal(tracker.metrics.reps,2);
-  const sym=tracker.metrics.formBreakdown.symmetry;
-  assert.ok(sym>=43&&sym<=49,`symmetry ${sym} should stay ≈46 where peakOther legitimately applies`);
+  assert.equal(tracker.metrics.scoreAccumulator.symmetryOffsetsMs?.length??0,0);
+  assert.deepEqual(tracker.metrics.axisAssessment?.symmetry,{kind:'unassessable',reason:'no-bilateral-evidence'});
 });
 // --- Hammer symmetry round (2026-11-08): peer-peak memory across soft interrupts + set median ---
 /** Choreographed split bilateral effort for the peer-peak fixtures: the left
@@ -481,21 +498,23 @@ function splitEffort(blindFrames:number){
 test('hammer peer-peak memory survives a short soft interrupt and rescues a split bilateral rep',()=>{
   const tracker=splitEffort(5); // ≈208 ms hole, inside the 2000 ms bound
   assert.equal(tracker.metrics.reps,1);
-  const values=tracker.metrics.scoreAccumulator.symmetryValues;
-  assert.equal(values?.length,1);
-  // Peak-to-peak against the left arm's preserved locked peak (≈79° vs ≈79°).
-  // Before this round the interrupt wiped lastPeak and the same rep fell to
-  // the instantaneous formula (peakOther 110° → ≈64).
-  assert.ok(values![0]>=90,`symmetry ${values![0]} should be peak-to-peak (≥90), not instantaneous (≈64)`);
-  assert.ok(tracker.metrics.formBreakdown.symmetry>=90);
+  // Step 3: the rescued peer peak now lands as peak-timing evidence — one
+  // offset inside the pairing window (≈600 ms by choreography), read as
+  // 略有错峰. Before the symmetry round the interrupt wiped lastPeak and the
+  // same rep carried no bilateral evidence at all.
+  const offsets=tracker.metrics.scoreAccumulator.symmetryOffsetsMs;
+  assert.equal(offsets?.length,1);
+  assert.ok(offsets![0]>=400&&offsets![0]<=800,`offset ${offsets![0]} should be the preserved peer peak's ≈600 ms`);
+  assert.deepEqual(tracker.metrics.axisAssessment?.symmetry,{kind:'category',category:'slight'});
 });
 test('hammer peer-peak memory does not survive a hole past the preservation bound',()=>{
   const tracker=splitEffort(60); // ≈2500 ms hole: the bound expires mid-burst
   assert.equal(tracker.metrics.reps,1);
-  const values=tracker.metrics.scoreAccumulator.symmetryValues;
-  assert.equal(values?.length,1);
-  // No rescue: the rep lands on the instantaneous path (peakOther 110° → ≈64).
-  assert.ok(values![0]>=50&&values![0]<=80,`symmetry ${values![0]} should be the instantaneous ≈64 after expiry, not peak-to-peak`);
+  // No rescue: the peer peak is gone and the other side never peaks again,
+  // so the rep records no bilateral evidence (pre-contract it fell to the
+  // instantaneous formula, ≈64).
+  assert.equal(tracker.metrics.scoreAccumulator.symmetryOffsetsMs?.length??0,0);
+  assert.deepEqual(tracker.metrics.axisAssessment?.symmetry,{kind:'unassessable',reason:'no-bilateral-evidence'});
 });
 test('medianOf takes the middle value, averaging the two middles on even counts',()=>{
   assert.equal(medianOf([]),0);
@@ -505,35 +524,30 @@ test('medianOf takes the middle value, averaging the two middles on even counts'
   assert.equal(medianOf([37,50,63,100]),56.5);
   assert.equal(medianOf([90,10,80,20]),50);
 });
-test('hammer set symmetry is the median of per-rep values, so one outlier rep cannot convict the set',()=>{
+test('hammer set symmetry category is the median of per-rep offsets, so one alternating effort cannot convict the set',()=>{
   const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
   const step=1000/24;let t=0;
   const feed=(l:number,r:number)=>{const raw=curlPose(l,r);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
   for(let c=0;c<63;c++)feed(160,160);
   const P=48;
-  const wave=(k:number)=>{const u=(k%P)/P;return 160-85*(1-Math.cos(2*Math.PI*u))/2;};
-  // Rep A: true single-arm, resting arm fully extended → peakOther 160 → 100.
-  for(let k=0;k<P;k++)feed(wave(k),160);
-  for(let c=0;c<40;c++)feed(160,160);
-  assert.equal(tracker.metrics.reps,1);
-  assert.equal(tracker.metrics.formBreakdown.symmetry,100);
-  // Rep B: resting arm held half-bent → peakOther 95 → 46 (the outlier).
-  for(let c=0;c<6;c++)feed(160,95);
-  for(let k=0;k<P;k++)feed(wave(k),95);
-  for(let c=0;c<40;c++)feed(160,95);
-  assert.equal(tracker.metrics.reps,2);
-  // Even count: the set value is the mean of the two middle values.
-  assert.equal(tracker.metrics.formBreakdown.symmetry,73);
-  // Rep C: extended again → 100. Median of [100, 46, 100] is 100; the old
-  // mean would report 82 — one half-bent-resting-arm rep convicted the set.
-  for(let c=0;c<6;c++)feed(160,160);
-  for(let k=0;k<P;k++)feed(wave(k),160);
-  for(let c=0;c<40;c++)feed(160,160);
-  assert.equal(tracker.metrics.reps,3);
-  assert.deepEqual(tracker.metrics.scoreAccumulator.symmetryValues,[100,46,100]);
-  assert.equal(tracker.metrics.formBreakdown.symmetry,100);
+  const wave=(k:number)=>{const u=(k%P)/P;return 160-81*(1-Math.cos(2*Math.PI*u))/2;};
+  const effort=(off:number)=>{
+    for(let k=0;k<P+off;k++)feed(wave(k),wave(k-off));
+    for(let c=0;c<40;c++)feed(160,160);
+  };
+  // Three synchronized efforts (peaks ≈83 ms apart, merged pairs, one offset
+  // each) around one alternating effort (peaks ≈917 ms apart, two singles,
+  // one offset each): offsets [83, 917, 917, 83, 83] → median 83 = 同步,
+  // while the mean (≈417) would report 略有错峰 — the median keeps one
+  // loose effort from mislabelling a synchronized set, as it did for the
+  // retired numeric axis.
+  effort(2);effort(22);effort(2);effort(2);
+  assert.equal(tracker.metrics.reps,5);
+  const offsets=tracker.metrics.scoreAccumulator.symmetryOffsetsMs;
+  assert.equal(offsets?.length,5);
+  assert.deepEqual(tracker.metrics.axisAssessment?.symmetry,{kind:'category',category:'sync'});
 });
-test('hammer true single-arm sets record only peakOther symmetry — no phantom peer values',()=>{
+test('hammer true single-arm sets record no timing offsets — no phantom peer evidence',()=>{
   const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
   const step=1000/24;let t=0;
   const feed=(l:number,r:number)=>{const raw=curlPose(l,r);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
@@ -543,14 +557,13 @@ test('hammer true single-arm sets record only peakOther symmetry — no phantom 
   for(let rep=0;rep<2;rep++)for(let k=0;k<P;k++)feed(wave(k),95);
   for(let c=0;c<40;c++)feed(160,95);
   assert.equal(tracker.metrics.reps,2);
-  const values=tracker.metrics.scoreAccumulator.symmetryValues;
-  assert.equal(values?.length,2);
-  // Both values stay on the instantaneous path (≈46): a peak-to-peak rescue
-  // would read ≥85, and the median of equals changes nothing in character.
-  assert.ok(values!.every(v=>v>=43&&v<=49),`values ${values} should both be ≈46`);
-  const sym=tracker.metrics.formBreakdown.symmetry;
-  assert.ok(sym>=43&&sym<=49,`set symmetry ${sym} should stay ≈46`);
+  // The resting side never peaks, so neither rep has bilateral evidence:
+  // nothing is recorded and the axis is unassessable for the set (the
+  // pre-contract instantaneous values ≈46 graded the resting arm's angle).
+  assert.equal(tracker.metrics.scoreAccumulator.symmetryOffsetsMs?.length??0,0);
+  assert.deepEqual(tracker.metrics.axisAssessment?.symmetry,{kind:'unassessable',reason:'no-bilateral-evidence'});
 });
+
 test('sustainedPeak credits only deviations sustained for at least 150 ms',()=>{
   const win=(start:number,v:number):TimedSpan=>({start,end:start+100,v});
   // A lone 100 ms window at 800 amid 200s cannot prove sustainment.
@@ -630,23 +643,28 @@ function raiseWorld2(l:number,r:number):Point[]{
   }
   return w;
 }
-test('front raise singles score peak-to-peak when the other side peaked within 800 ms',()=>{
+test('front raise singles record per-side depth bands; symmetry is unassessable (step 3)',()=>{
   const tracker=new ExtendedExerciseTracker('front_raise',20,{},true);
   const step=1000/24;let t=0;const img=raiseImage();
   const feed=(l:number,r:number)=>{tracker.update(structuredClone(img),t,1,raiseWorld2(l,r));t+=step;};
   for(let c=0;c<63;c++)feed(10,10);
   assert.equal(tracker.diagnostics.stage,'ready');
   // One bilateral effort, loosely synchronized: left peaks at 76°, the right
-  // ≈708 ms later at 68°. The peaks miss the merge overlap, so both reps emit
-  // as singles — scored peak-to-peak (≈88), not by the other arm's height at
-  // the peak instant (which would read ≈100 and hide the real difference).
+  // ≈708 ms later at 68°. Counting is unchanged (two singles). Pre-contract
+  // the pair scored a numeric symmetry peak-to-peak (≈88); step 3 emits no
+  // symmetry number frontally, and depth lands as per-side bands — both
+  // peaks sit in the 65–79° neighbourhood, short of the shoulder band.
   const P=48,OFF=17;
   const wave=(k:number,peak:number)=>{const u=(k%P)/P;return 10+(peak-10)*(1-Math.cos(2*Math.PI*u))/2;};
   for(let k=0;k<P;k++)feed(wave(k,76),wave(k-OFF,68));
   for(let c=0;c<48;c++)feed(10,10);
   assert.equal(tracker.metrics.reps,2);
-  const sym=tracker.metrics.formBreakdown.symmetry;
-  assert.ok(sym>=82&&sym<=94,`symmetry ${sym} should be ≈88 peak-to-peak (76° vs 68°)`);
+  assert.deepEqual(tracker.metrics.axisAssessment?.symmetry,{kind:'unassessable',reason:'view'});
+  assert.deepEqual(tracker.metrics.scoreAccumulator.depthBandCounts,{left:{below:1},right:{below:1}});
+  assert.deepEqual(tracker.metrics.axisAssessment?.depth,{kind:'bands',left:'below',right:'below'});
+  // No numeric depth or symmetry is emitted or accumulated for new sets.
+  assert.equal(tracker.metrics.formBreakdown.depth,0);
+  assert.equal(tracker.metrics.formBreakdown.symmetry,0);
 });
 // --- Round 4 (2026-11-08): peak evidence, overshoot revocation, cycle preservation, blocker hints ---
 /** Parametric front-raise frame with per-side exact (raised θ, elbow E, direction

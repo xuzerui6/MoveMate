@@ -1,7 +1,8 @@
 import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
 import type {ExerciseMetrics,RecognitionDiagnostics} from './exerciseMetrics';
 import {medianLandmarks,poseIssueCopy} from './poseFeedback';
-import { COPY_CALIBRATED, COPY_HALF_REP, COPY_OUT_OF_FRAME, notSeenCopyFor } from './companionCopy';
+import { COPY_CALIBRATED, COPY_HALF_REP, COPY_OUT_OF_FRAME, cannotAssessCopyFor, notSeenCopyFor } from './companionCopy';
+import { allNumericAssessments, frontRaiseBandFor, modalBand, syncCategoryForOffset, type AxisAssessments, type DepthBandCounts } from './axisAssessment';
 import {emptyCorrectionCounts,emptyFormBreakdown,medianOf} from './sessionMigration';
 import {NEW_EXERCISES,type NewExerciseType} from './newExercises';
 import {LIBRARY_RECOGNITION} from '../../gym/libraryRecognition';
@@ -177,6 +178,27 @@ const PEAK_EVIDENCE_WINDOW_MS=300,PEAK_EVIDENCE_BAND_DEG=10,EVIDENCE_MIN_SPAN_MS
  * adaptive wrapper's hammer evidence-freeze grace (HAMMER_FREEZE_GRACE_MS), so
  * both layers agree on how long a hole may last before state is void. */
 const CYCLE_PRESERVE_MS=2000;
+/** Step-3 scoring contract (2026-11-08): movements measured on ONE side by
+ * design — needed() locks a single tracking side and calibration judges that
+ * side alone. Their measure() "symmetry" channel is a both-knees difference
+ * or a support-point drift, not a bilateral-symmetry judgment, and the
+ * Phase-0 labels mark frontal bilateral symmetry unobservable from the
+ * side views these movements prescribe. The axis is declared unassessable
+ * for them and leaves the total (which renormalizes over the other three).
+ * Support-discipline fourth axes whose DEFINITION is single-side stillness
+ * (one-arm row's support elbow, split squat's rear foot, standing leg
+ * curl's support leg, mountain climber's extended partner) are not symmetry
+ * judgments at all and keep their numbers — see the step-3 doc. */
+const SINGLE_SIDE_TYPES:ReadonlySet<string>=new Set(['romanian_deadlift','glute_bridge','barbell_deadlift','lying_leg_raise']);
+/** Degraded framing (step 3, matrix cell 4): how long the required joints
+ * may stay unevidenced — no successful measure() — before the session
+ * enters the cannot-assess state: counting is already paused by the gate
+ * interrupts themselves; the state makes that pause a named, visible
+ * condition with reframe guidance instead of an endless tracking_lost.
+ * 3000 ms sits above every transient the suite shows (freeze grace 2000 ms,
+ * gate bursts ≈800 ms) and far below the suite's degraded clips, which
+ * never measure at all. */
+const CANNOT_ASSESS_AFTER_MS=3000;
 export type PeakEvidenceVerdict='qualified'|'revoked'|'insufficient';
 /** Judges one closed front-raise peak episode from its sampled evidence.
  * `best`/`bestAt` are the episode's sampled maximum raised angle and its time. */
@@ -349,6 +371,11 @@ export class ExtendedExerciseTracker {
    * peer-peak preservation (hammer curl); cleared by the next successfully
    * measured frame or any hard interrupt. */
   private cycleHoleStart:number|null=null;
+  /** Step 3 (cell 4): when the current unmeasurable stretch began (the last
+   * successfully measured frame's time, or the first failed frame's), and
+   * whether it has lasted long enough to name the cannot-assess state. */
+  private unmeasurableSince:number|null=null;
+  private cannotAssess=false;
   /** Generic-path stability evidence, aggregated by sustainedPeak at completion. */
   private controlSamples:TimedValue[]=[];
   private speedSpans:TimedSpan[]=[];
@@ -369,7 +396,40 @@ export class ExtendedExerciseTracker {
     // Accumulators without recorded values (every other movement, and hammer
     // sets restored from before this field existed) keep the mean above.
     const values=a.symmetryValues;if(values&&values.length)b.symmetry=Math.round(medianOf(values));
-    this.metrics.formBreakdown=b;}
+    this.metrics.formBreakdown=b;this.metrics.axisAssessment=this.assessments();}
+  /** The step-3 assessability map for the set as it stands (see
+   * axisAssessment.ts for the contract). Static per movement, except the
+   * hammer category (derived from the recorded peak-timing offsets), the
+   * front-raise bands (derived from the recorded per-side tallies) and the
+   * cannot-assess override: a session that ends inside the degraded-framing
+   * state without one scored rep presents every axis as unassessable —
+   * scored reps keep the axes they honestly earned before the degradation. */
+  private assessments():AxisAssessments{
+    const a=this.metrics.scoreAccumulator,out=allNumericAssessments();
+    if(this.cannotAssess&&a.count===0){for(const k of axes)out[k]={kind:'unassessable',reason:'framing'};return out;}
+    if(a.count===0)return out;
+    if(this.type==='hammer_curl'){
+      if(a.symmetryOffsetsMs&&a.symmetryOffsetsMs.length)out.symmetry={kind:'category',category:syncCategoryForOffset(medianOf(a.symmetryOffsetsMs))};
+      else if(!(a.symmetryValues&&a.symmetryValues.length))out.symmetry={kind:'unassessable',reason:'no-bilateral-evidence'};
+      // else: a restored pre-contract set — its median number stands.
+    }else if(this.type==='front_raise'){
+      out.symmetry={kind:'unassessable',reason:'view'};
+      const left=modalBand(a.depthBandCounts?.left),right=modalBand(a.depthBandCounts?.right);
+      out.depth=left||right?{kind:'bands',...(left?{left}:{}),...(right?{right}:{})}:{kind:'unassessable',reason:'no-bilateral-evidence'};
+    }else if(SINGLE_SIDE_TYPES.has(this.type)){
+      out.symmetry={kind:'unassessable',reason:'single-side'};
+    }
+    return out;
+  }
+  /** Step 3 (cell 4): a frame that could not be measured extends the
+   * current unmeasurable stretch; once it outlasts CANNOT_ASSESS_AFTER_MS
+   * the session is in the cannot-assess state until a frame measures again.
+   * Called by softInterrupt (every gate loss) and by formInterrupt only for
+   * its cannot-confirm rejections — see there. */
+  private noteUnmeasurable(now:number){
+    if(this.unmeasurableSince===null)this.unmeasurableSince=this.last??now;
+    if(now-this.unmeasurableSince>=CANNOT_ASSESS_AFTER_MS)this.cannotAssess=true;
+  }
   private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.retSince=null;this.retAccum=0;this.retPrevAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;this.hammerSides=[freshSideCycle(),freshSideCycle()];this.hammerPending=null;this.rowSides=[freshSideCycle(),freshSideCycle()];this.raiseSides=[freshSideCycle(),freshSideCycle()];this.raisePending=null;this.climberSides=[freshSideCycle(),freshSideCycle()];this.squatSides=[freshSideCycle(),freshSideCycle()];this.squatFront=null;this.lastPeak=[null,null];this.controlSamples=[];this.speedSpans=[];this.upperArmDevAt=null;this.upperArmClearAt=null;this.freezeBridged=false;}
   /** The adaptive wrapper deliberately froze frames during a hammer-curl evidence freeze
    * (see AdaptiveRecognition); the next frame gap is therefore known-benign and must not be
@@ -413,6 +473,16 @@ export class ExtendedExerciseTracker {
     if(!keepCycle&&!peerPeaks)this.cycleHoleStart=null;
     this.diagnostics={...this.diagnostics,stage:'tracking_lost',fps:0,calibrationProgress:progress,lastResetReason:reason};
     this.metrics={...this.metrics,phase:'standing',feedback,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:ready,message:feedback}};
+    // Step 3: every metrics surface carries the current assessability map;
+    // inside the cannot-assess state the interrupt's own message yields to
+    // the state copy (one reframe cue, companion tone) and the diagnostics
+    // stage names the state, so the pause is visible instead of silent.
+    this.metrics.axisAssessment=this.assessments();
+    if(this.cannotAssess){
+      const copy=cannotAssessCopyFor(this.type);
+      this.diagnostics={...this.diagnostics,stage:'cannot_assess'};
+      this.metrics={...this.metrics,feedback:copy,poseFeedback:{...this.metrics.poseFeedback,message:copy}};
+    }
     return this.metrics;
   }
   /** Transient-gate interrupt inside update(): the frame stream hiccupped — a
@@ -427,6 +497,7 @@ export class ExtendedExerciseTracker {
    * resume stale progress. Once ready, ready persists for the rest of the
    * session against transient gates. */
   private softInterrupt(reason:string,now:number,feedback:string=reason){
+    this.noteUnmeasurable(now);
     if(!this.ready&&this.lastStartAt!==null&&now-this.lastStartAt>CALIBRATION_STALE_MS){this.calibrationBank=0;this.calibration=null;}
     // Round 4: for front raise, a transient gate also preserves the in-flight
     // cycle while the hole is short (CYCLE_PRESERVE_MS from the last measured
@@ -452,6 +523,11 @@ export class ExtendedExerciseTracker {
    * fabricate a rep out of the rejected pose (the standing-leg-curl side-switch
    * case). Recalibration then re-earns the hold on top of the preserved bank. */
   private formInterrupt(reason:string,now:number){
+    // Only cannot-confirm rejections （暂时无法…) are evidence loss: the
+    // pose was seen and found unjudgeable. A rejection that names a visible
+    // wrong posture （俯身/站姿不计入…) is the system seeing the user clearly
+    // — it keeps its own specific copy forever and never trips the state.
+    if(reason.startsWith('暂时无法'))this.noteUnmeasurable(now);
     if(!this.ready&&this.lastStartAt!==null&&now-this.lastStartAt>CALIBRATION_STALE_MS){this.calibrationBank=0;this.calibration=null;}
     return this.interrupt(reason,reason,{preserveCalibration:true});
   }
@@ -755,21 +831,35 @@ export class ExtendedExerciseTracker {
     const depth=pair?Math.min(parts[0].peakAmp,parts[1].peakAmp):parts[0].peakAmp;
     const posture=pair?Math.min(parts[0].peakPosture,parts[1].peakPosture):parts[0].peakPosture;
     const control=Math.max(...parts.map(p=>p.control)),shift=Math.max(...parts.map(p=>p.shift)),speed=Math.max(...parts.map(p=>p.speed)),duration=Math.max(...parts.map(p=>p.duration));
-    // A single whose other side peaked within PEAK_PAIR_WINDOW_MS is a bilateral
-    // effort whose peaks merely missed the 150 ms merge overlap — score it
-    // peak-to-peak like a pair. The instantaneous peakOther formula reads the
-    // other elbow mid-flight on loose bilateral synchrony (at a 2 s pace, a
-    // 350 ms offset leaves it near 100° → symmetry ≈ 50 for visually symmetric
-    // curls) and stays reserved for true single-arm / alternating reps.
-    const symmetry=pair?cap(100-Math.abs(parts[0].peakElbow-parts[1].peakElbow)*1.5):peer?cap(100-Math.abs(parts[0].peakElbow-peer.value)*1.5):cap(100-Math.max(0,140-parts[0].peakOther)*1.2);
-    const breakdown={depth,stability:cap(100-Math.max(0,speed-260)*.08-Math.max(0,.6-duration)*70-control),trunk:cap(posture-shift*1.5),symmetry};
-    const score=Math.round(breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2+breakdown.symmetry*.2),scored=parts.every(p=>p.scoring)&&f.scorable,issues:PoseIssue[]=[];
-    if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(breakdown.symmetry<70)issues.push('poor_coordination');
+    // Step 3 (matrix cell 1): symmetry no longer takes a number. The Phase-0
+    // replay showed the two elbow channels disagreeing by 15–35° on visibly
+    // symmetric arms, so any peak-HEIGHT comparison (paired, peak-to-peak or
+    // the instantaneous peakOther read) grades channel noise, not the user.
+    // What the frontal view does evidence honestly is peak TIMING: this rep
+    // records the offset between the two sides' confirmed peak midpoints —
+    // from the pair itself, from the peer peak the round-3 machinery found,
+    // or, for a single with neither, from the other side's most recent
+    // confirmed peak wherever it sits (an alternating rep's honest record).
+    // A rep whose other side has never peaked records nothing: no bilateral
+    // evidence exists for it. The set presentation is the category of the
+    // median offset (see assessments()); the offsets join the accumulator
+    // exactly where symmetryValues used to, and symmetry leaves the total,
+    // which renormalizes over depth/stability/trunk.
+    const mid=(p:SideCompletion)=>(p.peakStart+p.peakEnd)/2;
+    let offsetMs:number|null=null;
+    if(pair)offsetMs=Math.abs(mid(parts[0])-mid(parts[1]));
+    else if(peer)offsetMs=Math.abs(mid(parts[0])-peer.at);
+    else{const lastOther=this.lastPeak[1-parts[0].side];if(lastOther)offsetMs=Math.abs(mid(parts[0])-lastOther.at);}
+    const breakdown={depth,stability:cap(100-Math.max(0,speed-260)*.08-Math.max(0,.6-duration)*70-control),trunk:cap(posture-shift*1.5)};
+    const score=Math.round((breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2)/.8),scored=parts.every(p=>p.scoring)&&f.scorable,issues:PoseIssue[]=[];
+    if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');
     const acc={...this.metrics.scoreAccumulator},counts={...this.metrics.correctionCounts};
-    // Hammer curls record each scored rep's symmetry value: the set-level axis
-    // aggregates them by median (see updateAverage). This is the only emit path
-    // that records values, which is what scopes the median to hammer curls.
-    if(scored){acc.count++;acc.total+=score;axes.forEach(k=>acc[k]+=breakdown[k]);acc.symmetryValues=[...(acc.symmetryValues??[]),breakdown.symmetry];issues.forEach(k=>counts[k]++);}
+    // Hammer curls record each scored rep's peak-timing offset: the set-level
+    // symmetry presentation derives from their median (see assessments()).
+    // This is the only emit path that records offsets, which is what scopes
+    // the category to hammer curls. The numeric symmetry sum is no longer
+    // maintained for new sets; restored pre-contract sets keep theirs.
+    if(scored){acc.count++;acc.total+=score;acc.depth+=breakdown.depth;acc.stability+=breakdown.stability;acc.trunk+=breakdown.trunk;if(offsetMs!==null)acc.symmetryOffsetsMs=[...(acc.symmetryOffsetsMs??[]),Math.round(offsetMs)];issues.forEach(k=>counts[k]++);}
     this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`:`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};
     this.updateAverage();
     return true;
@@ -1076,20 +1166,28 @@ export class ExtendedExerciseTracker {
   private emitFrontRaiseRep(parts:SideCompletion[],f:Measurement,peer?:{at:number;value:number}):boolean{
     if(this.metrics.reps>=this.metrics.targetReps)return false;
     const pair=parts.length===2;
-    const depth=pair?Math.min(parts[0].peakAmp,parts[1].peakAmp):parts[0].peakAmp;
     const posture=pair?Math.min(parts[0].peakPosture,parts[1].peakPosture):parts[0].peakPosture;
     const control=Math.max(...parts.map(p=>p.control)),shift=Math.max(...parts.map(p=>p.shift)),speed=Math.max(...parts.map(p=>p.speed)),duration=Math.max(...parts.map(p=>p.duration));
-    // For front raise, peakElbow stores the side's raised angle at its best amplitude
-    // and peakOther the other side's raised angle at that moment: a pair is symmetric
-    // when both sides peaked at the same height, a single when the other arm stayed down.
-    // Round 3: a single whose other side peaked within PEAK_PAIR_WINDOW_MS scores
-    // peak-to-peak like a pair (see emitHammerRep); peakOther remains for true singles.
-    const symmetry=pair?cap(100-Math.abs(parts[0].peakElbow-parts[1].peakElbow)*1.5):peer?cap(100-Math.abs(parts[0].peakElbow-peer.value)*1.5):cap(100-Math.max(0,parts[0].peakOther-25)*1.2);
-    const breakdown={depth,stability:cap(100-Math.max(0,speed-260)*.08-Math.max(0,.6-duration)*70-control),trunk:cap(posture-shift*1.5),symmetry};
-    const score=Math.round(breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2+breakdown.symmetry*.2),scored=parts.every(p=>p.scoring)&&f.scorable,issues:PoseIssue[]=[];
-    if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(breakdown.symmetry<70)issues.push('poor_coordination');
+    // Step 3 (matrix cell 2): front-raise depth and symmetry both leave the
+    // numeric contract. Depth becomes a per-side band (未到肩高 / 到达肩高 /
+    // 过顶） read off each side's confirmed peak raised angle — for front
+    // raise peakElbow stores exactly that — because the degree channel
+    // carries a systematic low bias (≈ −20° under a loose sleeve) that made
+    // the /90 number grade the channel, not the raise. Symmetry is
+    // unassessable frontally: the labels file marks only timing and
+    // projected height observable, and the right channel's episodic
+    // +15–50° over-read is a channel diagnostic, not a performance fact.
+    // The total renormalizes over stability and trunk; per scored rep each
+    // participating side's band joins the accumulator tallies the set
+    // presentation reads (modal band per side — see assessments()).
+    const breakdown={stability:cap(100-Math.max(0,speed-260)*.08-Math.max(0,.6-duration)*70-control),trunk:cap(posture-shift*1.5)};
+    const score=Math.round((breakdown.stability*.25+breakdown.trunk*.2)/.45),scored=parts.every(p=>p.scoring)&&f.scorable,issues:PoseIssue[]=[];
+    if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');
     const acc={...this.metrics.scoreAccumulator},counts={...this.metrics.correctionCounts};
-    if(scored){acc.count++;acc.total+=score;axes.forEach(k=>acc[k]+=breakdown[k]);issues.forEach(k=>counts[k]++);}
+    if(scored){acc.count++;acc.total+=score;acc.stability+=breakdown.stability;acc.trunk+=breakdown.trunk;
+      const bands:DepthBandCounts={left:{...(acc.depthBandCounts?.left??{})},right:{...(acc.depthBandCounts?.right??{})}};
+      for(const part of parts){const sideKey=part.side===0?'left':'right';const tally={...(bands[sideKey]??{})};const band=frontRaiseBandFor(part.peakElbow);tally[band]=(tally[band]||0)+1;bands[sideKey]=tally;}
+      acc.depthBandCounts=bands;issues.forEach(k=>counts[k]++);}
     this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`:`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};
     this.updateAverage();
     return true;
@@ -1236,6 +1334,10 @@ export class ExtendedExerciseTracker {
     this.worlds=world?.length===33&&world.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))?[...this.worlds,world].slice(-(this.prefiltered?1:5)):[];
     const f=this.measure(smooth,aspect,this.worlds.length?medianLandmarks(this.worlds):null,required);
     if(typeof f==='string')return this.formInterrupt(f,now);
+    // A measured frame ends any unmeasurable stretch and exits the
+    // cannot-assess state; the assessability map refreshes with it.
+    this.unmeasurableSince=null;
+    if(this.cannotAssess){this.cannotAssess=false;this.metrics.axisAssessment=this.assessments();}
     this.last=now;this.cycleHoleStart=null;this.times=[...this.times,now].filter(t=>now-t<=2000);
     this.diagnostics={...this.diagnostics,fps:this.times.length>1?Math.round((this.times.length-1)*1000/(now-this.times[0])):0,confidence:f.confidence,side:f.side||null,angle:f.angle,basis:f.basis,motion:f.motion};
     if(!this.ready){
@@ -1296,16 +1398,23 @@ export class ExtendedExerciseTracker {
           const acc={...this.metrics.scoreAccumulator},duration=(now-(this.movingAt??now))/1000;
           if(this.type==='standing_leg_curl'){const key=this.peak.side==='left'?'leftReps':'rightReps';acc[key]=(acc[key]||0)+1;}
           const breakdown={depth:this.peak.amplitude,stability:cap(100-Math.max(0,sustainedPeak(this.speedSpans,this.speed)-260)*.08-Math.max(0,.6-duration)*70-sustainedPeak(controlSpans(this.controlSamples,now),this.controlPenalty)),trunk:cap(this.peak.posture-(this.type==='romanian_deadlift'||this.type==='glute_bridge'||this.type==='barbell_deadlift'?0:this.shift*1.5)),symmetry:this.peak.symmetry};
-          const score=Math.round(breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2+breakdown.symmetry*.2),scored=this.scoring&&f.scorable,issues:PoseIssue[]=[];
-          if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(breakdown.symmetry<70)issues.push('poor_coordination');
-          const counts={...this.metrics.correctionCounts};if(scored){acc.count++;acc.total+=score;axes.forEach(k=>acc[k]+=breakdown[k]);issues.forEach(k=>counts[k]++);}
+          // Step 3 (matrix cell 3): single-side movements emit no symmetry
+          // number — the channel is not a bilateral judgment and the view
+          // cannot evidence one — so the axis leaves the total, which
+          // renormalizes over depth/stability/trunk, and no poor_coordination
+          // correction is derived from it. Every other generic-path movement
+          // keeps the four-axis total exactly as before.
+          const singleSide=SINGLE_SIDE_TYPES.has(this.type);
+          const score=singleSide?Math.round((breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2)/.8):Math.round(breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2+breakdown.symmetry*.2),scored=this.scoring&&f.scorable,issues:PoseIssue[]=[];
+          if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');if(!singleSide&&breakdown.symmetry<70)issues.push('poor_coordination');
+          const counts={...this.metrics.correctionCounts};if(scored){acc.count++;acc.total+=score;axes.forEach(k=>{if(singleSide&&k==='symmetry')return;acc[k]+=breakdown[k];});issues.forEach(k=>counts[k]++);}
           this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`:`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};this.updateAverage();completed=true;
         }this.resetCycle();
       }
     }else{this.returnAt=null;if(this.peak)this.retPrevAt=now;}
     const stage=this.metrics.reps>=this.metrics.targetReps?'complete':this.peak?(f.start?'returning':'peak'):f.start?'ready':'moving';
     const copy=definitions[this.type].stages,message=stage==='complete'?'目标完成啦，漂亮':f.hint||copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 继续，保持住':'');
-    const issue:PoseIssue|null=f.controlPenalty>30?'unstable_movement':f.posture<70?'body_alignment':f.symmetry<70?'poor_coordination':null;
+    const issue:PoseIssue|null=f.controlPenalty>30?'unstable_movement':f.posture<70?'body_alignment':!SINGLE_SIDE_TYPES.has(this.type)&&f.symmetry<70?'poor_coordination':null;
     this.diagnostics={...this.diagnostics,stage};this.metrics={...this.metrics,phase:f.start?'standing':this.peak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?poseIssueCopy(issue,this.type).joints:[],calibrated:true,message:f.hint|| (issue?poseIssueCopy(issue,this.type).action:message)}};this.previous=f;return this.metrics;
   }
 }
