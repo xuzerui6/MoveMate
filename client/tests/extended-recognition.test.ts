@@ -648,7 +648,7 @@ function raiseWorld2(l:number,r:number):Point[]{
   }
   return w;
 }
-test('front raise singles record per-side depth bands; symmetry is unassessable (step 3)',()=>{
+test('front raise singles record per-side depth tallies (diagnostics); depth presents as channel-suspended',()=>{
   const tracker=new ExtendedExerciseTracker('front_raise',20,{},true);
   const step=1000/24;let t=0;const img=raiseImage();
   const feed=(l:number,r:number)=>{tracker.update(structuredClone(img),t,1,raiseWorld2(l,r));t+=step;};
@@ -656,9 +656,12 @@ test('front raise singles record per-side depth bands; symmetry is unassessable 
   assert.equal(tracker.diagnostics.stage,'ready');
   // One bilateral effort, loosely synchronized: left peaks at 76°, the right
   // ≈708 ms later at 68°. Counting is unchanged (two singles). Pre-contract
-  // the pair scored a numeric symmetry peak-to-peak (≈88); step 3 emits no
-  // symmetry number frontally, and depth lands as per-side bands — both
+  // the pair scored a numeric symmetry peak-to-peak (≈88); step 3 emitted no
+  // symmetry number frontally, and depth landed as per-side bands — both
   // peaks sit in the 65–79° neighbourhood, short of the shoulder band.
+  // Channel suspensions (2026-11-09, Codex round-7): the tallies below
+  // still accumulate, but the band assignment itself was convicted, so
+  // the axis presents as unassessable ('channel') and no band is shown.
   const P=48,OFF=17;
   const wave=(k:number,peak:number)=>{const u=(k%P)/P;return 10+(peak-10)*(1-Math.cos(2*Math.PI*u))/2;};
   for(let k=0;k<P;k++)feed(wave(k,76),wave(k-OFF,68));
@@ -666,10 +669,36 @@ test('front raise singles record per-side depth bands; symmetry is unassessable 
   assert.equal(tracker.metrics.reps,2);
   assert.deepEqual(tracker.metrics.axisAssessment?.symmetry,{kind:'unassessable',reason:'view'});
   assert.deepEqual(tracker.metrics.scoreAccumulator.depthBandCounts,{left:{below:1},right:{below:1}});
-  assert.deepEqual(tracker.metrics.axisAssessment?.depth,{kind:'bands',left:'below',right:'below'});
+  assert.deepEqual(tracker.metrics.axisAssessment?.depth,{kind:'unassessable',reason:'channel'});
+  assert.deepEqual(tracker.metrics.axisAssessment?.stability,{kind:'unassessable',reason:'channel'});
+  assert.deepEqual(tracker.metrics.axisAssessment?.trunk,{kind:'unassessable',reason:'channel'});
   // No numeric depth or symmetry is emitted or accumulated for new sets.
   assert.equal(tracker.metrics.formBreakdown.depth,0);
   assert.equal(tracker.metrics.formBreakdown.symmetry,0);
+});
+test('front raise: a hard lean still computes trunk internally, but the suspended axis derives no correction',()=>{
+  const tracker=new ExtendedExerciseTracker('front_raise',20,{},true);
+  const step=1000/24;let t=0;const img=raiseImage();
+  // Hips shifted +0.10 of frame width against the shoulders: the image
+  // tilt reads ≈27° (posture ≈69, shift ≈19 vs the upright baseline),
+  // so the internal trunk value collapses (≈40) — the read the
+  // spillover audit convicted. It used to print a per-rep
+  // body_alignment correction and a live one (posture < 70).
+  const leanImg=raiseImage().map((p,i)=>i===23||i===24?{...p,x:p.x+.10}:p);
+  let liveBodyAlignmentSeen=false;
+  const feed=(l:number,r:number,lean=false)=>{tracker.update(structuredClone(lean?leanImg:img),t,1,raiseWorld2(l,r));t+=step;if(tracker.metrics.poseFeedback.primaryIssue==='body_alignment')liveBodyAlignmentSeen=true;};
+  for(let c=0;c<63;c++)feed(10,10);
+  assert.equal(tracker.diagnostics.stage,'ready');
+  const P=48,OFF=17;
+  const wave=(k:number,peak:number)=>{const u=(k%P)/P;return 10+(peak-10)*(1-Math.cos(2*Math.PI*u))/2;};
+  for(let k=0;k<P;k++)feed(wave(k,76),wave(k-OFF,68),true);
+  for(let c=0;c<48;c++)feed(10,10);
+  assert.equal(tracker.metrics.reps,2);
+  const tb=tracker.metrics.formBreakdown.trunk;
+  assert.ok(tb<70,`internal trunk ${tb} should show the lean read (<70), proving the fixture exercises the convicted path`);
+  assert.equal(tracker.metrics.correctionCounts.body_alignment,0);
+  assert.ok(!tracker.metrics.lastRepIssues.includes('body_alignment'));
+  assert.equal(liveBodyAlignmentSeen,false,'the live posture issue reads the suspended tilt channel and must not fire');
 });
 // --- Round 4 (2026-11-08): peak evidence, overshoot revocation, cycle preservation, blocker hints ---
 /** Parametric front-raise frame with per-side exact (raised θ, elbow E, direction
@@ -728,6 +757,24 @@ test('front raises count an in-band raise whose deepest frame dips at the elbow 
   // only, 155° on the qualified neighbours. Left arm only — the right rests.
   const specs=[...leftOnly(cycleR(95,k=>k===11?137:155)),...leftOnly(glideR(RS(12,155),RREST,4)),...holdR(RREST,34).map(s=>bothR(s))];
   assert.equal(driveRaise(specs).tracker.metrics.reps,1);
+});
+test('front raise: an elbow dip away from the peak still computes stability internally, but the provisionally suspended axis derives no correction',()=>{
+  // Elbow at 120° for sustained stretches of the rise and the return
+  // (the peak neighbourhood keeps 160°, so the raise qualifies and
+  // scores): the elbow-channel control term (75) alone manufactures
+  // the stability shortfall — the speed/duration evidence is clean
+  // (stabilityWithoutControl ≈98). Channel suspension (2026-11-09,
+  // Codex round-7, provisional for this axis): the correction stands
+  // only when the unsuspended evidence produces the shortfall, so
+  // none is derived; the internal value still computes.
+  const specs=[...cycleR(95,k=>(k>=2&&k<=7)||(k>=15&&k<=20)?120:160,22).map(s=>bothR(s)),...holdR(RREST,34).map(s=>bothR(s))];
+  const {tracker}=driveRaise(specs);
+  assert.equal(tracker.metrics.reps,1);
+  const s=tracker.metrics.formBreakdown.stability;
+  assert.ok(s<70,`internal stability ${s} should show the control-manufactured shortfall (<70)`);
+  assert.equal(tracker.metrics.correctionCounts.unstable_movement,0);
+  assert.ok(!tracker.metrics.lastRepIssues.includes('unstable_movement'));
+  assert.deepEqual(tracker.metrics.axisAssessment?.stability,{kind:'unassessable',reason:'channel'});
 });
 test('front raises reject a raise bent exactly at the peak frame, and one bent sustained around it',()=>{
   const bentAtPeak=[...leftOnly(cycleR(95,k=>k===11?115:155)),...holdR(RREST,34).map(s=>bothR(s))];

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { ExtendedExerciseTracker } from '../src/features/motion/lib/extendedRecognition';
 import { createRecognitionTracker, newDemonstrationPose } from '../src/features/motion/lib/recognition';
-import { numericCoverageOf, totalWithheld, type AxisAssessments } from '../src/features/motion/lib/axisAssessment';
+import { numericCoverageOf, totalScopeNote, totalWithheld, type AxisAssessments } from '../src/features/motion/lib/axisAssessment';
 import { restoredSetMetrics } from '../src/features/gym/workoutSync';
 import { buildGymSetCard, buildMotionSetCard, buildWorkoutCardData } from '../src/features/share/cardData';
 import { libraryPose } from './fixtures/library-camera';
@@ -16,17 +16,25 @@ import type { NormalizedLandmark as Point } from '@mediapipe/tasks-vision';
  * coverage gate of the suspension round was replaced per Codex
  * round-4), suspended constructs stop generating corrective output,
  * and the internal score computation (formScore / breakdown / XP
- * inputs) is untouched. */
+ * inputs) is untouched.
+ *
+ * Channel-suspension fixtures (2026-11-09, Codex round-7) extend the
+ * same discipline to the axes the spillover audit convicted at the
+ * channel level: hammer trunk and front-raise depth/trunk
+ * (demonstrated contamination) and front-raise stability
+ * (provisional — unresolved validity under demonstrated channel
+ * risk) are unassessable ('channel'); front-raise band tallies keep
+ * accumulating as diagnostics but are never presented. */
 
 const rot2 = (x: number, y: number, rad: number): [number, number] => [x * Math.cos(rad) - y * Math.sin(rad), x * Math.sin(rad) + y * Math.cos(rad)];
-function curlPose(leftElbow: number, rightElbow: number, upperDeg = 0): Point[] {
+function curlPose(leftElbow: number, rightElbow: number, upperDeg = 0, hipShift = 0): Point[] {
   const p: Point[] = Array.from({ length: 33 }, () => ({ x: .5, y: .5, z: 0, visibility: 1 }));
   const put = (i: number, x: number, y: number) => { p[i] = { x, y, z: 0, visibility: 1 }; };
   put(0, .5, .16);
   const elbows = [leftElbow, rightElbow];
   for (const o of [0, 1]) {
     const sx = .40 + o * .20, dir = o ? -1 : 1, phi = upperDeg * Math.PI / 180;
-    put(11 + o, sx, .30); put(23 + o, sx, .56); put(25 + o, sx, .74); put(27 + o, sx, .92);
+    put(11 + o, sx, .30); put(23 + o, sx + hipShift, .56); put(25 + o, sx, .74); put(27 + o, sx, .92);
     const [ux, uy] = rot2(0, 1, dir * phi);
     const ex = sx + ux * .18, ey = .30 + uy * .18; put(13 + o, ex, ey);
     const [fx, fy] = rot2(ux, uy, -dir * (180 - elbows[o]) * Math.PI / 180);
@@ -83,10 +91,13 @@ test('hammer curls: stability is unassessable (control), the total is withheld, 
   assert.equal(tracker.metrics.reps, 2);
   // The axis presents as cannot-assess with the suspension reason.
   assert.deepEqual(tracker.metrics.axisAssessment?.stability, { kind: 'unassessable', reason: 'control' });
+  // Channel suspension (2026-11-09, Codex round-7): trunk follows —
+  // demonstrated contamination of its image tilt channel.
+  assert.deepEqual(tracker.metrics.axisAssessment?.trunk, { kind: 'unassessable', reason: 'channel' });
   assert.deepEqual(tracker.metrics.axisAssessment?.symmetry, { kind: 'category', category: 'sync' });
-  // The suspended stability axis withholds the total at presentation
-  // level (numeric coverage .55 is recorded as a diagnostic only)...
-  assert.equal(numericCoverageOf(tracker.metrics.axisAssessment), .55);
+  // The suspended axes withhold the total at presentation level
+  // (numeric coverage .35 — depth alone — is a diagnostic only)...
+  assert.equal(numericCoverageOf(tracker.metrics.axisAssessment), .35);
   assert.equal(totalWithheld(tracker.metrics.axisAssessment), true);
   // ...while the internal computation is byte-identical to step 3: the
   // renormalized total over depth/stability/trunk, stability included.
@@ -158,10 +169,42 @@ test('a restored pre-contract hammer set keeps its historical numbers', () => {
   }, true);
   assert.equal(tracker.metrics.axisAssessment?.stability.kind, 'numeric');
   assert.equal(tracker.metrics.axisAssessment?.symmetry.kind, 'numeric');
+  // The channel suspension follows the same carve-out as 'control':
+  // the pre-contract set's trunk number stands with the rest of its
+  // historical presentation.
+  assert.equal(tracker.metrics.axisAssessment?.trunk.kind, 'numeric');
   assert.equal(totalWithheld(tracker.metrics.axisAssessment), false);
 });
 
-test('front raise: the set total returns under the minimum-axis contract, bands and internal score stand', () => {
+test('hammer curls: a hard lean still computes trunk internally, but the suspended axis derives no correction', () => {
+  const tracker = new ExtendedExerciseTracker('hammer_curl', 20, {}, true);
+  const step = 1000 / 24; let t = 0;
+  let liveBodyAlignmentSeen = false;
+  const feed = (l: number, r: number, lean = 0) => {
+    const raw = curlPose(l, r, 0, lean); tracker.update(raw, t, 1, structuredClone(raw)); t += step;
+    if (tracker.metrics.poseFeedback.primaryIssue === 'body_alignment') liveBodyAlignmentSeen = true;
+  };
+  for (let c = 0; c < 63; c++) feed(160, 160);
+  // Reps performed with the hips shifted 0.15 of frame width: the image
+  // tilt reads ≈30°, so the internal trunk value collapses (≈19 —
+  // posture and shift both read the tilt channel). This is the exact
+  // read the spillover audit convicted on marks-upright reps: it used
+  // to print a per-rep body_alignment correction and a live one
+  // (posture ≈64 < 70). Neither may surface now.
+  const P = 48;
+  const wave = (k: number) => { const u = (k % P) / P; return 160 - 81 * (1 - Math.cos(2 * Math.PI * u)) / 2; };
+  for (let rep = 0; rep < 2; rep++) for (let k = 0; k < P; k++) feed(wave(k), wave(k), .15);
+  for (let c = 0; c < 40; c++) feed(160, 160);
+  assert.equal(tracker.metrics.reps, 2);
+  const tb = tracker.metrics.formBreakdown.trunk;
+  assert.ok(tb < 70, `internal trunk ${tb} should show the lean read (<70), proving the fixture exercises the convicted path`);
+  assert.deepEqual(tracker.metrics.axisAssessment?.trunk, { kind: 'unassessable', reason: 'channel' });
+  assert.equal(tracker.metrics.correctionCounts.body_alignment, 0);
+  assert.ok(!tracker.metrics.lastRepIssues.includes('body_alignment'));
+  assert.equal(liveBodyAlignmentSeen, false, 'the live posture issue reads the suspended tilt channel and must not fire');
+});
+
+test('front raise: channel suspensions withhold the total again; tallies and internal score stand', () => {
   const tracker = createRecognitionTracker('front_raise', 20);
   let now = 0; const step = 100;
   let feedbackAtRep = '';
@@ -176,21 +219,40 @@ test('front raise: the set total returns under the minimum-axis contract, bands 
   feed('neutral', 3000);
   feed('peak', 1200); feed('neutral', 1200);
   assert.equal(tracker.metrics.reps, 1);
-  // Revised (round 5): the suspension round withheld this total under
-  // the ≥60% coverage gate (.45 < .60). Under the minimum-axis contract
-  // the total is presented: every applicable axis is assessed
-  // (stability + trunk numeric, depth as bands) and the only
-  // unassessable axis is by design ('view'). Coverage .45 remains as
-  // diagnostic metadata.
-  assert.equal(numericCoverageOf(tracker.metrics.axisAssessment), .45);
-  assert.equal(totalWithheld(tracker.metrics.axisAssessment), false);
-  assert.match(feedbackAtRep, /^好，第 1 次记下啦 · 本次 \d+ 分$/);
+  // History: the suspension round withheld this total under the ≥60%
+  // coverage gate; round 5's minimum-axis contract presented it again
+  // (stability + trunk numeric, depth as bands, symmetry by design).
+  // The channel suspensions (2026-11-09, Codex round-7) withhold it
+  // once more, on the spillover audit's evidence: depth (bands) and
+  // trunk are unassessable on demonstrated channel contamination,
+  // stability provisionally on unresolved validity under demonstrated
+  // channel risk; symmetry stays unassessable by design ('view').
+  assert.deepEqual(tracker.metrics.axisAssessment?.depth, { kind: 'unassessable', reason: 'channel' });
+  assert.deepEqual(tracker.metrics.axisAssessment?.stability, { kind: 'unassessable', reason: 'channel' });
+  assert.deepEqual(tracker.metrics.axisAssessment?.trunk, { kind: 'unassessable', reason: 'channel' });
+  assert.deepEqual(tracker.metrics.axisAssessment?.symmetry, { kind: 'unassessable', reason: 'view' });
+  assert.equal(numericCoverageOf(tracker.metrics.axisAssessment), 0);
+  assert.equal(totalWithheld(tracker.metrics.axisAssessment), true);
+  // The per-rep aggregate print follows the withheld total.
+  assert.equal(feedbackAtRep, '好，第 1 次记下啦');
+  // Band tallies keep accumulating as diagnostics — they are simply
+  // never presented anymore.
+  const bands = tracker.metrics.scoreAccumulator.depthBandCounts;
+  const tallies = (bands?.left ? Object.values(bands.left).reduce((a: number, b: any) => a + (b || 0), 0) : 0) + (bands?.right ? Object.values(bands.right).reduce((a: number, b: any) => a + (b || 0), 0) : 0);
+  assert.equal(tallies, 2, 'the bilateral demo raise still records one diagnostic tally per side');
   assert.ok(tracker.metrics.formScore > 0, 'internal formScore still computed');
+  // The scope label must NOT fire for front raise anymore: the
+  // withheld note owns this state (totalScopeNote returns null for a
+  // withheld map by construction).
+  assert.equal(totalScopeNote(tracker.metrics.axisAssessment, { depth: '幅度', stability: '稳定性', trunk: '躯干', symmetry: '对称' }), null);
 });
 
 test('restored hammer sets (offsets, no stored map) present the suspension; cards withhold the total', () => {
   const restored = restoredSetMetrics({ reps: 3, score: { count: 3, total: 270, depth: 280, stability: 260, trunk: 270, symmetry: 0, symmetryOffsetsMs: [400, 420, 380] } });
   assert.deepEqual(restored.axisAssessment?.stability, { kind: 'unassessable', reason: 'control' });
+  // Channel suspension: the derivation carries the trunk suspension
+  // for the same sets (offsets identify a hammer set).
+  assert.deepEqual(restored.axisAssessment?.trunk, { kind: 'unassessable', reason: 'channel' });
   assert.equal(restored.formScore, 90, 'the internal restored total is unchanged');
   assert.equal(totalWithheld(restored.axisAssessment), true);
 
@@ -198,6 +260,7 @@ test('restored hammer sets (offsets, no stored map) present the suspension; card
   assert.equal(card.totalWithheld, true);
   assert.equal(card.score, null);
   assert.equal(card.axes?.[1].text, '暂时评不了');
+  assert.equal(card.axes?.[2].text, '暂时评不了', 'the channel-suspended trunk renders as 暂时评不了, not a number');
   assert.equal(card.axes?.[3].text, '同步');
 
   // A set at exactly 80% coverage (single-side family) still shows its total.
@@ -346,6 +409,39 @@ test('seated lateral raise (not suspended): the elbow-extension control term sti
     if (tracker.metrics.poseFeedback.primaryIssue === 'unstable_movement') issueSeen = true;
   }
   assert.equal(issueSeen, true, 'the non-suspended profile keeps its control-derived live correction');
+});
+
+test('restored front-raise sets (tallies, no stored map) present the channel suspensions; cards withhold and drop out of averages', () => {
+  const score = { count: 2, total: 170, depth: 0, stability: 180, trunk: 160, symmetry: 0, depthBandCounts: { left: { shoulder: 2 }, right: { below: 1 } } };
+  const restored = restoredSetMetrics({ reps: 2, score });
+  assert.deepEqual(restored.axisAssessment?.depth, { kind: 'unassessable', reason: 'channel' });
+  assert.deepEqual(restored.axisAssessment?.stability, { kind: 'unassessable', reason: 'channel' });
+  assert.deepEqual(restored.axisAssessment?.trunk, { kind: 'unassessable', reason: 'channel' });
+  assert.deepEqual(restored.axisAssessment?.symmetry, { kind: 'unassessable', reason: 'view' });
+  assert.equal(restored.formScore, 85, 'the internal restored total is unchanged');
+  assert.equal(totalWithheld(restored.axisAssessment), true);
+
+  const card = buildGymSetCard({ reps: 2, exercise: { name: 'front_raise', nameZh: '哑铃前平举' }, score }, 0, new Date());
+  assert.equal(card.totalWithheld, true);
+  assert.equal(card.score, null);
+  assert.equal(card.scoreNote, null, 'no scope note beside a withheld total — the withheld presentation owns the state');
+  assert.equal(card.axes?.[0].text, '暂时评不了', 'band tallies are no longer presented as bands');
+  assert.equal(card.axes?.[1].text, '暂时评不了');
+  assert.equal(card.axes?.[2].text, '暂时评不了');
+  assert.equal(card.axes?.[3].text, '这个角度评不了');
+
+  // The completion average excludes the front-raise set through the
+  // shared predicate (its total is withheld now): only the presented
+  // set's value survives.
+  const row: any = {
+    session: { effectiveSeconds: 600, startTime: new Date() },
+    sets: [
+      { status: 'completed', exercise: { id: 'e1' }, reps: 8, score: { count: 2, total: 160, depth: 170, stability: 150, trunk: 160, symmetry: 160 } },
+      { status: 'completed', exercise: { id: 'e2' }, reps: 2, score },
+    ],
+  };
+  assert.equal(buildWorkoutCardData(row, 3)?.avgScore, 80, 'only the presentable set enters the average');
+  assert.equal(buildWorkoutCardData({ ...row, sets: [row.sets[1]] }, 3)?.avgScore, null);
 });
 
 test('workout completion card: withheld sets stay out of the average score', () => {

@@ -24,7 +24,7 @@ import {
 import Dialog from "../../components/Dialog";
 import AnimatedNumber from "../../components/AnimatedNumber";
 import AnimatedProgress from "../../components/AnimatedProgress";
-import { buildSetReveal } from "../motion/lib/companionCopy";
+import { buildSetReveal, COPY_DEPTH_SHALLOW_LIMIT } from "../motion/lib/companionCopy";
 import { assessmentFromScore, axisStateText, totalScopeNote, totalWithheld, TOTAL_WITHHELD_NOTE } from "../motion/lib/axisAssessment";
 import ShareCardButton from "../share/ShareCardButton";
 import { buildGymSetCard, buildRecordCard, buildWorkoutCardData, completionRecognitionAverage } from "../share/cardData";
@@ -241,7 +241,7 @@ export default function PlanWorkout() {
   // is bands/category), the reveal names the axes it covers — in the
   // profile's own axis names — instead of the generic subset note.
   const restScopeNote = lastAssessment && capability?.axes ? totalScopeNote(lastAssessment, { depth: capability.axes[0], stability: capability.axes[1], trunk: capability.axes[2], symmetry: capability.axes[3] }) : null;
-  const restReveal = row?.phase === "resting" && lastCameraSet && lastBreakdown ? buildSetReveal(lastBreakdown, prevCameraSet ? setBreakdownOf(prevCameraSet) : null, { reps: lastCameraSet.reps || 0, unit: current ? repUnit(current.exercise) : "次", scored: true, axisLabels: capability?.axes ? { depth: capability.axes[0], stability: capability.axes[1], trunk: capability.axes[2], symmetry: capability.axes[3] } : undefined, numericAxes: [...restNumericAxes] }) : null;
+  const restReveal = row?.phase === "resting" && lastCameraSet && lastBreakdown ? buildSetReveal(lastBreakdown, prevCameraSet ? setBreakdownOf(prevCameraSet) : null, { reps: lastCameraSet.reps || 0, unit: current ? repUnit(current.exercise) : "次", scored: true, axisLabels: capability?.axes ? { depth: capability.axes[0], stability: capability.axes[1], trunk: capability.axes[2], symmetry: capability.axes[3] } : undefined, numericAxes: [...restNumericAxes], quietAxes: requestedType === "hammer_curl" ? ["depth"] : undefined }) : null;
   const options = useWorkoutPreferences(!!row && !finished, restSeconds);
   const snapshot = useRef<any>({});
   snapshot.current = camera
@@ -846,6 +846,7 @@ export default function PlanWorkout() {
                     );
                   })}
                   {lastAssessment && axisKeys.some(k => lastAssessment[k].kind !== "numeric") && <p>{totalWithheld(lastAssessment) ? TOTAL_WITHHELD_NOTE : restScopeNote ?? "总分只按能评的项目算——评不了的不会算成低分"}</p>}
+                  {requestedType === "hammer_curl" && lastAssessment && totalWithheld(lastAssessment) && <p>{COPY_DEPTH_SHALLOW_LIMIT}</p>}
                   {restReveal.goalLine && <p className="gym-reveal-goal">{restReveal.goalLine}</p>}
                 </div>
               )}

@@ -20,6 +20,7 @@ import {
   COPY_UNCLEAR,
   COPY_WAIT_START,
   COPY_WORKOUT_DONE,
+  COPY_DEPTH_SHALLOW_LIMIT,
 } from '../src/features/motion/lib/companionCopy';
 import {POSE_ISSUE_COPY} from '../src/features/motion/lib/poseFeedback';
 import {jointTier, segmentGrade} from '../src/features/motion/lib/displayPose';
@@ -38,6 +39,24 @@ test('set reveal praises only a real improvement and names the axis',()=>{
   assert.match(r.progressLine,/先说进步：屈肘幅度比上一组好了一截（60 → 80）/);
   assert.equal(r.improvedAxis,'depth');
   assert.match(r.goalLine,/下一组小目标（就一个）/);
+});
+
+test('set reveal never stars a quiet axis in the improvement claim (hammer depth, Codex round-7 Q3)',()=>{
+  // Depth "improved" 92 → 100 while trunk improved 70 → 78: without
+  // the quiet rule the praise would star 屈肘幅度 — an affirmative
+  // depth-quality claim the ceiling-pinned channel cannot validate.
+  // The claim must land on the trunk improvement instead.
+  const labels={depth:AXES[0],stability:AXES[1],trunk:AXES[2],symmetry:AXES[3]};
+  const r=buildSetReveal(fb(100,70,78,70),fb(92,70,70,70),{reps:12,unit:'次',scored:true,axisLabels:labels,quietAxes:['depth']});
+  assert.match(r.progressLine,/先说进步：躯干稳定比上一组好了一截（70 → 78）/);
+  assert.equal(r.improvedAxis,'trunk');
+  // A depth-only "improvement" produces no praise line at all — the
+  // reveal falls back to the steady factual line.
+  const only=buildSetReveal(fb(100,70,70,70),fb(92,70,70,70),{reps:12,unit:'次',scored:true,axisLabels:labels,quietAxes:['depth']});
+  assert.ok(!only.progressLine.includes('先说进步'),`no depth praise may be printed, got: ${only.progressLine}`);
+  assert.equal(only.improvedAxis,null);
+  // The limitation copy itself obeys the copy red lines.
+  for(const word of BANNED_COPY_WORDS)assert.ok(!COPY_DEPTH_SHALLOW_LIMIT.includes(word));
 });
 
 test('set reveal catches a regression without blame words',()=>{

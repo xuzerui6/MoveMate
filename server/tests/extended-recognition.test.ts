@@ -150,6 +150,30 @@ test('axis-validity suspension (control) survives standalone + plan sync; XP sta
  w=await act('complete',{reps:2,score:pacc});w=await act('finish');assert.equal(w.phase,'finished');
 });
 
+test('channel suspensions survive standalone + plan sync; tallies stay stored as diagnostics; XP stays rep-derived',async()=>{
+ // Standalone (motion service whitelist): a hammer set whose trunk is
+ // channel-suspended alongside the control-suspended stability.
+ const s=await motion.createSession(uid,{id:randomUUID(),sportType:'hammer_curl',source:'camera'},2);
+ const hammerAssessment={depth:{kind:'numeric'},stability:{kind:'unassessable',reason:'control'},trunk:{kind:'unassessable',reason:'channel'},symmetry:{kind:'category',category:'sync'}};
+ const hacc={count:2,total:150,depth:185,stability:60,trunk:90,symmetry:0,symmetryOffsetsMs:[90,110]};
+ const p=await motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:hacc,axisAssessment:hammerAssessment},false,2);
+ assert.deepEqual(p.metrics.axisAssessment,hammerAssessment);
+ const done=await motion.sessionAction(s.id,uid,'finish',{},false,2);assert.equal(done.xpEarned,4);
+ // Plan sets (gym zod whitelist): a front-raise set with all three
+ // channel-suspended axes; its band tallies still validate and store
+ // verbatim (diagnostics), and a bogus reason still rejects.
+ const exerciseId=(definitions as any).front_raise.exerciseIds[0];
+ let w=await gym.startWorkout(uid,{id:randomUUID(),free:{exercises:[{exerciseId,sets:[{reps:3}]}]}});
+ const act=(action:string,extra:any={})=>gym.actWorkout(uid,w.id,{operationId:randomUUID(),version:w.version,action,setId:w.sets[w.cursor]?.id,...extra},2);
+ w=await act('start',{inputMode:'camera'});
+ const frAssessment={depth:{kind:'unassessable',reason:'channel'},stability:{kind:'unassessable',reason:'channel'},trunk:{kind:'unassessable',reason:'channel'},symmetry:{kind:'unassessable',reason:'view'}};
+ const fracc={count:2,total:170,depth:0,stability:175,trunk:165,symmetry:0,depthBandCounts:{left:{shoulder:2},right:{below:1,shoulder:1}},axisAssessment:frAssessment};
+ w=await act('progress',{reps:2,score:fracc});
+ assert.deepEqual(w.sets[0].score,fracc);
+ await assert.rejects(act('progress',{reps:2,score:{...fracc,axisAssessment:{...frAssessment,depth:{kind:'unassessable',reason:'static'}}}}),/axisAssessment|无效|不合法|参数/);
+ w=await act('complete',{reps:2,score:fracc});w=await act('finish');assert.equal(w.phase,'finished');
+});
+
 test('step-3 front-raise band tallies and assessments survive plan-set sync and reject malformed states',async()=>{
  const exerciseId=(definitions as any).front_raise.exerciseIds[0];
  let w=await gym.startWorkout(uid,{id:randomUUID(),free:{exercises:[{exerciseId,sets:[{reps:3}]}]}});

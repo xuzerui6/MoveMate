@@ -2,7 +2,7 @@ import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
 import type {ExerciseMetrics,RecognitionDiagnostics} from './exerciseMetrics';
 import {medianLandmarks,poseIssueCopy} from './poseFeedback';
 import { COPY_CALIBRATED, COPY_HALF_REP, COPY_OUT_OF_FRAME, cannotAssessCopyFor, notSeenCopyFor } from './companionCopy';
-import { allNumericAssessments, frontRaiseBandFor, modalBand, syncCategoryForOffset, totalWithheld, type AxisAssessments, type DepthBandCounts } from './axisAssessment';
+import { allNumericAssessments, frontRaiseBandFor, syncCategoryForOffset, totalWithheld, type AxisAssessments, type DepthBandCounts } from './axisAssessment';
 import {emptyCorrectionCounts,emptyFormBreakdown,medianOf} from './sessionMigration';
 import {NEW_EXERCISES,type NewExerciseType} from './newExercises';
 import {LIBRARY_RECOGNITION} from '../../gym/libraryRecognition';
@@ -208,6 +208,39 @@ const SINGLE_SIDE_TYPES:ReadonlySet<string>=new Set(['romanian_deadlift','glute_
  * are NOT in this set; the doc's table states the deciding fact per
  * profile. */
 const CONTROL_SUSPENDED_TYPES:ReadonlySet<string>=new Set(['hammer_curl','seated_curl','triceps_kickback']);
+/** Channel suspensions (2026-11-09, Codex round-7 concurrence;
+ * docs/channel-suspensions-2026-11-09.md; evidence:
+ * accuracy-phase0/spillover-audit-report.md). The spillover audit
+ * recomputed depth and trunk through the production path against
+ * Heavy substitution and independent marks and convicted the
+ * measurement CHANNELS behind these axes. The distinction Codex
+ * required be recorded: hammer/front-raise TRUNK and front-raise
+ * DEPTH carry DEMONSTRATED contamination — trunk's image shoulder/hip
+ * tilt wanders ±8° with 30–53° spikes on marks-upright reps (Heavy
+ * stays within 3.3° on identical footage) through a max-statistic no
+ * production gate tests, and front-raise band assignment flips on
+ * both valid in-band efforts, convicted in opposite directions by
+ * independent anchors. Front-raise STABILITY is suspended
+ * PROVISIONALLY: unresolved validity under demonstrated channel risk
+ * — it consumes the same implicated world elbow channel and
+ * substitution moves its output substantially (FR-C 48 vs 62), but no
+ * marks-grade evidence convicts or clears the axis itself; this is
+ * NOT a contamination verdict. All three axes are unassessable
+ * ('channel'), a validity reason, so totals withhold and the axes
+ * stop generating corrective output (see the emit and live-issue
+ * sites). Scope: the suspensions apply to these movements'
+ * assessments regardless of ladder rung — no shipped rung is
+ * validated for these axes (the audit convicted the shipping Full
+ * channel; Heavy is not shipped and is itself unvalidated for them).
+ * Internal computation is unchanged throughout (band tallies keep
+ * accumulating as diagnostics; XP is rep-derived; counting gates are
+ * a separate, already-audited path the audit found no basis to
+ * suspend). Restoration criteria are defined in the round doc,
+ * before any repair results exist. */
+const CHANNEL_SUSPENDED_AXES:ReadonlyMap<string,ReadonlySet<string>>=new Map([
+  ['hammer_curl',new Set(['trunk'])],
+  ['front_raise',new Set(['depth','stability','trunk'])],
+]);
 /** The stability value the speed/duration evidence alone supports —
  * the counterfactual the suspended types' issue derivation consults:
  * an unstable_movement correction is suppressed only when the suspended
@@ -425,11 +458,12 @@ export class ExtendedExerciseTracker {
     this.metrics.formBreakdown=b;this.metrics.axisAssessment=this.assessments();}
   /** The step-3 assessability map for the set as it stands (see
    * axisAssessment.ts for the contract). Static per movement, except the
-   * hammer category (derived from the recorded peak-timing offsets), the
-   * front-raise bands (derived from the recorded per-side tallies) and the
-   * cannot-assess override: a session that ends inside the degraded-framing
+   * hammer category (derived from the recorded peak-timing offsets) and
+   * the cannot-assess override: a session that ends inside the degraded-framing
    * state without one scored rep presents every axis as unassessable —
-   * scored reps keep the axes they honestly earned before the degradation. */
+   * scored reps keep the axes they honestly earned before the degradation.
+   * Front-raise band tallies are still recorded per rep but, since the
+   * channel suspensions, no longer derive a presented axis state. */
   private assessments():AxisAssessments{return this.assessmentsFor(this.metrics.scoreAccumulator);}
   /** The assessability map for a given accumulator (the emit sites consult
    * the post-increment accumulator to decide whether the rep's aggregate
@@ -458,14 +492,27 @@ export class ExtendedExerciseTracker {
       const preContract=this.type==='hammer_curl'&&!!(a.symmetryValues&&a.symmetryValues.length)&&!(a.symmetryOffsetsMs&&a.symmetryOffsetsMs.length);
       if(!preContract)out.stability={kind:'unassessable',reason:'control'};
     }
+    // Channel suspensions (2026-11-09, Codex round-7; see
+    // CHANNEL_SUSPENDED_AXES for the evidence and the recorded
+    // distinction — trunk/depth: demonstrated contamination;
+    // front-raise stability: provisional, unresolved validity under
+    // demonstrated channel risk). Hammer's trunk follows the same
+    // pre-contract carve-out as its stability: a restored pre-contract
+    // set keeps its historical numbers as a set.
+    const channelAxes=CHANNEL_SUSPENDED_AXES.get(this.type);
+    if(channelAxes){
+      const preContractHammer=this.type==='hammer_curl'&&!!(a.symmetryValues&&a.symmetryValues.length)&&!(a.symmetryOffsetsMs&&a.symmetryOffsetsMs.length);
+      if(!preContractHammer)for(const k of axes)if(channelAxes.has(k))out[k]={kind:'unassessable',reason:'channel'};
+    }
     if(this.type==='hammer_curl'){
       if(a.symmetryOffsetsMs&&a.symmetryOffsetsMs.length)out.symmetry={kind:'category',category:syncCategoryForOffset(medianOf(a.symmetryOffsetsMs))};
       else if(!(a.symmetryValues&&a.symmetryValues.length))out.symmetry={kind:'unassessable',reason:'no-bilateral-evidence'};
       // else: a restored pre-contract set — its median number stands.
     }else if(this.type==='front_raise'){
       out.symmetry={kind:'unassessable',reason:'view'};
-      const left=modalBand(a.depthBandCounts?.left),right=modalBand(a.depthBandCounts?.right);
-      out.depth=left||right?{kind:'bands',...(left?{left}:{}),...(right?{right}:{})}:{kind:'unassessable',reason:'no-bilateral-evidence'};
+      // Depth is channel-suspended above: the per-side band tallies
+      // keep accumulating in emitFrontRaiseRep as diagnostics, but no
+      // presented band is derived from them anymore.
     }else if(SINGLE_SIDE_TYPES.has(this.type)){
       out.symmetry={kind:'unassessable',reason:'single-side'};
     }
@@ -907,7 +954,13 @@ export class ExtendedExerciseTracker {
     // unstable_movement correction stands only when the speed/duration
     // evidence produces the shortfall without the control term — a
     // shortfall the suspended term manufactured is not corrected.
-    if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70&&stabilityWithoutControl(speed,duration)<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');
+    // Channel suspension (Codex round-7): hammer's trunk axis is
+    // suspended on demonstrated contamination, and posture − shift IS
+    // the convicted read — there is no unsuspended remainder to run a
+    // counterfactual over, so no body_alignment correction is derived
+    // from it at all. The internal trunk value still computes (it
+    // feeds the unprinted breakdown exactly as before).
+    if(breakdown.depth<70)issues.push('insufficient_range');if(breakdown.stability<70&&stabilityWithoutControl(speed,duration)<70)issues.push('unstable_movement');
     const acc={...this.metrics.scoreAccumulator},counts={...this.metrics.correctionCounts};
     // Hammer curls record each scored rep's peak-timing offset: the set-level
     // symmetry presentation derives from their median (see assessments()).
@@ -982,9 +1035,13 @@ export class ExtendedExerciseTracker {
     // read the suspended control term, so neither surfaces for hammer
     // curls anymore. The hint machinery (upperArmHintVisible) stays for
     // the record; the internal penalty still feeds the (unprinted)
-    // breakdown exactly as before. Posture-derived correction stands.
+    // breakdown exactly as before. Channel suspension (Codex round-7):
+    // the live posture issue read the same image tilt channel the
+    // spillover audit convicted for the trunk axis — it no longer
+    // surfaces either, so hammer curls currently raise no live
+    // corrective issue; stage copy carries the surface.
     const message=stage==='complete'?'目标完成啦，漂亮':completed?this.metrics.feedback:nearPeak?'接近啦，再往上带一点点，到肩膀高再放回':copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 继续，保持住':'');
-    const issue:PoseIssue|null=f.posture<70?'body_alignment':null;
+    const issue:PoseIssue|null=null;
     this.diagnostics={...this.diagnostics,stage};
     this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?poseIssueCopy(issue,this.type).joints:[],calibrated:true,message:issue?poseIssueCopy(issue,this.type).action:message}};
     return this.metrics;
@@ -1241,22 +1298,33 @@ export class ExtendedExerciseTracker {
     // projected height observable, and the right channel's episodic
     // +15–50° over-read is a channel diagnostic, not a performance fact.
     // The total renormalizes over stability and trunk; per scored rep each
-    // participating side's band joins the accumulator tallies the set
-    // presentation reads (modal band per side — see assessments()).
+    // participating side's band joins the accumulator tallies.
+    // Channel suspensions (2026-11-09, Codex round-7): the tallies are
+    // now DIAGNOSTICS ONLY — the spillover audit convicted the band
+    // assignment itself (both valid in-band efforts flip under
+    // substitution, in opposite directions), so no band is presented
+    // (see assessmentsFor). Trunk is suspended on demonstrated
+    // contamination and stability provisionally, so neither derives a
+    // correction here: trunk has no unsuspended remainder (posture −
+    // shift IS the convicted read), and an unstable_movement
+    // correction stands only when the speed/duration evidence produces
+    // the shortfall without the elbow-channel control term — the same
+    // counterfactual the hammer suspension applies.
     const breakdown={stability:cap(100-Math.max(0,speed-260)*.08-Math.max(0,.6-duration)*70-control),trunk:cap(posture-shift*1.5)};
     const score=Math.round((breakdown.stability*.25+breakdown.trunk*.2)/.45),scored=parts.every(p=>p.scoring)&&f.scorable,issues:PoseIssue[]=[];
-    if(breakdown.stability<70)issues.push('unstable_movement');if(breakdown.trunk<70)issues.push('body_alignment');
+    if(breakdown.stability<70&&stabilityWithoutControl(speed,duration)<70)issues.push('unstable_movement');
     const acc={...this.metrics.scoreAccumulator},counts={...this.metrics.correctionCounts};
     if(scored){acc.count++;acc.total+=score;acc.stability+=breakdown.stability;acc.trunk+=breakdown.trunk;
       const bands:DepthBandCounts={left:{...(acc.depthBandCounts?.left??{})},right:{...(acc.depthBandCounts?.right??{})}};
       for(const part of parts){const sideKey=part.side===0?'left':'right';const tally={...(bands[sideKey]??{})};const band=frontRaiseBandFor(part.peakElbow);tally[band]=(tally[band]||0)+1;bands[sideKey]=tally;}
       acc.depthBandCounts=bands;issues.forEach(k=>counts[k]++);}
-    // Minimum-axis contract (2026-11-09, Codex round-4): front raise's
-    // total is presented again — every applicable axis is assessed
-    // (stability + trunk numeric, depth as bands) and its only
-    // unassessable axis is unassessable by design ('view'), so the
-    // per-rep aggregate prints with the set total (see emitHammerRep's
-    // note for the withheld case).
+    // Minimum-axis contract (2026-11-09, Codex round-4): in the round-5
+    // window front raise's total was presented again (stability +
+    // trunk numeric, depth as bands, symmetry by design). The channel
+    // suspensions (Codex round-7) withhold it once more — depth,
+    // stability and trunk are validity-suspended ('channel') — so the
+    // per-rep aggregate follows the set total and does not print (see
+    // emitHammerRep's note for the withheld case).
     const withheld=scored&&totalWithheld(this.assessmentsFor(acc));
     this.metrics={...this.metrics,reps:this.metrics.reps+1,lastRepScore:scored?score:null,scoreAccumulator:acc,perfectReps:this.metrics.perfectReps+(scored&&score>=90?1:0),formScore:acc.count?Math.round(acc.total/acc.count):0,correctionCounts:counts,lastRepIssues:scored?issues:[],feedback:scored?(withheld?`好，第 ${this.metrics.reps+1} 次记下啦`:`好，第 ${this.metrics.reps+1} 次记下啦 · 本次 ${score} 分`):`好，第 ${this.metrics.reps+1} 次记下啦 · 这次没看清，不评分`};
     this.updateAverage();
@@ -1362,7 +1430,12 @@ export class ExtendedExerciseTracker {
     const nearPeak=stage==='moving'&&sides.every(s=>s.raised<65)&&sides.some(s=>s.raised>=45);
     const blocker=this.frontRaiseBlocker(sides);
     const message=stage==='complete'?'目标完成啦，漂亮':completed?this.metrics.feedback:blocker||(nearPeak?'接近啦，再往上带一点点，到肩膀高再放回':copy[stage==='ready'?0:stage==='moving'?1:stage==='peak'?2:3]+(stage==='moving'?' · 继续，保持住':''));
-    const issue:PoseIssue|null=f.posture<70?'body_alignment':null;
+    // Channel suspension (2026-11-09, Codex round-7): the live posture
+    // issue read the image tilt channel convicted for the trunk axis,
+    // so front raise raises no live corrective issue either. The
+    // blocker hints above are counting-gate guidance (direction /
+    // peak-evidence state), a separate audited path — they stand.
+    const issue:PoseIssue|null=null;
     this.diagnostics={...this.diagnostics,stage};
     this.metrics={...this.metrics,phase:f.start?'standing':anyPeak?'ascending':'descending',feedback:completed?this.metrics.feedback:message,poseFeedback:{status:!f.scorable?'uncertain':issue?'adjust':'stable',confidence:f.confidence,issues:issue?[issue]:[],primaryIssue:issue,affectedJoints:issue?poseIssueCopy(issue,this.type).joints:[],calibrated:true,message:blocker||(issue?poseIssueCopy(issue,this.type).action:message)}};
     return this.metrics;

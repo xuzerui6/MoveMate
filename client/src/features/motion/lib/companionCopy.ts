@@ -77,6 +77,12 @@ export const notSeenCopyFor = (type: string): string => isUpperBodyExercise(type
 /** Step-3 评分合同（2026-11-08）：某一轴在这个角度评不了时，轴位就写这句——
  * 不给数字、不假装看清。总分只按能评的轴算（见 axisAssessment.ts）。 */
 export const COPY_AXIS_UNASSESSABLE = '这个角度评不了'
+/** 锤式弯举幅度轴的限定句（2026-11-09，Codex round-7 Q3）：溢出审计确认
+ * 锤式幅度数值在合格动作上与参照一致（数值干净），但峰值被通道塌陷顶在
+ * 满格——浅幅动作暂时区分不出来。在区分证据出现之前，幅度只报「举到的
+ * 高度」这个测量事实，不拿它下质量结论（见 buildSetReveal 的 quietAxes
+ * 与 docs/channel-suspensions-2026-11-09.md）。 */
+export const COPY_DEPTH_SHALLOW_LIMIT = '幅度先记你举到的高度——深浅我还分不清，就不拿它下结论啦'
 /** 退化取景（跪姿特写那一类）持续到无法取证时的一句陪伴句：先说清状态
  * （这个角度评不了），只给一个调整动作（按动作族取入镜话术）。 */
 export const cannotAssessCopyFor = (type: string): string => `${COPY_AXIS_UNASSESSABLE}——${framingCopyFor(type)}`
@@ -116,7 +122,7 @@ export interface SetReveal {
 export function buildSetReveal(
   current: FormBreakdown,
   previous: FormBreakdown | null,
-  opts: { reps: number; unit: string; scored: boolean; axisLabels?: Record<AxisKey, string>; numericAxes?: AxisKey[] },
+  opts: { reps: number; unit: string; scored: boolean; axisLabels?: Record<AxisKey, string>; numericAxes?: AxisKey[]; quietAxes?: AxisKey[] },
 ): SetReveal {
   const labels = opts.axisLabels || AXIS_LABELS
   // Step-3 contract: axes that carry no number in this set (category or
@@ -133,11 +139,19 @@ export function buildSetReveal(
     return { progressLine: `这一组完成 ${opts.reps} ${opts.unit}，记下啦`, goalLine, improvedAxis: null }
   }
   const deltas = NUM.map(axis => ({ axis, delta: current[axis] - previous[axis] }))
-  const best = deltas.reduce((a, b) => (b.delta > a.delta ? b : a))
+  // quietAxes: axes whose number is a measurement readout whose QUALITY
+  // discrimination is unvalidated (hammer depth, Codex round-7 Q3 — its
+  // values match the reference on adequate reps but the channel pins
+  // peaks at the ceiling, so a shallow rep would still read full). Such
+  // an axis never stars in the affirmative improvement claim below; it
+  // still counts in the totals comparison and the weakest-axis goal,
+  // which make no per-axis quality claim.
+  const claimDeltas = opts.quietAxes?.length ? deltas.filter(d => !opts.quietAxes!.includes(d.axis)) : deltas
+  const best = claimDeltas.length ? claimDeltas.reduce((a, b) => (b.delta > a.delta ? b : a)) : null
   const worst = deltas.reduce((a, b) => (b.delta < a.delta ? b : a))
   const totalNow = NUM.reduce((sum, axis) => sum + current[axis], 0)
   const totalPrev = NUM.reduce((sum, axis) => sum + previous[axis], 0)
-  if (best.delta >= 5) {
+  if (best && best.delta >= 5) {
     return {
       progressLine: `先说进步：${labels[best.axis]}比上一组好了一截（${previous[best.axis]} → ${current[best.axis]}）——你的进步，我都记着呢`,
       goalLine,
