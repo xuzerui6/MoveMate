@@ -32,6 +32,22 @@
  * 'control' suspension from hammer_curl to every profile sharing the
  * unresolved assumption (see CONTROL_SUSPENDED_TYPES in
  * extendedRecognition.ts).
+ *
+ * Channel suspensions (2026-11-09, Codex round-7 concurrence,
+ * docs/channel-suspensions-2026-11-09.md): the Full-spillover audit
+ * (accuracy-phase0/spillover-audit-report.md) recomputed depth and
+ * trunk through the production path against Heavy substitution and
+ * independent marks, and convicted the measurement CHANNELS behind
+ * three more axes — hammer trunk and front-raise trunk/depth with
+ * demonstrated contamination, front-raise stability provisionally
+ * (unresolved validity under demonstrated channel risk — NOT a
+ * contamination verdict). Those axes are unassessable ('channel'), a
+ * validity reason distinct from 'control': the input channel fails to
+ * support the axis interpretation, whatever the construct. The
+ * suspensions apply to these movements' assessments regardless of
+ * ladder rung — no shipped rung is validated for these axes (the
+ * audit convicted the shipping Full channel; Heavy is not shipped
+ * and is itself unvalidated for them).
  */
 
 export type AxisKey = 'depth' | 'stability' | 'trunk' | 'symmetry'
@@ -120,8 +136,17 @@ export const allNumericAssessments = (): AxisAssessments => ({
  * elbow-dependent upper-arm angle, the same world channel already shown
  * to carry per-rep sign-flipping noise, so upper-arm control cannot be
  * judged reliably from this view yet and the whole stability axis is
- * withheld rather than rebranded from its speed/duration remainder. */
-export const UNASSESSABLE_REASONS = ['view', 'single-side', 'no-bilateral-evidence', 'framing', 'control'] as const
+ * withheld rather than rebranded from its speed/duration remainder;
+ * channel — the channel suspensions (2026-11-09, Codex round-7): the
+ * axis's measurement input itself failed validation — hammer and
+ * front-raise trunk read an image shoulder/hip tilt channel that
+ * wanders and spikes on upright reps no gate tests, front-raise depth
+ * bands sit on a raised-angle channel convicted in both directions by
+ * independent anchors, and front-raise stability consumes the same
+ * implicated elbow channel with its effect unresolved (provisional —
+ * unresolved validity under demonstrated channel risk, not a
+ * demonstrated contamination of the axis). */
+export const UNASSESSABLE_REASONS = ['view', 'single-side', 'no-bilateral-evidence', 'framing', 'control', 'channel'] as const
 
 /** Nominal axis weights of the set total (the weights every emit site
  * renormalizes over). Coverage of a total = the share of this nominal
@@ -157,9 +182,12 @@ export const BY_DESIGN_UNASSESSABLE_REASONS: readonly string[] = ['view', 'singl
  *      the evidence its total claims to summarize.
  * Axes unassessable BY DESIGN (BY_DESIGN_UNASSESSABLE_REASONS) are
  * non-applicable and never block. Outcomes: hammer frontal → withheld
- * (control suspension); front raise → total returns (stability+trunk
- * renormalized per step 3, depth as bands alongside); single-side
- * family → presented; degraded framing → withheld. */
+ * (control suspension); front raise → withheld since the channel
+ * suspensions (its trunk/depth/stability are validity-suspended; in
+ * the round-5 window between the two contracts its total was
+ * presented over stability+trunk renormalized, depth as bands
+ * alongside); single-side family → presented; degraded framing →
+ * withheld. */
 export const totalWithheld = (a?: AxisAssessments | null): boolean => {
   if (!a) return false
   return AXIS_KEYS.some(k => {
@@ -184,8 +212,11 @@ export const TOTAL_WITHHELD_NOTE = '这一组能评的项目还不够多，总�
 
 /** Scope label for a PRESENTED total whose numeric axes do not cover
  * every applicable axis (2026-11-09, Codex round-5 correction — the
- * front-raise case: its total is computed over stability + trunk only,
- * depth being per-side bands and symmetry unassessable by design). A
+ * front-raise case of that round: its total was computed over
+ * stability + trunk only, depth being per-side bands and symmetry
+ * unassessable by design; the channel suspensions have since withheld
+ * that total, so the label now serves any map of this shape, e.g. a
+ * categorical-symmetry set whose total is presented). A
  * bare number invites the reader to assume it summarizes all four axes,
  * so wherever such a total is shown its scope is named: the axes it is
  * actually computed over (in the surface's own display names), and the
@@ -222,8 +253,11 @@ export const numericAxesOf = (a?: AxisAssessments | null): AxisKey[] =>
  * Rebuild the assessment map for a stored score accumulator when the map
  * itself was not stored (defensive restore path). Only evidence-based
  * derivations are made: recorded peak-timing offsets imply the timing
- * category; recorded front-raise band tallies imply per-side bands (and
- * the front-raise symmetry rule). A stored map always wins.
+ * category (and identify a hammer set, whose suspended axes follow);
+ * recorded front-raise band tallies identify a front-raise set, whose
+ * channel suspensions follow (the tallies themselves remain recorded
+ * for diagnostics — derivation no longer presents them as bands). A
+ * stored map always wins.
  */
 export function assessmentFromScore(score: any): AxisAssessments | undefined {
   if (score?.axisAssessment && typeof score.axisAssessment === 'object') {
@@ -244,17 +278,25 @@ export function assessmentFromScore(score: any): AxisAssessments | undefined {
     // (see UNASSESSABLE_REASONS 'control') — the same evidence-based
     // derivation as the category above, extended to the suspended axis.
     out.stability = { kind: 'unassessable', reason: 'control' }
+    // Channel suspension (2026-11-09, Codex round-7): the same sets'
+    // trunk was read off the image tilt channel the spillover audit
+    // convicted on marks-upright reps — derivation carries it too.
+    out.trunk = { kind: 'unassessable', reason: 'channel' }
     return out
   }
   if (bands && (bands.left || bands.right)) {
-    const left = modalBand(bands.left)
-    const right = modalBand(bands.right)
-    if (left || right) {
-      const out = allNumericAssessments()
-      out.depth = { kind: 'bands', ...(left ? { left } : {}), ...(right ? { right } : {}) }
-      out.symmetry = { kind: 'unassessable', reason: 'view' }
-      return out
-    }
+    // Recorded band tallies exist only for front-raise sets. Since the
+    // channel suspensions (2026-11-09, Codex round-7) those sets present
+    // no bands: depth, trunk and stability are unassessable ('channel')
+    // and symmetry stays unassessable by design ('view'). The tallies
+    // remain in the accumulator as diagnostics; nothing derives a
+    // presented band from them anymore.
+    const out = allNumericAssessments()
+    out.depth = { kind: 'unassessable', reason: 'channel' }
+    out.stability = { kind: 'unassessable', reason: 'channel' }
+    out.trunk = { kind: 'unassessable', reason: 'channel' }
+    out.symmetry = { kind: 'unassessable', reason: 'view' }
+    return out
   }
   return undefined
 }
@@ -268,6 +310,6 @@ export function axisStateText(a: AxisAssessment): string | null {
     if (a.right) parts.push(`右 ${DEPTH_BAND_LABELS[a.right]}`)
     return parts.join(' · ') || null
   }
-  if (a.kind === 'unassessable') return a.reason === 'control' ? '暂时评不了' : '这个角度评不了'
+  if (a.kind === 'unassessable') return a.reason === 'control' || a.reason === 'channel' ? '暂时评不了' : '这个角度评不了'
   return null
 }

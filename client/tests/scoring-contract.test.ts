@@ -69,8 +69,13 @@ test('front raise totals renormalize over stability and trunk only', () => {
   assert.ok(Math.abs(tracker.metrics.formScore - expected) <= 1, `formScore ${tracker.metrics.formScore} should be the renormalized ${expected}`);
   const bands = tracker.metrics.scoreAccumulator.depthBandCounts;
   const tallies = (bands?.left ? Object.values(bands.left).reduce((a: number, b: any) => a + (b || 0), 0) : 0) + (bands?.right ? Object.values(bands.right).reduce((a: number, b: any) => a + (b || 0), 0) : 0);
-  assert.equal(tallies, 2, 'the bilateral demo raise records one band per side');
-  assert.equal(tracker.metrics.axisAssessment?.depth.kind, 'bands');
+  assert.equal(tallies, 2, 'the bilateral demo raise records one diagnostic tally per side');
+  // Channel suspensions (2026-11-09, Codex round-7): the internal
+  // renormalization above is unchanged, but no band is presented —
+  // depth, stability and trunk are unassessable ('channel').
+  assert.deepEqual(tracker.metrics.axisAssessment?.depth, { kind: 'unassessable', reason: 'channel' });
+  assert.deepEqual(tracker.metrics.axisAssessment?.stability, { kind: 'unassessable', reason: 'channel' });
+  assert.deepEqual(tracker.metrics.axisAssessment?.trunk, { kind: 'unassessable', reason: 'channel' });
   assert.deepEqual(tracker.metrics.axisAssessment?.symmetry, { kind: 'unassessable', reason: 'view' });
 });
 
@@ -142,9 +147,16 @@ test('restored sets present step-3 states instead of reverting them to numbers',
   // sets, whose stability came from the suspended control channel — the
   // rebuilt map carries the suspension too (see axis-validity.test.ts).
   assert.deepEqual(fromOffsets.axisAssessment?.stability, { kind: 'unassessable', reason: 'control' });
-  // Front-raise tallies rebuild bands + unassessable symmetry.
+  // Channel suspension (2026-11-09, Codex round-7): the same rebuilt
+  // map carries hammer's trunk suspension.
+  assert.deepEqual(fromOffsets.axisAssessment?.trunk, { kind: 'unassessable', reason: 'channel' });
+  // Front-raise tallies identify a front-raise set; since the channel
+  // suspensions the rebuilt map carries those suspensions instead of
+  // presenting the tallies as bands (symmetry stays by-design 'view').
   const fromBands = restoredSetMetrics({ reps: 2, score: { count: 2, total: 160, depth: 0, stability: 170, trunk: 150, symmetry: 0, depthBandCounts: { left: { shoulder: 2, below: 1 }, right: { below: 1 } } } });
-  assert.deepEqual(fromBands.axisAssessment?.depth, { kind: 'bands', left: 'shoulder', right: 'below' });
+  assert.deepEqual(fromBands.axisAssessment?.depth, { kind: 'unassessable', reason: 'channel' });
+  assert.deepEqual(fromBands.axisAssessment?.stability, { kind: 'unassessable', reason: 'channel' });
+  assert.deepEqual(fromBands.axisAssessment?.trunk, { kind: 'unassessable', reason: 'channel' });
   assert.deepEqual(fromBands.axisAssessment?.symmetry, { kind: 'unassessable', reason: 'view' });
   // Pre-contract sets carry no evidence: no map is invented for them.
   const legacy = restoredSetMetrics({ reps: 2, score: { count: 2, total: 190, depth: 180, stability: 190, trunk: 180, symmetry: 200 } });
@@ -156,8 +168,12 @@ test('share cards render step-3 states as text, never as a fabricated number', (
   const hammer = buildGymSetCard({ reps: 6, exercise: { name: 'hammer_curl', nameZh: '锤式弯举' }, score: { count: 6, total: 540, depth: 560, stability: 520, trunk: 550, symmetry: 0, symmetryOffsetsMs: [80, 90, 70, 85, 95, 75] } }, 0, new Date());
   assert.equal(hammer.axes?.[3].text, '同步');
   const raise = buildGymSetCard({ reps: 2, exercise: { name: 'front_raise', nameZh: '前平举' }, score: { count: 2, total: 170, depth: 0, stability: 180, trunk: 160, symmetry: 0, depthBandCounts: { left: { shoulder: 2 } } } }, 0, new Date());
-  assert.equal(raise.axes?.[0].text, '左 到达肩高');
+  // Channel suspensions: the tallies no longer present as bands — the
+  // depth axis renders the suspension text, and the total is withheld.
+  assert.equal(raise.axes?.[0].text, '暂时评不了');
   assert.equal(raise.axes?.[3].text, '这个角度评不了');
+  assert.equal(raise.totalWithheld, true);
+  assert.equal(raise.score, null);
 });
 
 test('set reveal ignores non-numeric axes when comparing sets', () => {
@@ -228,12 +244,33 @@ test('total scope label names the axes a subset total covers, derived from the m
   assert.equal(totalScopeNote(null, labels), null);
 });
 
-test('banded axes never enter a total on the card or restore paths, even with a poisoned sum', () => {
+test('a tallies-derived front-raise set with a poisoned sum presents no total at all', () => {
   // A stored front-raise accumulator whose depth/symmetry sums carry
-  // stray numbers: every presentation total still comes from the
-  // recorded per-rep totals alone — the banded axis has no numeric
-  // mapping anywhere, so there is nothing for a stray sum to feed.
+  // stray numbers. Since the channel suspensions the derivation
+  // withholds the total outright, so there is no presented number for
+  // a stray sum to feed; the internal restored total still comes from
+  // the recorded per-rep totals alone, exactly as before.
   const score = { count: 2, total: 170, depth: 9999, stability: 180, trunk: 160, symmetry: 8888, depthBandCounts: { left: { shoulder: 2 }, right: { below: 1 } } };
+  const card = buildGymSetCard({ reps: 2, exercise: { name: 'front_raise', nameZh: '哑铃前平举' }, score }, 0, new Date());
+  assert.equal(card.totalWithheld, true);
+  assert.equal(card.score, null);
+  assert.equal(card.scoreNote, null);
+  assert.equal(card.axes?.[0].text, '暂时评不了');
+  assert.equal(card.axes?.[3].text, '这个角度评不了');
+  const restored = restoredSetMetrics({ reps: 2, score });
+  assert.equal(restored.formScore, 85, 'the internal total is the recorded per-rep totals only, unchanged');
+  assert.deepEqual(restored.axisAssessment?.depth, { kind: 'unassessable', reason: 'channel' });
+  assert.deepEqual(restored.axisAssessment?.symmetry, { kind: 'unassessable', reason: 'view' });
+});
+
+test('a stored bands map (round-5 window set) keeps its presentation; banded axes never enter its total, even with a poisoned sum', () => {
+  // Historical sets are not recomputed: a set that stored its round-5
+  // assessment map presents exactly what it stored. Its total still
+  // comes from the recorded per-rep totals alone — the banded axis has
+  // no numeric mapping anywhere, so a stray depth sum has nothing to
+  // feed even here.
+  const storedMap = { depth: { kind: 'bands', left: 'shoulder', right: 'below' }, stability: { kind: 'numeric' }, trunk: { kind: 'numeric' }, symmetry: { kind: 'unassessable', reason: 'view' } };
+  const score = { count: 2, total: 170, depth: 9999, stability: 180, trunk: 160, symmetry: 8888, depthBandCounts: { left: { shoulder: 2 }, right: { below: 1 } }, axisAssessment: storedMap };
   const card = buildGymSetCard({ reps: 2, exercise: { name: 'front_raise', nameZh: '哑铃前平举' }, score }, 0, new Date());
   assert.equal(card.score, 85);
   assert.equal(card.axes?.[0].text, '左 到达肩高 · 右 未到肩高');
@@ -242,5 +279,4 @@ test('banded axes never enter a total on the card or restore paths, even with a 
   const restored = restoredSetMetrics({ reps: 2, score });
   assert.equal(restored.formScore, 85);
   assert.deepEqual(restored.axisAssessment?.depth, { kind: 'bands', left: 'shoulder', right: 'below' });
-  assert.deepEqual(restored.axisAssessment?.symmetry, { kind: 'unassessable', reason: 'view' });
 });

@@ -303,11 +303,14 @@ test("milestone card svg ring offset follows the fraction", () => {
 });
 
 test("set card svg prints the scope note beside a subset-scoped total, and only then", () => {
+  // A stored subset-scoped map (a round-5-window front-raise set —
+  // stored maps keep their historical presentation): the total is
+  // presented over stability + trunk, depth as bands alongside.
   const scoped = buildGymSetCard(
     {
       reps: 2,
       exercise: { nameZh: "哑铃前平举", name: "front_raise" },
-      score: { count: 2, total: 170, depth: 0, stability: 180, trunk: 160, symmetry: 0, depthBandCounts: { left: { shoulder: 2 }, right: { below: 1 } } },
+      score: { count: 2, total: 170, depth: 0, stability: 180, trunk: 160, symmetry: 0, depthBandCounts: { left: { shoulder: 2 }, right: { below: 1 } }, axisAssessment: { depth: { kind: "bands", left: "shoulder", right: "below" }, stability: { kind: "numeric" }, trunk: { kind: "numeric" }, symmetry: { kind: "unassessable", reason: "view" } } },
     },
     0,
     new Date(2026, 10, 7),
@@ -318,6 +321,24 @@ test("set card svg prints the scope note beside a subset-scoped total, and only 
   assert.ok(scopedSvg.includes("总分只按 稳定性、躯干 算；幅度看档位，不算进总分"));
   // The banded depth stays visible alongside the total, as state text.
   assert.ok(scopedSvg.includes("左 到达肩高 · 右 未到肩高"));
+  // The same tallies WITHOUT a stored map derive the channel
+  // suspensions (2026-11-09, Codex round-7): the card withholds the
+  // total, prints no scope note, and shows no band text anywhere.
+  const derived = buildGymSetCard(
+    {
+      reps: 2,
+      exercise: { nameZh: "哑铃前平举", name: "front_raise" },
+      score: { count: 2, total: 170, depth: 0, stability: 180, trunk: 160, symmetry: 0, depthBandCounts: { left: { shoulder: 2 }, right: { below: 1 } } },
+    },
+    0,
+    new Date(2026, 10, 7),
+  );
+  assert.equal(derived.totalWithheld, true);
+  assert.equal(derived.score, null);
+  assert.equal(derived.scoreNote, null);
+  const derivedSvg = setCardSvg(derived);
+  assert.ok(!derivedSvg.includes("到达肩高"), "no band text on a channel-suspended card");
+  assert.ok(!derivedSvg.includes("总分只按"));
   // A total covering every applicable axis keeps the previous card:
   // no scope note in the data, none in the SVG.
   const plain = buildGymSetCard(
