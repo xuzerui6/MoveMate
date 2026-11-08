@@ -63,4 +63,9 @@
 
 ## 部署记录
 
-（部署后回填：双站 Version ID 与线上核验。）
+- 合并：`f6f4166`（feature）→ main `73459ec`（merge commit），已推送 GitHub。
+- 生产（dongban.xyz）：Version ID `33aeb987-c892-4d39-9dfc-f1950860b03e`。
+- 预览（movemate-preview）：Version ID `96321da4-2288-43a0-85e8-5401e0cce745`。
+- 双站均以 `npx wrangler@4.158.0 deploy` 直发（生产默认 env、预览 `--env preview`），构建含 `MOVEMATE_MEDIA_DIR` 许可媒体。
+- 线上核验：双站实际返回的识别代码包 `useXiaozhiCoach-SQfEai3e.js` 与本地构建 sha256 完全一致（`9d07c324…`），首页入口均为新构建 `index-DHDIeNoQ.js`；新档案字符串（`mountain_climber` / `split_squat` / `barbell_good_morning` 等）在客户端包与 worker 包中均在位。
+- 披露：部署构建的 server 依赖采用批次 73/74 的文档化 bcrypt 兜底——从本轮 server 套件全过（115/115）的 tier-2 工作树复制 `server/node_modules`（lockfile 与 main 逐字一致），未在部署工作树内重装原生模块。
