@@ -31,5 +31,8 @@
 
 ## 验证与部署记录
 
+- 接入提交 `53f5fb2`（分支 `media/exercise-media-batch74`）；合入 main 提交 `9a15f7a`。
 - 串行全套测试（2026-11-08 本地）：client `test:repository` **380/380** + `tsc -b` 通过；server **103/103** + build 通过；cloudflare **34/34** + typecheck 通过。三套首轮均一次通过，无子进程偶发失败。
-- 接入提交、CI、双站部署与 sha256 抽查记录于合入后回填。
+- CI：分支手动触发 run `42467439660` 绿；main 推送 run `42467572839` 绿。
+- 双站部署（2026-11-08，wrangler@4.158.0）：生产 `dongban.xyz` Version `2a6cf871-74d6-48bc-a4a1-01684defd8dd`；预览 `preview.dongban.xyz` Version `3f5dca04-6048-49dd-8dde-eeb5aff7c684`。部署注记：部署 worktree 内 server 依赖 `npm ci` 再次卡在 bcrypt 的预编译包下载（与批次 73 同型），因部署只需 server 的 tsc/tsx 参与 bundle，改用接入 worktree 中与 lockfile 逐字节一致（md5 相同）、且已通过全套测试的 server/node_modules 完成构建（文件清单逐项比对一致、bcrypt 可正常加载），部署产物不受影响。
+- sha256 抽查（浏览器 UA，双站各 4 件：本批 1626 关键帧、1260 关键帧、1385 关键帧与 1626 详情 JSON）：8/8 与仓库文件一致。
