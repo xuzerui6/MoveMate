@@ -125,4 +125,21 @@ exerciseType='plan'，现在 isCameraExercise 为真后传真实 profile，
 
 ## 部署记录
 
-（部署后回填：commit、生产/预览 Version ID、生产 bundle 内容核验。）
+- Commit：`88e58e3`（main，fast-forward 合并 feat/recognition-picker-fix；
+  合并时 origin/main 仍为 fe8063b，视频窄口批次已在此前落地，无冲突）。
+  GitHub CI（run 42474795442）：success。
+- 生产 dongban.xyz：Version `76fd5a2a-edd7-41de-8be7-e37793350c17`。
+- 预览 preview.dongban.xyz：Version `13f5491d-c661-49e1-bb75-cdc667db9679`。
+- 服务器依赖本次在部署 worktree 内 `npm ci --prefix server` 干净成功
+  （bcrypt 预编译包正常加载），未用 node_modules 拷贝回退。
+- 生产 bundle 核验（部署后从 dongban.xyz 实际拉取）：首页引用
+  `assets/index-8R7-65Fw.js`（与本地构建哈希一致，预览站相同）；
+  `assets/Training-aDUQECl6.js` 含派生标签表达式（渲染为「新增18种 · 试用」）；
+  `assets/exercises-DMI87hot.js` 含全部 12 个新动作名
+  （站姿双哑铃肩推、杠铃站姿军事推举、哑铃后撤弓步、哑铃传统硬拉、
+  哑铃单臂俯身划船、平凳仰卧举腿、哑铃直立划船、登山跑、哑铃单腿分腿蹲、
+  坐姿哑铃提踵、杠铃早安式、屈膝凳上臂屈伸）与 profile 键
+  （mountain_climber、dumbbell_standing_press、barbell_good_morning、
+  one_arm_row 等）。
+- 试用页签最终形态：「基础4种」不变；「新增18种 · 试用」共 18 个条目。
+  Edward 真机点选 12 个新动作的实际识别体验待复测。
