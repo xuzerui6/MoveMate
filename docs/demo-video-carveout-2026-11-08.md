@@ -28,7 +28,8 @@
 - `cloudflare/src/media-sizes.json` 按其生成规则（manifest 视频 src→bytes）同步 +3 条唯一文件。
 - `client/public/exercise-media/attribution.json` 是 manifest 的镜像（通常由 build-exercise-media.py 整批重写）；本批只同步其 entries 至与新 manifest 一致，version/reviewedAt 未动。
 - 发布链为三条各生成了新的哈希 detail JSON；旧哈希 detail 文件为发布管线历来留下的未引用孤儿（0514 此前已有两份），本批未做清理。
-- 测试（全串行）：client `test:repository` **408/408** + tsc；server **108/108** + build；cloudflare **34/34** + typecheck。首轮 client 曾因 attribution.json 未同步失败一次，同步后全绿。
+- 测试（全串行）：本分支（基于 tier-1 主线）client `test:repository` **408/408** + tsc；server **108/108** + build；cloudflare **34/34** + typecheck。首轮 client 曾因 attribution.json 未同步失败一次，同步后全绿。
+- **与主线汇合**：集成期间识别第二梯队先行合入主线（49→56），本分支干净合并 origin/main 后在合并树复验：报告计数不变（视频 18、完整 769、唯一视频文件 15），client **436/436**、server **115/115**、cloudflare **34/34**，tsc/build/typecheck 全过（基线抬升来自 tier-2 的新夹具，非本批改动）。
 
 ## 部署记录
 
