@@ -141,9 +141,19 @@ No existing fixture was modified; no counting assertion changed.
 
 ## Deploy record
 
-- Merged to main as `PENDING`; CI `PENDING`.
-- Production (dongban.xyz): Version `PENDING`.
-- Preview (preview.dongban.xyz): Version `PENDING`.
+- Merged to main as `f1380f8` (feature `786fe9c` on
+  `round6/total-scope-labeling`); CI run 42519651692 **success**.
+- Production (dongban.xyz): Version
+  `404d067b-0874-4bbb-b62f-cf55ca2465a5`.
+- Preview (preview.dongban.xyz): Version
+  `07e58f07-02b3-4a90-8aa9-0ba8fdbb30a9`.
+- Deployed with `npx wrangler@4.158.0 deploy` directly (production,
+  then `--env preview`) from a main worktree; server `npm ci`
+  succeeded — the bcrypt node_modules-copy fallback was not needed
+  this round.
+- Live verification: the `axisAssessment` chunk (contains
+  `totalScopeNote`) and the `cardData` chunk (contains `scoreNote`)
+  fetched from both hosts are sha256-identical to the local build.
 - 动伴进度 space: checked — no displayed fact changed this round
   (library 769, camera-linked 56, videos 18 untouched; the space
   displays no score-presentation facts), so no sync was needed.
