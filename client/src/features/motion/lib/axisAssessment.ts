@@ -167,6 +167,16 @@ export const totalWithheld = (a?: AxisAssessments | null): boolean => {
     return ax.kind === 'unassessable' && !BY_DESIGN_UNASSESSABLE_REASONS.includes(ax.reason)
   })
 }
+
+/** The ONE inclusion rule for every cross-set average (workout share
+ * card, PlanWorkout completion screen): a set's total may enter an
+ * average only when the set produced scored reps AND its total is
+ * presented under the minimum-axis contract above. Averaging a withheld
+ * total in would publish the paused number through a side door — the
+ * average would move with a score no surface is allowed to print. Every
+ * average consumer uses this predicate; do not re-derive it inline. */
+export const totalEntersAverage = (score: any): boolean =>
+  (score?.count || 0) > 0 && !totalWithheld(assessmentFromScore(score))
 /** Companion-tone note shown wherever a set total is withheld: brief, no
  * score language, the pause framed as waiting for more evidence — never
  * as a failure of the set. */
