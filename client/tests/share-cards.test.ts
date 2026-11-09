@@ -353,3 +353,71 @@ test("set card svg prints the scope note beside a subset-scoped total, and only 
   assert.equal(plain.scoreNote, null);
   assert.ok(!setCardSvg(plain).includes("总分只按"));
 });
+
+test("hammer set cards omit the depth value entirely (Codex round-8)", () => {
+  // Gym/plan path: a post-contract hammer set (offsets derive the
+  // suspension map, total withheld). Summary shows the depth number
+  // WITH the limitation line; the standalone card has no note slot, so
+  // its depth slot renders the unavailable treatment instead of the
+  // bare amplitude number (93 = 560/6 here).
+  const gymHammer = buildGymSetCard(
+    { reps: 6, exercise: { name: "hammer_curl", nameZh: "锤式弯举" }, score: { count: 6, total: 540, depth: 560, stability: 520, trunk: 550, symmetry: 0, symmetryOffsetsMs: [80, 90, 70, 85, 95, 75] } },
+    0,
+    new Date(2026, 10, 7),
+  );
+  assert.equal(gymHammer.totalWithheld, true);
+  assert.equal(gymHammer.axes?.[0].text, "—");
+  assert.equal(gymHammer.axes?.[0].value, 0);
+  const gymSvg = setCardSvg(gymHammer);
+  assert.ok(gymSvg.includes("—"), "the depth slot carries the omission mark");
+  assert.ok(!gymSvg.includes(">93</text>"), "no depth number anywhere in the card svg");
+  // The other axes keep their existing states.
+  assert.equal(gymHammer.axes?.[1].text, "暂时评不了");
+  assert.equal(gymHammer.axes?.[3].text, "同步");
+
+  // Motion path: the same omission for a live/restored hammer session
+  // carrying its assessment map.
+  const motionHammer = buildMotionSetCard(
+    {
+      id: "cur",
+      exerciseType: "hammer_curl",
+      source: "camera",
+      startTime: new Date(2026, 10, 7),
+      reps: 6,
+      formScore: 95,
+      perfectReps: 0,
+      scoreAccumulator: { count: 6, total: 570, depth: 560, stability: 520, trunk: 550, symmetry: 0 },
+      formBreakdown: { depth: 93, stability: 87, trunk: 92, symmetry: 0 },
+      axisAssessment: { depth: { kind: "numeric" }, stability: { kind: "unassessable", reason: "control" }, trunk: { kind: "unassessable", reason: "channel" }, symmetry: { kind: "category", category: "sync" } },
+    } as any,
+    [] as any,
+  );
+  assert.equal(motionHammer.totalWithheld, true);
+  assert.equal(motionHammer.axes?.[0].text, "—");
+  assert.ok(!setCardSvg(motionHammer).includes(">93</text>"));
+
+  // A NON-hammer withheld card keeps its depth number: the omission is
+  // scoped to hammer's suppressed depth claim, not to withheld cards
+  // in general (seated curl: stability suspended, depth untouched).
+  const seated = buildGymSetCard(
+    { reps: 6, exercise: { name: "seated_curl", nameZh: "坐姿弯举" }, score: { count: 6, total: 500, depth: 560, stability: 520, trunk: 550, symmetry: 540, axisAssessment: { depth: { kind: "numeric" }, stability: { kind: "unassessable", reason: "control" }, trunk: { kind: "numeric" }, symmetry: { kind: "numeric" } } } },
+    0,
+    new Date(2026, 10, 7),
+  );
+  assert.equal(seated.totalWithheld, true);
+  assert.equal(seated.axes?.[0].text, undefined);
+  assert.equal(seated.axes?.[0].value, 93);
+  assert.ok(setCardSvg(seated).includes(">93</text>"));
+
+  // A pre-contract legacy hammer set (no assessment evidence at all)
+  // keeps today's card exactly: presented total, depth number shown.
+  const legacy = buildGymSetCard(
+    { reps: 6, exercise: { name: "hammer_curl", nameZh: "锤式弯举" }, score: { count: 6, total: 540, depth: 560, stability: 520, trunk: 550, symmetry: 530 } },
+    0,
+    new Date(2026, 10, 7),
+  );
+  assert.equal(legacy.totalWithheld, false);
+  assert.equal(legacy.score, 90);
+  assert.equal(legacy.axes?.[0].text, undefined);
+  assert.equal(legacy.axes?.[0].value, 93);
+});
