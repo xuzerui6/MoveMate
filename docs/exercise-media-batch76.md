@@ -33,4 +33,7 @@
 
 ## 验证与部署记录
 
-（待回填：串行全套测试、合入与 CI、双站部署版本、sha256 抽查结果在本批上线后补入本节。）
+- 串行全套测试（2026-11-10 本地）：client `test:repository` **519/519** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。合入后 step5 分支工作树复跑 client `test:repository` 519/519。
+- 接入提交：`611eb2c`（分支 media/exercise-media-batch76），合入 main 为 `1e71e28`；CI run 42666686246 **success**。
+- 双站部署（2026-11-10，wrangler@4.158.0 直跑）：production（dongban.xyz）Version **1cfe9aca-74fd-4c7f-a521-44bc0858dcb8**；preview（preview.dongban.xyz，经 step5 分支合入 main 后部署，该分支合并提交 ee10784 已推送）Version **e94e224a-0df4-404a-a452-026014f8e548**。preview 的 step5-heavy-test / step5-heavy-test-v2 / thunder-gate-test 三个测试页部署后复核均正常返回（200）。
+- sha256 抽查（浏览器 UA，两站各 4 帧）：ai-codex-exdb-1003-0、3122-1、1016-0、0994-1 的线上字节与仓库文件逐一一致；production 上 exdb:1017、exdb:3122 的 details 记录正常返回新双帧。
