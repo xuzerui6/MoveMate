@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MoveMate Step-5 · Heavy 模型真机可行性测试</title>
+<style>
+:root{color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;background:#fff;color:#111;-webkit-text-size-adjust:100%}
+main{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:24px;line-height:1.3;margin:8px 0 6px}
+.sub{color:#555;font-size:15px;line-height:1.6;margin:0 0 14px}
+.note{background:#f5f5f7;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.7;color:#333;margin:0 0 16px}
+video{width:100%;max-height:300px;background:#000;border-radius:12px;object-fit:cover;display:block}
+button{appearance:none;border:0;border-radius:12px;background:#111;color:#fff;font-size:18px;font-weight:600;padding:14px 20px;width:100%;margin:16px 0 8px}
+button:disabled{background:#999}
+button.secondary{background:#e8e8ec;color:#111}
+#status{font-size:16px;font-weight:600;margin:10px 0 6px;min-height:24px}
+.bar{height:10px;background:#eee;border-radius:6px;overflow:hidden;margin:0 0 18px}
+.bar>i{display:block;height:100%;width:0;background:#111;transition:width.2s}
+.card{border:1px solid #e3e3e8;border-radius:14px;padding:16px;margin:14px 0}
+.card h2{font-size:20px;margin:0 0 4px}
+.card.size{color:#666;font-size:14px;margin:0 0 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.metric{background:#f8f8fa;border-radius:10px;padding:10px 12px}
+.metric.k{font-size:13px;color:#666}
+.metric.v{font-size:24px;font-weight:700;margin-top:2px}
+.metric.v small{font-size:13px;font-weight:500;color:#666}
+.verdict{border-radius:14px;padding:16px;font-size:17px;font-weight:700;line-height:1.5;margin:14px 0}
+.verdict.pass{background:#e7f7ec;color:#0a6b2d}
+.verdict.fail{background:#fdecec;color:#a31111}
+.verdict.wait{background:#f5f5f7;color:#555}
+textarea{width:100%;min-height:260px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.55;border:1px solid #ddd;border-radius:10px;padding:10px;margin-top:8px}
+.err{color:#a31111;font-weight:600;white-space:pre-wrap}
+footer{color:#888;font-size:12.5px;line-height:1.6;margin-top:22px}
+</style>
+</head>
+<body>
+<main>
+<h1>大模型（Heavy）真机速度测试</h1>
+<p class="sub">测两件事：大模型第一次打开要等多久（下载＋初始化），和连续用 3 分钟会不会越用越卡。顺带和现在的 Full 模型对比。全程自动，你只需要点一次开始、允许摄像头，然后等它跑完截图。</p>
+<p class="note">测试期间请<b>保持页面在前台、不要锁屏</b>（锁屏会暂停计时）。全程约 5–8 分钟。视频只在本机处理，不上传、不保存。本页与正式 App 相互独立，不影响你的训练数据。</p>
+
+<video id="cam" autoplay muted playsinline></video>
+<button id="start">开始测试</button>
+<div id="status">等待开始</div>
+<div class="bar"><i id="prog"></i></div>
+
+<div id="cards"></div>
+<div id="verdict" class="verdict wait">结论：测试完成后显示（参考线：Heavy 持续帧率 ≥ 15 FPS 且延迟 p95 ≤ 150ms）</div>
+
+<h3 style="margin:18px 0 4px">结果文本（可复制）</h3>
+<textarea id="resultText" readonly placeholder="测试完成后这里会生成完整结果文本"></textarea>
+<button id="copy" class="secondary">复制结果</button>
+<p id="errbox" class="err"></p>
+
+<footer>MoveMate Step-5 可行性预检 · 模型与正式 App 同源（MediaPipe PoseLandmarker float16/1，tasks-vision 0.10.22-rc.20250304）· 推理路径与 iPhone 实验路径一致（主线程）。下载段为绕过浏览器缓存的真实下载，并按正式 App 的方式做大小＋SHA-256 校验后写入本机模型缓存。</footer>
+</main>
+
+<script type="module">
+import { FilesetResolver, PoseLandmarker} from '/pose/vision_bundle.mjs';
+
+/* 与正式 App 的 pose-models.json 完全一致的钉死配置 */
+const MODELS = {
+full: { label: 'Full（现行）', bytes: 9398198,
+sha256: '5134a3aad27a58b93da0088d431f366da362b44e3ccfbe3462b3827a839011b1',
+src: '/pose/pose_landmarker_full.task', parts: null},
+heavy: { label: 'Heavy（大模型）', bytes: 30664242,
+sha256: '64437af838a65d18e5ba7a0d39b465540069bc8aae8308de3e318aad31fcbc7b',
+src: '/pose/pose_landmarker_heavy.task',
+parts: ['/pose/pose_landmarker_heavy.part1', '/pose/pose_landmarker_heavy.part2']}
+};
+const CACHE_NAME = 'pose-models-v1'; /* 与正式 App 相同的模型缓存 */
+const WASM = '/pose/wasm'; /* 与正式 App 相同的本机 WASM */
+const qs = new URLSearchParams(location.search);
+const FULL_DUR = Number(qs.get('fullDur')) || 30;
+const HEAVY_DUR = Number(qs.get('heavyDur')) || 180;
+
+const $ = id => document.getElementById(id);
+const video = $('cam');
+const results = {};
+window.__STEP5 = { done: false, results};
+
+const mb = b => (b / 1e6).toFixed(1);
+const sec = ms => (ms / 1000).toFixed(1);
+const pct = (arr, p) => { if (!arr.length) return 0; const s = [...arr].sort((a, b) => a - b); return s[Math.min(s.length - 1, Math.floor(p * s.length))];};
+function setStatus(t, frac) { $('status').textContent = t; if (typeof frac === 'number') $('prog').style.width = Math.round(frac * 100) + '%';}
+async function sha256Hex(buf) {
+const d = await crypto.subtle.digest('SHA-256', buf);
+return [...new Uint8Array(d)].map(n => n.toString(16).padStart(2, '0')).join('');
+}
+
+/* ---- 与正式 App 相同的取模型字节方式：分片顺序下载 → 拼合 → 校验 → 写缓存 ---- */
+async function fetchModelCold(item) {
+const cache = await caches.open(CACHE_NAME);
+await cache.delete(item.src); /* 保证冷下载：先清掉本机已存的这份 */
+const chunks = [];
+for (const part of item.parts || [item.src]) {
+const r = await fetch(part, { cache: 'no-store'}); /* 绕过 HTTP 缓存，测真实网络下载 */
+if (!r.ok) throw new Error('下载失败 ' + part + ' HTTP ' + r.status);
+chunks.push(await r.arrayBuffer());
+}
+const bytes = new ArrayBuffer(chunks.reduce((s, c) => s + c.byteLength, 0));
+const view = new Uint8Array(bytes); let off = 0;
+for (const c of chunks) { view.set(new Uint8Array(c), off); off += c.byteLength;}
+if (bytes.byteLength!== item.bytes) throw new Error('模型大小校验失败');
+if (await sha256Hex(bytes)!== item.sha256) throw new Error('模型完整性校验失败');
+try { await cache.put(item.src, new Response(bytes.slice(0), { headers: { 'Content-Type': 'application/octet-stream'}}));} catch {}
+return bytes;
+}
+async function readModelCache(item) {
+const cache = await caches.open(CACHE_NAME);
+const hit = await cache.match(item.src);
+return hit? hit.arrayBuffer(): null;
+}
+
+/* ---- 与正式 App 主线程路径相同的创建参数 ---- */
+let visionPromise = null;
+const getVision = () => (visionPromise ||= FilesetResolver.forVisionTasks(WASM));
+async function createLandmarker(bytes) {
+const vision = await getVision();
+let lastErr = null;
+for (const delegate of ['GPU', 'CPU']) {
+try {
+const lm = await PoseLandmarker.createFromOptions(vision, {
+runningMode: 'VIDEO', numPoses: 1,
+minPoseDetectionConfidence:.55, minPosePresenceConfidence:.55, minTrackingConfidence:.55,
+baseOptions: { modelAssetBuffer: new Uint8Array(bytes), delegate}
+});
+return { lm, delegate};
+} catch (e) { lastErr = e;}
+}
+throw lastErr || new Error('模型初始化失败');
+}
+function makeDetector(lm) {
+let last = 0;
+return () => {
+const now = performance.now();
+const ts = now > last? now: last + 0.05;
+last = ts;
+const t0 = performance.now();
+const r = lm.detectForVideo(video, ts);
+return { dt: performance.now() - t0, found:!!(r && r.landmarks && r.landmarks.length)};
+};
+}
+
+/* ---- 持续推理：背靠背调用（与正式 App 相同的单帧推理），统计达成帧率与延迟 ---- */
+async function perfRun(det, durS, label) {
+const lat = []; const buckets = new Map();
+let frames = 0, errors = 0, found = 0;
+const start = performance.now();
+for (;;) {
+for (let i = 0; i < 10; i++) {
+const el = (performance.now() - start) / 1000;
+if (el >= durS) break;
+try {
+const { dt, found: f} = det();
+lat.push(dt); frames++; if (f) found++;
+const b = Math.floor(el); buckets.set(b, (buckets.get(b) || 0) + 1);
+} catch (e) { if (++errors > 50) throw e;}
+}
+const el = (performance.now() - start) / 1000;
+setStatus(label + '：持续推理 ' + Math.min(el, durS).toFixed(0) + ' / ' + durS + ' 秒（已完成 ' + frames + ' 帧）', undefined);
+if (el >= durS) break;
+await new Promise(r => setTimeout(r, 0));
+}
+const elapsed = (performance.now() - start) / 1000;
+const win = (from, to) => { let f = 0; for (const [b, c] of buckets) if (b >= from && b < to) f += c; return f / Math.max(1, Math.min(to, Math.floor(elapsed)) - from);};
+const whole = [...buckets.keys()].filter(b => b + 1 <= elapsed);
+const minBucket = whole.length? Math.min(...whole.map(b => buckets.get(b))): 0;
+return {
+seconds: elapsed, frames, errors, foundRate: frames? found / frames: 0,
+fps: frames / elapsed, p50: pct(lat,.5), p95: pct(lat,.95), max: lat.length? Math.max(...lat): 0,
+fpsFirst10: win(0, 10), fpsLast10: win(Math.max(0, Math.floor(elapsed) - 10), Math.floor(elapsed) + 1),
+minSecondFps: minBucket
+};
+}
+
+async function testModel(key, durS, phaseFrac) {
+const item = MODELS[key];
+const out = { key, label: item.label, mb: mb(item.bytes)};
+results[key] = out;
+setStatus(item.label + '：冷下载中（' + mb(item.bytes) + ' MB）…', phaseFrac(0));
+let t = performance.now();
+const bytes = await fetchModelCold(item);
+out.coldDownloadMs = performance.now() - t;
+out.downloadMBs = item.bytes / 1e6 / (out.coldDownloadMs / 1000);
+
+setStatus(item.label + '：冷初始化中…', phaseFrac(0.15));
+t = performance.now();
+const c1 = await createLandmarker(bytes);
+out.delegate = c1.delegate;
+const det1 = makeDetector(c1.lm);
+const f1 = det1();
+out.coldInitMs = performance.now() - t;
+out.coldFirstInferMs = f1.dt;
+
+setStatus(item.label + '：持续推理 ' + durS + ' 秒…', phaseFrac(0.3));
+out.perf = await perfRun(det1, durS, item.label);
+c1.lm.close();
+
+setStatus(item.label + '：热加载（第二次打开）…', phaseFrac(0.9));
+t = performance.now();
+const cached = await readModelCache(item);
+out.cacheReadMs = performance.now() - t;
+if (!cached) throw new Error('本机缓存读取失败');
+t = performance.now();
+const c2 = await createLandmarker(cached);
+const det2 = makeDetector(c2.lm);
+det2();
+out.warmInitMs = performance.now() - t;
+c2.lm.close();
+setStatus(item.label + '：完成', phaseFrac(1));
+return out;
+}
+
+function metric(k, v, unit) { return '<div class="metric"><div class="k">' + k + '</div><div class="v">' + v + (unit? ' <small>' + unit + '</small>': '') + '</div></div>';}
+function renderCard(out) {
+const el = document.createElement('section');
+el.className = 'card';
+if (out.error) {
+el.innerHTML = '<h2>' + out.label + '</h2><p class="size">' + out.mb + ' MB</p><p class="err">测试中断：' + out.error + '</p>';
+return el;
+}
+const p = out.perf;
+el.innerHTML = '<h2>' + out.label + '</h2><p class="size">模型 ' + out.mb + ' MB · delegate ' + out.delegate + '（主线程）</p><div class="grid">' +
+metric('冷下载（真实网络）', sec(out.coldDownloadMs), '秒') +
+metric('下载速度', out.downloadMBs.toFixed(1), 'MB/s') +
+metric('冷启动总耗时（下载+初始化）', sec(out.coldDownloadMs + out.coldInitMs), '秒') +
+metric('冷初始化（建模+首帧）', Math.round(out.coldInitMs), 'ms') +
+metric('热加载（缓存+初始化）', Math.round(out.cacheReadMs + out.warmInitMs), 'ms') +
+metric('持续帧率（' + Math.round(p.seconds) + ' 秒平均）', p.fps.toFixed(1), 'FPS') +
+metric('推理延迟 p50 / p95', Math.round(p.p50) + ' / ' + Math.round(p.p95), 'ms') +
+metric('帧率变化（前 10 秒 → 后 10 秒）', p.fpsFirst10.toFixed(1) + ' → ' + p.fpsLast10.toFixed(1), 'FPS') +
+'</div>';
+return el;
+}
+function renderText(env) {
+const L = [];
+L.push('MoveMate Step-5 Heavy 可行性测试结果');
+L.push('时间：' + new Date().toLocaleString('zh-CN', { hour12: false}));
+L.push('设备：' + env.ua);
+L.push('摄像头：' + env.cam);
+L.push('');
+for (const key of ['full', 'heavy']) {
+const o = results[key]; if (!o) continue;
+L.push('【' + o.label + '】模型 ' + o.mb + ' MB');
+if (o.error) { L.push('测试中断：' + o.error); L.push(''); continue;}
+const p = o.perf;
+L.push('冷下载：' + sec(o.coldDownloadMs) + ' 秒（' + o.downloadMBs.toFixed(1) + ' MB/s，大小+SHA-256 校验通过）');
+L.push('冷初始化（建模+首帧推理）：' + Math.round(o.coldInitMs) + ' ms（首帧 ' + Math.round(o.coldFirstInferMs) + ' ms，delegate ' + o.delegate + '，主线程）');
+L.push('冷启动总耗时（下载+初始化）：' + sec(o.coldDownloadMs + o.coldInitMs) + ' 秒');
+L.push('热加载（读本机缓存 ' + Math.round(o.cacheReadMs) + ' ms + 初始化）：' + Math.round(o.cacheReadMs + o.warmInitMs) + ' ms');
+L.push('持续推理 ' + Math.round(p.seconds) + ' 秒：' + p.frames + ' 帧，平均 ' + p.fps.toFixed(1) + ' FPS，延迟 p50 ' + Math.round(p.p50) + ' ms / p95 ' + Math.round(p.p95) + ' ms / 最大 ' + Math.round(p.max) + ' ms');
+L.push('帧率走势：前 10 秒 ' + p.fpsFirst10.toFixed(1) + ' FPS → 后 10 秒 ' + p.fpsLast10.toFixed(1) + ' FPS；最低整秒 ' + p.minSecondFps + ' FPS；检出人体帧占比 ' + Math.round(p.foundRate * 100) + '%；错误 ' + p.errors + ' 次');
+L.push('');
+}
+const h = results.heavy;
+if (h &&!h.error) {
+const pass = h.perf.fps >= 15 && h.perf.fpsLast10 >= 15 && h.perf.p95 <= 150;
+L.push('Heavy 参考结论（线：持续 ≥15 FPS 且 p95 ≤150ms）：' + (pass? '达到': '未达到'));
+}
+L.push('注：下载为绕过 HTTP 缓存的真实下载；视频只在本机处理，不上传。');
+return L.join('\n');
+}
+
+$('start').addEventListener('click', async () => {
+$('start').disabled = true; $('errbox').textContent = '';
+const env = { ua: navigator.userAgent, cam: '未取得'};
+try {
+setStatus('请求摄像头…');
+const stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'user', width: { ideal: 1280}, height: { ideal: 720}}});
+video.srcObject = stream;
+await video.play();
+const track = stream.getVideoTracks()[0];
+if (track) { const s = track.getSettings(); env.cam = (s.width || '?') + 'x' + (s.height || '?') + ' @' + (s.frameRate || '?') + 'fps';}
+setStatus('摄像头已开，开始测试…', 0);
+await testModel('full', FULL_DUR, f => f * 0.25);
+$('cards').appendChild(renderCard(results.full));
+await testModel('heavy', HEAVY_DUR, f => 0.25 + f * 0.75);
+$('cards').appendChild(renderCard(results.heavy));
+const h = results.heavy;
+const pass = h &&!h.error && h.perf.fps >= 15 && h.perf.fpsLast10 >= 15 && h.perf.p95 <= 150;
+const v = $('verdict');
+v.className = 'verdict ' + (pass? 'pass': 'fail');
+v.textContent = h && h.error? '结论：Heavy 测试中断（见上方错误），请截图发回。'
+: '结论：Heavy ' + (pass? '达到': '未达到') + '参考线（持续 ≥15 FPS 且 p95 ≤150ms）。请把本页截图发回。';
+setStatus('全部完成 ✅ 请截图本页发回', 1);
+} catch (e) {
+const msg = e && e.message? e.message: String(e);
+$('errbox').textContent = '出错：' + msg;
+setStatus('测试出错，请截图本页发回');
+for (const key of ['full', 'heavy']) if (results[key] &&!results[key].perf &&!results[key].error) results[key].error = msg;
+for (const key of ['full', 'heavy']) if (results[key] && results[key].error && key === 'heavy' &&!document.querySelector('.card')) {}
+$('cards').innerHTML = '';
+for (const key of ['full', 'heavy']) if (results[key]) $('cards').appendChild(renderCard(results[key]));
+} finally {
+$('resultText').value = renderText(env);
+window.__STEP5.done = true;
+window.__STEP5.text = $('resultText').value;
+}
+});
+$('copy').addEventListener('click', async () => {
+const ta = $('resultText');
+try { await navigator.clipboard.writeText(ta.value); $('copy').textContent = '已复制 ✓';}
+catch { ta.select(); document.execCommand('copy'); $('copy').textContent = '已复制 ✓';}
+setTimeout(() => $('copy').textContent = '复制结果', 2000);
+});
+</script>
+</body>
+</html>
