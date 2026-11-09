@@ -139,10 +139,19 @@ const AXIS_LABELS = ['幅度', '稳定性', '躯干', '对称'] as const
 const AXIS_KEYS = ['depth', 'stability', 'trunk', 'symmetry'] as const
 const AXIS_LABEL_RECORD = { depth: '幅度', stability: '稳定性', trunk: '躯干', symmetry: '对称' } as const
 
-function axesFrom(breakdown: { depth: number; stability: number; trunk: number; symmetry: number }, assessment?: AxisAssessments): SetCardAxis[] {
+function axesFrom(breakdown: { depth: number; stability: number; trunk: number; symmetry: number }, assessment?: AxisAssessments, opts?: { omitDepthValue?: boolean }): SetCardAxis[] {
   return AXIS_KEYS.map((key, i) => {
     const state = assessment?.[key]
     if (state && state.kind !== 'numeric') return { label: AXIS_LABELS[i], value: 0, text: axisStateText(state) || '这个角度评不了' }
+    // Codex round-8 (2026-11-09): hammer's depth number is a provisional
+    // descriptive readout that Summary/PlanWorkout present WITH the
+    // limitation line (COPY_DEPTH_SHALLOW_LIMIT); a standalone card has
+    // no note slot, so it must carry its own interpretation — the card
+    // omits the value entirely (the existing text treatment: no number,
+    // no bar) rather than printing a bare amplitude score. Card-layer
+    // only: the shared assessment keeps depth numeric for the surfaces
+    // that do carry the line.
+    if (key === 'depth' && opts?.omitDepthValue) return { label: AXIS_LABELS[i], value: 0, text: '—' }
     return { label: AXIS_LABELS[i], value: Math.round(breakdown[key] || 0) }
   })
 }
@@ -166,6 +175,10 @@ export function buildGymSetCard(set: any, index: number, dateInput: Date | strin
     : null
   const assessment = assessmentFromScore(set?.score)
   const withheld = scored && totalWithheld(assessment)
+  // The set's recognition type, derived the way PlanWorkout derives its
+  // requestedType (planCamera profile, then cameraType), with the core
+  // exercises' name — itself the type id — as the fallback.
+  const exerciseType = set?.exercise?.planCamera?.profile || set?.exercise?.cameraType || set?.exercise?.name
   return {
     date: formatCardDate(dateInput),
     nameZh: set?.exercise?.nameZh || '训练',
@@ -174,7 +187,7 @@ export function buildGymSetCard(set: any, index: number, dateInput: Date | strin
     totalWithheld: withheld,
     score: scored && !withheld ? Math.round((set.score.total || 0) / count) : null,
     scoreNote: scored && !withheld ? totalScopeNote(assessment, AXIS_LABEL_RECORD) : null,
-    axes: breakdown ? axesFrom(breakdown, assessment) : null,
+    axes: breakdown ? axesFrom(breakdown, assessment, { omitDepthValue: withheld && exerciseType === 'hammer_curl' }) : null,
     reps: set?.reps || 0,
     unit: '次',
     setIndex: index + 1,
@@ -207,7 +220,7 @@ export function buildMotionSetCard(result: WorkoutSession, history: WorkoutSessi
     totalWithheld: withheld,
     score: scored && !withheld ? Math.round(result.formScore || 0) : null,
     scoreNote: scored && !withheld ? totalScopeNote((result as any).axisAssessment, AXIS_LABEL_RECORD) : null,
-    axes: scored ? axesFrom(result.formBreakdown, (result as any).axisAssessment) : null,
+    axes: scored ? axesFrom(result.formBreakdown, (result as any).axisAssessment, { omitDepthValue: withheld && result.exerciseType === 'hammer_curl' }) : null,
     reps: result.reps || 0,
     unit: info.unit,
     setIndex: null,
