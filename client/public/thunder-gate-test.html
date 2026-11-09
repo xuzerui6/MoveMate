@@ -1,0 +1,860 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MoveMate Thunder 设备门 · 组合负载测试（Full 计数 + Thunder 评分）</title>
+<style>
+:root{color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;background:#fff;color:#111;-webkit-text-size-adjust:100%}
+main{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:24px;line-height:1.3;margin:8px 0 6px}
+.sub{color:#555;font-size:15px;line-height:1.6;margin:0 0 14px}
+.note{background:#f5f5f7;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.7;color:#333;margin:0 0 16px}
+.note b{color:#111}
+.check{background:#fff8e6;border:1px solid #f0dfa8;border-radius:12px;padding:12px 14px;font-size:14.5px;line-height:1.8;color:#333;margin:0 0 16px}
+.check li{margin:2px 0}
+video{width:100%;max-height:300px;background:#000;border-radius:12px;object-fit:cover;display:block}
+button{appearance:none;border:0;border-radius:12px;background:#111;color:#fff;font-size:18px;font-weight:600;padding:14px 20px;width:100%;margin:16px 0 8px}
+button:disabled{background:#999}
+button.secondary{background:#e8e8ec;color:#111}
+button[hidden]{display:none}
+#status{font-size:16px;font-weight:600;margin:10px 0 6px;min-height:24px}
+.bar{height:10px;background:#eee;border-radius:6px;overflow:hidden;margin:0 0 18px}
+.bar>i{display:block;height:100%;width:0;background:#111;transition:width.2s}
+.card{border:1px solid #e3e3e8;border-radius:14px;padding:16px;margin:14px 0}
+.card h2{font-size:20px;margin:0 0 4px}
+.card .size{color:#666;font-size:14px;margin:0 0 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.metric{background:#f8f8fa;border-radius:10px;padding:10px 12px}
+.metric .k{font-size:13px;color:#666}
+.metric .v{font-size:24px;font-weight:700;margin-top:2px}
+.metric .v small{font-size:13px;font-weight:500;color:#666}
+.series{font-family:ui-monospace,Menlo,monospace;font-size:10.5px;line-height:1.5;color:#555;word-break:break-all;background:#f8f8fa;border-radius:10px;padding:8px 10px;margin-top:10px}
+.series b{color:#333}
+.verdict{border-radius:14px;padding:16px;font-size:17px;font-weight:700;line-height:1.5;margin:14px 0}
+.verdict.pass{background:#e7f7ec;color:#0a6b2d}
+.verdict.fail{background:#fdecec;color:#a31111}
+.verdict.wait{background:#f5f5f7;color:#555}
+textarea{width:100%;min-height:300px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.55;border:1px solid #ddd;border-radius:10px;margin-top:8px}
+.err{color:#a31111;font-weight:600;white-space:pre-wrap}
+footer{color:#888;font-size:12.5px;line-height:1.6;margin-top:22px}
+</style>
+</head>
+<body>
+<main>
+<h1>新模型（Thunder）真机测试 · 组合负载</h1>
+<p class="sub">这是 Thunder 候选（锤式弯举「手臂控制」评分的新通道）在冻结方案里的<b>设备门</b>：测它能不能在你的手机上、与正式 App 的 Full 计数<b>同时运行</b>而不互相拖累——这正是它将来唯一可能的部署形态。本页若通过，结论仅限「<b>在本次测试的组合配置下可行</b>」，不等于功能上线。</p>
+
+<div class="note"><b>判定线（测试前冻结）：</b>组合段 180 秒内，<b>两个通道各自</b>：排除前 10 秒启动期后，每一个完整的滚动 10 秒窗口内新鲜帧处理率 ≥ 15 FPS，且全程相机→结果延迟 p95 ≤ 150 ms；Thunder 热加载 ≤ 同场 Full 热加载的 1.5 倍；内存不单调增长；计数通道零报错、无计数停顿、无帧饥饿。另有<b>数值平价前置条件</b>（已离线完成，见下方第一张卡）：手机上这套 TFJS 执行算出的角度必须先和离线校准过的参考实现对齐（中位数差 ≤3°、p90 ≤8°），平价不过，设备门不成立。</div>
+
+<div class="check"><b>开始前：</b>
+<ul style="margin:6px 0 0;padding-left:20px">
+<li><b>在室内</b>，把手机像平时训练那样支好；站进画面，确认能看到<b>完整上半身</b>再点开始</li>
+<li>手机先<b>冷却</b>：摸起来不热；<b>关掉其他 App</b>；不要插着充电线</li>
+<li>准备一对<b>平时偏轻的哑铃</b>：测试中要做<b>两组锤式弯举</b>（页面会提示时机，每组约 20 次、正常速度），两组之间会自动休息</li>
+<li>全程约 7 分钟，保持页面在前台、<b>不要锁屏</b>（锁屏会暂停计时）</li>
+<li>视频只在本机处理，不上传、不保存；本页与正式 App 相互独立</li>
+</ul></div>
+
+<video id="cam" autoplay muted playsinline></video>
+<button id="start">开始测试</button>
+<button id="resume" class="secondary" hidden>点这里继续组合段测试</button>
+<div id="status">等待开始</div>
+<div class="bar"><i id="prog"></i></div>
+
+<div id="cards"></div>
+<div id="verdict" class="verdict wait">结论：测试完成后显示</div>
+
+<h3 style="margin:18px 0 4px">结果文本（可复制）</h3>
+<textarea id="resultText" readonly placeholder="测试完成后这里会生成完整结果文本"></textarea>
+<button id="copy" class="secondary">复制结果</button>
+<p id="errbox" class="err"></p>
+
+<footer>MoveMate Thunder 设备门（候选规格 candidate-control-thunder v1 §7，2026-11-09 冻结）· 组合配置：Full = 正式 App 相同的 pose.worker 与传输层（Worker，GPU delegate 优先、失败回退 CPU）＋ 正式 App 未改动的锤式弯举计数器（AdaptiveRecognition 打包）；Thunder = TFJS 4.22 执行 MoveNet Thunder 的 TFHub 官方 TFJS 部署件（google/tfjs-model/movenet/singlepose/thunder/4，fp16 权重、int32 输入，与离线参考的 fp32 TFLite 是同一模型的两份官方转换；逐文件 sha-256 见结果文本），后端固定顺序 WebGL → WASM；预处理与离线参考协议一致（翻转→等比缩放补边至 256²→原始 0–255 取整输入），每帧全帧推理（无裁剪跟踪），下游为同一套 TimeFilter＋上臂角度计算 · 冷下载为绕过浏览器缓存的真实下载（同 Step-5 页的既定偏差）· 模型字节写入同一 pose-models-v1 缓存并逐文件校验 SHA-256。</footer>
+</main>
+<script src="/pose/step5-tracker.js"></script>
+<script type="module">
+import { tf, loadGraphModel, setWasmPaths } from '/pose/tfjs_bundle.mjs';
+
+/* 与正式 App 的 pose-models.json 完全一致的钉死配置（同 Step-5 页） */
+const MODELS = {
+  full:  { label: 'Full（现行 · 计数）', bytes: 9398198,
+    sha256: '5134a3aad27a58b93da0088d431f366da362b44e3ccfbe3462b3827a839011b1',
+    src: '/pose/pose_landmarker_full.task', parts: null }
+};
+const WORKER_URL = '/pose/step5-pose-worker.js'; /* 由正式 App 的 pose.worker.ts 打包（同 Step-5 v2 页） */
+const CACHE_NAME = 'pose-models-v1';             /* 与正式 App 相同的模型缓存 */
+const WASM_URL = new URL('/pose/wasm', location.origin).href;   /* MediaPipe wasm（Worker 用） */
+const TFJS_WASM_URL = new URL('/pose/tfjs-wasm/', location.origin).href; /* TFJS wasm 后端二进制 */
+const THUNDER_BASE = '/pose/thunder-tfjs/';
+/* TFHub 官方 TFJS 部署件 google/tfjs-model/movenet/singlepose/thunder/4（fp16 权重），逐文件钉死 */
+const THUNDER_FILES = [
+  { path: 'model.json', bytes: 168151, sha256: '957721af760b24a1abc93ce5d42caf0cb7795723ab873d3791f5f42f5cb8c7ca' },
+  { path: 'group1-shard1of3.bin', bytes: 4194304, sha256: '58dd47fd600a4849c342ce14e2ec32102744ca3d5f7fd9e6888d284f7f922cba' },
+  { path: 'group1-shard2of3.bin', bytes: 4194304, sha256: '08da980bc00886854f29b49b9c14528cd41626c0498c67b450de394713f1d0bc' },
+  { path: 'group1-shard3of3.bin', bytes: 4088504, sha256: 'c1c6b712e33456aa95aa556b6425528d04fe8730ce9b92de38ec58e947fede34' }
+];
+const THUNDER_TFLITE_SHA256 = '8014d8fe22285265f52aa1cea84056b7704f75adf12341a7712d4cb28bd1d9b6';
+/* 数值平价结果（2026-11-09 离线实测：桌面 TFJS/WASM 执行 vs 离线 LiteRT 参考协议，
+ * HC-A/HC-B annotator-3 标注时刻、每侧 n=45、双侧无缺失；冻结线 中位数 ≤3° 且 p90 ≤8°，四项全过） */
+const PARITY = { pass: true, pending: false, date: '2026-11-09', backend: 'WASM（桌面）',
+  clips: [
+    { id: 'HC-A', right: { n: 45, med: 2.45, p90: 5.61 }, left: { n: 45, med: 1.95, p90: 3.58 } },
+    { id: 'HC-B', right: { n: 45, med: 2.91, p90: 6.14 }, left: { n: 45, med: 1.68, p90: 3.02 } }
+  ] };
+
+const EXCL_S = 10;                                /* 启动排除期（与 Step-5 v2 协议澄清相同） */
+const qs = new URLSearchParams(location.search);
+const FULL_ONLY_DUR = Number(qs.get('fullOnlyDur')) || 60;
+const COMBINED_DUR = Number(qs.get('combinedDur')) || 180;
+const COOLDOWN_S = qs.has('cooldown') ? Number(qs.get('cooldown')) : 30;
+
+const $ = id => document.getElementById(id);
+const video = $('cam');
+const R = {};            /* 全部结果 */
+window.__THUNDERGATE = { done: false, results: R };
+let stream = null;
+
+const mb = b => (b / 1e6).toFixed(1);
+const sec = ms => (ms / 1000).toFixed(1);
+const pct = (arr, p) => { if (!arr.length) return 0; const s = [...arr].sort((a, b) => a - b); return s[Math.min(s.length - 1, Math.floor(p * s.length))]; };
+const med = arr => { if (!arr.length) return null; const s = [...arr].sort((a, b) => a - b); return s.length % 2 ? s[(s.length - 1) / 2] : (s[s.length / 2 - 1] + s[s.length / 2]) / 2; };
+function setStatus(t, frac) { $('status').textContent = t; if (typeof frac === 'number') $('prog').style.width = Math.round(frac * 100) + '%'; }
+async function sha256Hex(buf) {
+  const d = await crypto.subtle.digest('SHA-256', buf);
+  return [...new Uint8Array(d)].map(n => n.toString(16).padStart(2, '0')).join('');
+}
+
+/* ---- Full 模型字节：与 Step-5 页/正式 App 相同（分片拼合→校验→写缓存；读回复验） ---- */
+async function fetchModelCold(item) {
+  const cache = await caches.open(CACHE_NAME);
+  await cache.delete(item.src);
+  const chunks = [];
+  for (const part of item.parts || [item.src]) {
+    const r = await fetch(part, { cache: 'no-store' });
+    if (!r.ok) throw new Error('下载失败 ' + part + ' HTTP ' + r.status);
+    chunks.push(await r.arrayBuffer());
+  }
+  const bytes = new ArrayBuffer(chunks.reduce((s, c) => s + c.byteLength, 0));
+  const view = new Uint8Array(bytes); let off = 0;
+  for (const c of chunks) { view.set(new Uint8Array(c), off); off += c.byteLength; }
+  if (bytes.byteLength !== item.bytes) throw new Error('Full 模型大小校验失败');
+  if (await sha256Hex(bytes) !== item.sha256) throw new Error('Full 模型完整性校验失败');
+  try { await cache.put(item.src, new Response(bytes.slice(0), { headers: { 'Content-Type': 'application/octet-stream' } })); } catch {}
+  return bytes;
+}
+async function readModelCache(item) {
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    const hit = await cache.match(item.src);
+    if (!hit) return null;
+    const bytes = await hit.arrayBuffer();
+    if (bytes.byteLength !== item.bytes || await sha256Hex(bytes) !== item.sha256) { await cache.delete(item.src); return null; }
+    return bytes;
+  } catch { return null; }
+}
+
+/* ---- Thunder 模型字节：逐文件下载（no-store）→逐文件校验→写同一缓存；读回逐文件复验 ---- */
+async function fetchThunderCold() {
+  const cache = await caches.open(CACHE_NAME);
+  const files = new Map();
+  for (const f of THUNDER_FILES) {
+    const url = THUNDER_BASE + f.path;
+    await cache.delete(url);
+    const r = await fetch(url, { cache: 'no-store' });
+    if (!r.ok) throw new Error('Thunder 下载失败 ' + f.path + ' HTTP ' + r.status);
+    const buf = await r.arrayBuffer();
+    if (buf.byteLength !== f.bytes) throw new Error('Thunder 文件大小校验失败 ' + f.path);
+    if (await sha256Hex(buf) !== f.sha256) throw new Error('Thunder 文件完整性校验失败 ' + f.path);
+    files.set(f.path, buf);
+    try { await cache.put(url, new Response(buf.slice(0), { headers: { 'Content-Type': 'application/octet-stream' } })); } catch {}
+  }
+  return files;
+}
+async function readThunderCache() {
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    const files = new Map();
+    for (const f of THUNDER_FILES) {
+      const hit = await cache.match(THUNDER_BASE + f.path);
+      if (!hit) return null;
+      const buf = await hit.arrayBuffer();
+      if (buf.byteLength !== f.bytes || await sha256Hex(buf) !== f.sha256) return null;
+      files.set(f.path, buf);
+    }
+    return files;
+  } catch { return null; }
+}
+/* 由内存中的 model.json＋分片直接组装 TFJS GraphModel（IOHandler，不走网络） */
+function thunderIOHandler(files) {
+  return { load: async () => {
+    const manifest = JSON.parse(new TextDecoder().decode(files.get('model.json')));
+    const weightSpecs = [], buffers = [];
+    for (const group of manifest.weightsManifest) {
+      for (const w of group.weights) weightSpecs.push(w);
+      for (const p of group.paths) {
+        const b = files.get(p);
+        if (!b) throw new Error('Thunder 分片缺失 ' + p);
+        buffers.push(b);
+      }
+    }
+    let total = 0; for (const b of buffers) total += b.byteLength;
+    const all = new Uint8Array(total); let off = 0;
+    for (const b of buffers) { all.set(new Uint8Array(b), off); off += b.byteLength; }
+    return { modelTopology: manifest.modelTopology, weightSpecs, weightData: all.buffer };
+  } };
+}
+
+/* ---- Worker 传输层：移植正式 App poseTransport（同 Step-5 v2 页，逐字一致） ---- */
+function workerAttempt(bytes, delegate, timeouts) {
+  return new Promise((resolve, reject) => {
+    if (typeof Worker === 'undefined' || typeof createImageBitmap === 'undefined' ||
+        (delegate === 'GPU' && typeof OffscreenCanvas === 'undefined')) { reject(new Error('浏览器不支持此 Worker 方式')); return; }
+    const worker = new Worker(WORKER_URL);
+    const pending = new Map(); let next = 0, closed = false, firstFrame = true;
+    const failAll = msg => { for (const p of pending.values()) { clearTimeout(p.timer); p.reject(new Error(msg)); } pending.clear(); };
+    const close = () => { if (closed) return; closed = true; try { worker.terminate(); } catch {} failAll('推理已取消'); };
+    worker.onerror = () => failAll('Worker 推理初始化失败');
+    worker.onmessage = ({ data }) => {
+      const p = pending.get(data.id); if (!p) return;
+      pending.delete(data.id); clearTimeout(p.timer);
+      data.error ? p.reject(new Error(data.error)) : p.resolve(data);
+    };
+    const call = (data, transfer = []) => new Promise((res, rej) => {
+      if (closed) { rej(new Error('推理已取消')); return; }
+      const id = ++next;
+      const limit = data.kind === 'init' ? timeouts.init : (firstFrame ? timeouts.firstFrame : 1000);
+      const timer = setTimeout(() => { pending.delete(id); rej(new Error('推理响应超时')); }, limit);
+      pending.set(id, { resolve: res, reject: rej, timer });
+      try { worker.postMessage({ ...data, id }, transfer); }
+      catch (e) { clearTimeout(timer); pending.delete(id); rej(e); }
+    });
+    (async () => {
+      try {
+        const copy = bytes.slice(0);
+        await call({ kind: 'init', bytes: copy, delegate, wasm: WASM_URL }, [copy]);
+        const transport = {
+          mode: delegate === 'GPU' ? 'worker-gpu' : 'worker-cpu', delegate, close,
+          infer: async (vid, timestamp) => {
+            const t0 = performance.now();
+            const image = await createImageBitmap(vid);
+            if (closed) { image.close(); throw new Error('推理已取消'); }
+            try { const r = await call({ kind: 'frame', image, timestamp }, [image]); firstFrame = false;
+                  return { landmarks: r.landmarks, worldLandmarks: r.worldLandmarks, inferMs: performance.now() - t0 }; }
+            catch (e) { try { image.close(); } catch {} throw e; }
+          }
+        };
+        await transport.infer(video, performance.now());
+        resolve(transport);
+      } catch (e) { close(); reject(e); }
+    })();
+  });
+}
+async function openWorkerTransport(bytes) {
+  let lastErr = null;
+  for (const delegate of ['GPU', 'CPU']) {
+    try { return await workerAttempt(bytes, delegate, { init: 12000, firstFrame: 8000 }); }
+    catch (e) { lastErr = e; }
+  }
+  throw lastErr || new Error('Worker 初始化失败');
+}
+
+/* 与正式 App poseCompatibility.decodedFrameCount 相同 */
+function decodedFrameCount(standard, webkit) {
+  if (typeof standard === 'number' && standard > 0) return standard;
+  if (typeof webkit === 'number' && webkit > 0) return webkit;
+  return null;
+}
+
+/* ---- Thunder 执行：预处理与离线参考协议（extract_movenet.py）逐字一致 ----
+* 翻转 → 等比缩放补边至 256²（双线性）→ 原始 0–255 float32 → 全帧推理；
+* 输出 (y,x,score) 经同一逆变换回原图坐标，去镜像，COCO 左右对交换，
+* COCO-17 → MediaPipe-33 适配；max score < 0.30 判无检出。 */
+const TS = 256;
+const COCO_PAIRS = [[5,6],[7,8],[9,10],[11,12],[13,14],[15,16]];
+const COCO_TO_MP = {0:0,5:11,6:12,7:13,8:14,9:15,10:16,11:23,12:24,13:25,14:26,15:27,16:28};
+const COCO_FILL = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,17:15,18:16,19:15,20:16,21:15,22:16,29:27,30:28,31:27,32:28};
+function thunderRaw(model, bitmap) {
+const W = bitmap.width, H = bitmap.height;
+const scale = TS / Math.max(W, H);
+const nw = Math.round(W * scale), nh = Math.round(H * scale);
+const padX = (TS - nw) >> 1, padY = (TS - nh) >> 1;
+const data = tf.tidy(() => {
+let t = tf.browser.fromPixels(bitmap);
+t = tf.reverse(t, 1);
+t = tf.image.resizeBilinear(t, [nh, nw]);
+t = tf.pad(t, [[padY, TS - nh - padY], [padX, TS - nw - padX], [0, 0]]);
+const input = tf.expandDims(tf.cast(t, 'int32'), 0);
+return model.execute(input).dataSync();
+});
+const pts = [], scores = [];
+let maxScore = -1;
+for (let k = 0; k < 17; k++) {
+const yy = data[k * 3], xx = data[k * 3 + 1], sc = data[k * 3 + 2];
+scores.push(sc); if (sc > maxScore) maxScore = sc;
+pts.push([(xx * TS - padX) / scale, (yy * TS - padY) / scale]);
+}
+if (maxScore < 0.30) return null;
+for (const p of pts) p[0] = W - p[0];
+for (const [a, b] of COCO_PAIRS) {
+const tp = pts[a]; pts[a] = pts[b]; pts[b] = tp;
+const ts = scores[a]; scores[a] = scores[b]; scores[b] = ts;
+}
+const mp = Array.from({ length: 33}, () => [0, 0, 0, 0]);
+for (const c of Object.keys(COCO_TO_MP)) mp[COCO_TO_MP[c]] = [pts[c][0] / W, pts[c][1] / H, 0, scores[c]];
+for (const m of Object.keys(COCO_FILL)) { const s = COCO_FILL[m]; mp[m] = [mp[s][0], mp[s][1], 0, mp[s][3] * 0.5];}
+return mp;
+}
+/* 生产 TimeFilter 的逐字复刻（experiment-heavy2d.py 的已验证 replica） */
+class TF1D {
+constructor() { this.prev = null; this.d = 0; this.at = 0;}
+apply(v, now) {
+if (this.prev === null) { this.prev = v; this.d = 0; this.at = now; return v;}
+const dt = Math.max(0.001, (now - this.at) / 1000); this.at = now;
+const alpha = c => 1 / (1 + 1 / (2 * Math.PI * c * dt));
+this.d = this.d + alpha(1.0) * ((v - this.prev) / dt - this.d);
+const out = this.prev + alpha(1.5 + 0.03 * Math.abs(this.d)) * (v - this.prev);
+this.prev = out; return out;
+}
+}
+const U_SIDES = [[11, 13, 23, 15], [12, 14, 24, 16]];
+function angleAt(p, q, r, W, H) {
+const ax = (p[0] - q[0]) * W, ay = (p[1] - q[1]) * H, bx = (r[0] - q[0]) * W, by = (r[1] - q[1]) * H;
+const na = Math.hypot(ax, ay), nb = Math.hypot(bx, by);
+if (!na ||!nb) return null;
+return Math.acos(Math.max(-1, Math.min(1, (ax * bx + ay * by) / (na * nb)))) * 180 / Math.PI;
+}
+class ThunderScorer {
+constructor() { this.filters = new Map();}
+apply(lm, nowMs, W, H) {
+if (!lm) return [null, null];
+const Us = [];
+for (let s = 0; s < 2; s++) {
+const joints = U_SIDES[s], fp = {};
+joints.forEach((idx, j) => {
+const kx = s + '_' + j + '_x', ky = s + '_' + j + '_y';
+if (!this.filters.has(kx)) { this.filters.set(kx, new TF1D()); this.filters.set(ky, new TF1D());}
+fp[idx] = [this.filters.get(kx).apply(lm[idx][0], nowMs), this.filters.get(ky).apply(lm[idx][1], nowMs)];
+});
+Us.push(angleAt(fp[joints[1]], fp[joints[0]], fp[joints[2]], W, H));
+}
+return Us;
+}
+}
+async function thunderInfer(model, scorer, vid, capturedAt) {
+const t0 = performance.now();
+const bitmap = await createImageBitmap(vid);
+try {
+const lm = thunderRaw(model, bitmap);
+const U = scorer.apply(lm, capturedAt, bitmap.width, bitmap.height);
+return { capturedAt, receivedAt: performance.now(), inferMs: performance.now() - t0, found:!!lm, U};
+} finally { try { bitmap.close();} catch {}}
+}
+async function setupThunderBackend() {
+try { await tf.setBackend('webgl'); await tf.ready(); if (tf.getBackend() === 'webgl') return 'webgl';} catch {}
+try {
+setWasmPaths(TFJS_WASM_URL);
+await tf.setBackend('wasm'); await tf.ready();
+if (tf.getBackend() === 'wasm') return 'wasm';
+} catch {}
+throw new Error('Thunder 后端初始化失败（WebGL 与 WASM 均不可用）');
+}
+
+/* ---- 分段帧泵：调度与 Step-5 v2 页/正式 App 相同（rvfc 驱动、只提交新画面、
+* 每通道串行在途一帧）；Full 通道结果逐帧喂正式计数器（计数完整性检查）。 ---- */
+function segmentRun(opts) {
+return new Promise(resolveRun => {
+const durS = opts.durS;
+const mkChan = () => ({ frames: [], skippedBusy: 0, submitted: 0, duplicates: 0, errors: 0, timeouts: 0, mediaSeen: new Set(), busy: false});
+const F = mkChan();
+const T = opts.thunder? mkChan(): null;
+let presented = 0;
+let lastMedia = -1, lastDecoded = -1, origin = null, stopped = false, forceRaf = false, callbackId = 0, fallbackTimer = null;
+let frameId = 0;
+const trk = opts.tracker? { updates: 0, errors: 0, maxGapMs: 0, stalls: 0, lastAt: null}: null;
+const memSamples = [];
+const wall0 = performance.now(), wallEnd = wall0 + durS * 1000;
+let memTimer = null;
+if (opts.sampleMemory) {
+const sample = () => memSamples.push({ tS: (performance.now() - wall0) / 1000, mb: (typeof performance!== 'undefined' && performance.memory)? performance.memory.usedJSHeapSize / 1048576: null});
+sample(); memTimer = setInterval(sample, 10000);
+}
+function schedule() {
+if (stopped) return;
+if (typeof video.requestVideoFrameCallback === 'function' &&!forceRaf) {
+callbackId = video.requestVideoFrameCallback(onFrame);
+fallbackTimer = setTimeout(() => {
+if (stopped) return;
+try { video.cancelVideoFrameCallback && video.cancelVideoFrameCallback(callbackId);} catch {}
+forceRaf = true; onFrame(performance.now(), undefined);
+}, 500);
+} else {
+callbackId = requestAnimationFrame(t => onFrame(t, undefined));
+}
+}
+function phaseText(el) {
+if (!opts.exerciseUntilS) return opts.label;
+return el < opts.exerciseUntilS
+? opts.label + '：请连续做锤式弯举（约 20 次，正常速度）'
+: opts.label + '：停下休息，站在画面里别走开';
+}
+function statusTick() {
+const el = (performance.now() - wall0) / 1000;
+let extra = '（Full 已处理 ' + F.frames.length + ' 帧';
+if (T) extra += '，Thunder ' + T.frames.length + ' 帧';
+if (trk) extra += '，已计数 ' + opts.tracker.reps + ' 次';
+extra += '）';
+setStatus(phaseText(el) + ' ' + Math.min(el, durS).toFixed(0) + ' / ' + durS + ' 秒' + extra, opts.fracBase + opts.fracSpan * Math.min(1, el / durS));
+}
+function onFrame(now, metadata) {
+if (stopped) return;
+if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null;}
+schedule();
+const decoded = decodedFrameCount(video.getVideoPlaybackQuality && video.getVideoPlaybackQuality().totalVideoFrames, video.webkitDecodedFrameCount);
+const media = metadata && typeof metadata.mediaTime === 'number'? metadata.mediaTime: video.currentTime;
+const fresh = Number.isFinite(media) && media > lastMedia && (!!metadata || decoded === null || decoded > lastDecoded);
+if (!fresh) return;
+if (video.readyState < 2) return;
+presented++;
+if (decoded!== null) lastDecoded = decoded;
+lastMedia = media;
+if (origin === null) origin = now - media * 1000;
+const capturedAt = Math.min(now, origin + media * 1000);
+/* Full 通道 */
+if (F.busy) { F.skippedBusy++;}
+else {
+if (F.mediaSeen.has(media)) F.duplicates++; else F.mediaSeen.add(media);
+F.submitted++; F.busy = true;
+const submittedAt = performance.now();
+opts.full.infer(video, capturedAt).then(result => {
+F.busy = false;
+const receivedAt = performance.now();
+F.frames.push({ capturedAt, submittedAt, receivedAt, inferMs: result.inferMs, found:!!result.landmarks});
+if (opts.tracker) {
+const nowUp = performance.now();
+if (trk.lastAt!== null) {
+const gap = nowUp - trk.lastAt;
+if (gap > trk.maxGapMs) trk.maxGapMs = gap;
+if (gap > 2000) trk.stalls++;
+}
+trk.lastAt = nowUp;
+try {
+frameId++;
+opts.tracker.update({ runId: opts.runId, frameId, capturedAt, receivedAt,
+width: video.videoWidth, height: video.videoHeight,
+landmarks: result.landmarks, worldLandmarks: result.worldLandmarks,
+model: 'full', mode: opts.full.mode});
+trk.updates++;
+} catch (e) { trk.errors++;}
+}
+}).catch(e => {
+F.busy = false; F.errors++;
+if (e && e.message && e.message.indexOf('超时') >= 0) F.timeouts++;
+});
+}
+/* Thunder 通道 */
+if (T) {
+if (T.busy) { T.skippedBusy++;}
+else {
+if (T.mediaSeen.has(media)) T.duplicates++; else T.mediaSeen.add(media);
+T.submitted++; T.busy = true;
+thunderInfer(opts.thunder.model, opts.thunder.scorer, video, capturedAt).then(r => {
+T.busy = false; T.frames.push(r);
+}).catch(() => { T.busy = false; T.errors++;});
+}
+}
+if ((presented & 31) === 0) statusTick();
+}
+schedule();
+const tick = setInterval(() => {
+statusTick();
+if (performance.now() >= wallEnd) {
+clearInterval(tick); stopped = true;
+if (memTimer) clearInterval(memTimer);
+const endedWallSeconds = (performance.now() - wall0) / 1000;
+try { video.cancelVideoFrameCallback && video.cancelVideoFrameCallback(callbackId);} catch {}
+cancelAnimationFrame(callbackId);
+const settle = setInterval(() => {
+if ((!F.busy && (!T ||!T.busy)) || performance.now() - wallEnd > 1500) {
+clearInterval(settle);
+const pack = c => ({ frames: c.frames, presented, skippedBusy: c.skippedBusy, submitted: c.submitted,
+duplicates: c.duplicates, errors: c.errors, timeouts: c.timeouts, wallSeconds: endedWallSeconds});
+resolveRun({ full: pack(F), thunder: T? pack(T): null, tracker: trk, memSamples, presented});
+}
+}, 50);
+}
+}, 250);
+});
+}
+
+/* ---- 统计与判定：与 Step-5 v2 页同一实现（协议澄清的 operationalized gate） ---- */
+function computePerf(raw, durS) {
+const frames = raw.frames.slice().sort((a, b) => a.capturedAt - b.capturedAt);
+const out = { completed: frames.length, presented: raw.presented, skippedBusy: raw.skippedBusy,
+submitted: raw.submitted, duplicates: raw.duplicates, errors: raw.errors, timeouts: raw.timeouts};
+if (!frames.length) { out.empty = true; return out;}
+const t0 = frames[0].capturedAt;
+const rel = f => (f.capturedAt - t0) / 1000;
+const spanS = Math.max(0.001, (frames[frames.length - 1].capturedAt - t0) / 1000);
+out.throughput = frames.length / raw.wallSeconds;
+out.freshAvg = frames.length > 1? (frames.length - 1) / spanS: 0;
+out.foundRate = frames.filter(f => f.found).length / frames.length;
+const ages = frames.map(f => f.receivedAt - f.capturedAt);
+const trips = frames.map(f => f.inferMs);
+out.ageP50 = pct(ages,.5); out.ageP95 = pct(ages,.95); out.ageMax = Math.max(...ages);
+out.tripP50 = pct(trips,.5); out.tripP95 = pct(trips,.95);
+const perSecond = new Array(durS).fill(0);
+for (const f of frames) { const s = Math.floor(rel(f)); if (s >= 0 && s < durS) perSecond[s]++;}
+out.perSecond = perSecond;
+const windows = [];
+for (let s = EXCL_S; s + 10 <= durS; s++) {
+let c = 0; for (const f of frames) { const r = rel(f); if (r >= s && r < s + 10) c++;}
+windows.push(c / 10);
+}
+out.windowsTotal = windows.length;
+out.minRolling = windows.length? Math.min(...windows): null;
+out.windowsBelow = windows.filter(w => w < 15).length;
+const fin = frames.filter(f => rel(f) >= durS - 30 && rel(f) < durS);
+out.final30Rate = fin.length / Math.min(30, durS);
+out.final30AgeP95 = fin.length? pct(fin.map(f => f.receivedAt - f.capturedAt),.95): null;
+out.gateApplicable = windows.length > 0;
+out.pass = out.gateApplicable && out.minRolling >= 15 && out.ageP95 <= 150;
+out.failReasons = [];
+if (out.gateApplicable && out.minRolling < 15) out.failReasons.push('最低滚动10秒窗口新鲜帧率 ' + out.minRolling.toFixed(1) + ' FPS < 15');
+if (out.ageP95 > 150) out.failReasons.push('相机→结果延迟 p95 ' + Math.round(out.ageP95) + ' ms > 150');
+return out;
+}
+function memoryVerdict(samples, durS) {
+const vals = samples.filter(s => s.mb!== null);
+if (!vals.length) return { state: 'na', samples};
+const first = vals.filter(s => s.tS < 30).map(s => s.mb);
+const last = vals.filter(s => s.tS >= durS - 30).map(s => s.mb);
+if (!first.length ||!last.length) return { state: 'na', samples};
+const f = med(first), l = med(last);
+return { state: l <= f * 1.2? 'pass': 'fail', firstMed: f, lastMed: l, samples};
+}
+
+/* ---- 加载流程 ---- */
+async function loadFull() {
+const item = MODELS.full;
+const out = { label: item.label, mb: mb(item.bytes)};
+R.fullLoad = out;
+setStatus('Full：冷下载中（' + mb(item.bytes) + ' MB）…', 0);
+let t = performance.now();
+const bytes = await fetchModelCold(item);
+out.coldDownloadMs = performance.now() - t;
+out.downloadMBs = item.bytes / 1e6 / (out.coldDownloadMs / 1000);
+setStatus('Full：冷初始化中（Worker）…', 0.02);
+t = performance.now();
+const c1 = await openWorkerTransport(bytes);
+out.mode = c1.mode; out.delegate = c1.delegate;
+out.coldInitMs = performance.now() - t;
+c1.close();
+setStatus('Full：热加载（第二次打开）…', 0.04);
+t = performance.now();
+const cached = await readModelCache(item);
+out.cacheReadMs = performance.now() - t;
+if (!cached) throw new Error('Full 本机缓存读取失败');
+t = performance.now();
+const c2 = await openWorkerTransport(cached);
+out.warmInitMs = performance.now() - t;
+out.warmMode = c2.mode;
+c2.close();
+out.warmMs = out.cacheReadMs + out.warmInitMs;
+return cached;
+}
+async function loadThunder() {
+const totalBytes = THUNDER_FILES.reduce((s, f) => s + f.bytes, 0);
+const out = { label: 'Thunder（MoveNet · TFJS）', mb: mb(totalBytes), files: THUNDER_FILES.length};
+R.thunderLoad = out;
+setStatus('Thunder：冷下载中（' + mb(totalBytes) + ' MB，' + THUNDER_FILES.length + ' 个文件）…', 0.06);
+let t = performance.now();
+const files = await fetchThunderCold();
+out.coldDownloadMs = performance.now() - t;
+out.downloadMBs = totalBytes / 1e6 / (out.coldDownloadMs / 1000);
+setStatus('Thunder：冷初始化中（选择后端 WebGL → WASM）…', 0.1);
+t = performance.now();
+out.backend = await setupThunderBackend();
+let model = await loadGraphModel(thunderIOHandler(files));
+const scorer0 = new ThunderScorer();
+await thunderInfer(model, scorer0, video, performance.now());
+out.coldInitMs = performance.now() - t;
+try { model.dispose();} catch {}
+setStatus('Thunder：热加载（第二次打开）…', 0.13);
+t = performance.now();
+const cachedFiles = await readThunderCache();
+out.cacheReadMs = performance.now() - t;
+if (!cachedFiles) throw new Error('Thunder 本机缓存读取失败');
+t = performance.now();
+model = await loadGraphModel(thunderIOHandler(cachedFiles));
+const scorer1 = new ThunderScorer();
+await thunderInfer(model, scorer1, video, performance.now());
+out.warmInitMs = performance.now() - t;
+out.warmMs = out.cacheReadMs + out.warmInitMs;
+return model;
+}
+
+/* ---- 呈现 ---- */
+function metric(k, v, unit) { return '<div class="metric"><div class="k">' + k + '</div><div class="v">' + v + (unit? ' <small>' + unit + '</small>': '') + '</div></div>';}
+function cardEl(html) { const el = document.createElement('section'); el.className = 'card'; el.innerHTML = html; return el;}
+function renderParityCard() {
+const P = PARITY;
+let h = '<h2>前置条件 · 数值平价（离线，已完成）</h2>';
+if (P.pending) {
+h += '<p class="size">平价数据回填中——本页尚不可用于判定。</p>';
+} else {
+h += '<p class="size">桌面浏览器 TFJS 执行 vs 离线 LiteRT 参考协议 · 开发片段 HC-A/HC-B 的标注时刻 · ' + P.date + ' · 后端 ' + P.backend + '</p><div class="grid">' +
+metric('判定线', '中位数 ≤3° · p90 ≤8°', '每侧') +
+metric('平价结论', P.pass? '通过': '未通过', '');
+for (const c of P.clips) {
+h += metric(c.id + ' 右侧（图）中位数 / p90', c.right.med + '° / ' + c.right.p90 + '°', 'n=' + c.right.n) +
+metric(c.id + ' 左侧（图）中位数 / p90', c.left.med + '° / ' + c.left.p90 + '°', 'n=' + c.left.n);
+}
+h += '</div><div class="series">平价比较的是同一套下游计算（TimeFilter＋上臂角度）在两种执行下的每侧角度 U；' +
+(P.pass? 'TFJS 执行与校准所依据的参考协议一致，设备门可以继续。': 'TFJS 执行与参考协议不一致——按冻结方案，设备门在此即不成立，下面的性能数据只作诊断。') + '</div>';
+}
+return cardEl(h);
+}
+function renderLoadCards() {
+const f = R.fullLoad, th = R.thunderLoad;
+let h = '<h2>加载 · Full（计数）</h2><p class="size">模型 ' + f.mb + ' MB · 路径 ' + f.mode + '（Worker · ' + f.delegate + '）</p><div class="grid">' +
+metric('冷下载（真实网络）', sec(f.coldDownloadMs), '秒') +
+metric('下载速度', f.downloadMBs.toFixed(1), 'MB/s') +
+metric('冷初始化（Worker 建模+探活帧）', Math.round(f.coldInitMs), 'ms') +
+metric('热加载（缓存+初始化）', Math.round(f.warmMs), 'ms') + '</div>';
+$('cards').appendChild(cardEl(h));
+const ratio = th.warmMs / f.warmMs;
+R.warmRatio = ratio;
+h = '<h2>加载 · Thunder（评分）</h2><p class="size">TFJS 部署包 ' + th.mb + ' MB（' + th.files + ' 个文件，逐个 SHA-256 校验通过）· 后端 ' + th.backend + ' · TFHub 官方 TFJS 部署件（fp16 权重；离线参考 TFLite sha-256 ' + THUNDER_TFLITE_SHA256.slice(0, 8) + '…）</p><div class="grid">' +
+metric('冷下载（真实网络）', sec(th.coldDownloadMs), '秒') +
+metric('下载速度', th.downloadMBs.toFixed(1), 'MB/s') +
+metric('冷初始化（后端+建模+首帧）', Math.round(th.coldInitMs), 'ms') +
+metric('热加载（缓存+初始化+首帧）', Math.round(th.warmMs), 'ms') +
+metric('热加载比 Full（线 ≤1.5 倍）', ratio.toFixed(2), '倍') + '</div>' +
+'<div class="series"><b>热加载判定：</b>' + (ratio <= 1.5? '达到': '未达到——Thunder 热加载是 Full 的 ' + ratio.toFixed(2) + ' 倍，超过 1.5 倍线') + '</div>';
+$('cards').appendChild(cardEl(h));
+}
+function perfGrid(p, durS) {
+if (p.empty) return metric('持续推理', '无完成帧', '');
+return metric('新鲜帧处理率（' + durS + ' 秒平均）', p.freshAvg.toFixed(1), 'FPS') +
+metric('最低滚动 10 秒窗口（新鲜帧率）', p.minRolling === null? '不适用': p.minRolling.toFixed(1), 'FPS') +
+metric('末 30 秒新鲜帧率', p.final30Rate.toFixed(1), 'FPS') +
+metric('相机→结果延迟 p50 / p95', Math.round(p.ageP50) + ' / ' + Math.round(p.ageP95), 'ms') +
+metric('检出人体帧占比', Math.round(p.foundRate * 100), '%') +
+metric('错误 / 超时', p.errors + ' / ' + p.timeouts, '次');
+}
+function perfSeries(p, name) {
+if (p.empty) return '';
+return '<div class="series"><b>' + name + ' 判定：</b>' + (p.gateApplicable
+? (p.pass? '达到——所有滚动窗口 ≥15 FPS 且 p95 ≤150ms': '未达到——' + p.failReasons.join('；'))
+: '时长不足，无完整窗口，不判定') +
+' · 低于 15 的窗口 ' + p.windowsBelow + '/' + p.windowsTotal +
+'<br><b>核算：</b>呈现 ' + p.presented + '，提交 ' + p.submitted + '，完成 ' + p.completed + '，忙碌跳过 ' + p.skippedBusy + '，重复提交同一画面 ' + p.duplicates + ' 次' +
+'<br><b>每秒新鲜帧数：</b>' + p.perSecond.join(',') + '</div>';
+}
+function renderSegCards() {
+const A = R.segA, B = R.segB;
+let h = '<h2>第一段 · 只有 Full 计数（' + A.durS + ' 秒基线）</h2><p class="size">路径 ' + A.mode + '（Worker · ' + A.delegate + '）</p><div class="grid">' +
+perfGrid(A.fullPerf, A.durS) +
+metric('本段计数（正式计数器）', String(A.reps), '次') +
+metric('计数器更新 / 报错', A.tracker.updates + ' / ' + A.tracker.errors, '次') +
+metric('最大计数间隔', Math.round(A.tracker.maxGapMs), 'ms') + '</div>' + perfSeries(A.fullPerf, 'Full');
+$('cards').appendChild(cardEl(h));
+const mv = B.memVerdict;
+h = '<h2>第二段 · 组合负载（' + B.durS + ' 秒，决定性配置）</h2><p class="size">Full ' + B.mode + '（Worker · ' + B.delegate + '）＋ Thunder TFJS · 后端 ' + R.thunderLoad.backend + '</p>' +
+'<p class="size" style="margin-top:8px"><b>Full 通道</b></p><div class="grid">' + perfGrid(B.fullPerf, B.durS) +
+metric('本段计数（正式计数器）', String(B.reps), '次') +
+metric('计数器更新 / 报错', B.tracker.updates + ' / ' + B.tracker.errors, '次') +
+metric('最大计数间隔 / 停顿(>2s)', Math.round(B.tracker.maxGapMs) + ' ms / ' + B.tracker.stalls, '') + '</div>' + perfSeries(B.fullPerf, 'Full') +
+'<p class="size" style="margin-top:10px"><b>Thunder 通道</b></p><div class="grid">' + perfGrid(B.thunderPerf, B.durS) +
+metric('上臂角度 U（末帧，右/左）', B.lastU, '') + '</div>' + perfSeries(B.thunderPerf, 'Thunder') +
+'<div class="series"><b>内存（每 10 秒采样 JS 堆）：</b>' + (mv.state === 'na'
+? '本浏览器无 performance.memory 接口（如 iOS Safari），无法直接测量；运行完整结束、无崩溃/被系统终止。内存一项记为「未测」，不计入通过。'
+: '前 30 秒中位数 ' + mv.firstMed.toFixed(1) + ' MB → 末 30 秒中位数 ' + mv.lastMed.toFixed(1) + ' MB（线：末段 ≤ 首段 ×1.2）——' + (mv.state === 'pass'? '达到': '未达到')) + '</div>';
+$('cards').appendChild(cardEl(h));
+}
+function computeVerdict() {
+const B = R.segB;
+const comps = [];
+comps.push({ name: '数值平价前置条件', state: PARITY.pending? 'na': (PARITY.pass? 'pass': 'fail'),
+detail: PARITY.pending? '平价数据未回填': (PARITY.pass? 'TFJS 执行与离线参考一致': 'TFJS 执行与离线参考不一致')});
+comps.push({ name: '组合段 Full 通道（帧率+延迟）', state: B.fullPerf.pass? 'pass': 'fail', detail: B.fullPerf.pass? '所有滚动窗口 ≥15 FPS 且 p95 ≤150ms': B.fullPerf.failReasons.join('；')});
+comps.push({ name: '组合段 Thunder 通道（帧率+延迟）', state: B.thunderPerf.pass? 'pass': 'fail', detail: B.thunderPerf.pass? '所有滚动窗口 ≥15 FPS 且 p95 ≤150ms': B.thunderPerf.failReasons.join('；')});
+comps.push({ name: 'Thunder 热加载 ≤ Full 的 1.5 倍', state: R.warmRatio <= 1.5? 'pass': 'fail', detail: '实测 ' + R.warmRatio.toFixed(2) + ' 倍'});
+comps.push({ name: '内存不单调增长', state: B.memVerdict.state, detail: B.memVerdict.state === 'na'? '浏览器无此 API，未测': (B.memVerdict.state === 'pass'? '末段中位数 ≤ 首段 ×1.2': '末段中位数超过首段 ×1.2')});
+const integ = R.integrity;
+comps.push({ name: '计数完整性（页面口径）', state: integ.pass? 'pass': 'fail', detail: integ.detail});
+R.components = comps;
+const hardFail = comps.some(c => c.state === 'fail');
+const hasNa = comps.some(c => c.state === 'na');
+R.overall =!hardFail &&!comps.some(c => c.state === 'na' && c.name.indexOf('平价') >= 0);
+return { hardFail, hasNa};
+}
+function renderText(env) {
+const L = [];
+const f = R.fullLoad, th = R.thunderLoad, A = R.segA, B = R.segB;
+L.push('MoveMate Thunder 设备门结果（组合负载：Full 计数 + Thunder 评分）');
+L.push('时间：' + new Date().toLocaleString('zh-CN', { hour12: false}));
+L.push('设备：' + env.ua);
+L.push('摄像头：' + env.cam);
+L.push('判定线（冻结）：组合段每滚动 10 秒窗口（排除前 ' + EXCL_S + ' 秒）两通道各自新鲜帧率 ≥15 FPS 且延迟 p95 ≤150ms；Thunder 热加载 ≤ Full 热加载 ×1.5；内存末段中位数 ≤ 首段 ×1.2；计数完整性见下。');
+L.push('');
+L.push('「数值平价（离线前置）」' + (PARITY.pending? '未回填': (PARITY.pass? '通过': '未通过') + ' · 后端 ' + PARITY.backend + ' · ' + PARITY.date));
+if (!PARITY.pending) for (const c of PARITY.clips) L.push(' ' + c.id + '：右侧 n=' + c.right.n + ' 中位数 ' + c.right.med + '° / p90 ' + c.right.p90 + '°；左侧 n=' + c.left.n + ' 中位数 ' + c.left.med + '° / p90 ' + c.left.p90 + '°（线：中位数 ≤3°、p90 ≤8°，每侧）');
+L.push('');
+L.push('「加载 · Full」模型 ' + f.mb + ' MB · 路径 ' + f.mode + '（Worker · ' + f.delegate + '）');
+L.push('冷下载：' + sec(f.coldDownloadMs) + ' 秒（' + f.downloadMBs.toFixed(1) + ' MB/s，大小+SHA-256 校验通过）');
+L.push('冷初始化：' + Math.round(f.coldInitMs) + ' ms；热加载（缓存 ' + Math.round(f.cacheReadMs) + ' ms + 初始化）：' + Math.round(f.warmMs) + ' ms');
+L.push('「加载 · Thunder」TFJS 包 ' + th.mb + ' MB（' + th.files + ' 个文件，逐个 SHA-256 校验通过；TFHub 官方部署件 google/tfjs-model/movenet/singlepose/thunder/4，fp16 权重；离线平价参考 TFLite sha-256 ' + THUNDER_TFLITE_SHA256 + '）· 后端 ' + th.backend);
+L.push('冷下载：' + sec(th.coldDownloadMs) + ' 秒（' + th.downloadMBs.toFixed(1) + ' MB/s）');
+L.push('冷初始化（后端+建模+首帧）：' + Math.round(th.coldInitMs) + ' ms；热加载（缓存 ' + Math.round(th.cacheReadMs) + ' ms + 初始化+首帧）：' + Math.round(th.warmMs) + ' ms；为 Full 热加载的 ' + R.warmRatio.toFixed(2) + ' 倍（线 ≤1.5）');
+L.push('');
+const segLine = (name, durS, p) => {
+if (p.empty) return name + '：无完成帧';
+return name + ' ' + durS + ' 秒：呈现 ' + p.presented + '，提交 ' + p.submitted + '，完成 ' + p.completed + '，忙碌跳过 ' + p.skippedBusy + '，重复提交 ' + p.duplicates + '，错误 ' + p.errors + '（超时 ' + p.timeouts + '）；新鲜帧率平均 ' + p.freshAvg.toFixed(1) + ' FPS，最低滚动窗口 ' + (p.minRolling === null? '不适用': p.minRolling.toFixed(1) + ' FPS') + '（低于15的窗口 ' + p.windowsBelow + '/' + p.windowsTotal + '），末30秒 ' + p.final30Rate.toFixed(1) + ' FPS；延迟 p50 ' + Math.round(p.ageP50) + ' / p95 ' + Math.round(p.ageP95) + ' ms；检出占比 ' + Math.round(p.foundRate * 100) + '%；每秒新鲜帧数：' + p.perSecond.join(',');
+};
+L.push('「第一段 · Full-only ' + A.durS + ' 秒」');
+L.push(segLine('Full', A.durS, A.fullPerf));
+L.push('计数：' + A.reps + ' 次（计数器更新 ' + A.tracker.updates + '，报错 ' + A.tracker.errors + '，最大间隔 ' + Math.round(A.tracker.maxGapMs) + ' ms）');
+L.push('「第二段 · 组合 ' + B.durS + ' 秒」');
+L.push(segLine('Full', B.durS, B.fullPerf));
+L.push(segLine('Thunder', B.durS, B.thunderPerf));
+L.push('计数：' + B.reps + ' 次（计数器更新 ' + B.tracker.updates + '，报错 ' + B.tracker.errors + '，最大间隔 ' + Math.round(B.tracker.maxGapMs) + ' ms，停顿(>2s) ' + B.tracker.stalls + ' 次）');
+const mv = B.memVerdict;
+L.push('内存：' + (mv.state === 'na'? '浏览器无 performance.memory，未测；运行完整结束无崩溃': '前30秒中位数 ' + mv.firstMed.toFixed(1) + ' MB → 末30秒中位数 ' + mv.lastMed.toFixed(1) + ' MB —— ' + (mv.state === 'pass'? '达到': '未达到')));
+L.push('内存采样（秒:MB）：' + B.memSamples.map(s => s.tS.toFixed(0) + ':' + (s.mb === null? '—': s.mb.toFixed(0))).join(' '));
+L.push('');
+L.push('「计数完整性（页面口径）」' + R.integrity.detail);
+L.push('说明：本页能证明的是组合负载下计数通道持续工作、无报错、无 >2 秒停顿、无帧饥饿（提交/完成核算与重复提交计数）。两次现场做的组不是同一组动作，计数是否相同取决于两次实际做的次数；冻结方案中「同一组动作两种负载下计数完全一致」的严格形式需要相同输入，现场无法提供，不在本页结论内。');
+L.push('');
+L.push('「分项判定」');
+for (const c of R.components) L.push((c.state === 'pass'? '✓ ': c.state === 'fail'? '✗ ': '? ') + c.name + '：' + c.detail);
+L.push('总判定：' + (R.overall? '达到——结论限于「在本次测试的组合配置下可行」（Full Worker 计数 + Thunder TFJS/' + th.backend + ' 评分同时运行）': '未达到（见分项）'));
+L.push('注：下载为绕过 HTTP 缓存的真实下载；视频只在本机处理，不上传。');
+return L.join('\n');
+}
+
+/* ---- 相机与主流程 ---- */
+async function openCamera(env) {
+const s = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'user', width: { ideal: 1280}, height: { ideal: 720}}});
+stream = s;
+video.srcObject = s;
+await video.play();
+const track = s.getVideoTracks()[0];
+if (track) { const st = track.getSettings(); env.cam = (st.width || '?') + 'x' + (st.height || '?') + ' @' + (st.frameRate || '?') + 'fps';}
+}
+function stopCamera() {
+if (stream) stream.getTracks().forEach(t => t.stop());
+stream = null; video.srcObject = null;
+}
+function cooldown(seconds) {
+return new Promise(res => {
+let left = seconds;
+setStatus('休息中：摄像头已关… 还剩 ' + left + ' 秒（不要操作手机）', 0.52);
+const iv = setInterval(() => {
+left--;
+if (left <= 0) { clearInterval(iv); res(); return;}
+setStatus('休息中：摄像头已关… 还剩 ' + left + ' 秒（不要操作手机）', 0.52);
+}, 1000);
+});
+}
+async function reopenCamera(env) {
+try { await openCamera(env); return true;}
+catch {
+return await new Promise(res => {
+const btn = $('resume');
+btn.hidden = false;
+setStatus('需要点一下按钮继续组合段测试');
+btn.onclick = async () => { btn.hidden = true; try { await openCamera(env); res(true);} catch { res(false);}};
+});
+}
+}
+
+$('cards').appendChild(renderParityCard());
+
+$('start').addEventListener('click', async () => {
+$('start').disabled = true; $('errbox').textContent = '';
+const env = { ua: navigator.userAgent, cam: '未取得'};
+try {
+if (typeof window.MoveMateTracker === 'undefined') throw new Error('计数器脚本未加载');
+setStatus('请求摄像头…');
+await openCamera(env);
+setStatus('摄像头已开，开始加载模型…', 0);
+const fullBytes = await loadFull();
+const thunderModel = await loadThunder();
+renderLoadCards();
+
+/* 第一段：Full-only 基线 */
+setStatus('第一段：只有 Full 计数，准备开始…', 0.16);
+const trackerA = window.MoveMateTracker.create(1);
+const tA = await openWorkerTransport(fullBytes);
+const rawA = await segmentRun({ durS: FULL_ONLY_DUR, label: '第一段（只有 Full）', fracBase: 0.16, fracSpan: 0.2,
+full: tA, thunder: null, tracker: trackerA, runId: 1, exerciseUntilS: Math.min(40, FULL_ONLY_DUR * 2 / 3), sampleMemory: false});
+tA.close();
+R.segA = { durS: FULL_ONLY_DUR, mode: tA.mode, delegate: tA.delegate, fullPerf: computePerf(rawA.full, FULL_ONLY_DUR),
+tracker: rawA.tracker, reps: trackerA.reps};
+
+stopCamera();
+await cooldown(COOLDOWN_S);
+setStatus('休息结束，重新打开摄像头…', 0.52);
+if (!await reopenCamera(env)) throw new Error('休息后摄像头打开失败');
+
+/* 第二段：组合负载（决定性配置） */
+const trackerB = window.MoveMateTracker.create(2);
+const tB = await openWorkerTransport(fullBytes);
+const scorerB = new ThunderScorer();
+const rawB = await segmentRun({ durS: COMBINED_DUR, label: '第二段（组合负载）', fracBase: 0.52, fracSpan: 0.46,
+full: tB, thunder: { model: thunderModel, scorer: scorerB}, tracker: trackerB, runId: 2,
+exerciseUntilS: Math.min(60, COMBINED_DUR / 3), sampleMemory: true});
+tB.close();
+const lastTh = rawB.thunder.frames[rawB.thunder.frames.length - 1];
+R.segB = { durS: COMBINED_DUR, mode: tB.mode, delegate: tB.delegate,
+fullPerf: computePerf(rawB.full, COMBINED_DUR), thunderPerf: computePerf(rawB.thunder, COMBINED_DUR),
+tracker: rawB.tracker, reps: trackerB.reps, memSamples: rawB.memSamples,
+memVerdict: memoryVerdict(rawB.memSamples, COMBINED_DUR),
+lastU: lastTh && lastTh.U? lastTh.U.map(u => u === null? '—': u.toFixed(0) + '°').join(' / '): '无检出'};
+
+/* 计数完整性（页面口径）：两段计数器零报错、组合段无 >2s 停顿、两通道核算闭合、重复提交 0 */
+const acct = (raw, perf) => raw.submitted === perf.completed + raw.errors;
+const integOk = R.segA.tracker.errors === 0 && R.segB.tracker.errors === 0 &&
+R.segB.tracker.stalls === 0 &&
+rawA.full.duplicates === 0 && rawB.full.duplicates === 0 && rawB.thunder.duplicates === 0 &&
+acct(rawA.full, R.segA.fullPerf) && acct(rawB.full, R.segB.fullPerf) && acct(rawB.thunder, R.segB.thunderPerf);
+R.integrity = { pass: integOk, detail: integOk
+? '两段计数器报错 0；组合段计数最大间隔 ' + Math.round(R.segB.tracker.maxGapMs) + ' ms、无 >2 秒停顿；两通道提交=完成+错误核算闭合、重复提交 0——组合负载没有饿死计数通道。两段计数：第一段 ' + R.segA.reps + ' 次、第二段 ' + R.segB.reps + ' 次（现场两次做的组，次数供参照）'
+: '存在异常：计数器报错 ' + (R.segA.tracker.errors + R.segB.tracker.errors) + '，组合段停顿 ' + R.segB.tracker.stalls + ' 次，重复提交 Full ' + rawB.full.duplicates + '/Thunder ' + rawB.thunder.duplicates + '，核算闭合 ' + (acct(rawB.full, R.segB.fullPerf) && acct(rawB.thunder, R.segB.thunderPerf)? '是': '否')};
+
+renderSegCards();
+computeVerdict();
+const v = $('verdict');
+const fails = R.components.filter(c => c.state === 'fail');
+if (R.overall) {
+v.className = 'verdict pass';
+v.textContent = '结论：达到——在本次测试的组合配置下可行（Full Worker 计数 + Thunder 评分同时运行）。' +
+(R.components.some(c => c.state === 'na')? '（注：' + R.components.filter(c => c.state === 'na').map(c => c.name).join('、') + ' 在本浏览器未测，见结果文本。）': '') + '请把本页截图发回。';
+} else {
+v.className = 'verdict fail';
+v.textContent = '结论：未达到——' + (fails.length? fails.map(c => c.name).join('、'): '前置条件未满足') + '。请把本页截图发回。';
+}
+setStatus('全部完成 ✅ 请截图本页发回', 1);
+} catch (e) {
+const msg = e && e.message? e.message: String(e);
+$('errbox').textContent = '出错：' + msg;
+setStatus('测试出错，请截图本页发回');
+} finally {
+try { $('resultText').value = renderText(env);} catch {}
+window.__THUNDERGATE.done = true;
+window.__THUNDERGATE.text = $('resultText').value;
+}
+});
+$('copy').addEventListener('click', async () => {
+const ta = $('resultText');
+try { await navigator.clipboard.writeText(ta.value); $('copy').textContent = '已复制 ✓';}
+catch { ta.select(); document.execCommand('copy'); $('copy').textContent = '已复制 ✓';}
+setTimeout(() => $('copy').textContent = '复制结果', 2000);
+});
+</script>
+</body>
+</html>
