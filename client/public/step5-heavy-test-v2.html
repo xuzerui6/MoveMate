@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MoveMate Step-5 复测 · Heavy 可行性（室内 Worker 配置）</title>
+<style>
+:root{color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;background:#fff;color:#111;-webkit-text-size-adjust:100%}
+main{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:24px;line-height:1.3;margin:8px 0 6px}
+.sub{color:#555;font-size:15px;line-height:1.6;margin:0 0 14px}
+.note{background:#f5f5f7;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.7;color:#333;margin:0 0 16px}
+.note b{color:#111}
+.check{background:#fff8e6;border:1px solid #f0dfa8;border-radius:12px;padding:12px 14px;font-size:14.5px;line-height:1.8;color:#333;margin:0 0 16px}
+.check li{margin:2px 0}
+video{width:100%;max-height:300px;background:#000;border-radius:12px;object-fit:cover;display:block}
+button{appearance:none;border:0;border-radius:12px;background:#111;color:#fff;font-size:18px;font-weight:600;padding:14px 20px;width:100%;margin:16px 0 8px}
+button:disabled{background:#999}
+button.secondary{background:#e8e8ec;color:#111}
+button[hidden]{display:none}
+#status{font-size:16px;font-weight:600;margin:10px 0 6px;min-height:24px}
+.bar{height:10px;background:#eee;border-radius:6px;overflow:hidden;margin:0 0 18px}
+.bar>i{display:block;height:100%;width:0;background:#111;transition:width.2s}
+.card{border:1px solid #e3e3e8;border-radius:14px;padding:16px;margin:14px 0}
+.card h2{font-size:20px;margin:0 0 4px}
+.card .size{color:#666;font-size:14px;margin:0 0 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.metric{background:#f8f8fa;border-radius:10px;padding:10px 12px}
+.metric .k{font-size:13px;color:#666}
+.metric .v{font-size:24px;font-weight:700;margin-top:2px}
+.metric .v small{font-size:13px;font-weight:500;color:#666}
+.series{font-family:ui-monospace,Menlo,monospace;font-size:10.5px;line-height:1.5;color:#555;word-break:break-all;background:#f8f8fa;border-radius:10px;padding:8px 10px;margin-top:10px}
+.series b{color:#333}
+.verdict{border-radius:14px;padding:16px;font-size:17px;font-weight:700;line-height:1.5;margin:14px 0}
+.verdict.pass{background:#e7f7ec;color:#0a6b2d}
+.verdict.fail{background:#fdecec;color:#a31111}
+.verdict.wait{background:#f5f5f7;color:#555}
+textarea{width:100%;min-height:300px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.55;border:1px solid #ddd;border-radius:10px;padding:10px;margin-top:8px}
+.err{color:#a31111;font-weight:600;white-space:pre-wrap}
+footer{color:#888;font-size:12.5px;line-height:1.6;margin-top:22px}
+</style>
+</head>
+<body>
+<main>
+<h1>大模型（Heavy）真机速度复测 · Worker 配置</h1>
+<p class="sub">这是<b>唯一一次预登记复测</b>：在室内、按真实训练的取景，用正式 App 首选的 <b>Worker 路径</b>，先测 Full（对照），再测 Heavy。上次（2026-11-09，户外、主线程）Heavy 未达标的记录<b>保留在案</b>，本页结果不能改写它；本页若通过，结论仅限「在本次室内 Worker 配置下可行」。</p>
+
+<div class="note"><b>判定线（协议澄清，测试前冻结）：</b>「持续」= 排除前 10 秒启动期后，<b>每一个</b>完整的滚动 10 秒窗口内，新鲜帧处理率 ≥ 15 FPS；且全程相机→结果延迟 p95 ≤ 150 ms。本页把三个数分开报：<b>推理吞吐</b>（每秒完成多少次推理）、<b>新鲜帧处理率</b>（每秒处理多少个<i>不同</i>的摄像头画面——判定用这个）、<b>相机→结果年龄</b>（画面拍下到结果回来隔了多久）。两个模型都测满 180 秒。</div>
+
+<div class="check"><b>开始前（起始状态，固定顺序 Full → 冷却 60 秒 → Heavy）：</b>
+<ul style="margin:6px 0 0;padding-left:20px">
+<li><b>在室内</b>，把手机像平时训练那样支好；站进画面，确认能看到<b>完整上半身</b>再点开始</li>
+<li>手机先<b>冷却</b>：摸起来不热；<b>关掉其他 App</b>；不要插着充电线</li>
+<li>全程约 9 分钟，保持页面在前台、<b>不要锁屏</b>（锁屏会暂停计时）</li>
+<li>视频只在本机处理，不上传、不保存；本页与正式 App 相互独立</li>
+</ul></div>
+
+<video id="cam" autoplay muted playsinline></video>
+<button id="start">开始测试</button>
+<button id="resume" class="secondary" hidden>点这里继续 Heavy 测试</button>
+<div id="status">等待开始</div>
+<div class="bar"><i id="prog"></i></div>
+
+<div id="cards"></div>
+<div id="verdict" class="verdict wait">结论：测试完成后显示</div>
+
+<h3 style="margin:18px 0 4px">结果文本（可复制）</h3>
+<textarea id="resultText" readonly placeholder="测试完成后这里会生成完整结果文本"></textarea>
+<button id="copy" class="secondary">复制结果</button>
+<p id="errbox" class="err"></p>
+
+<footer>MoveMate Step-5 预登记复测 · 测试配置：室内 · 健身取景 · Worker 路径（与正式 App 相同的 pose.worker 与传输层：GPU delegate 优先、失败回退 CPU；帧调度与正式 App 相同——requestVideoFrameCallback 驱动、只提交新画面、同时只跑一帧）· 模型与正式 App 同源同字节（MediaPipe PoseLandmarker float16/1，大小＋SHA-256 校验，写入同一 pose-models-v1 缓存）· 冷下载为绕过浏览器缓存的真实下载（同 v1 的既定偏差）。</footer>
+</main>
+
+<script type="module">
+/* 与正式 App 的 pose-models.json 完全一致的钉死配置 */
+const MODELS = {
+  full:  { label: 'Full（现行 · 对照）', bytes: 9398198,
+    sha256: '5134a3aad27a58b93da0088d431f366da362b44e3ccfbe3462b3827a839011b1',
+    src: '/pose/pose_landmarker_full.task', parts: null },
+  heavy: { label: 'Heavy（大模型）', bytes: 30664242,
+    sha256: '64437af838a65d18e5ba7a0d39b465540069bc8aae8308de3e318aad31fcbc7b',
+    src: '/pose/pose_landmarker_heavy.task',
+    parts: ['/pose/pose_landmarker_heavy.part1', '/pose/pose_landmarker_heavy.part2'] }
+};
+const WORKER_URL = '/pose/step5-pose-worker.js'; /* 由正式 App 的 pose.worker.ts 打包 */
+const CACHE_NAME = 'pose-models-v1';             /* 与正式 App 相同的模型缓存 */
+const WASM_URL = new URL('/pose/wasm', location.origin).href;
+const EXCL_S = 10;                                /* 启动排除期（协议澄清冻结值） */
+const qs = new URLSearchParams(location.search);
+const FULL_DUR = Number(qs.get('fullDur')) || 180;
+const HEAVY_DUR = Number(qs.get('heavyDur')) || 180;
+const COOLDOWN_S = qs.has('cooldown') ? Number(qs.get('cooldown')) : 60;
+
+const $ = id => document.getElementById(id);
+const video = $('cam');
+const results = {};
+window.__STEP5V2 = { done: false, results };
+let stream = null;
+
+const mb = b => (b / 1e6).toFixed(1);
+const sec = ms => (ms / 1000).toFixed(1);
+const pct = (arr, p) => { if (!arr.length) return 0; const s = [...arr].sort((a, b) => a - b); return s[Math.min(s.length - 1, Math.floor(p * s.length))]; };
+function setStatus(t, frac) { $('status').textContent = t; if (typeof frac === 'number') $('prog').style.width = Math.round(frac * 100) + '%'; }
+async function sha256Hex(buf) {
+  const d = await crypto.subtle.digest('SHA-256', buf);
+  return [...new Uint8Array(d)].map(n => n.toString(16).padStart(2, '0')).join('');
+}
+
+/* ---- 与正式 App 相同的取模型字节方式：分片顺序下载 → 拼合 → 校验 → 写缓存 ---- */
+async function fetchModelCold(item) {
+  const cache = await caches.open(CACHE_NAME);
+  await cache.delete(item.src); /* 保证冷下载：先清掉本机已存的这份 */
+  const chunks = [];
+  for (const part of item.parts || [item.src]) {
+    const r = await fetch(part, { cache: 'no-store' }); /* 绕过 HTTP 缓存，测真实网络下载 */
+    if (!r.ok) throw new Error('下载失败 ' + part + ' HTTP ' + r.status);
+    chunks.push(await r.arrayBuffer());
+  }
+  const bytes = new ArrayBuffer(chunks.reduce((s, c) => s + c.byteLength, 0));
+  const view = new Uint8Array(bytes); let off = 0;
+  for (const c of chunks) { view.set(new Uint8Array(c), off); off += c.byteLength; }
+  if (bytes.byteLength !== item.bytes) throw new Error('模型大小校验失败');
+  if (await sha256Hex(bytes) !== item.sha256) throw new Error('模型完整性校验失败');
+  try { await cache.put(item.src, new Response(bytes.slice(0), { headers: { 'Content-Type': 'application/octet-stream' } })); } catch {}
+  return bytes;
+}
+/* 与正式 App readModelCache 相同：读回时复验大小＋SHA-256，不合格视为未命中 */
+async function readModelCache(item) {
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    const hit = await cache.match(item.src);
+    if (!hit) return null;
+    const bytes = await hit.arrayBuffer();
+    if (bytes.byteLength !== item.bytes || await sha256Hex(bytes) !== item.sha256) { await cache.delete(item.src); return null; }
+    return bytes;
+  } catch { return null; }
+}
+
+/* ---- Worker 传输层：移植正式 App poseTransport.workerTransport
+ * （init 12s / 首帧 8s / 稳态帧 1s 超时；GPU 优先、失败回退 CPU；建好后先探一帧，
+ * 与 openPoseTransport 的顺序一致。唯一有意偏差：稳态帧超时只记错误并继续测，
+ * 不像正式 App 那样降级——复测必须把一个固定配置测满 180 秒。） ---- */
+function workerAttempt(bytes, delegate, timeouts) {
+  return new Promise((resolve, reject) => {
+    if (typeof Worker === 'undefined' || typeof createImageBitmap === 'undefined' ||
+        (delegate === 'GPU' && typeof OffscreenCanvas === 'undefined')) { reject(new Error('浏览器不支持此 Worker 方式')); return; }
+    const worker = new Worker(WORKER_URL);
+    const pending = new Map(); let next = 0, closed = false, firstFrame = true;
+    const failAll = msg => { for (const p of pending.values()) { clearTimeout(p.timer); p.reject(new Error(msg)); } pending.clear(); };
+    const close = () => { if (closed) return; closed = true; try { worker.terminate(); } catch {} failAll('推理已取消'); };
+    worker.onerror = () => failAll('Worker 推理初始化失败');
+    worker.onmessage = ({ data }) => {
+      const p = pending.get(data.id); if (!p) return; /* 超时后的迟到回复按正式 App 一样忽略 */
+      pending.delete(data.id); clearTimeout(p.timer);
+      data.error ? p.reject(new Error(data.error)) : p.resolve(data);
+    };
+    const call = (data, transfer = []) => new Promise((res, rej) => {
+      if (closed) { rej(new Error('推理已取消')); return; }
+      const id = ++next;
+      const limit = data.kind === 'init' ? timeouts.init : (firstFrame ? timeouts.firstFrame : 1000);
+      const timer = setTimeout(() => { pending.delete(id); rej(new Error('推理响应超时')); }, limit);
+      pending.set(id, { resolve: res, reject: rej, timer });
+      try { worker.postMessage({ ...data, id }, transfer); }
+      catch (e) { clearTimeout(timer); pending.delete(id); rej(e); }
+    });
+    (async () => {
+      try {
+        const copy = bytes.slice(0);
+        await call({ kind: 'init', bytes: copy, delegate, wasm: WASM_URL }, [copy]);
+        const transport = {
+          mode: delegate === 'GPU' ? 'worker-gpu' : 'worker-cpu', delegate, close,
+          infer: async (vid, timestamp) => {
+            const t0 = performance.now();
+            const image = await createImageBitmap(vid);
+            if (closed) { image.close(); throw new Error('推理已取消'); }
+            try { const r = await call({ kind: 'frame', image, timestamp }, [image]); firstFrame = false;
+                  return { landmarks: r.landmarks, worldLandmarks: r.worldLandmarks, inferMs: performance.now() - t0 }; }
+            catch (e) { try { image.close(); } catch {} throw e; }
+          }
+        };
+        await transport.infer(video, performance.now()); /* 与正式 App 相同的首帧探活 */
+        resolve(transport);
+      } catch (e) { close(); reject(e); }
+    })();
+  });
+}
+async function openWorkerTransport(bytes) {
+  let lastErr = null;
+  for (const delegate of ['GPU', 'CPU']) {
+    try { return await workerAttempt(bytes, delegate, { init: 12000, firstFrame: 8000 }); }
+    catch (e) { lastErr = e; }
+  }
+  throw lastErr || new Error('Worker 初始化失败');
+}
+
+/* 与正式 App poseCompatibility.decodedFrameCount 相同 */
+function decodedFrameCount(standard, webkit) {
+  if (typeof standard === 'number' && standard > 0) return standard;
+  if (typeof webkit === 'number' && webkit > 0) return webkit;
+  return null;
+}
+
+/* ---- 帧泵：移植正式 App useAdaptivePose 的调度
+ * requestVideoFrameCallback 驱动（500ms 看门狗回退 rAF，与正式 App 相同）；
+ * 只提交 mediaTime 严格递增的新画面；同时只跑一帧（inFlight 串行）。
+ * 重复帧仪表：呈现数 / 忙碌跳过数 / 提交数 / 同一 mediaTime 重复提交数（应为 0）。 ---- */
+function perfRun(transport, durS, label, fracBase, fracSpan) {
+  return new Promise(resolveRun => {
+    const frames = [];           /* {capturedAt, submittedAt, receivedAt, inferMs, found} */
+    const mediaSeen = new Set(); /* 已提交的 mediaTime，用于重复提交计数 */
+    let presented = 0, skippedBusy = 0, submitted = 0, duplicates = 0;
+    let errors = 0, timeouts = 0;
+    let lastMedia = -1, lastDecoded = -1, origin = null, inFlight = false;
+    let stopped = false, forceRaf = false, callbackId = 0, fallbackTimer = null;
+    const wall0 = performance.now();
+    const wallEnd = wall0 + durS * 1000;
+
+    function schedule() {
+      if (stopped) return;
+      if (typeof video.requestVideoFrameCallback === 'function' && !forceRaf) {
+        callbackId = video.requestVideoFrameCallback(onFrame);
+        fallbackTimer = setTimeout(() => {
+          if (stopped) return;
+          try { video.cancelVideoFrameCallback && video.cancelVideoFrame(callbackId); } catch {}
+          forceRaf = true; onFrame(performance.now(), undefined);
+        }, 500);
+      } else {
+        callbackId = requestAnimationFrame(t => onFrame(t, undefined));
+      }
+    }
+    function onFrame(now, metadata) {
+      if (stopped) return;
+      if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null; }
+      schedule();
+      const decoded = decodedFrameCount(video.getVideoPlaybackQuality && video.getVideoPlaybackQuality().totalVideoFrames, video.webkitDecodedFrameCount);
+      const media = metadata && typeof metadata.mediaTime === 'number' ? metadata.mediaTime : video.currentTime;
+      const fresh = Number.isFinite(media) && media > lastMedia && (!!metadata || decoded === null || decoded > lastDecoded);
+      if (!fresh) return;
+      if (video.readyState < 2) return;
+      presented++;
+      if (inFlight) { skippedBusy++; return; }
+      if (decoded !== null) lastDecoded = decoded;
+      lastMedia = media;
+      if (origin === null) origin = now - media * 1000;
+      const capturedAt = Math.min(now, origin + media * 1000);
+      if (mediaSeen.has(media)) duplicates++; else mediaSeen.add(media);
+      submitted++;
+      inFlight = true;
+      const submittedAt = performance.now();
+      transport.infer(video, capturedAt).then(result => {
+        inFlight = false;
+        frames.push({ capturedAt, submittedAt, receivedAt: performance.now(), inferMs: result.inferMs, found: !!result.landmarks });
+      }).catch(e => {
+        inFlight = false; errors++;
+        if (e && e.message && e.message.indexOf('超时') >= 0) timeouts++;
+      });
+      if ((submitted & 31) === 0) {
+        const el = (performance.now() - wall0) / 1000;
+        setStatus(label + '：持续推理 ' + Math.min(el, durS).toFixed(0) + ' / ' + durS + ' 秒（已处理新鲜帧 ' + frames.length + '）', fracBase + fracSpan * Math.min(1, el / durS));
+      }
+    }
+    schedule();
+    const tick = setInterval(() => {
+      const el = (performance.now() - wall0) / 1000;
+      setStatus(label + '：持续推理 ' + Math.min(el, durS).toFixed(0) + ' / ' + durS + ' 秒（已处理新鲜帧 ' + frames.length + '）', fracBase + fracSpan * Math.min(1, el / durS));
+      if (performance.now() >= wallEnd) {
+        clearInterval(tick); stopped = true;
+        const endedWallSeconds = (performance.now() - wall0) / 1000;
+        try { video.cancelVideoFrameCallback && video.cancelVideoFrameCallback(callbackId); } catch {}
+        cancelAnimationFrame(callbackId);
+        /* 等在途的一帧落定（最多 1.5 秒），再结算 */
+        const settle = setInterval(() => {
+          if (!inFlight || performance.now() - wallEnd > 1500) {
+            clearInterval(settle);
+            resolveRun({ frames, presented, skippedBusy, submitted, duplicates, errors, timeouts, wallSeconds: endedWallSeconds });
+          }
+        }, 50);
+      }
+    }, 250);
+  });
+}
+
+/* ---- 统计与判定（协议澄清的 operationalized gate） ---- */
+function computePerf(raw, durS) {
+  const frames = raw.frames.slice().sort((a, b) => a.capturedAt - b.capturedAt);
+  const out = { completed: frames.length, presented: raw.presented, skippedBusy: raw.skippedBusy,
+    submitted: raw.submitted, duplicates: raw.duplicates, errors: raw.errors, timeouts: raw.timeouts };
+  if (!frames.length) { out.empty = true; return out; }
+  const t0 = frames[0].capturedAt;
+  const rel = f => (f.capturedAt - t0) / 1000;
+  const spanS = Math.max(0.001, (frames[frames.length - 1].capturedAt - t0) / 1000);
+  out.throughput = frames.length / raw.wallSeconds; /* 完成推理/秒；本泵每帧只推一次，与新鲜帧率的区别只在计数口径 */
+  out.freshAvg = frames.length > 1 ? (frames.length - 1) / spanS : 0;
+  out.foundRate = frames.filter(f => f.found).length / frames.length;
+  const ages = frames.map(f => f.receivedAt - f.capturedAt);
+  const trips = frames.map(f => f.inferMs);
+  out.ageP50 = pct(ages, .5); out.ageP95 = pct(ages, .95); out.ageMax = Math.max(...ages);
+  out.tripP50 = pct(trips, .5); out.tripP95 = pct(trips, .95);
+  const perSecond = new Array(durS).fill(0);
+  for (const f of frames) { const s = Math.floor(rel(f)); if (s >= 0 && s < durS) perSecond[s]++; }
+  out.perSecond = perSecond;
+  /* 滚动 10 秒窗口：起点为排除期后每 1 秒一个完整窗口 [s, s+10) */
+  const windows = [];
+  for (let s = EXCL_S; s + 10 <= durS; s++) {
+    let c = 0; for (const f of frames) { const r = rel(f); if (r >= s && r < s + 10) c++; }
+    windows.push(c / 10);
+  }
+  out.windowsTotal = windows.length;
+  out.minRolling = windows.length ? Math.min(...windows) : null;
+  out.windowsBelow = windows.filter(w => w < 15).length;
+  const fin = frames.filter(f => rel(f) >= durS - 30 && rel(f) < durS);
+  out.final30Rate = fin.length / Math.min(30, durS);
+  out.final30AgeP95 = fin.length ? pct(fin.map(f => f.receivedAt - f.capturedAt), .95) : null;
+  out.gateApplicable = windows.length > 0;
+  out.pass = out.gateApplicable && out.minRolling >= 15 && out.ageP95 <= 150;
+  out.failReasons = [];
+  if (out.gateApplicable && out.minRolling < 15) out.failReasons.push('最低滚动10秒窗口新鲜帧率 ' + out.minRolling.toFixed(1) + ' FPS < 15');
+  if (out.ageP95 > 150) out.failReasons.push('相机→结果延迟 p95 ' + Math.round(out.ageP95) + ' ms > 150');
+  return out;
+}
+
+async function testModel(key, durS, fracBase, fracSpan) {
+  const item = MODELS[key];
+  const out = { key, label: item.label, mb: mb(item.bytes), durS };
+  results[key] = out;
+  setStatus(item.label + '：冷下载中（' + mb(item.bytes) + ' MB）…', fracBase);
+  let t = performance.now();
+  const bytes = await fetchModelCold(item);
+  out.coldDownloadMs = performance.now() - t;
+  out.downloadMBs = item.bytes / 1e6 / (out.coldDownloadMs / 1000);
+
+  setStatus(item.label + '：冷初始化中（Worker）…', fracBase + fracSpan * 0.05);
+  t = performance.now();
+  const c1 = await openWorkerTransport(bytes);
+  out.mode = c1.mode; out.delegate = c1.delegate;
+  out.coldInitMs = performance.now() - t;
+
+  setStatus(item.label + '：持续推理 ' + durS + ' 秒（Worker）…', fracBase + fracSpan * 0.1);
+  const raw = await perfRun(c1, durS, item.label, fracBase + fracSpan * 0.1, fracSpan * 0.8);
+  out.perf = computePerf(raw, durS);
+  c1.close();
+
+  setStatus(item.label + '：热加载（第二次打开）…', fracBase + fracSpan * 0.95);
+  t = performance.now();
+  const cached = await readModelCache(item);
+  out.cacheReadMs = performance.now() - t;
+  if (!cached) throw new Error('本机缓存读取失败');
+  t = performance.now();
+  const c2 = await openWorkerTransport(cached);
+  out.warmInitMs = performance.now() - t;
+  out.warmMode = c2.mode;
+  c2.close();
+  setStatus(item.label + '：完成', fracBase + fracSpan);
+  return out;
+}
+
+function metric(k, v, unit) { return '<div class="metric"><div class="k">' + k + '</div><div class="v">' + v + (unit ? ' <small>' + unit + '</small>' : '') + '</div></div>'; }
+function renderCard(out) {
+  const el = document.createElement('section');
+  el.className = 'card';
+  if (out.error) {
+    el.innerHTML = '<h2>' + out.label + '</h2><p class="size">' + out.mb + ' MB</p><p class="err">测试中断：' + out.error + '</p>';
+    return el;
+  }
+  const p = out.perf;
+  let h = '<h2>' + out.label + '</h2><p class="size">模型 ' + out.mb + ' MB · 路径 ' + out.mode + '（Worker · ' + out.delegate + '）</p><div class="grid">' +
+    metric('冷下载（真实网络）', sec(out.coldDownloadMs), '秒') +
+    metric('下载速度', out.downloadMBs.toFixed(1), 'MB/s') +
+    metric('冷启动总耗时（下载+初始化）', sec(out.coldDownloadMs + out.coldInitMs), '秒') +
+    metric('冷初始化（Worker 建模+探活帧）', Math.round(out.coldInitMs), 'ms') +
+    metric('热加载（缓存+初始化）', Math.round(out.cacheReadMs + out.warmInitMs), 'ms');
+  if (p.empty) {
+    h += metric('持续推理', '无完成帧', '');
+  } else {
+    h += metric('新鲜帧处理率（' + out.durS + ' 秒平均）', p.freshAvg.toFixed(1), 'FPS') +
+      metric('推理吞吐（完成推理/秒）', p.throughput.toFixed(1), '/秒') +
+      metric('最低滚动 10 秒窗口（新鲜帧率）', p.minRolling === null ? '不适用' : p.minRolling.toFixed(1), 'FPS') +
+      metric('末 30 秒新鲜帧率', p.final30Rate.toFixed(1), 'FPS') +
+      metric('相机→结果延迟 p50 / p95', Math.round(p.ageP50) + ' / ' + Math.round(p.ageP95), 'ms') +
+      metric('重复提交同一画面', String(p.duplicates), '次') +
+      metric('检出人体帧占比', Math.round(p.foundRate * 100), '%') +
+      metric('错误 / 超时', p.errors + ' / ' + p.timeouts, '次');
+  }
+  h += '</div>';
+  if (!p.empty) {
+    h += '<div class="series"><b>判定（协议澄清）：</b>' + (p.gateApplicable
+      ? (p.pass ? '达到——所有滚动窗口 ≥15 FPS 且 p95 ≤150ms' : '未达到——' + p.failReasons.join('；'))
+      : '时长不足，无完整窗口，不判定') +
+      ' · 低于 15 的窗口 ' + p.windowsBelow + '/' + p.windowsTotal +
+      '<br><b>每秒新鲜帧数（' + out.durS + ' 个数）：</b>' + p.perSecond.join(',') + '</div>';
+  }
+  el.innerHTML = h;
+  return el;
+}
+
+function renderText(env) {
+  const L = [];
+  L.push('MoveMate Step-5 Heavy 可行性复测结果（预登记复测 · 室内 Worker 配置）');
+  L.push('时间：' + new Date().toLocaleString('zh-CN', { hour12: false }));
+  L.push('设备：' + env.ua);
+  L.push('摄像头：' + env.cam);
+  L.push('测试配置：室内 · 健身取景（完整上半身）· Worker 路径（正式 App 同源 worker，GPU 优先）· 顺序 Full→冷却→Heavy');
+  L.push('判定线（协议澄清）：排除前 ' + EXCL_S + ' 秒后，每个完整滚动 10 秒窗口的新鲜帧处理率 ≥15 FPS，且全程相机→结果延迟 p95 ≤150ms');
+  L.push('注：2026-11-09 户外主线程运行 Heavy 未达标（末段 11.6 FPS），该记录保留在案；本复测通过仅表示「在本次室内 Worker 配置下可行」。');
+  L.push('');
+  for (const key of ['full', 'heavy']) {
+    const o = results[key]; if (!o) continue;
+    L.push('【' + o.label + '】模型 ' + o.mb + ' MB · 路径 ' + (o.mode || '?') + '（Worker · ' + (o.delegate || '?') + '）');
+    if (o.error) { L.push('测试中断：' + o.error); L.push(''); continue; }
+    const p = o.perf;
+    L.push('冷下载：' + sec(o.coldDownloadMs) + ' 秒（' + o.downloadMBs.toFixed(1) + ' MB/s，大小+SHA-256 校验通过）');
+    L.push('冷初始化（Worker 建模+首帧探活）：' + Math.round(o.coldInitMs) + ' ms');
+    L.push('冷启动总耗时（下载+初始化）：' + sec(o.coldDownloadMs + o.coldInitMs) + ' 秒');
+    L.push('热加载（读本机缓存 ' + Math.round(o.cacheReadMs) + ' ms + 初始化）：' + Math.round(o.cacheReadMs + o.warmInitMs) + ' ms');
+    if (p.empty) { L.push('持续推理：无完成帧'); L.push(''); continue; }
+    L.push('持续推理 ' + o.durS + ' 秒（新鲜帧口径）：呈现 ' + p.presented + ' 帧，提交 ' + p.submitted + '，完成 ' + p.completed + '，忙碌跳过 ' + p.skippedBusy + '，重复提交同一画面 ' + p.duplicates + ' 次，错误 ' + p.errors + '（超时 ' + p.timeouts + '）');
+    L.push('新鲜帧处理率：平均 ' + p.freshAvg.toFixed(1) + ' FPS；最低滚动 10 秒窗口 ' + (p.minRolling === null ? '不适用' : p.minRolling.toFixed(1) + ' FPS') + '（低于 15 的窗口 ' + p.windowsBelow + '/' + p.windowsTotal + '）；末 30 秒 ' + p.final30Rate.toFixed(1) + ' FPS');
+    L.push('推理吞吐：' + p.throughput.toFixed(1) + ' 次/秒（本泵每帧只推一次，吞吐≈新鲜帧率；与之相对，v1 主线程背靠背循环会对同一画面重复推理）');
+    L.push('相机→结果延迟：p50 ' + Math.round(p.ageP50) + ' ms / p95 ' + Math.round(p.ageP95) + ' ms / 最大 ' + Math.round(p.ageMax) + ' ms；末 30 秒 p95 ' + (p.final30AgeP95 === null ? '—' : Math.round(p.final30AgeP95) + ' ms') + '；推理往返 p50/p95 ' + Math.round(p.tripP50) + ' / ' + Math.round(p.tripP95) + ' ms');
+    L.push('检出人体帧占比 ' + Math.round(p.foundRate * 100) + '%');
+    L.push('每秒新鲜帧数：' + p.perSecond.join(','));
+    L.push('本模型判定（协议澄清）：' + (p.gateApplicable ? (p.pass ? '达到' : '未达到——' + p.failReasons.join('；')) : '时长不足，不判定'));
+    L.push('');
+  }
+  const h = results.heavy;
+  if (h && !h.error && h.perf && !h.perf.empty) {
+    L.push('Heavy 复测结论：' + (h.perf.pass
+      ? '达到——结论限于「在本次室内 Worker 配置下可行」；户外主线程未达标记录保留在案。'
+      : '未达到——' + h.perf.failReasons.join('；') + '。按预登记规则，本复测路线到此关闭。'));
+  }
+  L.push('注：下载为绕过 HTTP 缓存的真实下载；视频只在本机处理，不上传。');
+  return L.join('\n');
+}
+
+async function openCamera(env) {
+  const s = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } } });
+  stream = s;
+  video.srcObject = s;
+  await video.play();
+  const track = s.getVideoTracks()[0];
+  if (track) { const st = track.getSettings(); env.cam = (st.width || '?') + 'x' + (st.height || '?') + ' @' + (st.frameRate || '?') + 'fps'; }
+}
+function stopCamera() {
+  if (stream) stream.getTracks().forEach(t => t.stop());
+  stream = null; video.srcObject = null;
+}
+function cooldown(seconds) {
+  return new Promise(res => {
+    let left = seconds;
+    setStatus('冷却中：摄像头已关，让手机休息… 还剩 ' + left + ' 秒（不要操作手机）', 0.5);
+    const iv = setInterval(() => {
+      left--;
+      if (left <= 0) { clearInterval(iv); res(); return; }
+      setStatus('冷却中：摄像头已关，让手机休息… 还剩 ' + left + ' 秒（不要操作手机）', 0.5);
+    }, 1000);
+  });
+}
+/* 冷却后自动重开摄像头；若浏览器要求手势，显示「继续」按钮兜底 */
+async function reopenCamera(env) {
+  try { await openCamera(env); return true; }
+  catch {
+    return await new Promise(res => {
+      const btn = $('resume');
+      btn.hidden = false;
+      setStatus('需要点一下按钮继续 Heavy 测试');
+      btn.onclick = async () => { btn.hidden = true; try { await openCamera(env); res(true); } catch { res(false); } };
+    });
+  }
+}
+
+$('start').addEventListener('click', async () => {
+  $('start').disabled = true; $('errbox').textContent = '';
+  const env = { ua: navigator.userAgent, cam: '未取得' };
+  try {
+    setStatus('请求摄像头…');
+    await openCamera(env);
+    setStatus('摄像头已开，开始测试（先 Full 对照）…', 0);
+    const full = await testModel('full', FULL_DUR, 0, 0.44);
+    $('cards').appendChild(renderCard(full));
+    stopCamera();
+    await cooldown(COOLDOWN_S);
+    setStatus('冷却结束，重新打开摄像头…', 0.5);
+    if (!await reopenCamera(env)) throw new Error('冷却后摄像头打开失败');
+    const heavy = await testModel('heavy', HEAVY_DUR, 0.5, 0.48);
+    $('cards').appendChild(renderCard(heavy));
+    const v = $('verdict');
+    if (heavy.perf && !heavy.perf.empty && heavy.perf.gateApplicable) {
+      v.className = 'verdict ' + (heavy.perf.pass ? 'pass' : 'fail');
+      v.textContent = heavy.perf.pass
+        ? '结论：Heavy 达到判定线——在本次室内 Worker 配置下可行。（户外主线程未达标记录保留在案。）请把本页截图发回。'
+        : '结论：Heavy 未达到判定线（' + heavy.perf.failReasons.join('；') + '）。按预登记规则，本复测路线到此关闭。请把本页截图发回。';
+    } else {
+      v.className = 'verdict fail';
+      v.textContent = '结论：Heavy 数据不完整，无法判定，请截图发回。';
+    }
+    setStatus('全部完成 ✅ 请截图本页发回', 1);
+  } catch (e) {
+    const msg = e && e.message ? e.message : String(e);
+    $('errbox').textContent = '出错：' + msg;
+    setStatus('测试出错，请截图本页发回');
+    for (const key of ['full', 'heavy']) if (results[key] && !results[key].perf && !results[key].error) results[key].error = msg;
+    $('cards').innerHTML = '';
+    for (const key of ['full', 'heavy']) if (results[key]) $('cards').appendChild(renderCard(results[key]));
+  } finally {
+    $('resultText').value = renderText(env);
+    window.__STEP5V2.done = true;
+    window.__STEP5V2.text = $('resultText').value;
+  }
+});
+$('copy').addEventListener('click', async () => {
+  const ta = $('resultText');
+  try { await navigator.clipboard.writeText(ta.value); $('copy').textContent = '已复制 ✓'; }
+  catch { ta.select(); document.execCommand('copy'); $('copy').textContent = '已复制 ✓'; }
+  setTimeout(() => $('copy').textContent = '复制结果', 2000);
+});
+</script>
+</body>
+</html>
