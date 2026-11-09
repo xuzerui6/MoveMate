@@ -1415,22 +1415,37 @@
     {
       "id": "exdb:0980",
       "originalName": "band bent-over hip extension",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：指定脚踝高度锚点却未说明带子系在哪条腿，背对锚点时拉力与后踢关系仍需图像对照。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照（本批探针条 · 踝环 + 低锚张力几何）：种子意见点名正文指定脚踝高度锚点却未说明带子系在哪条腿、背对锚点时拉力与后踢关系仍需图像对照——带与腿的连接由正文步骤序列收敛为环套工作腿脚踝（第 5–6 步的工作腿即受带腿），正文已补入并披露；工作侧取右腿。另按带路几何修订正文第 3 步的退步方向表述并披露：原文「向后退一步，在弹力带上产生张力」与背对锚点的几何相悖（朝锚点后退只会使带松弛），修订为站离锚点足够远、使带在起始位即绷紧，以带绷紧为准。探针执行：kill 条件（任一稿峰值帧带身明显松弛垂落 / 双帧摆幅不可读 / 画成手扶器械的开链踢腿机形态）均未触发——踝环 + 身后低锚的张力几何在双帧间全程绷紧且可读，种子的核心疑问以成帧肯定回答。定版双帧（均首稿过门）：起始帧踝环紧贴右脚踝鞋口上方（位置精确），带自踝向身后立柱底低锚拉成一条笔直水平线、全程绷紧，髋铰链前倾约 45 度、背平直，右腿在身前落地、左腿支撑无带，双臂自然下垂、双手空手无扶持；关键帧右腿后伸至与躯干成一直线、脚离地、臀肌收紧，带段自踝向锚点为一条笔直斜线、无松弛无垂落，柱底锚绕带与起始同位同形，铰链角与背部平直一致；双帧机位相同。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "054708e39781a3b061855ab9e65ab453933f4019c58f641732c0dec96db8dd08",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-0980",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch75.md",
+          "version": "2026-11-10 · 生成批次 75",
+          "sourceSha256": [
+            "4fb62c2444e0b2ff82e4413af19542870174b7e8effb58fa37cc2365d80b0308",
+            "092a1017df8db4b4dcfafb8fa091d04614d4f5878507e5d84b4908bc9fbdb40d"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0972",
@@ -1475,42 +1490,72 @@
     {
       "id": "exdb:0975",
       "originalName": "band close-grip push-up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：带子绕肘上方可能提供辅助，而非普通绕背抗阻俯卧撑；尚无专门示范确认回路与手距。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照（本批探针条 · 环带绕肢首例）：种子意见点名带子绕肘上方可能提供辅助、而非普通绕背抗阻俯卧撑，且尚无专门示范确认回路与手距——本条即以成帧正面回答：工作形态取正文字面，一条短闭合环带（宽扁亮红、无把手）同时圈住双上臂肘上方，双手空手撑地、不持带，手距按正文取双肩正下方（窄距）。探针执行：kill 条件（两稿皆成绕背持端式 / 环带滑至前臂或颈部 / 双手宽距）均未触发，环带绕肢形态成立。定版双帧：起始帧高位平板、环带贴双上臂肘正上方、双手位于双肩正下方、身体头到脚跟成直线；关键帧（第 2 稿，参考锚定修复：以起始帧为锚、只改相位）屈肘贴肋、胸近地面、身体直线保持，双手仍空手。放行附带两项记录：其一，环带站点跨帧上移——起始在肘正上方、关键帧移至上臂上段近腋下，同环带、同体段、同佩戴构型不变，底位张力环带沿上臂上移属物理可读形态，主理人亲核裁定放行，并立口径：绕肢环带条目的站点口径放宽为「同体段、同构型，底位可在该体段内上移」，滑至前臂/颈部、绕背或改构型仍废；其二，双帧机位距离略有差异（起始较近、关键帧较远），人物/服装/场景一致、相位无歧义，如实记录，后续批次已将双帧机位锁定写入每条提示词。正文与成帧口径一致，不改文。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "6ab38eee46923adfacd7f5daa0ae66d80050c9472f4a1f1813899f725cade291",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-0975",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch75.md",
+          "version": "2026-11-10 · 生成批次 75",
+          "sourceSha256": [
+            "e2b7f349e16eca1d2b9fce2db92f6ba8d95708c90cb53de759a93b8500b97de2",
+            "59374e9c0e7ca430bb8ce680236d4cbf49af53a719cb4efe6b3b61e903a60246"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0976",
       "originalName": "band concentration curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：脚踩同侧带端、肘抵大腿内侧的文字可读，仍需准确表现单侧脚底锚点、凳面及前臂握法的图解。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照（坐姿开类）：正文全显式，无需编辑定义——坐长凳、同侧（右）脚踩住带的一端、右手持另一端、右肘抵右大腿内侧膝上方、掌心朝上；工作侧取右臂（正文未指定侧，此处选定并披露，与全批单侧条同侧口径一致）。种子意见要求准确表现单侧脚底锚点、凳面及前臂握法，三项即成帧核验本身。定版双帧：起始帧（第 2 稿；首稿废因 GRIP——拳心朝内、非掌心朝上的旋后位，且带身在手中折成双股下垂、与单段拓扑不符）掌心完全朝上、指自下向上扣住带端，单条带段自右手笔直向下、于右鞋前掌下方穿出（放大可见带在鞋底下受压），右肘抵右大腿内侧，坐凳端、双脚平地；关键帧右手弯举至右肩前，右肘仍在右大腿内侧原位、上臂未动，带段向右脚同一点绷紧、更长更斜，躯干未后仰借力；双帧机位逐项一致。与 3123 互查：彼双臂自由弯举、肘贴体侧 / 本条单臂肘抵大腿，形态明确可辨。正文与成帧口径一致，不改文。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "859aba268b978b6f99a9dd2f081c70e3b5a659ded0e245d1b1fdaf10f7d2769b",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-0976",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch75.md",
+          "version": "2026-11-10 · 生成批次 75",
+          "sourceSha256": [
+            "86d94e1d8b87bfa2e1b4ddcc90899d429cb0a304130d3fe6256887ec670f9244",
+            "d7b4eba11b20a894b34c3c40f92fe4697ef2f06e9855b54a2e530b5c4a86527c"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3117",
@@ -1575,22 +1620,37 @@
     {
       "id": "exdb:0978",
       "originalName": "band front raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字明确向前平举，但没有说明带子的下端固定方式；与0977的变式区别仍不明确。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照（脚锚编辑定义条）：正文形式完整（站立、带在双大腿前、掌心向下、双臂伸直前举至与地面平行），唯带下端固定未写。种子意见点名下端固定方式缺失；编辑定义取双脚踩带——双脚与肩同宽踩住带中段、双手各持一端，这是该正文下唯一的规范布置，且与已定版 0997（band shoulder press，双脚踩带 + 手举至肩高）同一锚型，有定版托底；正文已按编辑定义补入「双脚踩住带中段」并披露。与 0977 的区别问题由 0977 本身的处置解决：0977 名实互斥已在带类台账中定论阻断，本批不画 0977，照片层面不存在兄弟冲突。定版双帧：起始帧（第 2 稿；首稿废因 ANCHOR——带中段整段平铺在双脚脚尖前方地面、双鞋踏在带线之后，脚锚不成立）地面再无松带，两带段自双手竖直向下、于双鞋鞋底边缘没入鞋下（中段为双鞋遮挡，连续性合理），双臂伸直垂于大腿前、掌心向后朝大腿；关键帧双臂在身前伸直前举至与地面平行（真前举、非侧举）、肘直、掌心向下，两带段向双脚同一点位绷紧，躯干直立不后仰、双脚未动；双帧机位逐项一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "c55fc143c69c706bcbf96fd0652c7d26c366ad72194bff7c77fa70e81ecce709",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-0978",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch75.md",
+          "version": "2026-11-10 · 生成批次 75",
+          "sourceSha256": [
+            "079dbd9a4a7d9c758b91838e0154b16ec88b2ab28cb279cf545bdbfbb23e8b08",
+            "ed2986d36eef4c80ff219c01eec0dee8d5828cb823feb391264979f1ad7cf0c9"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1408",
@@ -1631,22 +1691,37 @@
     {
       "id": "exdb:0979",
       "originalName": "band horizontal pallof press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照完整步骤：腰高侧方固定、双手胸前向前推并抗旋转的形式清楚；仍需能明确显示侧向锚点、双手前推及躯干不转的专门图解，不用胸推或转体图替代。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照（帕洛夫开类）：正文完整自洽——带固定于腰高坚固锚点、侧身垂直于锚点站立、双手胸前持带、向前伸臂推离身体、躯干抗旋转不转；锚点物件按全批口径取深蹲架立柱（在他左侧腰高）。正文「手柄」按全批形制口径改为直接握带端（本批带无把手，双手直接握带），已改文对齐并披露。种子意见要求明确显示侧向锚点、双手前推及躯干不转，三项即成帧核验本身。定版双帧：起始帧（第 2 稿；首稿废因 ANCHOR+PATH——绕柱点在胸高而非腰高，且带在柱上成环、双股平行段入双手，与「一端固定、单段入双手」的拓扑不符）单条带段自双手向左柱斜下至腰高绕柱点绷紧，双手并拢持同一带端于胸前正中、肘屈贴肋，胸髋正对前方；关键帧（第 2 稿，参考锚定修复：以起始帧为锚、只改相位；首稿废因 PAIR/VARIANT——双手伸向其右前斜方、脱离胸骨中线，成帧为斜向推而非帕洛夫正前推）双手沿胸骨中线正前伸直至肩高、居胸骨正前方，胸髋保持正对前方零旋转，带段向同一腰高绕柱点绷紧拉长，双脚未动；双帧机位逐项一致。新拓扑教训已记入过门记录：侧锚前推的相位病在推向不在带，后续提示词须把推线锚定到身体中线。其「vertical」同名条 1015 已在带类台账中以名实互斥 + 与本条不可辨定论阻断。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "aa3a4e656d125588b01fc28ee9f51e72c78df8fe3d9105100ce3a500ba59c861",
-        "steps": 9
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-0979",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch75.md",
+          "version": "2026-11-10 · 生成批次 75",
+          "sourceSha256": [
+            "57e438b219c3c5281c586ea19c944cb47cc7957dbdd62175119af8791ddc0d2d",
+            "d23c9001cca42d529232c50fcb0a98876214fcbe1281b7172334ae52dd913e57"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0981",
@@ -1671,22 +1746,37 @@
     {
       "id": "exdb:0983",
       "originalName": "band kneeling one arm pulldown",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：单臂高锚点下拉可读，原文仅称跪下，未区分双膝跪或单膝跪；不直接用站姿或双侧图替代。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照（跪姿编辑定义条）：正文骨架完整——带固定于头顶上方高锚、跪姿、单手掌心向下握带、手臂伸过头顶、下拉使肘靠近胸腔；唯一未定项是跪姿形态（双膝跪 vs 单膝跪），种子意见点名原文仅称跪下、未区分双膝跪或单膝跪，且不直接用站姿或双侧图替代。编辑定义取双膝跪（tall kneeling）：正文仅称「跪下」、无弓步/单膝语义，双膝跪是字面默认读法；正文已补入「双膝跪」并披露。工作侧取右臂（正文未指定侧，此处选定并披露，与全批单侧条同侧口径一致）；锚点物件按全批口径取他前上方深蹲架横杆。定版双帧（均首稿过门）：起始帧双膝同落垫面、髋伸展、躯干直立（双膝跪成立，非单膝弓步、非坐垫），右臂完全伸直上举指向前上方高锚（带绕架顶横杆）、掌心向下握带，带段自手向高锚笔直绷紧，左手放左大腿；关键帧右肘下拉至右肋侧、手至右上胸旁，带段向同一高锚绷紧（锚位/绕法与起始同），双膝跪位置不变、躯干直立不转体不后仰，左手仍在左大腿，工作侧与起始同侧未换；双帧机位逐项一致。与 3144 互查：彼地面坐姿双腿伸直脚环划船 / 本条跪姿高锚单臂下拉，体位与带路完全不同、可辨。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "392dfb9d0fad6f7b378ac455cf9b47aedf73665846603496a78b185c3a5dca27",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-0983",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch75.md",
+          "version": "2026-11-10 · 生成批次 75",
+          "sourceSha256": [
+            "4994f1d549dbefa93710ed2e45714e3da9a4355e818ea576be827d3fd6b02690",
+            "001b4b845f9294be4643f48a3a8cc8d5d908f8f6c376c638f5c43fdd8c90a5db"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0985",
@@ -1923,22 +2013,37 @@
     {
       "id": "exdb:0993",
       "originalName": "band reverse fly",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：胸高锚点、双手身前展开可读，但未说明双端或交叉带路，需完整示范确认两侧受力。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照（绕柱中锚编辑定义条）：正文骨架完整——带固定于胸高固定物、面向锚点站立、双手身前持带、双臂伸直向两侧展开至与地面平行、挤压肩胛；唯一未定项是带在锚点处的接法，种子意见点名未说明双端或交叉带路、需完整示范确认两侧受力。编辑定义取带中段绕锚点立柱一周、双手各持一端、不交叉（该动作的唯一规范接法，与绳索双侧飞鸟的双滑轮在双帧中等效呈现为单一中锚）；正文已补入带路并披露。定版双帧（均首稿过门，本批首个双帧均一稿过的条目）：起始帧带绕柱点在胸高，两带段自立柱向双手平行绷紧、不交叉、左右对称，双手各持一端于胸前并拢，肘近直带同一微屈，躯干正对立柱、双脚与肩同宽；关键帧双臂向两侧展开至 T 形、与肩同高、与地面平行，肘保持与起始同一微屈（非屈肘回收的划船形态），带自同一胸高绕柱点向双手拉成宽 V、两段绷紧不交叉，躯干正对立柱不后仰、双脚未动；双帧机位逐项一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "eb420fa12d5213d4330672f62af7309aa0da0efde3b015de21c11eb829e58fb4",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-0993",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch75.md",
+          "version": "2026-11-10 · 生成批次 75",
+          "sourceSha256": [
+            "cdac4a62f2057251c87552346c308b99019b7a2b7fcc00f09f91b7ed20b0417e",
+            "7ab63de65e1babfb84d32758f2ff2c102ed2875b910f78c7d324897554d48642"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0994",
@@ -2387,22 +2492,37 @@
     {
       "id": "exdb:1369",
       "originalName": "band two legs calf raise - (band under both legs) v. 2",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：双脚踩带并手握端的文字明确，但版本2与标准版的区别没有独立证明，保留ID与版本标记。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照（正文全显式）：正文全显式，无需编辑定义——双脚与肩同宽踩住带子、双手握住带的两端保持稳定、脚跟抬至尽可能高。种子意见称版本 2 与标准版的区别没有独立证明——其前提（目录内存在标准版）经备料阶段逐条核对不成立：目录内不存在 v.1 或其他双腿带提踵条目（仅 0999/1000 单腿两条，均已在带类台账中定论阻断），本条是该形式在目录中的唯一条目，不存在版本不可辨；ID 与 v.2 标记原样保留，该核对结论在此注明。定版双帧（均首稿过门）：起始帧双脚跟平踩、双膝伸直、躯干直立，带中段贴地穿过双鞋之下（带面自近侧鞋底下穿入、自远侧鞋底下穿出，与站姿双脚困带首稿常见的「带在脚尖前平躺、鞋全在带后」病形态不同），两带段自双鞋底沿腿侧上行至体侧双手、绷紧；关键帧双脚跟同步抬至最高、前脚掌支撑、小腿收缩，跟高差与起始一眼可辨，双膝保持伸直、躯干直立不前倾不下蹲，带仍困在双前脚掌之下、两段上行至双手绷紧，中段在双脚之间贴地可见；双帧机位逐项一致。正文与成帧口径一致，不改文。与 0999/1000 互查：彼单腿（已阻断不画），本条双腿双手持端，形态自明。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "9056fd969e695ec55f320643422dc553c30238b7638ebd4a0cb5fd7198bbac41",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-1369",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch75.md",
+          "version": "2026-11-10 · 生成批次 75",
+          "sourceSha256": [
+            "d6f51589a400c732cc0335c7ffeb53f761164db6077f4f9d5f3e82bc94e2db21",
+            "177a03542c5db37cf415dc4398957c5b954fa51470c7a420f6432fdaea3146b5"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1013",
@@ -32255,22 +32375,37 @@
     {
       "id": "exdb:3123",
       "originalName": "resistance band seated biceps curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：坐姿双手屈肘的步骤可读，但没有脚底或座椅固定端，不能确认弹力带张力方向。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照（脚锚编辑定义条）：正文形式完整——坐椅/凳、背挺直、双脚平放地面、反手掌心朝上、双臂下垂体侧、上臂静止、双手向肩弯举；唯固定端未写，种子意见点名没有脚底或座椅固定端、不能确认弹力带张力方向。编辑定义取双脚踩带：正文既明示双脚平放地面，带中段被双脚踩住即唯一与正文相容的规范锚法（与 0978 同理、与 3122 同型处理），张力方向随之唯一（自双手竖直向下至双脚）；正文已按编辑定义补入「双脚踩住带中段」并披露。定版双帧：起始帧（第 2 稿；首稿废因 ANCHOR——与 0978 首稿同病，带中段平铺于双脚脚尖前方地面、双鞋在带线之后，脚锚不成立）地面无松带，两带段自双手竖直向下、于双鞋外侧鞋底缘没入鞋下（与 0978 定版同一成立形态），双臂伸直垂于体侧、掌心朝前（旋后位），背挺直、双脚平地与肩同宽；关键帧双前臂同步弯举至肩前、双手同高、掌心朝己，双肘贴体侧原位、上臂未动，两带段向双脚同一点绷紧，背挺直不后仰、双脚未动；双帧机位逐项一致。与 0976 互查：彼单臂集中式、肘抵大腿 / 本条双臂自由式、肘贴体侧，必须可辨；与坐压式（带从凳下穿过）以脚锚形态可辨。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "c024baeb51331302211f8a0c70d8cd8b57ad555195eff3d60836b50a724a13c4",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-3123",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch75.md",
+          "version": "2026-11-10 · 生成批次 75",
+          "sourceSha256": [
+            "87bced6acfee293bd8a74afe82faefe37d64e252fb653a7ad58e12b297ce7e74",
+            "432786b73f62c568fa7173646e757065de11d528fa8aec1c0273cbd0da6eb194"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3124",
@@ -32351,22 +32486,37 @@
     {
       "id": "exdb:3144",
       "originalName": "resistance band seated straight back row",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：地面坐姿双腿伸直、带绕双脚与中立握拉明确；脚掌绕带防滑及回位需要专门图解，暂不使用站姿图。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照（正文全显式）：正文全显式，无需编辑定义——坐地板、双腿伸直、带绕双脚、双手持带两端、掌心相对（中立握）、拉向胸部、挤压肩胛、躯干挺直略后倾；种子意见点名脚掌绕带防滑及回位需要专门图解——防滑形态取带横压双脚底中部、双脚背屈勾住带，回位相位即起始帧，本条本就是坐姿成帧、无站姿替代。定版双帧：起始帧（第 2 稿；首稿废因为服装一致性 PAIR——赤脚成帧，与批次 66–74 以来的同一模特着装口径（深灰背心 + 黑短裤 + 黑训练鞋）不一致，带路本体（横压双脚底）与中立握、直背直腿本身均成立）着黑训练鞋，带横压双鞋底中部（鞋底朝前、带在鞋底面受压可见）、双脚背屈勾带，双腿伸直、背挺直，双臂向前伸直、中立握（双拳相对），带段自双手向双脚绷紧；关键帧双手拉至下胸/上腹、双肘后收过躯干（右肘明确过身）、肩胛挤压、胸廓打开，背挺直仅轻微后倾、头不掉、下背不圆，双腿伸直位置不变、带仍横压双鞋底同一点拉长绷紧，中立握保持；双帧机位逐项一致。与 0983 互查复核：彼跪姿 + 高锚 / 本条地面坐姿 + 脚环低带路，完全可辨。正文与成帧口径一致，不改文。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "6d49e6393067ef1620aa63c21cf347c5fac85f108c2278916d5fd2b40944ba3c",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-3144",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch75.md",
+          "version": "2026-11-10 · 生成批次 75",
+          "sourceSha256": [
+            "90389dc8270a13447f03d2f544da120bc51d94c0632febe968b29e897fec4877",
+            "e60c9cce9759fbcf8244a6a18743233fcbeaed7548efe2230898b004e7a98f0b"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0872",
