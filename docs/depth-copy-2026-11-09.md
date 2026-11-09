@@ -31,4 +31,14 @@
 
 ## 上线记录
 
-（部署后回填：commit / production Version / preview Version。）
+- Commit：`a0b07d6`（main）；CI 绿（run 42648053896）。串行套件：client test:repository
+  519/519 + tsc、server 131/131 + build、cloudflare 34/34 + typecheck。
+- Production：Version `ad75f081-75f0-43e9-b421-64d2f6206943`（dongban.xyz 已核验生效：
+  index 指向新构建 `index-Cqtv6Wkx.js`，`poseFeedback` 分块含新句、旧句消失）。
+- Preview：Version `866bc963-2d75-4ba9-a1ab-1ec156545e68`，经 step5 测试页分支合并
+  main 后部署（merge `9a70b5b`），已核验生效且 `/step5-heavy-test`、
+  `/step5-heavy-test-v2`、`/thunder-gate-test` 三个待测页面均完好。
+- 如实记录：2026-11-09 15:49–16:0x UTC 期间 Cloudflare 侧出现部署传播停滞
+  （production 首个版本 `4c62f0ce` 已被 API 记为 100% 生效，但边缘一度仍在发
+  上一版内容；preview 的 versions 接口同期两次 504）。等待传播恢复后两站均
+  核验为新内容，未做任何代码层面的额外改动。
