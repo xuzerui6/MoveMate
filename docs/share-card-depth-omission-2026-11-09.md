@@ -26,7 +26,7 @@ Summary/PlanWorkout present hammer's depth number WITH the limitation copy ã€Œå¹
 
 ## Deploy record
 
-- Feature: `fix/share-card-depth-omission`; merge: _(filled by backfill)_.
-- CI: _(filled by backfill)_.
-- Production (dongban.xyz) Version: _(filled by backfill)_; preview (preview.dongban.xyz) Version: _(filled by backfill)_.
-- No bcrypt/node_modules fallback was needed _(confirm at backfill)_.
+- Feature: `b56d792` on `fix/share-card-depth-omission`; merge: `2d3472e` on main.
+- CI: run 42547123819 success.
+- Production (dongban.xyz) Version: `1db9bcb8-f215-4571-81a8-7bde734ae177`; preview (preview.dongban.xyz) Version: `856ddb72-9f8a-42c2-bba7-afdd6ad5b1d1`. Live check: the `cardData` chunk fetched from both hosts is sha256-identical to the deployed build; both hosts return HTTP 200.
+- No bcrypt/node_modules fallback was needed (server `npm ci` succeeded in both worktrees).
