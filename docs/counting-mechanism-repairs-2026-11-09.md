@@ -175,7 +175,8 @@ space's current snapshot (769/1,329 · 待补 560 · 照片 656 · 器械类剩 
 
 ## Deploy record
 
-- Code commit: (pending — filled in after push)
-- CI: (pending)
-- Production `dongban.xyz` Version: (pending)
-- Preview `preview.dongban.xyz` Version: (pending)
+- Code commit: `8c565df` (main)
+- CI: run for `8c565df` — success (client 512/512, server 131/131,
+  Cloudflare 34/34 as run locally; CI green).
+- Production `dongban.xyz` Version: `d1ea7ab3-6925-4b1e-a4d0-4c4ab8f4957a`
+- Preview `preview.dongban.xyz` Version: `793e0f69-dc5b-4237-bac4-281f30512c23`
