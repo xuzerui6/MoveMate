@@ -2,6 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {AdaptiveRecognition,adaptiveEligible,loadRecognitionPreference,saveRecognitionPreference,selectNewRecognitionStrategy,selectRecognitionStrategy} from '../src/features/motion/lib/adaptiveRecognition';
 import {FrameOrder,fullIsFast,TimeFilter,type PoseFrame} from '../src/features/motion/lib/poseProtocol';
+import {COPY_SUBJECT_SWITCH} from '../src/features/motion/lib/companionCopy';
 import {recognitionDemonstration,newDemonstrationPose} from '../src/features/motion/lib/recognition';
 import {planPose} from './fixtures/plan-camera';
 import {libraryPose} from './fixtures/library-camera';
@@ -185,7 +186,11 @@ test('hammer curl: a freeze outlasting the grace still voids the half rep',()=>{
  assert.equal(r.tracker.ready,false);
  assert.equal(r.tracker.metrics.reps,0);
  // After recalibration a clean cycle counts exactly once: nothing was spliced.
- r.feed('neutral',800);assert.equal(r.tracker.ready,true);
+ // Recalibration here is a RE-arm (the latch was lost), so it takes the
+ // continuous re-arm hold (REARM_MIN_SEGMENT_MS), not the old instant
+ // re-latch; the rig's interpolation and filter lag mean the held feed
+ // runs longer than the measured 1500 ms segment it must produce.
+ r.feed('neutral',2600);assert.equal(r.tracker.ready,true);
  r.feed('peak',1200);r.feed('neutral',1600);
  assert.equal(r.tracker.metrics.reps,1);
 });
@@ -258,4 +263,15 @@ test('device preference can force legacy for new records only and persists best-
  assert.ok(['auto','legacy'].includes(loadRecognitionPreference()));
  // A preference never rewrites a saved strategy.
  assert.equal(selectRecognitionStrategy('squat','adaptive-v1',false),'adaptive-v1');
+});
+
+test('walking test: a teleport with a shape change reads as a subject switch, a plain jump keeps the position copy',()=>{
+ const r=replay('hammer_curl');r.feed('neutral',1600,false);assert.equal(r.tracker.ready,true);
+ // Same person, abruptly reframed: position guard, original copy.
+ r.send(fixture('hammer_curl'),true,f=>f.landmarks!.forEach(p=>p.x+=.3));
+ assert.match(r.tracker.metrics.feedback,/位置变了一下/);assert.equal(r.tracker.ready,false);
+ r.feed('neutral',1600,false);assert.equal(r.tracker.ready,true);
+ // Teleport AND shoulder width collapses: the model locked onto someone else.
+ r.send(fixture('hammer_curl'),true,f=>{const lm=f.landmarks!;lm.forEach(p=>p.x+=.3);const mid=(lm[11].x+lm[12].x)/2;lm[11].x=mid+(lm[11].x-mid)*.5;lm[12].x=mid+(lm[12].x-mid)*.5;});
+ assert.equal(r.tracker.metrics.feedback,COPY_SUBJECT_SWITCH);assert.equal(r.tracker.ready,false);
 });

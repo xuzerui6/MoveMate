@@ -28,6 +28,10 @@ export interface RecognitionDiagnostics {
   lastResetReason: string | null
   basis?: string
   motion?: string
+  /** Front raise only (2026-11-09): the most recent peak-evidence verdict,
+   * recorded for every closed peak episode — including efforts the overshoot
+   * review revokes, which previously left no verdict at all. */
+  lastPeakEvidence?: 'qualified' | 'revoked' | 'insufficient'
 }
 const leftSide = [11,13,15,23,27], rightSide = [12,14,16,24,28]
 const jointNames: Record<number,string> = {11:'左肩',12:'右肩',13:'左肘',14:'右肘',15:'左手腕',16:'右手腕',23:'左髋',24:'右髋',25:'左膝',26:'右膝',27:'左脚踝',28:'右脚踝'}

@@ -882,6 +882,98 @@ test('framing copy only demands what the movement actually needs in frame',()=>{
   tracker.update(null,0);
   assert.equal(tracker.metrics.feedback,COPY_NOT_SEEN_UPPER);
 });
+// --- Counting-mechanism repairs (2026-11-09; accuracy-phase0/counting-mechanisms-report.md) ---
+test('front raise: a qualified effort whose return only grazes the start line is paid out when the next effort supersedes it (Lead 3b)',()=>{
+  // FR-C's E12/E13 rebuilt: the first raise latches qualified, its descent
+  // bottoms at 24° for a single frame — inside the ≤25° return zone but far
+  // short of the 150 ms dwell that would confirm the return — and the second
+  // raise's qualified peak supersedes the latch. Pre-repair the first latch
+  // was silently overwritten and the pair counted once; the superseded
+  // effort now pays out in order, so the pair counts twice.
+  const specs=leftOnly([
+    ...glideR(RREST,RS(95,170),10),...holdR(RS(95,170),4),
+    ...glideR(RS(95,170),RS(26,170),7),RS(24,170),
+    ...glideR(RS(26,170),RS(95,170),7),...holdR(RS(95,170),4),
+    ...glideR(RS(95,170),RREST,8),...holdR(RREST,34),
+  ]);
+  assert.equal(driveRaise(specs).tracker.metrics.reps,2);
+});
+test('front raise: peak evidence is evaluated and recorded even when overshoot revokes the effort (Lead 3a)',()=>{
+  // FR-C's E2 rebuilt at its marked geometry: a raise to 119° — over the
+  // 115° band cap — with the elbow at its marked 145°. Pre-repair the
+  // overshoot branch ran first and the evidence path never executed, so no
+  // verdict existed for the effort at all. The rep is still revoked by the
+  // overshoot (round-4 semantics unchanged), but the verdict is now
+  // recorded — and at 145° the evidence itself qualifies: the band cap,
+  // not the elbow, is what declines this rep.
+  const straight=leftOnly([...glideR(RREST,RS(119,145),10),...holdR(RS(119,145),6),...glideR(RS(119,145),RREST,8),...holdR(RREST,34)]);
+  const a=driveRaise(straight);
+  assert.equal(a.tracker.metrics.reps,0);
+  assert.equal(a.tracker.diagnostics.lastPeakEvidence,'qualified');
+  // A genuinely bent overshoot records the opposite verdict.
+  const bent=leftOnly([...glideR(RREST,RS(119,115),10),...holdR(RS(119,115),6),...glideR(RS(119,115),RREST,8),...holdR(RREST,34)]);
+  const b=driveRaise(bent);
+  assert.equal(b.tracker.metrics.reps,0);
+  assert.equal(b.tracker.diagnostics.lastPeakEvidence,'revoked');
+});
+test('front raise: the overshoot gate judges the sampled extremum, not an unbounded refined one (Lead 2)',()=>{
+  // Sampled peak 114° — inside the band — bracketed by 100° and 113° at the
+  // stream's uniform cadence: the old parabola refinement judged this
+  // episode at ≈115.4° and revoked it, a value no sample ever reached. The
+  // gate now consumes the sampled extremum (114°), and the raise counts on
+  // its (clean) evidence.
+  const specs=leftOnly([
+    ...glideR(RREST,RS(98,170),9),RS(100,170),RS(114,170),RS(113,170),RS(112,170),RS(100,170),
+    ...glideR(RS(100,170),RREST,8),...holdR(RREST,34),
+  ]);
+  assert.equal(driveRaise(specs).tracker.metrics.reps,1);
+});
+test('hammer curls merge a bilateral effort whose fragmented plateau latched offset windows (Lead 1)',()=>{
+  // HC-A's split rebuilt: both arms peak together, the left returns while
+  // the right's channel exits the peak zone and re-enters it (two episodes
+  // in one cycle, the cycle keeping the second). The kept windows sit
+  // ~250 ms apart — outside the ±150 ms pair tolerance — so pre-repair the
+  // one effort emitted as two singles. The right's discarded first episode
+  // overlapped the left's window all along; the pair test now consults
+  // every episode a cycle latched.
+  const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
+  const step=1000/24;let t=0;
+  const feed=(l:number,r:number)=>{const raw=curlPose(l,r);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
+  for(let c=0;c<63;c++)feed(160,160);
+  assert.equal(tracker.diagnostics.stage,'ready');
+  const seq:[number,number][]=[
+    [140,140],[118,118],[95,95],[80,80],[72,72],[68,68],
+    [68,68],[68,68],[68,68],
+    [95,70],[118,95],[146,90],[146,90],[146,90],[146,90],
+    [146,76],[146,70],[146,70],
+    [146,100],[146,125],[146,146],[146,146],[146,146],[146,146],
+  ];
+  for(const [l,r] of seq)feed(l,r);
+  for(let c=0;c<40;c++)feed(160,160);
+  assert.equal(tracker.metrics.reps,1);
+  assert.equal(tracker.metrics.scoreAccumulator.count,1);
+});
+test('hammer curl in-flight cycles survive a form-rejection burst inside the preservation bound (Lead 1)',()=>{
+  // HC-A's tilt-gate losses rebuilt: both arms are mid-plateau when a lean
+  // (image tilt >35°) makes measure() reject six frames in a row. The
+  // rejection still costs the ready latch — recalibration must be re-earned
+  // at the start pose — but it no longer wipes the in-flight cycles, so the
+  // interrupted rep completes on the return that follows. Pre-repair the
+  // wipe plus the recalibration shadow made this rep invisible.
+  const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
+  const step=1000/24;let t=0;
+  const feed=(l:number,r:number)=>{const raw=curlPose(l,r);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
+  const lean=(l:number,r:number)=>{const raw=curlPose(l,r);for(const i of [0,11,12,13,14,15,16])raw[i]={...raw[i],x:raw[i].x+.22};tracker.update(raw,t,1,structuredClone(raw));t+=step;};
+  for(let c=0;c<63;c++)feed(160,160);
+  assert.equal(tracker.diagnostics.stage,'ready');
+  for(const e of [140,118,95,80,72,68])feed(e,e);
+  for(let c=0;c<3;c++)feed(68,68);
+  for(let c=0;c<6;c++)lean(68,68);
+  for(const e of [85,100,118,132,146,146,146,146])feed(e,e);
+  for(let c=0;c<50;c++)feed(160,160);
+  assert.equal(tracker.metrics.reps,1);
+  assert.equal(tracker.metrics.scoreAccumulator.count,1);
+});
 test('hammer curl upper-arm hint is suspended with its construct; the rep still counts',()=>{
   // Revised (round 5, workstream C): this fixture used to pin the hint's
   // sustained-deviation hysteresis (brief drift silent, sustained drift
@@ -903,4 +995,40 @@ test('hammer curl upper-arm hint is suspended with its construct; the rep still 
   assert.doesNotMatch(r.tracker.metrics.poseFeedback.message,/上臂贴紧一点点/);
   // The rep still counts when the arms return.
   r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,1);
+});
+
+test('walking test: re-arming after a lost latch needs one continuous hold, fragments alone never re-arm',()=>{
+  // Legacy path: first calibration keeps the banked-fragment rule.
+  const r=run('hammer_curl');
+  r.feed('neutral',1200);r.feed('peak',600);r.feed('neutral',1000);
+  assert.equal(r.tracker.diagnostics.stage,'ready');
+  r.tracker.interrupt('暂停');
+  // Arm-swing fragments: banked start time far beyond 2 s, no unbroken hold.
+  for(let i=0;i<4;i++){r.feed('neutral',900);r.feed('peak',300);}
+  assert.equal(r.tracker.diagnostics.stage,'calibrating');
+  assert.equal(r.tracker.metrics.reps,0);
+  // One genuine continuous hold re-arms (the legacy path's median smoothing
+  // lags the measured segment, so the held feed runs longer than 1500 ms).
+  r.feed('neutral',2400);assert.equal(r.tracker.diagnostics.stage,'ready');
+  // Adaptive path (armOnStart): same rule after the first latch is lost.
+  const a=run('hammer_curl',createRecognitionTracker('hammer_curl',20,{},true,true));
+  a.feed('neutral',300);assert.equal(a.tracker.diagnostics.stage,'ready');
+  a.tracker.interrupt('暂停');
+  a.feed('neutral',900);assert.equal(a.tracker.diagnostics.stage,'calibrating');
+  a.feed('peak',300);a.feed('neutral',900);assert.equal(a.tracker.diagnostics.stage,'calibrating');
+  a.feed('neutral',1600);assert.equal(a.tracker.diagnostics.stage,'ready');
+});
+
+test('walking test: no form cue surfaces before the first latch (hammer upper-arm hint stays out of the FIND phase)',()=>{
+  const r=run('hammer_curl');
+  // The round-5 drift (elbows and wrists translated outward together) on a
+  // flexed, non-start pose: upper-arm angle ≈40°, so measure() computes
+  // the 「上臂贴紧一点点」 hint — the exact string the walking recording
+  // showed mid-FIND. Pre-fix the calibration branch surfaced f.hint on
+  // non-start frames; the set has not latched, so no form cue may appear.
+  const drift=(p:Point[])=>{p[13]={...p[13],x:p[13].x-.1};p[15]={...p[15],x:p[15].x-.1};p[14]={...p[14],x:p[14].x+.1};p[16]={...p[16],x:p[16].x+.1};};
+  r.feed('peak',600,drift);
+  assert.equal(r.tracker.diagnostics.stage,'calibrating');
+  assert.doesNotMatch(r.tracker.metrics.feedback,/上臂贴紧/);
+  assert.doesNotMatch(r.tracker.metrics.poseFeedback.message,/上臂贴紧/);
 });

@@ -34,11 +34,11 @@ type RaiseSide={raised:number;forward:boolean;latDom:boolean;elbow:number};
 type RaiseSample={t:number;raised:number;elbow:number;fwd:boolean;lat:boolean};
 /** A run of consecutive same-verdict direction samples (direction latch). */
 type SustainRun={start:number;last:number;n:number}|null;
-type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;otherBase:number;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number;controlSamples:TimedValue[];speedSpans:TimedSpan[];samples:RaiseSample[];overshoot:boolean;dirLatched:boolean;dirMixed:boolean;dirTurned:boolean;fwdRun:SustainRun;latRun:SustainRun;supportBase:Point|null;supportPeak:Point|null};
-type SideCompletion={side:number;at:number;peakStart:number;peakEnd:number;peakAmp:number;peakPosture:number;peakOther:number;peakElbow:number;duration:number;scoring:boolean;control:number;shift:number;speed:number};
+type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;otherBase:number;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number;controlSamples:TimedValue[];speedSpans:TimedSpan[];samples:RaiseSample[];overshoot:boolean;dirLatched:boolean;dirMixed:boolean;dirTurned:boolean;fwdRun:SustainRun;latRun:SustainRun;supportBase:Point|null;supportPeak:Point|null;peakWindows:{start:number;end:number}[];returnTouched:boolean;returnTouchAt:number|null;evidence:PeakEvidenceVerdict|null};
+type SideCompletion={side:number;at:number;peakStart:number;peakEnd:number;peakAmp:number;peakPosture:number;peakOther:number;peakElbow:number;duration:number;scoring:boolean;control:number;shift:number;speed:number;peakWindows:{start:number;end:number}[];cycleStart:number;returnedAt:number};
 /** One side's confirmed peak: midpoint time + peak value in the movement's peak units (see lastPeak). */
 type PeakMark={at:number;value:number};
-const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,otherBase:180,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180,controlSamples:[],speedSpans:[],samples:[],overshoot:false,dirLatched:false,dirMixed:false,dirTurned:false,fwdRun:null,latRun:null,supportBase:null,supportPeak:null});
+const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,otherBase:180,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180,controlSamples:[],speedSpans:[],samples:[],overshoot:false,dirLatched:false,dirMixed:false,dirTurned:false,fwdRun:null,latRun:null,supportBase:null,supportPeak:null,peakWindows:[],returnTouched:false,returnTouchAt:null,evidence:null});
 /** Timestamped stability evidence: a point sample of the control penalty (held
  * until the next sample) or one angular-velocity window with its true span. */
 type TimedValue={t:number;v:number};
@@ -54,6 +54,26 @@ const SUSTAIN_MS=150;
 /** Calibration staleness guard: the bank preserved across gate interrupts expires
  * when no start-pose frame has been seen for this long while still calibrating. */
 const CALIBRATION_STALE_MS=10000;
+/** After a TRACKING-LOSS interrupt (the wrapper's rejects, a pause, a
+ * restored session — anywhere the subject was actually lost), RE-ARMING
+ * requires one continuously-measured start-pose hold of this length;
+ * banked fragments may still supply the rest of the 2 s total. Re-arms
+ * after a FORM rejection are exempt: the tracker measured the user on the
+ * rejecting frame, the set context is intact, and mid-set re-latching is
+ * load-bearing (the 2026-11-09 counting repairs rely on it). The
+ * 2026-11-09 walking recording showed the hole this closes: the session
+ * lost tracking every few seconds and each phantom rep completed inside a
+ * stretch re-armed instantly from an arm-swing fragment, while walking
+ * never produces a 1.5 s unbroken start hold (longest gap-aware run on
+ * the extracted stream ≈1.1 s). First calibration is untouched — the
+ * guided user stands in front of the camera and the 2026-11-07 banking
+ * story governs it. */
+const REARM_MIN_SEGMENT_MS=1500;
+/** A calibration segment is "continuous" only while measured frames keep
+ * arriving: a gap longer than this banks the open segment and restarts
+ * it, so a freeze span or skipped frames cannot inflate a hold out of a
+ * few start frames at either end. */
+const SEGMENT_GAP_MS=500;
 /** Two peaks this close in time are one bilateral effort for symmetry purposes,
  * even when their peak windows did not overlap enough to merge into a paired rep
  * (the merge test tolerates only ≈ dwell + 150 ms of offset). */
@@ -117,9 +137,11 @@ const RETURN_HOLD_MS=150,RETURN_WINDOW_MS=500,RETURN_FRAME_CAP_MS=100;
  * ≤80° for only 0.156·T (≈109 ms at 0.7 s/rep, before sampling phase eats up to two
  * frame intervals), so fast reps were structurally uncountable — synthetic-trajectory
  * replay measured 0/10 at 1.0 s/rep, 75° peak, 24 FPS. Peaks are now confirmed by the
- * sub-frame interpolated zone crossing: entry/exit times and the extremum come from
- * linear crossing interpolation plus a parabola through the samples bracketing the
- * extremum. Angle thresholds are unchanged; only the time/sampling layer moved.
+ * sub-frame interpolated zone crossing: entry/exit times come from
+ * linear crossing interpolation, and the extremum was originally refined by a parabola
+ * through the samples bracketing it — the judged value is now the sampled extremum
+ * (2026-11-09 counting-mechanism repair; see feedPeakTrack's close site). Angle
+ * thresholds are unchanged; only the time/sampling layer moved.
  * One guard keeps the crossing rule from trusting noise: the interpolated dwell must
  * reach PEAK_MIN_DWELL_MS — a one-frame landmark spike interpolates to ≲21 ms of
  * dwell at ≥15 FPS, while a genuine 0.7 s/rep curl dwells ≥50 ms even with a 79°
@@ -314,8 +336,8 @@ const COPY_FRAMING_WEAK='这个角度方向不好判断——稍微转成斜侧�
 /** Sub-frame peak-episode tracker over a depth signal (depth ≥ 0 = inside the peak
  * zone, larger = deeper). Feed every frame; `best` fires on the frame that is the
  * deepest sample so far (callers snapshot that frame's posture/validity), and
- * `closed` reports the episode's interpolated entry/exit times and refined extremum
- * when the signal leaves the zone. */
+ * `closed` reports the episode's interpolated entry/exit times and its sampled
+ * extremum when the signal leaves the zone. */
 type PeakTrack={prevAt:number|null;prevDepth:number;open:boolean;start:number;best:number;bestAt:number;beforeAt:number;beforeDepth:number;afterAt:number|null;afterDepth:number;gap:boolean};
 function freshPeakTrack():PeakTrack{return {prevAt:null,prevDepth:0,open:false,start:0,best:-Infinity,bestAt:0,beforeAt:0,beforeDepth:0,afterAt:null,afterDepth:0,gap:false};}
 type PeakClose={start:number;end:number;depth:number;valid:boolean};
@@ -339,20 +361,18 @@ function feedPeakTrack(tr:PeakTrack,now:number,depth:number):{best:boolean;close
   }
   if(tr.open&&prevAt!==null&&prevDepth>=0&&depth<0){
     const span=prevDepth-depth,end=prevAt+(now-prevAt)*(span>0?prevDepth/span:0);
-    let depthEst=tr.best;
-    if(!tr.gap&&tr.best>-Infinity){
-      // Parabola through the samples bracketing the extremum (the closing frame is
-      // the after-sample when none was recorded) refines the extremum depth.
-      const t2=tr.afterAt??now,y2=tr.afterAt!==null?tr.afterDepth:depth;
-      const h1=tr.bestAt-tr.beforeAt,h2=t2-tr.bestAt;
-      if(h1>0&&h2>0){
-        const y0=tr.beforeDepth,y1=tr.best,a=((y2-y1)+(h2/h1)*(y0-y1))/(h2*(h1+h2));
-        if(a<0){
-          const b=a*h1-(y0-y1)/h1,u=Math.max(-h1,Math.min(h2,-b/(2*a)));
-          depthEst=Math.max(y1,y1+b*u+a*u*u);
-        }
-      }
-    }
+    // The judged extremum is the SAMPLED extremum (counting-mechanism repair,
+    // 2026-11-09; investigation Lead 2, implication 1). The parabola refinement
+    // that used to raise this value above the deepest sample is unbounded:
+    // near-collinear bracket samples make its vertex diverge, so gates judged
+    // values no sample ever reached — refined raised extrema of 202° and, on
+    // one garbage segment, 681°, against sampled maxima ≤180° — amplifying
+    // channel noise exactly where the front-raise revocation line sits. A
+    // revocation gate must judge a statistic that cannot exceed the sampled
+    // evidence. Episode TIMING still refines sub-frame (the crossing-
+    // interpolated start/end above, and with it the dwell validity); only the
+    // judged value is bounded to the sampled range.
+    const depthEst=tr.best;
     closed={start:tr.start,end,depth:depthEst,valid:end-tr.start>=PEAK_MIN_DWELL_MS};
     tr.open=false;
   }
@@ -388,6 +408,11 @@ export class ExtendedExerciseTracker {
   private lastStartAt:number|null=null;
   private baseline:Measurement|null=null;
   private ready=false;
+  /** Set when a latched ready is lost to a tracking-loss interrupt (and
+   * for trackers restored from a latched session): re-arming then
+   * requires the REARM_MIN_SEGMENT_MS continuous hold. Form-rejection
+   * re-arms never set it. */
+  private strictRearm=false;
   private times:number[]=[];
   private side:Side|null=null;
   private cycleSide:Side|null=null;
@@ -444,6 +469,9 @@ export class ExtendedExerciseTracker {
   requiredIndices(raw:Point[]){return this.needed(raw)}
   constructor(readonly type:ExtendedType,targetReps=20,restored:Partial<ExerciseMetrics>={},readonly prefiltered=false,readonly armOnStart=false){
     const acc={...emptyFormBreakdown(),count:0,total:0,...restored.scoreAccumulator};
+    // A tracker restored from a session that had already latched (or counted)
+    // is in a re-arm context from birth: its next latch is a RE-arm.
+    this.strictRearm=!!restored.poseFeedback?.calibrated||(restored.reps||0)>0;
     this.metrics={...restored,reps:Math.max(0,restored.reps||0),targetReps,perfectReps:restored.perfectReps||0,formScore:acc.count?Math.round(acc.total/acc.count):0,phase:'standing',feedback:definitions[type].placement,scoreAccumulator:acc,formBreakdown:emptyFormBreakdown(),correctionCounts:{...emptyCorrectionCounts(),...restored.correctionCounts},lastRepIssues:[],repeatedIssue:null,poseFeedback:{status:'uncertain',confidence:0,issues:[],primaryIssue:null,affectedJoints:[],calibrated:false,message:'站到起始姿势，陪我停两秒'}};
     this.updateAverage();
   }
@@ -540,7 +568,7 @@ export class ExtendedExerciseTracker {
     else{if(this.upperArmClearAt===null)this.upperArmClearAt=now;if(now-this.upperArmClearAt>=UPPER_ARM_CLEAR_MS)this.upperArmDevAt=null;}
     return this.upperArmDevAt!==null&&now-this.upperArmDevAt>=UPPER_ARM_SUSTAIN_MS;
   }
-  interrupt(reason='先停一下，继续时重新校准',feedback=reason,opts?:{preserveCalibration?:boolean;preserveReady?:boolean;preserveCycle?:boolean;preservePeerPeak?:boolean}){
+  interrupt(reason='先停一下，继续时重新校准',feedback=reason,opts?:{preserveCalibration?:boolean;preserveReady?:boolean;preserveCycle?:boolean;preservePeerPeak?:boolean;preserveHammerCycle?:boolean}){
     // preserveCalibration (round 3): the calibration bank, the open hold segment
     // and the calibration baseline survive. The baseline is calibration state
     // too — the per-side updaters dereference it unconditionally once ready, so
@@ -558,16 +586,27 @@ export class ExtendedExerciseTracker {
     // only the peer-peak memory survives — the snapshot folds each side's
     // completed record together with whatever peak evidence its still-open
     // cycle holds, so a hole cannot erase a peak the peer already produced.
+    // preserveHammerCycle (counting-mechanism repair, 2026-11-09; Lead 1,
+    // implication 4): the hammer-curl side cycles, a pending completion and
+    // the last-peak record survive a FORM rejection inside the same
+    // CYCLE_PRESERVE_MS bound, so a frame judged invalid no longer voids a
+    // nearly-complete cycle (see formInterrupt). Calibration and ready
+    // semantics are untouched — recalibration is still required.
     // The cycles and any pending completion still reset exactly as before.
     const preserve=!!opts?.preserveCalibration;
     const bank=preserve?this.calibrationBank:0,segment=preserve?this.calibration:null,ready=preserve&&opts?.preserveReady?this.ready:false,baseline=preserve?this.baseline:null,progress=preserve?this.diagnostics.calibrationProgress:0;
     const keepCycle=!!opts?.preserveCycle;
     const raiseSides=keepCycle?this.raiseSides:null,raisePending=keepCycle?this.raisePending:null,lastPeak=keepCycle?this.lastPeak:null;
     const peerPeaks=opts?.preservePeerPeak?this.peerPeakSnapshot():null;
+    const keepHammer=!!opts?.preserveHammerCycle;
+    const hammerSides=keepHammer?this.hammerSides:null,hammerPending=keepHammer?this.hammerPending:null,hammerPeak=keepHammer?this.lastPeak:null;
+    const wasReady=this.ready;
     this.frames=[];this.worlds=[];this.last=null;this.calibration=segment;this.calibrationBank=bank;this.baseline=baseline;this.ready=ready;this.side=null;this.times=[];this.previous=null;this.resetCycle();
+    if(wasReady&&!ready&&!preserve)this.strictRearm=true;
     if(keepCycle&&raiseSides&&lastPeak){this.raiseSides=raiseSides;this.raisePending=raisePending;this.lastPeak=lastPeak;}
+    if(keepHammer&&hammerSides&&hammerPeak){this.hammerSides=hammerSides;this.hammerPending=hammerPending;this.lastPeak=hammerPeak;}
     if(peerPeaks)this.lastPeak=peerPeaks;
-    if(!keepCycle&&!peerPeaks)this.cycleHoleStart=null;
+    if(!keepCycle&&!peerPeaks&&!keepHammer)this.cycleHoleStart=null;
     this.diagnostics={...this.diagnostics,stage:'tracking_lost',fps:0,calibrationProgress:progress,lastResetReason:reason};
     this.metrics={...this.metrics,phase:'standing',feedback,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:ready,message:feedback}};
     // Step 3: every metrics surface carries the current assessability map;
@@ -626,7 +665,27 @@ export class ExtendedExerciseTracker {
     // — it keeps its own specific copy forever and never trips the state.
     if(reason.startsWith('暂时无法'))this.noteUnmeasurable(now);
     if(!this.ready&&this.lastStartAt!==null&&now-this.lastStartAt>CALIBRATION_STALE_MS){this.calibrationBank=0;this.calibration=null;}
-    return this.interrupt(reason,reason,{preserveCalibration:true});
+    // Hammer curls (counting-mechanism repair, 2026-11-09; Lead 1,
+    // implication 4): a form rejection judges the current frame's posture,
+    // and wiping the in-flight cycles on it was the shipped path's largest
+    // single counting loss on HC-A (4 of 7 missed episodes died inside a
+    // tilt-gate rejection). Inside the shared preservation bound — measured
+    // from the last successfully measured frame on the same hole clock
+    // softInterrupt uses — the side cycles, any pending completion and the
+    // peak record survive; past the bound the rejection voids the cycles
+    // exactly as before. Ready still drops: recalibration re-earns the
+    // start hold before the preserved cycles can progress, and a preserved
+    // cycle still needs valid measured frames to complete — preservation
+    // fabricates nothing. Other movements keep the wipe: their form
+    // rejections judge the pose family itself, and no traced loss indicts
+    // them.
+    let preserveHammerCycle=false;
+    if(this.type==='hammer_curl'){
+      if(this.cycleHoleStart===null)this.cycleHoleStart=this.last??now;
+      preserveHammerCycle=now-this.cycleHoleStart<=CYCLE_PRESERVE_MS;
+      if(!preserveHammerCycle)this.cycleHoleStart=null;
+    }
+    return this.interrupt(reason,reason,{preserveCalibration:true,preserveHammerCycle});
   }
   private needed(raw:Point[]):number[]{
     if(this.type==='seated_curl'||this.type==='seated_lateral_raise'||this.type==='lying_triceps_extension')return [11,12,13,14,15,16,23,24,25,26,27,28];
@@ -989,7 +1048,7 @@ export class ExtendedExerciseTracker {
       // merely clip the zone still confirms — with its interpolated depth scored.
       const ev=feedPeakTrack(cyc.track,now,80-e);
       if(ev.best){cyc.peakPosture=f.posture;cyc.peakOther=other;}
-      if(ev.closed?.valid){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=80-ev.closed.depth;cyc.peakAmp=cap((160-cyc.peakElbow)/95*100);}
+      if(ev.closed?.valid){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=80-ev.closed.depth;cyc.peakAmp=cap((160-cyc.peakElbow)/95*100);cyc.peakWindows.push({start:ev.closed.start,end:ev.closed.end});}
       // Return confirmation: accumulate the interpolated in-zone dwell (≥145°) inside
       // a 500 ms window, so elbow jitter cannot stall the rep and coarse sampling
       // cannot shrink a genuine dwell below the hold (see zonePortion).
@@ -999,12 +1058,24 @@ export class ExtendedExerciseTracker {
         if(cyc.returnSince===null||portion.start-cyc.returnSince>RETURN_WINDOW_MS){cyc.returnSince=portion.start;cyc.returnAccum=0;}
         cyc.returnAccum+=Math.min(RETURN_FRAME_CAP_MS,portion.ms);
         if(cyc.returnAccum>=RETURN_HOLD_MS){
-          const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax)};
+          const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax),peakWindows:cyc.peakWindows,cycleStart:cyc.movingAt??cyc.peakStart,returnedAt:cyc.returnSince??now};
           this.lastPeak[s]={at:(done.peakStart+done.peakEnd)/2,value:done.peakElbow};
           this.hammerSides[s]=freshSideCycle();replaced=true;
           if(this.hammerPending){
             const pending=this.hammerPending;
-            const overlap=done.peakStart<=pending.peakEnd+150&&pending.peakStart<=done.peakEnd+150;
+            // Pair identity (counting-mechanism repair, 2026-11-09; Lead 1):
+            // the test consults EVERY peak episode each cycle latched, not
+            // only the window each cycle finally kept. On a fragmented
+            // channel one side's plateau closes as several episodes and the
+            // cycle keeps the last, so the two kept windows can sit ~330 ms
+            // apart on one synchronous effort — the shipped split — while a
+            // discarded fragment of the same plateau overlapped the
+            // partner's window all along. The ±150 ms tolerance itself is
+            // unchanged; what changed is which windows it compares.
+            // A genuinely staggered effort — each side exactly one episode,
+            // windows apart (the step-3 loose-sync and alternating
+            // fixtures) — still fails every pairing and emits as singles.
+            const overlap=done.peakWindows.some(w=>pending.peakWindows.some(p=>w.start<=p.end+150&&p.start<=w.end+150));
             if(pending.side!==s&&overlap){this.hammerPending=null;if(this.emitHammerRep([pending,done],f))completed=true;}
             else{this.hammerPending=null;if(this.emitHammerRep([pending],f,this.peerPeakFor(pending,this.hammerSides)))completed=true;this.hammerPending=done;}
           }else this.hammerPending=done;
@@ -1082,14 +1153,14 @@ export class ExtendedExerciseTracker {
       const cyc=this.rowSides[s],e=elbows[s],other=elbows[1-s];
       const ev=feedPeakTrack(cyc.track,now,100-e);
       if(ev.best){cyc.peakPosture=f.posture;cyc.peakOther=other;}
-      if(ev.closed?.valid){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=100-ev.closed.depth;cyc.peakAmp=cap((160-cyc.peakElbow)/90*100);}
+      if(ev.closed?.valid){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=100-ev.closed.depth;cyc.peakAmp=cap((160-cyc.peakElbow)/90*100);cyc.peakWindows.push({start:ev.closed.start,end:ev.closed.end});}
       const portion=cyc.prevAt===null?{start:now,ms:0}:zonePortion(cyc.prevAngle,e,145,true,cyc.prevAt,now);
       let replaced=false;
       if(cyc.peakStart!==null&&portion.ms>0){
         if(cyc.returnSince===null||portion.start-cyc.returnSince>RETURN_WINDOW_MS){cyc.returnSince=portion.start;cyc.returnAccum=0;}
         cyc.returnAccum+=Math.min(RETURN_FRAME_CAP_MS,portion.ms);
         if(cyc.returnAccum>=RETURN_HOLD_MS){
-          const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax)};
+          const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax),peakWindows:cyc.peakWindows,cycleStart:cyc.movingAt??cyc.peakStart,returnedAt:cyc.returnSince??now};
           const otherBase=cyc.otherBase;
           this.rowSides[s]=freshSideCycle();replaced=true;
           if(this.emitOneArmRowRep(done,otherBase,f))completed=true;
@@ -1170,7 +1241,7 @@ export class ExtendedExerciseTracker {
       const depth=Math.min(100-leg.hip,110-leg.knee);
       const ev=feedPeakTrack(cyc.track,now,depth);
       if(ev.best){cyc.peakPosture=f.posture;cyc.peakOther=other.hip;cyc.peakElbow=leg.hip;cyc.peakAmp=cap((170-leg.hip)/85*100);}
-      if(ev.closed?.valid){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;}
+      if(ev.closed?.valid){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakWindows.push({start:ev.closed.start,end:ev.closed.end});}
       const ext=Math.min(leg.hip-150,leg.knee-150);
       const portion=cyc.prevAt===null?{start:now,ms:0}:zonePortion(cyc.prevAngle,ext,0,true,cyc.prevAt,now);
       let replaced=false;
@@ -1178,7 +1249,7 @@ export class ExtendedExerciseTracker {
         if(cyc.returnSince===null||portion.start-cyc.returnSince>RETURN_WINDOW_MS){cyc.returnSince=portion.start;cyc.returnAccum=0;}
         cyc.returnAccum+=Math.min(RETURN_FRAME_CAP_MS,portion.ms);
         if(cyc.returnAccum>=RETURN_HOLD_MS){
-          const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax)};
+          const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax),peakWindows:cyc.peakWindows,cycleStart:cyc.movingAt??cyc.peakStart,returnedAt:cyc.returnSince??now};
           const alternated=done.peakOther>=135;
           this.climberSides[s]=freshSideCycle();replaced=true;
           if(alternated&&this.emitClimberRep(done,f))completed=true;
@@ -1245,14 +1316,14 @@ export class ExtendedExerciseTracker {
     let completed=false;
     const ev=feedPeakTrack(cyc.track,now,125-knee);
     if(ev.best){cyc.peakPosture=f.posture;cyc.supportPeak={...f.points[27+rear]};}
-    if(ev.closed?.valid){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=125-ev.closed.depth;cyc.peakAmp=cap((170-cyc.peakElbow)/80*100);}
+    if(ev.closed?.valid){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=125-ev.closed.depth;cyc.peakAmp=cap((170-cyc.peakElbow)/80*100);cyc.peakWindows.push({start:ev.closed.start,end:ev.closed.end});}
     const portion=cyc.prevAt===null?{start:now,ms:0}:zonePortion(cyc.prevAngle,knee,150,true,cyc.prevAt,now);
     let replaced=false;
     if(cyc.peakStart!==null&&portion.ms>0){
       if(cyc.returnSince===null||portion.start-cyc.returnSince>RETURN_WINDOW_MS){cyc.returnSince=portion.start;cyc.returnAccum=0;}
       cyc.returnAccum+=Math.min(RETURN_FRAME_CAP_MS,portion.ms);
       if(cyc.returnAccum>=RETURN_HOLD_MS){
-        const done:SideCompletion={side:front,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:legs[rear].knee,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax)};
+        const done:SideCompletion={side:front,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:legs[rear].knee,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax),peakWindows:cyc.peakWindows,cycleStart:cyc.movingAt??cyc.peakStart,returnedAt:cyc.returnSince??now};
         const drift=cyc.supportBase&&cyc.supportPeak?dist(cyc.supportPeak,cyc.supportBase):0;
         this.squatSides[front]=freshSideCycle();replaced=true;
         if(this.emitSplitSquatRep(done,drift,f))completed=true;
@@ -1330,6 +1401,43 @@ export class ExtendedExerciseTracker {
     this.updateAverage();
     return true;
   }
+  /** A front-raise completion's arrival at the pending/merge machinery: it
+   * pairs with a waiting opposite-side completion whose kept peak windows
+   * overlap, otherwise it flushes the waiting one as a single and takes its
+   * place. Shared by the return-confirmed path and the latch payout below,
+   * so a paid-out latch is indistinguishable from a returned one downstream. */
+  private arriveRaiseCompletion(done:SideCompletion,f:Measurement):boolean{
+    let completed=false;
+    if(this.raisePending){
+      const pending=this.raisePending;
+      const overlap=done.peakStart<=pending.peakEnd+150&&pending.peakStart<=done.peakEnd+150;
+      if(pending.side!==done.side&&overlap){this.raisePending=null;if(this.emitFrontRaiseRep([pending,done],f))completed=true;}
+      else{this.raisePending=null;if(this.emitFrontRaiseRep([pending],f,this.peerPeakFor(pending,this.raiseSides)))completed=true;this.raisePending=done;}
+    }else this.raisePending=done;
+    return completed;
+  }
+  /** Closes out a latched front-raise effort whose return never confirmed
+   * because the NEXT effort's qualified peak superseded it (counting-
+   * mechanism repair, 2026-11-09; investigation Lead 3b). The completion is
+   * built from the latch and the stability evidence gathered up to the
+   * descent's return-zone touch — the effort's own end — and arrives through
+   * the same pending machinery as a return-confirmed completion, in order.
+   * The cycle stays open for the superseding effort: its per-effort
+   * stability evidence restarts here, so the superseded effort's peak and
+   * descent samples cannot leak into the next rep's charge, while the
+   * conservative whole-cycle flags (scoring, shift) keep accumulating and
+   * the new effort's duration runs from the touch. */
+  private payOutRaiseLatch(s:0|1,now:number,f:Measurement):boolean{
+    const cyc=this.raiseSides[s];
+    if(cyc.peakStart===null||cyc.returnTouchAt===null)return false;
+    const touchAt=cyc.returnTouchAt;
+    const controlSamples=cyc.controlSamples.filter(v=>v.t<=touchAt),speedSpans=cyc.speedSpans.filter(sp=>sp.start<=touchAt);
+    const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(touchAt-(cyc.movingAt??cyc.peakStart))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(controlSamples,touchAt),controlSamples.length?Math.max(...controlSamples.map(v=>v.v)):0),shift:cyc.shiftMax,speed:sustainedPeak(speedSpans,speedSpans.length?Math.max(...speedSpans.map(sp=>sp.v)):0),peakWindows:[{start:cyc.peakStart,end:cyc.peakEnd}],cycleStart:cyc.movingAt??cyc.peakStart,returnedAt:touchAt};
+    this.lastPeak[s]={at:(done.peakStart+done.peakEnd)/2,value:done.peakElbow};
+    cyc.controlSamples=[];cyc.speedSpans=[];cyc.controlMax=0;cyc.speedMax=0;cyc.sampleAt=null;
+    cyc.movingAt=touchAt;
+    return this.arriveRaiseCompletion(done,f);
+  }
   /** Front raises count per side, mirroring hammer curls: each arm independently runs
    * start (raised ≤25°) → peak (raised 65–115°, elbow ≥140°, that arm forward-dominant)
    * → return to start. Overlapping peaks merge into one synchronized rep; non-overlapping
@@ -1379,31 +1487,52 @@ export class ExtendedExerciseTracker {
       if(ev.best){cyc.peakPosture=f.posture;cyc.peakOther=other.raised;}
       if(ev.closed?.valid){
         const ext=65+ev.closed.depth;
+        cyc.peakWindows.push({start:ev.closed.start,end:ev.closed.end});
+        // Peak evidence is evaluated for EVERY closed episode and the verdict
+        // recorded (counting-mechanism repair, 2026-11-09; investigation
+        // Lead 3a): the overshoot branch used to run first and pre-empt
+        // evaluation entirely, so an effort that tripped the band cap — the
+        // bent 145° effort of the FR-C audit — left no evidence verdict at
+        // all, its elbow axis unknowable by construction. Evaluation now
+        // always runs and the verdict is carried on the cycle and mirrored
+        // to diagnostics; the overshoot review below still decides the
+        // effort's fate exactly as round 4 specified.
+        const verdict=evaluatePeakEvidence(cyc.samples,cyc.track.bestAt,65+cyc.track.best);
+        cyc.evidence=verdict;this.diagnostics={...this.diagnostics,lastPeakEvidence:verdict};
         // Overshoot review (round 4): a reliable segment whose extremum left
         // the band voids the whole raise — including a latch an earlier
         // segment of the same raise already earned (previously a saved
         // peakStart was never revoked by a later failing segment). The 115°
         // rule itself is unchanged.
         if(ext>115){cyc.overshoot=true;cyc.peakStart=null;}
-        else if(!cyc.overshoot&&evaluatePeakEvidence(cyc.samples,cyc.track.bestAt,65+cyc.track.best)==='qualified'){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=ext;cyc.peakAmp=cap(ext/90*100);}
+        else if(!cyc.overshoot&&verdict==='qualified'){
+          // A superseded latch is never silently overwritten (Lead 3b): when
+          // the descent after the earlier latch reached the return zone, that
+          // effort was a separate effort — it is closed out and paid in
+          // order before the new latch takes the slot. Without the touch the
+          // new peak is a continuation of the same effort and replaces its
+          // latch, exactly as before.
+          if(cyc.peakStart!==null&&cyc.returnTouched&&this.payOutRaiseLatch(s,now,f))completed=true;
+          cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=ext;cyc.peakAmp=cap(ext/90*100);cyc.returnTouched=false;cyc.returnTouchAt=null;
+        }
       }
       // Return confirmation accumulates the interpolated in-zone dwell (raised ≤25°)
       // inside a 500 ms window, like hammer curl's (see zonePortion).
       const portion=cyc.prevAt===null?{start:now,ms:0}:zonePortion(cyc.prevAngle,v,25,false,cyc.prevAt,now);
       let replaced=false;
       if(cyc.peakStart!==null&&portion.ms>0){
+        // The descent entered the return zone after this latch (Lead 3b's
+        // effort-separation fact): recorded even when the dwell falls short
+        // of confirming the return, because a new qualified peak uses it to
+        // decide whether the latch it supersedes was a separate effort.
+        if(!cyc.returnTouched){cyc.returnTouched=true;cyc.returnTouchAt=portion.start;}
         if(cyc.returnSince===null||portion.start-cyc.returnSince>RETURN_WINDOW_MS){cyc.returnSince=portion.start;cyc.returnAccum=0;}
         cyc.returnAccum+=Math.min(RETURN_FRAME_CAP_MS,portion.ms);
         if(cyc.returnAccum>=RETURN_HOLD_MS){
-          const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax)};
+          const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax),peakWindows:cyc.peakWindows,cycleStart:cyc.movingAt??cyc.peakStart,returnedAt:cyc.returnSince??now};
           this.lastPeak[s]={at:(done.peakStart+done.peakEnd)/2,value:done.peakElbow};
           this.raiseSides[s]=freshSideCycle();replaced=true;
-          if(this.raisePending){
-            const pending=this.raisePending;
-            const overlap=done.peakStart<=pending.peakEnd+150&&pending.peakStart<=done.peakEnd+150;
-            if(pending.side!==s&&overlap){this.raisePending=null;if(this.emitFrontRaiseRep([pending,done],f))completed=true;}
-            else{this.raisePending=null;if(this.emitFrontRaiseRep([pending],f,this.peerPeakFor(pending,this.raiseSides)))completed=true;this.raisePending=done;}
-          }else this.raisePending=done;
+          if(this.arriveRaiseCompletion(done,f))completed=true;
         }
       }
       if(!replaced){
@@ -1481,6 +1610,7 @@ export class ExtendedExerciseTracker {
     // cannot-assess state; the assessability map refreshes with it.
     this.unmeasurableSince=null;
     if(this.cannotAssess){this.cannotAssess=false;this.metrics.axisAssessment=this.assessments();}
+    const prevMeasuredAt=this.last;
     this.last=now;this.cycleHoleStart=null;this.times=[...this.times,now].filter(t=>now-t<=2000);
     this.diagnostics={...this.diagnostics,fps:this.times.length>1?Math.round((this.times.length-1)*1000/(now-this.times[0])):0,confidence:f.confidence,side:f.side||null,angle:f.angle,basis:f.basis,motion:f.motion};
     if(!this.ready){
@@ -1492,8 +1622,19 @@ export class ExtendedExerciseTracker {
       // frame for over CALIBRATION_STALE_MS while calibrating clears the bank.
       if(!f.start&&this.lastStartAt!==null&&now-this.lastStartAt>CALIBRATION_STALE_MS){this.calibrationBank=0;this.calibration=null;}
       if(f.start)this.lastStartAt=now;
-      if(!f.start){if(this.calibration!==null){this.calibrationBank+=now-this.calibration;this.calibration=null;}this.baseline=null;}else{if(this.calibration===null)this.calibration=now;this.baseline=f;if(this.armOnStart||this.calibrationBank+(now-this.calibration)>=2000)this.ready=true;}
-      const progress=this.ready?1:Math.min(1,(this.calibrationBank+(this.calibration===null?0:now-this.calibration))/2000);this.diagnostics={...this.diagnostics,stage:this.ready?'ready':'calibrating',calibrationProgress:progress};
+      if(!f.start){if(this.calibration!==null){this.calibrationBank+=now-this.calibration;this.calibration=null;}this.baseline=null;}else{
+        // Continuity is measured, not wall-clock: a measurement gap banks
+        // the open segment and restarts it (see SEGMENT_GAP_MS).
+        if(this.calibration!==null&&prevMeasuredAt!==null&&now-prevMeasuredAt>SEGMENT_GAP_MS){this.calibrationBank+=prevMeasuredAt-this.calibration;this.calibration=now;}
+        if(this.calibration===null)this.calibration=now;this.baseline=f;const segment=now-this.calibration;if((!this.strictRearm||segment>=REARM_MIN_SEGMENT_MS)&&(this.armOnStart||this.calibrationBank+segment>=2000))this.ready=true;}
+      // Progress reports distance to the latch: on a strict re-arm the
+      // continuous hold is usually the binding requirement, so banked
+      // fragments alone must not fill the ring (they cap at the current
+      // segment's share of the hold).
+      const segmentNow=this.calibration===null?0:now-this.calibration;
+      let progress=this.ready?1:Math.min(1,(this.calibrationBank+segmentNow)/2000);
+      if(this.strictRearm&&!this.ready)progress=this.armOnStart?Math.min(1,segmentNow/REARM_MIN_SEGMENT_MS):Math.min(progress,segmentNow/REARM_MIN_SEGMENT_MS);
+      this.diagnostics={...this.diagnostics,stage:this.ready?'ready':'calibrating',calibrationProgress:progress};
       // Front raise must not surface its direction hint before calibration completes:
       // at rest the direction test is always false, so the hint kept ordering the user
       // to raise an arm — and raising it zeroed the calibration they were holding.
@@ -1502,7 +1643,14 @@ export class ExtendedExerciseTracker {
       // (COPY_FRAMING_WEAK); the start-pose progress copy remains the 满足
       // surface and the direction measure() strings the 无法确认 one. Pass
       // conditions are untouched.
-      const calibHint=this.type==='front_raise'?(!f.start&&f.framing==='weak'?COPY_FRAMING_WEAK:undefined):f.hint;
+      // No form cue before the set has latched — for ANY type, not just front
+      // raise. measure()'s hint is a form judgment computed from an
+      // uncalibrated pose (the 2026-11-09 walking recording showed hammer's
+      // upper-arm hint, removed from the live path in round 5, still reaching
+      // the screen through this branch during the FIND phase). The only
+      // pre-latch exception stays front raise's framing-weak signal, which is
+      // a framing fact, not a form judgment. Post-latch surfaces are untouched.
+      const calibHint=this.type==='front_raise'&&!f.start&&f.framing==='weak'?COPY_FRAMING_WEAK:undefined;
       const message=this.ready?COPY_CALIBRATED:f.start?`就快好啦，保持起始姿势（${Math.round(progress*100)}%）`:calibHint||(this.armOnStart?'先回到起始姿势，陪我停两秒':'回到起始姿势，陪我停两秒');
       this.metrics={...this.metrics,feedback:message,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:this.ready,confidence:f.confidence,message}};return this.metrics;
     }

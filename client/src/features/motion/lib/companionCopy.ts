@@ -40,6 +40,12 @@ export const COPY_HINT_RANGE = '再往上带一点点，你可以的'
 export const COPY_HINT_TEMPO = '不赶时间，慢一点，肌肉更买账'
 /** 文案表 13 · 出画 */
 export const COPY_OUT_OF_FRAME = '咦，你去哪啦？回到画面里，我接着陪你'
+
+/** The tracked pose teleported AND changed shape between accepted frames —
+ * the model most likely locked onto a different person. Say so honestly
+ * instead of silently continuing the set on someone else (2026-11-09
+ * walking test: two people side by side, skeleton hopping between them). */
+export const COPY_SUBJECT_SWITCH = '画面里好像不止一个人，我跟丢啦——站回画面中间，让我重新找到你'
 /** 文案表 14 · 看不清 / 冻结 */
 export const COPY_UNCLEAR = '我有点看不清——别担心，数到的都在，先停一下'
 /** 文案表 15 · 半程未完成 */
