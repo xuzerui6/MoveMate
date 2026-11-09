@@ -11084,6 +11084,96 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1003",
+   "expectedName": "band squat row",
+   "sourceId": "ai-codex-exdb-1003",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e5362e92a52de0bb93b824fb29902e46e5f701d46d1f379cf25ac7cc85ceb7dd",
+    "d3a8b0fdcc854ec872d577e1b3b4605e98f0b80c8ddd7d78769356706e2ec819"
+   ],
+   "phases": [
+    "起始：面向深蹲架立柱站立、双脚与肩同宽、完全直立，带绕立柱一周于腰高（编辑口径接法），双手各直接握住一端、掌心相对，双臂向前伸直至胸高，两带段自双手至立柱绷紧",
+    "关键：蹲底（髋后坐、大腿约与地面平行、背挺直胸挺、双脚平地不动）且同帧将带拉满——双肘后收过躯干、双手拉至下胸/上腹、肩胛挤压；带仍绕同一立柱腰高、双段绷紧"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3122",
+   "expectedName": "resistance band seated shoulder press",
+   "sourceId": "ai-codex-exdb-3122",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "8c827ce9ff510b353554aacdcc470c8604c1adeb6920fcbabeddadfcab1bc570",
+    "cd0c5946f8fd827b10c3fa33df1612b4d9499e4287b77fb51e41ad3ff573987f"
+   ],
+   "phases": [
+    "起始：坐平凳、背挺直自立，双脚平地与肩同宽，带中段被双脚踩住压在双鞋底下（编辑定义锚法），双手各握一端在肩高、肘屈向下、掌心朝前，带段自双手竖直向下至双脚绷紧，地面无松带",
+    "关键：双臂过顶充分伸展、掌心仍朝前，带段自过顶双手沿双臂、在双肩前方下行至双脚同一踩压点，拉长绷紧；颈部无带，背挺直不后仰，双脚不动"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1017",
+   "expectedName": "band y-raise",
+   "sourceId": "ai-codex-exdb-1017",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "9999bb841ca44bbd6f9a152f1aa3771f62a4d42de0cbf62c32a023e226c7253d",
+    "25f4510d0dce3e6cc6dd2b854f7f6835893fae59460a8f43b21f88b8e287d599"
+   ],
+   "phases": [
+    "起始：站立、双脚与肩同宽，带中段被双脚踩住压在双鞋底下（编辑定义锚法），双手各握一端、双臂伸直垂于大腿前、掌心朝内，带自双手竖直向下至双脚绷紧，地面无松带",
+    "关键：双臂伸直上举并向两侧打开至 Y 形（双手高于头顶、宽于双肩）、掌心仍朝内、肩胛挤压，带段自双手斜向下至双脚同一点绷紧；躯干直立不后仰，双脚不动"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1016",
+   "expectedName": "band wrist curl",
+   "sourceId": "ai-codex-exdb-1016",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d7472f478d55697763464d49bbfd7aed6e6a77170427bdce7ae0192a948f75d0",
+    "a45c404651a3f68947c496b82c77e7c568ca998903ace8a6a4b7691c7e5c71f7"
+   ],
+   "phases": [
+    "起始：坐长凳端、背挺直，双脚平地与肩同宽，带中段被双脚踩住压在双鞋底下（编辑定义锚法），双前臂平放于大腿上、双手伸出膝前少许，掌心朝上各握一端，双腕放松、双手略向下垂，带段自双手向下至双脚绷紧",
+    "关键：双腕向上弯至最大（手指朝上）、掌心仍朝上，前臂仍贴大腿原位、双肘不动，带段自上抬的双手向下至双脚同一点绷紧；双脚与躯干不动"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0994",
+   "expectedName": "band reverse wrist curl",
+   "sourceId": "ai-codex-exdb-0994",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "fa4d541b184d03f0c813a18308bd7bd3eccdeb1673f09aa3a5c2648544d597f6",
+    "588aa57d576d67886a467bb0e9fcb212fea305faf246e5f123ef2eeabe8af03e"
+   ],
+   "phases": [
+    "起始：坐长凳端、背挺直，双脚平地与肩同宽，带中段被双脚踩住压在双鞋底下（编辑定义锚法），双前臂平放于大腿上、手腕悬在膝缘之外，掌心朝下，带两端自双脚上行并缠绕在双手手指上，双腕放松、双手下垂、手指朝下，带路「鞋底→带段→绕指」连续绷紧",
+    "关键：双腕向上伸至最大（手背上抬、手指朝上后）、掌心仍朝下，带端仍绕在手指上，带段自双手向下至双脚同一点绷紧；前臂仍贴大腿、双脚与躯干不动"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
