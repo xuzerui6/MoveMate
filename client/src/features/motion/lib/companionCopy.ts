@@ -88,7 +88,7 @@ export const COPY_AXIS_UNASSESSABLE = '这个角度评不了'
  * 满格——浅幅动作暂时区分不出来。在区分证据出现之前，幅度只报「举到的
  * 高度」这个测量事实，不拿它下质量结论（见 buildSetReveal 的 quietAxes
  * 与 docs/channel-suspensions-2026-11-09.md）。 */
-export const COPY_DEPTH_SHALLOW_LIMIT = '幅度先记你举到的高度——深浅我还分不清，就不拿它下结论啦'
+export const COPY_DEPTH_SHALLOW_LIMIT = '举到多高，我都给你记着呢'
 /** 退化取景（跪姿特写那一类）持续到无法取证时的一句陪伴句：先说清状态
  * （这个角度评不了），只给一个调整动作（按动作族取入镜话术）。 */
 export const cannotAssessCopyFor = (type: string): string => `${COPY_AXIS_UNASSESSABLE}——${framingCopyFor(type)}`
