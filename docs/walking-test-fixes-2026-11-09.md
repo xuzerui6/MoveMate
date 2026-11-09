@@ -9,6 +9,12 @@ contradicted itself). Full investigation:
 
 No counting threshold changed anywhere in this round. No scoring change.
 
+Ship record: main `59e5391`; CI green; production (dongban.xyz) Version
+`869f27b9-423d-415c-9b27-7dd8d12d94f5`; preview (preview.dongban.xyz)
+Version `8b1d6737-c29a-47cd-9a9a-f6f809fdb58b`. Both stations verified
+live (HTTP 200; the new companion copy and timer copy present in the
+served chunks).
+
 ## Defect 1 — phantom reps from walking: strict re-arm after tracking loss
 
 Mechanism (traced in the report): the session latched and lost its latch
