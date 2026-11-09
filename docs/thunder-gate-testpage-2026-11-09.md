@@ -1,5 +1,7 @@
 # Thunder 设备门测试页（/thunder-gate-test）— 2026-11-09
 
+**部署记录**：preview Version `538ef0d7-bb94-48e7-86fc-d17806cb2db9`（2026-11-09 部署）；入口 https://preview.dongban.xyz/thunder-gate-test 。分支提交：`aef949b`（合并 origin/main 0dd052c）+ `2b3d863`（本页全量）。已核验：页面与全部二进制资产（tracker 打包、TFJS bundle、wasm、模型四文件、pose worker）与仓库 sha256 逐一相同；v1/v2 Step-5 页在 preview 仍可达；production `dongban.xyz/thunder-gate-test` 只返回 App 壳（773 B，无本页标记），未受影响。合并后基线 client test:repository 519/519。
+
 候选 `candidate-control-thunder` v1 §7 设备门的实现记录。**仅 preview 部署，production 不动**；分支 `feat/step5-heavy-testpage`（与 Step-5 页同一分支纪律）。
 
 ## 页面构成
