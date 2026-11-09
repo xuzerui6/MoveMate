@@ -14,6 +14,7 @@ import {
   COPY_HINT_UPPER_ARM,
   COPY_NOT_SEEN,
   COPY_OUT_OF_FRAME,
+  COPY_SUBJECT_SWITCH,
   COPY_PEAK_CURL,
   COPY_SET_BETTER,
   COPY_SET_WORSE,
@@ -29,7 +30,7 @@ const AXES=['屈肘幅度','上臂控制','躯干稳定','双臂协调'];
 const fb=(depth:number,stability:number,trunk:number,symmetry:number)=>({depth,stability,trunk,symmetry});
 
 test('companion copy never uses banned engineering words',()=>{
-  const lines=[COPY_CALIBRATION_PAUSED,COPY_CALIBRATED,COPY_HALF_REP,COPY_HINT_RANGE,COPY_HINT_TEMPO,COPY_HINT_UPPER_ARM,COPY_NOT_SEEN,COPY_OUT_OF_FRAME,COPY_PEAK_CURL,COPY_SET_BETTER,COPY_SET_WORSE,COPY_UNCLEAR,COPY_WAIT_START,COPY_WORKOUT_DONE,
+  const lines=[COPY_CALIBRATION_PAUSED,COPY_CALIBRATED,COPY_HALF_REP,COPY_HINT_RANGE,COPY_HINT_TEMPO,COPY_HINT_UPPER_ARM,COPY_NOT_SEEN,COPY_OUT_OF_FRAME,COPY_SUBJECT_SWITCH,COPY_PEAK_CURL,COPY_SET_BETTER,COPY_SET_WORSE,COPY_UNCLEAR,COPY_WAIT_START,COPY_WORKOUT_DONE,
     ...Object.values(POSE_ISSUE_COPY).map(c=>c.action)];
   for(const line of lines)for(const word of BANNED_COPY_WORDS)assert.ok(!line.includes(word),`「${line}」不应包含「${word}」`);
 });

@@ -3,7 +3,7 @@ import {FrameOrder,TimeFilter,type PoseFrame} from './poseProtocol';
 import type {ExerciseMetrics} from './exerciseMetrics';
 import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
 import {framingFeedback} from './framingFeedback';
-import {COPY_BASIS_UNSTABLE,COPY_HALF_REP,COPY_UNCLEAR,notSeenCopyFor} from './companionCopy';
+import {COPY_BASIS_UNSTABLE,COPY_HALF_REP,COPY_SUBJECT_SWITCH,COPY_UNCLEAR,notSeenCopyFor} from './companionCopy';
 import type {PoseModelPreference} from './poseCompatibility';
 import {analyzeSquatFrame,squatSideVisible} from './squatMetrics';
 export const adaptiveEligible=(type:string)=>['squat','jumping_jack','push_up','high_knees','biceps_curl','hammer_curl','barbell_curl','reverse_barbell_curl','seated_curl','shoulder_press','neutral_seated_press','bent_over_row','barbell_row','bench_press','incline_bench_press','barbell_deadlift','romanian_deadlift','goblet_squat','barbell_back_squat','barbell_front_squat','dumbbell_standing_press','barbell_military_press','dumbbell_deadlift','barbell_good_morning'].includes(type);
@@ -122,7 +122,18 @@ export class AdaptiveRecognition {
   const shoulder=this.type==='squat'&&needed.includes(12)?12:11,hip=shoulder+12;
   const aspect=f.width/f.height,scale=Math.hypot((raw[shoulder].x-raw[hip].x)*aspect,raw[shoulder].y-raw[hip].y);
   if(scale<.06)return this.reject('画面里你显得有点小，靠近一点点，让我看清楚你');
-  if(this.previous&&this.previousShoulder===shoulder){const last=this.previous,old=Math.max(.04,Math.hypot((last[shoulder].x-last[hip].x)*aspect,last[shoulder].y-last[hip].y));if(Math.hypot((raw[hip].x-last[hip].x)*aspect,raw[hip].y-last[hip].y)>old*.5||scale/old<.75||scale/old>1.25)return this.reject('位置变了一下，回到起始姿势，我们重新来');}
+  if(this.previous&&this.previousShoulder===shoulder){const last=this.previous,old=Math.max(.04,Math.hypot((last[shoulder].x-last[hip].x)*aspect,last[shoulder].y-last[hip].y));
+   // Subject-switch verdict (2026-11-09 walking test): the pose teleported
+   // (hip-centroid step beyond the position guard's own bound) AND changed
+   // shape (shoulder width outside the band two similar framings of the
+   // same body stay in) between consecutive ACCEPTED frames — the model
+   // most likely locked onto a different person. Say so and drop to the
+   // finding-you state (reject interrupts the tracker) instead of silently
+   // continuing the set on someone else. Position-only jumps keep the
+   // existing copy and behaviour exactly.
+   const centroidStep=Math.hypot(((raw[23].x+raw[24].x)-(last[23].x+last[24].x))/2*aspect,((raw[23].y+raw[24].y)-(last[23].y+last[24].y))/2),shoulderWidth=Math.hypot((raw[11].x-raw[12].x)*aspect,raw[11].y-raw[12].y),lastShoulderWidth=Math.max(.02,Math.hypot((last[11].x-last[12].x)*aspect,last[11].y-last[12].y)),widthRatio=shoulderWidth/lastShoulderWidth;
+   if(centroidStep>old*.5&&(widthRatio<.75||widthRatio>1.33))return this.reject(COPY_SUBJECT_SWITCH);
+   if(Math.hypot((raw[hip].x-last[hip].x)*aspect,raw[hip].y-last[hip].y)>old*.5||scale/old<.75||scale/old>1.25)return this.reject('位置变了一下，回到起始姿势，我们重新来');}
   const w=f.worldLandmarks,pairs=[[11,13],[13,15],[12,14],[14,16],[23,25],[25,27],[24,26],[26,28]].filter(pair=>pair.every(i=>needed.includes(i)));
   let world=w?.length===33&&w.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))&&needed.every(i=>(raw[i].visibility??0)>=.7&&(w[i].visibility??raw[i].visibility??0)>=.7)?w:null;
   if(world){const torso=distance(world[shoulder],world[hip]),ratios=pairs.map(([a,b])=>distance(world![a],world![b])/torso);if(torso<.04||torso>1.5||ratios.some((r,i)=>r<.15||r>2.5||this.shape&&Math.abs(r/this.shape[i]-1)>.25))world=null;else this.shape=ratios;}

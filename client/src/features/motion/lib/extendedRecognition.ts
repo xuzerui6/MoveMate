@@ -54,6 +54,26 @@ const SUSTAIN_MS=150;
 /** Calibration staleness guard: the bank preserved across gate interrupts expires
  * when no start-pose frame has been seen for this long while still calibrating. */
 const CALIBRATION_STALE_MS=10000;
+/** After a TRACKING-LOSS interrupt (the wrapper's rejects, a pause, a
+ * restored session — anywhere the subject was actually lost), RE-ARMING
+ * requires one continuously-measured start-pose hold of this length;
+ * banked fragments may still supply the rest of the 2 s total. Re-arms
+ * after a FORM rejection are exempt: the tracker measured the user on the
+ * rejecting frame, the set context is intact, and mid-set re-latching is
+ * load-bearing (the 2026-11-09 counting repairs rely on it). The
+ * 2026-11-09 walking recording showed the hole this closes: the session
+ * lost tracking every few seconds and each phantom rep completed inside a
+ * stretch re-armed instantly from an arm-swing fragment, while walking
+ * never produces a 1.5 s unbroken start hold (longest gap-aware run on
+ * the extracted stream ≈1.1 s). First calibration is untouched — the
+ * guided user stands in front of the camera and the 2026-11-07 banking
+ * story governs it. */
+const REARM_MIN_SEGMENT_MS=1500;
+/** A calibration segment is "continuous" only while measured frames keep
+ * arriving: a gap longer than this banks the open segment and restarts
+ * it, so a freeze span or skipped frames cannot inflate a hold out of a
+ * few start frames at either end. */
+const SEGMENT_GAP_MS=500;
 /** Two peaks this close in time are one bilateral effort for symmetry purposes,
  * even when their peak windows did not overlap enough to merge into a paired rep
  * (the merge test tolerates only ≈ dwell + 150 ms of offset). */
@@ -388,6 +408,11 @@ export class ExtendedExerciseTracker {
   private lastStartAt:number|null=null;
   private baseline:Measurement|null=null;
   private ready=false;
+  /** Set when a latched ready is lost to a tracking-loss interrupt (and
+   * for trackers restored from a latched session): re-arming then
+   * requires the REARM_MIN_SEGMENT_MS continuous hold. Form-rejection
+   * re-arms never set it. */
+  private strictRearm=false;
   private times:number[]=[];
   private side:Side|null=null;
   private cycleSide:Side|null=null;
@@ -444,6 +469,9 @@ export class ExtendedExerciseTracker {
   requiredIndices(raw:Point[]){return this.needed(raw)}
   constructor(readonly type:ExtendedType,targetReps=20,restored:Partial<ExerciseMetrics>={},readonly prefiltered=false,readonly armOnStart=false){
     const acc={...emptyFormBreakdown(),count:0,total:0,...restored.scoreAccumulator};
+    // A tracker restored from a session that had already latched (or counted)
+    // is in a re-arm context from birth: its next latch is a RE-arm.
+    this.strictRearm=!!restored.poseFeedback?.calibrated||(restored.reps||0)>0;
     this.metrics={...restored,reps:Math.max(0,restored.reps||0),targetReps,perfectReps:restored.perfectReps||0,formScore:acc.count?Math.round(acc.total/acc.count):0,phase:'standing',feedback:definitions[type].placement,scoreAccumulator:acc,formBreakdown:emptyFormBreakdown(),correctionCounts:{...emptyCorrectionCounts(),...restored.correctionCounts},lastRepIssues:[],repeatedIssue:null,poseFeedback:{status:'uncertain',confidence:0,issues:[],primaryIssue:null,affectedJoints:[],calibrated:false,message:'站到起始姿势，陪我停两秒'}};
     this.updateAverage();
   }
@@ -572,7 +600,9 @@ export class ExtendedExerciseTracker {
     const peerPeaks=opts?.preservePeerPeak?this.peerPeakSnapshot():null;
     const keepHammer=!!opts?.preserveHammerCycle;
     const hammerSides=keepHammer?this.hammerSides:null,hammerPending=keepHammer?this.hammerPending:null,hammerPeak=keepHammer?this.lastPeak:null;
+    const wasReady=this.ready;
     this.frames=[];this.worlds=[];this.last=null;this.calibration=segment;this.calibrationBank=bank;this.baseline=baseline;this.ready=ready;this.side=null;this.times=[];this.previous=null;this.resetCycle();
+    if(wasReady&&!ready&&!preserve)this.strictRearm=true;
     if(keepCycle&&raiseSides&&lastPeak){this.raiseSides=raiseSides;this.raisePending=raisePending;this.lastPeak=lastPeak;}
     if(keepHammer&&hammerSides&&hammerPeak){this.hammerSides=hammerSides;this.hammerPending=hammerPending;this.lastPeak=hammerPeak;}
     if(peerPeaks)this.lastPeak=peerPeaks;
@@ -1580,6 +1610,7 @@ export class ExtendedExerciseTracker {
     // cannot-assess state; the assessability map refreshes with it.
     this.unmeasurableSince=null;
     if(this.cannotAssess){this.cannotAssess=false;this.metrics.axisAssessment=this.assessments();}
+    const prevMeasuredAt=this.last;
     this.last=now;this.cycleHoleStart=null;this.times=[...this.times,now].filter(t=>now-t<=2000);
     this.diagnostics={...this.diagnostics,fps:this.times.length>1?Math.round((this.times.length-1)*1000/(now-this.times[0])):0,confidence:f.confidence,side:f.side||null,angle:f.angle,basis:f.basis,motion:f.motion};
     if(!this.ready){
@@ -1591,8 +1622,19 @@ export class ExtendedExerciseTracker {
       // frame for over CALIBRATION_STALE_MS while calibrating clears the bank.
       if(!f.start&&this.lastStartAt!==null&&now-this.lastStartAt>CALIBRATION_STALE_MS){this.calibrationBank=0;this.calibration=null;}
       if(f.start)this.lastStartAt=now;
-      if(!f.start){if(this.calibration!==null){this.calibrationBank+=now-this.calibration;this.calibration=null;}this.baseline=null;}else{if(this.calibration===null)this.calibration=now;this.baseline=f;if(this.armOnStart||this.calibrationBank+(now-this.calibration)>=2000)this.ready=true;}
-      const progress=this.ready?1:Math.min(1,(this.calibrationBank+(this.calibration===null?0:now-this.calibration))/2000);this.diagnostics={...this.diagnostics,stage:this.ready?'ready':'calibrating',calibrationProgress:progress};
+      if(!f.start){if(this.calibration!==null){this.calibrationBank+=now-this.calibration;this.calibration=null;}this.baseline=null;}else{
+        // Continuity is measured, not wall-clock: a measurement gap banks
+        // the open segment and restarts it (see SEGMENT_GAP_MS).
+        if(this.calibration!==null&&prevMeasuredAt!==null&&now-prevMeasuredAt>SEGMENT_GAP_MS){this.calibrationBank+=prevMeasuredAt-this.calibration;this.calibration=now;}
+        if(this.calibration===null)this.calibration=now;this.baseline=f;const segment=now-this.calibration;if((!this.strictRearm||segment>=REARM_MIN_SEGMENT_MS)&&(this.armOnStart||this.calibrationBank+segment>=2000))this.ready=true;}
+      // Progress reports distance to the latch: on a strict re-arm the
+      // continuous hold is usually the binding requirement, so banked
+      // fragments alone must not fill the ring (they cap at the current
+      // segment's share of the hold).
+      const segmentNow=this.calibration===null?0:now-this.calibration;
+      let progress=this.ready?1:Math.min(1,(this.calibrationBank+segmentNow)/2000);
+      if(this.strictRearm&&!this.ready)progress=this.armOnStart?Math.min(1,segmentNow/REARM_MIN_SEGMENT_MS):Math.min(progress,segmentNow/REARM_MIN_SEGMENT_MS);
+      this.diagnostics={...this.diagnostics,stage:this.ready?'ready':'calibrating',calibrationProgress:progress};
       // Front raise must not surface its direction hint before calibration completes:
       // at rest the direction test is always false, so the hint kept ordering the user
       // to raise an arm — and raising it zeroed the calibration they were holding.
@@ -1601,7 +1643,14 @@ export class ExtendedExerciseTracker {
       // (COPY_FRAMING_WEAK); the start-pose progress copy remains the 满足
       // surface and the direction measure() strings the 无法确认 one. Pass
       // conditions are untouched.
-      const calibHint=this.type==='front_raise'?(!f.start&&f.framing==='weak'?COPY_FRAMING_WEAK:undefined):f.hint;
+      // No form cue before the set has latched — for ANY type, not just front
+      // raise. measure()'s hint is a form judgment computed from an
+      // uncalibrated pose (the 2026-11-09 walking recording showed hammer's
+      // upper-arm hint, removed from the live path in round 5, still reaching
+      // the screen through this branch during the FIND phase). The only
+      // pre-latch exception stays front raise's framing-weak signal, which is
+      // a framing fact, not a form judgment. Post-latch surfaces are untouched.
+      const calibHint=this.type==='front_raise'&&!f.start&&f.framing==='weak'?COPY_FRAMING_WEAK:undefined;
       const message=this.ready?COPY_CALIBRATED:f.start?`就快好啦，保持起始姿势（${Math.round(progress*100)}%）`:calibHint||(this.armOnStart?'先回到起始姿势，陪我停两秒':'回到起始姿势，陪我停两秒');
       this.metrics={...this.metrics,feedback:message,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:this.ready,confidence:f.confidence,message}};return this.metrics;
     }

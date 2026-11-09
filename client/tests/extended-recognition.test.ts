@@ -996,3 +996,39 @@ test('hammer curl upper-arm hint is suspended with its construct; the rep still 
   // The rep still counts when the arms return.
   r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,1);
 });
+
+test('walking test: re-arming after a lost latch needs one continuous hold, fragments alone never re-arm',()=>{
+  // Legacy path: first calibration keeps the banked-fragment rule.
+  const r=run('hammer_curl');
+  r.feed('neutral',1200);r.feed('peak',600);r.feed('neutral',1000);
+  assert.equal(r.tracker.diagnostics.stage,'ready');
+  r.tracker.interrupt('暂停');
+  // Arm-swing fragments: banked start time far beyond 2 s, no unbroken hold.
+  for(let i=0;i<4;i++){r.feed('neutral',900);r.feed('peak',300);}
+  assert.equal(r.tracker.diagnostics.stage,'calibrating');
+  assert.equal(r.tracker.metrics.reps,0);
+  // One genuine continuous hold re-arms (the legacy path's median smoothing
+  // lags the measured segment, so the held feed runs longer than 1500 ms).
+  r.feed('neutral',2400);assert.equal(r.tracker.diagnostics.stage,'ready');
+  // Adaptive path (armOnStart): same rule after the first latch is lost.
+  const a=run('hammer_curl',createRecognitionTracker('hammer_curl',20,{},true,true));
+  a.feed('neutral',300);assert.equal(a.tracker.diagnostics.stage,'ready');
+  a.tracker.interrupt('暂停');
+  a.feed('neutral',900);assert.equal(a.tracker.diagnostics.stage,'calibrating');
+  a.feed('peak',300);a.feed('neutral',900);assert.equal(a.tracker.diagnostics.stage,'calibrating');
+  a.feed('neutral',1600);assert.equal(a.tracker.diagnostics.stage,'ready');
+});
+
+test('walking test: no form cue surfaces before the first latch (hammer upper-arm hint stays out of the FIND phase)',()=>{
+  const r=run('hammer_curl');
+  // The round-5 drift (elbows and wrists translated outward together) on a
+  // flexed, non-start pose: upper-arm angle ≈40°, so measure() computes
+  // the 「上臂贴紧一点点」 hint — the exact string the walking recording
+  // showed mid-FIND. Pre-fix the calibration branch surfaced f.hint on
+  // non-start frames; the set has not latched, so no form cue may appear.
+  const drift=(p:Point[])=>{p[13]={...p[13],x:p[13].x-.1};p[15]={...p[15],x:p[15].x-.1};p[14]={...p[14],x:p[14].x+.1};p[16]={...p[16],x:p[16].x+.1};};
+  r.feed('peak',600,drift);
+  assert.equal(r.tracker.diagnostics.stage,'calibrating');
+  assert.doesNotMatch(r.tracker.metrics.feedback,/上臂贴紧/);
+  assert.doesNotMatch(r.tracker.metrics.poseFeedback.message,/上臂贴紧/);
+});

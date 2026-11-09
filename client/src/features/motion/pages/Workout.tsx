@@ -21,6 +21,7 @@ import type { WorkoutContext, WorkoutSession, XiaozhiState } from '../types'
 import { ExerciseDemo } from '../../gym/ExerciseMedia'
 
 import {COPY_CALIBRATED,COPY_PREPARE,framingCopyFor,milestoneLine} from '../lib/companionCopy'
+import {createDwellState,dwellPush} from '../lib/statusDwell'
 import {adaptiveEligible,loadPoseModelPreference,loadRecognitionPreference,savePoseModelPreference,saveRecognitionPreference,selectNewRecognitionStrategy,selectRecognitionStrategy,type RecognitionPreference} from '../lib/adaptiveRecognition'
 import type {PoseModelPreference} from '../lib/poseCompatibility'
 import {PoseDiagnostics,PoseModelExperimentSelect,RecognitionOverride} from '../components/PoseDiagnostics'
@@ -265,17 +266,36 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   useEffect(() => {
     if (failure || poseFailed) document.querySelector('.training-workout .training-error')?.scrollIntoView({ block: 'center' })
   }, [failure, poseFailed])
-  const statusLabel = ending ? '正在确认结束' : pendingAction ? '状态待确认' : paused ? '已暂停' : simulatedPose ? '演示 · 不计 XP' : metrics.poseFeedback.calibrated ? '识别中' : '正在找你'
+  // Live status text passes through a display dwell (2026-11-09 walking
+  // test): in marginal visibility the calibrated flag can flip several
+  // times a second, and rendering every flip strobes the header state,
+  // the capsule and the HUD panel. Counts, the clock and event lines are
+  // never dwelled; paused/ending states bypass it entirely.
+  const statusDwell = useRef(createDwellState())
+  const liveStatus = dwellPush(statusDwell.current, metrics.poseFeedback.calibrated ? '识别中' : '正在找你', Date.now())
+  const statusLabel = ending ? '正在确认结束' : pendingAction ? '状态待确认' : paused ? '已暂停' : simulatedPose ? '演示 · 不计 XP' : liveStatus
   const preparedToResume=pose.engine?.diagnostics.stage==='ready'&&pose.engine.metrics.poseFeedback.calibrated&&(pose.telemetry?.fps||0)>=8;
   const hint = ending ? '这一组就到这里，正在帮你保存。' : pendingAction ? '本地识别先停住，正在和服务器对一下状态。' : paused ? adaptive?(preparedToResume?'休息不计时，起始姿势已准备好，可直接继续。':'休息不计时，继续后识别下一个完整动作。'): '休息不计时，继续时先回到起始姿势。' : metrics.reps >= metrics.targetReps ? '目标完成啦，可以结束这一组了。' : metrics.feedback
   // 陪伴句（识别页 v2）：同一时刻只留一句。事件句（校准完成、里程碑）短暂优先，
   // 其次是最要紧的一条姿势提示（poseFeedback 主问题），其余时候用引擎反馈。
   const [coachEvent, setCoachEvent] = useState<{ text: string; at: number } | null>(null)
   const wasCalibrated = useRef(false)
+  const everCalibrated = useRef(false)
+  const uncalibratedSince = useRef<number | null>(null)
   useEffect(() => {
     if (!active || paused || busy || ending) return
-    if (!wasCalibrated.current && metrics.poseFeedback.calibrated) { wasCalibrated.current = true; setCoachEvent({ text: COPY_CALIBRATED, at: Date.now() }) }
-    if (!metrics.poseFeedback.calibrated) wasCalibrated.current = false
+    if (metrics.poseFeedback.calibrated) {
+      // 「找到你啦」 fires on the first latch, and again only after the
+      // subject was genuinely gone for a while — a sub-second dropout in
+      // marginal light must not replay the celebration on every re-latch
+      // (the walking recording flapped it about once a second).
+      const awayLong = uncalibratedSince.current !== null && Date.now() - uncalibratedSince.current >= 2500
+      if (!wasCalibrated.current && (!everCalibrated.current || awayLong)) setCoachEvent({ text: COPY_CALIBRATED, at: Date.now() })
+      wasCalibrated.current = true; everCalibrated.current = true; uncalibratedSince.current = null
+    } else {
+      if (uncalibratedSince.current === null) uncalibratedSince.current = Date.now()
+      wasCalibrated.current = false
+    }
   }, [active, paused, busy, ending, metrics.poseFeedback.calibrated])
   const prevReps = useRef(metrics.reps)
   useEffect(() => {
@@ -286,8 +306,18 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   }, [active, paused, busy, ending, simulatedPose, metrics.reps, metrics.targetReps])
   const unclear = active && !paused && metrics.poseFeedback.calibrated && (diagnostics.stage === 'tracking_lost' || diagnostics.stage === 'cannot_assess' || metrics.poseFeedback.status === 'uncertain')
   const eventLine = coachEvent && Date.now() - coachEvent.at < 3000 ? coachEvent.text : null
-  const coachLine = paused || ending || pendingAction ? hint : eventLine || (metrics.poseFeedback.primaryIssue ? metrics.poseFeedback.message : metrics.feedback)
-  const capsuleText = ending ? '正在确认结束' : paused ? '已暂停 · 休息不计时' : !metrics.poseFeedback.calibrated ? '正在找你 · 站好就行' : unclear ? '我有点看不清' : `陪你练 · ${exercise.name}`
+  // The capsule, the HUD panel choice and the coach line's engine-feedback
+  // fallback pass through the same display dwell as the header state, so a
+  // flapping tracker cannot strobe them. Event lines and the primary-issue
+  // message stay immediate, as do the rep count and the session clock.
+  const capsuleDwell = useRef(createDwellState())
+  const coachDwell = useRef(createDwellState())
+  const panelDwell = useRef(createDwellState())
+  const liveCapsule = dwellPush(capsuleDwell.current, !metrics.poseFeedback.calibrated ? '正在找你 · 站好就行' : unclear ? '我有点看不清' : `陪你练 · ${exercise.name}`, Date.now())
+  const liveCoach = dwellPush(coachDwell.current, metrics.feedback, Date.now(), 1200, 350)
+  const coachLine = paused || ending || pendingAction ? hint : eventLine || (metrics.poseFeedback.primaryIssue ? metrics.poseFeedback.message : liveCoach)
+  const capsuleText = ending ? '正在确认结束' : paused ? '已暂停 · 休息不计时' : liveCapsule
+  const hudCalibrated = dwellPush(panelDwell.current, metrics.poseFeedback.calibrated ? 'cal' : 'find', Date.now()) === 'cal'
   return <div className={`page workout-page training-workout ${active ? 'live' : 'setup'}${cameraExpanded ? ' camera-expanded' : ''}`}>
     <Header title={exercise.name + '训练'} back={leave} action={active ? <span className={'training-status' + (paused ? ' paused' : '')}>{statusLabel}</span> : <span className="muted">目标 20 {exercise.unit}</span>}/>
     {!active && <section className="training-prep">
@@ -316,12 +346,17 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
       <div className="camera-card training-camera" hidden={!active && !preparing}>
         <PoseCanvas keepVideoRendering={adaptive} videoRef={pose.videoRef} landmarks={simulatedPose ? demoLandmarks : pose.landmarks} demo={simulatedPose} phase={metrics.phase} fit={cameraFit} affectedJoints={paused ? [] : metrics.poseFeedback.affectedJoints} frame={simulatedPose ? null : pose.frame}/>
         {active&&!paused&&!ending&&!pendingAction&&<div className="training-hud" aria-live="polite">
-          <div className={`training-hud-capsule${unclear?' amber':''}`}><span className="training-hud-dot"/><span className="training-hud-capsule-text">{capsuleText}</span></div>
+          <div className={`training-hud-capsule${capsuleText==='我有点看不清'?' amber':''}`}><span className="training-hud-dot"/><span className="training-hud-capsule-text">{capsuleText}</span></div>
           {!simulatedPose&&<button type="button" className="training-hud-voice" aria-pressed={voiceEnabled} onClick={toggleVoice}>语音陪练 · {voiceEnabled?'开':'关'}</button>}
           <div className="training-hud-bottom">
-            {!metrics.poseFeedback.calibrated?<div className="training-hud-calib">
+            {!hudCalibrated?<div className="training-hud-calib">
               <svg className="training-hud-ring" viewBox="0 0 64 64" aria-hidden="true"><circle className="ring-bg" cx="32" cy="32" r="26"/><circle className="ring-fg" cx="32" cy="32" r="26" strokeDasharray="163.4" strokeDashoffset={163.4*(1-Math.min(1,Math.max(0,diagnostics.calibrationProgress)))}/><text x="32" y="37" textAnchor="middle">找你</text></svg>
-              <div><b>{metrics.feedback}</b><span>计时还没开始 · 计数也是</span></div>
+              {/* The clock semantics are the page's own (see calibratedOnce):
+                once the set has latched, 有效时长 keeps running through a
+                tracking loss exactly like a resume from pause — so the
+                subline may only claim the timer has not started before the
+                FIRST latch. After it, say what is true instead. */}
+              <div><b>{metrics.feedback}</b><span>{calibratedOnce.current?'计时在走 · 站回来，我接着数':'计时还没开始 · 计数也是'}</span></div>
             </div>:<><div className="training-hud-count"><strong key={metrics.reps} className="motion-rep-num">{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}<br/>这一组的目标</span></div>
             <p className={`training-hud-coach${unclear?' amber':''}`}><span>陪练说</span>{coachLine}</p></>}
           </div>
