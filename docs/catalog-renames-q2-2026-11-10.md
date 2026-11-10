@@ -46,4 +46,4 @@ Edward 于 2026-11-10 13:23 批准（「好，就这么改」）。裁决框架�
 
 - 串行全套：client test:repository 519/519 + tsc、server 131/131 + build、
   cloudflare 34/34 + typecheck 全绿。
-- 生产部署 Version `PENDING`；预览部署 Version `PENDING`（部署后回填）。
+- 生产部署 Version `1ed31aad-9fdc-486d-8938-bdb4bb2c2b6a`；预览部署 Version `bb8532de-9028-489a-9834-68ff50f5dfa7`；CI run `42762667529`（merge `b4cdac6`，全绿）。生产核查：attribution.json 795 条且 exdb:0769 在列、媒体完好；部署包内 5 个新英文名/新中文名就位、旧名仅以别名各保留 1 处；exdb:0972 段 `equipment: "body weight"` 已确认。预览三测试页均 200。
