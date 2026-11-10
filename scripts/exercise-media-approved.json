@@ -169,7 +169,7 @@
     "f4e08d4ad4e6542f5dd923bbfabe9a28bf6c960bed02b1b9d65f6bafd6ceb051"
    ],
    "exerciseId": "exdb:0739",
-   "expectedName": "sled 45в° leg press",
+   "expectedName": "sled 45° leg press",
    "phases": [
     "推起位置",
     "屈膝回落"
@@ -5837,21 +5837,6 @@
    "phases": [
     "双脚与肩同宽站立、脚趾稍外展、双手扶住支撑物",
     "屈膝、臀部后推降至蹲位、挺胸背直"
-   ],
-   "generated": true,
-   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
-  },
-  {
-   "exerciseId": "exdb:1463",
-   "expectedName": "sled 45° leg press (side pov)",
-   "sourceId": "ai-generated-exdb-1463",
-   "sourceSha256": [
-    "e6902e373376b3e5cd9ed1f0ac37324e70ee02d3e4fc231cd278fd3bebc16f65",
-    "fc3d2dbae62bb5c6aac6d2e3b0989b9186ef53735d2ec7fdd6eb57bb5124474d"
-   ],
-   "phases": [
-    "背平贴靠背、双脚与肩同宽置于踏板、膝约90°",
-    "蹬踏板伸直双腿至完全伸展"
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
@@ -13312,6 +13297,10 @@
   {
    "source": "free-exercise-db Kneeling_Jump_Squat → exdb:0513",
    "reason": "照片为跪姿杠铃深蹲，条目定义为站姿徒手跳深蹲；跪姿、杠铃、无跳跃离地。"
+  },
+  {
+   "source": "ai-generated-exdb-1463",
+   "reason": "2026-11-10 目录裁决 Q1（Edward 批准）：exdb:1463 与 exdb:0739 同为 45° 雪橇腿举，(side pov) 仅为拍摄视角后缀，不构成独立动作；条目已软归档合并至 exdb:0739，本来源生成图自媒体索引摘除、不再发布（文件留仓，帧 sha256 前缀 e6902e37/fc3d2dba）。"
   }
  ],
  "batch": 43,
