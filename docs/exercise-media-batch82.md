@@ -33,4 +33,6 @@
 ## 验证与部署记录
 
 - 串行全套测试（2026-11-10 本地）：client `test:repository` **519/519** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。发布链计数三方一致：build 输出 817 image entries；publish-exercise-documentation 输出 complete 817 / photos 704 / pending 512（原始口径，含已归档 51 条；有效口径 complete 817 / pending 461 / total 1,278），report 脚本 images 817 / missing 512。
-- 接入提交、双站部署版本与线上核查记录于合入后回填。
+- 接入提交：`b1e2111`（分支 media/exercise-media-batch82），合入 main 为 `f18d4fb`；CI run 42793024471 **success**。
+- 双站部署（2026-11-10，wrangler@4.158.0 直跑）：production（dongban.xyz）Version **33f5f252-a05a-49c1-b30e-26e1703df469**；preview（preview.dongban.xyz，经 step5 分支合入 main 后部署，该分支合并提交 8016f0f 已推送）Version **3a1bf010-7ffe-49a9-80cd-ab59f86de865**。preview 的 step5-heavy-test / step5-heavy-test-v2 / thunder-gate-test 三个测试页部署后复核均正常返回（200）。
+- sha256 抽查（浏览器 UA）：本批 4 个 WebP 文件（3666-0/1、0767-0/1）在 production 与 preview 两站的线上字节与仓库文件逐一一致（8/8）；production 的 attribution.json 条目数 817，exdb:3666 与 exdb:0767 均在列。
