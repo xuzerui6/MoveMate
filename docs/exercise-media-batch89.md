@@ -49,4 +49,6 @@
 
 ## 验证与部署记录
 
-（待回填：串行测试、CI、双站部署与线上核查结果。）
+- 串行全套测试（2026-11-11 本地）：client `test:repository` **519/519** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。发布链计数三方一致：publish-media-metadata 输出 886 records；publish-exercise-documentation 输出 complete 886 / photos 773 / pending 443（原始口径，含已归档 51 条；有效口径 complete 886 / pending 392 / total 1,278），report 脚本 images 886 / missing 443，camera 56/56、cameraPending 为空。
+- 合并与 CI：接入提交（见批次分支 `media/exercise-media-batch89`）；main 合并 `7ef0e59`；GitHub CI 运行 **42863252986** success。
+- 部署：生产 Version **`b1a59b9c-34aa-45ab-a182-a0d0877d11d2`**；预演 `feat/step5-heavy-testpage` 合并提交 `a504c92`（该站部署前 client 套件首跑 504/506 为已知冷启动假失败、串行重跑 519/519），预演 Version **`e14f0e39-c714-4646-a8a1-33ecd0dce372`**。线上核查：新图生产站 sha256 **24/24**、预演站 sha256 **24/24**、生产与预演 attribution.json 实测均为 886 条、生产与预演首页 200、预演三张验收测试页（step5-heavy-test / step5-heavy-test-v2 / thunder-gate-test）均 200。核查说明：须用浏览器 UA 复核（默认 UA 会触发 Cloudflare 防护）；一次 urllib 直读曾遇代理 IncompleteRead，改 curl 重试后全部一致。
