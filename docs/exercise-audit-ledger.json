@@ -14928,22 +14928,37 @@
     {
       "id": "exdb:2403",
       "originalName": "dumbbell alternate biceps curl (with arm blaster)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：交替反握屈肘明确，但支撑板被写成放上臂上，佩戴和肘托接触需准确图证。",
+      "reason": "2026-11-11 B2 批次 7 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Rogue 厂商页的颈挂弯举说明及 DMoose 手册 PDF 的佩戴、Dumbbell Bicep Curls 文字已实际打开核读，支持佩戴器械后逐侧弯举、下降后换另一臂，覆盖交替组合；手册该示例有转掌，本条沿用目录掌朝前的旋后形式，不宣称手册要求固定旋后；通行做法：板体贴于胸腹前、上臂后侧承靠是同器械标准佩戴关系；交替弯举时非运动侧保持起始位、运动侧下降后再换侧，是该名称的通行交替顺序；原文没有逐字写另一侧保持，本次明确补出，不归目录继承；无需加入中途转掌；目录继承：原第 1 步站直、肩宽脚位、双铃及掌朝前，原第 3 步上臂静止、呼气单侧向肩弯举，原第 4 步肩高，原第 5 步收缩停顿，原第 6 步吸气慢放，原第 7 步另一臂重复，原第 8 步交替合并结尾（原第 2 步仅有使用该器械的意图，其误译与「放在上臂上」均不作为正确佩戴关系继承）。正文变更：原第 2 步器械句改为统一佩戴、胸腹板位及上臂后侧贴靠，并移至拿铃前，原第 1 步原样移到其后，避免持双铃时再调吊带；原第 3 步只补非运动侧保持，单侧举起、下放、再换另一臂的结构及顺序不变；原第 4 步删除「二头肌完全收缩」，保留肩高；原第 5–8 步原样保留；第 5 步停顿在当侧屈肘收缩末端，合并结尾不拆改。接入时定稿 8 步 → 存储 5 步：第 1、2 步以分号合并，第 4、5 步以分号合并，第 6、7 步以分号合并，定稿句子实质不变。双帧终门通过——双帧经父级亲核：臂力板佩戴与同族一致，峰值只弯举一侧手臂、另一侧保持起始位置下垂，交替关系明确，与定稿一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "049ae367838e5c09fac980cd8f8742a053363d727d9b34206f0b807b87ad48c9",
-        "steps": 8
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-7-2403",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch92.md",
+          "version": "2026-11-11 · 生成批次 92",
+          "sourceSha256": [
+            "cfb7b607d02f057675cb4f235bf8a2a61467264e29b32b62a20db295a17ad108",
+            "548e4b3ffe1a3bf6b08040acd0ad9f739c020afe5d601c2d53a82ae828ef2d50"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1646",
@@ -15478,22 +15493,37 @@
     {
       "id": "exdb:2401",
       "originalName": "dumbbell biceps curl (with arm blaster)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：全文普通站姿双臂弯举，没有支撑板佩戴或接触。",
+      "reason": "2026-11-11 B2 批次 7 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Rogue Arm Blaster 厂商产品页的 Product Description 已实际打开核读，支持弯举时颈挂佩戴；DMoose《How to Use an Arm Blaster》手册 PDF（第三方托管）可提取文字的佩戴说明与 Dumbbell Bicep Curls 部分已实际打开核读，支持调吊带使承垫在肘上方、固定上臂位置及佩戴器械弯举的组合；手册的哑铃示例含转掌和单侧操作，本条不冒称其规定双臂同时或固定旋后；通行做法：板体中央贴躯干前方、两端承靠上臂后侧而非关节尖端，是该曲板通行佩戴关系；双铃旋后同时弯举沿用目录标准形式，与板的上臂支撑相容；双手持铃前先佩戴，屈肘时前臂摆动、上臂后侧靠板，不将「固定」写成关节锁死；目录继承：原第 1 步站直、双铃、掌朝前，原第 2 步肘近躯干与上臂静止，原第 3 步呼气弯举、收缩二头肌，原第 4 步铃至肩高，原第 5 步收缩位置短暂停顿，原第 6 步吸气慢放，原第 7 步样板句（佩戴、胸腹前板位及后侧贴靠均为新增，「完全收缩」不继承）。正文变更：原第 1 步前新增统一佩戴步，先佩戴再拿铃；原第 2 步只补贴板关系，保留肘靠躯干与上臂静止；原第 4 步删除「二头肌完全收缩」的绝对终点要求，保留肩高终点，并将「举重」改为举起哑铃；原第 1、3、5、6、7 步保留并顺延；原第 5 步停顿在屈肘上举的收缩末端，未新增暂停。接入时定稿 8 步 → 存储 5 步：第 1、2 步以分号合并，第 4、5 步以分号合并，第 6、7 步以分号合并，定稿句子实质不变。双帧终门通过——双帧经父级亲核：臂力板佩戴形态成立（吊带挂颈、板体平贴胸腹前、承垫托住肘上方上臂后侧），双臂旋后弯举、肘贴板面，与定稿一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "5bcabac2e7f31a7590f58a9f1364297e94ff1c6a5bcae336da68b5130f84a852",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-7-2401",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch92.md",
+          "version": "2026-11-11 · 生成批次 92",
+          "sourceSha256": [
+            "d7ab57004b17ac0ad395079d6cbb318693f3e1f4bcdd4ad8c365e7e5b90e6c0e",
+            "cbadec7fa60e581086f6e1b6485ae79e6b37900e12dc6650697d658cbf72d72b"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1654",
@@ -16511,22 +16541,37 @@
     {
       "id": "exdb:2402",
       "originalName": "dumbbell hammer curls (with arm blaster)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文旋到掌心向前且无支撑板，锤式握法和器械特征均缺失。",
+      "reason": "2026-11-11 B2 批次 7 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Rogue 厂商页的颈挂弯举说明及 DMoose 手册 PDF 的佩戴、Dumbbell Hammer Curls 文字已实际打开核读，后者明确掌朝体侧、不转掌，覆盖臂力板与锤式弯举组合；手册示例逐侧进行，本条双臂同时来自现行目录，不冒称来源规定同时；通行做法：胸腹前曲板、上臂后侧承靠沿用同器械标准佩戴关系；锤式由中立握屈伸肘而非转前臂，掌心始终朝躯干／彼此相对，在双臂同时形式中同样成立；肩高与上臂固定不构成最大幅度或关节锁死要求；目录继承：原第 1 步站直、双铃及掌朝躯干，原第 2 步肘近躯干，原第 3 步起始位置句，原第 4 步上臂不动、呼气卷曲及二头肌收缩，原第 5 步铃与肩齐平，原第 6 步收缩停顿，原第 7 步吸气慢放，原第 8 步「重复建议的重复次数。」（板的佩戴与贴靠、全程中立握的明确约束为新增／修正，不继承原转掌）。正文变更：原第 1 步前新增与 2401 相同的佩戴步；原第 2 步删除旋掌至朝前，保留肘近躯干并补上臂后侧靠板及全程中立握；原第 5 步删「二头肌完全收缩」，保留肩高定位并明确哑铃；原第 1、3、4、6、7、8 步原样保留并顺延；原第 6 步停顿在上举收缩末端；结尾样板变体保留原文，不擅改为其他句式。接入时定稿 9 步 → 存储 5 步：第 1、2 步以分号合并，第 3、4 步以分号合并，第 5、6 步以分号合并，第 7、8 步以分号合并，定稿句子实质不变。双帧终门通过——双帧经父级亲核：臂力板佩戴与 2401 同一形态，中立握（掌心相对）全程保住、峰值锤式弯举到位，与定稿一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "62c0e3d8ddb25d0a591159eee3eebe8ba481e3f15c7389567dee8a15130fd68a",
-        "steps": 8
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-7-2402",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch92.md",
+          "version": "2026-11-11 · 生成批次 92",
+          "sourceSha256": [
+            "eb516526ba2b2c7378474fc086a0917fc85aa9fbc8cdc754b8a4852f95e376dc",
+            "e4e0fabd11c98224cf3ff28e36711f7cae1f582b85a8432354e4855fe5e779f5"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1664",
@@ -20710,22 +20755,37 @@
     {
       "id": "exdb:2327",
       "originalName": "dumbbell reverse grip row (female)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题reverse grip，正文正手掌向身，不足以证明反握，不按人物性别推断差别。",
+      "reason": "2026-11-11 B2 批次 7 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Muscle & Strength《Reverse Grip Bent-Over Dumbbell Row》的 Instructions、Tips 已实际打开核读，明确 underhand、palms facing up、背直俯身、向胸下方拉起、顶部肩胛挤压及暂停下降；本条采用旋后掌向，reverse 在该划船来源指旋后，与 reverse 弯举家族的旋前口径不同，未直接套用弯举定义，两条口径并存、互不沿用；通行做法：垂臂时掌朝前、屈肘拉起后掌朝上描述同一旋后握随前臂位置改变的空间朝向，不另加转掌动作；女性标记不改变形式；原「拉向胸部」理解为哑铃向胸部下方升高的普通划船路线，与已读来源相容；目录继承：原第 1 步肩宽站姿及膝微屈，原第 3 步俯身、背直、核心参与，原第 4 步垂臂、肘微屈，原第 5 步拉向胸部、肩胛挤压，原第 6 步顶部停顿及慢放，原第 7 步样板句（原第 2 步双手各握一铃保留，掌向残句不继承；「完全伸展」不继承）。正文变更：原第 2 步删除「正手握握，手掌朝向身体」，以来源支持的旋后掌向消歧；掌向随拉起的位置变化不表示中途转腕；原第 4 步删「完全伸展」，并将与微屈肘并列的「伸直垂下」简化为垂下，去除最大幅度要求；第 1、3、5、6、7 步保留；第 6 步暂停在拉起至胸旁的上方后侧收缩末端，「顶部」成立；未添加性别化动作说明。接入时定稿 7 步 → 存储 5 步：第 1、2 步以分号合并，第 3、4 步以分号合并，定稿句子实质不变。双帧终门通过——双帧经父级亲核：划船家族 reverse grip 按旋后保住（下垂时掌心朝前、拉至胸部时掌心朝上），未按弯举家族的旋前口径误读；图中人物为女性，与目录 (female) 标记相符，与定稿一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "ab5bf13600e7f20a6add6ebb0dd732a4749c1f0d5b29ea3249263174f65c46a4",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-7-2327",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch92.md",
+          "version": "2026-11-11 · 生成批次 92",
+          "sourceSha256": [
+            "c7e935c330f8d1b6924a9666bf314077a77319189ee27e87106afaa35909d803",
+            "4a9bad848269c0963cbfefbd5c97f1061d339e470ec0338ed970d12808f2ce70"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0384",
@@ -20861,22 +20921,37 @@
     {
       "id": "exdb:2397",
       "originalName": "dumbbell scott press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：全文普通坐姿正握肩推，没有Scott特定旋转/肘路，不能仅改标题配普通图。",
+      "reason": "2026-11-11 B2 批次 7 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Iron & Grit／Jordan《How to Perform the Scott Press》的 How to 段已实际打开核读，支持偏心握持、小指侧较高、肘朝两侧略向前、上推略向后且肘全程弯曲；Iron Man／Greg Zulak《Arcs, Angles and Planes of Motion, Part 2》的 Scott-style 段已实际打开，支持倾斜握铃、向外后方的路线及非伸直臂终点；两者在底端是否靠肩描述不同，本条只写肩高附近，不要求触肩；Buff Dudes 教学视频打开报错，仅检索取得作者描述，未声称观看，不承担画面核验；通行做法：坐姿保持躯干直立是这一哑铃肩部路线的通行支撑变体，已读文字没有把站姿规定为排他条件，故依 G3 保留坐凳；题面「掌朝自己起始、顶端转朝前」假设不据此定版——核读支持的是倾斜握铃、屈肘及向后弧线，不能把 Arnold 式转掌拼入 Scott press，该假设经起草方核证推翻、PASS 2 复核确认；掌心朝前的既有握向可在哑铃倾斜及肩部向后运动中保持，不新增强制前臂翻掌；目录继承：原第 1 步坐长凳、双手各持一铃、掌朝前，原第 2 步肩高及肘弯曲，原第 4 步最高点暂停、慢降，原第 5 步样板句（倾斜握铃、肘朝外略向前及略向后的路线为来源补足，非继承；原第 3 步完全伸臂不保留）。正文变更：原第 1 步保留坐姿、双铃及掌向；原第 2 步只补 Scott 式倾斜握铃与肘路，肩高改「肩部高度附近」以不强迫触肩；原第 3 步普通直上「直到手臂完全伸展」改为略向后弧线及保持屈肘，删除最大伸展终点；原第 4、5 步保留；暂停在上举末端，空间最高点成立；未写题面未经证实的顶部转掌、未增加停顿或来源数值。接入时定稿 5 步，原文直存、无合并。双帧终门通过——峰值初稿手臂近乎伸直、哑铃水平，与普通肩推无异、违背定稿的屈肘略向后收尾，经一次参考锚定修复只改手臂位置，修复稿肘部明确弯曲、上举略向后、掌心全程朝前、无 Arnold 式转掌，父级亲核成立；哑铃小指侧略高的倾斜在双帧中读感偏弱，为已记录的轻微旗标，终门接受。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "1e27c45cdf92311ba498ca32720355215af871daf3a2d21b74852e883a92a4fe",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-7-2397",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch92.md",
+          "version": "2026-11-11 · 生成批次 92",
+          "sourceSha256": [
+            "cd4bfc88d000b18b4f67c6e564e528ad4d0ad4b7fe2504b9ca67d1db65ccc9eb",
+            "e3880e4d2f98c26584b7c8b5627911f2f5595e50f5971889d9a7453894cd7c37"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0387",
@@ -23158,22 +23233,37 @@
     {
       "id": "exdb:2293",
       "originalName": "dumbbell standing zottman preacher curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：顶部掌转下清楚，但下放同时转回而非保持旋前到低位，阶段先后需独立核对。",
+      "reason": "2026-11-11 B2 批次 7 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Fitwill《Dumbbell Standing Zottman Preacher Curl》的整体说明、Instructions 已实际打开核读，明确站立面对牧师凳、胸靠近垫顶、上臂后侧贴垫、双铃同时上举及旋前下放，覆盖组合整体；Muscle & Fitness／Jimmy Pena《Mastering the Zottman Curl》的 How to 段已实际打开核读，独立核实顶部转掌、保持旋前下降、底部转回的先后，此页本身不是牧师凳组合依据；SetGrip、Muscle Mag Fitness 同名页打开 Cache miss，ShapeFit 牧师佐特曼页打开报错，均不当作已读依据；通行做法：站立面对斜垫、从垫后方以上臂后侧承靠，是站立牧师式的通行支撑关系，并非 standing 与 preacher 互斥；本条采用已读整体来源的双臂形式；起始旋后垂臂掌朝前、屈肘上举掌朝上属于同一旋后握，旋前下降保持至最低位后才旋后，名称的关键在相位，不加来源中的暂停或数值；目录继承：原第 1 步站直、双手各一铃、掌朝前，原第 2 步上臂靠牧师凳及肘微屈，原第 3 步上臂静止、双铃上举向肩，原第 4 步最高点转掌向下，原第 5 步慢放，原第 6 步样板句（站位关系、后侧接触面及底部才转回为补足或修正）。正文变更：原第 1、2 步只明确面对凳及上臂后侧贴斜垫，保留站姿、双铃双臂、微屈肘；原第 3 步补掌心向上以消歧上行握法；原第 4 步原样保留，确为上举最高点的转掌，不是新增停顿；原第 5 步「下放同时转回」改为旋前下降到底再旋后；原第 6 步保留；没有引入普通佐特曼来源中的顶部或底部暂停。接入时定稿 6 步 → 存储 5 步：第 1、2 步以分号合并，定稿句子实质不变。双帧终门通过——佐特曼旋转对照经父级放大亲核成立：起始双手掌心向上／朝前，峰值手背朝上、拇指朝内，为真实转腕旋前，未翻掌，与定稿的顶部转掌—旋前下放相位一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "f127da1d7a714cbc3e92463c6806cb08cb70d0c448b6345a8151948371577d0f",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-7-2293",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch92.md",
+          "version": "2026-11-11 · 生成批次 92",
+          "sourceSha256": [
+            "4ac6f693fe045926694a6b1509280abd2761662e7d62c5836a00dbc4941a801a",
+            "f59b782bc5769fe8556505e52cb30eea08358eaabdef27da96619112f91278c3"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1684",
@@ -25051,22 +25141,37 @@
     {
       "id": "exdb:2404",
       "originalName": "ez-bar biceps curl (with arm blaster)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：支撑板误译手臂冲击波，可辨胸前托上臂但具体佩戴及曲柄握位需专门图核对。",
+      "reason": "2026-11-11 B2 批次 7 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Rogue 厂商页的颈挂及与 Curl Bar 配套说明已实际打开核读；DMoose 手册 PDF 的佩戴、E-Z Bar Curl 文字已实际打开核读，覆盖佩戴该器械做 EZ 杠弯举的组合；Muscle & Strength《EZ Bar Curl》的 Instructions 已实际打开核读，核实掌朝上握法、肘近体侧及屈肘路线，该页未专门说明曲柄倾斜掌向，不冒称其覆盖；Bodybuilding.com 教学视频打开报错，检索可见作者教学描述，但未作为已观看或已开读页面证据；通行做法：曲柄段是 EZ 杠的常规握持区，旋后弯举的握法顺弯折斜面，使掌心朝上并略向内而非强扭成直杠式平行掌面，是器械形状决定的通识级握法，具体倾角不写数值；胸腹前板位和上臂后侧承靠与同族一致，杠在身体前方随屈肘上升，板承上臂、手握杠，不将板放到上臂上；目录继承：原第 1 步站直、肩宽脚位、EZ 杠及掌朝上，原第 2 步上臂靠板并保持静止的意图，原第 3 步肘近身体、呼气向肩弯举，原第 4 步顶部暂停与挤压二头肌，原第 5 步吸气慢放，原第 6 步样板句（颈挂、板体位置、后侧接触及曲柄握位均为补足，「充分伸展」不继承）。正文变更：新增与 2401–2403 完全一致的佩戴步，放在拿杠前；原第 1 步删独立「反手」用语，保留站姿脚位及掌朝上，补握弯曲段、顺柄略向内；原第 2 步误译改为臂力板并明确上臂后侧接触，保持静止内容保留；原第 5 步删「充分」这一最大幅度要求，只保留伸展方向；原第 3、4、6 步原样保留并顺延；原第 4 步停顿在向肩上举后的上方收缩末端，「顶部」空间成立。接入时定稿 7 步 → 存储 5 步：第 1、2 步以分号合并，第 5、6 步以分号合并，定稿句子实质不变。双帧终门通过——双帧经父级亲核：臂力板佩戴与同族一致，双手握 EZ 杠弯曲段、掌心向上随曲柄略向内，峰值弯举到位，与定稿一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "e07f89430b84fe9ce00050a32784ffd3a9dc62da6884c720c1e227e75159d639",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-7-2404",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch92.md",
+          "version": "2026-11-11 · 生成批次 92",
+          "sourceSha256": [
+            "4ddec78a2fdaa6c7b70de2f88484fa1438000aa799128b659db1a2bbdd17b8ac",
+            "3936e8e34970558b129303812f06d205abd1058f706401ba0d185091ac67e59d"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2432",
@@ -29209,22 +29314,37 @@
     {
       "id": "exdb:2271",
       "originalName": "left hook. boxing",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称是左勾拳，步骤却向前伸直左臂，未说明勾拳肘角和弧线；不能配直拳或据此制作完整出拳图。",
+      "reason": "2026-11-11 B2 批次 7 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：CoachUp／George Foreman III《Fundamentals: How to Throw a Left Hook》的 Execution、Variations 已实际打开核读，支持髋与核心带动、左拳横摆、收手及左脚转轴这一变体；该文把转脚列为变化，不冒称每个左勾拳必须转脚；它列有不同掌向，未给单一拳面标准；通行做法：采用左脚在前的常见正架前手左勾拳，屈肘形成横向弧线、以左前掌转动而非整只脚钉地扭膝，是通行入门教学形式；肩宽与微屈膝沿用旧文；双手护脸、右手护下颌是戒备姿势的普通表达，不指定掌面、肘角数值或击打对象，不把直拳伸臂路线搬入勾拳；目录继承：原第 1 步肩宽、微屈膝，原第 2 步左手护脸及右手在下颌的意图，原第 3 步转髋、左脚为轴，原第 4 步转躯干、调动核心，原第 5 步收回与重复合并句（左脚在前、前掌转轴的明确化及屈肘弧线为补足；右手「握住下巴」不是可原样继承的可读指令）。正文变更：原第 1 步只补左脚在前以明确本条采用的前手形式；原第 2 步修「握住下巴」为护下颌；原第 3 步向前伸臂改屈肘水平弧线，左脚轴心明确为前掌；第 3、4 步是同一次出拳中的联动，先写拳路再写躯干参与，并非出拳结束后另转体；原第 4、5 步保留；未加换右手、停顿、角度或流派拳面。接入时定稿 5 步，原文直存、无合并。双帧终门通过——双帧经父级亲核：起始为正架戒备（左脚在前、双拳护脸护下颌），峰值左肘弯曲、左拳沿水平弧线横扫、左脚前掌转轴、右拳仍护下颌，与定稿一致。生成注记：首个 Codex 会话中途消失，起始帧自 ~/.codex/generated_images 回收并经生成方核验后采用，峰值帧以其为参考锚定生成。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "8700ab3b538de320f0e1229cd7191987162a1aa169c3ef2dbdbbeb527deeb263",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-7-2271",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch92.md",
+          "version": "2026-11-11 · 生成批次 92",
+          "sourceSha256": [
+            "0033e9974e333e5d1ea6045f998dd8a10a9e32ffb924a4bb4526ab00d789c9e1",
+            "aba1698bb73f34637bf7e3b6d0490f1cffdf8c60b17d14472e4da91c83da5a26"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0570",
@@ -34686,22 +34806,37 @@
     {
       "id": "exdb:2208",
       "originalName": "roller back stretch",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤、支撑和器械：文字从臀下滚至上背，包含未说明的腰部承重点，需明确滚筒类型及接触区域，不直接发布跨全背滚压图。",
+      "reason": "2026-11-11 B2 批次 7 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：ACE／Brian Tabor《Foam Roller Thoracic Extension》段的准备及执行说明已实际打开核读，支持泡沫滚筒置肩胛下方的上背、屈膝脚平放、双手脑后、上背后伸及回位；Muscle & Strength《Thoracic Extension on Foam Roller》的 Instructions、Tips 已实际打开，支持相同上背区域及腹部控制，不采用其活动至幅度耗尽的措辞；两页均只覆盖上背／胸椎段，不声称覆盖全背，也未将标题中的医疗主题移入正文；通行做法：采用通行的滚筒背部后伸拉伸，而非滚筒跨臀腰滚压；横筒在上背下方作支点，脚与臀留地、手扶头，上背向后越过筒再回位，支点不需由臀下迁移到背上；短暂停顿来自旧文，放在后伸行程结束、尚未回位的相位，不将来源的动态运动解释成新增静态保持处方；目录继承：原第 1 步坐地准备，原第 2 步滚筒轴与身体垂直，原第 3 步缓慢向后的意图，原第 5 步「暂停片刻」与慢慢返回，原第 6 步样板句（腿伸直、臀下承点、一路滚到上背的路线不继承；仰卧、泡沫材质、屈膝、脚臀落地、手扶头、胸椎段承托均为来源补足或通行布置）。正文变更：原第 1 步保留坐地，伸腿改屈膝脚平放以建立后仰支撑；原第 2 步把含糊「滚轮」明确为泡沫滚筒，保留横置关系，承点由臀下改上背；原第 3、4 步的跨全背滚动改为手扶头、脚臀稳定下的上背后伸；原第 5 步保留「暂停片刻」，现落在上背后伸末端，返回改为反向收回，不再声称滚回臀下；原第 6 步原样保留；区域缩到上背，不加全背伸展、最大幅度或医疗主张。接入时定稿 6 步 → 存储 5 步：第 1、2 步以分号合并，定稿句子实质不变。双帧终门通过——双帧经父级亲核：泡沫滚筒横托肩胛下方上背、屈膝脚平放、臀部着地、双手脑后扶头，峰值上背越过滚筒后伸，与定稿一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "42e0a03f02a3be237b46e63371f169b6a6a21d7dad9b2ac0d3a6b4b2d4007a8e",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-7-2208",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch92.md",
+          "version": "2026-11-11 · 生成批次 92",
+          "sourceSha256": [
+            "866f155568d78afeb67a117cf2b0d71cff8b8982a427971c58778a07de6e596f",
+            "8aed7d4b97a1974f9b4e384e1ce9df839ecc991bc93ca8bdac339a1bf311ccc5"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2204",
@@ -35689,22 +35824,37 @@
     {
       "id": "exdb:1775",
       "originalName": "side plank hip adduction",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称与目标为内收，但步骤要求抬上侧腿向天花板，为外展；不能采用哥本哈根或侧桥外展图来冒充。",
+      "reason": "2026-11-11 B2 批次 7 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：LiftManual《Side Plank Hip Adduction》的 Description、Instructions 已实际打开核读，明确上侧脚交叉放在下侧脚前或后方的地面上、下侧腿腾空抬起、保持侧桥再下放，来源实际运动肢体与正文同为下侧腿；该页将 Copenhagen Plank 另列为近亲，不用其替代；本次检索 GoLightWeight、Kysero 的摘要是上腿架凳的哥本哈根式，未用作依据；通行做法：采用上侧脚跨前落地这一已列出的形式，地面同时承前臂和上侧脚，下侧腿因此能离地；下侧腿向上侧大腿方向抬起是朝身体中线的髋内收，支撑脚不随之抬起，是通行侧桥内收形式的几何关系；名称未规定架凳，不增添凳子；目录继承：原第 1 步侧躺、腿伸展叠放作为入位，原第 2 步前臂支撑、肘在肩下，原第 3 步核心收紧、抬髋、身体直线，原第 4 步保持侧平板与运动腿伸直的意图，原第 5 步慢放，原第 6 步重复后换边的合并结尾（上侧脚跨前落地、下侧腿内收均为修正补足，未列继承）。正文变更：原第 2、3 步补上侧脚着地及其支撑角色，解除叠脚时下侧腿无法单独抬起的问题；原第 4 步由上腿向天花板抬起改为下腿向上侧大腿方向内收；原第 1、5、6 步保留，前臂、肩下肘、收紧核心及直线要求保留；不拆改换边结尾，不增停顿，不改成哥本哈根式。接入时定稿 6 步 → 存储 5 步：第 1、2 步以分号合并，定稿句子实质不变。双帧终门通过——双帧经父级亲核：前臂侧桥、上侧脚跨前落地支撑，峰值下侧直腿明确离地、向上侧大腿方向内收抬起，内收指向可读，与定稿一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "10a459644acc65f9f607d5cafb78cdb084b8702e50e86994d561649f6e06ecd0",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-7-1775",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch92.md",
+          "version": "2026-11-11 · 生成批次 92",
+          "sourceSha256": [
+            "c649438cb7a2ce10825991a9919392a95d3278acafe7eebf490d1a6ddcd7fa9c",
+            "aeb681374b7fd2ebbeb505b4beab868d4cd8019f136e8c725b729326ee3730f1"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0716",
@@ -38484,22 +38634,37 @@
     {
       "id": "exdb:2297",
       "originalName": "stability ball crunch (full range hands behind head)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤、支撑和器械：标题 full range，正文没有仰卧球和后伸准备阶段，只有坐球前卷，缺少完整幅度的关键步骤。",
+      "reason": "2026-11-11 B2 批次 7 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Sweat《Exercise Ball Crunch》的 Step 1–3 已实际打开核读，覆盖坐球后向前走脚、后仰躺球、中背顺应球面曲线、双手脑后、卷起及慢慢返回；不声称它用 full range 作专名；Muscle & Strength 候选地址与 IDEA 候选 PDF 工具均报不可访问，Dynperformance 候选页打开 Cache miss，均未用其摘要当作核读；通行做法：球上全程卷腹的通行区别是背部可沿球面后伸，再以腹肌屈曲抬起肩背，不止在坐姿前倾；以此落实 full range，腰背留在球面承托，未要求头碰地、后仰到极限或坐起到膝盖；来源覆盖球上准备与卷起整体，后伸相位用方向表达而非最大幅度命令；目录继承：原第 1 步坐球、脚平放、膝弯曲（不继承角度数值），原第 2 步双手脑后、肘朝外，原第 3 步收紧腹肌、慢慢卷起的意图，原第 4 步顶部停顿及慢降回起始，原第 5 步样板句（走脚、仰卧、腰背承球及后伸准备均为新增，未误列继承）。正文变更：原第 1 步删除「成 90 度角」，保留非数值屈膝；原第 2 步原样保留；新增走脚仰卧与后伸起始步以落实 full range；原第 3 步坐姿「向前弯曲」改为从后伸位卷起，「胸部靠近膝盖」保留为朝膝盖方向，不要求坐起；原第 4 步原句保留，其「起始位置」现明确为新增后伸起始位，顶部是肩背卷起的上方收缩末端，空间成立；原第 5 步原样保留并顺延编号。接入时定稿 6 步 → 存储 5 步：第 1、2 步以分号合并，定稿句子实质不变。双帧终门通过——双帧经父级亲核：起始后仰躺球、腰背贴合球面随之后伸、双手脑后且肘朝外，峰值卷起上半身，full range 的后伸起始与卷起两端均成立，与定稿一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "24dd5b6abe1778863ea2412cd2d37a0cffbcc11cd8e27ec3988badf5f9f4cb40",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-7-2297",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch92.md",
+          "version": "2026-11-11 · 生成批次 92",
+          "sourceSha256": [
+            "d8c58e4c2e6ef7bc9778845b9e825fcf5f71a3c86c11f7e43d46057eab0b5053",
+            "bbab42e44432e4a5c4bef0610e93bce5c2a13a2ed625cfdb0deee63eb9dd7cd2"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3291",
@@ -40132,22 +40297,37 @@
     {
       "id": "exdb:2135",
       "originalName": "weighted front plank",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：全文只有徒手前臂平板，没说明重量位置、固定与辅助摆放。",
+      "reason": "2026-11-11 B2 批次 7 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Hussle《Take on the weighted plank》的 Weight plates 和 With a partner 段已实际打开核读，覆盖片放背部中央、同伴在已建立平板后放片、前臂撑地及保持躯干平直；该页具体置片区写下背，也列臀部选择，本条只采用其背部置片路线，不称来源支持上背限定；Skimble、Need.fit 候选页打开均为 Cache miss，不用摘要裁定中背或上背位置；通行做法：选片平放于下背中央、避免偏到一侧，是上述来源明确列出的负重前平板形式，题面「肩胛下方至下背」不是唯一必须区间；由同伴扶稳防滑、结束保持后先取片再降身，是与放片角色一致的通行进出安排；片受力向下经躯干传至前臂和脚趾，不由颈部承片，不承诺片会自行固定；无时长或负荷数值；目录继承：原第 1 步俯卧，原第 2 步前臂、肩下肘，原第 3 步伸腿、脚趾着地，原第 4 步核心及抬身，原第 5 步头至脚跟直线，原第 6 步无数值保持表述，原第 7 步降身，原第 8 步样板句，均保留（片、同伴放取及扶稳为新增）。正文变更：原第 5 步后加同伴背部放片、扶稳步骤；原第 7 步前加同伴取片，正文先建立支撑、再承片、保持、卸片、降身，与证据自述一致；其余原句保留并顺延编号；原第 6 步无时长数值，原第 8 步是 G1 样板，不删除，也不具体化为处方。接入时定稿 10 步 → 存储 5 步：第 1、2 步以分号合并，第 3、4 步以分号合并，第 5、6 步以分号合并，第 7、8 步以分号合并，第 9、10 步以分号合并，定稿句子实质不变。双帧终门通过——静态负重平板呈现经父级亲核：前臂平板躯干平直，峰值杠铃片平放于下背并由同伴手扶稳，起始帧为同伴正持片放置的进出安排，与定稿的放片/保持/取片顺序一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "f50cb8025a06aa1f3028e666d5eb3f7e791d3a79991bc4a1f5cf94dac328152a",
-        "steps": 8
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-7-2135",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch92.md",
+          "version": "2026-11-11 · 生成批次 92",
+          "sourceSha256": [
+            "9ca5b81d23e9b9906f6a9556dfea09e1d33e177bd4efac58698c08aa27d90a69",
+            "90e0474c8361e3c8effc32d69c19b06ed8eddb64b092eebe7fa654a842bd935b"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0834",
@@ -40785,42 +40965,72 @@
     {
       "id": "exdb:1754",
       "originalName": "weighted three bench dips",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文只有一凳双脚地面，没有三凳支撑与负重固定，不能用单凳版。",
+      "reason": "2026-11-11 B2 批次 7 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖（正文与证据注采用 PASS 2 对抗核查给出的替换全文）：Muscle & Strength《Weighted Three Bench Dips》Instructions 1–7 已独立核读，同一连续文本明确三凳分工（两平行凳各承一手、第三凳横置前方承双脚跟）、地面准备、大腿置片、可由同伴协助、屈肘下降与伸臂推回，组合整体由单一同名来源覆盖，非部件拼装；PASS 1 曾核读同站无负重三凳页、Lyfta 同名页（教程从下降开始、置片提示句截断、无三凳分工）与 Fitwill 同名页（明说两凳）并据此建议搁置，PASS 2 补查发现同站负重同名页后推翻搁置，前三页的局限判断经复核成立，缺口纯粹在漏检（本批新缺陷类别：同名来源的同站变体页漏检）；Dr. Fitology 同名候选页两轮均为 Cache miss，不承担依据；通行做法：结束时同伴先卸片、再退出支撑位置，避免承片退出；目录继承：原第 3 步屈肘下降，原第 4 步底部暂停及推回，原第 5 步样板句（三凳分工、负重位置、同伴角色与地面入位不在现行正文中，不列继承）。正文变更：原单凳坐边/滑髋改为符合三凳构型的地面准备与分别撑凳，旧「手指指向前方」不再强套两侧凳；补三凳分工与大腿承片；原第 4 步底部停顿（继承）保留，未新增其他停顿；收尾卸片步置于样板句之后（G1′）；无负荷数值、角度或最大幅度要求。接入时定稿 7 步 → 存储 5 步：第 1、2 步以分号合并，第 5、6 步以分号合并，定稿句子实质不变。双帧终门通过——双帧经父级亲核：三凳全部承重（双手分撑两侧凳、双脚跟落在前方横凳上，脚跟/脚掌承重明确），大腿上方平放杠铃片、同伴仅扶稳杠铃片，起始手臂伸直、峰值屈肘下降，与定稿一致；批次 6 的 1753 式前凳不承重失败模式未重演。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "d23b66caed17e779ec8ffd2838277e18c5751d640cd3ecf7cafcfec605435caf",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-7-1754",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch92.md",
+          "version": "2026-11-11 · 生成批次 92",
+          "sourceSha256": [
+            "5d197eb123319a52130ad12809cbc08219646f0c061a4aa328019bbfec5b2afb",
+            "a2d97fc4c11e1f1b6c618ebd28f4c8bb70661bf596635ed6ff7c3d12b03a9f11"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1755",
       "originalName": "weighted tricep dips",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文单凳撑身体，没有负重物，不与双杠负重臂屈伸混用。",
+      "reason": "2026-11-11 B2 批次 7 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Tom Venuto《Bench Dips》已实际打开核读动作执行、脚落地变体及负重进阶段，支持凳上形式、大腿承片、由同伴放置；其详细放片进阶采用脚架凳，不声称原文专门示范了本条脚在地面的负重形式，不采用其中锁肘、角度、负荷或医疗内容；通行做法：依题意保留单凳基础形式，腿前伸、脚跟着地是普通凳上臂屈伸的支撑方式；大腿保持可承片的姿态，由同伴平放、扶稳并在结束时取下，是相同凳上负重方式在脚跟落地形式中的通行安排，未转成双杠；杠铃片平承于近髋的大腿上方，双手继续撑凳，不要求练习者腾手抓片，同伴扶片防滑是新增的操作安排；目录继承：原第 1 步坐凳或椅边、双手抓臀旁边缘，原第 2 步滑髋、腿前伸，原第 3 步背靠近凳、肘微屈，原第 4 步屈肘降至上臂平行地面，原第 5 步伸臂推回，原第 6 步样板句（片、脚跟落地的明确措辞及同伴均为新增）。正文变更：原第 2 步只补脚跟着地以明确支撑；原第 3 步后新增同伴放片及扶稳步骤，落实 weighted 的位置与固定角色；样板句后新增同伴取片再坐回的收尾，符合 G1′；原第 1、3、4、5、6 步文字保留，后续编号顺延；上臂平行地面是非数值姿态，不删；没有新增停顿或锁肘要求。接入时定稿 8 步 → 存储 5 步：第 1、2 步以分号合并，第 3、4 步以分号合并，第 6、7 步以分号合并，定稿句子实质不变。双帧终门通过——双帧经父级亲核：单凳撑身、双腿前伸脚跟着地，大腿上方杠铃片由同伴放置并扶稳，峰值屈肘下降至上臂平行，与定稿一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a2d55a028624a319932dce277ec380a74620d1aa6138a162d62df1f5cc1c6239",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-7-1755",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch92.md",
+          "version": "2026-11-11 · 生成批次 92",
+          "sourceSha256": [
+            "5a41a90c9d7985766c8c4ccf66749a3d94f1ab9e0ece1ed8f0dc2393d0eaa61a",
+            "1e3262301cb7999adc89f23774647b46cddc2c67003b233e23b402abc0528d60"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1767",
