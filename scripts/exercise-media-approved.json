@@ -11771,6 +11771,132 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1639",
+   "expectedName": "cable rope hammer preacher curl",
+   "sourceId": "ai-codex-fillA3-1639",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "7f70c27959c11224691161a5c90e35ec0c838ab354a1fe5e2d8132b690b8c8b5",
+    "df2f5c99fea97be87f81fd98e6fa19a6e67ac2120a5b3e1fbcda7bf362e70423"
+   ],
+   "phases": [
+    "起始：面向低滑轮站立、双上臂平贴牧师斜垫、肘落垫下缘，双手各握一股绳头、中立握（掌心相对）、肘微屈，索经连接头单索绷直入低滑轮",
+    "关键：双前臂卷至肩高、绳头与止挡球随之上升，双肘仍压垫下缘、上臂贴垫原位，双手仍中立握未翻旋后，索路连续"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0209",
+   "expectedName": "cable reverse preacher curl",
+   "sourceId": "ai-codex-fillA3-0209",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "dc1105a3c7da8bbd246775915fd6aa79c9c546958d3bbc974667ba589d650283",
+    "ef0e8737867eccfbece212700342d1b2273ee081183fc6dbb3b67831ab881869"
+   ],
+   "phases": [
+    "起始：坐牧师凳、双上臂贴垫，低索直杆附件，正握（掌心向下、手指自杠上方向下扣）握杆，肘部充分伸展",
+    "关键：直杆卷至肩高，双手仍掌心向下、指尖向下扣杠（反握在收缩位未翻旋后），上臂贴垫原位，索路绷直入低滑轮"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1633",
+   "expectedName": "cable one arm preacher curl",
+   "sourceId": "ai-codex-fillA3-1633",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "94094aef1859384e38a0680f1ae41b838ad333253bfc5b4098dd6022262dc92a",
+    "73c1fa225e241d361be3218d05835140e4b4d30cbe12fe978193e9d11b93e77a"
+   ],
+   "phases": [
+    "起始：面对低滑轮站立，右上臂贴牧师垫、右手旋后握（掌心向上）单 D 手柄，左臂垂放体侧不动（起始帧为定向重生成稿：工作臂取右侧）",
+    "关键：右手柄卷至右肩高，右上臂贴垫原位、左臂不动，索路自手柄绷直入低滑轮"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0151",
+   "expectedName": "cable standing chest press",
+   "sourceId": "ai-codex-fillA3-0151",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "0a7cfbdcf8b553e82b33496eca9d260fa5d4e679db02fe2e1c0ca5edb2de07bd",
+    "cbd4919288c439438907cba26b7981443afcddfaca05c0784fc315780db31281"
+   ],
+   "phases": [
+    "起始：背对双立柱绳索机站立、前后开立（左脚在前），双手肩高握柄、肘约 90 度，左右索各自绷直回本侧胸高滑轮，无卧推凳",
+    "关键：双臂向前推至身前完全伸展、双手胸前近合，双索仍各行其侧、无交叉合并，站姿原位"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0176",
+   "expectedName": "cable kneeling triceps extension",
+   "sourceId": "ai-codex-fillA3-0176",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "8e40f0b07f249d093656f418ddd37487b97cd9592ab56c576df92335a17a35a7",
+    "47aa4194188717df82ef5946fb038d4b0ed18f8983599134275d0bb509ba2e35"
+   ],
+   "phases": [
+    "起始：面向高滑轮双膝跪地（小腿脚背贴地）、躯干直立无支撑，双手于耳侧握绳头、肘贴头、上臂近垂直贴头两侧",
+    "关键：双臂向头前上方完全伸展，上臂仍贴头侧、跪位原位，索自双手经连接头连续入高滑轮"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0149",
+   "expectedName": "cable alternate triceps extension",
+   "sourceId": "ai-codex-fillA3-0149",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "9ca48107eecccbea8657e97f1813fc1eea143d7029f9c37f9cefd876bd1444a1",
+    "8551cfc47b3a75c565c7489456cef4d95596f9023df2f0cdaf91f37c7d92815e"
+   ],
+   "phases": [
+    "起始：低滑轮单 D 手柄，躯干前倾约 30 至 40 度，右上臂指向身后近与地面平行、肘屈约 90 度前臂下垂，左臂垂放不动（呈现裁定：踢背式单侧定格）",
+    "关键：右前臂向后伸展至整臂成一条直线，上臂角度与起始帧一致、仅前臂伸展，左臂仍垂放不动，索全程绷直入低滑轮"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1321",
+   "expectedName": "cable rope elevated seated row",
+   "sourceId": "ai-codex-fillA3-1321",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "4c7f51c80e16194b4da5701971bfe7aff109af6c5fbba64de72ba133a7ed3418",
+    "37c63470547345409dfb4bcb5910453055bdb9db0e0469d16bf25e6bc19f03b0"
+   ],
+   "phases": [
+    "起始：坐高位长凳（双脚离地）并踏划船架高位脚踏板，低滑轮绳索附件，双臂前伸、中立握双绳头，躯干近直立",
+    "关键：双绳头拉至下肋腹侧、双肘过躯干、肩胛收紧，躯干近直立微后倾，座位与脚踏原位"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
