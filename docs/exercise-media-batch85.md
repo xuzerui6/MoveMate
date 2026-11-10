@@ -46,4 +46,5 @@
 ## 验证与部署记录
 
 - 串行全套测试（2026-11-10 本地）：client `test:repository` **519/519** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。发布链计数三方一致：build 输出 846 image entries；publish-media-metadata 输出 846 records；publish-exercise-documentation 输出 complete 846 / photos 733 / pending 483（原始口径，含已归档 51 条；有效口径 complete 846 / pending 432 / total 1,278），report 脚本 images 846 / missing 483 / cameraImages 56 / cameraPending 空。
-- 合并与 CI、双站部署与线上核查：见本文件后续回填记录。
+- 合并与 CI：接入提交 `eb5185e`；main 合并 `4545cc1`；GitHub CI 运行 **42808532191** success。
+- 部署：生产 Version **`7258308a-12eb-4500-bacc-cae29960514d`**；预演 `feat/step5-heavy-testpage` 合并提交 `ebfb765`（该站部署前 client 套件 519/519），预演 Version **`d3fbb823-39ae-41e1-942c-b95864845c6e`**。线上核查（浏览器 UA）：新图生产站 sha256 **18/18** 全合；生产 attribution.json 实测 846 条（exdb:1456 在列、exdb:1458 不在列）；生产首页 200；预演新图抽查 200；预演三张验收测试页（step5-heavy-test / step5-heavy-test-v2 / thunder-gate-test）均 200 保留完好。
