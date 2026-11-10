@@ -3918,22 +3918,37 @@
     {
       "id": "exdb:1545",
       "originalName": "barbell full zercher squat",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：肘窝托杠的形式明确，但原文又称双手握杠，需核对上臂前臂位置和托杠接触，不能用前架图代替。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A5 · 杠铃/EZ杠第二子批，批次 96 接入）：种子意见指肘窝托杠的形式明确，但原文又称双手握杠，需核对上臂前臂位置和托杠接触，不能用前架图代替——定版双帧正面回答：双帧杠铃均横置于双侧肘窝、由肘部弯曲处承托，非肩前前架、非双手抱持；双手呈握拳状贴近胸前（泽奇托杠的通行手位，手指不缠绕杠身），主理人终门确认手部读法与肘窝承托关系可读、成立。关键帧为全深蹲（大腿明显低于平行），与名称 full 及正文「平行或尽可能降低」的读法一致。双帧均首稿过门。正文原样不改；接入时定稿 7 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 1、2 步以分号合并，第 3、4 步以分号合并，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "5c759fe799c2fe651f9158b804c62ff4b60d98278694999239f6844448fdf461",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA05-1545",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch96.md",
+          "version": "2026-11-11 · 生成批次 96",
+          "sourceSha256": [
+            "0f467787826f68eb1f41eba07dbb56983af9b643c38885ad539d42b65a516a03",
+            "aa7818ff24aee5d6e50c634e56ab2caa8af678d53525f4189259a1b4177ca923"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1409",
@@ -4183,22 +4198,37 @@
     {
       "id": "exdb:1719",
       "originalName": "barbell incline close grip bench press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：45度凳、窄握和屈肘贴身明确，但凳角、握距及胸前触点需对应实拍，不用普通上斜卧推图证明窄握。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A5 · 杠铃/EZ杠第二子批，批次 96 接入）：种子意见指 45 度凳、窄握和屈肘贴身明确，但凳角、握距及胸前触点需对应实拍，不用普通上斜卧推图证明窄握——定版双帧正面回答：凳角 45°、握距明显窄于肩宽、直杠；关键帧杠触上胸且肘贴身，未用普通宽握上斜图替代。双帧均首稿过门。正文原样不改；接入时定稿 7 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 1、2 步以分号合并，第 5、6 步以分号合并，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "39aae1bfe2de955a3902d801d707d3b2df587a5b82375a708b0e617ced13728c",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA05-1719",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch96.md",
+          "version": "2026-11-11 · 生成批次 96",
+          "sourceSha256": [
+            "3138a35c0ea88a64e1408f22b2335a0de3b94e37b5957df04a2cef47ecb1de79",
+            "9d120ab00248f2988713194448e2ec06beeb242b77553325fabab71f1870806d"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0048",
@@ -4540,22 +4570,37 @@
     {
       "id": "exdb:1720",
       "originalName": "barbell lying back of the head tricep extension",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：平凳双脚着地、上臂固定降至脑后明确；仍需对应头后终点与握位的示范，不采用额前版充数。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A5 · 杠铃/EZ杠第二子批，批次 96 接入）：种子意见指平凳双脚着地、上臂固定降至脑后明确，仍需对应头后终点与握位的示范，不采用额前版充数——定版双帧正面回答：头在凳端、正握直杠、双脚平放；关键帧上臂保持竖直，杠铃降至脑后并越过凳端，为脑后终点而非额前屈伸。双帧均首稿过门。正文 5 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "900d138ae7140833ecdffdab08273945b7526c201df251bf1c0c459e4e92988f",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA05-1720",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch96.md",
+          "version": "2026-11-11 · 生成批次 96",
+          "sourceSha256": [
+            "55b9a6d9bd448857980676102829a4237b2699f367b79cca53b8d1e0346e26ea",
+            "04e2297049cde72a411fd9f8dc176cbed88277d8bb78576a65a20e5fa8be8900"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0055",
@@ -5565,22 +5610,37 @@
     {
       "id": "exdb:2187",
       "originalName": "barbell reverse close-grip bench press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：平凳肩宽反握与肘靠身可读；需对应反握接触与安全出架示范，不能用正握窄握图替代。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A5 · 杠铃/EZ杠第二子批，批次 96 接入）：种子意见指平凳肩宽反握与肘靠身可读，需对应反握接触与安全出架示范，不能用正握窄握图替代——定版双帧以头端机位正面回答：起始帧杠已出架、双臂伸展于胸部上方，双手反握（掌心朝向头部、手指在杠下）接触可读；关键帧杠降至下胸、肘贴身，反握在峰值未翻。双帧均首稿过门。正文原样不改；接入时定稿 7 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 1、2 步以分号合并，第 5、6 步以分号合并，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "497ee9f48004c4c51bc1fb7df74a33c9728033c0f4247e92bb7f76c9d6784e63",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA05-2187",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch96.md",
+          "version": "2026-11-11 · 生成批次 96",
+          "sourceSha256": [
+            "f1ed9a83b2bcbf0d2fd2f8110bee7b155d89813db094ccd3d1786ffdcc1c9240",
+            "722ed624c97bcb4934b82fa16c9f8e2ec2418ec8e6d1471fc6b4abc047324c81"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0080",
@@ -5755,22 +5815,37 @@
     {
       "id": "exdb:1721",
       "originalName": "barbell reverse grip skullcrusher",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：反握掌心向脸、平凳额前屈伸可读；还需明确直杠手腕和头前终点的专门示范。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A5 · 杠铃/EZ杠第二子批，批次 96 接入）：种子意见指反握掌心向脸、平凳额前屈伸可读，还需明确直杠手腕和头前终点的专门示范——定版双帧正面回答：直杠、双手与肩同宽；关键帧杠降至前额、上臂静止，反握保持（掌心朝脸、手指在杠下），本批最高握法翻转风险在峰值未发作。起始帧初稿掌向不可读（拳面扣杠顶，回避类典型含糊），留档于生成暂存 FAILED/；以关键帧为锚做锚定修复只改相位，修复后起始帧掌心朝脸可读，双帧口径一致，主理人终门核实。正文原样不改；接入时定稿 6 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 1、2 步以分号合并，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "ce5664e819ebcc656af0c7ae1b0cefcb5a5485ea93fe48d7b086bfaaf7b045ea",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA05-1721",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch96.md",
+          "version": "2026-11-11 · 生成批次 96",
+          "sourceSha256": [
+            "0893b66adab8507c5cd0c15b8a6a179d29c403dc4cd905be138743168001bd15",
+            "b95d592142509e62df50d735a2dd050ba01528511e7647a37ec59a478e164946"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0081",
@@ -24821,22 +24896,37 @@
     {
       "id": "exdb:3010",
       "originalName": "ez bar lying bent arms pullover",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文肘仅轻屈且固定上拉，标题bent arms的具体肘角需核验，曲杠不能画成直杆。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A5 · 杠铃/EZ杠第二子批，批次 96 接入）：种子意见指正文肘仅轻屈且固定上拉，标题 bent arms 的具体肘角需核验，曲杠不能画成直杆——定版双帧正面回答：双帧均为曲杠（EZ 杠，未画成直杆）、旋前握；关键帧杠沿弧线降至头后且肘保持轻屈。起始帧初稿双臂近乎伸直、与正文「保持肘部轻微弯曲」读法冲突，留档于生成暂存 FAILED/；以本帧为锚做锚定修复仅加肘部轻屈，修复后远侧臂轻屈明确、近侧臂偏直但非锁定，主理人终门复核近侧臂肘角读法（软弯、未锁死）后采用。正文原样不改；接入时定稿 6 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 1、2 步以分号合并，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "f388fee2637dd1b99af81e224831aa35b6733670ade1043bfdfacba32da5ff76",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA05-3010",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch96.md",
+          "version": "2026-11-11 · 生成批次 96",
+          "sourceSha256": [
+            "1d3f176d7156cbb03d437625eee8042ae2b9382f25478dd5307aebc0dad7a55d",
+            "7812e01a2b32532978a262a0fd623d666843abd993676b1d1b1547d61b6f987e"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1748",
@@ -25016,22 +25106,37 @@
     {
       "id": "exdb:1627",
       "originalName": "ez barbell close grip preacher curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：上臂托垫反握明确，但没有窄握位置说明，曲杆与牧师垫角度需专门核对。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A5 · 杠铃/EZ杠第二子批，批次 96 接入）：种子意见指上臂托垫反握明确，但没有窄握位置说明，曲杆与牧师垫角度需专门核对——定版双帧正面回答：曲杠（EZ 杠）成立、双手握于内侧弯折段呈窄握，上臂与三头肌双帧贴垫。起始帧初稿握法含糊（拳面扣杠顶），与关键帧明确的反握读法不一致，初稿留档于生成暂存 FAILED/；以关键帧为锚做锚定修复只改相位，修复后起始帧掌心明确朝向镜头、手指在杠下，与关键帧同为反握口径，主理人终门核实双帧一致。正文原样不改；接入时定稿 6 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 1、2 步以分号合并，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "2d697ed271db59af935d95c71b0d94e33e239c636e449d918558e0ca51848223",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA05-1627",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch96.md",
+          "version": "2026-11-11 · 生成批次 96",
+          "sourceSha256": [
+            "01ed2c6fb7e9f0192ebc8eb7215fc7ce2b72e36c5da2fc88e7cf338472fc6daf",
+            "d0960cf4bf9c2b55cc060fa598e9fe9955c9d445ac81d55dbb471e131535f71b"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0446",
@@ -25126,22 +25231,37 @@
     {
       "id": "exdb:2186",
       "originalName": "ez barbell decline triceps extension",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：下斜脚固定、正握降前额明确；凳角、脚固定及曲杆握位仍需对应图。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A5 · 杠铃/EZ杠第二子批，批次 96 接入）：种子意见指下斜脚固定、正握降前额明确，凳角、脚固定及曲杆握位仍需对应图——定版双帧正面回答：下斜凳头低脚高、双脚双帧勾在高处滚垫下固定，曲杠（EZ 杠）正握、双手与肩同宽；关键帧杠降至额前、肘部靠近头部。双帧均首稿过门。正文原样不改；接入时定稿 6 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 1、2 步以分号合并，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "eecd991d33ffa24c144841f9355d129c73e7a0ad6eb6fba1c8ce87dea756f30c",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA05-2186",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch96.md",
+          "version": "2026-11-11 · 生成批次 96",
+          "sourceSha256": [
+            "1150eed850f678cf782acf369499311ef6c0e1f11ec2ed0a24bbee807cd31cd3",
+            "a5ac5caf73c605081b1088da0126f1d57468bd3daec95c277da5168748f3ebbc"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0449",
