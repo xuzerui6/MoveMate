@@ -11735,6 +11735,42 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3666",
+   "expectedName": "walking on incline treadmill",
+   "sourceId": "ai-codex-fillA1-3666",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "2dda2d09b70b970a1be4d5c638a5ce46a0884fbb4d8df3bb91d6dade8b109ef7",
+    "705c8fa09b6e326df37511d6f4afb0132236cbf2c1dedde77270836237c3b62c"
+   ],
+   "phases": [
+    "起始：正侧面整机入画，坡度跑步机斜坡明显，站跑带上双脚与肩同宽、躯干挺直，一腿在前落地、另一腿在后蹬离，双臂自然摆动、双手不扶扶手（起始帧经参考锚定修复：后侧手离扶手自然下摆，机身与步幅相位不变）",
+    "关键：同一机位步幅相位互逆帧，前后腿位置互换、步行无腾空，坡度与起始帧同等明显，双臂仍自由摆动"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0767",
+   "expectedName": "smith shrug",
+   "sourceId": "ai-codex-fillA2-0767",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "bed1a1aba9328b6efd5254a325f05f9668972d87fadcde87f3bd0f90a4e84824",
+    "c9667e364911eb395488f521d62cc66dce6957401fc8365db4fbf8953236dc13"
+   ],
+   "phases": [
+    "起始：史密斯机整机入画，双垂直导轨、杠端滑套与安全限位块完整，体前正握（掌心向身）略宽于肩、杠贴大腿前侧，双臂完全伸直、双肩自然下沉，站姿双脚与肩同宽、膝微屈",
+    "关键：双肩耸至近耳、斜方肌收紧成团，双臂仍完全伸直，杠沿导轨上移、仍在体前，滑套套轨约束关系与起始帧一致"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
