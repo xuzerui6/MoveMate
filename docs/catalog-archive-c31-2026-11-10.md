@@ -79,4 +79,9 @@ Edward 于 2026-11-10 17:04 批准（「好，就这么处理」）。条目清�
 - 串行全套：client test:repository 519/519 + tsc、server 131/131 + build、
   cloudflare 34/34 + typecheck 全绿（cloudflare 首跑 runtime 测试现已知冷启动 flake，
   复跑全过；server 首跑 flows 因客户端依赖未装失败，装后复跑 131/131）。
-- 功能提交与双站 Version 于发布后回填本节。
+- 功能提交 `a28f278` → merge `93d707f` 推入 main；GitHub CI run 42788729465 全绿。
+- 生产部署 Version `6697c0cd-939d-41e8-849c-23214d9434df`（dongban.xyz 200；
+  线上 attribution.json 实测 807 条；部署包内实测含 `exdb:3016 archived:true` 与别名）。
+- 预览部署 Version `7a327b1a-d08a-43b9-8c89-c2c622aed2b4`（step5 分支合入 main 后部署，
+  step5-heavy-test / step5-heavy-test-v2 / thunder-gate-test 三页均 200 preserved；
+  合并树复跑 client test:repository 519/519）。
