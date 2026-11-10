@@ -14399,6 +14399,150 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1545",
+   "expectedName": "barbell full zercher squat",
+   "sourceId": "ai-codex-fillA05-1545",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "0f467787826f68eb1f41eba07dbb56983af9b643c38885ad539d42b65a516a03",
+    "aa7818ff24aee5d6e50c634e56ab2caa8af678d53525f4189259a1b4177ca923"
+   ],
+   "phases": [
+    "起始：双脚与肩同宽站立，杠铃托在双侧肘窝处、双手握拳贴近胸前保持稳定。",
+    "关键：全深蹲到底（大腿明显低于平行），杠铃仍托在肘窝、躯干挺起。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1627",
+   "expectedName": "ez barbell close grip preacher curl",
+   "sourceId": "ai-codex-fillA05-1627",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "01ed2c6fb7e9f0192ebc8eb7215fc7ce2b72e36c5da2fc88e7cf338472fc6daf",
+    "d0960cf4bf9c2b55cc060fa598e9fe9955c9d445ac81d55dbb471e131535f71b"
+   ],
+   "phases": [
+    "起始：坐在牧师弯举凳上，上臂与三头肌贴垫，反手窄握 EZ 杠内侧弯折段、手臂充分伸展，掌心朝向镜头。",
+    "关键：杠铃弯举至肩前、肘部充分弯曲，握向与起始帧一致（反握）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1719",
+   "expectedName": "barbell incline close grip bench press",
+   "sourceId": "ai-codex-fillA05-1719",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "3138a35c0ea88a64e1408f22b2335a0de3b94e37b5957df04a2cef47ecb1de79",
+    "9d120ab00248f2988713194448e2ec06beeb242b77553325fabab71f1870806d"
+   ],
+   "phases": [
+    "起始：45 度上斜凳仰卧，握距略窄于肩宽握直杠，双臂伸展、杠在上胸上方。",
+    "关键：杠铃降至触及上胸，肘部贴近身体，窄握未变。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1720",
+   "expectedName": "barbell lying back of the head tricep extension",
+   "sourceId": "ai-codex-fillA05-1720",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "55b9a6d9bd448857980676102829a4237b2699f367b79cca53b8d1e0346e26ea",
+    "04e2297049cde72a411fd9f8dc176cbed88277d8bb78576a65a20e5fa8be8900"
+   ],
+   "phases": [
+    "起始：平躺长凳、头在凳端，正手与肩同宽握直杠，手臂伸直至胸部上方、上臂竖直。",
+    "关键：上臂保持竖直，杠铃已降至脑后并越过凳端（非额前）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1721",
+   "expectedName": "barbell reverse grip skullcrusher",
+   "sourceId": "ai-codex-fillA05-1721",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "0893b66adab8507c5cd0c15b8a6a179d29c403dc4cd905be138743168001bd15",
+    "b95d592142509e62df50d735a2dd050ba01528511e7647a37ec59a478e164946"
+   ],
+   "phases": [
+    "起始：平躺长凳、头在凳端，反握直杠（掌心朝向脸部）、双手与肩同宽，手臂伸直越过胸部。",
+    "关键：杠铃降至前额，上臂静止，反握未翻（掌心仍朝脸）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2186",
+   "expectedName": "ez barbell decline triceps extension",
+   "sourceId": "ai-codex-fillA05-2186",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "1150eed850f678cf782acf369499311ef6c0e1f11ec2ed0a24bbee807cd31cd3",
+    "a5ac5caf73c605081b1088da0126f1d57468bd3daec95c277da5168748f3ebbc"
+   ],
+   "phases": [
+    "起始：下斜凳仰卧（头低脚高），双脚勾在高端滚垫下固定，正手握 EZ 杠、双臂充分伸展。",
+    "关键：杠铃降至前额，肘部靠近头部，双脚仍固定于高处垫下。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2187",
+   "expectedName": "barbell reverse close-grip bench press",
+   "sourceId": "ai-codex-fillA05-2187",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f1ed9a83b2bcbf0d2fd2f8110bee7b155d89813db094ccd3d1786ffdcc1c9240",
+    "722ed624c97bcb4934b82fa16c9f8e2ec2418ec8e6d1471fc6b4abc047324c81"
+   ],
+   "phases": [
+    "起始：平躺长凳、背贴凳面，反握直杠（掌心朝向头部、手指在杠下）、双手与肩同宽，杠已出架、双臂伸展于胸部上方。",
+    "关键：杠铃降至下胸，肘部贴近身体，反握未翻。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3010",
+   "expectedName": "ez bar lying bent arms pullover",
+   "sourceId": "ai-codex-fillA05-3010",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "1d3f176d7156cbb03d437625eee8042ae2b9382f25478dd5307aebc0dad7a55d",
+    "7812e01a2b32532978a262a0fd623d666843abd993676b1d1b1547d61b6f987e"
+   ],
+   "phases": [
+    "起始：平躺长凳、头在一端，旋前握 EZ 杠（曲杠）、双手与肩同宽，手臂在胸部上方、肘部轻微弯曲。",
+    "关键：杠铃沿弧线降至头后，肘部保持轻微弯曲，曲杠形态未变。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
