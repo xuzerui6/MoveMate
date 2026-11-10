@@ -24251,22 +24251,37 @@
     {
       "id": "exdb:1458",
       "originalName": "ez barbell seated curls",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文上臂放大腿而不是自然垂体侧，支撑与普通坐姿弯举不同，需独立核对。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A4 · 杠铃/EZ杠批，批次 86 接入）：种子意见指正文上臂放大腿而不是自然垂体侧、支撑与普通坐姿弯举不同，需独立核对——定版双帧按正文成帧：坐平凳、背挺直（身体坐直），反手（掌心向上）与肩同宽握 EZ 杠内侧弯曲段，双上臂平放在大腿上、杠垂于身前，仅前臂屈肘卷杠至肩高、上臂静止贴腿。描绘路线如实记录：右前方 45° 正面路线起始帧两稿均判 CONFIG 废稿并留档（稿 1 双上臂垂落于两膝之间；稿 2 右上臂贴腿但左上臂仍垂落、且躯干折叠趴伏与正文「身体坐直」相抵），峰值帧未跑；经主理人改判正侧面机位重开本条——侧面下上臂—大腿贴附面、躯干直立与弯举弧线均可无歧义判读，侧面路线双帧均首稿过门、终门亲核通过（峰值帧双脚略收于凳下、贴附面部分被前臂与杠片遮挡，靠上臂走向与肘位未移判读，均如实记录）。接入时正文 7 步按目录存储形制（checked 条目 3–5 步）分号合并为 5 步，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "3a46aa63458a8dfa8e0be546df390569990c10ce2d416e566637a6e791cb3ad1",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA4-1458",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch86.md",
+          "version": "2026-11-10 · 生成批次 86",
+          "sourceSha256": [
+            "3f7f6fcf900ba3a5e1cd9739502c1df5d516de2914f0a30da8905355cc127a1c",
+            "81a4f7be547a3dd0dfcd9f73ef89b4c05afd4f2fbd4eeeb26557dae99f4caa1f"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0453",
