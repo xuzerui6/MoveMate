@@ -32545,42 +32545,72 @@
     {
       "id": "exdb:3236",
       "originalName": "resistance band hip thrusts on knees (female)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：原文把跪姿挺髋写成抬膝离地并使大腿平行地面，支撑与动作矛盾；不依据性别后缀推断形式。",
+      "reason": "2026-11-10 改文第三批条（矛盾登记表子类型 (b) 正文自相矛盾，处置 rewrite-with-evidence；起草、独立复核与裁决定稿，随改文第四批 3007 并入媒体批次 79）+ Codex CLI 图像生成双帧已逐帧对照：原文单点互斥——第 5 步要求「将膝盖抬离地面」并推髋至「大腿与地面平行」，与全程跪姿支撑正面冲突；第 2 步带「缠绕在大腿上，就在膝盖上方」无任何锚点，阻力方向无从成立；回位步又写「将膝盖放回」，与从未离地的膝盖自相矛盾。本批以 Physitrack 与 Muscle & Fitness 证立跪姿髋推构型（Triathlete/Kawamoto 佐证）：带牢固固定于身后、套在髋部前侧（目录沉默处的定义要素经裁决取此读法并披露为编辑定义，舍无锚绕大腿读法），起始改为将臀部向脚后跟方向坐回，行程改为膝盖全程着地、推髋至躯干与大腿成一直线，回位对象由膝盖改正为臀部。复核提出的两项条件性修正（第 6 步停顿与第 1/3/4 步设置口令的出处）经裁决对照目录原文均判定为继承内容、按 G2/G3 保留，定稿与起草稿逐字一致；结尾样板句按 G1 保留。名称的 (female) 后缀仅为目录标签，不贡献教学内容、未据此推断形式。接入时定稿 7 步按目录存储形制（checked 条目步骤 3–5 条）合并为 5 步：设置两步合并（跪姿落位 + 身后锚定套髋）、回位步与样板句合并，全文句子无删减。定版双帧为本批探针条、均首稿过门：起始帧跪姿落垫、髋向后坐向脚后跟、躯干自髋前倾，双手扶髋，红色宽扁环带绕身后深蹲架立柱底部固定、两带段向前绷紧且前段横过骨盆前侧；关键帧双膝仍在原位压垫、髋前推至躯干与大腿成一直线、带在同一锚点拉长绷紧，行程只由髋承载（kill 条件五条均未触发：膝离地、前锚或绕大腿、带位上移至腰或颈、站姿化、相位不可辨或带松弛均未出现）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "6fa7ae101fe946966313da5eafa3d8ac6e272ec869bc1ed03580abfa4c859dde",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-textrev-79-3236",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch79.md",
+          "version": "2026-11-10 · 生成批次 79",
+          "sourceSha256": [
+            "273507d4035e9fd3149002fcfb2db22ba144cbb017638bed3d38d2fcdd03d119",
+            "43810bb3224232b6ae55344be80bbfb92a2ec65836b54697cd4aed744987cfca"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3007",
       "originalName": "resistance band leg extension",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：标题腿屈伸，正文站立把整腿向前伸而没有明确屈膝起始；无法区分伸膝与屈髋。",
+      "reason": "2026-11-10 改文第四批条（矛盾登记表子类型 (c) 定义要素缺失，处置 rewrite-with-evidence；起草、独立复核与裁决定稿，随改文第三批 3236 并入媒体批次 79）+ Codex CLI 图像生成双帧已逐帧对照：原正文描述站立面向锚点、把整条腿向前伸直——是屈髋而非伸膝，与名称 leg extension 所指的抗阻伸膝不可区分，缺失的定义要素正是屈膝起始位。本批以两家临床来源一致证立坐姿构型——Hawkes Physiotherapy（椅腿与脚踝固定、伸直膝盖、顶部停顿与缓慢放回）与 WebMD Ignite / ColumbiaDoctors 的「Knee extension」（椅腿 + 踝部固定、不锁死膝关节），RACGP HANDI 旁证：坐在稳固的椅子上，带一端固定在脚后方的椅腿上、另一端固定在练习腿的脚踝上，屈膝起始、大腿贴住椅面、只伸展膝盖。目录原文未指明椅子或椅腿锚点且描述站姿，定稿采坐姿构型整体替换站姿描述，记为披露的编辑定义（站姿踝带、坐姿双踝环、脚背前系三备选读法均已记录、未采）。复核唯一要求修正（将结尾合并句拆为两句）经裁决驳回：单侧动作的继承合并收尾「重复所需的重复次数，然后换腿。」内容与 G1 一致，裁决立细化规则 G1″，定稿与起草稿逐字一致；第 4 步顶部停顿为原文继承、按 G2 保留（亦有来源支持）；椅腿在脚后方时伸膝拉长带身、其拉力对抗伸展，记为由已核构型得出的机械推断、非来源引文。与姊妹条 exdb:1010（髋铰链）区分成立：本条双帧髋角恒定。定稿 5 步与目录存储形制（checked 条目步骤 3–5 条）恰合，接入未作合并、逐字存入。定版双帧均首稿过门：起始帧坐姿落椅、躯干直立、双侧大腿平贴椅面，红色宽扁带一端绕练习腿后方的椅腿、另一端环绕练习腿脚踝且绷紧，练习膝屈约 90°、脚平放地面，另一腿不动、双手不持带；关键帧仅练习膝伸展至近伸直（保留自然微屈、未锁死），大腿仍平贴椅面、髋角不变，行程纯由膝关节承载，带自同一椅腿锚拉长绷紧（kill 条件六条均未触发：整腿前抬的髋屈冒充、站姿复发、锚点漂移或手持带、双腿同动、锁死或过伸、带松弛均未出现）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "af46596c1f9dfd67b5b05a0236291656daacb5b859b802b2516ea07712a638a4",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-textrev-79-3007",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch79.md",
+          "version": "2026-11-10 · 生成批次 79",
+          "sourceSha256": [
+            "af4c2cc7698754b5fbdef6daaefd1c8625239e9c6e3f40d66bf7d8badd8e0bb3",
+            "99a627e8e9e47cd70fd4903712d782557ea7dfd149b845e60b6312cd09a1ae3d"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3123",
