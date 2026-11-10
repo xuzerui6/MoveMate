@@ -11591,6 +11591,150 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0015",
+   "expectedName": "assisted parallel close grip pull-up",
+   "sourceId": "ai-codex-fillA1-0015",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "fd9cfcd20eb13a0f0491eecc3dcffbae6ca89ea49825282a1b0a581335c45cbe",
+    "4105a4afa4e2af39d8f187781b2e5d94e1d6756fb050a5d341615f316924d8ac"
+   ],
+   "phases": [
+    "起始：高框架助力站前双膝跪助力垫、小腿与脚背贴垫、双脚完全离地，顶部平行把手掌心相对中立窄握，双臂完全伸展悬垂、躯干直立，侧方配重块完整入画",
+    "关键：同一机位，身体拉起至下巴明确高于把手，肘贴身下收、双膝仍跪同一助力垫原位、双脚离地"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0019",
+   "expectedName": "assisted triceps dip (kneeling)",
+   "sourceId": "ai-codex-fillA1-0019",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d9ccdc9fb0d9eaee32a619b6de7fe41f927d6851ce2b7866683eb3e578975461",
+    "942117606cc9b8275202407b902b6578d9313851ee960aa3d8e087ac0ca596a9"
+   ],
+   "phases": [
+    "起始：助力站双膝跪垫、双脚离地，窄握（约肩宽）握住双柄，双臂伸直支撑、躯干直立不前倾",
+    "关键：屈肘下放至肘约 90°、上臂近水平，肘尖向后、躯干保持直立，双膝仍跪垫原位（肱三头肌版，与宽握胸版 2364 区分）"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0571",
+   "expectedName": "lever alternating narrow grip seated row",
+   "sourceId": "ai-codex-fillA1-0571",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a68f4feb72ad0cb8eb409b25025c1708643d6435c562d12371be922e7299fb39",
+    "5899ee9ce7309c43ee188d877b0858a054e4af03b7eedeb1a43d2d499afb2c3f"
+   ],
+   "phases": [
+    "起始：坐姿双脚平放踏板、背部挺直，双手掌心相对中立窄握双柄、双臂前伸，两侧杠杆臂同位",
+    "关键：右柄拉至躯干侧、肩胛收紧，左臂保持前伸原位不动，双杠杆臂角度差明确——交替单侧行程"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0604",
+   "expectedName": "lever shrug",
+   "sourceId": "ai-codex-fillA1-0604",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "bd52343e381af840c4eef9547f199a9858acc7a8eee9519ca3cdd95e7fed0918",
+    "7f8910984c4e4643c783b9141213669cf6a52355c167d2aebe16171295d9f935"
+   ],
+   "phases": [
+    "起始：坐姿背贴靠垫，正手握体侧杠杆手柄、双臂伸直，肩线自然下沉，杠杆轴点与配重臂完整入画",
+    "关键：双肩耸至近耳、斜方肌收紧成团，双臂仍伸直、背仍贴靠垫"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0869",
+   "expectedName": "lever shoulder press v. 2",
+   "sourceId": "ai-codex-fillA1-0869",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "bc61bd54c9322c080bd080f2366cb0769c4f640fdb3089e60e6dddd6beafc131",
+    "b74eb44df2e4926cdfe70dc81ab93408f84a29e5091908850f4c097c11c999d2"
+   ],
+   "phases": [
+    "起始：坐姿背贴靠背、双脚平地，正手握柄略宽于肩，手柄位于肩高、肘屈",
+    "关键：双臂向上推至头顶伸展但未锁定，背仍贴靠背、双脚原位"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1349",
+   "expectedName": "lever t-bar row",
+   "sourceId": "ai-codex-fillA1-1349",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b07d8819d93bff87635c14bbc6a6b08ab6a4dcb0ff99867a448811551eccd308",
+    "65f3701136cb83b3e775944e7209db7cc2707cf5c71b7c3c3e42dcd5cc8fa9b0"
+   ],
+   "phases": [
+    "起始：站姿倚垫式胸托 T 杠机（该机型通行构型），双脚踏机器踏板、胸贴斜垫，正手（掌心向下）握柄、双臂前伸下垂",
+    "关键：手柄拉至胸前、肘贴身后收、肩胛挤压，胸仍贴垫、双脚踏板原位"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2287",
+   "expectedName": "lever alternate leg press",
+   "sourceId": "ai-codex-fillA1-2287",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e5e9196aa74393775a140115731d47ed97a3a15b42caae949acd635529127ff8",
+    "1cfcea7f7a37bc885e507088ec65a280ee1ec807f7942e073adc6b71a1816231"
+   ],
+   "phases": [
+    "起始：水平杠杆腿举机坐姿，背贴靠背、双脚同置共用平台、双膝屈曲，双手扶侧柄",
+    "关键：右腿伸至近直推动平台，左腿屈膝原位、左脚仍贴平台（平台以倾转方式容纳单腿行程）"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2364",
+   "expectedName": "assisted wide-grip chest dip (kneeling)",
+   "sourceId": "ai-codex-fillA1-2364",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "2317305c64b982ae6c6d35674063c9bfe5f682ecdb3250d731639e1f9dc599b2",
+    "f23b0945fe0bfd0fb333e8a9dc98165eee981a97639afa373da292cc723b2263"
+   ],
+   "phases": [
+    "起始：助力站双膝跪垫，宽握（明显宽于肩）握住双柄，躯干微前倾、双臂伸直支撑",
+    "关键：屈肘下放至上臂与地面平行、肘尖向外后，躯干保持前倾，双膝仍跪垫原位（胸版底位，与窄握肱三头肌版 0019 区分）"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
