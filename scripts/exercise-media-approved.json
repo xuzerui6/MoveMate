@@ -13013,6 +13013,258 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1414",
+   "expectedName": "dumbbell one arm reverse preacher curl",
+   "sourceId": "ai-codex-fillB2-5-1414",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "0d47552802e22551e691979e8ad7f3a86cbe3cf33bba74e173381fef479ce52a",
+    "0c1d6f483d1ebe8af1efe90ebd3771820061ecebe4ca56e40c31287c6d88bcdf"
+   ],
+   "phases": [
+    "起始：坐牧师凳胸靠垫，工作侧上臂贴凳垫，单手旋前握哑铃、掌心向下，前臂沿垫前方展开。",
+    "关键：以肘为支点将哑铃弯向肩膀，掌心仍向下、未翻掌，收缩末端挤压二头肌。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1419",
+   "expectedName": "iron cross stretch",
+   "sourceId": "ai-codex-fillB2-5-1419",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d7ac2689f7b42059ae545d894fb553c5b2ba3d15b301f0531335a40e0d906a20",
+    "2d353dbfe182d1eb24823fa317337d08ae890f52773f0cfcef30632203f4534e"
+   ],
+   "phases": [
+    "起始：仰卧，双臂向两侧展开，双肩贴地，双腿伸直并拢。",
+    "关键：一条腿伸直跨过身体落向对侧，双肩保持贴地，另一腿留在原位。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1431",
+   "expectedName": "assisted standing chin-up",
+   "sourceId": "ai-codex-fillB2-5-1431",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "012c1a1e75fa065db11a09860b69ac69acdf08794153e8d9639d324bb21ef404",
+    "955394fd904eed87bb0579e2ada170ccce663db2cb7a5d308faf15711745eaea"
+   ],
+   "phases": [
+    "起始：站在辅助踏板上，反握横杠、掌心朝向自己，握距约肩宽，双臂伸直。",
+    "关键：屈肘上拉至下巴明确超过横杠，踏板随辅助机构同步上升。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1435",
+   "expectedName": "barbell low bar squat",
+   "sourceId": "ai-codex-fillB2-5-1435",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e508a1a306743913990352c942d6fc87cbfdda5a90aea5285feac49222993b79",
+    "b39fe42411da45c1b3e9ea6021ff9b8ef0656bbbb5c8172550933e67234b6460"
+   ],
+   "phases": [
+    "起始：肩宽站立，杠铃置于肩胛冈下方三角肌后束的低杠位，双手握稳。",
+    "关键：屈膝后推臀下蹲至大腿与地面平行或略低，躯干随髋自然前倾，脚跟贴地。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1466",
+   "expectedName": "twist hip lift",
+   "sourceId": "ai-codex-fillB2-5-1466",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b71efd0a5d1473940f6df8f748ff2f84bacbe0e9465cec4a0bfc985f6bba0394",
+    "eb04d33eeb1dcff01d5a7d4ff4e62eac7e00c6d73703008acc2c89d13beeebb8"
+   ],
+   "phases": [
+    "起始：仰卧屈膝，双脚平放地面，双手在身体两侧支撑，肩背着地。",
+    "关键：髋部抬离地面成桥位，骨盆小幅向一侧扭转，双脚仍全掌着地、肩部稳定。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1548",
+   "expectedName": "chair leg extended stretch",
+   "sourceId": "ai-codex-fillB2-5-1548",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "104af1ef6584c2a0ae0b7b2d44abb8df6cf8d929ecef91647b5b904705203f44",
+    "1bedeaf671567ddde4c72964616087127bee3828cb5c70f056de27725e1fd02c"
+   ],
+   "phases": [
+    "起始：坐在椅子边缘，背部挺直，一只腿伸直、脚跟着地、脚尖朝上。",
+    "关键：保持背部平直，从髋部向前倾，感受大腿后侧拉伸。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1616",
+   "expectedName": "lever reverse grip preacher curl",
+   "sourceId": "ai-codex-fillB2-5-1616",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "935437465c08d4e594b33e43c23706c02e48d0318bab088a893af2072b9640f8",
+    "62af2c7b92d46a30a5451bb965c9f3990ae7d1faa395a0855ebfb55a3306bcc1"
+   ],
+   "phases": [
+    "起始：坐牧师式弯举机，上臂贴紧牧师垫、肘对准机器转轴，旋前握手柄、掌心向下。",
+    "关键：以肘为支点将手柄弯向肩膀，掌心仍向下，收缩末端停顿挤压。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1617",
+   "expectedName": "dumbbell decline one arm hammer press",
+   "sourceId": "ai-codex-fillB2-5-1617",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "79b6151df2122dbb6e69420d08ce1c3e986fe711d88812b4940008d1eb8b9233",
+    "c97b13874c696d5fc2b964ab092cfd9ac2d43ce6a8c5c18a4af1b1558e43be1c"
+   ],
+   "phases": [
+    "起始：躺在下斜凳上，脚踝由凳端固定垫固定，单手锤式中立握哑铃置于同侧胸旁，肘朝脚端。",
+    "关键：保持中立握，将哑铃从胸侧推至胸部上方，掌心朝身体中线。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1622",
+   "expectedName": "dumbbell one arm reverse grip press",
+   "sourceId": "ai-codex-fillB2-5-1622",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "17da595745116a13095e00581ceabea4e4a7cd487d6c24891e2b4667e1d3c774",
+    "33e2eef4c4ee246e071199e53b2d2623e25aaa219be68297e5b81ec83864d58a"
+   ],
+   "phases": [
+    "起始：仰卧平凳、双脚支地，单手旋后反握哑铃置于同侧胸旁，掌心朝向头部一侧，哑铃轴向横贯躯干。",
+    "关键：肘贴近躯干，将哑铃推至胸部上方，全程保持反握、掌心朝头端。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1624",
+   "expectedName": "dumbbell reverse bench press",
+   "sourceId": "ai-codex-fillB2-5-1624",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d39f5821a6ace2904f6d33fcd1b87f1fdf3a707460fb208ecb5b683d6a9f1b54",
+    "69dc0e0492578ba5b57439d2a06bd90f53da0404313ea7e538d99bea0d8a34e8"
+   ],
+   "phases": [
+    "起始：平躺长凳、双脚支地屈膝，双手旋后反握哑铃置于胸部两侧，掌心朝向头部一侧。",
+    "关键：双肘靠近躯干，将哑铃推回胸部上方，掌心仍朝头端、未旋成正握。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1635",
+   "expectedName": "cable one arm reverse preacher curl",
+   "sourceId": "ai-codex-fillB2-5-1635",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a7781ccf349c7f86d9be14892f2e4be31be70aab71df81a48a390f4c05d89b56",
+    "7a481f36d46e5989c8f254a6c09645048e0d5180aa52eeda446d78fdefab5cb4"
+   ],
+   "phases": [
+    "起始：面向低滑轮坐牧师凳，上臂贴紧凳垫，单手旋前握单手柄、掌心向下，前臂向垫前下方展开，绳索不碰垫。",
+    "关键：以肘为支点将手柄弯向肩前，掌心仍向下，收缩末端停顿挤压。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1640",
+   "expectedName": "cable rope one arm hammer preacher curl",
+   "sourceId": "ai-codex-fillB2-5-1640",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "537b2f848bfaaccfe03ebe2a148161de98185c42b406da246c08761e2b728497",
+    "d015633600edd122282657532c4dbaf6149a6538e1f973eb0ab487bdb8986543"
+   ],
+   "phases": [
+    "起始：面向低滑轮坐牧师凳，上臂贴紧凳垫，单手中立握绳索附件一端挡块旁的绳段，未握端挡块抵住接环。",
+    "关键：以肘为支点将握持端卷向肩前，未握端垂落避开工作臂与凳垫，收缩末端挤压。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1653",
+   "expectedName": "dumbbell bicep curl with stork stance",
+   "sourceId": "ai-codex-fillB2-5-1653",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "792b6cf85b4b32361e4403a13a8c6e50c2fc251c7f2a0e1fc3d438375843ae63",
+    "05716d7ec9146aee8f320965ea28c493b2d0e46191b5001e8073e6c501bcbae4"
+   ],
+   "phases": [
+    "起始：单脚全脚掌支撑站立，另一只脚向后抬离地面，双手持哑铃垂于体侧、掌心朝前。",
+    "关键：保持单腿平衡与上臂静止，将哑铃弯至肩旁，非支撑脚仍离地。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1655",
+   "expectedName": "dumbbell biceps curl squat",
+   "sourceId": "ai-codex-fillB2-5-1655",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "05040fe7ab9e7f4e65299a1b61fcf157a9b10928963dd05c423076e83b96e1b3",
+    "1ce9d3d4a5e13bb393ffb16f15729fd943a4a7f775cef6704876dc190caf8332"
+   ],
+   "phases": [
+    "起始：肩宽站立，双手各握哑铃垂于身体两侧，掌心朝前。",
+    "关键：下蹲至底部同时将哑铃弯至肩旁，肘贴身体、脚跟贴地，呈组合终点。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
