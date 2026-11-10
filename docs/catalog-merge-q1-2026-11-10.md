@@ -75,5 +75,7 @@ Q1 条件核查见同目录 `CONDITION-CHECKS-Q1.md`。
 ## 测试与发布
 
 - 串行全套：client test:repository 519/519 + tsc、server 131/131 + build、
-  cloudflare 34/34 + typecheck 全绿；GitHub CI 同步核对。
-- 生产与预览双站部署（wrangler@4.158.0 直调）；版本号见本批提交后附记与空间同步记录。
+  cloudflare 34/34 + typecheck 全绿；GitHub CI（run 42761258297）全绿。
+- 功能提交 `1d82a29`（main）。生产部署 Version `3e519f67`（dongban.xyz，
+  线上 attribution.json 实测 795 条、无 exdb:1463）；预览部署 Version `d010ddb3`
+  （preview.dongban.xyz，step5 v2 与 thunder-gate 测试页均 200 preserved）。
