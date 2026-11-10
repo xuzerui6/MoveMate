@@ -32,4 +32,8 @@
 
 ## 验证与部署记录
 
-（待回填：串行全套测试、接入/合入提交、CI、双站部署版本与 sha256 抽查结果，及 exdb:1254 线上正文与双帧核对。）
+- 串行全套测试（2026-11-10 本地）：client `test:repository` **519/519** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。合入后 step5 分支工作树复跑 client `test:repository` 519/519。发布链计数三方一致：publish-exercise-documentation 输出 complete 789 / photos 676 / pending 540，report 脚本 images 789 / missing 540。
+- 接入提交：`ab7a2c1`（分支 media/exercise-media-batch77），合入 main 为 `8e25e4a`；CI run 42732780907 **success**。
+- 双站部署（2026-11-10，wrangler@4.158.0 直跑）：production（dongban.xyz）Version **24cdf63a-688f-4454-9ec4-324b8aebdc74**；preview（preview.dongban.xyz，经 step5 分支合入 main 后部署，该分支合并提交 b0e3908 已推送）Version **48a4b00c-2b49-43f4-86d9-cce213318235**。preview 的 step5-heavy-test / step5-heavy-test-v2 / thunder-gate-test 三个测试页部署后复核均正常返回（200）。
+- sha256 抽查（浏览器 UA，两站各 4 帧）：ai-codex-exdb-0240-0、1253-1、0984-1、1254-0 的线上字节与仓库文件逐一一致（8/8）。
+- 正文线上核对：production 的 exdb:1254 details 记录正常返回新双帧且来源版本为「生成批次 77」；部署 bundle 内 exdb:1254 / 0984 / 0240 的定稿正文（form/cues/reviewStatus=checked）逐字在位（正文经登录态 API 下发，公开端点仅能核媒体，故以 bundle 字节核对正文）。计数口径注记：带类按审计台账为 25 → **27/61**（本批带类 2 条：0984、1254），剩 34；器械类 109 → 106（绳索 −1、杠杆 −2）。
