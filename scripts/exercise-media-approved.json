@@ -14903,6 +14903,186 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1658",
+   "expectedName": "dumbbell lunge with bicep curl",
+   "sourceId": "ai-codex-fillA09-1658",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "5c95d3835eb12fa6e71cc582d86bc383e2349c5c1437374be523a6d6dc03791c",
+    "46b8f1608a4214493ef70fc7afe8eac4589ecb7911577a368614b267ce31218d"
+   ],
+   "phases": [
+    "起始：双脚与肩同宽站立，双手各握一哑铃、掌心朝前，双臂垂于身体两侧。",
+    "关键：前弓步下沉到位（前腿大腿与地面平行、前膝约 90 度，后膝悬空、后脚跟抬起），同时双哑铃弯举至肩高、掌心朝上、肘部贴近身体。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1660",
+   "expectedName": "dumbbell kneeling bicep curl exercise ball",
+   "sourceId": "ai-codex-fillA09-1660",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "ea497e78ecfee494cc537d7c7596ed60352dfc94bbb653c857566e4a6dcaeb3a",
+    "30bc18af3edbd8b7042f55c0f5454b94ca8fe3d35432cc59a12a2b9bc8e6b6dd"
+   ],
+   "phases": [
+    "起始：双膝跪地，双前臂搭过健身球顶部、双手各握一哑铃，胸部贴近球面。",
+    "关键：双肘明确压托在健身球顶面（球面在肘下压出凹陷），双哑铃弯举至肩高、掌心朝上。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1666",
+   "expectedName": "dumbbell one arm prone hammer curl",
+   "sourceId": "ai-codex-fillA09-1666",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "7a14c6590cecbf8f62317d6de4b89371a060dc2808159620cfec600d47d033b1",
+    "a1438b890411688cf88df521202d5ac174712f9b1fa28a2ab13d272702557fc9"
+   ],
+   "phases": [
+    "起始：面朝下俯卧于平凳全身贴凳，持铃臂完全伸展垂向地面、中立握（掌心面向身体），空手平放于凳面头部旁支撑。",
+    "关键：持铃臂屈肘将哑铃弯向肩膀，中立握未旋转、锤式握向成立，空手仍平放凳面。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1676",
+   "expectedName": "dumbbell seated alternate hammer curl on exercise ball",
+   "sourceId": "ai-codex-fillA09-1676",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "008e752c748c0bd7cdeae6e74d15c7f633b8a31ffeb0e564a26a8e32c27ccce4",
+    "5ffd7570fa96f09579908e89a766c0c6a0ac62692ea1e999539fb279cf28e3e7"
+   ],
+   "phases": [
+    "起始：坐在健身球上、双脚平放、背部挺直，双手各握一哑铃、掌心朝向身体，双臂完全伸展。",
+    "关键：一臂将哑铃完全弯举至肩高、锤式握完整（铃轴竖直、拇指朝上，未旋成反握），另一臂保持伸展持铃。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1684",
+   "expectedName": "dumbbell step up single leg balance with bicep curl",
+   "sourceId": "ai-codex-fillA09-1684",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "315cea1f61aa4daf0018e6d02f4f5a05e2fa6cd198411935105c526a7e92323d",
+    "99b96d2aa9e6af78102c66cd1f68a27f38dacab5e1cfc04d070f5b24ea81d435"
+   ],
+   "phases": [
+    "起始：站在台阶前，双手各握一哑铃、掌心朝向身体，双臂垂于身体两侧。",
+    "关键：一脚全脚掌踏在台阶顶面单腿平衡站立，对侧膝抬至髋高，双哑铃弯举至肩高、保持中立握（掌心朝向身体）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1729",
+   "expectedName": "dumbbell lying alternate extension",
+   "sourceId": "ai-codex-fillA09-1729",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b83bd3a618e622fc9f2ca68a5cd847d70f71f6000c425c65644155eaa973bc28",
+    "6aa614d8d04a34b005e7885e42228c2b72540cfd5246cc814ebdffca7d36579f"
+   ],
+   "phases": [
+    "起始：平躺在长凳上，双手各握一哑铃、掌心相对，双臂伸直越过胸部。",
+    "关键：一臂屈肘将哑铃放至耳侧（上臂保持竖直），另一臂保持完全伸展，中立握全程未变。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1732",
+   "expectedName": "dumbbell forward lunge triceps extension",
+   "sourceId": "ai-codex-fillA09-1732",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "28cffd32e29a0e3716187b42048b545dbe812fb91701f3f3f30b8fa9b8fe5739",
+    "c290acf9cde4e11b9220de891382c836fd60c6978d41748be20b1b08b215e51c"
+   ],
+   "phases": [
+    "起始：前弓步保持（前腿大腿平行、后膝悬空），双臂伸直过头顶、双手各握一哑铃、掌心相对、肘部靠近耳朵。",
+    "关键：弓步姿势不变，双肘弯曲将双哑铃明确降至脑后，上臂保持竖直贴耳、过顶中立握未翻。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1743",
+   "expectedName": "dumbbell twisting bench press",
+   "sourceId": "ai-codex-fillA09-1743",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "ed83ccf80ad1d44e039de6148e641bdac23ed5e66d3acd16fb74fc4e3c0c1d3b",
+    "fb509e29d8e9b3c2d186dc041b630b5ccbb720095a43c5fbd9b0bbc61497d22e"
+   ],
+   "phases": [
+    "起始：平躺在长凳上，双臂伸直越过胸部，双手正手握哑铃，手背朝向镜头（掌心背向自己、朝向脚端）。",
+    "关键：双哑铃降至胸侧、肘部贴近躯干，双腕已按正文扭转，掌心朝向镜头（面向自己），旋腕变化在双帧间可读。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3240",
+   "expectedName": "exercise ball on the wall calf raise (tennis ball between knees)",
+   "sourceId": "ai-codex-fillA09-3240",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "aa01d5a4b064db20eb14b85583b309bf5ff7d63211473c44798346c7bc9a7877",
+    "59e6d606ae14f3d7e36bbcb381d61a9d818fb3b54314e5020f571fe563df417e"
+   ],
+   "phases": [
+    "起始：背靠墙站立，健身球置于下背部与墙壁之间，双手各握一哑铃垂于两侧，网球夹在双膝之间，双脚平放、脚跟贴地。",
+    "关键：脚跟抬离地面、身体抬起到前脚掌上，健身球仍贴下背与墙、网球仍夹在膝间，双手各持一哑铃。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3545",
+   "expectedName": "dumbbell incline alternate press",
+   "sourceId": "ai-codex-fillA09-3545",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "97617bd46dc44999112800a72bc6bf71e94f32d5dd015df96ccc558a54739e55",
+    "1497faf143da39e517eb251cdb7e7244e4d84cd397030a355bce6383ad2ad72a"
+   ],
+   "phases": [
+    "起始：坐在上斜凳上、背部与头部贴凳，双手各握一哑铃停在肩高、掌心朝前。",
+    "关键：一臂将哑铃完全推起至手臂伸展、掌心仍朝前（未旋成中立握），另一哑铃保持在肩高。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
