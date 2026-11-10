@@ -65,4 +65,5 @@
 ## 验证与部署记录
 
 - 串行全套测试（2026-11-11 本地）：client `test:repository` **519/519** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。发布链计数三方一致：publish-media-metadata 输出 900 records；publish-exercise-documentation 输出 complete 900 / photos 787 / pending 429（原始口径，含已归档 51 条；有效口径 complete 900 / pending 378 / total 1,278），report 脚本 images 900 / missing 429，camera 56/56、cameraPending 为空。
-- 合并与 CI：接入提交（见批次分支 `media/exercise-media-batch90`）；main 合并与 CI 运行号、生产/预演 Version ID 与线上核查结果于部署后回填本节。
+- 合并与 CI：接入提交 `71c17ea`（分支 `media/exercise-media-batch90`）；main 合并 `ef0d678`；GitHub CI 运行 **42871473140** success。
+- 部署：生产 Version **`7c9a6427-4717-4978-a3bd-5cfa6bcc06bd`**；预演 `feat/step5-heavy-testpage` 合并提交 `a693ed3`（该站部署前 client 套件 519/519），预演 Version **`9dc8ceea-7c21-4882-96f4-9ed36779b473`**。线上核查：新图生产站 sha256 **28/28**、预演站 sha256 **28/28**、生产与预演 attribution.json 实测均为 900 条、生产与预演首页 200、预演三张验收测试页（step5-heavy-test / step5-heavy-test-v2 / thunder-gate-test）均 200。核查说明：须用浏览器 UA 复核（默认 UA 会触发 Cloudflare 防护）。预演分支合并时先以陈旧的远端跟踪引用（a66ecab）建合并被拒推，核实远端真实 tip 为批次 89 的预演合并 `a504c92` 后在其上重做合并 `a693ed3` 并推送成功——内容无差异，后续预演合并前先以 `git ls-remote` 核实远端 tip。
