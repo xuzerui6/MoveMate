@@ -2113,22 +2113,37 @@
     {
       "id": "exdb:0996",
       "originalName": "band seated hip internal rotation",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：标题内旋，正文膝上套带并双膝外开，实际描述外展而非内旋，保持原ID待核对。",
+      "reason": "2026-11-10 改文第二批条（矛盾登记表子类型 (a) 正文述另一变式，处置 rewrite-with-evidence；身份先行裁决、起草、独立复核与裁决定稿）+ Codex CLI 图像生成双帧已逐帧对照：原正文与名称正面互斥——名称为 seated hip internal rotation（坐姿髋内旋），原正文却将带套在大腿膝盖上方并写「慢慢向外旋转膝盖」，双膝打开、描述的是髋外展（原第 3 步还要求双脚分开与肩同宽），种子意见明示实际描述外展而非内旋。本批先行身份裁决：两家物理治疗来源（MD Health；Dunsborough Physiotherapy Centre）与独立复核的盲推一致确立坐姿内旋构型——环形弹力带套在双侧脚踝上、双膝之间夹软垫保持并拢、由大腿内旋带动小腿与双脚向外分开，与已定版的 exdb:3006（坐姿髋外展）可区分、非重复条目，是 exdb:0984 的坐姿姊妹条，沿用试点裁决的解剖读法，正文已整段替换（带的位置由大腿膝上改到双踝、新增膝间软垫、旋转方向改写为大腿内旋）。定版双帧均首稿过门：起始帧坐姿背挺直、双脚并拢平放，浅灰软垫夹于双膝间，亮红宽扁环带绕双踝、双膝紧贴软垫；关键帧双脚向两侧明显分开、环带在双踝间绷紧成直线，双膝仍紧夹同一软垫、膝距与大腿走向未随脚打开——小腿自膝部向外旋转（雨刷式），髋内旋而非外展冒充（kill 条件五条均未触发）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "e2ce1c852ee38ad5d8c4b0b2f6a8825f8624e285f54124fc72a8aa889f5776ca",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-0996",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch78.md",
+          "version": "2026-11-10 · 生成批次 78",
+          "sourceSha256": [
+            "7657d9101fa9b00a4432e671ba94e03c497d2e3ad924773433d5dceda503be7a",
+            "cc9fe9eb6ebfbfce432cb200cb5e01ac55b9677003a1e883a1e37aa599ebd873"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1011",
@@ -8420,22 +8435,37 @@
     {
       "id": "exdb:0158",
       "originalName": "cable decline fly",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文站立而仅称机器调到下降位置，缺下斜凳或明确高到低轨迹，名称体位不一致。",
+      "reason": "2026-11-10 改文第二批条（矛盾登记表子类型 (a) 正文述另一变式，处置 rewrite-with-evidence；起草、独立复核与第三轮裁决定稿）+ Codex CLI 图像生成双帧已逐帧对照：原正文与名称体位不一致——名称为 decline fly（下斜飞鸟），原正文却全程站立（背对机器站立、双臂在身前伸直、向两侧张开），仅第 1 步称将机器「调整至下降位置」，下斜凳与下斜轨迹全缺，种子意见点名名称体位不一致。本批按裁决的有界单源例外定稿，三条件已记录在案：(i) 原正文在定义要素（下斜体位）上确证错误——站立读法教授的是另一动作，现状不是中性缺失；(ii) 唯一来源为具名专业教学来源 Weight Training Guide（Edward Lord）的 decline cable fly 页面，明确覆盖下斜凳、两个低位滑轮与抱式弧线这一定义要素；(iii) 定稿严格限于该来源的段落，不引入凳角、握向或最大打开幅度——原第 5 步的「完全伸展位置」终点及其停顿、无据的站姿与掌心朝前握法均未带入。另一候选来源 NTCC 的「Decline Pulley Flyes」小节在 decline 标题下复述平凳设置，正是本批所纠之错本身，不构成独立一致、未采用并已记录。第三轮复核后裁决补明第 3 步的双臂张开起始位（来源有据）。定版双帧均首稿过门：起始帧下斜明确（头端低、双脚固定于高端脚垫下），双塔滑轮均为低位近地面，双臂向两侧张开与肩同线、肘微屈，双索绷紧至低滑轮；关键帧双臂沿抱式弧线向上、向内合拢，双手在胸上方相会而不交叉叠合，肘保留微屈、非推举，凳斜、脚固定与索路与起始一致。与已定版 exdb:0240（平凳 + 高滑轮交叉）对照区分成立（kill 条件五条均未触发）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "86e84a10ef578fe04f6d95b2fc0c7a0cd28a7cf0f4c9fb76b4cb2a146938d981",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-0158",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch78.md",
+          "version": "2026-11-10 · 生成批次 78",
+          "sourceSha256": [
+            "017d9ca3a2ef1029556d3aed082130030cf83cc21fba69740db9012b79cd09ac",
+            "3d515d73195371cbb75efbeec9f13db19dc9e15b5c2b5a5c09a34bf49ab535fe"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1260",
@@ -10975,22 +11005,37 @@
     {
       "id": "exdb:1725",
       "originalName": "cable rope incline tricep extension",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题上斜且调整凳角，正文全程站立无凳面接触，体位矛盾。",
+      "reason": "2026-11-10 改文第二批条（矛盾登记表子类型 (a) 正文述另一变式，处置 rewrite-toward-name；起草、独立复核与第三轮裁决定稿）+ Codex CLI 图像生成双帧已逐帧对照：原正文与名称正面互斥——名称为 incline tricep extension（上斜臂屈伸），原正文却将绳子接到高滑轮、全程站立完成下压，第 5 步的终点甚至是「前臂接触二头肌」，上斜凳只在第 1 步被要求「调整到舒适的角度」却全程无凳面接触，种子意见点名体位矛盾。本批按名称优先、证据裁决：E1（Muscle & Strength）与 E2（Weight Training Guide）两源一致确立低滑轮、上斜凳背靠、绳柄自头后向头顶上方伸展的几何，正文已整段替换（高滑轮改低滑轮、站立改凳上背靠、正手改掌心相对的中立握；E1 的 30 度凳角数字与前臂相对终点未引入）。E3（The Optimal You 的高滑轮、肘贴体侧下压段落）经裁决带理由排除并记录：它描述的是借用本名的另一动作（下压），属本工程所纠的误标类别，零采用。第三轮裁决另将初稿省略的继承停顿按 G2 以原文第 6 步措辞恢复到伸展步之首。定版双帧为本批探针条、均首稿过门：起始帧坐在上斜凳上向后倚靠、背全程贴凳垫，绳索塔低滑轮在塔基近地面处清晰可见，缆绳自低位斜上行至双手，双手以中立握持绳柄、肘屈、绳柄在头后上方，上臂贴近头部两侧；关键帧仅肘伸展，双手回到头顶正上方、双臂向上伸直，各握一侧绳端，上臂位置不变、背仍贴凳垫，缆绳仍自双手下行至同一低滑轮——双帧无任何下压相位，与站姿下压的误标读法不可混淆（kill 条件五条均未触发）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "3ae54bc18e577b9cdbd7bc652bd545c5560d40d4e20df4992d941a92e91cc710",
-        "steps": 7
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-1725",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch78.md",
+          "version": "2026-11-10 · 生成批次 78",
+          "sourceSha256": [
+            "f37f85560242e851daf1e64c4591d5fe7805cd16bbe0b78264a0ed36a4356b44",
+            "fb8a708e0071fff1a8b76bc54f3e58a680e8592e74c9dadf0a5b021afbce7eb2"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1726",
@@ -28074,22 +28119,37 @@
     {
       "id": "exdb:2289",
       "originalName": "lever calf press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：同一杠杆垫既与肩对齐又让脚趾踩，接触结构矛盾，不能按腿举机或站式提踵机任一配图。",
+      "reason": "2026-11-10 改文第二批条（矛盾登记表子类型 (b) 正文自相矛盾，处置 rewrite-with-evidence；起草、独立复核与裁决定稿）+ Codex CLI 图像生成双帧已逐帧对照：原正文接触结构自相矛盾——第 1 步「使肩膀与杠杆垫对齐」、第 2 步却「将脚趾放在杠杆垫上」，同一块杠杆垫既是肩部负荷面又是脚踏接触面，且第 4 步「将杠杆垫向下推」、第 6 步「让脚后跟重新抬起」与提踵的运动方向互相打架，种子意见点名不能按腿举机或站式提踵机任一配图。本批以两家厂商手册（Hammer Strength PL-SHC；HOIST HD-3403）重建水平（斜躺）脚踏板式小腿蹬伸构型，正文已整段替换：背贴靠背垫、前脚掌压脚踏板下缘、仅踝部伸展与回弯。裁决删改三处：脚跟越过踏板下缘的定位无据，已删（只保留前脚掌与踏板下缘接触）；把手位置两轮复核对手册的读法不一致，只保留「机器提供的支撑把手」、不写具体位置；回程改写为纯踝部运动，删去预设垂直脚跟路径的「让脚跟慢慢回落」类表述。定版双帧均首稿过门（脚位经放大核对）：起始帧斜躺背垫、双手握支撑把手，前脚掌压脚踏板下缘区、脚跟悬于下缘之下，踝背屈、小腿拉伸；关键帧踝完全跖屈、脚跟抬至最高、小腿收紧，前脚掌仍在踏板下缘，膝、髋、腿位、座位与握持与起始逐项一致——纯踝动，无腿举冒充。与姊妹条 exdb:2335（有大腿压垫）同批互查、区分成立（kill 条件四条均未触发）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "7f3916a571a5f162c2982cf724e5db96eb9b6d5623dd7f0f7e1f90f19c7acdb7",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-2289",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch78.md",
+          "version": "2026-11-10 · 生成批次 78",
+          "sourceSha256": [
+            "080895eaaceb49171c2a94edb6ee134bba32b2995f41582ee508e0d511ab6ecd",
+            "643c77541edd2dbcb42125fef6e23561b93273f69f7667848a5482a5b9979c1f"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0577",
@@ -29194,22 +29254,37 @@
     {
       "id": "exdb:2335",
       "originalName": "lever seated calf press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：肩与垫对齐、膝置垫下、把垫压下却抬跟，接触方向相互冲突。",
+      "reason": "2026-11-10 改文第二批条（矛盾登记表子类型 (b) 正文自相矛盾，处置 rewrite-with-evidence；起草、独立复核与裁决定稿）+ Codex CLI 图像生成双帧已逐帧对照：原正文把两套接触结构混写——第 1 步「使您的肩膀与杠杆垫对齐」（肩垫）、第 2 步又「将膝盖放在杠杆垫下方」（膝下垫），第 4 步「将杠杆垫压下」却要抬起脚后跟，接触与方向互相冲突，种子意见点名接触方向相互冲突。本批以器械手册与专业来源（Cybex 手册、Weight Training Guide、HOIST、FitTec）定版：负荷界面为压在膝盖上方大腿处的负荷垫，肩垫表述整段删除，正文已整段替换。裁决保留并记录一项：第 2 步「脚跟悬在边缘外」为机械推断而非来源引文——大腿压垫式坐姿提踵机上，脚跟必须能降到前脚掌支撑面以下、否则提踵无法成立，其记录口径与试点 exdb:0984 的屈膝表述相同。起始支撑的解除与结束后的锁回均指向机器自身说明（Cybex 手册可证支撑固定；不新编通用解除序列）。名称观察：目录英文名作 press、证据动作实为 raise，已记入目录裁决待办，本批不改名。定版：起始帧首稿过门——坐姿直立，负荷垫压在膝盖上方大腿处（旧正文的肩垫形态未出现），前脚掌踩脚踏平台前缘、脚跟悬于缘外并降至平台面以下；关键帧第 2 稿定版——首稿废因 ANCHOR（抬脚跟时双脚整体离地、前脚掌脱离平台缘），以起始帧为参考锚定单帧修复（只改脚跟高度）后，双前脚掌均留在平台前缘、双脚跟抬高、小腿收紧，大腿压垫随大腿微升，座位、躯干、握持与机位与起始一致。备查小项：本条模特鞋为白底款，与本批其他条目的全黑鞋面不同，双帧内一致，不构成身份问题。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "d9427249d48d0d4d746a4bb25f385493826422b9f88975f2b02e106dd0509646",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-2335",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch78.md",
+          "version": "2026-11-10 · 生成批次 78",
+          "sourceSha256": [
+            "8fd6a944d98ae87019eef619240a772181e9a46e85d75c00e2ef40497283864c",
+            "af53f037c7fa9bd0eee5432a1c5723129cb1f7c9055cb10ab74b6c837198f2e5"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0594",
@@ -32545,22 +32620,37 @@
     {
       "id": "exdb:3124",
       "originalName": "resistance band seated chest press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：坐凳双手向前推明确，但带子固定在背后何处完全缺失，不能自行画成绕背或外部锚点。",
+      "reason": "2026-11-10 改文第二批条（矛盾登记表子类型 (c) 定义要素缺失，处置 rewrite-with-evidence；起草、独立复核与裁决定稿）+ Codex CLI 图像生成双帧已逐帧对照：原正文坐凳双手向前推的动作明确，但弹力带在背后的固定方式这一定义要素完全缺失（原第 2 步仅写双手握「阻力带手柄」、掌心朝下），种子意见明示不能自行画成绕背或外部锚点。本批经裁决取编辑定义并披露：带绕过上背部、从腋下穿过，双手直接握带端（证据 Hinge Health 与 LiveUp/iLA 两源一致，Alabama Extension 旁证；椅背绕带与外部锚点两种备选读法已记录为未采）；第 3 步的终点表述「直至双臂接近伸直」取来源原文措辞（动作终点、非新编幅度规定）；原「手柄」与掌心向下握法随编辑定义一并改写（直接握带端）。定版双帧均首稿过门：起始帧坐姿背挺直，红带自上背经双侧腋下至双手，双手直接握带端置于胸部两侧、肘屈，带在上背绷紧；关键帧双手在胸部高度向前推出至双臂接近伸直，带身自双手经腋下拉长绷紧回上背，坐姿与机位与起始一致——带全程只接触上背与双手，未触椅、未绕颈、无把手（kill 条件五条均未触发）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "032311d5d62c4dadece61d125312789a2437cc8a43d0cdaeb96d82beb8d59242",
-        "steps": 5
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-3124",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch78.md",
+          "version": "2026-11-10 · 生成批次 78",
+          "sourceSha256": [
+            "70ce62698682e8c318377b30b743f3074b7f4fe721974d6533e98acc996b4719",
+            "042737254a4c4dda8202b4074266ae1b4e5f3b93d1da7ed3f4b731cda419af22"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3006",
@@ -35432,22 +35522,37 @@
     {
       "id": "exdb:0760",
       "originalName": "smith leg press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文座椅背靠和独立脚踏平台，实际描述腿举机而非脚推史密斯杠，器械不一致。",
+      "reason": "2026-11-10 改文第二批条（矛盾登记表子类型 (a) 正文述另一变式，处置 rewrite-with-evidence；起草、独立复核与第三轮裁决定稿）+ Codex CLI 图像生成双帧已逐帧对照：原正文器械错配——名称为 smith leg press（史密斯腿举），原正文却是调整座椅与独立脚踏板、坐在机器上背靠靠背、伸腿将脚踏板推离身体，整段描述的是坐姿腿举机而非仰卧以脚推史密斯杠，种子意见点名器械不一致。本批以 H1（RitFit，史密斯机厂商）与 H2（Muscle & Strength）定版：仰卧地面、双脚抵住杠铃、安全限位设在最低点稍下方、背贴地、双手握机器框架保持稳定，正文已整段替换，座椅、靠背与独立脚踏板内容全删。解锁与回挂按裁决指引至这台史密斯机自身的说明，理由已在证据包记录：(a) 操作缺口——无已核来源说明在仰卧抵杠位置如何操作挂钩；(b) 锁定冲突——H1 主张推起时避免锁死、H2 却有解扣时锁伸的表述，两源冲突，故正文不教任何具体旋转方向、挂钩程序或锁定主张（H1 的旋转措辞仅作为挂钩操作存在的证据记录、不是教学步骤）。结尾样板句按裁决细化规则 G1′ 移至闭合动作循环处、回挂步殿后为整组收尾步。裁决注意事项：本条双帧只呈现推起与放低的位置，不构成解锁/回挂的操作教程。定版双帧为本批探针条、均首稿过门：双帧史密斯形态明确（双条竖直镀铬导轨、带挂钩机构的杠铃与两侧杠铃片、导轨上的安全限位件均可辨），仰卧地面、双脚平抵杠铃下侧——起始帧髋膝深屈、杠在低位，双手握机器框架为稳定握持；关键帧杠沿导轨被推高，髋膝伸展、双腿近伸直且膝保留自然微屈（未锁死），背仍贴地；双帧均未呈现任何解锁或回挂操作，无座椅、靠背或独立脚踏板，生成端默认的坐姿腿举机形态未出现（kill 条件五条均未触发）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "d9bfd8816b3fc013145ea08a378a199da97931760e8a71e74892fe2e9916d86e",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-exdb-0760",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch78.md",
+          "version": "2026-11-10 · 生成批次 78",
+          "sourceSha256": [
+            "7cceaf2f36456d4035c11cee91645527fc536bf92ee6673ac8741c84ccbf2268",
+            "fc1a4b63bc08e7d416fa1d0723f67f83a2a67dca060a645809dd09a3a3b19028"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1434",

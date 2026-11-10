@@ -11264,6 +11264,132 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0996",
+   "expectedName": "band seated hip internal rotation",
+   "sourceId": "ai-codex-exdb-0996",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "7657d9101fa9b00a4432e671ba94e03c497d2e3ad924773433d5dceda503be7a",
+    "cc9fe9eb6ebfbfce432cb200cb5e01ac55b9677003a1e883a1e37aa599ebd873"
+   ],
+   "phases": [
+    "起始：坐姿背挺直、双脚并拢平放，浅灰软垫夹于双膝间，亮红宽扁环带绕双踝，双膝紧贴软垫",
+    "关键：双脚向两侧明显分开、环带在双踝间绷紧成直线；双膝仍紧夹同一软垫、膝距与大腿走向未随脚打开，小腿自膝部向外旋转（髋内旋、非外展）"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3124",
+   "expectedName": "resistance band seated chest press",
+   "sourceId": "ai-codex-exdb-3124",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "70ce62698682e8c318377b30b743f3074b7f4fe721974d6533e98acc996b4719",
+    "042737254a4c4dda8202b4074266ae1b4e5f3b93d1da7ed3f4b731cda419af22"
+   ],
+   "phases": [
+    "起始：坐姿背挺直，红带绕过上背部、经双侧腋下至双手，双手直接握带端置于胸部两侧、肘屈，带在上背绷紧；带未触椅、未绕颈",
+    "关键：双手在胸部高度向前推出至双臂接近伸直，带身自双手经腋下拉长绷紧回上背；坐姿与机位与起始一致"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0158",
+   "expectedName": "cable decline fly",
+   "sourceId": "ai-codex-exdb-0158",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "017d9ca3a2ef1029556d3aed082130030cf83cc21fba69740db9012b79cd09ac",
+    "3d515d73195371cbb75efbeec9f13db19dc9e15b5c2b5a5c09a34bf49ab535fe"
+   ],
+   "phases": [
+    "起始：仰卧下斜凳（头端低），双脚固定于高端脚垫下；双塔滑轮均为低位近地面，双臂向两侧张开与肩同线、肘微屈，双索绷紧至低滑轮",
+    "关键：双臂沿抱式弧线向上、向内合拢，双手在胸上方相会（不交叉），肘保留微屈；凳斜、脚固定与索路与起始一致"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2289",
+   "expectedName": "lever calf press",
+   "sourceId": "ai-codex-exdb-2289",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "080895eaaceb49171c2a94edb6ee134bba32b2995f41582ee508e0d511ab6ecd",
+    "643c77541edd2dbcb42125fef6e23561b93273f69f7667848a5482a5b9979c1f"
+   ],
+   "phases": [
+    "起始：斜躺于水平蹬伸式提踵机、背贴靠背垫，双手握支撑把手；前脚掌压脚踏板下缘、脚跟悬于下缘之下，踝背屈、小腿拉伸",
+    "关键：踝完全跖屈、脚跟抬至最高、小腿收紧，前脚掌仍在踏板下缘；膝、髋、座位与握持与起始一致，仅踝角改变"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2335",
+   "expectedName": "lever seated calf press",
+   "sourceId": "ai-codex-exdb-2335",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "8fd6a944d98ae87019eef619240a772181e9a46e85d75c00e2ef40497283864c",
+    "af53f037c7fa9bd0eee5432a1c5723129cb1f7c9055cb10ab74b6c837198f2e5"
+   ],
+   "phases": [
+    "起始：坐姿直立，负荷垫（大腿压垫）压在膝盖上方大腿处（无肩垫）；前脚掌踩脚踏平台前缘，脚跟悬于缘外并降至平台面以下",
+    "关键：双前脚掌仍留在平台前缘、双脚跟抬高、小腿收紧，大腿压垫随大腿微升；座位、躯干、握持与机位与起始一致"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1725",
+   "expectedName": "cable rope incline tricep extension",
+   "sourceId": "ai-codex-exdb-1725",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f37f85560242e851daf1e64c4591d5fe7805cd16bbe0b78264a0ed36a4356b44",
+    "fb8a708e0071fff1a8b76bc54f3e58a680e8592e74c9dadf0a5b021afbce7eb2"
+   ],
+   "phases": [
+    "起始：坐在上斜凳上向后倚靠、背贴凳垫；低滑轮在塔基近地面处，缆绳自低位斜上行至双手，双手以中立握持绳柄、肘屈、绳柄在头后上方，上臂贴近头部两侧",
+    "关键：仅肘伸展，双手回到头顶正上方、双臂向上伸直，各握一侧绳端；上臂位置不变、背仍贴凳垫，缆绳仍自双手下行至同一低滑轮（非下压）"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0760",
+   "expectedName": "smith leg press",
+   "sourceId": "ai-codex-exdb-0760",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "7cceaf2f36456d4035c11cee91645527fc536bf92ee6673ac8741c84ccbf2268",
+    "fc1a4b63bc08e7d416fa1d0723f67f83a2a67dca060a645809dd09a3a3b19028"
+   ],
+   "phases": [
+    "起始：仰卧地面、背贴地，双脚平抵史密斯机杠铃下侧，髋膝深屈、杠在低位；双手握机器框架稳定身体；双竖直导轨、挂钩杠与安全限位件可辨，无座椅/靠背/脚踏板，未呈现解锁操作",
+    "关键：杠沿导轨被推高，髋膝伸展、双腿近伸直且膝保留自然微屈，双脚仍平抵杠下侧，背仍贴地；机位与起始一致，未呈现回挂操作"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
