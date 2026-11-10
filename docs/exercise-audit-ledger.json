@@ -3973,22 +3973,37 @@
     {
       "id": "exdb:3562",
       "originalName": "barbell glute bridge two legs on bench (male)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题两腿在凳上，正文却上背靠凳、双脚落地，实际支撑不同，不依据人物性别后缀推断。",
+      "reason": "2026-11-11 B2 批次 9 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：实际打开核读 Dr. Fitology 的 Barbell Glute Bridge Two Legs On Bench 的 Overview、How to Perform 与上背留地提示，同一教学连续覆盖髋部杠铃、双手扶稳、肩背地面、双脚凳面、脚跟驱动及肩膝直线，满足组合整体门，不借普通杠铃臀冲拼装；已打开同站徒手版，其执行段也直接列在该脚高位构型下加杠铃的选择，两页一致；本站专业归属为 About 公开的具名负责人 Adrian Salavaty 及其 Certificate IV in Fitness，不虚称动作页有逐篇作者签名；另核读 LiftManual 杠铃同名页，仅作一致性旁证，不靠无署名目录单独通过组合门；通行做法：与 3523 一致采甲读法，乙（上背靠凳臀冲）不能代替“两腿在凳”的名称；髋部承杆、双手防滚、上背留地、双脚施力到凳的受力路径相容，在屈膝伸髋终点形成肩—髋—膝直线由本条来源直接支持，不沿用其他臀冲的深度规定；双脚仍按原有髋宽准备，不增加凳高、膝角、外部负荷数值或全程贴合保证；目录继承：原第 1 步“双脚平放”“与臀部同宽”（位置改为凳面）、原第 2 步整句杠铃放臀部与双手牢握、原第 3 步臀肌和核心提示与脚后跟推动及膝至肩直线、原第 4—6 步整句顶部暂停挤臀与慢放及样板句；肩背着地、双脚置凳不是目录继承。正文变更：第 1 步替换上背靠凳、脚落地为与 3523 相同的脚高位臀桥；第 3 步“抬离长凳”改为“抬离地面”，其他保留；第 4 步停顿在伸髋末端，髋位于较高处；不添加人物形式差别。接入时定稿 6 步 → 存储 5 步：第 1、2 步以分号合并，定稿句子实质不变。双帧终门通过——父级亲核阅读 A 成立：肩背在地面、双脚平放在凳面上，杠铃横置髋部由双手扶稳，两帧均不读作臀冲。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "da36c4e2628b5a757974cd5d0940843da5c8d1d7cfee19c5be41bb82e614ded8",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-9-3562",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch94.md",
+          "version": "2026-11-11 · 生成批次 94",
+          "sourceSha256": [
+            "1a66de84fad94c5fe2c82b463015f2e090483f7a01fad1e4713358d73a3516e0",
+            "7f949231bca6419d926de2b60d96094a03195ded47d1398d7c6983c696e154b1"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0044",
@@ -8126,22 +8141,37 @@
     {
       "id": "exdb:3544",
       "originalName": "bodyweight incline side plank",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称带上斜，步骤却是前臂着地、双腿叠放的普通侧平板；缺少高处支撑说明。",
+      "reason": "2026-11-11 B2 批次 9 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：实际打开核读器械品牌 RPM Power 的 Adjustable Weight Bench Exercises 中 Incline Side plank 段，覆盖前臂及肘撑凳、肩下支撑、收核心、抬髋直线、保持及换侧这一整体形式——是品牌公开使用教学，无个人教练署名，不伪装成个人专业审校；Fortabo 同名教学页搜索命中前臂凳上形式，但两次打开均 Cache miss，不据其摘要裁定叠脚或错脚；通行做法：高位前臂、低位双脚的侧平板是通行上斜侧支撑，脚留地面是形成该倾斜支撑线的几何条件；保留目录叠腿，采用叠脚、下侧脚外缘着地的标准形式，不添加来源中的抬上腿变体；凳面承前臂，肩在肘上方，抬髋后躯干与腿连成线，不将全身都放上凳面；目录继承：原第 1 步“双腿伸展并叠放在一起”、原第 2 步前臂与肩下肘的关系、原第 3 步整句核心与抬髋及头至脚直线、原第 4、5 步整句静态保持及下降换侧；凳面支撑和双脚着地为新增。正文变更：第 1 步由地面侧躺改为凳旁侧位准备，保留叠腿并交代脚接地；第 2 步前臂由地面改为凳面，删除数值“90 度角”，只保留非数值支撑关系；第 3—5 步原样保留，第 4 步“保持此位置所需的时间”为目录无具体数值的继承表述，按硬性规则保留，未新增时长或其他暂停；保留静态保持＋换边结构，不补 G1 样板句。接入时定稿 5 步原文直存。双帧终门通过——起始帧前臂撑凳、髋未抬，峰值帧抬髋成头到脚直线、双脚留在地面，下斜方向与脚部固定经核对成立。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "641ab54612c30f09e88d63754c9b16b6e48f27265957aad174dce527958372f3",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-9-3544",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch94.md",
+          "version": "2026-11-11 · 生成批次 94",
+          "sourceSha256": [
+            "58002915c8fafd653381694c5b4d8c18c2f3f45cc757b89c635fd631d9741276",
+            "3fd0fd94b7ee5034dfbc2e39e5b1f4b333d3631024f717bc7bdbcffc7e7a23fa"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1771",
@@ -15858,22 +15888,37 @@
     {
       "id": "exdb:3635",
       "originalName": "dumbbell contralateral forward lunge",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题contralateral，正文每手一铃普通双侧持重，缺对侧单手持重特征。",
+      "reason": "2026-11-11 B2 批次 9 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：实际打开核读论文《Effect of Load Distribution on Trunk Muscle Activity with Lunge Exercises in Amateur Athletes》（PMC）的 2.5.4 Lunge 与 Figure 2 图注文字，覆盖单侧持铃、持铃手与启动腿对侧及臂位沿躯干——没有把研究中的固定前后站位连续下蹲当成逐次换手前弓步依据，不移入实验处方；实际核读 Drew Murphy 的 The Suitcase Lunge（T-Nation 存档）的 How to，覆盖体侧单手持握，但其固定持铃手交替腿会兼有同侧与对侧，故不照抄其轮换方案；LiftManual 同名页搜索命中分侧方案，但打开 Cache miss，不称核读成功；通行做法：单铃对侧前弓步是通行的非对称持铃形式；本稿保留原目录逐次交替腿的功能，每次站回后先换手，保证新的前迈腿仍与持铃手对侧——这是对该通行形式的明确轮换安排，依据等级为通识，不冒称论文或 Murphy 已示范逐次换手；换手在稳定站立时完成，非弓步下降中传铃；不采用肩位持铃；原大腿平行地面是继承姿态判据，不将论文的实验下降深度移来；目录继承：原第 1 步肩宽站姿、原第 2 步整句右腿前迈与背直及核心、原第 3、4 步整句双膝下蹲与大腿平行及右脚跟推回、原第 5 步左腿重复、原第 6 步交替完成所需次数；双铃改单铃及换手均为修正新增。正文变更：第 1 步双手各持铃改为左手单铃体侧；第 5、6 步交代站回后逐次换手，保留交替结构和所需次数语义；第 2—4 步原样保留，未改成分侧完成，也未新增暂停（“站稳后换手”是转换条件，不是计时停顿）。接入时定稿 6 步 → 存储 5 步：第 1、2 步以分号合并，定稿句子实质不变。双帧终门通过——父级亲核对侧配对成立：两帧哑铃均在左手，峰值帧右腿向前迈步至大腿与地面平行。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "93b625eff8b06ad333132dbdfd30810da9bec51337f7bca7e369aff88775c864",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-9-3635",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch94.md",
+          "version": "2026-11-11 · 生成批次 94",
+          "sourceSha256": [
+            "8ff906ba00ceb33d297e81be38d4a3d2c0c1a9be02ef12ede5fe91f0d1ad0dd3",
+            "14c4244a0d6dfa0dbebce4a29a9236afd978f0eafc66268d579ff6184087c2a7"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0298",
@@ -25933,22 +25978,37 @@
     {
       "id": "exdb:3523",
       "originalName": "glute bridge two legs on bench (male)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称要求双腿放凳上，文字却是坐凳、脚落地、手扶凳，支撑位置矛盾；不能与上背靠凳臀推互换。",
+      "reason": "2026-11-11 B2 批次 9 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：实际核读 Simple Solutions Fitness 的 Feet-Elevated Glute Bridge 执行段，覆盖仰卧、双脚置高处与桥起下放；实际打开核读 Dr. Fitology 的 Glute Bridge Two Legs On Bench 的 Overview 和 How to Perform，覆盖地面肩背支撑、双脚凳面、肩至膝直线，并检索打开同站杠铃变体页，两页构型一致；该站 About 公开负责人 Adrian Salavaty 的 Certificate IV in Fitness，按具名负责人运营的教练站归属，不虚称动作页逐篇有其亲笔署名或外部审校；通行做法：甲读法（肩背在地面、双脚在凳面）是通行脚高位臀桥的完整形式，双手置于体侧地面作辅助支撑——LiftManual 同名页亦列掌心向下体侧手位，但无专业署名，不让其单独承担构型；乙读法（上背靠凳的臀冲）仅解释现文为何像臀冲，不能证明名称必须读成臀冲，已核读的 Bret Contreras Hip Thrust Wiki Page Overview 将上背架凳定义为 hip thrust，故不采乙；肩—髋—膝直线在脚高位桥起时仍成立，与 3562 同读法、同终点，不根据家族习惯另设幅度；目录继承：原第 3 步“收紧臀肌和腿筋”及“直到身体从膝盖到肩膀形成一条直线”、原第 4 步整句顶部暂停与慢放、原第 5 步样板句；原第 1、2 步具体支撑关系均须替换。正文变更：第 1 步替换坐凳靠背、脚落地构型；第 2 步扶凳改为手撑地；第 3 步“抬离长凳”改为“抬离地面”，保留肌肉提示及终点直线；第 4 步暂停在伸髋桥起末端，未引入人物性别描述。接入时定稿 5 步原文直存。双帧终门通过——父级亲核阅读 A 成立：肩背在地面、双脚平放在凳面上，峰值帧抬髋成膝—髋—肩直线，两帧均不读作上背靠凳的臀冲。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "9b290d80da0f25b56badc7e2a4e3054c1f7905c3bbb7052c16877065fb40475e",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-9-3523",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch94.md",
+          "version": "2026-11-11 · 生成批次 94",
+          "sourceSha256": [
+            "82943c59785e64a4d6d1ad3abb931dea5151a256a8293499d1978194280ad3ab",
+            "86da9076b657bae29f48f9cb81542edc85c4551de9d6c9f63135ad104ddb0e39"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3193",
@@ -29299,42 +29359,72 @@
     {
       "id": "exdb:3288",
       "originalName": "korean dips",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称通常涉及身体位于横杆前方、双手身后支撑，文字却是普通双杠臂屈伸；器械和支撑不符。",
+      "reason": "2026-11-11 B2 批次 9 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：实际打开核读 Al Kavadlo《All About Dips》（T-Nation 存档）的 Korean Dips 段，覆盖身后直杠、双脚悬空，并明确正反握均可选（不移入其普通直杠段的胸触杠要求）；又核读 GymnasticBodies 的 Korean Dip 操作列表，覆盖单杠、体后握杆、掌心向后、背对杠及推起时髋略向前避开杠——本稿选后者明确列出的掌心向后形式，不移入肩胛触杠或锁肘要求；Enso Method Book、赛事规则 PDF 与 Sommer 书籍 PDF 均因文件过大或网络策略未能读取，未据摘要作细节裁定；通行做法：身后杠与双脚离地的支撑关系是该动作区别于普通双杠臂屈伸的通行整体构型，非两个动作拼接；不规定前伸或后伸腿形（题面前伸腿假设未获采用）；下降时髋在杠前、回推时略向前使臀部绕开杆，不要求背部全程贴杆；上臂平行地面为本目录选定的非数值终点姿态，保留但不称来源规定了这一深度，不升级为最大下沉；目录继承：原第 1 步“双臂伸展并支撑体重”、原第 2 步整句屈肘下降至上臂平行地面、原第 3 步下沉末端暂停与伸臂推回的句干、原第 4 步样板句；单杠、握向、身体与杠的前后关系、脚离地、避杠路线均为修正或补充。正文变更：第 1 步将双杠间支撑替换为身后单杠并明确握向与悬空支撑；第 3 步补避杠路线，保留原暂停（落点仍在下降终点，未增顶部停顿）；第 2、4 步原样保留。接入时定稿 4 步原文直存。双帧终门通过——起始帧身后单杠、掌心向后支撑、双脚离地；峰值帧屈肘下沉至上臂平行；已接受的柔软点：峰值帧膝部屈曲（正文未规定腿形）、峰值帧掌心向后读面部分被遮挡，均记录不改判。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "02912622dd697fbeea9fd729d4c728c1aa4405044945a26517489acf2618254b",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-9-3288",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch94.md",
+          "version": "2026-11-11 · 生成批次 94",
+          "sourceSha256": [
+            "446cf14eb6763737390156b456506f1babe2ce638c1568aed293f90aa5acb5c1",
+            "ff9408ecc5b01f6721a168b25b1524b48d0ca4ba416d8eea8e7c7e50eaaa5f71"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3418",
       "originalName": "l-pull-up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称要求双腿前伸成L形，文字没有腿部抬起或保持水平；缺失关键姿态，不能用普通引体图。",
+      "reason": "2026-11-11 B2 批次 9 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：实际打开核读 CrossFit 的 The L Pull-Up 署名教学说明，覆盖引体中保持静态 L-sit 的组合整体；实际核读 CrossFit 的 The L-Sit 中 Greg Glassman 的姿态说明，覆盖双腿直伸于前（带 topicId 的 L-sit 地址曾超时，后用无参数地址成功打开；未观看内嵌视频）；通行做法：水平直腿、双腿并拢是标准 L 位的姿态判据，作用是与普通垂腿引体区分，不要求腿尽可能抬高；在组合全过程维持该位，不在上拉后才临时抬腿；握距与肘靠近身体沿用目录，不声称上述短说明逐项规定了它们；目录继承：原第 1 步整句正手略宽握、原第 2 步“双臂完全伸展”、原第 3、4 步整句上拉路径与肘靠身及下巴过杠、原第 5 步顶部停顿和慢放、原第 6 步样板句；原“身体伸直”与 L 位全身直线不相容，替换为明确腿位。正文变更：只替换第 2 步的全身直线为 L 位并交代全循环保持，其他步骤原样保留（包括目录既有“杠铃杆／杠铃”称谓）；第 5 步停顿在上拉收缩末端，身体确在较高位置，未增加第二次暂停或腿高数值。接入时定稿 6 步 → 存储 5 步：第 1、2 步以分号合并，定稿句子实质不变。双帧终门通过——起始帧伸臂悬挂且双腿已成水平 L 位，峰值帧下巴过杠且 L 位保持；已接受的柔软点：起始帧双脚在视觉上与远侧立柱重叠，仅为透视，记录不改判。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "c050db99aab9392824831708ce2cb8cfff1572d2d9969121d0ad2ccd18c7e865",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-9-3418",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch94.md",
+          "version": "2026-11-11 · 生成批次 94",
+          "sourceSha256": [
+            "f190f0d55d5fa5f1040449e79acd897cf045e2c4bfc67ab33fa7fd090cce8fcc",
+            "4da04ebb727386062eadaff6b5f986c17ff9ea3a69b62d3019e515d5bed99f53"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3419",
@@ -29444,22 +29534,37 @@
     {
       "id": "exdb:3300",
       "originalName": "lean planche",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源要求肩越过手且肘微屈，但未说明脚是否持续触地；与直臂前倾保持区别尚需核对。",
+      "reason": "2026-11-11 B2 批次 9 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖（本条证据注经 PASS 2 核查修正后定版，正文不动）：已核读 Ryan Hurst / GMB 的 Planche Progression，其 Basic Planche Lean 为脚趾接地、肩越腕的前倾支撑，基本定位要求直臂；因本条名为 lean planche，另核读具名教练 Daniel Flefil 的 Planche Tutorial，Stage 1: Lean Planche 明确直臂前倾且不必抬脚，确认本稿采用的同名形式——GMB 负责手向、脚趾及肩腕关系，Flefil 的同名教学负责支持名称映射、直臂及脚不离地；没有把英文词序相近本身当作证据。分歧与取舍（PASS 2 新增披露）：TrainRBoost 同名步骤写微屈肘、与目录相同，但该页未见专业个人署名；Workout Temple 同名教学则写伸肘；检索未核得具名专业来源把微屈肘确定为 lean planche 区别于 planche lean 的定义特征，ExRx 本轮不可访问，不声称已排除其潜在不同口径——本稿据具名教练的同名教学选择直臂、脚趾接地形式（即 PASS 1 曾以近亲名称直接反转继承微屈肘、跳过名称映射环节的缺陷，已由 PASS 2 补证后确认直臂取舍，肘部裁定按定稿成立：直臂）；通行做法：选择手指朝前这一来源许可的常规手位，非唯一可行握向；前倾与回退时脚趾仍接地，脚可绕趾部转动，不误读为脚底全掌不动或全身平移至离地 planche；前倾静态保持后才回退，无需新增另一次暂停；目录继承：原第 1 步俯卧撑位、肩宽手距、身体伸直，原第 2 步整句核心与缓慢重心前移，原第 3 步前倾中身体伸直，原第 4 步“保持这个姿势”及“然后慢慢回到起始位置”，原第 5 步样板句；脚接地、手指朝前为新增，直臂为替换。正文变更：第 1、3、4 步补持续脚趾触地与选定手向；原第 3 步微屈肘改为直臂，未写锁肘；第 4 步删除原“几秒钟”时长，保留保持及随后回退。接入时定稿 5 步原文直存。双帧终门通过——峰值帧肩部明显越过双手，两帧肘部均为直臂，经父级放大亲核确立（远侧手臂部分被遮挡但读为伸直），无继承“肘微屈”的残留。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "9fe75f14677ded7f7fe371a087d5922e8099feb0458bbb1b00435170fa7ea188",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-9-3300",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch94.md",
+          "version": "2026-11-11 · 生成批次 94",
+          "sourceSha256": [
+            "12058b7254d30595ff95928a3c99c70379ed6bbb8cd84790fc69f3a1de2971e8",
+            "5dbd2820f55acd2ea96141b7b22439a2f352d24d024dc835b888aea6264670e5"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2271",
@@ -34224,22 +34329,37 @@
     {
       "id": "exdb:3552",
       "originalName": "quick feet v. 2",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源仅原地快速交替抬脚，未明确与其他小碎步的版本区别或膝高；完整左右步态示范待核对。",
+      "reason": "2026-11-11 B2 批次 9 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：实际打开核读 Gabriella Bellissimo、Len Kravitz / ACE 的 Body-weight Interval Training 的 Table 5，确认专业教学列有普通 Quick feet，但仅给低髋、核心提示，不声称其规定 v. 2 或膝高；针对完整名称搜索“quick feet v. 2”命中 FitFocus、Tetafit、Niud、GymiaFit 等目录，实际打开 FitFocus 同名页的 How to，其为重复现文的原地跑式小步，没有给 v. 1 对照或版本专属动作，且该页无专业署名、其他样板建议与快速脚步不协调，不采其训练处方；其余命中站本轮仅搜索命中、未逐页打开，不声称核读；通行做法：普通 quick feet 的通识形式是双脚快速轮流轻离地、以前脚掌着地的原地小碎步，低幅用于区别高抬腿，不指定膝高或步频；本轮未发现可署名来源区分 v. 2 专属形式，版本标签不增加定义要求——这只是检索范围内的结论，并非证明世界上不存在其他版本；未用台阶 quick feet、方向反应或器械版本代替本条，也不据英文编号自行发明形式；目录继承：原第 1 步整句肩宽站姿及双臂体侧、原第 2 步“首先快速上下移动双脚，就像原地跑步一样”的动作骨架、原第 3 步整句快而轻盈与重点脚掌、原第 4 步整句继承结尾。正文变更：仅第 2 步明确交替、小幅和前脚掌接地；第 1、3、4 步原样保留；原结尾无数值，保留其持续时间或重复次数结构，不替换为 G1 样板句；本条原文没有暂停，不增加。接入时定稿 4 步原文直存。双帧终门通过——起始帧肩宽站立，峰值帧原地前脚掌轻弹、双脚近地面的轻跳瞬间；已接受的柔软点：峰值帧双脚均近地面使交替相位读感较弱，但原地、前脚掌特征与幅度正确，记录不改判。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "41ab4700de2a146e9c337ef7cd385522b6cabb8d99ed826e82d7322d3c8b9c45",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-9-3552",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch94.md",
+          "version": "2026-11-11 · 生成批次 94",
+          "sourceSha256": [
+            "12923a92d02ffb92e97ea776a9b8cf3a2b189e6058ba5edde9e7f7e8cfb59857",
+            "1e60f19865ce3245061eca486335300fcf9febe4e93644400357ad7095ded641"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0666",
@@ -35999,22 +36119,37 @@
     {
       "id": "exdb:3667",
       "originalName": "side lying hip adduction (male)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称内收、目标内收肌，步骤却抬上侧腿向上，为外展轨迹；名称和运动方向相反，不能发布同一示范。",
+      "reason": "2026-11-11 B2 批次 9 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：实际打开核读 ACE 的 Side Lying Hip Adduction 的 Step 1–3：下臂垫头、两腿伸直、下侧腿略向前移、上抬下侧腿、髋保持侧向及受控下放——来源实际运动的是下侧腿，不是取外展页的起始姿态冒充内收依据；题面上侧屈膝跨前是可选假设，本稿不采用；搜索命中的 University of Windsor 手册候选摘要虽列该形式，实际打开为 404，不能据它硬定屈膝跨前；通行做法：选择 ACE 明写的双腿伸直、下侧腿略前移形式，为下侧腿留出上抬空间，在侧卧平面向上抬下腿是髋内收；与已核读的批次 7 的 1775 一致采用下侧腿内收，差别是本条躯干侧卧着地而非侧桥，不借 1775 的上侧脚支撑要求改成本条必需姿势；上侧腿不随抬，保持髋不旋转；目录继承：原第 1 步整句侧躺与双腿伸直叠放作为准备、原第 2 步整句下臂垫头、原第 3 步“启动内收肌”及“但不要旋转臀部或向后倾斜”、原第 4 步暂停及慢放、原第 5 步整句合并结尾；下侧腿前移及改抬下侧腿均为修正，非原文内容。正文变更：第 2 步补 ACE 形式的下腿前移，不把未采用的上侧屈膝假设写入；第 3 步抬上腿改为抬下腿，删除最大幅度措辞“尽可能高地”，保留内收肌及防旋转提示；第 4 步继承暂停并明确其新落点为下侧腿离地上抬末端，将“在顶部”换成明确肢体和相位的措辞；原第 1、5 步原样保留，G1″ 合并结尾不拆；不加人物形式差别。接入时定稿 5 步原文直存。双帧终门通过——父级独立亲核确立：被抬起的是下侧腿（起始帧下侧腿按 ACE 设置略向前移，上侧腿在两帧中均留在地面），本批标志性风险点保持成立。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "da074665d6d24a935d864703775ff435639023b2dbc11fa584d1826e24c4a785",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-9-3667",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch94.md",
+          "version": "2026-11-11 · 生成批次 94",
+          "sourceSha256": [
+            "d30765dc8d1afc266419c322e7db7eaee14b564d03d878cf15dd1e1df6ba1756",
+            "e2e45bbb08f5401402b18edd060db6cb1887a527adbc8fcee48b83e7edca443e"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1775",
@@ -36537,22 +36672,37 @@
     {
       "id": "exdb:3304",
       "originalName": "skin the cat",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源要求收腿穿过手臂后返回，但未明确后侧悬垂终点与肩部转动范围；复杂悬挂动作不据此制作通用图。",
+      "reason": "2026-11-11 B2 批次 9 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：实际打开核读 Summer Fun Fitness 的 Calisthenics Upper Body Workouts for Beginners 中 Skin the Cat to German Hang 教学分级，覆盖单杠、收腿穿杠、进入 German hang 后翻回，并将直腿形式另列为 advanced——本稿采用其收腿教学形式，不移入保持呼吸或时长；实际核读 MoveMore 教学库 German-hang & Skin the cat development 的公开 THE WHAT 段，覆盖杆上身后悬垂和进出此姿态的区分（订阅视频及付费补充未读取，不称看过）；通行做法：收膝使双腿能穿过双臂与杆下空间，髋越过倒悬位置后继续下落才到身后悬垂，过头顶并非立即反向的终点；腿可以保持屈膝向下垂落，不把直腿或最大肩伸写成必需；进出同一路径是整体动作的通行循环，非另拼直腿翻转；本条没有继承的暂停或静态保持，不新增任何停顿；目录继承：原第 1 步整句放松悬挂及伸臂、原第 2 步整句收核心与膝靠胸、原第 3 步举腿过头与穿过手臂的动作意图、原第 5 步最终再悬挂与双臂伸展的结果、原第 6 步样板句；身后悬垂终点及明确反向路径属纠正补足。正文变更：第 3 步明确收腿及后翻方向；第 4 步不再于腿刚过头时直接返回，补完整身后悬垂终点；第 5 步明确先反向翻回再下放腿。接入时定稿 6 步 → 存储 5 步：第 3、4 步以分号合并（同一受控后翻相位），定稿句子实质不变。双帧终门通过——起始帧伸臂放松悬挂；峰值帧经一次锚定修复后成立：初稿峰值双腿高收未落入悬垂，已归档于暂存 FAILED/exdb-3304-peak-draft1.png，修复稿完成翻转、双臂位于身体后方、双腿下垂落入悬垂且膝部微屈；已接受的柔软点：悬垂保留轻微前倾体角，记录不改判。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "144fb8e838c115c957b0acddf7bc33bf69a54eb238ace7e3dbdd4c015fe2a07f",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-9-3304",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch94.md",
+          "version": "2026-11-11 · 生成批次 94",
+          "sourceSha256": [
+            "af3130392c9c5a737e3b592b6630747c4bc975fa85ec3e5ae7d1234802a057cf",
+            "6b514e0eb2265564aadc9ee553a8a146594645c9f23a3faf16381f6c2af43c0c"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1425",
@@ -40432,22 +40582,37 @@
     {
       "id": "exdb:3670",
       "originalName": "weighted decline sit-up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文只双手脑后或胸前，没有任何负重物及接触方式。",
+      "reason": "2026-11-11 B2 批次 9 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：实际打开核读 Exercises.com.au 的 Decline Weighted Sit Ups 的 How To，覆盖下斜凳、脚垫固定、双手在上胸前持片、起坐及回到板面的组合整体——注意原文随即明确要求片不要接触胸部，故不将题面“贴于胸前”假设说成得到核证，采用在上胸前留出间隙的持法；该页为机构署名 Exercises.com.au，非虚构个人教练作者；实际核读 Catalyst Athletics 的 Decline Sit-Up 的执行和 Variations，确认其另列脑后负重选择，本稿不混用；候选 FORCE 页打开 Cache miss，不据其摘要覆盖贴胸接触；通行做法：下斜指仰卧头端低、固定脚端高，与已核读的批次 1 的 0282 一致；前胸双手持片与脑后持片是不同持法，本稿仅采用已核读的胸前留隙形式，整个循环由双手扶住，不承诺片自行贴合；原躯干垂直地面为本条继承终点姿态，予以保留，不把来源最大起坐幅度移入；目录继承：原第 1 步仰卧于凳与脚垫固定、原第 3 步整句收腹与慢慢抬身及前卷至垂直、原第 4 步整句顶部停顿和慢放、原第 5 步样板句；原第 2 步双手位置选择与持片冲突须替换，负重物与接触安排不是原文内容。正文变更：第 1 步只明确下斜方向与高端脚垫；第 2 步原脑后／胸前空手改为双手胸前持片，依本条实际核读来源明确留隙，不默默采用贴胸假设；第 3—5 步原样保留，顶部停顿发生在卷起末端；无重量、规格、凳角或新增时长。接入时定稿 5 步原文直存。双帧终门通过——两帧杠铃片均持于上胸前且与胸部留有可见间隙（从不接触、从不在脑后），下斜方向（头低脚高）与高端脚垫固定经核对成立，峰值帧躯干垂直。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "e106a6ba995a74e7c24dbd65b9c4584c4a581427191c17c1a8f89c29483cb8e1",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB2-9-3670",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch94.md",
+          "version": "2026-11-11 · 生成批次 94",
+          "sourceSha256": [
+            "1a8c39bc82dad80293c420b7481e0ceda48d41589a79507f3bf722354736b049",
+            "9e4239c4e1362e702a341cb85215c228ae12fbadff8e5a65ce9f29a1721c4554"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0833",
