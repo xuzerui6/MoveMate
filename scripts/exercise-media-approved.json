@@ -14021,6 +14021,204 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3288",
+   "expectedName": "korean dips",
+   "sourceId": "ai-codex-fillB2-9-3288",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "446cf14eb6763737390156b456506f1babe2ce638c1568aed293f90aa5acb5c1",
+    "ff9408ecc5b01f6721a168b25b1524b48d0ca4ba416d8eea8e7c7e50eaaa5f71"
+   ],
+   "phases": [
+    "起始：身体在单根直杠前方，双手在身后掌心向后握杆，双臂伸展支撑体重，双脚离地。",
+    "关键：屈肘下沉至上臂与地面平行，双脚保持离地。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3300",
+   "expectedName": "lean planche",
+   "sourceId": "ai-codex-fillB2-9-3300",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "12058b7254d30595ff95928a3c99c70379ed6bbb8cd84790fc69f3a1de2971e8",
+    "5dbd2820f55acd2ea96141b7b22439a2f352d24d024dc835b888aea6264670e5"
+   ],
+   "phases": [
+    "起始：俯卧撑位，双臂伸直、肩在手上方，脚趾支撑，身体成直线。",
+    "关键：重心前移至肩越过双手，手臂保持伸直，双脚仍触地。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3304",
+   "expectedName": "skin the cat",
+   "sourceId": "ai-codex-fillB2-9-3304",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "af3130392c9c5a737e3b592b6630747c4bc975fa85ec3e5ae7d1234802a057cf",
+    "6b514e0eb2265564aadc9ee553a8a146594645c9f23a3faf16381f6c2af43c0c"
+   ],
+   "phases": [
+    "起始：双臂完全伸展，身体放松悬挂于单杠。",
+    "关键：向后翻转完成，双臂位于身体后方，身体垂落进入身后悬垂，双腿下垂、膝部微屈。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3418",
+   "expectedName": "l-pull-up",
+   "sourceId": "ai-codex-fillB2-9-3418",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f190f0d55d5fa5f1040449e79acd897cf045e2c4bfc67ab33fa7fd090cce8fcc",
+    "4da04ebb727386062eadaff6b5f986c17ff9ea3a69b62d3019e515d5bed99f53"
+   ],
+   "phases": [
+    "起始：双臂伸展悬挂，双腿伸直并拢向前抬起至与地面平行的 L 位。",
+    "关键：下巴越过杠面，双腿全程保持水平 L 位。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3523",
+   "expectedName": "glute bridge two legs on bench (male)",
+   "sourceId": "ai-codex-fillB2-9-3523",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "82943c59785e64a4d6d1ad3abb931dea5151a256a8293499d1978194280ad3ab",
+    "86da9076b657bae29f48f9cb81542edc85c4551de9d6c9f63135ad104ddb0e39"
+   ],
+   "phases": [
+    "起始：仰卧地面、肩背着地，双膝弯曲，双脚平放在凳面上，双手撑于臀旁地面。",
+    "关键：臀部抬离地面，身体从膝盖到肩膀形成一条直线。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3544",
+   "expectedName": "bodyweight incline side plank",
+   "sourceId": "ai-codex-fillB2-9-3544",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "58002915c8fafd653381694c5b4d8c18c2f3f45cc757b89c635fd631d9741276",
+    "3fd0fd94b7ee5034dfbc2e39e5b1f4b333d3631024f717bc7bdbcffc7e7a23fa"
+   ],
+   "phases": [
+    "起始：侧位立于凳旁，下侧前臂撑于凳面，双腿叠放、双脚留在地面，髋部尚未抬起。",
+    "关键：臀部抬离地面，从头到脚形成一条直线的上斜侧平板。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3552",
+   "expectedName": "quick feet v. 2",
+   "sourceId": "ai-codex-fillB2-9-3552",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "12923a92d02ffb92e97ea776a9b8cf3a2b189e6058ba5edde9e7f7e8cfb59857",
+    "1e60f19865ce3245061eca486335300fcf9febe4e93644400357ad7095ded641"
+   ],
+   "phases": [
+    "起始：双脚与肩同宽站立，双臂放在身体两侧。",
+    "关键：双脚快速交替小幅离地，以前脚掌轻快着地，如原地跑步。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3562",
+   "expectedName": "barbell glute bridge two legs on bench (male)",
+   "sourceId": "ai-codex-fillB2-9-3562",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "1a66de84fad94c5fe2c82b463015f2e090483f7a01fad1e4713358d73a3516e0",
+    "7f949231bca6419d926de2b60d96094a03195ded47d1398d7c6983c696e154b1"
+   ],
+   "phases": [
+    "起始：仰卧地面、肩背着地，双脚平放在凳面上，杠铃置于髋部由双手扶稳。",
+    "关键：臀部抬离地面，身体从膝盖到肩膀形成一条直线，杠铃仍由双手扶稳于髋部。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3635",
+   "expectedName": "dumbbell contralateral forward lunge",
+   "sourceId": "ai-codex-fillB2-9-3635",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "8ff906ba00ceb33d297e81be38d4a3d2c0c1a9be02ef12ede5fe91f0d1ad0dd3",
+    "14c4244a0d6dfa0dbebce4a29a9236afd978f0eafc66268d579ff6184087c2a7"
+   ],
+   "phases": [
+    "起始：双脚与肩同宽站立，左手握一个哑铃垂于体侧。",
+    "关键：右腿向前迈步下蹲至右大腿与地面平行，哑铃仍在左手体侧（对侧持铃）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3667",
+   "expectedName": "side lying hip adduction (male)",
+   "sourceId": "ai-codex-fillB2-9-3667",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d30765dc8d1afc266419c322e7db7eaee14b564d03d878cf15dd1e1df6ba1756",
+    "e2e45bbb08f5401402b18edd060db6cb1887a527adbc8fcee48b83e7edca443e"
+   ],
+   "phases": [
+    "起始：侧卧双腿伸直叠放，下臂垫于头下，下侧腿略向前移、双脚落在地面。",
+    "关键：下侧直腿向上抬起内收，上侧腿留在地面，髋部不旋转。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3670",
+   "expectedName": "weighted decline sit-up",
+   "sourceId": "ai-codex-fillB2-9-3670",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "1a8c39bc82dad80293c420b7481e0ceda48d41589a79507f3bf722354736b049",
+    "9e4239c4e1362e702a341cb85215c228ae12fbadff8e5a65ce9f29a1721c4554"
+   ],
+   "phases": [
+    "起始：平躺在头低脚高的下斜凳上，双脚固定在高端脚垫下，双手持杠铃片于上胸前并留出间隙。",
+    "关键：上半身卷曲抬起至躯干垂直于地面，杠铃片仍持于上胸前、未接触胸部。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
