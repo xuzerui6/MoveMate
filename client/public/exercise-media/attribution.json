@@ -37857,6 +37857,376 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:0400": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla07-0400-0.93b5c23d1f8c.webp",
+          "sha256": "93b5c23d1f8caa1f0c257cc52a059c63f9da3ccf45825d4c20c48a75f9b81d8c",
+          "bytes": 72058,
+          "distribution": "repository",
+          "phase": "起始：坐于长凳，哑铃竖放在工作腿大腿上，另一腿向前伸直离地，工作腿前脚掌踩台阶边缘、脚跟下沉。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla07-0400-1.fffe7989f1e9.webp",
+          "sha256": "fffe7989f1e9046da0eb59fc6d6a51555f17107369575d6668c161f8a218da61",
+          "bytes": 69046,
+          "distribution": "repository",
+          "phase": "关键：工作腿脚跟抬至最高，前脚掌踩稳台阶边缘，哑铃仍压在同腿大腿上。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA07-0400",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch97.md",
+          "version": "2026-11-11 · 生成批次 97",
+          "sourceSha256": [
+            "5b6c811e924bed7d9f3c1275b8aab93950419bf3ab3f1f3821636af87ffffc9c",
+            "749ee84abdd10054226d037c6fc61a6bc88026b3215d32e596c463f7512b1822"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0402": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla07-0402-0.7a89af909cb2.webp",
+          "sha256": "7a89af909cb200b0af3cdc1479767996acc2f24e1d512675162ff5bea604ca3b",
+          "bytes": 64468,
+          "distribution": "repository",
+          "phase": "起始：单臂上臂整段贴在牧师垫上，反手握哑铃（掌心离垫朝外），手臂沿垫面下放伸展。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla07-0402-1.472bccc0b054.webp",
+          "sha256": "472bccc0b054ba91888527e87ddf5e22f4f3a51c52e2735c184dd89c3e3e8260",
+          "bytes": 60810,
+          "distribution": "repository",
+          "phase": "关键：屈肘将哑铃弯至肩高，上臂仍贴垫，握向未翻转。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA07-0402",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch97.md",
+          "version": "2026-11-11 · 生成批次 97",
+          "sourceSha256": [
+            "6728fc3cf193b311976fdd5ae0952b28882d8f4b69cb5cfbf5d44f76de3fcfa1",
+            "d253adf48cef7d5e11054641dd5080836d8ad7dfd4b9e82df33c4f4507d47f80"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0409": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla07-0409-0.ca7b54e25f28.webp",
+          "sha256": "ca7b54e25f28fb50dc6f06ef75b84312196015e528a5b7accc0ebc50d0610c96",
+          "bytes": 91256,
+          "distribution": "repository",
+          "phase": "起始：工作腿前脚掌站在台阶边缘、脚跟沉至台阶面以下，同侧手持哑铃，另一手扶栏杆，非工作腿悬空。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla07-0409-1.819480f4cb39.webp",
+          "sha256": "819480f4cb397f73e39963a90df0761a37b05f0a393127a8c5c1beb5fd679df9",
+          "bytes": 86056,
+          "distribution": "repository",
+          "phase": "关键：脚跟抬至最高、踮起脚趾支撑，持铃与扶栏关系不变。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA07-0409",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch97.md",
+          "version": "2026-11-11 · 生成批次 97",
+          "sourceSha256": [
+            "bff708307ca4ecada68966ce022def532002d31866917572885307f0749281aa",
+            "b0ac7fcf6955c2865aca9746dc26c422d88bc4ee976ae5d24dd2d02101490d7d"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0863": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla07-0863-0.7bf31fbaf7b6.webp",
+          "sha256": "7bf31fbaf7b6266d04341874b5fe39c530e5dcd9a3e9906cc56ab5c7f23f570a",
+          "bytes": 85504,
+          "distribution": "repository",
+          "phase": "起始：侧卧于平凳，上臂贴身、肘弯曲 90 度，前臂垂于腹前下方，头部由下侧手臂承托。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla07-0863-1.7c61d08807dc.webp",
+          "sha256": "7c61d08807dc051939aee1aea2248df5dfe84c1e9604d5bea21a42ffee04f764",
+          "bytes": 75792,
+          "distribution": "repository",
+          "phase": "关键：上臂贴身、肘保持 90 度，前臂向上旋转至竖直指天。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA07-0863",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch97.md",
+          "version": "2026-11-11 · 生成批次 97",
+          "sourceSha256": [
+            "c703a88792eb75816cace582dbd2502ff3dfb93190561fcca887c22271ef5099",
+            "2c46e8e2824ba7eff2d8eb19fca648c80960a689b8b47d0cb6d466df1dc3b195"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1276": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla07-1276-0.19acc825e9de.webp",
+          "sha256": "19acc825e9de8182a96632806d024ffc86740c6ba8fa6f347b16b3c34148b750",
+          "bytes": 83374,
+          "distribution": "repository",
+          "phase": "起始：仰卧下斜凳、脚踝锁于高处滚垫下，单臂伸直于胸部上方，掌心朝前。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla07-1276-1.ea227d3ecc5e.webp",
+          "sha256": "ea227d3ecc5e5e2ae20e11d6a2e24bd230faadf5c5b3a22fdfc6689dba5ccf71",
+          "bytes": 81344,
+          "distribution": "repository",
+          "phase": "关键：手臂沿身体侧方下放至肩线侧旁的拉伸位，掌心仍朝前，肘部轻微弯曲。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA07-1276",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch97.md",
+          "version": "2026-11-11 · 生成批次 97",
+          "sourceSha256": [
+            "57949e504d64b27558eaf5af9dd330ea623c36f4c129ea765ed1139814a91fea",
+            "35c42e946832b44b39763e6a3155ea4bef495aa42f888401f09a8348685b0dba"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1280": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla07-1280-0.7132efb2cd46.webp",
+          "sha256": "7132efb2cd4689497fa04e1bf6656990b71aa363cb4074164122faa2a93f3e93",
+          "bytes": 76604,
+          "distribution": "repository",
+          "phase": "起始：上斜体位由健身球托住头、颈与上背部，单臂伸直于胸部上方，掌心朝内。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla07-1280-1.deeaeb3fe3de.webp",
+          "sha256": "deeaeb3fe3de1b6282c2ee5d9721d56756190dc9e93bfec5866a9123e74a94dd",
+          "bytes": 69264,
+          "distribution": "repository",
+          "phase": "关键：哑铃向一侧放低至手臂近与地面平行，肘部轻微弯曲，握向保持。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA07-1280",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch97.md",
+          "version": "2026-11-11 · 生成批次 97",
+          "sourceSha256": [
+            "4c59bd6a02e51980ce929eae71724ac8d0c309bbfd6bc5e96b1e75cc2ec665eb",
+            "52b15e322522a7c06118d475d8dd196f9760789b4b4e346366509a231b1298ad"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1282": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla07-1282-0.e198b60f03b7.webp",
+          "sha256": "e198b60f03b72ca577cbe0156d256c76b3a35d89875e6f5586b6a20ba4aa7866",
+          "bytes": 69272,
+          "distribution": "repository",
+          "phase": "起始：健身球托住头、颈与上背部，单手持哑铃位于肩高，掌心朝前。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla07-1282-1.60e2083e4ec4.webp",
+          "sha256": "60e2083e4ec49d93b12b64086118d145a425511e595fdb93e59b3c14445bd439",
+          "bytes": 67720,
+          "distribution": "repository",
+          "phase": "关键：哑铃推至手臂完全伸展，掌心仍朝前，未发生旋握。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA07-1282",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch97.md",
+          "version": "2026-11-11 · 生成批次 97",
+          "sourceSha256": [
+            "cd6a0d3ec398ba547e1826d42a3651ea3c1ed3acca3a49ed7aea792ddf926878",
+            "8cd0850bb273af134b8419b4b729c9d31f5b90607dfb61fa6d98110d606e45dc"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1284": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla07-1284-0.da6281cb60d8.webp",
+          "sha256": "da6281cb60d81bfafd176942de6c7ceb7d1d500dcac26055f8eae80ac6a42684",
+          "bytes": 74956,
+          "distribution": "repository",
+          "phase": "起始：上背部靠在健身球上成桥式，双手共托一只哑铃伸直于胸部上方。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla07-1284-1.4e81416a0a2c.webp",
+          "sha256": "4e81416a0a2ceaa35c76215df6ca2fa84c6c5de2afe4883875ea44f57b58cd6c",
+          "bytes": 82404,
+          "distribution": "repository",
+          "phase": "关键：哑铃下放至脑后、低于头位，双臂保持近伸直，桥式与脚位不变。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA07-1284",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch97.md",
+          "version": "2026-11-11 · 生成批次 97",
+          "sourceSha256": [
+            "fb70cd38b9171b876c0b96f6bcf85bbc70f64a8be4856caa71c24184c4232c18",
+            "5af3aed89519005894afde3991e3a82d86f2c5ce471834169f3bc02d2858a956"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1288": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla07-1288-0.da5da9a86c29.webp",
+          "sha256": "da5da9a86c2966ff89d63a7cf07c111399994be70d01e536808d7ed25f2325d3",
+          "bytes": 63814,
+          "distribution": "repository",
+          "phase": "起始：上背与头颈靠在健身球上成水平桥式，单臂伸直于胸部上方，掌心朝内。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla07-1288-1.3d51c6726dc0.webp",
+          "sha256": "3d51c6726dc0361fd121f53c1f9c527c62e59c61f20b8a40a2617384acd99a34",
+          "bytes": 59422,
+          "distribution": "repository",
+          "phase": "关键：哑铃向体侧放低、肘部轻微弯曲，髋部保持顶高、桥式不塌。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA07-1288",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch97.md",
+          "version": "2026-11-11 · 生成批次 97",
+          "sourceSha256": [
+            "370b3bf858fbb28b147bf5da2fd400cb4f02f6c24803ec093147f678f348d117",
+            "c3d2b4dd15c0bb3f8c4d8a49e56db4656f66a24dd6b87cc48673d8e6f1b0033f"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1289": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla07-1289-0.91c3e025b94c.webp",
+          "sha256": "91c3e025b94cc4f9317e2e71a964375b7c6338a8580c9ec0920a7a4e97e3a3f7",
+          "bytes": 86924,
+          "distribution": "repository",
+          "phase": "起始：45 度上斜凳，单手正手握哑铃置于肩高，掌心朝前。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla07-1289-1.2cfb56682ef1.webp",
+          "sha256": "2cfb56682ef1db2b74fc5decfee08667a23f265b3d260dd432c2de5e292f8586",
+          "bytes": 85592,
+          "distribution": "repository",
+          "phase": "关键：哑铃推至手臂完全伸展，掌心仍朝前，未发生旋握。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA07-1289",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch97.md",
+          "version": "2026-11-11 · 生成批次 97",
+          "sourceSha256": [
+            "89fed76fe7b2f17fa5381fa65ea23f2ed389a0f891878241a4ccde4f415b002d",
+            "08ee08982be5fd0038b4ba30e9caff9db55de99c6da6390487dac3f009c87a15"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }
