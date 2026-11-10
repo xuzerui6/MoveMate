@@ -30,5 +30,7 @@
 
 ## 验证与部署记录
 
-- 串行全套测试（2026-11-10 本地）：client `test:repository` + `tsc -b`、server 测试 + build、cloudflare 测试 + typecheck（结果见合入后回填）。
-- 接入提交：（合入后回填）；双站部署 Version：（部署后回填）。
+- 串行全套测试（2026-11-10 本地）：client `test:repository` **519/519** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。发布链计数三方一致：publish-exercise-documentation 输出 complete 797 / photos 684 / pending 532（原始口径，含已归档 20 条；有效口径 complete 797 / pending 512 / total 1,309），report 脚本 images 797 / missing 532。
+- 接入提交：`f87987d`（分支 media/exercise-media-batch79），合入 main 为 `caeee02`；CI run 42764724228 **success**。合入后 step5 分支工作树复跑 client `test:repository` 519/519。
+- 双站部署（2026-11-10，wrangler@4.158.0 直跑）：production（dongban.xyz）Version **280bf0ec-b760-4010-863d-62e5ea9a70ef**；preview（preview.dongban.xyz，经 step5 分支合入 main 后部署，该分支合并提交 bdcb659 已推送）Version **e9fff392-89a9-456a-9093-8dfc2098694a**。preview 的 step5-heavy-test / step5-heavy-test-v2 / thunder-gate-test 三个测试页部署后复核均正常返回（200）。
+- sha256 抽查（浏览器 UA）：production 的 ai-codex-textrev-79-3236-0/1、3007-0/1 四帧与 preview 的 3236-0、3007-1 两帧，线上字节与仓库文件逐一一致（6/6）；production 的 attribution.json 条目数 797、exdb:3236 details 记录正常返回新双帧。
