@@ -6,7 +6,13 @@
    "nameZh": "四分之三仰卧起坐",
    "aliases": [
     "四分之三仰卧起坐",
-    "3/4 sit-up"
+    "3/4 sit-up",
+    "屈膝卷起",
+    "curl-up",
+    "四分之一仰卧起坐",
+    "quarter sit-up",
+    "半程仰卧起坐",
+    "half sit-up (male)"
    ],
    "instructions": [
     "平躺，膝盖弯曲，双脚平放在地上。",
@@ -467,7 +473,9 @@
    "nameZh": "毛毛虫爬行",
    "aliases": [
     "毛毛虫爬行",
-    "inchworm"
+    "inchworm",
+    "毛毛虫爬行（变式2）",
+    "inchworm v. 2"
    ],
    "instructions": [
     "从站立位置开始，双脚分开与臀部同宽。",
@@ -506,7 +514,9 @@
    "nameZh": "低杠反向划船",
    "aliases": [
     "低杠反向划船",
-    "inverted row"
+    "inverted row",
+    "反向划船（变式2）",
+    "inverted row v. 2"
    ],
    "instructions": [
     "在腰部高度设置一个杠铃或使用悬挂训练器。 面向杠铃或悬吊训练器站立，双脚分开与肩同宽。",
@@ -933,7 +943,11 @@
     "barbell",
     "杠铃深蹲",
     "杠铃深蹲",
-    "barbell full squat"
+    "barbell full squat",
+    "杠铃全蹲（背面视角）",
+    "barbell full squat (back pov)",
+    "杠铃全蹲（侧面视角）",
+    "barbell full squat (side pov)"
    ],
    "instructions": [
     "站立，双脚分开与肩同宽，脚趾稍微向外。 将杠铃放在上背部，将其放在斜方肌或三角肌后束上。 当你开始降低身体时，启动你的核心并保持胸部挺直。",
@@ -4598,7 +4612,9 @@
    "reviewReason": "候选已对照：与 exdb:1731 近同名且说明相近，未确认握铃数量及独立变式，不自动合并。 当前不发布此候选，不计完整覆盖。",
    "nameZh": "哑铃窄握推举（条目0296）",
    "aliases": [
-    "哑铃窄握推举（条目0296）"
+    "哑铃窄握推举（条目0296）",
+    "哑铃窄握推举（条目1731）",
+    "dumbbell close grip press"
    ]
   },
   "exdb:0306": {
@@ -5895,7 +5911,9 @@
    "nameZh": "扶墙弓步小腿拉伸",
    "aliases": [
     "扶墙弓步小腿拉伸",
-    "Calf Stretch Hands Against Wall"
+    "Calf Stretch Hands Against Wall",
+    "站姿扶墙小腿拉伸",
+    "standing calves calf stretch"
    ],
    "form": "面向墙面，前腿屈膝、后腿伸展，后脚跟贴地；两张照片为同一保持位的不同取景，不是两次动态动作。",
    "instructions": [
@@ -6629,7 +6647,9 @@
   "exdb:0489": {
    "nameZh": "背伸展",
    "aliases": [
-    "背伸展"
+    "背伸展",
+    "凳上背伸展",
+    "hyperextension (on bench)"
    ],
    "reviewStatus": "checked",
    "reviewReason": "AI 生成双帧（2026-11-07 按条目定义逐张核对后采用）：原待核对点为凳面角度未给且与 0488 近同——本条以目录名 hyperextension 为正条，编辑定版为 45° 背伸凳（罗马椅）、大腿上部置垫、双脚固定脚踏、双臂交叉于胸前（正文两可选项取其一定版以便核对）。起始帧躯干以髋为轴前屈下放、背平直；关键帧躯干抬至与双腿成一直线、未超伸。关键帧第一版躯干未抬起、与起始无差别，已剔除重生成。",
@@ -6807,7 +6827,9 @@
     "深蹲跳",
     "jump squat",
     "跳跃深蹲",
-    "深蹲跳"
+    "深蹲跳",
+    "深蹲跳（变式2）",
+    "jump squat v. 2"
    ],
    "reviewStatus": "checked",
    "reviewReason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：徒手深蹲双臂胸前交叉与爆发跳起双脚离地清晰，与条目定义一致；原图解已删除。素材检查为来源、变式与可见过程核对，非专业教学认证。",
@@ -7197,7 +7219,9 @@
   "exdb:0635": {
    "nameZh": "地面斜向卷腹",
    "aliases": [
-    "地面斜向卷腹"
+    "地面斜向卷腹",
+    "斜向卷腹（变式2）",
+    "oblique crunch v. 2"
    ],
    "reviewStatus": "checked",
    "reviewReason": "真人实拍双帧对照：仰卧屈膝倒腿、卷肩旋转起身，与地面斜向卷腹定义一致，文字按照片的倒腿形式写明并注明交替。",
@@ -7806,7 +7830,9 @@
   "exdb:0659": {
    "nameZh": "扶墙俯卧撑",
    "aliases": [
-    "扶墙俯卧撑"
+    "扶墙俯卧撑",
+    "扶墙俯卧撑（变式2）",
+    "push-up (wall) v. 2"
    ],
    "instructions": [
     "面向墙壁站稳，双手在肩部附近高度撑墙，略宽于肩。",
@@ -8773,7 +8799,9 @@
   "exdb:1710": {
    "nameZh": "辅助仰卧臀部与梨状肌拉伸",
    "aliases": [
-    "辅助仰卧臀部与梨状肌拉伸"
+    "辅助仰卧臀部与梨状肌拉伸",
+    "辅助仰卧臀部拉伸",
+    "assisted lying glutes stretch"
    ],
    "reviewStatus": "needs_review",
    "reviewReason": "逐项对照固定版本名称、器械和完整步骤：与 exdb:1709 步骤近同，名称增加梨状肌却没有姿势或辅助区别；不自动合并或用同图证明不同目标。"
@@ -10504,7 +10532,9 @@
   "exdb:0655": {
    "nameZh": "健身球俯卧撑（条目0655）",
    "aliases": [
-    "健身球俯卧撑（条目0655）"
+    "健身球俯卧撑（条目0655）",
+    "健身球俯卧撑（条目0656）",
+    "push-up (on stability ball)"
    ],
    "reviewStatus": "needs_review",
    "reviewReason": "逐项对照固定版本完整步骤、支撑和器械：双手撑球版的正文与0656同名同文，未确认两个ID为何独立；保留ID并等待变式证据。"
@@ -10974,7 +11004,9 @@
   "exdb:0048": {
    "nameZh": "杠铃上斜反握卧推",
    "aliases": [
-    "杠铃上斜反握卧推"
+    "杠铃上斜反握卧推",
+    "杠铃上斜反握卧推（条目1257）",
+    "barbell reverse grip incline bench press"
    ],
    "reviewStatus": "needs_review",
    "reviewReason": "逐项对照固定版本完整步骤：45度上斜反握形式可读，尚缺能核验反握手位、出架及下降路径的专门示范。"
@@ -11506,7 +11538,9 @@
   "exdb:0078": {
    "nameZh": "杠铃后撤弓步",
    "aliases": [
-    "杠铃后撤弓步"
+    "杠铃后撤弓步",
+    "杠铃后撤弓步（版本2）",
+    "barbell rear lunge v. 2"
    ],
    "reviewStatus": "checked",
    "reviewReason": "显式原创分阶段 SVG 已逐帧对照文字、器械和支撑检查；非真人实拍、非专业教学认证。按本条目自身步骤绘制；与 exdb:0077（版本2）文本相同、变式区别未确认，本批不作版本对比宣称。",
@@ -11621,7 +11655,9 @@
   "exdb:0082": {
    "nameZh": "杠铃掌心向下腕伸",
    "aliases": [
-    "杠铃掌心向下腕伸"
+    "杠铃掌心向下腕伸",
+    "杠铃反握腕伸（版本2）",
+    "barbell revers wrist curl v. 2"
    ],
    "reviewStatus": "needs_review",
    "reviewReason": "逐项对照固定版本完整步骤：坐凳前臂托大腿、向上伸腕的形式明确，但细小腕部和直杠握法需近景示范，不用普通弯举图。"
@@ -12155,7 +12191,9 @@
    "nameZh": "杠铃直立划船（版本2）",
    "aliases": [
     "直立划船",
-    "杠铃提拉"
+    "杠铃提拉",
+    "杠铃直立划船（版本3）",
+    "barbell upright row v. 3"
    ],
    "reviewStatus": "checked",
    "reviewReason": "AI 生成双帧（2026-11-07 按条目定义逐张核对后采用）：起始站立正手握杠、握距略宽于肩，杠悬于大腿前、双臂伸直；关键阶段杠沿身体上提至下颌下方、肘部抬高引领且握法保持正手（首版顶位翻成反手已重生成替换），两帧同人同景。",
@@ -12244,7 +12282,9 @@
   "exdb:0126": {
    "nameZh": "杠铃坐姿腕弯举",
    "aliases": [
-    "杠铃坐姿腕弯举"
+    "杠铃坐姿腕弯举",
+    "杠铃腕弯举（版本2）",
+    "barbell wrist curl v. 2"
    ],
    "reviewStatus": "checked",
    "reviewReason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐姿、前臂置于大腿、反握杠铃、手腕下垂滚向指尖与屈腕卷起清晰，与条目定义一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
@@ -15088,7 +15128,9 @@
   "exdb:0580": {
    "nameZh": "器械免握耸肩",
    "aliases": [
-    "器械免握耸肩"
+    "器械免握耸肩",
+    "器械免握耸肩（版本2）",
+    "lever gripless shrug v. 2"
    ],
    "reviewStatus": "needs_review",
    "reviewReason": "逐项对照固定版本完整步骤：标题gripless，正文却要求握柄，免握的前臂/肩垫接触完全未说明。"
@@ -16322,7 +16364,9 @@
   "exdb:0454": {
    "nameZh": "EZ杠蜘蛛弯举（条目0454）",
    "aliases": [
-    "EZ杠蜘蛛弯举（条目0454）"
+    "EZ杠蜘蛛弯举（条目0454）",
+    "EZ杠蜘蛛弯举（条目1628）",
+    "ez barbell spider curl"
    ],
    "reviewStatus": "needs_review",
    "reviewReason": "逐项对照固定版本完整步骤：正文站立上臂放牧师凳或球，没有蜘蛛弯举俯卧胸托，且与1628同名同文。"
@@ -17623,7 +17667,9 @@
   "exdb:0846": {
    "nameZh": "负重俄罗斯转体",
    "aliases": [
-    "负重俄罗斯转体"
+    "负重俄罗斯转体",
+    "负重俄罗斯转体（版本2）",
+    "weighted russian twist v. 2"
    ],
    "reviewStatus": "needs_review",
    "reviewReason": "逐项对照固定版本完整步骤：坐地双脚着地、胸前球左右移动明确，但重物球/健身球混用，器械尺寸与触地终点需固定形式后配图。"
@@ -18076,7 +18122,9 @@
    "aliases": [
     "哑铃跨身锤式弯举",
     "站姿交叉锤式弯举",
-    "Cross Body Hammer Curl"
+    "Cross Body Hammer Curl",
+    "哑铃跨身锤式弯举（版本2）",
+    "dumbbell cross body hammer curl v. 2"
    ],
    "form": "站姿双手各持一铃、掌心向内，交替向对侧肩部弯举。",
    "instructions": [
@@ -18112,7 +18160,9 @@
   "exdb:0299": {
    "nameZh": "哑铃古巴推举",
    "aliases": [
-    "哑铃古巴推举"
+    "哑铃古巴推举",
+    "哑铃古巴推举（版本2）",
+    "dumbbell cuban press v. 2"
    ],
    "reviewStatus": "needs_review",
    "reviewReason": "逐项对照固定版本完整步骤：正文肩高直接上推再转手腕，缺肩外旋上翻和高肘准备等关键组合，不能只用肩推图。"
@@ -18191,7 +18241,9 @@
   "exdb:0305": {
    "nameZh": "哑铃下斜耸肩",
    "aliases": [
-    "哑铃下斜耸肩"
+    "哑铃下斜耸肩",
+    "哑铃下斜耸肩（版本2）",
+    "dumbbell decline shrug v. 2"
    ],
    "reviewStatus": "needs_review",
    "reviewReason": "逐项对照固定版本完整步骤：45度下斜俯卧胸托可读，但手臂垂地和肩向耳耸的肩胛方向需专门图核验。"
@@ -18345,7 +18397,9 @@
    "aliases": [
     "哑铃上斜弯举",
     "上斜凳双哑铃反握弯举",
-    "dumbbell incline biceps curl"
+    "dumbbell incline biceps curl",
+    "哑铃上斜弯举（版本2）",
+    "dumbbell incline curl v. 2"
    ],
    "instructions": [
     "背靠上斜凳躺稳，双脚踩地，每手持一只哑铃。",
@@ -19706,7 +19760,9 @@
   "exdb:0370": {
    "nameZh": "哑铃牧师锤式弯举",
    "aliases": [
-    "哑铃牧师锤式弯举"
+    "哑铃牧师锤式弯举",
+    "哑铃锤式弯举（版本2）",
+    "dumbbell hammer curl v. 2"
    ],
    "reviewStatus": "checked",
    "reviewReason": "2026-11-05 真人实拍（free-exercise-db，Unlicense）双帧已逐帧对照：坐于牧师凳、双手各握哑铃掌心相对、上臂贴垫、手臂伸直与双臂同时屈肘弯举至肩高清晰，与条目名称「哑铃牧师锤式弯举」一致；目录「站直、旋转手掌至掌心朝前」写法已按名称与照片的坐姿牧师凳、锤式握法、双臂同时弯举改写。素材检查为来源、变式与可见过程核对，非专业教学认证。",
@@ -21051,7 +21107,9 @@
    "aliases": [
     "哑铃直立划船",
     "站姿双哑铃直立提拉",
-    "dumbbell upright row"
+    "dumbbell upright row",
+    "哑铃直立划船（背面视角）",
+    "dumbbell upright row (back pov)"
    ],
    "instructions": [
     "双脚站稳，双手正握哑铃于大腿前。",
