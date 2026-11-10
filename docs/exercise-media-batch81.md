@@ -46,4 +46,6 @@
 ## 验证与部署记录
 
 - 串行全套测试（2026-11-10 本地）：client `test:repository` **519/519** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。发布链计数三方一致：build 输出 815 image entries；publish-exercise-documentation 输出 complete 815 / photos 702 / pending 514（原始口径，含已归档 51 条；有效口径 complete 815 / pending 463 / total 1,278），report 脚本 images 815 / missing 514。
-- 接入提交与双站 Version：见本文件后续回填。
+- 接入提交：`1d334a7`（分支 media/exercise-media-batch81），合入 main 为 `d7b0a1d`；CI run 42791161440 **success**。合入后 step5 分支工作树复跑 client `test:repository` 519/519。
+- 双站部署（2026-11-10，wrangler@4.158.0 直跑）：production（dongban.xyz）Version **8a187aff-e9cc-4839-aeea-6f4f12fdac67**；preview（preview.dongban.xyz，经 step5 分支合入 main 后部署，该分支合并提交 d2c54a4 已推送）Version **287b5cf1-307e-4f7b-894b-d25f3e59f001**。preview 的 step5-heavy-test / step5-heavy-test-v2 / thunder-gate-test 三个测试页部署后复核均正常返回（200）。
+- sha256 抽查（浏览器 UA）：production 的 ai-codex-fillA1-0015-0、1349-1、2364-0 与 preview 的 2287-1、0571-0，线上字节与仓库文件逐一一致（5/5）；production 的 attribution.json 条目数 815、exdb:0015 在列、exdb:3666 不在列（暂缓符合预期）。
