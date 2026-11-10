@@ -11375,6 +11375,42 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3236",
+   "expectedName": "resistance band hip thrusts on knees (female)",
+   "sourceId": "ai-codex-textrev-79-3236",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "273507d4035e9fd3149002fcfb2db22ba144cbb017638bed3d38d2fcdd03d119",
+    "43810bb3224232b6ae55344be80bbfb92a2ec65836b54697cd4aed744987cfca"
+   ],
+   "phases": [
+    "起始：跪在垫上、双膝分开约与髋同宽，小腿与脚背平贴垫面，髋向后坐向脚后跟、躯干自髋前倾，双手扶髋；红色宽扁环带绕身后深蹲架立柱底部固定，两带段向前绷紧、前段横过骨盆前侧",
+    "关键：双膝仍在原位压垫，髋向前推至躯干与大腿成一直线、臀部收紧；环带仍绕同一立柱底部，前段仍横过骨盆前侧且拉长绷紧，行程只由髋承载、膝位不变"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3007",
+   "expectedName": "resistance band leg extension",
+   "sourceId": "ai-codex-textrev-79-3007",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "af4c2cc7698754b5fbdef6daaefd1c8625239e9c6e3f40d66bf7d8badd8e0bb3",
+    "99a627e8e9e47cd70fd4903712d782557ea7dfd149b845e60b6312cd09a1ae3d"
+   ],
+   "phases": [
+    "起始：坐姿落椅、躯干直立，双侧大腿平贴椅面；红色宽扁弹力带一端绕练习腿后方的椅腿、另一端环绕练习腿脚踝，带身绷紧；练习膝屈约 90°、脚平放地面，另一腿屈膝脚平放不动，双手不持带",
+    "关键：练习腿大腿仍平贴椅面、髋角不变，仅膝向前伸展至近伸直（保留自然微屈、未锁死），带自同一椅腿锚斜拉至脚踝、拉长绷紧；另一腿、躯干与双手均未动"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
