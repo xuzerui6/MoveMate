@@ -11411,6 +11411,186 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0985",
+   "expectedName": "band kneeling twisting crunch",
+   "sourceId": "ai-codex-q3-80-0985",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f267fbec4fb8cff7a6566943228ff9f12ecf2db73911a639af756607aefc73ad",
+    "0207fad03eeab21731b8a4182d67c5390f67fcf6f94bcf1adc14ad58eee6d64c"
+   ],
+   "phases": [
+    "起始：背对腰高锚点（深蹲架立柱）跪于垫上、双膝与小腿贴垫，带自锚点直线向前绷紧至胸前双手（不绕腰或颈），躯干中立、双手握带",
+    "关键：双膝与骨盆原位不动，躯干向左转至肩线与骨盆线明显成角，双手随转体移至右侧臀部，带仍自同一腰高后锚绷紧"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1012",
+   "expectedName": "band twisting overhead press",
+   "sourceId": "ai-codex-q3-80-1012",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f9bf2c041519d692e76e346dbdaa720eddc8b4f054408654d651730ca18e1714",
+    "8aef8c57b4e31e9cdd7304026fa59ae28127c40dae2795ff84815fd92924fdf0"
+   ],
+   "phases": [
+    "起始：双脚分开站立、双脚踩住带中段，带自双脚沿体侧上行，双手握带两端于肩高、掌心朝前、无把手，带绷紧、躯干中立",
+    "关键：双臂过顶充分伸展、掌心朝前，躯干整体向左转成角，臀部与双脚朝向不变，带自双脚上行全程绷紧（锚定修复稿，首稿仅头部左转判废）"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0216",
+   "expectedName": "cable seated shoulder internal rotation",
+   "sourceId": "ai-codex-q3-80-0216",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "8b611d181c352fe37f941d19babb39688b487b579095d65ee638dc6f794b2700",
+    "a1b0f81390a613fa05d90d45da0fb08fd21f26b4b6456c52e90e5979e997e10f"
+   ],
+   "phases": [
+    "起始：坐于凳上、面向绳索机，右臂在身前伸直、与地面平行握住手柄（肘稍屈），滑轮在身前肩高，左手置左腿",
+    "关键：上臂保持向前、肘保持肩高，前臂内旋横过身前、手柄贴近身体中线，躯干不转（锚定修复稿，首稿塌为坐姿划船判废；内旋平面略呈斜向、肘屈角较起始帧增大，为亲核记录在案的成帧柔和度）"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2399",
+   "expectedName": "cable seated twist",
+   "sourceId": "ai-codex-q3-80-2399",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "faf6ff3e7d4759913144332fcedc8e5d3391c11bcb44d095400ebad24d3d202c",
+    "ccd9321d60c0e1f73f45173d31bf00c116466b13faa2ef1073b25e8382588b24"
+   ],
+   "phases": [
+    "起始：坐于绳索机前、双脚平放地面，双臂伸直在身前握住胸高滑轮手柄，索绷紧，躯干中立",
+    "关键：骨盆、双腿与双脚原位，躯干向左转至肩线与骨盆线明显成角，双臂保持伸直随躯干横移、手柄拉过身体至左侧，索呈斜线绷紧（锚定修复稿，首稿双手未随转体横移判废）"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0243",
+   "expectedName": "cable twist",
+   "sourceId": "ai-codex-q3-80-0243",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "139ba42e96d224a37dbc819b619b11533b2ef26e0bf62b06ade062fce5e014e5",
+    "779827d7b2cfe047c5d131f100c8b3c615799f7e3e0b4686b6ae00a9c596bd47"
+   ],
+   "phases": [
+    "起始：面向绳索机站立、双脚与肩同宽，双手在胸前握住胸高滑轮手柄、双臂略屈，索水平绷紧",
+    "关键：骨盆与双脚原位，躯干向右转至肩线与骨盆线明显成角，手柄随转体拉过身体至右侧（锚定修复稿，首稿转向左侧与正文自名右转冲突判废）"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0244",
+   "expectedName": "cable twisting pull",
+   "sourceId": "ai-codex-q3-80-0244",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "3a4e216551aa048c8ffd6c9f320006d8e62948e73da313aab35f4c09193a1af6",
+    "9fa892074ae4046ab043f1d5dd8f04641795b06a35aceea78621e9bc83b31aa0"
+   ],
+   "phases": [
+    "起始：面向低滑轮站立，左手握柄、左臂完全伸展、索绷紧，右臂垂放不持柄",
+    "关键：左手将手柄拉至左侧肋旁，躯干向右转，下身与站位不变，右臂全程垂放（锚定修复稿，首稿工作手镜像为右手判废）"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0236",
+   "expectedName": "cable standing twist row (v-bar)",
+   "sourceId": "ai-codex-q3-80-0236",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "cf14474cc385edbc56cd019fa41208449fe2b1cc37792f85b38cdf4b6f652c97",
+    "25a7a84323b4ffa7570a30091ad34db4625f66b66d8dc93fb39e08580eb1e069"
+   ],
+   "phases": [
+    "起始：面对绳索机站立、双脚与肩同宽，正手掌心朝下握住胸高滑轮的 V 形杆，双臂身前伸直、索绷紧，躯干中立",
+    "关键：V 形杆拉至躯干、肩胛挤压，躯干同时向左扭转成角，骨盆与双腿原位"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0968",
+   "expectedName": "band alternating biceps curl",
+   "sourceId": "ai-codex-q3-80-0968",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f3a8d64a8f4bc3c70020eba3f75beb31305bb10fe17855733bbeb5c73cada63a",
+    "ae7e6df672f0b6b20e776e4983a9113e47a19f6e55247e46ef9b1bdac0371010"
+   ],
+   "phases": [
+    "起始：双脚分开站立、双脚踩住带中段，带自双脚上行绷紧，双手反手掌心朝上握带两端、双臂下垂于体侧",
+    "关键：仅右臂弯举至顶、肘贴体侧，左臂完全下垂持带端，带仍自双脚绷紧"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1383",
+   "expectedName": "hack calf raise",
+   "sourceId": "ai-codex-q3-80-1383",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f534803bdc8ed514b262116206eaf961186a858e5a4972b593e68125830e9cf9",
+    "6e22615553090c9b5ff9c91f0b2368517733087a7cbfd01c50c55a9c20f6fb72"
+   ],
+   "phases": [
+    "起始：面向机器站上哈克机，胸贴靠垫、双肩置于肩垫之下，双脚前脚掌踩宽幅平台远侧下缘、鞋身悬挑出缘，双脚跟悬空垂落于边缘之下、低于板面，双鞋完整（宽板悬挑描绘策略自同簇 1384 迁移稿）",
+    "关键：同一机位同构型，双脚跟抬至最高、前脚掌仍压同一边缘、双鞋完整，相位差只在脚踝"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1384",
+   "expectedName": "hack one leg calf raise",
+   "sourceId": "ai-codex-q3-80-1384",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "27d3c8816d8f0dae17d16cbfc4c5b81ce0ee907795e814825a5b2457fe7cfd86",
+    "77c1ca560c5774eb1cc7acf15fa9b15152ab0dd25027950c1b77bcb49039a83c"
+   ],
+   "phases": [
+    "起始：面向机器站上哈克机，胸贴靠垫、双肩置于肩垫之下，右脚前脚掌踩宽幅平台远侧下缘、鞋后段悬空、脚跟垂落低于平台面，左脚完全离地悬于平台旁（第二稿，首稿整脚平踏判废）",
+    "关键：右脚跟抬至最高、小腿收缩，左脚保持离地原位，仅脚跟高度变化"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
