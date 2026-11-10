@@ -36,4 +36,7 @@
 ## 验证与部署记录
 
 - 串行全套测试（2026-11-10 本地）：client `test:repository` **519/519** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。发布链计数三方一致：publish-exercise-documentation 输出 complete 796 / photos 683 / pending 533，report 脚本 images 796 / missing 533；分类计数经审计台账复核（带类 27 → 29/61、器械待补 106 → 101：绳索 −2、杠杆 −2、史密斯 −1）。
-- （接入提交、CI、双站部署版本与线上核对见回填。）
+- 接入提交：`5bfa6e5`（分支 media/exercise-media-batch78），合入 main 为 `1f8ea60`；CI run 42751667518 **success**。合入后 step5 分支工作树复跑 client `test:repository` 519/519。
+- 双站部署（2026-11-10，wrangler@4.158.0 直跑）：production（dongban.xyz）Version **37542caf-0b9d-40eb-9548-a37ab00c3ee9**；preview（preview.dongban.xyz，经 step5 分支合入 main 后部署，该分支合并提交 b6cd0d7 已推送）Version **1d9157da-1635-4c41-8ff5-e34475c389a5**。preview 的 step5-heavy-test / step5-heavy-test-v2 / thunder-gate-test 三个测试页部署后复核均正常返回（200）。
+- sha256 抽查（浏览器 UA，两站各 4 帧）：production 的 ai-codex-exdb-0996-0、1725-1、2335-0、0760-1 与 preview 的 ai-codex-exdb-3124-0、2289-1、0158-0、0996-1，线上字节与仓库文件逐一一致（8/8；preview 的 3124-0 首次抽测出现一次瞬时下载不一致，立即复测一致，判定为传输抖动而非部署问题）。
+- 正文线上核对：production 的 exdb:0760 details 记录正常返回新双帧且来源版本为「生成批次 78」；部署 bundle 内 exdb:0760 的定稿正文（form/cues/instructions，含「完成整组动作后，按这台史密斯机自身的说明将杠铃重新锁回」的回挂指引末步）逐字在位，bundle 内 `reviewStatus: "checked"` 记录计数 796 与图文完整计数一致（正文经登录态 API 下发，公开端点仅能核媒体，故以部署 bundle 字节核对正文）。

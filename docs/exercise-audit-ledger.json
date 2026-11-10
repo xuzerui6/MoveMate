@@ -1493,7 +1493,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "34ebc94a8ba09451734eeb3e1c618fbdfddb30139ccfa409e75401a754af813f",
+        "sourceRecordSha256": "7a5d352524207737e5eb57313738ecc479f105cdee5cd4de19cf5ce7bd08ba79",
         "steps": 6
       },
       "photo": false,
@@ -1583,7 +1583,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "cab5b8a0792a4e1b7b6a852b82f5994fde34c29eb9c4fc46400373a5150daf4a",
+        "sourceRecordSha256": "59a825deb92a853848f03b899d1a292e6067bf15d142f2876d47026385f6c98a",
         "steps": 8
       },
       "photo": false,
@@ -1603,7 +1603,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "24eac97f8e2c9bafb265987f899d8aee93950504ce15d4f00dcf494a3efc3bf3",
+        "sourceRecordSha256": "ee12cedb3a5246e75789aa1f858e5c8c934e3cadd0232af8feb50683050869ae",
         "steps": 9
       },
       "photo": false,
@@ -1623,7 +1623,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "0348814ec60091414572b42bc097396c1afb70c4d8c74ef30fdbad626033f06f",
+        "sourceRecordSha256": "3566104e326ab6e343f76f67baaf4a1977881149699fef42e3038e184cc8126e",
         "steps": 4
       },
       "photo": false,
@@ -1749,7 +1749,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "bc480719271deb421fe72fe068cd6d8729db09030eaba58c23bf3a3e7d1e7da5",
+        "sourceRecordSha256": "e5b02f85cc70736998c7a70ec99083beb80e2c626b6d1fb27e7de4b7fb915cb6",
         "steps": 4
       },
       "photo": false,
@@ -2479,7 +2479,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "660d8989e87e5d36a632c032836a9b0a1b1c981795ba1f728db91248d1cc7baf",
+        "sourceRecordSha256": "785188a06575c97ee77db87e8496ef22a9e6f9a5a38f110c3bd01751602e086c",
         "steps": 7
       },
       "photo": false,
@@ -8353,7 +8353,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "bc2c7e6bc38056055dda6601e74129addec802f4ba7bc473287c2774a95aa97d",
+        "sourceRecordSha256": "695415de7f60ebbfb81637fd81f4b7ba62be812106e2f88f1d9c5433b8b3cd5f",
         "steps": 7
       },
       "photo": false,
@@ -9013,7 +9013,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "08ae7efdbe04ddee3cef8a314800837452906963035fe7d88a0cd45c817fadbb",
+        "sourceRecordSha256": "cc04c03681745ebd00493a1dd21417fc431d42d3d73605363b745ff93ffb3575",
         "steps": 7,
         "editorialSources": [
           {
@@ -9268,7 +9268,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "94389fb97aa52f9af82d8c77e224be7e2e02359c34527dfbb8a61a378ae52c8f",
+        "sourceRecordSha256": "3d2f09ce089557ce2760faa98186addd74900022cd9b64900704fae08a744d0f",
         "steps": 8
       },
       "photo": false,
@@ -12123,7 +12123,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "8fc8f4bd22c0a2aa12dfa6ad0f139ab7f25bbc693eda515b3ddc9601b02f2b54",
+        "sourceRecordSha256": "556d7bc39676129a4791d809c39cf97866797488aa9a13011d4e4b4f4e1c90b1",
         "steps": 6
       },
       "photo": false,
@@ -12508,7 +12508,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "45d5e0acad8a1f88dded16af8d09ffc4b593117d10e5a5ced25fa1c821552c9c",
+        "sourceRecordSha256": "97637672e718fc0e94f4e909ea3c80b6e6e878211019f008e6952f9ef254a233",
         "steps": 6
       },
       "photo": false,
@@ -29242,7 +29242,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "c09b75a0c8d3af3e1621cf82af5b45646ae0bfb0810bc4ecdf41e16de0b3bfd4",
+        "sourceRecordSha256": "9a71f373830cca72965fecbdc4e65459f43efee5827d4e7d401192f6c398fba3",
         "steps": 6
       },
       "photo": false,
@@ -29402,7 +29402,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "2a7b012fd5ca44a624138e0e36d4de48fdbcca56ca1d82538c9a57063e67a855",
+        "sourceRecordSha256": "b3a61a28dcd1f650e59756d7f4207cca2aa4190059bf363e504525025ea57cec",
         "steps": 6
       },
       "photo": false,
@@ -29847,7 +29847,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "741e7a329549d877db715180f01167354024ca3888998ad0b4ea52defd710d42",
+        "sourceRecordSha256": "f3b6add020c1bd15a3ee92f8e9caa826299d926a6a3fc1b34fb19da188731f91",
         "steps": 6
       },
       "photo": false,
@@ -30379,7 +30379,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "017a44aba7556122c793e5966ceaea7e4045955e3c8217b582321eb2054cfd49",
+        "sourceRecordSha256": "ae122d248b9571a7c9334fdeae2952e33eff93ed4f38104a8afcdd6aec013440",
         "steps": 5
       },
       "photo": false,
@@ -34601,7 +34601,7 @@
     },
     {
       "id": "exdb:0739",
-      "originalName": "sled 45в° leg press",
+      "originalName": "sled 45° leg press",
       "status": "checked",
       "reviewStage": "editorial",
       "reason": "保留已审核实拍；对照器械、支撑和阶段整理中文资料，非专业教学认证。",
@@ -34610,7 +34610,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "ad243ca496badc449be85c483b20a7f3da2e203be825da0b778192e24cd407c1",
+        "sourceRecordSha256": "580e82073a7a0e3349e20f94a5b1acfeaa3ac0bd7dc2161d804ef631612ee122",
         "steps": 5
       },
       "photo": true,
@@ -34645,7 +34645,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "fd28f10405cc9bdc0d67373b1adf14ceef5a7ab5c16c4da6a8d8cf85f94499a9",
+        "sourceRecordSha256": "94517693c34905d29771a005dcb64f2dfd36837067a05f6b9e5af60cf670f937",
         "steps": 7
       },
       "photo": false,
@@ -34657,37 +34657,22 @@
     {
       "id": "exdb:1463",
       "originalName": "sled 45° leg press (side pov)",
-      "status": "checked",
+      "status": "needs_review",
       "reviewStage": "editorial",
-      "reason": "2026-11-06 AI 生成图片（本项目生成，非真人实拍）双帧已逐项对照：侧面视角，45°腿举机结构完整，起始位背贴靠背、双脚平放踏板、膝约90°、双手握侧把手，关键位双腿完全伸直将踏板推远、背仍贴靠背，与目录步骤及条目名称「45度腿举（侧面视角）」一致；既有口径要求的靠背支撑、轨道结构与可控膝位图证已由本组图满足。素材检查为来源、变式与可见过程核对，非专业教学认证。",
+      "reason": "2026-11-10 目录裁决 Q1（Edward 批准）：与 exdb:0739 同为 45° 雪橇腿举，(side pov) 仅为拍摄视角后缀，不构成独立动作；已软归档合并至 exdb:0739，媒体索引同步摘除。软归档按 ID 仍可解析，存量计划引用不受影响。",
       "text": {
-        "status": "source_compared",
+        "status": "reviewed_with_issues",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "7f919d95bc603c78fde50e60fd34cee4ddfca8e1dabff1d5a1c1d5cb741f6acd",
+        "sourceRecordSha256": "be3b871de254e00b6e47151cfdcba5184a7353d3f8e4bd4f8f0ccf72123210b9",
         "steps": 5
       },
-      "photo": true,
+      "photo": false,
       "illustration": false,
       "video": false,
-      "complete": true,
-      "sources": [
-        {
-          "name": "AI 生成 / ai-generated-exdb-1463",
-          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
-          "license": "Unlicense",
-          "licenseUrl": "/exercise-media/UNLICENSE.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch40.md",
-          "version": "2026-11-06 · 生成批次 40",
-          "sourceSha256": [
-            "e6902e373376b3e5cd9ed1f0ac37324e70ee02d3e4fc231cd278fd3bebc16f65",
-            "fc3d2dbae62bb5c6aac6d2e3b0989b9186ef53735d2ec7fdd6eb57bb5124474d"
-          ],
-          "changes": "本项目 AI 生成的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
-          "distribution": "repository"
-        }
-      ]
+      "complete": false,
+      "sources": []
     },
     {
       "id": "exdb:0740",
@@ -35565,7 +35550,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "91e54c06e1620d1b0921bfafa0f616a732e5d5c85593c66ae7a6d1ac2535ae10",
+        "sourceRecordSha256": "99c99b8b424409e64400d1cf5ce4e1903e6e0b36d6c2b96c3a50dc415431fd14",
         "steps": 11
       },
       "photo": false,
@@ -35805,7 +35790,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "c4904260eb75c1550243be6e0670dbd2bb871c1c1c9168be84f4066cf496ae63",
+        "sourceRecordSha256": "394cba66153139a1943590ab16e014f5ff4bdd7b260a67d9069f2a77235cdeac",
         "steps": 7
       },
       "photo": false,
@@ -35825,7 +35810,7 @@
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "18800d19822b0aa9dec81cc6af654fdfd17829798524029e9aedc2bf1f4da602",
+        "sourceRecordSha256": "0fd160603113cf0c658e2f56ba9b4ed9e2771d10a8ad7a2e3996d1b3c79a2fd0",
         "steps": 7
       },
       "photo": false,
