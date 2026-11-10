@@ -44,3 +44,5 @@
 ## 验证与部署记录
 
 - 串行全套测试（2026-11-10 本地）：client `test:repository` **519/519** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。发布链计数三方一致：build 输出 824 image entries；publish-exercise-documentation 输出 complete 824 / photos 711 / pending 505（原始口径，含已归档 51 条；有效口径 complete 824 / pending 454 / total 1,278），report 脚本 images 824 / missing 505。
+- 合并与 CI：接入提交 `1305324`；main 合并 `718c7d7`；GitHub CI 运行 **42802670219** success。
+- 部署：生产 Version **`4f4d6845-ac84-44df-956e-74a9185fe82d`**；预演 `feat/step5-heavy-testpage` 合并提交 `910dd77`（该站部署前 client 套件 519/519），预演 Version **`cfb2451b-7eba-4e5c-8afb-a98f2ab0a4a6`**。线上核查：新图生产站 sha256 **14/14**、预演站抽查 200、三张验收测试页 200、生产首页 200。
