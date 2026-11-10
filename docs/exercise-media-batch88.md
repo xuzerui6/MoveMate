@@ -52,3 +52,5 @@
 ## 验证与部署记录
 
 - 串行全套测试（2026-11-10 本地）：client `test:repository` **519/519** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。发布链计数三方一致：publish-media-metadata 输出 874 records；publish-exercise-documentation 输出 complete 874 / photos 761 / pending 455（原始口径，含已归档 51 条；有效口径 complete 874 / pending 404 / total 1,278），report 脚本 images 874 / missing 455，missing 清单恰移除本批 13 条。
+- 合并与 CI：接入提交 `e7f523f`；main 合并 `dfc22f1`；GitHub CI 运行 **42851650422** success。
+- 部署：生产 Version **`df46f934-8e44-40ce-87dd-a167982b289d`**；预演 `feat/step5-heavy-testpage` 合并提交 `2f92f43`（该站部署前 client 套件 519/519），预演 Version **`0381f125-25a6-47e6-a483-f340d75630e2`**。线上核查：新图生产站 sha256 **26/26**、预演站 sha256 **26/26**、生产 attribution.json 实测 874 条（exdb:0680、exdb:0399 在列）、生产首页 200、预演三张验收测试页（step5-heavy-test / step5-heavy-test-v2 / thunder-gate-test）均 200。核查说明：直接以 Python urllib 请求会触发 Cloudflare 机器人防护返回 403，须用浏览器 UA 复核。
