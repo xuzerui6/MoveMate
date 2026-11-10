@@ -15143,42 +15143,72 @@
     {
       "id": "exdb:1646",
       "originalName": "dumbbell alternate hammer preacher curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：中立握牧师凳明确，但正文没有交替左右阶段，不能套同时双臂图。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A08 · 哑铃第三子批，批次 98 接入）：种子意见指中立握牧师凳明确，但正文没有交替左右阶段，不能套同时双臂图——定版双帧正面回答：起始帧双臂在垫上完全伸展、掌心相对（锤式握法）；关键帧一臂弯举至肩高、锤式握向全程不旋转，另一臂仍伸展贴垫——交替读法无歧义，未套同时弯举图。与同批 1647 的兄弟区分经终门确认：本条为锤式（掌心相对），1647 为掌心向上。过程记录：本条首个生成会话因服务重启在产出前终止、零帧落地、未消耗稿数预算，换新会话重跑后双帧首稿过门。正文原样不改；接入时原文 6 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 1、2 步以分号合并，句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "1e84abba306fe57137c2d2d4e9383f75430636871e398f0b1f5e8d81b120353e",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA08-1646",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch98.md",
+          "version": "2026-11-11 · 生成批次 98",
+          "sourceSha256": [
+            "86cdb6182453c53ffc22888fded3fa6bcaffdc005bf8d9a907229360ab5c4f36",
+            "746a3d3d544abff18377268f2cda2f70db8979f3eaca718968222c34336ef7bc"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1647",
       "originalName": "dumbbell alternate preacher curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：双上臂托垫、旋后交替清楚，需对应左右阶段和凳面支撑的专用图。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A08 · 哑铃第三子批，批次 98 接入）：种子意见指双上臂托垫、旋后交替清楚，需对应左右阶段和凳面支撑的专用图——定版双帧正面回答：起始帧双上臂贴垫、双臂完全伸展、掌心朝上；关键帧一臂弯举至肩高、掌心仍朝上，另一臂仍伸展贴垫——掌心向上的握向在各手位一致，左右交替阶段对应。与同批 1646 的兄弟区分经终门确认：本条掌心向上，1646 为锤式掌心相对。双帧均首稿过门。正文原样不改；接入时原文 7 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 1、2 步以分号合并，第 6、7 步以分号合并，句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "f2806b290aa127d7839e3827aa64d4bc0838d2fc4f21020cff9a70c6d4e0f3c4",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA08-1647",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch98.md",
+          "version": "2026-11-11 · 生成批次 98",
+          "sourceSha256": [
+            "ce68ae8c4dc3d910f2c8f6a45cd3dc746cb753c9e6e00891feb92cf6e20ec43a",
+            "583c4bc2bf797466035920214d9f57e7dffc68b3e1a7ed0d124ad7884e61b8b0"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1648",
@@ -15256,42 +15286,72 @@
     {
       "id": "exdb:1649",
       "originalName": "dumbbell alternating bicep curl with leg raised on exercise ball",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：站姿后脚搭球交替弯举可读，需要后脚球面与承重腿准确支撑图，不能用球上坐姿。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A08 · 哑铃第三子批，批次 98 接入）：种子意见指站姿后脚搭球交替弯举可读，需要后脚球面与承重腿准确支撑图，不能用球上坐姿——定版双帧正面回答：人物全程站立、从未坐球，一只脚搭在身后健身球顶面、承重腿直立；关键帧一臂弯举至肩高，另一臂仍伸展，后脚保持搭球。投影说明：3/4 机位下球在画面空间中位于其身后偏左，抬起的腿向后伸至球面、几何关系连贯，主理人裁定「身后搭球」的读法成立，记录不改判。关键帧弯举的是与生成提示指定相反的一臂，交替动作任一侧均为有效呈现，仅记录不改判。双帧均首稿过门。正文原样不改；正文 5 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "c2b91219fded415efe66549cad20d126e60f6201767bee342b844fffbcf94328",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA08-1649",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch98.md",
+          "version": "2026-11-11 · 生成批次 98",
+          "sourceSha256": [
+            "d56c66dfc9ce15ce78052018b291ac12cc55f965611f6c7b943ecb981fe9d8d7",
+            "17651cb7c063d85d09388d5a6d9f3234b2e1b354667a50c81863d103c36cb747"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1650",
       "originalName": "dumbbell alternating seated bicep curl on exercise ball",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：坐球交替屈肘并旋前臂明确，但初始掌向与旋腕描述不严谨，需握法和球面图核对。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A08 · 哑铃第三子批，批次 98 接入）：种子意见指坐球交替屈肘并旋前臂明确，但初始掌向与旋腕描述不严谨，需握法和球面图核对——定版双帧正面回答：人物端坐于健身球上、双脚平放、背部挺直；起始帧双臂完全伸展、掌心朝前，关键帧一臂弯举并完成前臂旋转至手掌面向肩膀，另一臂仍伸展——种子所问的初始掌向与旋腕终点均以成帧对应。本条为 1649 的坐姿兄弟条（彼条站立、后脚搭球；本条坐球），区分成立。双帧均首稿过门。正文原样不改；接入时原文 6 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 1、2 步以分号合并，句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "07b14fdfedeae05f8b05f50c639a51b2b9370af65ebfc1a0d2a5b1bac859a044",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA08-1650",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch98.md",
+          "version": "2026-11-11 · 生成批次 98",
+          "sourceSha256": [
+            "8fc4b789960e16b3a856da652f9aa62e77dd07e07868ab50f9f4522abb70a5e8",
+            "e3671d87a15d13ba8bcbfdfa3ff25e5f90924af5480de8809c65580c23878caf"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2137",
@@ -16454,22 +16514,37 @@
     {
       "id": "exdb:1437",
       "originalName": "dumbbell finger curls",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：前臂托腿、铃滚到指尖再卷指清楚，需要手指近景与铃柄接触图，不以腕弯举替代。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A08 · 哑铃第三子批，批次 98 接入）：种子意见指前臂托腿、铃滚到指尖再卷指清楚，需要手指近景与铃柄接触图，不以腕弯举替代——定版双帧正面回答：近景特写中，起始帧哑铃柄落在张开的指尖上、前臂平放于大腿、掌心朝上、腕部平直；关键帧手指完全收拢卷起哑铃，前臂仍贴腿、腕部未弯折——全程只有手指屈伸，不读作腕弯举，为本批最干净的一对。双帧均首稿过门。正文原样不改；正文 4 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "7638bdb8d0fb5ec9872545c0b454d5ac358a377f6007fb5a44ab3a0247108bfa",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA08-1437",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch98.md",
+          "version": "2026-11-11 · 生成批次 98",
+          "sourceSha256": [
+            "747214120dd7a23ca4eac45d66c00b3a8da42825bb83217c8e593da6c615e8b5",
+            "c5ba2abd84e05aa6c2b896206328385f8e4b97a68432e257f0c50037edf5ea7e"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0308",
@@ -17354,22 +17429,37 @@
     {
       "id": "exdb:1620",
       "originalName": "dumbbell incline one arm hammer press on exercise ball",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：球托头颈上背、单手中立握明确，但上斜角度和球脚支撑未确认。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A08 · 哑铃第三子批，批次 98 接入）：种子意见指球托头颈上背、单手中立握明确，但上斜角度和球脚支撑未确认——定版双帧正面回答：健身球托住头、颈与上背部，躯干成上斜线；关键帧手臂完全伸展，掌心仍朝内（锤式握法、铃片呈前—后向），经主理人放大亲核确认未翻成掌心朝前——本批最高握法价值的核查点守住。起始帧初稿头部悬空离球、与正文的头颈承托相悖，初稿留档于生成暂存 FAILED/；以关键帧为锚做锚定修复只改头部承托，修复后头部贴球、肘部 90 度，主理人终门核实。正文原样不改；接入时原文 6 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 1、2 步以分号合并，句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "388020926bf2cc6d58204461b8fb0629713d799e4113a4a0d798b085a73065c0",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA08-1620",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch98.md",
+          "version": "2026-11-11 · 生成批次 98",
+          "sourceSha256": [
+            "0483396b2460e087dcf6c69dd50f8c530ca0f740cd376f8124b38b39b2654d31",
+            "a445d79b5cd04114beab1c1fb35bbd0827fb2117f88b3b87120664592c354952"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0323",
@@ -20224,22 +20314,37 @@
     {
       "id": "exdb:1441",
       "originalName": "dumbbell over bench one arm reverse wrist curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：前臂撑凳、掌心向下、腕悬空上伸明确，需准确近景和支撑边缘图。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A08 · 哑铃第三子批，批次 98 接入）：种子意见指前臂撑凳、掌心向下、腕悬空上伸明确，需准确近景和支撑边缘图——定版双帧正面回答：前臂整段平放在长凳上、手腕悬在长凳边缘之外，掌心朝下两帧一致；起始帧手腕向下弯曲，关键帧手腕向上弯曲伸展、将哑铃拉向前臂——凳沿支撑边缘与腕部行程在近景中均可读，为教科书式凳上单臂反向腕弯举成帧。双帧均首稿过门。正文原样不改；正文 5 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "227b80f30aba021fe0e69301eed5579533768255f53f2d5ca6f69288bb4bb124",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA08-1441",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch98.md",
+          "version": "2026-11-11 · 生成批次 98",
+          "sourceSha256": [
+            "a635947f722539141ce6db7fe9ce549064d68a0a5837bed4c03787139bd1bbd1",
+            "9d50548ccce36809e9cb13f4bf6018e077f690e41bdae74c26a3614729c21c6d"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0367",
@@ -20685,22 +20790,37 @@
     {
       "id": "exdb:1294",
       "originalName": "dumbbell pullover hip extension on exercise ball",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：球托头颈上背上拉后抬髋可读，但正文抬髋离地与原球支撑高度关系不清，需要完整多阶段图。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A08 · 哑铃第三子批，批次 98 接入）：种子意见指球托头颈上背、上拉后抬髋可读，但正文抬髋离地与原球支撑高度关系不清，需要完整多阶段图——定版双帧按组合动作的终点帧惯例跨帧分配两个端点，正面回答：起始帧哑铃下放至脑后、双臂伸直，臀部落于地面；关键帧哑铃回到胸部上方、臀部抬离地面成完整桥式；两帧中健身球均真实承托头、颈与上背部——上拉端点与伸髋端点各以一帧成立，组合关系可读。双帧均首稿过门。正文原样不改；接入时原文 8 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 1、2 步以分号合并，第 4、5 步以分号合并，第 6、7 步以分号合并，句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "0372bd10d919e062b3bd4b91835bf89fae534f0da78117a712d93c0db6e50b83",
-        "steps": 8
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA08-1294",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch98.md",
+          "version": "2026-11-11 · 生成批次 98",
+          "sourceSha256": [
+            "6bcd7c1deb5e3a7390125e5b55c101e3c9818b6a6c65242d6f59838d9e6a1322",
+            "b9b157d4f7997794be828d0a66b975026bcc3c5e60c0b95d5246ff467c76ffa2"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1295",
@@ -22210,22 +22330,37 @@
     {
       "id": "exdb:1380",
       "originalName": "dumbbell seated one leg calf raise - hammer grip",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：单脚踩台、哑铃压同侧大腿并中立握明确，需要手/铃/膝接触近景和另一脚支撑图。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A08 · 哑铃第三子批，批次 98 接入）：种子意见指单脚踩台、哑铃压同侧大腿并中立握明确，需要手/铃/膝接触近景和另一脚支撑图——定版双帧正面回答：哑铃竖放在工作腿大腿上，单手以锤式（中立）握法握住铃身——本条与 0400（批次 97）的定义区分（锤式握法）成立；工作脚前脚掌踩台阶边缘，起始帧脚跟沉至台阶面以下、关键帧抬至最高，手、铃、膝接触可读。起始帧初稿工作脚鞋身渲染半脱、脚跟裸露，初稿留档于生成暂存 FAILED/；以关键帧为锚做锚定修复只改脚部，修复后鞋身完整，主理人终门核实。已接受的柔软点：铃身位于大腿中段而非紧贴膝上，正文仅要求哑铃放在大腿上，记录不改判。正文原样不改；接入时原文 6 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 1、2 步以分号合并，句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "2efa6bdab919816d3946cccd4ad237857505c775029b1e1b536590371b929e6b",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA08-1380",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch98.md",
+          "version": "2026-11-11 · 生成批次 98",
+          "sourceSha256": [
+            "e52b4de4fbb24ec9df6eee9512bebb8019f50967e1656375612e232d64a4ebbb",
+            "3f0ba10b34b19341e66cd89fdeccdd9cd77740785593190fa7d94fc83004cd96"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1381",
@@ -24781,22 +24916,37 @@
     {
       "id": "exdb:1382",
       "originalName": "exercise ball on the wall calf raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：下背球靠墙、双手体侧持铃、地面提踵明确，需墙/球/背及前脚掌多接触点图。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A08 · 哑铃第三子批，批次 98 接入）：种子意见指下背球靠墙、双手体侧持铃、地面提踵明确，需墙/球/背及前脚掌多接触点图——定版双帧正面回答：健身球同时接触下背与墙面、两帧不脱离；双手在身体两侧各持一哑铃，起始帧双脚平放、脚跟贴地，关键帧脚跟抬离地面、重量转移到前脚掌——下背—球—墙的接触链与脚跟至前脚掌的行程均可读。已接受的柔软点：球的接触点位于下背与腰部的交界处，正文「下背部」口径成立，记录不改判。双帧均首稿过门。正文原样不改；接入时原文 6 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 1、2 步以分号合并，句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "bb9cfd2f523594df2f6f671ced7e7b5bec2e8ab3d252c399aa2f5f3c94fd44a9",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA08-1382",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch98.md",
+          "version": "2026-11-11 · 生成批次 98",
+          "sourceSha256": [
+            "65915cd340e345fd39b1ff921e95067391734f1ad74c488edf62cf81c368fc16",
+            "16f6354f1d1b525f6ecbc61a04f6d3f2b8a66656dcc9c8518ee9a30994889d78"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3241",

@@ -14723,6 +14723,186 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1294",
+   "expectedName": "dumbbell pullover hip extension on exercise ball",
+   "sourceId": "ai-codex-fillA08-1294",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "6bcd7c1deb5e3a7390125e5b55c101e3c9818b6a6c65242d6f59838d9e6a1322",
+    "b9b157d4f7997794be828d0a66b975026bcc3c5e60c0b95d5246ff467c76ffa2"
+   ],
+   "phases": [
+    "起始：健身球托住头、颈与上背部，双手握哑铃下放至脑后、手臂伸直，臀部落于地面。",
+    "关键：哑铃回到胸部上方，臀部抬离地面成完整桥式、挤压臀肌，双臂保持伸展。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1380",
+   "expectedName": "dumbbell seated one leg calf raise - hammer grip",
+   "sourceId": "ai-codex-fillA08-1380",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e52b4de4fbb24ec9df6eee9512bebb8019f50967e1656375612e232d64a4ebbb",
+    "3f0ba10b34b19341e66cd89fdeccdd9cd77740785593190fa7d94fc83004cd96"
+   ],
+   "phases": [
+    "起始：坐于长凳，哑铃竖放在工作腿大腿上、锤式握法握住，工作脚前脚掌踩台阶边缘、脚跟沉至台阶面以下。",
+    "关键：工作腿脚跟抬至最高，前脚掌踩稳台阶边缘，哑铃仍竖放于同腿大腿上。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1382",
+   "expectedName": "exercise ball on the wall calf raise",
+   "sourceId": "ai-codex-fillA08-1382",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "65915cd340e345fd39b1ff921e95067391734f1ad74c488edf62cf81c368fc16",
+    "16f6354f1d1b525f6ecbc61a04f6d3f2b8a66656dcc9c8518ee9a30994889d78"
+   ],
+   "phases": [
+    "起始：健身球夹在下背部与墙壁之间，双手在身体两侧各持一哑铃，双脚平放、脚跟贴地。",
+    "关键：脚跟抬离地面、身体重量转移到前脚掌，球仍同时接触下背与墙面。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1437",
+   "expectedName": "dumbbell finger curls",
+   "sourceId": "ai-codex-fillA08-1437",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "747214120dd7a23ca4eac45d66c00b3a8da42825bb83217c8e593da6c615e8b5",
+    "c5ba2abd84e05aa6c2b896206328385f8e4b97a68432e257f0c50037edf5ea7e"
+   ],
+   "phases": [
+    "起始：前臂平放在大腿上、掌心朝上，哑铃柄落在张开的指尖上，腕部保持平直。",
+    "关键：手指完全收拢卷起哑铃，前臂仍贴腿、腕部未弯折。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1441",
+   "expectedName": "dumbbell over bench one arm reverse wrist curl",
+   "sourceId": "ai-codex-fillA08-1441",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a635947f722539141ce6db7fe9ce549064d68a0a5837bed4c03787139bd1bbd1",
+    "9d50548ccce36809e9cb13f4bf6018e077f690e41bdae74c26a3614729c21c6d"
+   ],
+   "phases": [
+    "起始：前臂平放在长凳上，手腕悬在长凳边缘之外，掌心朝下，手腕向下弯曲。",
+    "关键：手腕向上弯曲伸展、将哑铃拉向前臂，前臂仍平放凳上、掌心仍朝下。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1620",
+   "expectedName": "dumbbell incline one arm hammer press on exercise ball",
+   "sourceId": "ai-codex-fillA08-1620",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "0483396b2460e087dcf6c69dd50f8c530ca0f740cd376f8124b38b39b2654d31",
+    "a445d79b5cd04114beab1c1fb35bbd0827fb2117f88b3b87120664592c354952"
+   ],
+   "phases": [
+    "起始：健身球托住头、颈与上背部（头部贴球），单手持哑铃位于肩高、掌心朝内，肘部弯曲 90 度。",
+    "关键：哑铃推至手臂完全伸展，掌心仍朝内（锤式握法），未旋成掌心朝前。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1646",
+   "expectedName": "dumbbell alternate hammer preacher curl",
+   "sourceId": "ai-codex-fillA08-1646",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "86cdb6182453c53ffc22888fded3fa6bcaffdc005bf8d9a907229360ab5c4f36",
+    "746a3d3d544abff18377268f2cda2f70db8979f3eaca718968222c34336ef7bc"
+   ],
+   "phases": [
+    "起始：双上臂贴牧师垫，双臂完全伸展，掌心相对（锤式握法）。",
+    "关键：一臂弯举至肩高、锤式握向不旋转，另一臂仍伸展贴垫。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1647",
+   "expectedName": "dumbbell alternate preacher curl",
+   "sourceId": "ai-codex-fillA08-1647",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "ce68ae8c4dc3d910f2c8f6a45cd3dc746cb753c9e6e00891feb92cf6e20ec43a",
+    "583c4bc2bf797466035920214d9f57e7dffc68b3e1a7ed0d124ad7884e61b8b0"
+   ],
+   "phases": [
+    "起始：双上臂贴牧师垫，双臂完全伸展，掌心朝上。",
+    "关键：一臂弯举至肩高、掌心仍朝上，另一臂仍伸展贴垫。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1649",
+   "expectedName": "dumbbell alternating bicep curl with leg raised on exercise ball",
+   "sourceId": "ai-codex-fillA08-1649",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d56c66dfc9ce15ce78052018b291ac12cc55f965611f6c7b943ecb981fe9d8d7",
+    "17651cb7c063d85d09388d5a6d9f3234b2e1b354667a50c81863d103c36cb747"
+   ],
+   "phases": [
+    "起始：站立，一只脚搭在身后的健身球上（不坐球），双臂完全伸展垂于体侧，掌心朝前。",
+    "关键：一臂弯举至肩高，另一臂仍伸展，后脚保持搭在球上。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1650",
+   "expectedName": "dumbbell alternating seated bicep curl on exercise ball",
+   "sourceId": "ai-codex-fillA08-1650",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "8fc4b789960e16b3a856da652f9aa62e77dd07e07868ab50f9f4522abb70a5e8",
+    "e3671d87a15d13ba8bcbfdfa3ff25e5f90924af5480de8809c65580c23878caf"
+   ],
+   "phases": [
+    "起始：坐于健身球上、双脚平放，双臂完全伸展，掌心朝前。",
+    "关键：一臂弯举并旋转前臂至手掌面向肩膀，另一臂仍伸展。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
