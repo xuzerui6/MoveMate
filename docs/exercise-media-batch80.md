@@ -49,4 +49,7 @@
 
 ## 验证与部署记录
 
-（待测试与部署完成后回填。）
+- 串行全套测试（2026-11-10 本地）：client `test:repository` **519/519** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。发布链计数三方一致：publish-exercise-documentation 输出 complete 807 / photos 694 / pending 522（原始口径，含已归档 20 条；有效口径 complete 807 / pending 502 / total 1,309），report 脚本 images 807 / missing 522。
+- 接入提交：`02bed2d`（分支 media/exercise-media-batch80），合入 main 为 `2bdac1c`；CI run 42773329880 **success**。合入后 step5 分支工作树复跑 client `test:repository` 519/519。
+- 双站部署（2026-11-10，wrangler@4.158.0 直跑）：production（dongban.xyz）Version **11d961ae-a0c3-446c-a2a7-a6f31c174203**；preview（preview.dongban.xyz，经 step5 分支合入 main 后部署，该分支合并提交 8370d70 已推送）Version **652050e2-d29a-4309-a7c1-d5aa166cf2f3**。preview 的 step5-heavy-test / step5-heavy-test-v2 / thunder-gate-test 三个测试页部署后复核均正常返回（200）。
+- sha256 抽查（浏览器 UA）：production 的 ai-codex-q3-80-1383-0/1（哈克双帧）、0985-0、0236-1 与 preview 的 1384-0、1012-1，线上字节与仓库文件逐一一致（6/6）；production 的 attribution.json 条目数 807、exdb:1383 在列。
