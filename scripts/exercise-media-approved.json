@@ -11897,6 +11897,168 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0048",
+   "expectedName": "barbell incline reverse-grip press",
+   "sourceId": "ai-codex-fillA4-0048",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "1ef1596dc4fa2b2de568c0aef4d6299e3b156da4c294fe2d3c0d98e3b0d03e5c",
+    "fd88d30f1cd3eb5660a0ce3479725162f13ecaa17101c9d8aae4a5c9b90dd7e9"
+   ],
+   "phases": [
+    "起始：45° 上斜凳仰卧、双脚着地，卧推架立柱与 J 钩在位；反握（掌心朝面部、拇指朝外）握距略宽于肩，杠轻触上胸、双肘内收朝下",
+    "关键：双臂完全伸展、杠于上胸正上方，双手仍反握未翻（掌心朝面部、拇指朝外），凳角、架位与握距与起始帧一致"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0034",
+   "expectedName": "barbell decline bent arm pullover",
+   "sourceId": "ai-codex-fillA4-0034",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "2b85ab63b819a312cfac45b58ffcd6687e1e8b6bde8cceb9e07a60d257b44dfc",
+    "becc7665eeeaa3c597b3aa19157620a6d2d0e28049f7ba4fcd644ff1ffd4284c"
+   ],
+   "phases": [
+    "起始：下斜凳仰卧（头低臀高）、双脚钩于高端脚垫滚垫下固定，旋前握与肩同宽，双臂上举杠于胸上方、双肘明显弯曲",
+    "关键：杠沿弧线降至头后约头部高度，双脚仍钩定、背贴凳，双肘保持明显弯曲（双帧同为恒定屈臂读法）"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0073",
+   "expectedName": "barbell pullover",
+   "sourceId": "ai-codex-fillA4-0073",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "9879322dfd17f3a37634c3c577cd1ad9f376c8ac8cb6fd5daadb3c2724560ae6",
+    "ba211ea156fb5aeb9fc64032adb066bdc89bbb65cff432be6abc891b752322ab"
+   ],
+   "phases": [
+    "起始：平凳仰卧、头在凳一端、双脚平放地面，正握（旋前）与肩同宽，双臂完全伸直、杠于胸上方",
+    "关键：保持手臂伸直，杠沿弧线降至头后、背阔肌拉伸，凳面水平、双脚着地不变（直臂读法）"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0082",
+   "expectedName": "barbell reverse wrist curl",
+   "sourceId": "ai-codex-fillA4-0082",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "cb1ac9ae34684d34a224d22fffb066c1da0ddbee27ac08286ce5a1c3de0b271f",
+    "ea4fc82b086a77b6047c9dc7968f57f5927a35182b30a107eeb6772dec5b557a"
+   ],
+   "phases": [
+    "起始：坐凳近中景，正手握杠（掌心朝下、旋前），双前臂平放大腿上、手腕悬于膝缘外，手腕下屈、杠下沉",
+    "关键：手腕上伸、杠被抬过前臂线、指节朝上，前臂仍贴大腿、掌心朝下未翻"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0094",
+   "expectedName": "barbell seated twist",
+   "sourceId": "ai-codex-fillA4-0094",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "54dc1cae5594c87823d01db01fd156a6cd6575b234cdc5beb1467734fd2d0e71",
+    "7c0c41272abe3bc172038cab1137a13da350a2bc5b66e1fac9834683aecbccb2"
+   ],
+   "phases": [
+    "起始：坐平凳、双脚平放地面，双手握空杠横置胸前、肘微屈，躯干正对前方、背挺直",
+    "关键：躯干向他的左侧旋转至极点（面部与胸口转向画面右侧、胸口朝镜头侧打开），杠仍在胸前随躯干一体转动，臀、膝与双脚未动"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1255",
+   "expectedName": "barbell decline pullover",
+   "sourceId": "ai-codex-fillA4-1255",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "fc604b98f01b70ea4cfe277921b905717e95b2e86c57cf11860c901f3a822811",
+    "3dfbec409af71461d70aed71d8e0e83e4e76cddc9b64edc59c441eff85c62df8"
+   ],
+   "phases": [
+    "起始：下斜凳仰卧（头低臀高）、双脚钩高端脚垫固定，旋前握略宽于肩，双臂伸至胸上方、肘轻微弯曲（近直臂）",
+    "关键：杠沿弧线降至头后，肘角与起始帧同为轻微弯曲、未转屈臂读法，双脚仍钩定"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1256",
+   "expectedName": "barbell reverse grip decline bench press",
+   "sourceId": "ai-codex-fillA4-1256",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "2d5da2bce9517b22eecee264297c01f789e25734ab2f499ae61c399ddffba576",
+    "b2151d39ba2a797eb33d0cf91b5f71734bfd604bf54470df5ea7aaa799357dea"
+   ],
+   "phases": [
+    "起始：下斜凳仰卧（头低臀高）、双脚固定、卧推架在位；反握（掌心朝面部、拇指朝外）握距略宽于肩，杠触胸、双肘内收",
+    "关键：双臂全伸、杠于胸上方，双手放大核仍反握未翻（拇指朝外、手指自下卷握），凳位、架位与握距与起始帧一致"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1258",
+   "expectedName": "barbell wide reverse grip bench press",
+   "sourceId": "ai-codex-fillA4-1258",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "bd0fae79c49d88b396fc3354b785f2618ffbc9356edf7c0d8677d291edf9bf4f",
+    "42c08e7231905a48f915f97e906790a7cae963c4dfd95842234ad18c21f28561"
+   ],
+   "phases": [
+    "起始：平凳仰卧、背贴凳、双脚平放地面；反握宽握（双手显著位于肩外侧），杠降至触胸、双肘内收、手腕伸直",
+    "关键：双臂完全伸展、杠于胸正上方，反握未翻、宽握距未收窄"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1456",
+   "expectedName": "barbell standing close grip military press",
+   "sourceId": "ai-codex-fillA4-1456",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "010d9e0506e928da47dc9dcf1c7b9a0af23872c8da3024ae6cbde4f2811d7406",
+    "5c4d6113039a8f6cd70d8db5d84fbdde8d31f56a7b767185bd55ee587d862053"
+   ],
+   "phases": [
+    "起始：站立、双脚与肩同宽，正握窄握（双手在肩宽内）杠举至肩高、上胸前，双肘贴身指向前方、前臂近垂直",
+    "关键：杠沿面前垂直推至头顶正上方、双臂充分伸展，窄握未变、杠无前飘"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
