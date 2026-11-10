@@ -13787,6 +13787,240 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2405",
+   "expectedName": "cable triceps pushdown (v-bar) (with arm blaster)",
+   "sourceId": "ai-codex-fillB2-8-2405",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b3577b02d8fc454cccf3bc53c09bd98c40ce0f4c59428b43ecf2539c9b65158e",
+    "6af6c59a55e0c0f0a827f1f7baca6053500bbfc8dcee96b123b58dec2df6ac46"
+   ],
+   "phases": [
+    "起始：双手掌心向下握 V 形杆于胸高，上臂贴于臂力板，肘部靠近身体。",
+    "关键：V 形杆下压至手臂伸直，肘部与上臂保持固定。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2406",
+   "expectedName": "cable reverse grip triceps pushdown (sz-bar) (with arm blaster)",
+   "sourceId": "ai-codex-fillB2-8-2406",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f2da82e7dc6f987994c8381c07bdd6f63ab7b25087f75d560c3c8e1ecf9c6b3a",
+    "124362139ab3f3a50a4cf69ea57da938f5aeb5a8dcfd5fc8d8eceacb7247d899"
+   ],
+   "phases": [
+    "起始：双手掌心向上握 SZ 杆于胸高，上臂贴于臂力板。",
+    "关键：SZ 杆下压至手臂伸直，掌心保持向上。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2407",
+   "expectedName": "barbell biceps curl (with arm blaster)",
+   "sourceId": "ai-codex-fillB2-8-2407",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "9c46da1fdf8baa158acc3b5649dc8b8c0f104cea77ee87782fc1039840082022",
+    "45300a7d492a8473525ffb911807d9d876aad2627f7eddfaf8e12d2e7c7ac7a3"
+   ],
+   "phases": [
+    "起始：双手掌心向上握杠铃垂于身前，上臂贴于臂力板。",
+    "关键：杠铃弯举至与肩部齐平，上臂保持静止。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2429",
+   "expectedName": "frog crunch",
+   "sourceId": "ai-codex-fillB2-8-2429",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "716e935e23e2a3af850939b389fd83da5f7ef81c628a5beec064e3e8f19ca791",
+    "b142906a8aa1be11e094a7228e5200ddb641d92bd3efca57840a0a77a8a5c77f"
+   ],
+   "phases": [
+    "起始：仰卧成蛙位，屈膝外开、双脚脚底相对，双手放在脑后。",
+    "关键：上半身卷起，肩胛骨离地，双脚保持脚底相对。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2464",
+   "expectedName": "cable thibaudeau kayak row",
+   "sourceId": "ai-codex-fillB2-8-2464",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "0d91b9de82f5e9305bd7c1c2dc4455d190a4484276357edd747c0e53f47187b4",
+    "8229467ba4c171186d7dd284e018256d90f199e24cd0ddfef02774812a4c2929"
+   ],
+   "phases": [
+    "起始：面对机器站立，双手掌心向下握直杆于前上方，肘部微屈。",
+    "关键：躯干侧屈，杆的一侧斜向下拉至髋侧大腿旁。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3011",
+   "expectedName": "incline scapula push up",
+   "sourceId": "ai-codex-fillB2-8-3011",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "54e3b0def260ba6c1fd27f1c3f1dccfdd0a1aa19e1aa41b9fb94fe14d4e5775d",
+    "1e8d5d73d7adc00c30c021e22c3d7f3cfcb5109d03930e4abf404d6cf7572a3e"
+   ],
+   "phases": [
+    "起始：双手撑凳、身体呈直线，肩胛骨分开，胸廓推离凳面。",
+    "关键：肩胛骨靠拢，胸廓向长凳下沉，肘部保持伸直。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3021",
+   "expectedName": "scapula push-up",
+   "sourceId": "ai-codex-fillB2-8-3021",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "4743beb6a8b2886269c8c97e8c59343f7c6b50caf43b9689aa28f0ec4e784518",
+    "6fb594afaa990399f04ec740cc841c8a78580996eb05df2bb98da6c1215e278e"
+   ],
+   "phases": [
+    "起始：高位平板，肩胛骨靠拢，胸廓下沉，肘部伸直。",
+    "关键：推动手掌使肩胛骨分开，胸廓推离地面，上背略拱。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3168",
+   "expectedName": "bodyweight squatting row",
+   "sourceId": "ai-codex-fillB2-8-3168",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "0d2ffdf3958e970c9fbeb2f79388872b89ee7ed7d862c118baeda458630ccdaf",
+    "7384abef8eea12891962814f5b858b3cf07a62d04ccf9c9c6b44a23934b2bf01"
+   ],
+   "phases": [
+    "起始：蹲姿抓牢立柱，双臂伸直，身体后倾。",
+    "关键：蹬地并屈肘拉起上身，肩胛骨收紧。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3203",
+   "expectedName": "prisoner half sit-up (male)",
+   "sourceId": "ai-codex-fillB2-8-3203",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "dec2e5b45b95168714d67cc90627a782bf80d244150d75520b3f8513c27ad485",
+    "460aa07caabe0124747b32b9c7cc3a54c4e33b2f80d54bfd266f9e6b5e472f49"
+   ],
+   "phases": [
+    "起始：仰卧屈膝，双脚平放，双手放在脑后，肘部朝外。",
+    "关键：上半身部分卷起，未坐成直立，仍为半程起坐。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3218",
+   "expectedName": "hands clasped circular toe touch (male)",
+   "sourceId": "ai-codex-fillB2-8-3218",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "c61f426ff20a54c3c55cc17e3b2f316cd08fbdabc6ba70c610c690657ae655ce",
+    "f437dec8f8930add9067d6734ea21e0be586d868338e3737576f1878ddc1f94e"
+   ],
+   "phases": [
+    "起始：直立站立，双手合十交握于胸前。",
+    "关键：髋部前折并侧倾，交握的双手触及一侧脚。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3221",
+   "expectedName": "half knee bends (male)",
+   "sourceId": "ai-codex-fillB2-8-3221",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "8177c374cc00cf78858126f2fdeb9d1e80df25b9474859b8bee65273ee2d3912",
+    "db8897f5659379cb9a4ba30802162af6637c452e4e062db8177e31bd74d96dc4"
+   ],
+   "phases": [
+    "起始：直立站立，双臂抱于胸前。",
+    "关键：屈膝下蹲至半程，大腿尚未与地面平行。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3222",
+   "expectedName": "semi squat jump (male)",
+   "sourceId": "ai-codex-fillB2-8-3222",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "c33b17f65868484dac6f4e292d684af7ac03727525e0a626cdb77ce57b4d23b2",
+    "26f1e0098edee4b9258eddc2a67cad43459b6395008144c287de3f5baefd8c70"
+   ],
+   "phases": [
+    "起始：浅蹲蓄势，大腿未及平行，双臂后摆。",
+    "关键：身体腾空跃起，髋膝伸展，双臂上摆。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3237",
+   "expectedName": "landmine lateral raise",
+   "sourceId": "ai-codex-fillB2-8-3237",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "2a06848d012ddec9c4c673e7a898d636d089381a922fe15c4f8b4a16c7667147",
+    "c58dd634f79132fde7f97e5cf0906f3c26f5d9e8c90b4accadcc2ba0895f3152"
+   ],
+   "phases": [
+    "起始：右手握地雷杆自由端垂于身体右侧，固定端在身后。",
+    "关键：右臂沿侧方弧线抬至肩高，杠铃绕锚点转动。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
