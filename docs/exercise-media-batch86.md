@@ -55,4 +55,7 @@
 
 ## 验证与部署记录
 
-（待回填）
+- 串行全套测试（2026-11-10 本地，接入工作树）：client `test:repository` **519/519** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过（cloudflare 首跑有 2 条 runtime 测试因本地子进程冷启动 `fetch failed` 失败，原样重跑 34/34 全过——既有环境 flake，与本批改动无关）。发布链计数三方一致：build 输出 847 image entries；publish-media-metadata 输出 847 records；publish-exercise-documentation 输出 complete 847 / photos 734 / pending 482（原始口径，含已归档 51 条；有效口径 complete 847 / pending 431 / total 1,278）；report 脚本 images 847 / missing 482 / cameraImages 56 / cameraPending 空。
+- 登记校验：补登后 client 仓库套件全绿——`exercise-media.test.ts` 对每条 approved 登记逐条校验目录英文名与 `expectedName` 一致、清单条目存在且来源块完整（author/url/version/changes/sourceSha256 与许可白名单），13 条补登行派生自已发布清单、与校验口径逐项对齐；构建以 `--only exdb:1458` 运行，1458 之外全部条目在清单中逐字保留（git 差异核过）。
+- 合并与 CI：接入提交 `3deb6f4`；main 合并 `ec716f4`；GitHub CI 运行 **42810644449** success。
+- 部署（wrangler@4.158.0 直调 + vault token）：生产 Version **`3f3b5640-6599-49ae-aabe-23dcf7ba113d`**；预演经 step5 分支合并 `afb808b`（部署前 client 套件首跑 504/506、2 败且有测试文件未完整执行，同属冷启动 flake，原样复跑 519/519 全绿后部署），预演 Version **`7df713b8-50b4-4b4e-91c3-a2f5640b6361`**。线上核查（浏览器 UA）：1458 双帧 WebP sha256 生产 **2/2**、预演 **2/2** 全合；生产与预演 attribution.json 均实测 847 条且 exdb:1458 在列；生产首页 200；预演三张验收测试页（step5-heavy-test / step5-heavy-test-v2 / thunder-gate-test）均 200 保留完好。
