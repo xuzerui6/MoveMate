@@ -15083,6 +15083,78 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3546",
+   "expectedName": "dumbbell seated alternate shoulder",
+   "sourceId": "ai-codex-fillA10-3546",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "58649a4cc6771590237059d7a290bf8be0b9fed021240a7a2656642dfdd3ea8f",
+    "ade6cd06357f8b864fb44d1632e56441c99b4580daa2e16fe4adcbe62351ece1"
+   ],
+   "phases": [
+    "起始：坐在长凳上、背部挺直、双脚平放，双手各握一哑铃停在肩高，掌心向内（中立握、铃轴前后向）。",
+    "关键：一臂将哑铃完全推过头顶，铃轴仍保持前后向（未旋成掌心朝前），另一哑铃保持在肩高。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0655",
+   "expectedName": "push-up (on stability ball)",
+   "sourceId": "ai-codex-fillA11-0655",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "0da5dd20b25917fbcfa2940c9c05c34fd789ce3a688d8bacde5630b998b81cda",
+    "bfe9d3491e53515a330b45fbd19605e8d47df3773e8d7fee8ad7acbe9e327702"
+   ],
+   "phases": [
+    "起始：双手与肩同宽撑在健身球上，双腿伸直在身后、脚趾支撑，手臂伸直，身体呈一条直线。",
+    "关键：屈肘将胸部降至接近球面，身体仍保持一条直线。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1334",
+   "expectedName": "exercise ball back extension with hands behind head",
+   "sourceId": "ai-codex-fillA11-1334",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "60c08a3f2b48d696b83a17d847f6ee10d0f27657dd921c4390086838131f3ee1",
+    "cf577b84186b930bac64ee9b888b2913b67b4f7988a3c2105844321732b39391"
+   ],
+   "phases": [
+    "起始：俯卧于健身球上、臀部（骨盆）压在球顶，双脚脚掌平抵墙面，双手放在脑后，躯干向下屈过球面。",
+    "关键：上半身抬起至头部—背部—腿部近一条直线（无过度反弓），双手仍在脑后、双脚仍抵墙。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1707",
+   "expectedName": "prone twist on stability ball",
+   "sourceId": "ai-codex-fillA11-1707",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "46aa0a3758144bd9fd7aa4e25bd0451fac16b2af41e431c2b37a5ba968091c73",
+    "dfe7255430fc59f5eeb96e39708636c3b5d797b40093d4dd5d70e7b79637d93b"
+   ],
+   "phases": [
+    "起始：俯卧于健身球上、双手放在脑后，躯干抬离球面、未旋转，臀部与腿部保持稳定。",
+    "关键：躯干向一侧明确旋转，臀部与腿部不跟随旋转，双手仍在脑后。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [

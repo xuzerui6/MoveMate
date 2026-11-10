@@ -38967,6 +38967,154 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:3546": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla10-3546-0.ceec19da0831.webp",
+          "sha256": "ceec19da083168c4b2e26522abb1624fb5a92faf0fda7b110240e97369c72b93",
+          "bytes": 77364,
+          "distribution": "repository",
+          "phase": "起始：坐在长凳上、背部挺直、双脚平放，双手各握一哑铃停在肩高，掌心向内（中立握、铃轴前后向）。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla10-3546-1.aabe6726c1f1.webp",
+          "sha256": "aabe6726c1f1b5ae0e78a90e97d587ef223b12cb1b019306e976763afae1aefd",
+          "bytes": 80786,
+          "distribution": "repository",
+          "phase": "关键：一臂将哑铃完全推过头顶，铃轴仍保持前后向（未旋成掌心朝前），另一哑铃保持在肩高。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA10-3546",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch100.md",
+          "version": "2026-11-11 · 生成批次 100",
+          "sourceSha256": [
+            "58649a4cc6771590237059d7a290bf8be0b9fed021240a7a2656642dfdd3ea8f",
+            "ade6cd06357f8b864fb44d1632e56441c99b4580daa2e16fe4adcbe62351ece1"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0655": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla11-0655-0.201c2156f1b7.webp",
+          "sha256": "201c2156f1b7d438ad6dfc9b10b9d37a7946e59aae95c76392776576e2371370",
+          "bytes": 102818,
+          "distribution": "repository",
+          "phase": "起始：双手与肩同宽撑在健身球上，双腿伸直在身后、脚趾支撑，手臂伸直，身体呈一条直线。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla11-0655-1.b445f363f6fc.webp",
+          "sha256": "b445f363f6fcef5a4e9f71658557deafd037beb90538cf3fdea45e3c416a55b1",
+          "bytes": 98152,
+          "distribution": "repository",
+          "phase": "关键：屈肘将胸部降至接近球面，身体仍保持一条直线。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA11-0655",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch100.md",
+          "version": "2026-11-11 · 生成批次 100",
+          "sourceSha256": [
+            "0da5dd20b25917fbcfa2940c9c05c34fd789ce3a688d8bacde5630b998b81cda",
+            "bfe9d3491e53515a330b45fbd19605e8d47df3773e8d7fee8ad7acbe9e327702"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1334": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla11-1334-0.7b74977fdd44.webp",
+          "sha256": "7b74977fdd448c3bebb06dc74fd721b1bec4cd5f8c58f2e5da73b7f218e74bb4",
+          "bytes": 46622,
+          "distribution": "repository",
+          "phase": "起始：俯卧于健身球上、臀部（骨盆）压在球顶，双脚脚掌平抵墙面，双手放在脑后，躯干向下屈过球面。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla11-1334-1.1614abe4b1fd.webp",
+          "sha256": "1614abe4b1fd98be9edd2425e44afd6507dfa3774a50c22dd706aebbe7870162",
+          "bytes": 42140,
+          "distribution": "repository",
+          "phase": "关键：上半身抬起至头部—背部—腿部近一条直线（无过度反弓），双手仍在脑后、双脚仍抵墙。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA11-1334",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch100.md",
+          "version": "2026-11-11 · 生成批次 100",
+          "sourceSha256": [
+            "60c08a3f2b48d696b83a17d847f6ee10d0f27657dd921c4390086838131f3ee1",
+            "cf577b84186b930bac64ee9b888b2913b67b4f7988a3c2105844321732b39391"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:1707": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla11-1707-0.c8d278920c57.webp",
+          "sha256": "c8d278920c57f2e102a3db29f9d81fdf376d3d9f0ef50f4a037fe6286f0b28b5",
+          "bytes": 90446,
+          "distribution": "repository",
+          "phase": "起始：俯卧于健身球上、双手放在脑后，躯干抬离球面、未旋转，臀部与腿部保持稳定。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla11-1707-1.d346960efd8e.webp",
+          "sha256": "d346960efd8e3cefa208a457fe8af47405f87f7c326b080e3a7ff60dbfbce398",
+          "bytes": 81352,
+          "distribution": "repository",
+          "phase": "关键：躯干向一侧明确旋转，臀部与腿部不跟随旋转，双手仍在脑后。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA11-1707",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch100.md",
+          "version": "2026-11-11 · 生成批次 100",
+          "sourceSha256": [
+            "46aa0a3758144bd9fd7aa4e25bd0451fac16b2af41e431c2b37a5ba968091c73",
+            "dfe7255430fc59f5eeb96e39708636c3b5d797b40093d4dd5d70e7b79637d93b"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }
