@@ -8210,22 +8210,37 @@
     {
       "id": "exdb:0149",
       "originalName": "cable alternate triceps extension",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：上臂平行地面、前臂后伸可读，但滑轮高度及手臂起点方向未说明。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A3 · 绳索批，批次 83 接入）：种子意见指上臂平行地面、前臂后伸可读，但滑轮高度及手臂起点方向未说明——呈现裁定（备料已披露，种子读法同向）：按踢背式几何成帧，低滑轮、单 D 手柄、躯干前倾约 30 至 40 度、右上臂指向身后与地面平行、肘屈 90 度前臂下垂起；关键帧右臂成一条直线指向身后，上臂角度与起始帧一致（仅前臂伸展）、左臂全程垂放不动，交替以单侧定格呈现；索自右手向前下方入低滑轮、全程绷直不断。终门观察项（如实记录）：双帧工作上臂线略高于严格水平（肘略高于肩线延长），双帧一致、读法无歧义，主理人终门亲核按原样采用并披露。呈现裁定为呈现层处理而非正文修改，正文不改。双帧均首稿过门。接入时定稿 6 步按目录存储形制（checked 条目 3–5 步）分号合并为 5 步，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "1e69343d8fa936d8fc06e2d70f8f196321261a0599e2df12cf0138c9b41bfd98",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA3-0149",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch83.md",
+          "version": "2026-11-10 · 生成批次 83",
+          "sourceSha256": [
+            "9ca48107eecccbea8657e97f1813fc1eea143d7029f9c37f9cefd876bd1444a1",
+            "8551cfc47b3a75c565c7489456cef4d95596f9023df2f0cdaf91f37c7d92815e"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3235",
@@ -8285,22 +8300,37 @@
     {
       "id": "exdb:0151",
       "originalName": "cable standing chest press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：名称bench，正文却背对机器站立推胸，没有凳面，体位矛盾。2026-11-10 目录裁决 Q2 改名（Edward 批准；框架卷宗 D20）：原名 cable bench press 的 bench 在正文全程无落点，正文为完整自洽的站立绳索推胸，改名为 cable standing chest press，正文不动；旧中英文名保留于别名供搜索召回。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A3 · 绳索批，批次 83 接入）：本条名称问题已由目录裁决 Q2 先行解决（原名 cable bench press 改为 cable standing chest press，正文为完整自洽的站立绳索推胸，旧名保留别名），种子所指体位矛盾随改名消解，本批按现行名称与正文补图。定版双帧：双立柱胸高滑轮、背对机器站立、无卧推凳入画（旧名陷阱未中）；双索逐段核双帧过——起始帧双手肩高、肘约 90 度，左右索各自绷直回本侧滑轮；关键帧双臂身前完全伸展、双手胸前近合，双索仍各行其侧、无交叉无合并。呈现裁定（如实披露）：站姿取前后开立（左脚在前）以稳定推胸，此为呈现层裁定而非正文修改，正文不改。双帧均首稿过门。接入时定稿 8 步按目录存储形制（checked 条目 3–5 步）分号合并为 5 步，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "c68209cea4ecfc9c41dab717d79de95001b7ade7dd0e8171d1754901a379609e",
-        "steps": 8
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA3-0151",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch83.md",
+          "version": "2026-11-10 · 生成批次 83",
+          "sourceSha256": [
+            "0a7cfbdcf8b553e82b33496eca9d260fa5d4e679db02fe2e1c0ca5edb2de07bd",
+            "cbd4919288c439438907cba26b7981443afcddfaca05c0784fc315780db31281"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1630",
@@ -9295,22 +9325,37 @@
     {
       "id": "exdb:0176",
       "originalName": "cable kneeling triceps extension",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：面朝方向、绳柄/直杆和躯干支撑均与来源不一致。 当前不发布此候选，不计完整覆盖。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A3 · 绳索批，批次 83 接入）：种子意见指先前候选的面朝方向、绳柄/直杆与躯干支撑三项均与正文不一致、该候选不发布——本批定版双帧按正文逐项反向落实并正面回答：面向机器双膝跪地（小腿脚背贴地）、躯干直立无支撑、用绳附件（非直杆）连高滑轮；起始帧双手于耳侧握绳头、肘贴头、上臂近垂直贴头两侧，索自双手经连接头连高滑轮；关键帧双臂向头前上方完全伸展、上臂仍贴头侧、跪位原位。双帧均首稿过门。正文与成帧口径一致，不改文；接入时定稿 6 步按目录存储形制（checked 条目 3–5 步）分号合并为 5 步，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "987a8b56394a46b4688dc25293baf9659fc2a0388da6ed68f8ef20f9aabd0212",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA3-0176",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch83.md",
+          "version": "2026-11-10 · 生成批次 83",
+          "sourceSha256": [
+            "8e40f0b07f249d093656f418ddd37487b97cd9592ab56c576df92335a17a35a7",
+            "47aa4194188717df82ef5946fb038d4b0ed18f8983599134275d0bb509ba2e35"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2330",
@@ -9990,22 +10035,37 @@
     {
       "id": "exdb:1633",
       "originalName": "cable one arm preacher curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：站姿上臂靠牧师垫清楚，滑轮高度未写，需准确垫面、脚底与手柄路径图。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A3 · 绳索批，批次 83 接入）：种子意见指站姿上臂靠牧师垫清楚，滑轮高度未写，需准确垫面、脚底与手柄路径图——定版双帧正面回答：站姿托垫、低索、单 D 手柄，索路自手柄绷直入低滑轮。起始帧首稿工作臂误作左臂，违本批单侧统一取右的成帧口径，判 SIDE 废稿（留档备料 FAILED 目录），同会话定向重生成为右臂：右上臂贴垫、左臂垂放体侧不动，握柄放大核掌心向上、手指自柄下向上扣，旋后握成立；关键帧右柄卷至右肩高、上臂贴垫原位、左臂不动。呈现裁定（如实披露）：正文未明滑轮高度与握法，按低索 + 单 D 手柄 + 旋后握成帧，此为呈现层裁定而非正文修改，正文不改。接入时定稿 9 步按目录存储形制（checked 条目 3–5 步）分号合并为 5 步，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "f8cbb04873ec268eb3e5512a227f9c1cbeac7b3d1e75e820e68271f88f16cbe6",
-        "steps": 9
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA3-1633",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch83.md",
+          "version": "2026-11-10 · 生成批次 83",
+          "sourceSha256": [
+            "94094aef1859384e38a0680f1ae41b838ad333253bfc5b4098dd6022262dc92a",
+            "73c1fa225e241d361be3218d05835140e4b4d30cbe12fe978193e9d11b93e77a"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1267",
@@ -10845,22 +10905,37 @@
     {
       "id": "exdb:0209",
       "originalName": "cable reverse preacher curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：坐姿上臂垫上掌心向下明确，仍需托垫、滑轮与手腕近景，不套普通旋后弯举。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A3 · 绳索批，批次 83 接入）：种子意见指坐姿上臂垫上掌心向下明确，仍需托垫、滑轮与手腕近景，不套普通旋后弯举——定版双帧正面回答：坐牧师凳、双上臂贴垫、低索直杆附件。握法双帧放大核为本条首要死线并已过：起始帧掌背向上、手指自杠上方向下扣（掌心向下）；关键帧杆至肩高，双手仍指背朝镜头、指尖向下扣杠（掌心朝向自己）——反握（旋前）在收缩位未翻旋后。索自杆中连接头绷直入低滑轮。呈现裁定（如实披露）：正文第 1 步垫高表述按坐姿牧师凳通行构型落实为低索直杆，此为呈现层落实而非正文修改，正文不改。正文与成帧口径一致；接入时定稿 7 步按目录存储形制（checked 条目 3–5 步）分号合并为 5 步，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "c944c871197229da14ecda054ffadb29189d1c8bb8002207c3839701e9760ffe",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA3-0209",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch83.md",
+          "version": "2026-11-10 · 生成批次 83",
+          "sourceSha256": [
+            "dc1105a3c7da8bbd246775915fd6aa79c9c546958d3bbc974667ba589d650283",
+            "ef0e8737867eccfbece212700342d1b2273ee081183fc6dbb3b67831ab881869"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0210",
@@ -11000,22 +11075,37 @@
     {
       "id": "exdb:1321",
       "originalName": "cable rope elevated seated row",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：高架座椅坐姿清楚，但脚部支撑、滑轮相对高度与高座结构未明确。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A3 · 绳索批，批次 83 接入）：种子意见指高架座椅坐姿清楚，但脚部支撑、滑轮相对高度与高座结构未明确——呈现裁定三件套（如实披露）在定版双帧中同时成立：高位长凳座面（座高明显、双脚离地）、双脚平踏划船架高位脚踏板、低滑轮 + 绳索附件；起始帧双臂前伸、中立握双绳头；关键帧双绳头拉至下肋腹侧、双肘过躯干、肩胛收紧、躯干近直立微后倾，座位与脚踏原位。正文第 2 步「正手握住缆绳手柄，手掌相对」措辞自相矛盾，按绳附件中立握（手掌相对）落实，此为呈现层裁定而非正文修改，正文不改，特此披露。双帧均首稿过门。接入时定稿 7 步按目录存储形制（checked 条目 3–5 步）分号合并为 5 步，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "0632d0eca0f59579f1e5e0038faeedca318f78ad39008b19f13868bedf29bad7",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA3-1321",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch83.md",
+          "version": "2026-11-10 · 生成批次 83",
+          "sourceSha256": [
+            "4c7f51c80e16194b4da5701971bfe7aff109af6c5fbba64de72ba133a7ed3418",
+            "37c63470547345409dfb4bcb5910453055bdb9db0e0469d16bf25e6bc19f03b0"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1322",
@@ -11040,22 +11130,37 @@
     {
       "id": "exdb:1639",
       "originalName": "cable rope hammer preacher curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：低索中立握、上臂托垫清楚，需核对站姿凳垫与手柄末端细节图。",
+      "reason": "2026-11-10 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A3 · 绳索批，批次 83 接入）：种子意见指低索中立握、上臂托垫清楚，需核对站姿凳垫与手柄末端细节图——定版双帧正面回答（本批探针）：面向低滑轮站立、双上臂平贴牧师斜垫、肘落垫下缘，双手各握一股绳头、中立握掌心相对、止挡球贴手上方，索经金属连接头以单索绷直入低滑轮，逐段追索无断点；关键帧双前臂卷至肩高、双肘仍压垫下缘、上臂贴垫原位，放大核双手仍中立握（拇指向上、掌心相对）、腕无旋转，未翻旋后。双帧均首稿过门，本条构型为同批牧师基底（1633/0209）确立先例。观察项（如实记录）：模特鞋为黑面白中底，与备料「黑色训练鞋」字面轻微出入，鞋主体为黑、终门按原样采用。正文与成帧口径一致，不改文；接入时定稿 8 步按目录存储形制（checked 条目 3–5 步）分号合并为 5 步，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "2cfa6fd540cb3a275eac16b4edebebe8f239df692f9dae3dcf2105469f3ee13f",
-        "steps": 8
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA3-1639",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch83.md",
+          "version": "2026-11-10 · 生成批次 83",
+          "sourceSha256": [
+            "7f70c27959c11224691161a5c90e35ec0c838ab354a1fe5e2d8132b690b8c8b5",
+            "df2f5c99fea97be87f81fd98e6fa19a6e67ac2120a5b3e1fbcda7bf362e70423"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1724",
