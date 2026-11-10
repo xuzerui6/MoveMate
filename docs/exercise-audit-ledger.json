@@ -1464,16 +1464,16 @@
     },
     {
       "id": "exdb:0972",
-      "originalName": "band bicycle crunch",
+      "originalName": "bicycle crunch",
       "status": "needs_review",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：全部步骤只描述徒手蹬车卷腹，没有带子佩戴、张力或锚点，不能用徒手版示范冒充。",
+      "reason": "逐项对照固定版本名称、器械和完整步骤：全部步骤只描述徒手蹬车卷腹，没有带子佩戴、张力或锚点，不能用徒手版示范冒充。2026-11-10 目录裁决 Q2 改名（Edward 批准；框架卷宗 D14）：原名 band bicycle crunch 与正文不符——正文全程徒手、弹力带零落点，改名为 bicycle crunch，器械字段由 band 改为 body weight 并移入徒手类；旧中英文名保留于别名供搜索召回。",
       "text": {
         "status": "reviewed_with_issues",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "b93ddfa14c3cdb12546fc7b1201806bd8706cbf5527151461e6c2517c48f587d",
+        "sourceRecordSha256": "8a3a262d2f3aae86ce4628485ac92f9067fcc8f1bc68bf9651827d4906993456",
         "steps": 5
       },
       "photo": false,
@@ -2279,16 +2279,16 @@
     },
     {
       "id": "exdb:1000",
-      "originalName": "band single leg reverse calf raise",
+      "originalName": "band seated reverse calf raise",
       "status": "needs_review",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称反向提踵通常应核对脚尖抬起，正文却与普通脚跟抬起一致，且带端没有固定。",
+      "reason": "逐项对照固定版本名称、器械和完整步骤：名称反向提踵通常应核对脚尖抬起，正文却与普通脚跟抬起一致，且带端没有固定。2026-11-10 目录裁决 Q2 改名（Edward 批准；框架卷宗 D19）：原名 band single leg reverse calf raise 的站姿单腿背屈读法无来源可核，可核形式为坐姿弹力带背屈（康复来源），改名为 band seated reverse calf raise；正文暂按原文保留，待改文线按新名起草；旧中英文名保留于别名供搜索召回。",
       "text": {
         "status": "reviewed_with_issues",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "e48c2b827e1aeb7e149c5ad091e7c84ca473b0739b734640efffa2332bb940d5",
+        "sourceRecordSha256": "cb94217c10811cdf233d7d88ff3737cd0b391b61050448818b29b89a8a661e84",
         "steps": 5
       },
       "photo": false,
@@ -8194,16 +8194,16 @@
     },
     {
       "id": "exdb:0151",
-      "originalName": "cable bench press",
+      "originalName": "cable standing chest press",
       "status": "needs_review",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：名称bench，正文却背对机器站立推胸，没有凳面，体位矛盾。",
+      "reason": "逐项对照固定版本完整步骤：名称bench，正文却背对机器站立推胸，没有凳面，体位矛盾。2026-11-10 目录裁决 Q2 改名（Edward 批准；框架卷宗 D20）：原名 cable bench press 的 bench 在正文全程无落点，正文为完整自洽的站立绳索推胸，改名为 cable standing chest press，正文不动；旧中英文名保留于别名供搜索召回。",
       "text": {
         "status": "reviewed_with_issues",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "be820f5bdb4b67a164dce8b13dde8a4d46c76007e69ac4d16bc55b7234188ba2",
+        "sourceRecordSha256": "c68209cea4ecfc9c41dab717d79de95001b7ade7dd0e8171d1754901a379609e",
         "steps": 8
       },
       "photo": false,
@@ -29213,16 +29213,16 @@
     },
     {
       "id": "exdb:1349",
-      "originalName": "lever reverse t-bar row",
+      "originalName": "lever t-bar row",
       "status": "needs_review",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题reverse T，正文普通胸托正握划船，没有反向特征或T杠结构。",
+      "reason": "逐项对照固定版本完整步骤：标题reverse T，正文普通胸托正握划船，没有反向特征或T杠结构。2026-11-10 目录裁决 Q2 改名（Edward 批准；框架卷宗 D23）：原名 lever reverse t-bar row 的 reverse 既非反握亦无其他落点（反握读法由 exdb:1351 承载），改名为 lever t-bar row，正文不动；旧中英文名保留于别名供搜索召回。",
       "text": {
         "status": "reviewed_with_issues",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "176bc044a7be75e5d39ffabdeb590ffd9c3a1753770236e7ae8493ea2bb9b1ff",
+        "sourceRecordSha256": "b0680fa39bc29690c8ef698612f6e25f6bcbc5254476c4527540d5753fb7d51c",
         "steps": 7
       },
       "photo": false,
@@ -36066,16 +36066,16 @@
     },
     {
       "id": "exdb:0769",
-      "originalName": "smith sprint lunge",
+      "originalName": "smith rear foot elevated split squat",
       "status": "checked",
       "reviewStage": "editorial",
-      "reason": "2026-11-08 Codex CLI 图像生成双帧已逐帧对照（正文定版条 · 不改文）：名称 sprint，种子意见点名正文后脚脚尖搭在髋高横杆上后下蹲、更像后脚抬高分腿蹲，形式需要核对——以正文形式作答定版：本条的执行形式就是后脚搭史密斯杠的分腿蹲，杠本身即抬高物（这是它区别于一切凳式保加利亚分腿蹲的身份点），名称仅作标签、形式全从正文；正文与成帧口径一致，未作口径修订，仅在此记录名称与形式的对应关系。双手自然垂于体侧为编辑定义补足的无争议细节（正文未写，此处披露）。定版双帧：双帧右脚脚尖均搭在锁定于髋高的史密斯杠本身上（非凳、箱或地面，第一检查点成立），起始帧左腿伸直支撑、躯干直立，关键帧左大腿约与地面平行、左脚跟不离地、右膝下沉接近地面、躯干仍直立、双臂垂于体侧。工作侧按正文首述取左腿。素材检查为来源、变式与可见过程核对，非专业教学认证。",
+      "reason": "2026-11-08 Codex CLI 图像生成双帧已逐帧对照（正文定版条 · 不改文）：名称 sprint，种子意见点名正文后脚脚尖搭在髋高横杆上后下蹲、更像后脚抬高分腿蹲，形式需要核对——以正文形式作答定版：本条的执行形式就是后脚搭史密斯杠的分腿蹲，杠本身即抬高物（这是它区别于一切凳式保加利亚分腿蹲的身份点），名称仅作标签、形式全从正文；正文与成帧口径一致，未作口径修订，仅在此记录名称与形式的对应关系。双手自然垂于体侧为编辑定义补足的无争议细节（正文未写，此处披露）。定版双帧：双帧右脚脚尖均搭在锁定于髋高的史密斯杠本身上（非凳、箱或地面，第一检查点成立），起始帧左腿伸直支撑、躯干直立，关键帧左大腿约与地面平行、左脚跟不离地、右膝下沉接近地面、躯干仍直立、双臂垂于体侧。工作侧按正文首述取左腿。素材检查为来源、变式与可见过程核对，非专业教学认证。2026-11-10 目录裁决 Q2 改名（Edward 批准；框架卷宗 D24，已发布条目身份复核）：原名 smith sprint lunge 的 sprint 在正文与成帧中零落点，内容实为后脚脚尖置于杠上、双侧交替的分腿蹲，改名为 smith rear foot elevated split squat；中文名以「搭杠」标明支点，与 exdb:0768 的长凳支点相区别；正文与媒体不动，历史训练快照中的旧名按快照语义保留；旧中英文名保留于别名供搜索召回。",
       "text": {
         "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
-        "sourceRecordSha256": "e779d53e10e320c8225bf1b41d9f5531933f9386c2a8a4fe4a6bd0421f60d5c5",
+        "sourceRecordSha256": "ec83428fd4ea22495359679e8442f86dc00700640c371de95155a5c65b670c44",
         "steps": 5
       },
       "photo": true,
