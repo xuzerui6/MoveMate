@@ -51,4 +51,6 @@
 
 ## 验证与部署记录
 
-（待回填：串行测试、CI、双站 Version 与线上核查结果。）
+- 串行全套测试（2026-11-10 本地）：client `test:repository` **519/519** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。发布链计数三方一致：publish-media-metadata 输出 861 records；publish-exercise-documentation 输出 complete 861 / photos 748 / pending 468（原始口径，含已归档 51 条；有效口径 complete 861 / pending 417 / total 1,278），report 脚本 images 861 / missing 468，missing 清单恰移除本批 14 条。
+- 合并与 CI：接入提交 `2b0c0d6`；main 合并 `3ac6350`；GitHub CI 运行 **42813072646** success。
+- 部署：生产 Version **`f5c7d15f-ba57-4433-bdbe-f725e185e4f9`**；预演 `feat/step5-heavy-testpage` 合并提交 `6ccbac2`（该站部署前 client 套件 519/519），预演 Version **`300e3004-ca4c-43ac-b0a5-8567e7eb833f`**。线上核查：新图生产站 sha256 **28/28**、预演站 sha256 **28/28**、生产 attribution.json 实测 861 条（exdb:0399、exdb:0508 在列）、生产首页 200、预演三张验收测试页（step5-heavy-test / step5-heavy-test-v2 / thunder-gate-test）均 200。
