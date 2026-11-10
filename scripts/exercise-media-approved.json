@@ -14219,6 +14219,186 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0303",
+   "expectedName": "dumbbell decline hammer press",
+   "sourceId": "ai-codex-fillA5-0303",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "dd6bf9d5a49eab3a5e42cf2bfcffe66a9d8576bd2618921c2fd3584b3fd13ea3",
+    "a3887fc477ecc1ae0f8870dbd5c0e46c569ba1cc4b63eedbc0e0d93c932c6c49"
+   ],
+   "phases": [
+    "起始：下斜凳仰卧、头部低于臀部，双脚勾在高端滚垫下固定，双手各握一哑铃、掌心相对（中立握），双臂伸至胸部上方。",
+    "关键：双铃降至胸部两侧、肘部微屈，中立握未翻，双脚仍勾定。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0305",
+   "expectedName": "dumbbell decline shrug",
+   "sourceId": "ai-codex-fillA5-0305",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "6a9f867778bc16e1a9b85ebcd751bde92224cb83030d4426f7801d88d0df49af",
+    "7b5e44868d53e3d7999f1e90cc2de93e5ddd7b052d61093666422c97bae7a2e3"
+   ],
+   "phases": [
+    "起始：俯卧于 45 度下斜凳、胸腹贴凳，双臂完全伸直垂向地面，各握一哑铃。",
+    "关键：保持手臂伸直，双肩向耳朵方向耸起，哑铃与肩线均高于起始帧。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0307",
+   "expectedName": "dumbbell decline twist fly",
+   "sourceId": "ai-codex-fillA5-0307",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a0fb0a2948f5ee966fa062a3c22bedaa5af7c6b913ff731f43b93e8e707a50f3",
+    "9b0b1465650090d9a9f9a9993568f85816e8f3d25bdbef063305b171eef3c2ed"
+   ],
+   "phases": [
+    "起始：下斜凳仰卧、头部低于臀部，双脚勾垫固定，双臂伸直越过胸部、掌心相对。",
+    "关键：双臂以宽弧线展开至胸侧，下放末端双腕已旋转，掌心朝前（近侧手最清晰）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0324",
+   "expectedName": "dumbbell incline palm-in press",
+   "sourceId": "ai-codex-fillA5-0324",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d6cb94d95fbd081e92ffdec7ef9fd7077d7ec1e916b999d074031a75b75a1e6f",
+    "1683d266eada0a488ac1682eb103404a2d5d6fa6a64cfe9c78b7545404b4bbe5"
+   ],
+   "phases": [
+    "起始：坐在 45 度上斜凳上，双脚踩实地面、背靠凳面，哑铃在肩高、肘部弯曲，掌心相对（铃柄沿身体纵轴）。",
+    "关键：双臂充分伸展推至上方，掌心仍相对未翻，凳角与握向与起始帧一致。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0358",
+   "expectedName": "dumbbell one arm reverse wrist curl",
+   "sourceId": "ai-codex-fillA5-0358",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "1ab465943a5216c88d95969606cf5e9b20ec1499b6ac2deedd9ecfb5fa832602",
+    "ec905109d64af6ba4adcfff764b624357b334a07a88051c482fb7151b67b4523"
+   ],
+   "phases": [
+    "起始：坐凳、前臂平托大腿、手腕悬于膝缘外，正手握哑铃（掌心向下），手腕下屈、哑铃降至膝下。",
+    "关键：手腕向上卷伸，哑铃抬过前臂线，前臂未离大腿、掌心仍向下。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0359",
+   "expectedName": "dumbbell one arm reverse fly (with support)",
+   "sourceId": "ai-codex-fillA5-0359",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "9e1e577f6b61e227e4cd8283207d6c8e3f1eee751f15c0cb1f92a3f22752a21b",
+    "7e232904cafd326898ca06ee78c1a9e20316cfdeef7f540847fad608045c31e5"
+   ],
+   "phases": [
+    "起始：坐凳前倾，空闲手全掌按凳支撑、双脚平放，持铃臂自然下垂、掌心朝腿。",
+    "关键：持铃臂侧举至与地面平行、肘微屈，躯干与支撑手未动，三点支撑全程在位。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0364",
+   "expectedName": "dumbbell one arm wrist curl",
+   "sourceId": "ai-codex-fillA5-0364",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "2e4e910c882b191ee15626c8e0b57a46913f690b893d54da6f55717dfe2b175e",
+    "699cea85386c965b68119f9ec5df20cac4a8e44c6c1285842f2d7ec9b1d50a76"
+   ],
+   "phases": [
+    "起始：坐凳、前臂托大腿，反握哑铃（掌心向上），手腕下伸、哑铃停在张开的指尖上。",
+    "关键：手指收拢握紧、屈腕上卷，前臂未离大腿。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0380",
+   "expectedName": "dumbbell rear lateral raise",
+   "sourceId": "ai-codex-fillA5-0380",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e0adaf985d9f242535fe530ac33670bf3cbd29c00f4d1b8edf10c26e6cfbc7d3",
+    "da22e47b6e21c8c25dc95e2d2cf84d24dac4b0a670f9776c958015017d101468"
+   ],
+   "phases": [
+    "起始：站姿髋铰链俯身、平背，双臂下垂、掌心相对，各握一哑铃。",
+    "关键：双臂侧举至与地面平行、肘微屈，掌心朝后、无旋腕。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0385",
+   "expectedName": "dumbbell reverse wrist curl",
+   "sourceId": "ai-codex-fillA5-0385",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "5f24e8de221a6fb6e0898d0197e82e97e5ee5fd0b6b1346c8742c602dad2744e",
+    "5a101750f38790095161aa01885f926a810bc74d4e37b61142e17b61ad0fe8af"
+   ],
+   "phases": [
+    "起始：坐凳、双前臂托大腿、双腕悬于膝缘外，双手正手握哑铃（掌心向下），双腕下屈。",
+    "关键：双腕同步上伸、哑铃抬起，双手掌心仍向下、握向未变。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0386",
+   "expectedName": "dumbbell rotation reverse fly",
+   "sourceId": "ai-codex-fillA5-0386",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e1f777f57ec1fba9191840cbbbe2aa267bd0237f1c9ad8285c936f6c45f33945",
+    "2fa821c7e7fa3dc7e97c918811c317dae6c15bc2a711c9ade773fac7c7ac2c49"
+   ],
+   "phases": [
+    "起始：站姿俯身、平背，双臂下垂、掌心相对（中立），各握一哑铃。",
+    "关键：双臂侧举至与地面平行且已旋腕：手背朝上、掌心向下、拇指朝前。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
