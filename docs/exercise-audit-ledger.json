@@ -1300,22 +1300,37 @@
     {
       "id": "exdb:0968",
       "originalName": "band alternating biceps curl",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：已说明反手交替屈肘，但没有交代带子脚踩或其他固定方式，不能据此确定阻力方向。",
+      "reason": "2026-11-10 Q3 呈现政策定稿条（目录裁决框架卷宗 D27 交替类；Edward 2026-11-10 批准呈现政策；正文定稿见改文线 Q3-TEXTS.md，未引入负荷、组次、节奏、最大幅度或医疗主张）+ Codex CLI 图像生成双帧已逐帧对照：种子问题有二：名称 alternating、正文逐侧交替执行，交替本体不被双帧承载；且带下端固定全缺、阻力方向不能确定。政策处置：第 1 步补入锚点（P3 披露项）——原句只写持带、带下端固定全缺，补「双脚踩住弹力带中段，……握住弹力带两端」，此为本目录带类站姿持带动作的唯一定版制式（批次 75 定版口径，同批定稿 1012 第 1 步「将弹力带放在脚下」同式），且框架 D27 原案明文派起草环节补锚，属既有制式套用而非新造事实；收尾后新增末步呈现声明（P1），定格交替相位：右臂弯举至顶部、左臂垂于体侧持带端，两臂如此交替进行。余步逐字继承（含第 2 步继承的顶部停顿/挤压表述，按 G2/G3 不动）。定稿恰为 5 步，与目录存储形制恰合，未作任何合并、逐字存入。定版双帧均首稿过门、零废稿：双脚踩带中段、带自双脚上行绷紧、反手持端；关键帧仅右臂弯举至顶、左臂完全下垂持带，交替本体与呈现侧（右臂）双帧一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "79a349fe017946a751d6e48a7aaf87ecd9c32098f707e10177a3ae7b89287c4e",
-        "steps": 4
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-q3-80-0968",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch80.md",
+          "version": "2026-11-10 · 生成批次 80",
+          "sourceSha256": [
+            "f3a8d64a8f4bc3c70020eba3f75beb31305bb10fe17855733bbeb5c73cada63a",
+            "ae7e6df672f0b6b20e776e4983a9113e47a19f6e55247e46ef9b1bdac0371010"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0969",
@@ -1796,22 +1811,37 @@
     {
       "id": "exdb:0985",
       "originalName": "band kneeling twisting crunch",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：腰高锚点背向跪姿，动作写躯干扭向一侧而双手移向另一侧，未明确带路及屈曲/旋转阶段。",
+      "reason": "2026-11-10 Q3 呈现政策定稿条（目录裁决框架卷宗 D25 旋转簇；Edward 2026-11-10 批准呈现政策；正文定稿见改文线 Q3-TEXTS.md，未引入负荷、组次、节奏、最大幅度或医疗主张）+ Codex CLI 图像生成双帧已逐帧对照：种子问题为第 3 步「将躯干扭向一侧」未明确屈曲/旋转阶段与带路、转幅与骨盆冻结无成帧核法。政策编辑两处：第 3 步补入簇级口径「保持骨盆与双膝位置不动，」（P2，跪姿下骨盆固定即骨盆与双膝原位，与第 2 步跪位自洽）；收尾之后按 G1′ 新增末步呈现声明（P1），载明图中为躯干向左转至肩线与骨盆线明显成角、双手移向右侧臀部的位置、另一侧做法相同。余步逐字继承（锚点、停顿、交替收尾按 G2/G3 保留）。接入时定稿 7 步按目录存储形制（checked 条目步骤 3–5 条）合并为 5 步：设置两步合并为一步；扭转步与停顿回位步分号合并；另一侧重复步与交替样板句合并；呈现声明单列末步、原句完整保留。定版双帧均首稿过门：起始帧背对腰高锚点（深蹲架立柱）跪于垫上、双膝与小腿贴垫，带自锚点直线向前绷紧至双手（不绕腰或颈），躯干中立；关键帧双膝与骨盆原位不动，躯干左转至肩线与骨盆线明显成角，双手随转体移至右侧臀部，带仍自同一锚点绷紧。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a4b585bb6edf3d6fb98b61032b77d23bfd834e922734338230b105e11347de98",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-q3-80-0985",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch80.md",
+          "version": "2026-11-10 · 生成批次 80",
+          "sourceSha256": [
+            "f267fbec4fb8cff7a6566943228ff9f12ecf2db73911a639af756607aefc73ad",
+            "0207fad03eeab21731b8a4182d67c5390f67fcf6f94bcf1adc14ad58eee6d64c"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0984",
@@ -2547,22 +2577,37 @@
     {
       "id": "exdb:1012",
       "originalName": "band twisting overhead press",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：脚踩带肩推同时转躯干、髋固定，需专门展示左右转换及肩髋关系，不用普通肩推图替代。",
+      "reason": "2026-11-10 Q3 呈现政策定稿条（目录裁决框架卷宗 D25 旋转簇；Edward 2026-11-10 批准呈现政策；正文定稿见改文线 Q3-TEXTS.md，未引入负荷、组次、节奏、最大幅度或医疗主张）+ Codex CLI 图像生成双帧已逐帧对照：种子问题为旋转、交替、过顶三重叠加，双帧不可教。政策编辑两处：第 2 步一处 P3 最小纠正——「将弹力带手柄保持在…」改为「将弹力带两端保持在…」，本目录带类制式为一条无把手的宽扁环带（批次 75 定版口径），「手柄」与所呈之物正面冲突，仅换此一词、句义不变；收尾后新增末步呈现声明（P1），载明图中为过顶推举时躯干向左转、另一侧做法相同、交替进行。第 4 步「保持臀部稳定」为正文自有（G3 继承），骨盆固定口径无需另补。本条备查的绕背带路塌陷（同批探针 0989 的 PATH 失败模式）经生成门专项核查不适用：本条带路为脚困式（双脚踩带、带自双脚沿体侧上行），全程在镜头可读面内、无绕背段，塌陷未发生。接入时定稿 8 步合并为 5 步：站位与持带两步分号合并；过顶按压与扭转两步分号合并；顶部停顿回位与另一侧重复两步分号合并；交替样板句与呈现声明分号合并为末步，呈现声明原句完整保留于合并步内。定版双帧：起始帧 1 稿过门（双脚踩住带中段、双手持带两端于肩高、掌心朝前、无把手、带绷紧、躯干中立）；关键帧首稿仅头部左转、躯干未成角（SIDE 判废），以起始帧为锚的修复稿躯干（肩/胸/肋）整体左转成角、臀与双脚朝向不变、双臂过顶伸展掌心朝前，过门。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "fbeea4fd92385d5b4e598f305ba48ede1fa8271a49218b9c8a80f93367a75aba",
-        "steps": 7
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-q3-80-1012",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch80.md",
+          "version": "2026-11-10 · 生成批次 80",
+          "sourceSha256": [
+            "f9bf2c041519d692e76e346dbdaa720eddc8b4f054408654d651730ca18e1714",
+            "8aef8c57b4e31e9cdd7304026fa59ae28127c40dae2795ff84815fd92924fdf0"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1369",
@@ -11450,42 +11495,72 @@
     {
       "id": "exdb:0216",
       "originalName": "cable seated shoulder internal rotation",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：正文手臂前伸肘仅微屈，向内旋至中线，可能与肩水平内收混淆，需明确上臂和旋转轴。",
+      "reason": "2026-11-10 Q3 呈现政策定稿条（目录裁决框架卷宗 D25 器械旋转簇；Edward 2026-11-10 批准呈现政策；正文定稿见改文线 Q3-TEXTS.md，未引入负荷、组次、节奏、最大幅度或医疗主张）+ Codex CLI 图像生成双帧已逐帧对照：种子问题为动作本体即肩内旋，旋转量与终点位在双帧下无成帧核法。政策编辑仅一处：正文 1–6 步逐字继承（第 6 步合并式收尾按 G1″ 成立），收尾后新增末步呈现声明（P1），载明图中为右臂内旋至手柄贴近身体中线、另一侧做法相同；本条转幅口径由第 4 步自载（拉向身体中心），声明步将其落为图中端点。滑轮位于身前肩高为第 2 步几何（手臂身前伸直、与地面平行、面向机器）的机械推论，仅入成帧、不入正文。接入时定稿 7 步合并为 5 步：坐位与持柄两步分号合并；姿态步与内旋步分号合并；停顿回位步独立保留；合并式收尾步与呈现声明分号合并为末步，呈现声明原句完整保留于合并步内。定版双帧：起始帧 1 稿过门，首要死线守住——右臂身前伸直、与地面平行持柄（非肘贴体侧 90° 的常见变式），滑轮身前肩高，左手置左腿；关键帧首稿塌为坐姿划船（上臂垂落、肘屈拉至肋侧，VARIANT 判废），锚定修复稿肘保持肩高、上臂保持向前、前臂内旋横过身前、手柄至身体中线前方，过门。亲核保留意见记录在案：修复稿的前臂内旋平面略呈斜向（非纯水平面横扫）、肘屈角较起始帧的「稍屈」有所增大——属成帧柔和度，正文定义的端点（肘在肩高、上臂向前、手柄至身体中线、无躯干旋转）全部成立，未命中任一 kill 构型，按原样采用并在此披露。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "08e3c595fa4b1cb9dae57408a023a6863a14d79916ee8082f7a7aa4ff170df07",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-q3-80-0216",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch80.md",
+          "version": "2026-11-10 · 生成批次 80",
+          "sourceSha256": [
+            "8b611d181c352fe37f941d19babb39688b487b579095d65ee638dc6f794b2700",
+            "a1b0f81390a613fa05d90d45da0fb08fd21f26b4b6456c52e90e5979e997e10f"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2399",
       "originalName": "cable seated twist",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：坐姿双手前伸旋转清楚，滑轮位置、座椅和固定骨盆方式未说明，需专门图像核对。",
+      "reason": "2026-11-10 Q3 呈现政策定稿条（目录裁决框架卷宗 D25 旋转簇；Edward 2026-11-10 批准呈现政策；正文定稿见改文线 Q3-TEXTS.md，未引入负荷、组次、节奏、最大幅度或医疗主张）+ Codex CLI 图像生成双帧已逐帧对照：种子问题为轴向旋转本体，滑轮位与骨盆固定在正文中亦未写明。政策编辑两处：第 3 步补入簇级口径「、骨盆与双腿固定不动」（P2，框架 D25(b) 明文授权正文补齐）；收尾后新增末步呈现声明（P1），载明图中为躯干向左转至肩线与骨盆线明显成角、另一侧做法相同。滑轮胸高为正文几何（双臂伸直身前持柄）的机械推论，仅入成帧、不入正文。余步逐字继承。接入时定稿 7 步合并为 5 步：坐位与持柄两步分号合并；旋转步独立保留（P2 补入句所在步）；停顿回位与另一侧重复两步分号合并；交替样板句与呈现声明分号合并为末步，呈现声明原句完整保留于合并步内。定版双帧：起始帧 1 稿过门（坐姿面向机器、双臂伸直持柄、胸高滑轮、索绷紧）；关键帧首稿躯干左转成立但双手未随躯干横移、手柄未拉过身体（VARIANT 判废），锚定修复稿双臂保持伸直并随躯干左转横移、手柄至身体左侧、索呈斜线，骨盆、双腿与双脚原位，过门。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "987a5bc33e851f3d52f55efd9d93f4af6c01e1d05c0c38efedd3d316dfdbd2a4",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-q3-80-2399",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch80.md",
+          "version": "2026-11-10 · 生成批次 80",
+          "sourceSha256": [
+            "faf6ff3e7d4759913144332fcedc8e5d3391c11bcb44d095400ebad24d3d202c",
+            "ccd9321d60c0e1f73f45173d31bf00c116466b13faa2ef1073b25e8382588b24"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0218",
@@ -12225,22 +12300,37 @@
     {
       "id": "exdb:0236",
       "originalName": "cable standing twist row (v-bar)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：胸高固定、拉回并交替转体明确，但V柄掌心向下与形状不一致，需要三维支撑和手位图。",
+      "reason": "2026-11-10 Q3 呈现政策定稿条（目录裁决框架卷宗 D25 旋转簇；Edward 2026-11-10 批准呈现政策；正文定稿见改文线 Q3-TEXTS.md，未引入负荷、组次、节奏、最大幅度或医疗主张）+ Codex CLI 图像生成双帧已逐帧对照：种子问题为划船加转体的复合本体。政策编辑仅一处：正文 1–10 步逐字继承、零改动，收尾后新增第 11 步呈现声明（P1），载明图中为拉杆时躯干向左扭转、下一次重复换向扭转、交替进行，与第 10 步逐次换向口径衔接，定格其一式；本条旋转为划船的复合分量，第 5 步自有稳定口径，不另补 P2。接入时定稿 11 步合并为 5 步（本批合并幅度最大）：设置四步（接杆、站位、握法、后退生张力）分号合并为一步；稳定步与拉杆步分号合并；扭转步与最高点停顿步分号合并；释放回位步与逐次交替样板句分号合并；呈现声明单列末步、原句完整保留。全文句子无删减。定版双帧均首稿过门、零废稿：起始帧 V 形杆附件无误、正手掌心朝下（明文握法守住）、胸高滑轮水平索、躯干中立；关键帧杆至躯干、肩胛挤压、躯干左转成角、骨盆与双腿原位。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "9a344009fe76de8ee2714d74672015612dc7eda132fb778429bf244ff71526a7",
-        "steps": 10
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-q3-80-0236",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch80.md",
+          "version": "2026-11-10 · 生成批次 80",
+          "sourceSha256": [
+            "cf14474cc385edbc56cd019fa41208449fe2b1cc37792f85b38cdf4b6f652c97",
+            "25a7a84323b4ffa7570a30091ad34db4625f66b66d8dc93fb39e08580eb1e069"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1269",
@@ -12520,22 +12610,37 @@
     {
       "id": "exdb:0243",
       "originalName": "cable twist",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：面向机器双手胸前转体明确，但滑轮位置与跨身力线未写，需三维示范。",
+      "reason": "2026-11-10 Q3 呈现政策定稿条（目录裁决框架卷宗 D25 旋转簇；Edward 2026-11-10 批准呈现政策；正文定稿见改文线 Q3-TEXTS.md，未引入负荷、组次、节奏、最大幅度或医疗主张）+ Codex CLI 图像生成双帧已逐帧对照：种子问题为旋转本体，规格缺项（滑轮高、骨盆固定未写）。政策编辑两处：第 3 步补入簇级口径「，保持骨盆与双腿不动」（P2）；收尾后新增末步呈现声明（P1），载明图中为躯干向右转至肩线与骨盆线明显成角、另一侧做法相同。呈现侧取正文第 3 步自名的右侧，与正文零冲突。滑轮胸高为正文几何（手柄于胸前、面向机器）的机械推论，仅入成帧、不入正文。余步逐字继承（含第 4 步继承的感受性表述，按 G3 不动）。接入时定稿 8 步合并为 5 步：站位与持柄两步分号合并；右转步与停顿感受步分号合并；返回步与左侧重复步分号合并；交替样板句与呈现声明分号合并为末步，呈现声明原句完整保留于合并步内。定版双帧：起始帧 1 稿过门（面向机器、胸高滑轮水平索、双手持柄于胸前）；关键帧首稿躯干转向其左侧、与正文自名右转冲突（SIDE 判废），锚定修复稿躯干向右转、手柄至身体右侧、骨盆与双脚原位，过门。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "e39eb7b03773fc2efb63d130e94944228ae67239863ca22367070118df028f78",
-        "steps": 7
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-q3-80-0243",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch80.md",
+          "version": "2026-11-10 · 生成批次 80",
+          "sourceSha256": [
+            "139ba42e96d224a37dbc819b619b11533b2ef26e0bf62b06ade062fce5e014e5",
+            "779827d7b2cfe047c5d131f100c8b3c615799f7e3e0b4686b6ae00a9c596bd47"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0862",
@@ -12560,22 +12665,37 @@
     {
       "id": "exdb:0244",
       "originalName": "cable twisting pull",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：低索单手拉身前并向对侧转体明确；仍需确认转向和肩髋关系，不使用固定躯干划船图。",
+      "reason": "2026-11-10 Q3 呈现政策定稿条（目录裁决框架卷宗 D25 旋转簇；Edward 2026-11-10 批准呈现政策；正文定稿见改文线 Q3-TEXTS.md，未引入负荷、组次、节奏、最大幅度或医疗主张）+ Codex CLI 图像生成双帧已逐帧对照：种子问题为拉与转的复合路径差异在运动过程而非端点。政策编辑两处：第 5 步句首补入簇级口径「保持双腿与骨盆不动，」（P2，与第 4 步自有稳定口径同向）；收尾后新增末步呈现声明（P1），载明图中为左手拉引、躯干向右转，换右手时镜像进行。呈现侧与方向全依正文自名（左手、低滑轮、右转），零冲突。余步逐字继承（原文「您」体例按 G3 保留不改）。接入时定稿 9 步合并为 5 步：接柄站位与伸臂两步分号合并；站姿步与稳定步分号合并；拉转步独立保留（P2 补入句所在步）；挤压步与回位步分号合并；合并式收尾步（重复后换边）与呈现声明分号合并为末步，呈现声明原句完整保留于合并步内。定版双帧：起始帧 1 稿过门（低滑轮、左臂完全伸展持柄、右臂垂放不持柄）；关键帧首稿工作手换成近镜头侧的右手（镜像，SIDE 判废），锚定修复稿左手（远侧）拉引至左侧肋旁、躯干右转、右臂全程垂放、站位不变，过门。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "5671ddb9f560ccdba76d2912b53b8cf6a7a1f2bfcb9e217585b9d1bb88e26b8c",
-        "steps": 8
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-q3-80-0244",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch80.md",
+          "version": "2026-11-10 · 生成批次 80",
+          "sourceSha256": [
+            "3a4e216551aa048c8ffd6c9f320006d8e62948e73da313aab35f4c09193a1af6",
+            "9fa892074ae4046ab043f1d5dd8f04641795b06a35aceea78621e9bc83b31aa0"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1645",
@@ -24543,42 +24663,72 @@
     {
       "id": "exdb:1383",
       "originalName": "hack calf raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：脚掌踏台抬跟明确，但肩垫/背垫与机身朝向未说明，不能用普通站式提踵机图。",
+      "reason": "2026-11-10 Q3 呈现政策定稿条（目录裁决框架卷宗 D28 哈克朝向簇；Edward 2026-11-10 批准呈现政策；正文定稿见改文线 Q3-TEXTS.md，未引入负荷、组次、节奏、最大幅度或医疗主张）+ Codex CLI 图像生成双帧已逐帧对照：种子问题为正文只写「站在雪橇机上……抬高脚跟」，哈克机身朝向（面入/面出）两可、无垫面接触与支点落点；批次 3 搁置并转为呈现裁决候选（首选），面入/面出两朝向均有据、一家厂商同一机器双载，无收敛读法可采。政策编辑：第 2 步重写（P3 + 定向呈现执行）——按簇级选向（面向机器）写明面入构型：胸贴靠垫、双肩置于肩垫下（Muscle & Strength《Hack Squat Calf Raise》明文，批次 3 已开卷核读，为本簇唯一明确载明朝向、垫面接触与步骤的成文教学来源）、前脚掌踩平台下缘（同源「balls of your feet on the lower edge」，原「脚趾」一词同步收正为「前脚掌」）、脚后跟悬空（继承）；收尾后新增末步朝向披露（P1）：图中为面向机器的做法，同一机型也可背向机器、背部贴垫完成，动作相同（面出同机变式有一机双载的厂商记载，批次 3 查明）。余步逐字继承。接入时定稿 7 步合并为 5 步：调重步与站位步（重写后的第 2 步）分号合并；握柄步与抬跟步分号合并；停顿回落步独立保留；重复样板句与朝向披露分号合并为末步，披露原句完整保留于合并步内。成帧经两轮：窄幅下缘平台规格下起始帧两稿皆废（d1 支点几何正确但鞋跟渲染损坏、赤足脚跟自鞋底下方伸出，ANCHOR；d2 鞋体完整但双脚整脚平踏平台、脚跟未悬空，ANCHOR），峰值帧未生成、本条一度退回搁置；其后经裁决授权的描绘策略迁移尝试——以同簇姊妹条 1384 过门起始帧为锚，将其宽幅水平平台 + 鞋前段踩远侧缘悬挑的成帧路径迁移至双腿构型——起始与峰值均 1 稿过门、零废稿：起始帧面入（胸贴垫、肩入肩垫下、背向镜头），双脚前 1/3 踩宽板远侧下缘、后 2/3 悬挑出缘，双脚跟垂落低于板面，双鞋完整包覆；关键帧同机位，双脚跟抬至最高、前脚掌仍压同一边缘，相位差只在脚踝。失败定性随之收窄：败点在窄幅下缘平台这一描绘规格本身，而非双腿面入提踵的接触要求。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a0be1bffbb570fa64f54fe724ceec549c5602bb64cfa1530ae9fa60c19b5a6b9",
-        "steps": 6
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-q3-80-1383",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch80.md",
+          "version": "2026-11-10 · 生成批次 80",
+          "sourceSha256": [
+            "f534803bdc8ed514b262116206eaf961186a858e5a4972b593e68125830e9cf9",
+            "6e22615553090c9b5ff9c91f0b2368517733087a7cbfd01c50c55a9c20f6fb72"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1384",
       "originalName": "hack one leg calf raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：单脚承重抬跟可读，但机身支撑、另一腿位置与脚掌边缘接触需对应图。",
+      "reason": "2026-11-10 Q3 呈现政策定稿条（目录裁决框架卷宗 D28 哈克朝向簇；Edward 2026-11-10 批准呈现政策；正文定稿见改文线 Q3-TEXTS.md，未引入负荷、组次、节奏、最大幅度或医疗主张）+ Codex CLI 图像生成双帧已逐帧对照：种子问题与 1383 同病：正文只写单脚站机抬跟，哈克机身朝向未定、无支点落点。政策编辑：第 2 步重写（P3 + 定向呈现执行）——套用与 1383 同簇同式的面入构型（同簇一致性补全，出处同 1383：Muscle & Strength 明文的胸贴靠垫、双肩置于肩垫下、前脚掌踩平台下缘），写明一只脚以前脚掌踩平台下缘、脚后跟悬空、另一只脚离地（「离地」为原句「离开地面」的原样保留，仅语序随句调整）；收尾后新增末步呈现声明（P1）：图中为面向机器、右脚练习的做法，同一机型也可背向机器完成，换腿时做法相同，与第 7 步换腿口径衔接。余步逐字继承。接入时定稿 8 步合并为 5 步：调重步与站位步（重写后的第 2 步）分号合并；握柄步与抬跟步分号合并；停顿回落步与重复样板句分号合并；换腿步与呈现声明分号合并为末步，呈现声明原句完整保留于合并步内。定版双帧：起始帧首稿工作脚整脚平踏小平台、脚跟未悬空（ANCHOR 判废），改写平台几何的第二稿成立——宽幅水平平台、鞋前 1/3 踩远侧下缘、鞋后 2/3 悬空、脚跟垂落低于平台面，面入、右脚工作、左脚完全离地悬于平台旁、鞋体完整；关键帧同一机位，右脚跟抬至最高、小腿收缩，左脚保持离地原位，仅脚跟高度变化，过门。本条的宽板悬挑写法其后经裁决迁移至 1383 并成立，现为哈克簇双条共同的成帧路径。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "e0d4ad1cfba54588463597683aadfcd9ab82059109fc3eb3c2c99bbc5326b781",
-        "steps": 7
+        "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-q3-80-1384",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch80.md",
+          "version": "2026-11-10 · 生成批次 80",
+          "sourceSha256": [
+            "27d3c8816d8f0dae17d16cbfc4c5b81ce0ee907795e814825a5b2457fe7cfd86",
+            "77c1ca560c5774eb1cc7acf15fa9b15152ab0dd25027950c1b77bcb49039a83c"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3221",
