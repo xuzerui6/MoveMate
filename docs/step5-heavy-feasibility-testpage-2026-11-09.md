@@ -94,3 +94,15 @@ Codex 指出：30 FPS 摄像头不可能产生 128.6 个不同画面/秒——v1
 - 本页测的是主线程路径（iPhone 实验路径）；Worker 路径不在本页范围。
 - 「冷下载」在同一台手机重复跑时，Cache Storage 条目会被页面先删再测，仍是真冷；但运营商/网络状态差异会体现在 MB/s 上，属预期。
 - Heavy 在 App 内目前仅为手动实验档、从不自动启用（`poseCompatibility.ts`：曾在参考 iPhone 上决定性地未过探针且每台设备 30.7 MB）——本页是融合计划第 5 步的正式可行性门，不改变这一状态。
+
+---
+
+## 附记（2026-11-10 晚）：首跑无效——帧泵新鲜度判定缺陷与修复
+
+**首跑记录（无效）**：2026-11-10 21:23，Edward 在 iPhone 17 Pro（iOS 26）室内按说明跑 v2 页。结果：Full 与 Heavy 各 180 秒内均只记录 **呈现 1 / 提交 1 / 完成 1** 帧，0 错误、0 超时；唯一一帧往返很快（Full 15 ms、Heavy 30 ms、检出人体）。页面当时给出的「未达到／路线关闭」结论**不成立**：对照臂 Full 在正式 App 同机同路径（Worker GPU）日常实测 21–24 FPS，0.0 FPS 与既证事实矛盾，说明没测到东西的是仪器，不是模型。**该次运行判为无效（invalid run），不消耗预登记的那一次复测**；Heavy 路线不因这次运行关闭。
+
+**根因**：v2 页 `perfRun` 的新鲜度判定写作 `media > lastMedia && (!!metadata || decoded === null || decoded > lastDecoded)`——在无 metadata 的路径（500ms 看门狗触发 rAF 回退后）上无条件以 decoded 帧计数（`getVideoPlaybackQuality().totalVideoFrames` / `webkitDecodedFrameCount`）门控提交。而 iOS Safari 对 getUserMedia 相机流的该计数从不递增，第一帧之后再无「新鲜」帧，帧泵饿死。正式 App `useAdaptivePose` 的同段代码本就不同：decoded 门只在 `!metadata && !r.appleCamera` 时生效（Apple 相机流明确豁免），另有 mediaTime 停滞 >500ms 时强制切 rAF 的逃逸——v2 页移植帧泵时漏掉了这两处，正是 2026-11-09 户外 Worker 轮「两模型各只处理 1 帧」的同一缺陷（当时误记为测试页帧投递冻结）。
+
+**修复（已上线预览站）**：① 新鲜度改为与正式 App 同式：mediaTime/currentTime 严格递增驱动提交；decoded 计数只保留为仪表，仅在「无 metadata 且非 Apple 相机流」时作门；补上 Apple 停滞逃逸（mediaTime 停滞 >500ms → forceRaf + 改用 currentTime）。② 新增**仪器有效性门**：任一模型 180 秒内呈现帧 <300 时，该模型判定与整页结论只读作「无效运行——帧泵未正常工作，本次测试无效」，不再输出模型「未达到」结论。③ 页脚已加同义披露行。判定线（滚动 10 秒窗口 ≥15 FPS、p95 ≤150 ms、排除前 10 秒）、顺序（Full→冷却 60 秒→Heavy）、时长与冷下载口径均未动。
+
+**下一步**：Edward 方便时在同一预览地址重跑（即真正的预登记复测）；通过口径不变——仅表示「在室内 Worker 配置下可行」。

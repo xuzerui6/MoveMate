@@ -71,7 +71,7 @@ footer{color:#888;font-size:12.5px;line-height:1.6;margin-top:22px}
 <button id="copy" class="secondary">复制结果</button>
 <p id="errbox" class="err"></p>
 
-<footer>MoveMate Step-5 预登记复测 · 测试配置：室内 · 健身取景 · Worker 路径（与正式 App 相同的 pose.worker 与传输层：GPU delegate 优先、失败回退 CPU；帧调度与正式 App 相同——requestVideoFrameCallback 驱动、只提交新画面、同时只跑一帧）· 模型与正式 App 同源同字节（MediaPipe PoseLandmarker float16/1，大小＋SHA-256 校验，写入同一 pose-models-v1 缓存）· 冷下载为绕过浏览器缓存的真实下载（同 v1 的既定偏差）。</footer>
+<footer>MoveMate Step-5 预登记复测 · 测试配置：室内 · 健身取景 · Worker 路径（与正式 App 相同的 pose.worker 与传输层：GPU delegate 优先、失败回退 CPU；帧调度与正式 App 相同——requestVideoFrameCallback 驱动、只提交新画面、同时只跑一帧）· 模型与正式 App 同源同字节（MediaPipe PoseLandmarker float16/1，大小＋SHA-256 校验，写入同一 pose-models-v1 缓存）· 冷下载为绕过浏览器缓存的真实下载（同 v1 的既定偏差）。<br>修复披露（2026-11-10）：2026-11-10 晚的首跑因本页帧泵的新鲜度判定缺陷（无条件以 decoded 帧计数门控无-metadata 路径，iOS 相机流该计数不递增）全场只测到 1 帧，该次运行无效、不消耗预登记复测；帧泵已按正式 App useAdaptivePose 的同式新鲜度规则修复（mediaTime/currentTime 递增驱动、decoded 仅作仪表、含 Apple 停滞逃逸），并新增仪器有效性门：呈现帧过低时结论只读作「测试无效」，不再误报为模型未达到。</footer>
 </main>
 
 <script type="module">
@@ -196,6 +196,9 @@ async function openWorkerTransport(bytes) {
   throw lastErr || new Error('Worker 初始化失败');
 }
 
+/* 与正式 App useAdaptivePose 相同的 Apple 相机流判定（poseCompatibility.usesMainThreadLite 同式） */
+const APPLE_CAMERA = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
 /* 与正式 App poseCompatibility.decodedFrameCount 相同 */
 function decodedFrameCount(standard, webkit) {
   if (typeof standard === 'number' && standard > 0) return standard;
@@ -213,7 +216,7 @@ function perfRun(transport, durS, label, fracBase, fracSpan) {
     const mediaSeen = new Set(); /* 已提交的 mediaTime，用于重复提交计数 */
     let presented = 0, skippedBusy = 0, submitted = 0, duplicates = 0;
     let errors = 0, timeouts = 0;
-    let lastMedia = -1, lastDecoded = -1, origin = null, inFlight = false;
+    let lastMedia = -1, lastDecoded = -1, origin = null, inFlight = false, lastSubmittedAt = -Infinity;
     let stopped = false, forceRaf = false, callbackId = 0, fallbackTimer = null;
     const wall0 = performance.now();
     const wallEnd = wall0 + durS * 1000;
@@ -234,11 +237,20 @@ function perfRun(transport, durS, label, fracBase, fracSpan) {
     function onFrame(now, metadata) {
       if (stopped) return;
       if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null; }
+      /* 与正式 App useAdaptivePose 相同的 Apple 逃逸：rVFC 的 mediaTime 停滞 >500ms 时改走 rAF + currentTime */
+      if (APPLE_CAMERA && metadata && typeof metadata.mediaTime === 'number' && metadata.mediaTime <= lastMedia && now - lastSubmittedAt > 500) {
+        forceRaf = true;
+        metadata = undefined;
+      }
       schedule();
       const decoded = decodedFrameCount(video.getVideoPlaybackQuality && video.getVideoPlaybackQuality().totalVideoFrames, video.webkitDecodedFrameCount);
       const media = metadata && typeof metadata.mediaTime === 'number' ? metadata.mediaTime : video.currentTime;
-      const fresh = Number.isFinite(media) && media > lastMedia && (!!metadata || decoded === null || decoded > lastDecoded);
-      if (!fresh) return;
+      /* 新鲜度与正式 App useAdaptivePose 相同：由 mediaTime/currentTime 严格递增驱动；
+       * decoded 计数只作仪表，且仅在「无 metadata 且非 Apple 相机流」时才作门（正式 App 同式）。
+       * 2026-11-10 修复：此前无条件以 decoded 门控无-metadata 路径，而 iOS 相机流的 decoded
+       * 计数从不递增，第一帧之后帧泵被饿死、全场只测到 1 帧（当晚运行因此无效）。 */
+      if (!Number.isFinite(media) || media <= lastMedia) return;
+      if (!metadata && !APPLE_CAMERA && decoded !== null && decoded <= lastDecoded) return;
       if (video.readyState < 2) return;
       presented++;
       if (inFlight) { skippedBusy++; return; }
@@ -250,6 +262,7 @@ function perfRun(transport, durS, label, fracBase, fracSpan) {
       submitted++;
       inFlight = true;
       const submittedAt = performance.now();
+      lastSubmittedAt = submittedAt;
       transport.infer(video, capturedAt).then(result => {
         inFlight = false;
         frames.push({ capturedAt, submittedAt, receivedAt: performance.now(), inferMs: result.inferMs, found: !!result.landmarks });
@@ -288,6 +301,9 @@ function computePerf(raw, durS) {
   const frames = raw.frames.slice().sort((a, b) => a.capturedAt - b.capturedAt);
   const out = { completed: frames.length, presented: raw.presented, skippedBusy: raw.skippedBusy,
     submitted: raw.submitted, duplicates: raw.duplicates, errors: raw.errors, timeouts: raw.timeouts };
+  /* 仪器有效性门（2026-11-10 新增）：180 秒运行内呈现帧 <300 ⇒ 帧泵未正常工作，
+   * 本次运行无效——结论只能读作「测试无效」，不得读作模型「未达到」。 */
+  out.invalidRun = raw.presented < 300;
   if (!frames.length) { out.empty = true; return out; }
   const t0 = frames[0].capturedAt;
   const rel = f => (f.capturedAt - t0) / 1000;
@@ -373,7 +389,7 @@ function renderCard(out) {
     metric('冷初始化（Worker 建模+探活帧）', Math.round(out.coldInitMs), 'ms') +
     metric('热加载（缓存+初始化）', Math.round(out.cacheReadMs + out.warmInitMs), 'ms');
   if (p.empty) {
-    h += metric('持续推理', '无完成帧', '');
+    h += metric('持续推理', p.invalidRun ? '无完成帧——无效运行（帧泵未正常工作），本次测试无效' : '无完成帧', '');
   } else {
     h += metric('新鲜帧处理率（' + out.durS + ' 秒平均）', p.freshAvg.toFixed(1), 'FPS') +
       metric('推理吞吐（完成推理/秒）', p.throughput.toFixed(1), '/秒') +
@@ -386,9 +402,11 @@ function renderCard(out) {
   }
   h += '</div>';
   if (!p.empty) {
-    h += '<div class="series"><b>判定（协议澄清）：</b>' + (p.gateApplicable
-      ? (p.pass ? '达到——所有滚动窗口 ≥15 FPS 且 p95 ≤150ms' : '未达到——' + p.failReasons.join('；'))
-      : '时长不足，无完整窗口，不判定') +
+    h += '<div class="series"><b>判定（协议澄清）：</b>' + (p.invalidRun
+      ? '无效运行——帧泵未正常工作（呈现帧数过低），本次测试无效，不构成模型判定'
+      : p.gateApplicable
+        ? (p.pass ? '达到——所有滚动窗口 ≥15 FPS 且 p95 ≤150ms' : '未达到——' + p.failReasons.join('；'))
+        : '时长不足，无完整窗口，不判定') +
       ' · 低于 15 的窗口 ' + p.windowsBelow + '/' + p.windowsTotal +
       '<br><b>每秒新鲜帧数（' + out.durS + ' 个数）：</b>' + p.perSecond.join(',') + '</div>';
   }
@@ -415,18 +433,22 @@ function renderText(env) {
     L.push('冷初始化（Worker 建模+首帧探活）：' + Math.round(o.coldInitMs) + ' ms');
     L.push('冷启动总耗时（下载+初始化）：' + sec(o.coldDownloadMs + o.coldInitMs) + ' 秒');
     L.push('热加载（读本机缓存 ' + Math.round(o.cacheReadMs) + ' ms + 初始化）：' + Math.round(o.cacheReadMs + o.warmInitMs) + ' ms');
-    if (p.empty) { L.push('持续推理：无完成帧'); L.push(''); continue; }
+    if (p.empty) { L.push('持续推理：无完成帧'); if (p.invalidRun) L.push('本模型判定：无效运行——帧泵未正常工作，本次测试无效，不构成模型判定'); L.push(''); continue; }
     L.push('持续推理 ' + o.durS + ' 秒（新鲜帧口径）：呈现 ' + p.presented + ' 帧，提交 ' + p.submitted + '，完成 ' + p.completed + '，忙碌跳过 ' + p.skippedBusy + '，重复提交同一画面 ' + p.duplicates + ' 次，错误 ' + p.errors + '（超时 ' + p.timeouts + '）');
     L.push('新鲜帧处理率：平均 ' + p.freshAvg.toFixed(1) + ' FPS；最低滚动 10 秒窗口 ' + (p.minRolling === null ? '不适用' : p.minRolling.toFixed(1) + ' FPS') + '（低于 15 的窗口 ' + p.windowsBelow + '/' + p.windowsTotal + '）；末 30 秒 ' + p.final30Rate.toFixed(1) + ' FPS');
     L.push('推理吞吐：' + p.throughput.toFixed(1) + ' 次/秒（本泵每帧只推一次，吞吐≈新鲜帧率；与之相对，v1 主线程背靠背循环会对同一画面重复推理）');
     L.push('相机→结果延迟：p50 ' + Math.round(p.ageP50) + ' ms / p95 ' + Math.round(p.ageP95) + ' ms / 最大 ' + Math.round(p.ageMax) + ' ms；末 30 秒 p95 ' + (p.final30AgeP95 === null ? '—' : Math.round(p.final30AgeP95) + ' ms') + '；推理往返 p50/p95 ' + Math.round(p.tripP50) + ' / ' + Math.round(p.tripP95) + ' ms');
     L.push('检出人体帧占比 ' + Math.round(p.foundRate * 100) + '%');
     L.push('每秒新鲜帧数：' + p.perSecond.join(','));
-    L.push('本模型判定（协议澄清）：' + (p.gateApplicable ? (p.pass ? '达到' : '未达到——' + p.failReasons.join('；')) : '时长不足，不判定'));
+    L.push('本模型判定（协议澄清）：' + (p.invalidRun ? '无效运行——帧泵未正常工作，本次测试无效，不构成模型判定' : p.gateApplicable ? (p.pass ? '达到' : '未达到——' + p.failReasons.join('；')) : '时长不足，不判定'));
     L.push('');
   }
   const h = results.heavy;
-  if (h && !h.error && h.perf && !h.perf.empty) {
+  const f2 = results.full;
+  const anyInvalid = (f2 && f2.perf && f2.perf.invalidRun) || (h && h.perf && h.perf.invalidRun);
+  if (anyInvalid) {
+    L.push('Heavy 复测结论：本次测试无效——帧泵未正常工作，未测得有效数据；不构成未达到判定，预登记复测未被消耗，修复后重跑。');
+  } else if (h && !h.error && h.perf && !h.perf.empty) {
     L.push('Heavy 复测结论：' + (h.perf.pass
       ? '达到——结论限于「在本次室内 Worker 配置下可行」；户外主线程未达标记录保留在案。'
       : '未达到——' + h.perf.failReasons.join('；') + '。按预登记规则，本复测路线到此关闭。'));
@@ -487,7 +509,10 @@ $('start').addEventListener('click', async () => {
     const heavy = await testModel('heavy', HEAVY_DUR, 0.5, 0.48);
     $('cards').appendChild(renderCard(heavy));
     const v = $('verdict');
-    if (heavy.perf && !heavy.perf.empty && heavy.perf.gateApplicable) {
+    if ((full.perf && full.perf.invalidRun) || (heavy.perf && heavy.perf.invalidRun)) {
+      v.className = 'verdict fail';
+      v.textContent = '结论：本次测试无效——帧泵未正常工作（呈现帧数过低），没有测到有效数据；这不是模型未达到，预登记复测未被消耗。请把本页截图发回，我们修好后重跑。';
+    } else if (heavy.perf && !heavy.perf.empty && heavy.perf.gateApplicable) {
       v.className = 'verdict ' + (heavy.perf.pass ? 'pass' : 'fail');
       v.textContent = heavy.perf.pass
         ? '结论：Heavy 达到判定线——在本次室内 Worker 配置下可行。（户外主线程未达标记录保留在案。）请把本页截图发回。'
