@@ -15893,6 +15893,204 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1758",
+   "expectedName": "assisted sit-up",
+   "sourceId": "ai-codex-fillB1-1758",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "6e51880dd3dadfd9855f685b0dee370d1e992e96f2e694bc0e4e972389045ab3",
+    "bdadf6953442d660ca5f16774c867b10b76ff1ab0d2298e563b9a0e38c4f9efb"
+   ],
+   "phases": [
+    "起始：平躺、屈膝、双脚平放地面，双手脑后肘朝外；同伴跪于脚侧，双手按住双脚。",
+    "关键：躯干卷起至45度角，双手仍脑后；同伴双手始终按住双脚，脚仍贴地。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0989",
+   "expectedName": "band one arm twisting chest press",
+   "sourceId": "ai-codex-fillB1-0989",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b8bf1faa9e2fda57d7f22f3e9323db48f3f856b3a7a05a8350963c656b7fe978",
+    "a722537738959e1ca6a05f37d3934d38a8bd7d03c1a4b824a35be680953054f8"
+   ],
+   "phases": [
+    "起始：背面机位，带子固定于胸高锚点、绷紧绕过背部，持带的手在锚点一侧胸高处握带。",
+    "关键：持带的手跨身至对侧肩后向前推出、手臂伸直，躯干随之转体。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0153",
+   "expectedName": "cable cross-over lateral pulldown",
+   "sourceId": "ai-codex-fillB1-0153",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a290dbf6286df99872b19746f91b169899034b5ee43034f2881a9d4d15dc7839",
+    "6f2a984cb6e4a02715dfc3688fa4cb38b2361abbc977fec108e5add33473d882"
+   ],
+   "phases": [
+    "起始：站于机架中间、微前倾挺胸，双臂向上向两侧伸展，左手握右滑轮、右手握左滑轮，索路在身前上方呈X形交叉。",
+    "关键：双手下拉至胸前并交叉，肘部下沉、肩胛挤压，索路仍交叉。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1269",
+   "expectedName": "cable standing up straight crossovers",
+   "sourceId": "ai-codex-fillB1-1269",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e0cf0f93b5a0e4a650459d5a5622842d2efe123b4c7fd1f945f9e5059d425167",
+    "b26246c0f6289fced67a8f4045832ac6ab8b22adfc69b7cd81d150d8591dc09a"
+   ],
+   "phases": [
+    "起始：直立、双脚与肩同宽，双臂向两侧完全伸直、掌心朝下各握手柄，索路自胸高滑轮水平而来。",
+    "关键：双臂保持完全伸直，在身前交叉，掌心仍朝下。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1270",
+   "expectedName": "cable upper chest crossovers",
+   "sourceId": "ai-codex-fillB1-1270",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "8c3f57e8e84e950304efd354b5120e1d58a3178bf3f463f9959a062c5ce6bb1c",
+    "451b3f2455e4ebf7b65742c58cea6676bc61a1e742f19f1cc0c6c8b4f2dd4833"
+   ],
+   "phases": [
+    "起始：前后脚站姿，双臂向两侧伸展、肘微屈、掌心朝下各握手柄，索路自胸高滑轮水平而来。",
+    "关键：双手在胸前合拢并相互交叉，挤压胸肌，肘仍微屈。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3547",
+   "expectedName": "dumbbell seated biceps curl to shoulder press",
+   "sourceId": "ai-codex-fillB1-3547",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "12ec787e975bfcb8f5d0a54c82ce9f8e5f77afe571b87409fa54711c65ee6505",
+    "f561a52bea9ef16cde851f2b8f26079d4c7e19ce7136c0037f519b927737dda0"
+   ],
+   "phases": [
+    "起始：坐于长凳、背挺直、双脚平放，双哑铃已弯至肩高、前臂垂直、掌心朝前。",
+    "关键：双哑铃推过头顶、双臂完全伸直、手掌朝前；坐姿、双脚仍平放地面。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3560",
+   "expectedName": "dumbbell standing alternate hammer curl and press",
+   "sourceId": "ai-codex-fillB1-3560",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "8919813b068cb044f66497227c2e58f0c30f34e6fc0490c04a0933953da8c6aa",
+    "f2843fb4c373573776c9a8937d5b2779049c1d5f89e722afd60ad772e23ffbb0"
+   ],
+   "phases": [
+    "起始：站直、背挺直，左哑铃弯至左肩齐平、锤式握法，右哑铃垂于体侧。",
+    "关键：左哑铃推过头顶、手臂完全伸直；右哑铃仍垂于体侧。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3638",
+   "expectedName": "push to run",
+   "sourceId": "ai-codex-fillB1-3638",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a7c94ef36055ab2428df40d404221e76bb3dfd599722425922f8387f55ac222f",
+    "da3227424243c41c2ea594512e6a18821c4bb4fb5e44c00b191c06e69630315e"
+   ],
+   "phases": [
+    "起始：俯卧撑底部，胸部近地面、肘弯曲、身体一条直线、双手与肩同宽撑地。",
+    "关键：高平板姿势、双臂伸直撑地，一只膝盖收至胸前，另一腿向后伸直。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3296",
+   "expectedName": "front lever",
+   "sourceId": "ai-codex-fillB1-3296",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b3cfbcf71c1487a4c44ffde6185f3c893b1178f2a286fbbc65844c9433452d83",
+    "f25cba7ee94517e575fb6e79bdcfa74618d61f4ccb489630303d435aef162f31"
+   ],
+   "phases": [
+    "起始：正手握杆悬垂、双手与肩同宽，膝盖弯曲靠向胸部。",
+    "关键：全前水平保持，身体仰面与地面平行、双腿伸直并拢向前，双臂伸直握杆于头顶上方。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3299",
+   "expectedName": "full planche",
+   "sourceId": "ai-codex-fillB1-3299",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "ce79e84690f74af6c8655b2bb6528499c24b9d4e5b52e08c06ce994e7df0fbc9",
+    "7d20481aa961488d8037d329fbecb67fb3843a087d2735a2c3a4a257b6820644"
+   ],
+   "phases": [
+    "起始：俯卧撑位置，双手与肩同宽、手指指向前方、双臂伸直撑地、双脚着地。",
+    "关键：全俄挺保持，双臂完全伸直、双手撑地、身体与地面平行、双脚离地。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3303",
+   "expectedName": "flag",
+   "sourceId": "ai-codex-fillB1-3303",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e6af2c866bb680597452a6f74f360264e494468ff8e54cb11ea870464496b9ce",
+    "23c4eab6f30bbae386cf55668ce4aa11f69a8eb5682207257550a73ae74cac71"
+   ],
+   "phases": [
+    "起始：站于竖杆旁，双手一上一下握杆、手掌相对、双臂完全伸直，双脚着地。",
+    "关键：人体旗帜保持，身体水平、双腿伸直并拢、双脚离地，下手直臂推杆、上手屈肘拉杆。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
