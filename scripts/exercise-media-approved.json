@@ -16667,6 +16667,222 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0140",
+      "expectedName": "biceps pull-up",
+      "sourceId": "ai-codex-replaceIllus-0140",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "dba19f973e0b7c0a9c9490697b31d774f3a9482f4cc4904e2845d4b5d892f413",
+        "82e852fd800af64d23361620f160287df3fa81cfdf89bbdd63f5eaed8ae50fe9"
+      ],
+      "phases": [
+        "正握直臂悬垂于单杠下。",
+        "拉至下巴过杠，正握保持。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0251",
+      "expectedName": "chest dip",
+      "sourceId": "ai-codex-replaceIllus-0251",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "3f60e82e4e8aa9e96d0a9ffeda5e4f6895f5903a971ade0bd2b164a718a8cae7",
+        "5cc7f5efc5c553802dfb335358ead572dfc510f8f2038ba9a10a32c7ba885c10"
+      ],
+      "phases": [
+        "双杠直臂支撑，屈膝收脚。",
+        "屈肘下放，躯干前倾，上臂近平行。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0259",
+      "expectedName": "close-grip push-up",
+      "sourceId": "ai-codex-replaceIllus-0259",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "b020e4b8eb3d931b34121b8b78cc714746078071e70b83cf422dd875e7998021",
+        "0e4ac7c6e6d0a185f9b2d2679510500dd0f58416b639e0add2529ae555b15759"
+      ],
+      "phases": [
+        "高位平板，双手并拢置于胸下。",
+        "屈肘下放，双肘贴体，胸近地面。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0315",
+      "expectedName": "dumbbell incline biceps curl",
+      "sourceId": "ai-codex-replaceIllus-0315",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "2011b2701e16864f416dec1d0a5282acc3f601263eb21cbc7153bbe61707c183",
+        "eb1d02074f6972ee8ea5d75a427505643c30304852dc8f213c7ba0410565371f"
+      ],
+      "phases": [
+        "上斜凳坐姿，双臂下放，掌心向前。",
+        "双铃同时弯举至肩高，上臂静止。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0318",
+      "expectedName": "dumbbell incline curl",
+      "sourceId": "ai-codex-replaceIllus-0318",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "6c6f127920c5bd98c4a2b05a65cf547e016c6b47a236a206467216782c28ec10",
+        "fb77ebc415ea63b6bcafcf11c6518f1547d93e67ad537f74575117ca7c461ec7"
+      ],
+      "phases": [
+        "上斜凳坐姿，双臂下放，掌心向前。",
+        "双铃弯举至肩高，上臂静止。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0319",
+      "expectedName": "dumbbell incline fly",
+      "sourceId": "ai-codex-replaceIllus-0319",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "4eef7543b25a8f10c80d77884d96d04d88a949bf896702a13c97f4888e4039e4",
+        "4968ec7282bfb019e5916d464cc237fdd2a2d3d735eebeef6f2824297693230a"
+      ],
+      "phases": [
+        "上斜凳，双铃并拢举于胸上方。",
+        "双臂沿弧线打开至胸侧，肘微屈。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0332",
+      "expectedName": "dumbbell iron cross",
+      "sourceId": "ai-codex-replaceIllus-0332",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "0cf38d5fdead5359f6411c92c1681397a44b229f6d8efe60eaec929b884568ba",
+        "d08f18b07e5d6614d8d0582e449c7822852a902276d4ddfa50ea47bae60c1e74"
+      ],
+      "phases": [
+        "站立，双铃垂于体侧。",
+        "双臂侧平举至肩高，全程站立。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0354",
+      "expectedName": "dumbbell one arm kickback",
+      "sourceId": "ai-codex-replaceIllus-0354",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "8ddc55c0ac0ff9aa1d1d503da0e5cfe012d38d3bf0fbaab977e9b37aa40b9ea0",
+        "54b515e205d198cc160e9dc29c95c8fe985e91de7addc494ab54847b6e96c2dc"
+      ],
+      "phases": [
+        "俯身，工作臂垂放持单铃，空闲手扶腿。",
+        "工作臂向后伸直锁定，俯身不变。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0355",
+      "expectedName": "dumbbell one arm lateral raise",
+      "sourceId": "ai-codex-replaceIllus-0355",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "2458db0d81f07f6154180d19b1a0e3a37d75e60e444c2bc13cdc2f1b8d5f8fe0",
+        "f235f746df17e0e787ce2c9668f5ef2bdaf58a976dcc2ac1c002781d8827294a"
+      ],
+      "phases": [
+        "站立，单铃垂于工作侧，空闲手垂放。",
+        "工作臂侧平举至肩高，躯干直立。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0356",
+      "expectedName": "dumbbell one arm lateral raise with support",
+      "sourceId": "ai-codex-replaceIllus-0356",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "dad85092fae2f5500de2281f56fb12697cf7f639b679ef40bff9c6d78ee4ee26",
+        "796ded8b57e6625278fedb24fb72461ecb62a91d80d6591520b8b54b624d1b55"
+      ],
+      "phases": [
+        "侧立墙边，空闲手平贴墙面，单铃垂放。",
+        "工作臂侧平举至肩高，扶墙手不动。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0360",
+      "expectedName": "dumbbell one arm shoulder press v. 2",
+      "sourceId": "ai-codex-replaceIllus-0360",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "b06d1ab14ade7e4afedef6406ebd08abb60da56121859f5eb513c3e4e5b59620",
+        "053d95f211b29d457f2583af861bb7d8e42bf2ce1b82e6c321f927fb69448259"
+      ],
+      "phases": [
+        "站立，单铃置于肩高，掌心向前。",
+        "单臂过顶推起，掌心仍向前。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0362",
+      "expectedName": "dumbbell one arm triceps extension (on bench)",
+      "sourceId": "ai-codex-replaceIllus-0362",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "9e62dcf3c8b588b4c43ffa45308296f27c6d065539b3c3313ff8257a02f5ee80",
+        "7515761985ddc07e0dc909a898627fdfa7ef2025617015b2f23912976990f650"
+      ],
+      "phases": [
+        "坐于平凳，工作臂过顶伸臂持单铃，空闲手撑凳。",
+        "屈肘将铃降至头后，上臂竖直。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [

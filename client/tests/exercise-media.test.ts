@@ -119,7 +119,11 @@ test("misleading variants and custom movements never inherit demonstration media
   ])
     assert.equal(mediaFor(id), undefined);
   assert.equal(mediaFor(undefined), undefined);
-  assert.equal(mediaFor('exdb:0354')?.kind,'illustration');
+  // Batch 112 gave 0354 its own gated one-arm generated pair (stills only), replacing the
+  // single-arm drawing; the no-inheritance guard now checks that pair and still forbids video.
+  assert.equal(mediaFor('exdb:0354')?.kind,undefined);
+  assert.equal(mediaFor('exdb:0354')?.images.length,2);
+  assert.equal(mediaFor('exdb:0354')?.sources[0].name,'AI 生成 / ai-codex-replaceIllus-0354');
   assert.equal(mediaFor('exdb:0354')?.video,undefined,'An explicit single-arm drawing must not inherit the bilateral kickback video');
   assert.equal(
     mediaFor("exdb:0085")?.video,
