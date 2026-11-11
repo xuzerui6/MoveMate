@@ -16451,6 +16451,222 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0002",
+      "expectedName": "45° side bend",
+      "sourceId": "ai-codex-replaceIllus-0002",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "2676d657b3aa8cd3cb823523c1783c40262fa5716d5e629c0776fbfa1f03ba35",
+        "a1b9ccbfdbdcb7b25c90743735ba7fa845be50d867e1112f4c4e2506f723b8ff"
+      ],
+      "phases": [
+        "站立直立，双臂自然垂于体侧。",
+        "躯干向一侧屈约 45 度，同侧手沿大腿下滑。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0041",
+      "expectedName": "barbell front raise",
+      "sourceId": "ai-codex-replaceIllus-0041",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "a836983d33627546a6cea13d36a7e7bf0b6de47c8950e0fbcf524cbb4f3d0f08",
+        "1e5cf46b87816adfe9b8ffbfd218c175a6f90a75f0aa41f134f93eb23c348d57"
+      ],
+      "phases": [
+        "站立，杠铃垂于大腿前，正握。",
+        "双臂前举杠铃至肩高，掌心向下。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0049",
+      "expectedName": "barbell incline row",
+      "sourceId": "ai-codex-replaceIllus-0049",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "6d910498c56b9f99e10d3bdf9ab8abd5ffc8ec1bf0450c39be3f6eb0a2fcbf07",
+        "fd75b1205a50b69feba530f38c0b4a7f177ec4ea1d8284a36192b07adfa3589a"
+      ],
+      "phases": [
+        "俯卧上斜凳，双臂垂放握杠。",
+        "杠铃拉至躯干，双肘后收。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0055",
+      "expectedName": "barbell lying close-grip press",
+      "sourceId": "ai-codex-replaceIllus-0055",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "fc4ea71d4fd8059213fb9699bb5c2fd506966961e0ae9aa41025d2bff32d82ef",
+        "cd895bfc683856e71b30e564594f968f452d1835d82cdb9cb0ef56b57288343c"
+      ],
+      "phases": [
+        "仰卧平凳，窄握伸臂持杠。",
+        "杠铃降至触胸，双肘收紧。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0057",
+      "expectedName": "barbell lying extension",
+      "sourceId": "ai-codex-replaceIllus-0057",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "477dcf6b621ffba37be680d12d729efb5e9d25a7e344362aa51d828128baeb8c",
+        "31ac9362aca199e27b4f1598ce9496f9c9077fe6f13c9f3a2f6fe715d5c6cd82"
+      ],
+      "phases": [
+        "仰卧平凳，伸臂持杠于胸上方。",
+        "屈肘将杠降至额后，上臂竖直。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0060",
+      "expectedName": "barbell lying triceps extension skull crusher",
+      "sourceId": "ai-codex-replaceIllus-0060",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "6e2fa063197e0e73f0a07dcb324e3eec05da3d6b0fd7b91bcd016084ef8da591",
+        "c8ea486421eaa90038af87c4099c5bafb16c80e08bed4b75aa25a0c52a58f7c5"
+      ],
+      "phases": [
+        "仰卧平凳，伸臂持杠于胸上方。",
+        "屈肘将杠降至额后，上臂竖直。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0061",
+      "expectedName": "barbell lying triceps extension",
+      "sourceId": "ai-codex-replaceIllus-0061",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "c4370c7e91fe24440541e9fe6843cb72c41f3a37bd92eec4c5fa520db22e24c6",
+        "e3ebf3f5a9fe3efc545bf31f3700597c4ebffe10d9dc8fc02f0e8e46f501e585"
+      ],
+      "phases": [
+        "仰卧平凳，伸臂持杠于胸上方（正面）。",
+        "屈肘将杠降至头后，上臂竖直。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0078",
+      "expectedName": "barbell rear lunge",
+      "sourceId": "ai-codex-replaceIllus-0078",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "1836fd90c5c39c1aff5daa8ebf601ed735eb08937a2350653ad697fdf98a6594",
+        "ab0583be36b5c4e1a252add41aed44e28007846d6538d4460ade7f8f696c0c11"
+      ],
+      "phases": [
+        "杠铃置于肩背，双脚并立。",
+        "单腿后撤弓步，后膝下沉近地。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0091",
+      "expectedName": "barbell seated overhead press",
+      "sourceId": "ai-codex-replaceIllus-0091",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "9b96a1dcf3c78adfbc3514a13c63f5e174ad3cc3bb341ecd328a6f21527e111e",
+        "d72d00357d8205c81164bb443702f136cad626c7d2a475624a4be508bf4337be"
+      ],
+      "phases": [
+        "坐姿，杠铃置于肩前，正握。",
+        "杠铃过顶推起，手臂伸直。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0092",
+      "expectedName": "barbell seated overhead triceps extension",
+      "sourceId": "ai-codex-replaceIllus-0092",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "7a2c4793e6f8d307a9383b12bbed70e38ffa6b00b4214c09bd2314a2ff7f9c80",
+        "cd0d3879fc69410bfaf174f1d91174f41767e15f3d03b88c9b26a0bd5b8f7dc7"
+      ],
+      "phases": [
+        "坐姿，杠铃过顶伸臂持握。",
+        "屈肘将杠降至头后，上臂竖直。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0116",
+      "expectedName": "barbell straight leg deadlift",
+      "sourceId": "ai-codex-replaceIllus-0116",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "c4b7063913de9b51c4415bd49de9551cbc3d7e04b84417921f6de44b09a23a64",
+        "3786e1bb2a39b5e63361bef46469107b91beacf9fcd3b0c8149d44820d7c74cc"
+      ],
+      "phases": [
+        "站立，杠铃垂于大腿前（侧面）。",
+        "屈髋俯身，杠铃贴腿降至膝下，膝微屈。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0123",
+      "expectedName": "barbell wide-grip upright row",
+      "sourceId": "ai-codex-replaceIllus-0123",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "99f3cfc3fb04725e59e67644654d26f5d4454cef8458487cb03e3b7ce882693b",
+        "74ac4cf477293e61c8bc8247712bef5fc4d6599a980fd40964bbf4e0b886cca6"
+      ],
+      "phases": [
+        "站立，宽距正握杠铃垂于大腿前。",
+        "提拉杠铃至下巴高，双肘高张。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
