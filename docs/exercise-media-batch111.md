@@ -36,7 +36,7 @@
 
 - 串行全套测试（本地，接入工作树）：client `test:repository` **534/534** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。测试维护一处：`client/tests/exercise-media-batch4.test.ts` 历史断言名单移除本批替换的 0061（余 0375/0475），同文件非图解计数 17 → 18——本批媒体事实更新，非规则放宽。
 - 登记校验：发布链计数四方一致：build 输出 1064 image entries；publish-media-metadata 输出 1064 records；publish-exercise-documentation 输出 complete 1064 / photos 976 / illustrations 88 / pending 265（原始口径）。
-- 集成提交 `待填`；GitHub CI 运行 **待填**。
-- 双站部署：生产 Version `待填`；预演 Version `待填`。
-- 在线核查：新图 24 张双站 sha256 **待填**；双站 attribution.json 条数 **待填**。
-- 「动伴进度」空间同轮同步（待填）。
+- 集成提交 `39f89bb`；GitHub CI 运行 43074896267 success。
+- 双站部署：生产 Version `9b664e68-2647-4faa-8dd0-9ce5bcfde9cf`；预演 Version `e3ec8fc1-b0e8-4974-8f92-a7008bc24d4c`（preview 分支 tip `d0028f1` = 95817fb + 合并本批 main；预演工作树复跑 client `test:repository` 534/534 通过后部署。注：本轮首次建 preview 工作树时误用本克隆过期的远端跟踪引用（4e4e796）做了合并、推送被非快进拒绝，未产生任何远端变更；改以 ls-remote 实测尖端 95817fb 重做后成功。）
+- 在线核查：新图 24 张双站 sha256 **48/48 一致**；双站 attribution.json 条目数 **1064**；被替换的旧图解文件在生产返回 404；预演三张测试页均 200。
+- 「动伴进度」空间同轮同步已派发（图解 88、照片 976、批次 111 记录置顶）。
