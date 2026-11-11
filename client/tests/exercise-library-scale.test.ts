@@ -216,7 +216,14 @@ test('independent references correct specific source errors, retain licenses and
   assert.equal(mediaFor('exdb:0332')!.kind,undefined,'Batch 112: 0332 illustration replaced by its own gated standing-lateral-raise pair');
   assert.equal(mediaFor('exdb:0332')!.images.length,2);
   assert.equal(mediaFor('exdb:0332')!.sources[0].name,'AI 生成 / ai-codex-replaceIllus-0332');
-  assert.equal(mediaFor('exdb:0433')!.kind,'illustration','Cross-bench shoulder support must not replace this source’s full-length bench support');
+  // Batch 114 replaced the 0433 illustration with a gated generated pair depicting this
+  // entry's own text (head and torso supported along the full-length bench, one dumbbell
+  // in both hands, arms nearly straight), so the guard now checks the replacement record
+  // instead of the deleted illustration — the cross-bench shoulder-support source photo
+  // remains unused.
+  assert.equal(mediaFor('exdb:0433')!.kind,undefined,'Batch 114: 0433 illustration replaced by its own gated along-bench straight-arm pullover pair');
+  assert.equal(mediaFor('exdb:0433')!.images.length,2);
+  assert.equal(mediaFor('exdb:0433')!.sources[0].name,'AI 生成 / ai-codex-replaceIllus-0433');
   // Batch 19 replaced the 0660 illustration with a verified real photo: two separate
   // dumbbells on the ground (not one upright dumbbell), so the two-dumbbell guard now
   // checks the photo record instead of the deleted illustration entry.

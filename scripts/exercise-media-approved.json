@@ -17099,6 +17099,222 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0430",
+      "expectedName": "dumbbell standing triceps extension",
+      "sourceId": "ai-codex-replaceIllus-0430",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "8988c54190a984c2ee948628a9b66874b9b638622a44753194fe75d6d875b5c6",
+        "6bdf45bc5b898063434a7e5e07c0dd59c14be9954b5dd635128a5aa874127aac"
+      ],
+      "phases": [
+        "站姿单手持铃伸直于头顶上方，上臂靠近头部。",
+        "屈肘将哑铃下放至脑后。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0433",
+      "expectedName": "dumbbell straight arm pullover",
+      "sourceId": "ai-codex-replaceIllus-0433",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "43d431fee150aa6d9c5eb7b5af30c049bdccf1c7544832411aadb849199a0d83",
+        "005faa4b81e374d8d3ff75215e6bb1bfb5c0c3323a560377927932a93711fbe3"
+      ],
+      "phases": [
+        "沿凳仰卧，双手握一只哑铃近伸直举于胸上方。",
+        "保持手臂近伸直，沿弧线下放至头后。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0456",
+      "expectedName": "flexion leg sit up (bent knee)",
+      "sourceId": "ai-codex-replaceIllus-0456",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "9f32cfd06a04280aeba21201162c513f573aca7ab7d6786a4a479c384936291e",
+        "57b29cb54c16ffc7d290e702532cc9a7e048033534fa219b5673718ea40a237f"
+      ],
+      "phases": [
+        "平躺屈膝，双脚平放，双手置于脑后。",
+        "躯干卷起约45度，同时双膝离地收向胸部。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0459",
+      "expectedName": "flutter kicks",
+      "sourceId": "ai-codex-replaceIllus-0459",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "6fae8f7d0413a6421b7ef010148640bc99da373e7e6725a3835ed6af2ba0bdff",
+        "43071fd893594503eeaa0de16cbbf693ccdd0c86d06f5e853eb45fc002f7fbd7"
+      ],
+      "phases": [
+        "仰卧，双腿伸直抬离地面，双手置于身体两侧。",
+        "双腿小幅交替上下摆动，一腿高一腿低。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0464",
+      "expectedName": "front plank with twist",
+      "sourceId": "ai-codex-replaceIllus-0464",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "c64774c62cc17370e781593e4e3239884fed302912df8450506acc4359a434a5",
+        "80721e32161bd724f2c2d1278354a5ce62932630ab1f5bcd1b578f4f4bef8c0a"
+      ],
+      "phases": [
+        "高平板支撑，双手位于肩膀正下方，身体成一条直线。",
+        "躯干向一侧旋转，单臂向上伸展。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0475",
+      "expectedName": "hanging straight leg raise",
+      "sourceId": "ai-codex-replaceIllus-0475",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "951e862fe95f31fc8c81125380084164ae8c5751cbc6063638cf387c064401f3",
+        "05bc1874ed8ee48d100b072f48d8bf3f56dda65b82d22595b097eff80caf08fd"
+      ],
+      "phases": [
+        "正握单杠直臂悬垂，双腿伸直下放。",
+        "双腿保持伸直向前抬起至接近水平。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0546",
+      "expectedName": "kettlebell seated press",
+      "sourceId": "ai-codex-replaceIllus-0546",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "7119171bc9467004b94a2447897eae8ab6fdbcfffdc4cb2bb1ad948b6be8e554",
+        "b432ba49b85feaae530a1cefda0092302fd1eb1ebec52ef0f4bce59e03ed2df1"
+      ],
+      "phases": [
+        "坐姿，每手一只壶铃置于肩侧。",
+        "双臂同时将壶铃推至头顶上方。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0643",
+      "expectedName": "overhead triceps stretch",
+      "sourceId": "ai-codex-replaceIllus-0643",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "eb68f0454bf1b7815a159b2712795e4f441dfbc843368dfd0cdf80e7e076011a",
+        "f860717dea0054198d93e9c15e0c3c93bf0a0a7f696684e1a3301ba3b615cd1b"
+      ],
+      "phases": [
+        "站姿，一臂过顶屈肘，手落向背部。",
+        "另一手轻扶该肘，保持拉伸。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0653",
+      "expectedName": "push-up (bosu ball)",
+      "sourceId": "ai-codex-replaceIllus-0653",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "de828c2138dfbae2def8efd3b862ccbf174636a1a0085c7c47e775720710a45f",
+        "a96bcf891b640d5b60075de5a3d7ca38e66ff93a6edd6fdff6274b7067f7becd"
+      ],
+      "phases": [
+        "BOSU平面朝上，双手握平面两侧边缘，身体成线。",
+        "屈肘降低胸部至接近平台。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0659",
+      "expectedName": "push-up (wall)",
+      "sourceId": "ai-codex-replaceIllus-0659",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "d0a772216b386de71ded88814fdbd7771c14d3318507a597529746d801ccf038",
+        "a91b8d89e993f2930f1a5de1b9d8a02fd1e0f6270431d414a38d1bcf12ff6b5b"
+      ],
+      "phases": [
+        "面向墙壁，双手撑墙，身体成一条直线。",
+        "屈肘使胸部靠近墙面。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0669",
+      "expectedName": "rear deltoid stretch",
+      "sourceId": "ai-codex-replaceIllus-0669",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "9d6a27babfcf88ba5c73dc2f8a94459a00227e75f655fbf0517bb0e16ba935b3",
+        "09d5ac8c35ef586a6fdb162927ef1e4e62a7228c15d09ffc5ccec8ff8ff0c8f8"
+      ],
+      "phases": [
+        "站姿，一臂伸直横过胸前。",
+        "另一手轻扶该肘，向对侧肩方向靠近。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0687",
+      "expectedName": "russian twist",
+      "sourceId": "ai-codex-replaceIllus-0687",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "17223e76e571a7a00d9753fdc26f7e2d051afc471306bac7992f29864fc5ae02",
+        "025dd29719247ed5cca3b38952b4dbf62cd7b03fa5b7328a68f62524c76fd776"
+      ],
+      "phases": [
+        "坐姿屈膝，双脚离地，双手合拢于胸前。",
+        "躯干向一侧旋转，双手带向该侧。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [
