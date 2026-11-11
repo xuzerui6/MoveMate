@@ -8073,24 +8073,23 @@
         "sourceRecordSha256": "e262d077a83f86cfbcc9d4e570cd81c21620ce21c5c1e08bf3bd3983aeccbc21",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0129",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "AI 生成 / ai-codex-replaceIllus-0129",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch110.md",
+          "version": "2026-11-12 · 生成批次 110",
           "sourceSha256": [
-            "c1a8bc047c305840a8aef9306620fb7e7b306f84006f79b73bb5e0c1315e072c",
-            "7f556a3e3f3b0e436591dc54c17292408441c444e3ce939e4a4a81963a502143",
-            "f04821787d6427febfe94f90921a5bc8dba762ee4f44de573071be1b2aa6a05e"
+            "affd3767c7912c437ad6846b2772bd983f58e29abf226a83c1305768574709a8",
+            "68daa0b48552590da71eeb0d3d2de3703a192f2b78fd9fb85d42409be626b13e"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"
         }
       ]
@@ -8507,24 +8506,23 @@
         "sourceRecordSha256": "08bcbdbb3e05e06a430c5f8b48bf341193774ce7d0aaa5342a5baba51d253400",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:1373",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "AI 生成 / ai-codex-replaceIllus-1373",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch110.md",
+          "version": "2026-11-12 · 生成批次 110",
           "sourceSha256": [
-            "b317ba7f245e884d56932a64ee6e6a2f7a1d72301b686ad7ad30045dead4ab28",
-            "a0130005827c023f7f55d4f4a9b2fd2d90ab586b1bac431d64417e51469cc98f",
-            "97ac0aa6b924cd114a0122126093cd935a307e412ab4bfb1766596c3d18435fb"
+            "f2711a2b8c0836e09aee2ecd68311722c76c6647fc856ecf1457abc80ad4f1a3",
+            "159294eb92555361bc49baaa4ef09c7fc31cd11a48b53ebc58e0e7570ff6cdf7"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"
         }
       ]
@@ -9165,22 +9163,37 @@
     {
       "id": "exdb:0154",
       "originalName": "cable cross-over revers fly",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：低滑轮俯身反向飞鸟可读，但交叉握的左右索路需要图证，不用同侧高滑轮图替代。",
+      "reason": "2026-11-12 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（B1 · 非常规画面，批次 110 接入；0154 搁置重排收官）：定版双帧正面回答种子严点——双侧均为低滑轮、索路自低处来；起始帧俯身背平、膝微屈，双臂在身前交叉，左手握右侧低滑轮手柄、右手握左侧，掌心朝下，两索在身前交叉成单个 X（手部与滑轮出索处均经放大逐根核对，恰两根索、无第三根杂散缆绳）；关键帧双臂向两侧后上方打开、肘微屈、肩胛挤压，掌心仍朝下。起始帧以批次 108 已过门的峰值定版帧为锚定向生成，1 稿过门；峰值帧沿用该定版帧。正文原样不改；正文 6 步 → 存储 5 步（第 1、2 步分号合并，定稿句子无一删减）。种子无 form 字段，form 按种子正文与 B1-SPECS §C2 对侧握裁定合成一句，不新增正文主张。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "0074d7e47a7d0dc1b8ec7c284905c68782fce0d5482f7d75d774d2a64b1d09d2",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB1-0154",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch110.md",
+          "version": "2026-11-12 · 生成批次 110",
+          "sourceSha256": [
+            "f880ed57df5a3d9173a4f153f244cc5fa2b159edc2ad6eeda3bbf4c64596b783",
+            "99d1553b2d3595f5d1cb4c552d4ba317c583786a63542eca8b105a5f8da44e07"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0155",
@@ -16444,24 +16457,23 @@
         "sourceRecordSha256": "5f0104aba68f34d2452b22677d12170f87a89be4a3faa14aef9b8228f7f5953c",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0300",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "AI 生成 / ai-codex-replaceIllus-0300",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch110.md",
+          "version": "2026-11-12 · 生成批次 110",
           "sourceSha256": [
-            "e1816f044b591ee6191047ad2fe4d1d138d7d9fa66100391e990043c4b06f67d",
-            "09e6e08c969fee271ebf33aae5a09025b8f69dd0a4ec3d8ea9b9467b9900aa31",
-            "24ac752cb524d41f4b56837132f4bbd1c81483d0d37c3dd2b1e5e31bb8ed98d8"
+            "9ee45985d7440581b006adcd933647b317b08f67245c899be4acf44f11717e11",
+            "ee830f28a244b6eb5732a905fd132067014fbdd2baae3244b766ec084b6ac4f6"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"
         }
       ]
@@ -17025,24 +17037,23 @@
         "sourceRecordSha256": "bf234e8fa42e70024fa6a6cc5590ba70c1148f868be00061136636f2b9130364",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:1760",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "AI 生成 / ai-codex-replaceIllus-1760",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch110.md",
+          "version": "2026-11-12 · 生成批次 110",
           "sourceSha256": [
-            "89d6fe8c324c8368d333a8a82a3ee1844fa0a371d6c40cf3302536def15e297d",
-            "82d0e723b93654fe424c71423d95f69e5128a39c1966bd3a256b5dbaf544b432",
-            "6116cc3a464d6865267ca5324e37cf21861e7a3e73decc6bd203b306bd89fc0e"
+            "12836adf038bcb9bc873daab96ce61dc1008e8c8ded9eff90bfab3913c7f0c2c",
+            "6f0e4a16d3509c35477839d0595ff6010404383f42687aea4f6646ddd648638e"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"
         }
       ]
@@ -19483,24 +19494,23 @@
         "sourceRecordSha256": "04da77141953d57bf03693698904bf2bc0288a4d371c6df73fbd590346517de5",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0292",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "AI 生成 / ai-codex-replaceIllus-0292",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch110.md",
+          "version": "2026-11-12 · 生成批次 110",
           "sourceSha256": [
-            "c22523c185c1bead7883c2d6f009845a590a2c9c9aeae664af14fac431e86062",
-            "796578e52bc994620990162e543734d3bb69d53ead828a04722ea8cdec60a118",
-            "5f5bfba7fca1b29189c6fe1527a850a5bbfc144bd6ec37abce5e5f40f5ff79ae"
+            "f2e8a1443afe60e7304aa38de379ef9d3f750298057bcce66d85566a0fe78ef3",
+            "e784c4b461badd0bee2628f1e3f6fb368655cf29433af6c85ad1ce5a066c2581"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"
         }
       ]
@@ -21283,24 +21293,23 @@
         "sourceRecordSha256": "99517e4085e635112cbd87d2673e5f76704289406e99021995a1db4a1e6443e4",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:2292",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "AI 生成 / ai-codex-replaceIllus-2292",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch110.md",
+          "version": "2026-11-12 · 生成批次 110",
           "sourceSha256": [
-            "901f9b5c6ef2fc6d738ff94b33f64dc1d8baa3ece27e1692bf1311b10f75e72c",
-            "ad374d72e698ca090df2bccb88db7f4bcedb0b0ed18c7430023de1dcef9e3f20",
-            "74cc1472295fe027019cd8f8c1a32764fd01fcb406b27263e4ba6f3beb272d14"
+            "fb848e52a2e670c4f9bbba2016870a7c0bd0d405f40e317881b576961082aa45",
+            "2e3e5061cc0eee24fcd843f3b2aab06bfb89afcb8be1063ae0805b54e8fd1211"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"
         }
       ]
@@ -21339,24 +21348,23 @@
         "sourceRecordSha256": "7ca5ff40c51357d2a0d03401d419d5eeb1af92180abc8a64abe676a9675d7a9d",
         "steps": 5
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0378",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "AI 生成 / ai-codex-replaceIllus-0378",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch110.md",
+          "version": "2026-11-12 · 生成批次 110",
           "sourceSha256": [
-            "626bc1228eb87aa4568cd4cc6f2893355ad1b93262ce44e83d51aaaf76a327da",
-            "95b8a2b4263f4107d6a10ff3b6709bc3f7317be38ff64acdd1ae11cf0e13ca94",
-            "aa6c8330f3f19b3a483d7c33d78bfab8ba896beafbfdb40f85dcd90ec1c089c8"
+            "9f0d1403f5f3c320dbc3d9eaa94b15108a11ef60708063d45b6f5ba830b481e7",
+            "b1b29317d828476a13bae1ce3530d2808b9d080de6afaa9ac21a8e30a70c282e"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"
         }
       ]
@@ -21560,24 +21568,23 @@
         "sourceRecordSha256": "14c2a7415a0c23e00efbc5d22fc39ea6c70282204f420a670c79b0679a959126",
         "steps": 5
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0383",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "AI 生成 / ai-codex-replaceIllus-0383",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch110.md",
+          "version": "2026-11-12 · 生成批次 110",
           "sourceSha256": [
-            "b1b060aad712ee1700685a7ead2dbccc4e0adf4bb81f9570b46c2c31a382b916",
-            "73b329669f91cc12f3d8cd8a5337bbe6309622e0f7e6eda18257424c709f8486",
-            "b50176a7e4dae5fec28627e9867ec9cb112daebe4cd444b3220cd7580b8749ee"
+            "eec73d06fb97eac0e9316696bfaa90615a183c4bc45550e52c9274e76223ea20",
+            "892e3e730189499e3c54d8fab91c29334391dabb8c3390d6f55d6100712c49c6"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"
         }
       ]
@@ -21776,24 +21783,23 @@
         "sourceRecordSha256": "753e2edef85014bd69991e58cbf0b418c23405866d18423c77bb5ec674bbe463",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:1459",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "AI 生成 / ai-codex-replaceIllus-1459",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch110.md",
+          "version": "2026-11-12 · 生成批次 110",
           "sourceSha256": [
-            "2f1e11e0e97d80e5eb7bdb2173054531a5b016e0d8fdc491eb762113453897fa",
-            "e88abf7780f0d5a20baa05080f53caedb0b8141e1473ededcd7e499564db903b",
-            "01908763f9007b29dd0acc58fe7568cb348e3c20bab80c55d8fd97a734ea3501"
+            "af60c575021c8a0d2b301306acb1bb7395c44a6e1ad0c8fddd5eb3e30fb0cddc",
+            "a38e6060e0e7511f5aaf0f9ff34d029185478c62383dfcc932a9e98d70e56a24"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"
         }
       ]
@@ -22276,24 +22282,23 @@
         "sourceRecordSha256": "4d89e97c793a3480e2ba873586e748c3732fbd784966a6874eae6562ea564b5e",
         "steps": 5
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:1379",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "AI 生成 / ai-codex-replaceIllus-1379",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch110.md",
+          "version": "2026-11-12 · 生成批次 110",
           "sourceSha256": [
-            "a843932cfeafc2d16618aba116fbc4ec5f01a82f7371f77de14f1b35af1bd92a",
-            "11869fad2c1847d0434fdf73d7b0cb7c512407ef9eb6681ccf9000f8e34f9939",
-            "3cfb061893ddf18a42c8ca4b28c9f29f9bc671e20d912a60d43a7415e12f2406"
+            "c6d80d2b186eafa0c77d7285efa6f9de8fd764dafd5e7133046c1aace7898580",
+            "c68832a3fa016213b5d7b65749b914fe43a1cc99842bdaade4cf83c0e607dc64"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"
         }
       ]
@@ -22988,24 +22993,23 @@
         "sourceRecordSha256": "a844396aadb22ac3c1a8334fb9b05d499182e9d373dae6021519eeebd106bd96",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0404",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "AI 生成 / ai-codex-replaceIllus-0404",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch110.md",
+          "version": "2026-11-12 · 生成批次 110",
           "sourceSha256": [
-            "9c7563bf4bf99d26322235d3db908048c81b7e8be22faf7b104d36d3a4ea9964",
-            "52d32285d7d88118589ce254c0e7af86b8deed856bcba41fba80557cbd637081",
-            "eba7d7bcd0678d15ed8bc2cd64b7a77e04488591308d948e0573f64a0aa1eee5"
+            "34fe22b3ec1d46c59bb3dfdc5b96aaf2add0c85546c921965c4992cb32205926",
+            "35d41ce63d754c1e1404d087e254af349947f2e4f2f05c153fda477b9e1b008f"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"
         }
       ]
@@ -40737,24 +40741,23 @@
         "sourceRecordSha256": "6c21757592eaaa37377d28774ced069534f1bbb3f49c64f419a3b9d711fe3261",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0795",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "AI 生成 / ai-codex-replaceIllus-0795",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch110.md",
+          "version": "2026-11-12 · 生成批次 110",
           "sourceSha256": [
-            "bd0d6f05a55f38e7dc68a3d845b1e36a1cf1af5ea04c39f0d26929f57fe399ac",
-            "ab1032b7389f9a9ef8bdf8ec0e3aef6118bf5ff557f46db08ac252696c18a639",
-            "62abd42e59cb5c6108fdde673e86a9477ef32de3a4bae667b958ea3697f4aadb"
+            "81cddbe6cdc2f5b42cba0f622a00d4ba12b15292ab48d73ab6f7dc30115d44fc",
+            "a6f42af7a184d3c17980fd8b3cbbf88107d391de5bde40bd295d209bc40daa6b"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"
         }
       ]
@@ -42278,24 +42281,23 @@
         "sourceRecordSha256": "8b00a821f1921ea950a80cff0375a3c7f2f765c28a6433fc0787be37757d01d5",
         "steps": 4
       },
-      "photo": false,
-      "illustration": true,
+      "photo": true,
+      "illustration": false,
       "video": false,
       "complete": true,
       "sources": [
         {
-          "name": "MoveMate 原创人体动作示意 / exdb:0834",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
+          "name": "AI 生成 / ai-codex-replaceIllus-0834",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch110.md",
+          "version": "2026-11-12 · 生成批次 110",
           "sourceSha256": [
-            "125f85a1064f897844e9c55f030bac617fdcf78b005c24aa727e1dab72294115",
-            "ae75c5a4c77402f979363eafb1ed15852448a34113dd58f6528bf9abe112ee3e",
-            "3f3cb246b1241819f0b54adf160c044e99a6c98e3e6d90ccbe63af46f181b606"
+            "29baa10281f9bc9bd85ccf9734639961e98f5eb563775ca80d2bbf4c65ba3bf1",
+            "9bcffaf4c65d04f78737d6226da1f4ca86e1b3de3ddbc4adb87efee29cbcd860"
           ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"
         }
       ]

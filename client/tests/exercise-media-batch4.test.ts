@@ -11,7 +11,7 @@ test('batch four has readable Chinese instructions and discoverable common alias
   }
 });
 test('unmatched equipment, support and bent-leg variants stay without a false demonstration',()=>{
-  for(const id of ['1373','1760','0375','0061','0292','2292','0475'])assert.notEqual(mediaFor('exdb:'+id)?.kind||(!mediaFor('exdb:'+id)?'missing':'photo'),'photo',id);
+  for(const id of ['0375','0061','0475'])assert.notEqual(mediaFor('exdb:'+id)?.kind||(!mediaFor('exdb:'+id)?'missing':'photo'),'photo',id);
   assert.equal(mediaFor('user:0042'),undefined);
   assert.ok(mediaFor('exdb:0333')!.sources[0].name.includes('Standing_Bent-Over_Two-Arm'));
   assert.ok(mediaFor('exdb:2330')!.sources[0].name.includes('Wide-Grip_Lat_Pulldown'));
@@ -29,6 +29,6 @@ test('all prior twenty-seven demonstration IDs survive, and new photos have actu
   // which historical records this preservation check is protecting.
   const old=['motion:squat','motion:push_up','exdb:0294','exdb:0416','exdb:0334','exdb:0405','exdb:0293','exdb:0025','exdb:0031','exdb:0032','exdb:0085','exdb:0289','exdb:0652','exdb:0043','exdb:0030','exdb:0027','exdb:0861','exdb:0739','exdb:0585','exdb:0586','exdb:0313','exdb:0241','exdb:0175','exdb:0314','motion:jumping_jack','motion:high_knees','movemate:reverse_lunge'];
   assert.equal(new Set(old).size,27);for(const id of old)assert.ok(mediaFor(id));
-  const added=targets.filter(id=>mediaFor(id)&&mediaFor(id)?.kind!=='illustration');assert.equal(added.length,13);
+  const added=targets.filter(id=>mediaFor(id)&&mediaFor(id)?.kind!=='illustration');assert.equal(added.length,17);
   for(const id of added)assert.ok(mediaFor(id)!.images.every(f=>f.phase&&!/^分解 \d+$/.test(f.phase)));
 });
