@@ -15515,6 +15515,42 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3655",
+   "expectedName": "walking high knees lunge",
+   "sourceId": "ai-codex-fillA14-3655",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a69181589d6ac593313e941c99f4e45eb38fdb41f88d77d61928adf2ddeb224d",
+    "1f3340dedf9a13d3dbaf32dcd19f6312df97e22e86876a234b0c2f34ffede3f1"
+   ],
+   "phases": [
+    "起始：双脚分开与臀部同宽站立，右膝高抬向胸部、左腿单脚支撑。",
+    "关键：右脚向前迈出至深弓步底位，前大腿平行地面、后膝悬空贴近地面，身体相对背景向前行进。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3699",
+   "expectedName": "shoulder tap",
+   "sourceId": "ai-codex-fillA14-3699",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f6a7b7de52430f3f38125cea6e088a020162a1e556524a0f021d82b4d8e8a85f",
+    "a43fb3d53e2510b84f6e064349c961402618bea3502222d0bde893be9fd55b84"
+   ],
+   "phases": [
+    "起始：高平板支撑，双手在肩膀正下方，身体呈一条直线、髋部水平。",
+    "关键：右手抬离地面、掌心贴实左肩，仅左手与双脚三点支撑，髋部保持水平。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [

@@ -36833,22 +36833,37 @@
     {
       "id": "exdb:3699",
       "originalName": "shoulder tap",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源明确高平板单手触对侧肩、左右交替；需核对三点承重、手部接触和回位图，不采用跪姿或普通平板代替。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A14 · 徒手·动态 2 条，批次 104 接入）：定版双帧正面回答：起始帧直臂高平板、身体一直线、髋部水平；关键帧右手离地、掌心贴实左肩（对侧触肩接触清晰），仅左手与双脚三点承重、髋部水平。已接受的柔软点：躯干有极轻微向支撑侧的转动，属触肩动作固有，记录不改判。双帧均首稿过门。正文 5 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "23823933d856062f1f64908626a3ab2494fe6bf82f45269996b09bbe47043e4a",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA14-3699",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch104.md",
+          "version": "2026-11-11 · 生成批次 104",
+          "sourceSha256": [
+            "f6a7b7de52430f3f38125cea6e088a020162a1e556524a0f021d82b4d8e8a85f",
+            "a43fb3d53e2510b84f6e064349c961402618bea3502222d0bde893be9fd55b84"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0699",
@@ -41393,22 +41408,37 @@
     {
       "id": "exdb:3655",
       "originalName": "walking high knees lunge",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源明确抬膝后前迈弓步、另一腿抬膝继续行进；需完整左右行进序列，原地高抬腿和后撤弓步素材不足以覆盖。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A14 · 徒手·动态 2 条，批次 104 接入）：定版双帧正面回答：起始帧右膝高抬至胸前、左腿单脚支撑；关键帧右脚前迈深弓步，前大腿平行地面、后膝悬空贴近地面，身体相对背景明显前进——行进序列可读，非原地高抬腿、非后撤弓步。双帧均首稿过门。正文原样不改；接入时定稿 7 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 2、3 步分号合并；第 4、5 步分号合并，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "cfaec0de98ac8a93282df666700c8c84105d818f5614ed0467764d0c3b2c1409",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA14-3655",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch104.md",
+          "version": "2026-11-11 · 生成批次 104",
+          "sourceSha256": [
+            "a69181589d6ac593313e941c99f4e45eb38fdb41f88d77d61928adf2ddeb224d",
+            "1f3340dedf9a13d3dbaf32dcd19f6312df97e22e86876a234b0c2f34ffede3f1"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1460",
