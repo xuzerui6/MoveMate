@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>模型下载测速</title>
+<style>
+:root{color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;background:#fff;color:#111;-webkit-text-size-adjust:100%}
+main{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:24px;line-height:1.3;margin:8px 0 6px}
+.sub{color:#555;font-size:15px;line-height:1.6;margin:0 0 14px}
+button{appearance:none;border:0;border-radius:12px;background:#111;color:#fff;font-size:18px;font-weight:600;padding:14px 20px;width:100%;margin:16px 0 8px;min-height:52px}
+button:disabled{background:#999}
+#status{font-size:16px;font-weight:600;margin:10px 0 6px;min-height:24px}
+.card{border:1px solid #e3e3e8;border-radius:14px;padding:16px;margin:14px 0}
+.card h2{font-size:20px;margin:0 0 4px}
+.card .size{color:#666;font-size:14px;margin:0 0 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.metric{background:#f8f8fa;border-radius:10px;padding:10px 12px}
+.metric.best{background:#e7f7ec}
+.metric .k{font-size:13px;color:#666}
+.metric .v{font-size:24px;font-weight:700;margin-top:2px}
+.metric .v small{font-size:13px;font-weight:500;color:#666}
+.metric .spd{font-size:17px;font-weight:700;margin-top:4px}
+.verdict{border-radius:14px;padding:16px;font-size:17px;font-weight:700;line-height:1.5;margin:14px 0}
+.verdict.pass{background:#e7f7ec;color:#0a6b2d}
+.verdict.fail{background:#fdecec;color:#a31111}
+.verdict.wait{background:#f5f5f7;color:#555}
+footer{color:#888;font-size:12.5px;line-height:1.6;margin-top:22px}
+</style>
+</head>
+<body>
+<main>
+<h1>模型下载测速</h1>
+<p class="sub">点开始后，会把同一个 9.4MB 模型文件分别从两条线路各下载两次，显示速度对比。两条线路一条一条来，不会同时下载。整个过程只有下载，不上传任何数据；测速结果不保存。</p>
+
+<button id="start">开始测速</button>
+<div id="status">等待开始</div>
+
+<div id="results"></div>
+<div id="verdict" class="verdict wait" hidden></div>
+
+<footer>测速方法：每条线路下载两次，对比时取每条线路更快的那一次；每次下载都带随机参数，不会命中手机缓存。单次下载超过 120 秒视为失败。文件：pose_landmarker_full.task（9,398,198 字节）。</footer>
+</main>
+<script>
+(function () {
+  var SIZE = 9398198;
+  var TIMEOUT_MS = 120000;
+  var ROUTES = [
+    { name: '现在的线路', url: 'https://dongban.xyz/pose/pose_landmarker_full.task' },
+    { name: 'NODEPEND 线路', url: 'https://pose-test.lxdcloud.top/pose/pose_landmarker_full.task' }
+  ];
+  var startBtn = document.getElementById('start');
+  var statusEl = document.getElementById('status');
+  var resultsEl = document.getElementById('results');
+  var verdictEl = document.getElementById('verdict');
+  var counter = 0;
+
+  function setStatus(t) { statusEl.textContent = t; }
+  function fmtSec(s) { return s.toFixed(1); }
+  function fmtSpd(v) { return (v >= 10 ? v.toFixed(1) : v.toFixed(2)); }
+
+  function resourceTimingSeconds(url) {
+    try {
+      var entries = performance.getEntriesByName(url);
+      if (!entries || !entries.length) return null;
+      var e = entries[entries.length - 1];
+      if (e && e.startTime > 0 && e.responseEnd > e.startTime) {
+        return (e.responseEnd - e.startTime) / 1000;
+      }
+    } catch (err) { /* 忽略，回退到 fetch 计时 */ }
+    return null;
+  }
+
+  function measure(route) {
+    counter += 1;
+    var url = route.url + '?speedtest=' + Date.now() + '-' + counter;
+    var controller = null;
+    var timer = null;
+    try {
+      controller = new AbortController();
+      timer = setTimeout(function () { try { controller.abort(); } catch (e) {} }, TIMEOUT_MS);
+    } catch (e) { /* 老浏览器无 AbortController 时不设超时 */ }
+    var t0 = performance.now();
+    var opts = { mode: 'no-cors', cache: 'no-store' };
+    if (controller) opts.signal = controller.signal;
+    return fetch(url, opts).then(function () {
+      if (timer) clearTimeout(timer);
+      var wall = (performance.now() - t0) / 1000;
+      var rt = resourceTimingSeconds(url);
+      if (rt === null) {
+        return new Promise(function (resolve) {
+          setTimeout(function () {
+            var rt2 = resourceTimingSeconds(url);
+            resolve(rt2 !== null ? rt2 : wall);
+          }, 60);
+        });
+      }
+      return rt;
+    }).then(function (seconds) {
+      return { seconds: seconds, mbps: SIZE / seconds / 1e6 };
+    }).catch(function () {
+      if (timer) clearTimeout(timer);
+      return { error: true };
+    });
+  }
+
+  function bestOf(attempts) {
+    var best = null;
+    for (var i = 0; i < attempts.length; i++) {
+      var a = attempts[i];
+      if (!a.error && (best === null || a.mbps > best.mbps)) best = a;
+    }
+    return best;
+  }
+
+  function render(all) {
+    var html = '';
+    var bests = [];
+    for (var r = 0; r < all.length; r++) {
+      var route = all[r].route;
+      var attempts = all[r].attempts;
+      var best = bestOf(attempts);
+      bests.push(best);
+      html += '<div class="card"><h2>' + route.name + '</h2>' +
+        '<p class="size">模型文件 9.4 MB · 下载两次</p><div class="grid">';
+      for (var i = 0; i < attempts.length; i++) {
+        var a = attempts[i];
+        var isBest = best !== null && a === best;
+        html += '<div class="metric' + (isBest ? ' best' : '') + '">' +
+          '<div class="k">第' + (i + 1) + '次' + (isBest ? ' · 更快' : '') + '</div>';
+        if (a.error) {
+          html += '<div class="v">失败</div><div class="k">该线路下载失败</div>';
+        } else {
+          html += '<div class="v">' + fmtSec(a.seconds) + '<small> 秒</small></div>' +
+            '<div class="spd">' + fmtSpd(a.mbps) + ' MB/s</div>';
+        }
+        html += '</div>';
+      }
+      html += '</div></div>';
+    }
+    resultsEl.innerHTML = html;
+
+    var bA = bests[0], bB = bests[1];
+    var cls, text;
+    if (bA && bB) {
+      var fast = bA.mbps >= bB.mbps ? bA : bB;
+      var slow = bA.mbps >= bB.mbps ? bB : bA;
+      var ratio = fast.mbps / slow.mbps;
+      if (ratio <= 1.15) {
+        cls = 'wait';
+        text = '结论：两条线路速度差不多（' + fmtSpd(bA.mbps) + ' MB/s 对 ' + fmtSpd(bB.mbps) + ' MB/s）。';
+      } else {
+        cls = 'pass';
+        var fastName = bA.mbps >= bB.mbps ? ROUTES[0].name : ROUTES[1].name;
+        text = '结论：' + fastName + '更快，约 ' + ratio.toFixed(1) + ' 倍（' + fmtSpd(fast.mbps) + ' MB/s 对 ' + fmtSpd(slow.mbps) + ' MB/s）。';
+      }
+    } else if (bA && !bB) {
+      cls = 'fail';
+      text = '结论：NODEPEND 线路下载失败，现在的线路可用（' + fmtSpd(bA.mbps) + ' MB/s）。';
+    } else if (!bA && bB) {
+      cls = 'fail';
+      text = '结论：现在的线路下载失败，NODEPEND 线路可用（' + fmtSpd(bB.mbps) + ' MB/s）。';
+    } else {
+      cls = 'fail';
+      text = '结论：两条线路都下载失败，请检查网络后重试。';
+    }
+    verdictEl.className = 'verdict ' + cls;
+    verdictEl.textContent = text;
+    verdictEl.hidden = false;
+  }
+
+  function run() {
+    startBtn.disabled = true;
+    resultsEl.innerHTML = '';
+    verdictEl.hidden = true;
+    var all = [];
+    var chain = Promise.resolve();
+    ROUTES.forEach(function (route) {
+      chain = chain.then(function () {
+        var attempts = [];
+        var inner = Promise.resolve();
+        [1, 2].forEach(function (n) {
+          inner = inner.then(function () {
+            setStatus('正在下载：' + route.name + ' 第' + n + '次…');
+            return measure(route).then(function (res) { attempts.push(res); });
+          });
+        });
+        return inner.then(function () { all.push({ route: route, attempts: attempts }); });
+      });
+    });
+    chain.then(function () {
+      render(all);
+      setStatus('测速完成');
+    }).catch(function () {
+      /* measure 内部已吞掉错误，这里只作兜底，确保一定有结果卡 */
+      try { render(all); } catch (e) {}
+      setStatus('测速完成');
+    }).then(function () {
+      startBtn.disabled = false;
+      startBtn.textContent = '重新测速';
+    });
+  }
+
+  startBtn.addEventListener('click', run);
+})();
+</script>
+</body>
+</html>
