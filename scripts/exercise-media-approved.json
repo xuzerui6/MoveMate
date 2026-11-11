@@ -16091,6 +16091,114 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0010",
+   "expectedName": "assisted hanging knee raise with throw down",
+   "sourceId": "ai-codex-fillB1b-0010",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "4f009926b65607c7259383a5ba2eb22434a61605bac001f14589c182d665a9eb",
+    "32778aac0033f2367ca378427f2d5276b09a1989fb9333ecfeb7cfebc5ae7c30"
+   ],
+   "phases": [
+    "起始：悬垂、双臂全伸、手掌背向；膝抬至胸前、双腿并拢；辅助者站身前，双手扶小腿。",
+    "关键：辅助者双手向下推压小腿，练习者腿下放至中途、膝仍微屈、双脚离地、无腰部反弓、无身体摆动。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0011",
+   "expectedName": "assisted hanging knee raise",
+   "sourceId": "ai-codex-fillB1b-0011",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "06a64fc30bdabc2a0f69e9f7a843af1d20d2821c91c25bfbd730983f7a7b7ab4",
+    "1ff9fd022a5f9b5a2ac5ba8ef019b48b3e601737f1ef77edc54dc00735c7d6b3"
+   ],
+   "phases": [
+    "起始：悬垂、双腿自然下垂；辅助者站身前，双手扶住练习者膝部区域。",
+    "关键：膝抬至胸前、双腿并拢、最高点停顿；辅助者双手在脚踝处轻托助力，无下压动作。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0012",
+   "expectedName": "assisted lying leg raise with lateral throw down",
+   "sourceId": "ai-codex-fillB1b-0012",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "8ab21b1d663f89b3c0ecf882cccd94f0174664224e51fda700b74c14931934ba",
+    "ddbac9d18c4ee1882a886fc4f7d04a2ba054776c54a465f82c7c9c773e3923c3"
+   ],
+   "phases": [
+    "起始：辅助者站头侧、双脚分于练习者头部两侧；练习者双手握辅助者脚踝；双腿并拢抬至垂直、伸直；辅助者双手握练习者脚踝。",
+    "关键：头侧高位机位；双腿向练习者左侧偏出、与躯干中线约成45°、离地几英寸、双脚不触地；辅助者双手握练习者脚踝。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0013",
+   "expectedName": "assisted lying leg raise with throw down",
+   "sourceId": "ai-codex-fillB1b-0013",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "68dc54cc274a549b28bcd9634600644fc31eb33815061d533782dbb1c60e957e",
+    "a901b6eb8418e37df3bb1a5950b1e247a0ccd15cda73a4e0671cab423e72ef8c"
+   ],
+   "phases": [
+    "起始：与0012同setup：辅助者站头侧、双脚分于头部两侧；练习者双手握辅助者脚踝；双腿并拢抬至垂直、伸直；辅助者双手握练习者脚踝。",
+    "关键：双腿沿直线向下放低、近地面前稳住、双脚不触地；练习者双手仍握辅助者脚踝；辅助者双手握练习者脚踝。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0225",
+   "expectedName": "cable standing cross-over high reverse fly",
+   "sourceId": "ai-codex-fillB1b-0225",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "952605704702a5df355b396299070add7d4bec05047edcd44ca35e8c7149b3dc",
+    "40037d4f6da9a91c93cb90faa91735c5d65bd42970b1cb69c86c008aabecfc13"
+   ],
+   "phases": [
+    "起始：双滑轮略高于肩；左右手交叉握对侧手柄、双臂胸前交叉、手掌斜朝下；两根缆绳各从一侧滑轮连至对侧手、胸前交叉一次成单X。",
+    "关键：侧面3/4机位；双臂向两侧后方宽弧线打开、手在躯干正面平面之后；挤压肩胛；肘微屈；左手仍握右滑轮手柄、右手仍握左滑轮手柄。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0833",
+   "expectedName": "weighted donkey calf raise",
+   "sourceId": "ai-codex-fillB1b-0833",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "c9ea0f275292ee9cd34810c598d9d41280dfce60284cda77bbbecd812d7d9797",
+    "04c7bae5834f8d91aeaac535d575641e89006f26b7f2e13b3f06376177969bdc"
+   ],
+   "phases": [
+    "起始：侧面机位；练习者俯身约90°、前臂撑凳、双手握凳缘；前掌踩高台边缘、脚跟悬空且降至台面以下；膝直不锁；同伴骑坐于下背/臀部、双腿垂于两侧。",
+    "关键：脚跟抬至最高、前掌仍在高台边缘、小腿收紧；同伴仍骑坐于下背/臀部。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
