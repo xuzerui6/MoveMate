@@ -37,7 +37,9 @@ test('pose model preference round-trips through device storage and defaults to a
   t.after(() => { Reflect.deleteProperty(globalThis, 'localStorage'); });
   assert.equal(loadPoseModelPreference(), 'auto');
   savePoseModelPreference('heavy');
-  assert.equal(loadPoseModelPreference(), 'heavy');
+  // The Heavy route closed on 2026-11-11 and left the settings UI: a stored
+  // 'heavy' now falls back to 'auto' instead of reviving the dead route.
+  assert.equal(loadPoseModelPreference(), 'auto');
   savePoseModelPreference('full');
   assert.equal(loadPoseModelPreference(), 'full');
   savePoseModelPreference('auto');

@@ -1067,3 +1067,12 @@ fieldset.gym-settings-equipment{padding:24px}
 .gym-reveal-axis{display:grid;grid-template-columns:64px 1fr 28px;align-items:center;gap:10px;font-size:13px;margin:6px 0}
 .gym-reveal-axis b{text-align:right}
 .gym-reveal-goal{margin:8px 0 0;font-size:14px;line-height:1.6}
+
+/* 识别高级设置（由准备页移入设置页，UI 审计 F1/F2） */
+.gym-settings-advanced summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.gym-settings-advanced summary::-webkit-details-marker{display:none}
+.gym-settings-advanced summary::after{content:'展开 ›';font-size:13px;color:var(--color-primary,#008a40);font-weight:600;flex:none}
+.gym-settings-advanced[open ] summary::after{content:'收起 ›'}
+.recognition-advanced label{display:flex;flex-direction:column;gap:8px;font-weight:700;font-size:15px;margin-top:14px}
+.recognition-advanced select{min-height:48px;font-size:16px;border:1px solid var(--line,#e3e9e6);border-radius:12px;padding:8px 12px;background:#fff;width:100%}
+.recognition-advanced .gym-settings-hint{margin-top:8px}

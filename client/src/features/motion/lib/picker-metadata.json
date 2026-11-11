@@ -1,0 +1,112 @@
+{
+  "squat": {
+    "bodyPart": "upper legs",
+    "equipment": "body weight",
+    "target": "quadriceps"
+  },
+  "push_up": {
+    "bodyPart": "chest",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  "jumping_jack": {
+    "bodyPart": "cardio",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  "high_knees": {
+    "bodyPart": "cardio",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  "hammer_curl": {
+    "bodyPart": "upper arms",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  "front_raise": {
+    "bodyPart": "shoulders",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  "triceps_kickback": {
+    "bodyPart": "upper arms",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  "romanian_deadlift": {
+    "bodyPart": "upper legs",
+    "equipment": "dumbbell",
+    "target": "glutes"
+  },
+  "glute_bridge": {
+    "bodyPart": "upper legs",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  "standing_leg_curl": {
+    "bodyPart": "upper legs",
+    "equipment": "body weight",
+    "target": "hamstrings"
+  },
+  "dumbbell_standing_press": {
+    "bodyPart": "shoulders",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  "barbell_military_press": {
+    "bodyPart": "shoulders",
+    "equipment": "barbell",
+    "target": "delts"
+  },
+  "dumbbell_reverse_lunge": {
+    "bodyPart": "upper legs",
+    "equipment": "dumbbell",
+    "target": "glutes"
+  },
+  "dumbbell_deadlift": {
+    "bodyPart": "upper legs",
+    "equipment": "dumbbell",
+    "target": "glutes"
+  },
+  "one_arm_row": {
+    "bodyPart": "back",
+    "equipment": "dumbbell",
+    "target": "upper back"
+  },
+  "lying_leg_raise": {
+    "bodyPart": "waist",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  "upright_row": {
+    "bodyPart": "shoulders",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  "mountain_climber": {
+    "bodyPart": "cardio",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  "split_squat": {
+    "bodyPart": "upper legs",
+    "equipment": "dumbbell",
+    "target": "quads"
+  },
+  "seated_calf_raise": {
+    "bodyPart": "lower legs",
+    "equipment": "dumbbell",
+    "target": "calves"
+  },
+  "barbell_good_morning": {
+    "bodyPart": "upper legs",
+    "equipment": "barbell",
+    "target": "hamstrings"
+  },
+  "bench_dip": {
+    "bodyPart": "upper arms",
+    "equipment": "body weight",
+    "target": "triceps"
+  }
+}

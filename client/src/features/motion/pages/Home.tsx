@@ -5,11 +5,14 @@ import { Icon } from '../components/Icons';
 import { useStore } from '../lib/store';
 import { localDateKey, requiredXp } from '../lib/rewards';
 import { useHeartRateMonitor } from '../hooks/useHeartRateMonitor';
+import { usePosePrefetchLine } from '../hooks/usePosePrepare';
+import { PosePrefetchLine } from '../components/PosePrefetchLine';
 import AnimatedNumber from '../../../components/AnimatedNumber';
 import ground from '../assets/avatar-ground.png';
 const format=(s:number)=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
 export function Home({start}:{start:()=>void}){
  const {state,sessions}=useStore(),heart=useHeartRateMonitor(state.age),today=localDateKey(new Date()),needed=requiredXp(state.level);
+ const prefetchSnapshot=usePosePrefetchLine();
  const records=state.history.filter(s=>s.source!=='demo'&&localDateKey(new Date(s.startTime))===today);
  const seconds=records.reduce((n,s)=>n+s.durationSeconds,0),xp=records.filter(s=>s.settled).reduce((n,s)=>n+s.xpEarned,0);
  const active=sessions.find(s=>['running','paused'].includes(s.status));
@@ -19,6 +22,7 @@ export function Home({start}:{start:()=>void}){
  <section className="home-core" aria-label="我的成长"><div className="growth-stage"><img className="growth-ground" src={ground} alt=""/><span className="level-pill">Lv.{state.level}</span><AvatarFigure view="front"/><div className="growth-copy"><span>当前经验</span><p><b>{state.xp}</b> / {needed} XP</p><div className="progress" role="progressbar" aria-label="升级进度" aria-valuenow={state.xp} aria-valuemin={0} aria-valuemax={needed}><i style={{width:Math.min(100,state.xp/needed*100)+'%'}}/></div><small>再积累 {Math.max(0,needed-state.xp)} XP 升级</small></div></div>
  <div className="home-cta"><button className="primary" onClick={start}><Icon name="dumbbell"/>开始运动<Icon name="arrow"/></button><Link className="secondary" to="/groups"><Icon name="users"/>找搭子<Icon name="arrow"/></Link></div><p className="home-caption">和 AI 训练，也和搭子一起运动</p>
  {active&&<Link className="active-session-banner" to={active.workoutId?'/train/workout/'+active.workoutId:active.gameId?'/game/'+active.gameId:'/train'}><Icon name="clock"/><span><b>{active.status==='paused'?'还有一项暂停的运动':'你的运动正在记录中'}</b><small>返回继续，刷新不会丢失进度</small></span><Icon name="arrow"/></Link>}
+ <PosePrefetchLine snapshot={prefetchSnapshot}/>
  </section>
  <section className="today-section"><div className="section-title"><h2>今日运动</h2><time dateTime={today}>{new Date().toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'short'})}</time></div><div className="today-metrics"><div><Icon name="clock" size={29}/><span><small>有效运动时长</small><strong>{format(seconds)}</strong></span></div><div><Icon name="bolt" size={29}/><span><small>获得经验</small><strong>+{xp}<em> XP</em></strong></span></div></div></section>
  <div className="gym-links"><Link to="/train/plans">今日计划与训练安排 →</Link><Link to="/train/stats">查看训练进步 →</Link></div>
