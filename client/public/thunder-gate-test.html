@@ -226,7 +226,7 @@ function workerAttempt(bytes, delegate, timeouts) {
       if (closed) { rej(new Error('推理已取消')); return; }
       const id = ++next;
       const limit = data.kind === 'init' ? timeouts.init : (firstFrame ? timeouts.firstFrame : 1000);
-      const timer = setTimeout(() => { pending.delete(id); rej(new Error('推理响应超时')); }, limit);
+      const timer = setTimeout(() => { pending.delete(id); rej(new Error('推理响应超时（' + data.kind + '）')); }, limit);
       pending.set(id, { resolve: res, reject: rej, timer });
       try { worker.postMessage({ ...data, id }, transfer); }
       catch (e) { clearTimeout(timer); pending.delete(id); rej(e); }
@@ -252,10 +252,10 @@ function workerAttempt(bytes, delegate, timeouts) {
     })();
   });
 }
-async function openWorkerTransport(bytes) {
+async function openWorkerTransport(bytes, timeouts = { init: 12000, firstFrame: 8000 }) {
   let lastErr = null;
   for (const delegate of ['GPU', 'CPU']) {
-    try { return await workerAttempt(bytes, delegate, { init: 12000, firstFrame: 8000 }); }
+    try { return await workerAttempt(bytes, delegate, timeouts); }
     catch (e) { lastErr = e; }
   }
   throw lastErr || new Error('Worker 初始化失败');
@@ -789,7 +789,8 @@ renderLoadCards();
 /* 第一段：Full-only 基线 */
 setStatus('第一段：只有 Full 计数，准备开始…', 0.16);
 const trackerA = window.MoveMateTracker.create(1);
-const tA = await openWorkerTransport(fullBytes);
+const tA = await openWorkerTransport(fullBytes, { init: 12000, firstFrame: 8000 })
+  .catch(e => { throw new Error('第一段 Full 通道启动：' + (e && e.message ? e.message : String(e))); });
 const rawA = await segmentRun({ durS: FULL_ONLY_DUR, label: '第一段（只有 Full）', fracBase: 0.16, fracSpan: 0.2,
 full: tA, thunder: null, tracker: trackerA, runId: 1, exerciseUntilS: Math.min(40, FULL_ONLY_DUR * 2 / 3), sampleMemory: false});
 tA.close();
@@ -803,7 +804,8 @@ if (!await reopenCamera(env)) throw new Error('休息后摄像头打开失败');
 
 /* 第二段：组合负载（决定性配置） */
 const trackerB = window.MoveMateTracker.create(2);
-const tB = await openWorkerTransport(fullBytes);
+const tB = await openWorkerTransport(fullBytes, { init: 30000, firstFrame: 20000 })
+  .catch(e => { throw new Error('第二段 Full 通道启动：' + (e && e.message ? e.message : String(e))); });
 const scorerB = new ThunderScorer();
 const rawB = await segmentRun({ durS: COMBINED_DUR, label: '第二段（组合负载）', fracBase: 0.52, fracSpan: 0.46,
 full: tB, thunder: { model: thunderModel, scorer: scorerB}, tracker: trackerB, runId: 2,
