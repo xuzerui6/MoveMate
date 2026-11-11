@@ -650,42 +650,72 @@
     {
       "id": "exdb:0011",
       "originalName": "assisted hanging knee raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称和器械要求辅助，但完整步骤没有任何同伴、踝带、背垫或助力装置说明；不能把普通悬垂举膝当作辅助版。",
+      "reason": "2026-11-11 B1b 批次 109 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Fitwill 同名页「Assistance from a station or partner helps reduce swinging」；Lyfta 同名页 FAQ「Assistance can be provided by using a low bar or straps, or by having someone hold your legs」；Exsercise《Best Assisted Exercises for Mobility and Supported Core》「use light partner help only when the hang or raise would otherwise collapse」；目录继承：现行第 1—2 步悬垂姿势与抬膝、第 3 步最高点暂停与挤压腹肌；辅助形式为编辑定义：同伴扶持；肘撑器械椅为另一有来源的形式，本稿未取——器械椅/肘撑站形式见 Lyfta 同名页正文「Grip the handles firmly and press down to lift your body off the ground」与 ffocus 同名页，WellLifeUP 计划表亦列为肘撑形式但 PASS 2 未能检索到该页原文、不计入已验证来源；取同伴形式的理由：现行第 1 步已定为引体向上杆悬垂（G3 继承），器械椅形式须重写第 1 步；家族一致性——0010/0012/0013 的辅助均为同伴；B1 HOLD 的理由本身预设画面中有辅助者；接触点「小腿」是对「hold your legs」的编辑落点。正文变更：第 1 步补辅助者位置与接触点（身前、双手扶小腿）；第 2 步补「轻托助力、稳住身体」；第 3—5 步继承不变。接入时定稿 5 步原文直存。双帧终门通过——起始帧悬垂、双腿自然下垂，辅助者站身前、双手扶住练习者小腿/膝部区域；峰值帧膝抬至胸前、双腿并拢、最高点停顿，辅助者双手在脚踝处轻托助力、无下压动作，与 0010 的下压形成对照；已接受的披露：起始帧辅助者双手落在膝盖高度而非小腿中段，峰值帧双手在脚踝处，两帧手位不一致，记录不改判。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "b14a5a5d13bc67b1e7d6e29b7a01203305ad7c614bf75b99e02b00f4c4868a42",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB1b-0011",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch109.md",
+          "version": "2026-11-11 · 生成批次 109",
+          "sourceSha256": [
+            "06a64fc30bdabc2a0f69e9f7a843af1d20d2821c91c25bfbd730983f7a7b7ab4",
+            "1ff9fd022a5f9b5a2ac5ba8ef019b48b3e601737f1ef77edc54dc00735c7d6b3"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0010",
       "originalName": "assisted hanging knee raise with throw down",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称有辅助下压，步骤却要求自己爆发地把腿甩下并后摆，没有辅助者和受力方式；不据此提供甩腿示范。",
+      "reason": "2026-11-11 B1b 批次 109 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Muscle & Fitness《Partner Up for Shredded Abs》（Mehmet Edip）「Feel your partner throw your legs away and down… Resist the force of your legs as they are thrown and don't let your feet touch the ground」与 Redefining Strength《The Partner Cardio-Core Workout》（Cori Lefkowith）「The standing partner will then grab their feet and \"throw\" their partner's legs toward the ground… engage your abs and decelerate the throw right before your heels touch the ground」，两家可署名专业来源印证辅助者下压小腿、练习者抵抗下放；Fitwill 与 Lyfta 同名页（镜像家族）「push the lower legs down」「your partner will gently push or \"throw down\" your knees… Resist the force of the throw down」；最高点微收骨盆与停顿、不反弓、不摆动、每组间止摆均来自 Fitwill；目录继承：现行第 1—2 步悬垂姿势与抬膝至胸前；已排除的异读：ManiacMuscle 器械椅自助版（无辅助者）不采用，若 throw-down 是自助的、名称中的 assisted 将无落点。正文变更：第 1 步补辅助者位置与接触点（身前、双手扶小腿，位置由下压方向的几何决定）；第 2 步补最高点停顿与骨盆微收；第 3 步将自助「爆发性地把腿扔下」改为辅助者下压 + 练习者抵抗，删除「将它们完全伸展」的终点强化措辞；第 4 步删除现行「让双腿向后摆动」，改为静止后开始下一次；第 5 步按 G1 以标准样板句收尾。接入时定稿 5 步原文直存。双帧终门通过——起始帧悬垂、双臂全伸、手掌背向，膝抬至胸前、双腿并拢，辅助者站身前、双手扶小腿；峰值帧辅助者双手向下推压小腿，练习者腿下放至中途、膝仍微屈、双脚离地、无腰部反弓、无身体摆动。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "1cc77ce6e3b76294272d6f0e6be5fc3ee40b640d7efbbd61eb64cdc3105ee2e8",
-        "steps": 4
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB1b-0010",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch109.md",
+          "version": "2026-11-11 · 生成批次 109",
+          "sourceSha256": [
+            "4f009926b65607c7259383a5ba2eb22434a61605bac001f14589c182d665a9eb",
+            "32778aac0033f2367ca378427f2d5276b09a1989fb9333ecfeb7cfebc5ae7c30"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1708",
@@ -765,42 +795,72 @@
     {
       "id": "exdb:0012",
       "originalName": "assisted lying leg raise with lateral throw down",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：名称要求辅助者侧向下压，文字仅自助仰卧左右摆腿；缺少辅助接触点和动作，不能采用徒手摆腿图。",
+      "reason": "2026-11-11 B1b 批次 109 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Fitwill 同名页「a partner pushes them downward and slightly to one side while you resist the force」；Muscle & Fitness 同文「Ask your partner to throw your legs in different directions. Throwing them to the side at least 45 degrees works the oblique muscles」；Redefining Strength 同文「They can throw them straight ahead or angled to one side or the other」；ManiacMuscle《Assisted Lying Leg Raise With Lateral Throw-Down》「Your partner pushes or throws your legs slightly to one side instead of straight down」「Use your lower abs and obliques to slow the legs before they reach the floor」「Fight to keep your hips and torso from twisting」「Do not allow the heels to slam down」；练习者握辅助者脚踝固定上身：Muscle & Fitness「Reach back and hold your partners ankles or calves securely with your hands」、Redefining Strength「the partner on the ground will reach back and grab the standing partner's ankles」；辅助者站于头侧、双脚分于头两侧：Muscle & Fitness「Lay with your back on the floor, placing your head between your partner's feet」、Fitwill「partner standing near your shoulders」；双腿抬至垂直、保持伸直并拢：Fitwill「Raise the legs toward vertical」、Redefining Strength「Keep your legs straight and close together」；另一锚定体系的变体：ManiacMuscle 同名页取脚侧站位＋握器械锚点（「Your partner stands near your feet」「Grip a stable anchor: Hold the edge of a bench, a rack post, or another stable support behind your head」），其侧向下压与抗旋转的执行描述与本稿一致，分歧只在辅助者站位与练习者手握锚点；本稿取三家一致的头侧＋握辅助者脚踝形式；已排除的异读：单腿版（Lyfta/Exsercise 的单腿变体）是另一动作，不移入本条的双腿正文。正文变更：第 1 步补垫子与辅助者头侧站位；第 2 步将继承的「双手放臀下」改为握辅助者脚踝，并补「抬至垂直」；第 3 步写明辅助者握脚踝、向下压向一侧及抵抗要求；第 4 步保留继承的「离地几英寸」与暂停；第 5 步按 G1″ 将换边与样板句合并；M&F 的「至少 45 度」侧向角度作为支持细节记入证据注，不写入正文。接入时定稿 5 步原文直存。双帧终门通过——起始帧辅助者站头侧、双脚分于练习者头部两侧，练习者双手握辅助者脚踝，双腿并拢抬至垂直、伸直，辅助者双手握练习者脚踝；峰值帧经一次锚定修复（双手由小腿中段移至握脚踝），机位为头侧高位俯视，双腿向练习者左侧偏出、与躯干中线约成 45°、离地几英寸、双脚不触地，练习者双手仍握辅助者脚踝；已接受的披露：起始帧为足侧三/四分机位、峰值帧为头侧高位俯视，机位不同为呈现「侧向」改道之举，按 1458/0989 机位改道先例披露，两帧人物、服装、器械、场地一致。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a84b85fbb1918270a2309f8f93677b25f247215f8c8cfd98046b68906a1c5a4a",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB1b-0012",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch109.md",
+          "version": "2026-11-11 · 生成批次 109",
+          "sourceSha256": [
+            "8ab21b1d663f89b3c0ecf882cccd94f0174664224e51fda700b74c14931934ba",
+            "ddbac9d18c4ee1882a886fc4f7d04a2ba054776c54a465f82c7c9c773e3923c3"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0013",
       "originalName": "assisted lying leg raise with throw down",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：完整步骤没有辅助者，下放双腿的描述还重复，未确认外力施加方式；不按普通举腿直接配图。",
+      "reason": "2026-11-11 B1b 批次 109 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Fitwill 同名页「The partner should push the legs downward in a straight line with firm but predictable pressure. Resist the throw, lower slowly, and stop before the heels touch down」；练习者握辅助者脚踝、辅助者站于头侧、双腿抬至垂直同 0012 的来源（Muscle & Fitness、Redefining Strength、Fitwill），直线版亦适用——Muscle & Fitness「Feel your partner throw your legs away and down… Slowly bring your legs back up to your partner」、Redefining Strength「throw them straight ahead」；双脚不触地、近地面前稳住：Muscle & Fitness「don't let your feet touch the ground」、Redefining Strength「decelerate the throw right before your heels touch the ground」；证据推翻规格的重开方向：B1-SPECS 写辅助者「脚侧」，三家来源一致指头侧，本稿取头侧（PASS 2 复核确认）。正文变更：第 1—2 步同 0012 的对应修改（垫子、头侧站位、握辅助者脚踝、抬至垂直）；第 3 步写明直线下压（与 0012 的侧向形成对照）；第 4 步清理现行第 5/6 步对「放下」的重复描述，并补来源自带的近地面前稳住；第 5 步按 G1 以标准样板句收尾。接入时定稿 5 步原文直存。双帧终门通过——起始帧与 0012 同 setup（头侧、握辅助者脚踝、双腿抬至垂直）；峰值帧经两次锚定修复（双手由大腿上部移至握脚踝，取第 2 稿），双腿沿直线向下放低、近地面前稳住、双脚不触地，练习者双手仍握辅助者脚踝；已接受的披露：修复后辅助者躯干较原帧更深俯身（够到脚踝的必然结果），其余（直线下放、机位、场地）不变。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "8afd1e45db5d7ee6939493e6992e9e2debf5b9c95326078c5ef36037a09607b9",
-        "steps": 8
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB1b-0013",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch109.md",
+          "version": "2026-11-11 · 生成批次 109",
+          "sourceSha256": [
+            "68dc54cc274a549b28bcd9634600644fc31eb33815061d533782dbb1c60e957e",
+            "a901b6eb8418e37df3bb1a5950b1e247a0ccd15cda73a4e0671cab423e72ef8c"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0014",
@@ -12815,22 +12875,37 @@
     {
       "id": "exdb:0225",
       "originalName": "cable standing cross-over high reverse fly",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：标题反向飞鸟，正文双手拉向体前并收肩胛，开合方向矛盾。",
+      "reason": "2026-11-11 B1b 批次 109 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Physitrack《Cable machine rear deltoid fly in standing》「The cables will cross for this exercise, so reach up and grasp the right cable in the left hand, and the left cable in the right hand」；Lyfta 同名页「Pull the handles of the cable machine out to your sides and slightly backwards, while keeping your arms straight」；ManiacMuscle《Cable Standing Cross-Over High Reverse Fly》「Pull the handles outward and slightly backward in a wide arc, as if performing a reverse hugging motion… This should feel like a rear-delt fly, not a row」；LiftManual 同名页「grips a high cable in each hand crossing the arms in front, then pulls them wide and back」；EresFitness 同名页「Pull your arms out to the sides and back until aligned with your back」；起始双臂胸前交叉：ManiacMuscle「Let your arms cross in front of your chest so the cables form an \"X\"」、LiftManual「crossing the arms in front」、Lyfta「arms fully extended and crossed in front of your body」；手掌斜朝下：Physitrack「Hold your hands up just above head height with your palms facing diagonally down and in」；滑轮高度取「略高于肩」：四家独立来源一致指肩以上（LiftManual high position、ManiacMuscle slightly above shoulder height、Physitrack highest point、EresFitness high pulleys），支持肩同高的只有镜像家族（ffocus）与目录自身；Lyfta 未写滑轮高度（PASS 1 证据注称 Lyfta 亦支持肩同高有误，已更正）；挤压肩胛只在向后打开时成立：现行第 5 步「拉向身体前方」+「挤压肩胛」自相矛盾，且目录自身的目标肌群字段已是后侧链（target delts，secondary trapezius / rhomboids / rear deltoids），与反向飞鸟一致；正向（体前夹胸）无独立来源：FitnessVolt 同名页复述目录正文，是目录自身的回响，不是独立证据；选项 (b)（改为体前夹胸并改标题）已否决。正文变更：第 1 步滑轮高度为「略高于肩」；第 3 步将错误的「手臂向两侧伸展、手掌朝前」改为起始交叉握法与手掌斜朝下；第 5 步将「拉向身体前方」纠正为「向两侧后方打开」；第 6 步将「最高点」改为「动作末端」；第 7 步按 G1 收尾。接入时定稿 7 步按发布器 3–5 步规则存为 5 步：第 1、2 步与第 5、6 步分号合并，定稿句子无一删减。双帧终门通过——起始帧双滑轮略高于肩，左右手交叉握对侧手柄、双臂胸前交叉、手掌斜朝下，两根缆绳各从一侧滑轮连至对侧手、胸前交叉一次成单 X；峰值帧经机位改道修复（侧面 3/4 机位），双臂向两侧后方宽弧线打开、手在躯干正面平面之后，挤压肩胛，肘微屈，左手仍握右滑轮手柄、右手仍握左滑轮手柄；已接受的披露：起始帧与峰值帧机位不同（正面 vs 侧面），为呈现「向后打开」改道之举，按 1458/0989 机位改道先例披露，两帧人物、服装、器械、场地一致；修复后峰值滑轮高度约与肩平、略高于肩的读数不如起始帧明显。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "353a7bd5d9c73a1df36c1d7f0daf89e68233d89739b51bd8fc7c1895680a9ff8",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB1b-0225",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch109.md",
+          "version": "2026-11-11 · 生成批次 109",
+          "sourceSha256": [
+            "952605704702a5df355b396299070add7d4bec05047edcd44ca35e8c7149b3dc",
+            "40037d4f6da9a91c93cb90faa91735c5d65bd42970b1cb69c86c008aabecfc13"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0226",
@@ -42102,22 +42177,37 @@
     {
       "id": "exdb:0833",
       "originalName": "weighted donkey calf raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本完整步骤：全文只台阶上徒手抬跟，没有俯身和背部负重。",
+      "reason": "2026-11-11 B1b 批次 109 定稿条（按通行做法定稿（B2 门）：以名称承载的定义特征与通行做法为据定稿，无旧门槛要求的两专业来源逐字互证，依据逐条披露）+ Codex CLI 图像生成双帧已逐帧对照并经父级终门亲核：定稿依据：来源覆盖：Tiger Fitness《Donkey Calf Raise》（Marc Lobliner，MTS Nutrition CEO）「allowing a partner to sit on your back with a platform under your toes」；need.fit《Donkey Calf Raise》「standing on a calf block while bent forward over a bench with a dip belt or partner loading」「Hinging 90 degrees at the hips」；LiftManual《Donkey Calf Raise》「Have a training partner sit on your lower back (across your hips, not your spine)」；膝盖伸直、不锁死：Tiger Fitness「Your legs and knees should remain straight, but not hyperextended」、need.fit「Keep knees soft but extended」；顶部停顿继承现行正文第 4 步；目录裁决：Edward 2026-11-11 裁决取选项 (a)（俯身约 90°、双手撑稳固物、同伴骑坐下背/臀部负重提踵），选项 (b) 改名/改器械不取；ExRx 同名页经 need.fit 与 The Nest 的参考文献转引，未直接打开核读，不计入独立证据数；本条的三家独立来源已满足 B2 门。正文变更：第 1 步补俯身约 90 度、前臂撑凳（PASS 2 修正：原稿「双手扶住身前的长凳或稳固物」改为「前臂撑在身前的长凳上、双手握住长凳边缘」，与 LiftManual「brace your forearms on a bench」及 Tiger Fitness「forearms on the supporting pad and grip the handles」一致）、膝盖姿态；第 2 步新增同伴骑坐负重，此为名称中 weighted 的落点；第 3 步删除现行「尽可能抬高」的最大幅度措辞；第 4 步继承顶部停顿；第 5 步按 G1 收尾；器械（dip belt、器械驴式机）作为替代负重形式存在，本稿取同伴负重一种画到底、保持一致，不混用。接入时定稿 5 步原文直存。双帧终门通过——起始帧侧面机位，练习者俯身约 90°、前臂撑凳、双手握凳缘，前掌踩高台边缘、脚跟悬空且降至台面以下，膝直不锁，同伴骑坐于下背/臀部、双腿垂于两侧；峰值帧（额度恢复后补生成，1 稿通过）脚跟抬至最高、前掌仍在高台边缘、小腿收紧，同伴仍骑坐于下背/臀部；已接受的披露：同伴穿深蓝 T 恤（与练习者灰色背心不同，便于区分两人），同伴双脚悬空未触地（骑坐自然结果）。素材检查为来源、变式与可见过程核对，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "fd004969d11624b6dd3573454ef397d67e5b584a8165124ed6634d51b59c2910",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillB1b-0833",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch109.md",
+          "version": "2026-11-11 · 生成批次 109",
+          "sourceSha256": [
+            "c9ea0f275292ee9cd34810c598d9d41280dfce60284cda77bbbecd812d7d9797",
+            "04c7bae5834f8d91aeaac535d575641e89006f26b7f2e13b3f06376177969bdc"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1310",
