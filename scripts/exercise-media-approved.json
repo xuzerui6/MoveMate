@@ -15155,6 +15155,186 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0284",
+   "expectedName": "donkey calf raise",
+   "sourceId": "ai-codex-fillA12-0284",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "513bb81ee49bfb2f2371a0fd17984eb9c01c9f2a147e7ac8234cebc52864691a",
+    "0fcaf35cba7b7edbb12ab058ae86c2ab2fefbb05c2886407fa55f3dd8b0f71bc"
+   ],
+   "phases": [
+    "起始：脚趾站在台阶边缘、双手扶栏杆保持平衡，脚后跟沉至台阶下方。",
+    "关键：脚后跟抬至最高、身体重量转移到脚掌上（提踵顶点），双手仍扶栏杆。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0476",
+   "expectedName": "hanging straight twisting leg hip raise",
+   "sourceId": "ai-codex-fillA12-0476",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d0c07ceff74562b0d04edfc54bda0bd16eb0576361ba6bc31b8a8e4f23ca3e99",
+    "24b00d1dd4d3dad0c31bf4f91aa8f5fdc330195d671e4fe3f389b3f01772a8ab"
+   ],
+   "phases": [
+    "起始：悬挂在引体向上杆上，双臂完全伸展、双腿伸直垂下。",
+    "关键：双腿保持伸直抬至与地面平行，臀部向一侧扭转、双腿移向一侧，双臂仍完全伸直。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0624",
+   "expectedName": "march sit (wall)",
+   "sourceId": "ai-codex-fillA12-0624",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "da1abdafa1f15c20814431ab8160cdca47750fbf941802be65ed06aad52f91bb",
+    "2380d32d1c73349de51d0fb55fc762a60a322f24c3e850f1753164138d2b9227"
+   ],
+   "phases": [
+    "起始：背部贴墙滑下至膝盖弯曲 90 度、双脚平放地面（靠墙半蹲基位）。",
+    "关键：保持背部贴墙，一脚抬离地面、膝盖靠近胸部，另一脚单脚承重。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0642",
+   "expectedName": "outside leg kick push-up",
+   "sourceId": "ai-codex-fillA12-0642",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "0d6869887318f050a6b7080a8a79904a20ec57d2403f6bcecc0d6160f43f3025",
+    "ade9c07f2c7d3f29116764d3cd4ee0237d078c9400bbea4ada72eed5c3e5c865"
+   ],
+   "phases": [
+    "起始：俯卧撑底部位置，屈肘将身体降低，背部挺直、核心参与，双脚并拢。",
+    "关键：身体推起至顶端，一条腿向体侧完全伸展踢出，另一腿保持支撑。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0972",
+   "expectedName": "bicycle crunch",
+   "sourceId": "ai-codex-fillA12-0972",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "20e164c7ac919eec010d7f0e87b8893cc620345b116beb4f15a018dcfdf21425",
+    "b0db87b471f45147ae9f9c1217c92fb8a285616da4c15935206cf5f3b4db4d5f"
+   ],
+   "phases": [
+    "起始：平躺、双手放在脑后，膝盖弯曲、双脚抬离地面。",
+    "关键：一侧膝盖靠近胸部、躯干扭转使对侧肘靠近该膝，另一腿伸直低悬离地；画面中无任何弹力带。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1355",
+   "expectedName": "one arm against wall",
+   "sourceId": "ai-codex-fillA12-1355",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d4b77991110e4c8ed31f9176d8a37fedbd99e711e344824a47ccc5a5d9eeded8",
+    "a629612d95675aaf0b665b75b9064368ec9a06ed15d555c13027264579a68a64"
+   ],
+   "phases": [
+    "起始：面向墙壁站立，一只手臂完全伸直、手掌靠在墙上，身体直立。",
+    "关键：整身向前倾斜、背部平坦，工作臂仍完全伸直，手掌推向墙壁。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1366",
+   "expectedName": "upward facing dog",
+   "sourceId": "ai-codex-fillA12-1366",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "6e9a9ae6dc1e52caf545cd1304f30626b2b6412339d68ed75d37dae88281b57b",
+    "1d4efc427c4ce63b7ea6e85b0a418f8f0a9e6ea2dc5216bba354f326eefd1ac9"
+   ],
+   "phases": [
+    "起始：俯卧在垫上、双腿伸到身后，双手放在下肋骨旁边、手指指向前方。",
+    "关键：手臂伸直撑起，躯干和大腿完全抬离地面，只有手掌与脚背触地，胸部打开、目光向上。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1428",
+   "expectedName": "wrist circles",
+   "sourceId": "ai-codex-fillA12-1428",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f4809a3fed071d71b3ff47ef7d1fe02fe646f8343e2092a00384b1f4a178695f",
+    "c4d72431d9cb9cf005928570f69018bd11bbf84bc90916548c659379f9861d2f"
+   ],
+   "phases": [
+    "起始：双臂向前伸直至肩高、双手握拳，手腕处于绕环的一个相位。",
+    "关键：双臂位置保持不变，拳面方向已转至绕环的另一相位（双帧之间的相位差可读）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1468",
+   "expectedName": "crab twist toe touch",
+   "sourceId": "ai-codex-fillA12-1468",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e2e5e800253472d5c2561a81ea0d763bc7e17be7a3ace4745146520704504a28",
+    "1295c987257a1f776a71ccca338ac26d9a33c147c35df0657e07738a5fdc7c96"
+   ],
+   "phases": [
+    "起始：蟹式基位——双手撑在身后、手指指向脚部，臀部抬离地面，膝盖弯曲、双脚平放。",
+    "关键：一条腿向前完全伸直，对侧手离开地面触到该腿脚趾，身体呈三点支撑。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1686",
+   "expectedName": "squat to overhead reach with twist",
+   "sourceId": "ai-codex-fillA12-1686",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "4e031ddd9b2edc6884070cb85074937d2d3b8ec5424264afd5ae983e3f6a276e",
+    "f49ee09fc30a6bccaf443d16d661df0743daefc7cabf5d9a27602e7a9ee83a33"
+   ],
+   "phases": [
+    "起始：深蹲底部位置，双脚分开与肩同宽、脚趾稍微外翻，双手向下。",
+    "关键：完全站起、双臂举过头顶，躯干向一侧扭转（肩线相对骨盆旋转），双脚保持原地正对。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
