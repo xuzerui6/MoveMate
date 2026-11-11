@@ -39744,6 +39744,117 @@
           "distribution": "repository"
         }
       ]
+    },
+    "exdb:3213": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla13-3213-0.162bf5662643.webp",
+          "sha256": "162bf566264354523708a44aee153ee854156f6de3ecaad7f428199676d60cfe",
+          "bytes": 81400,
+          "distribution": "repository",
+          "phase": "起始：双脚分开与肩同宽站立，双臂向两侧平伸。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla13-3213-1.a049d89a164f.webp",
+          "sha256": "a049d89a164f691253badb9ad56743fb77de989c04d1e7759044fb9dc27c1e39",
+          "bytes": 81076,
+          "distribution": "repository",
+          "phase": "关键：腰部向一侧弯曲，同侧手沿腿下伸至脚踝附近，另一臂仍向侧面伸展，髋部正对前方。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA13-3213",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch103.md",
+          "version": "2026-11-11 · 生成批次 103",
+          "sourceSha256": [
+            "33ea2e054778e1bdd6e7e036ca96067ccc791acde7d682c7136645b6a52bafac",
+            "d27b1052dd1fe3478a3f96bcde0436b5450371b6cc36543817f4f7cc6b44f7e5"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:3231": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla13-3231-0.8f010574dff8.webp",
+          "sha256": "8f010574dff8b9f5f77e3d84794dd2356d167e541b941cd6ad0ef46cc31a9b29",
+          "bytes": 69962,
+          "distribution": "repository",
+          "phase": "起始：双脚分开与肩同宽站立，双臂向两侧平伸。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla13-3231-1.3fdf0d2b91e2.webp",
+          "sha256": "3fdf0d2b91e2b100bb6f74b99b85d2411db8b03ac665b5103aaa3c38158a67f9",
+          "bytes": 57922,
+          "distribution": "repository",
+          "phase": "关键：腰部向前弯曲、背部挺直，双手同时下触双脚脚趾，双腿近直。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA13-3231",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch103.md",
+          "version": "2026-11-11 · 生成批次 103",
+          "sourceSha256": [
+            "61e57fad63f91bbdfd5fe7495615cb85d7698343d84fe8bed2242b137687acd2",
+            "67cf8a1bd1aed8b492b4e34bbe5ea50a649fd6b12a0ef28c6a8731ac5c3141e4"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:3433": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-filla13-3433-0.2a6f450a071f.webp",
+          "sha256": "2a6f450a071fc90b5d8712c92c1f5742d01c7f4f5479542be053516070f26d69",
+          "bytes": 87058,
+          "distribution": "repository",
+          "phase": "起始：脸朝下平躺在垫子上，双臂伸过头顶贴在垫面。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-filla13-3433-1.8b3e55f08959.webp",
+          "sha256": "8b3e55f0895903c22caf1447f4caaba1d7ea0e82419f8954fcb6a7c6d59c0665",
+          "bytes": 81150,
+          "distribution": "repository",
+          "phase": "关键：胸部与头部抬离垫面，双臂过顶微抬，双腿均离地、一高一低交替打腿。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA13-3433",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch103.md",
+          "version": "2026-11-11 · 生成批次 103",
+          "sourceSha256": [
+            "387fe60085bfc3dad3a6711538c5c05ae493fadc727e47b871a7b2f24e9d5032",
+            "6b78b5dbb53a633cbafc283c0b03f874b2f229295f8d01de9b370f7d0ada12f5"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     }
   }
 }
