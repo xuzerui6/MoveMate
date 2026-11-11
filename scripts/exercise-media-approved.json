@@ -15839,6 +15839,60 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1750",
+   "expectedName": "medicine ball supine chest throw",
+   "sourceId": "ai-codex-fillA17-1750",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "3fbf1a6e926816fbb069394396fe697e68ec7957677fa7d94e795c08baa814e7",
+    "0394174879b6bd8484874c5f40fe2389ac809564da2315ebcfabc1b5d0f915c2"
+   ],
+   "phases": [
+    "起始：平躺在长凳上，膝盖弯曲、双脚平放，双手握住药球、手臂伸直至胸部上方。",
+    "关键：爆发性地将药球向上抛，球明确离手在空中，双手张开上举追球；无同伴。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2141",
+   "expectedName": "walk elliptical cross trainer",
+   "sourceId": "ai-codex-fillA17-2141",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "92c64c039bc8900f45ea9add148a95f56bcf396adb772638f46ee9ab9477138d",
+    "3adc0d59a8129aba5abc36c61440461b707d1a89971e6ff01d7226a8840ea3b1"
+   ],
+   "phases": [
+    "起始：站于椭圆机脚踏、轻握活动手柄、直立。",
+    "关键：行进中步态，一脚下压向前、一脚后抬，一侧手柄拉向胸前、另一侧前推，交替推拉清晰。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3644",
+   "expectedName": "weighted lunge with swing",
+   "sourceId": "ai-codex-fillA17-3644",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f1a933379a7571827eb0d3c94837a8d6aadc39171658ab64ad4fddfb3e1cd430",
+    "9c16e15265dca4773705ba749a84f29b27686db8948f6a1a16c6833cab40bbbe"
+   ],
+   "phases": [
+    "起始：双脚分开与肩同宽站立，每只手各握一个哑铃垂于体侧，手臂伸直。",
+    "关键：右脚向前迈出深前弓步，双哑铃直臂前摆至胸高；只呈现右腿一侧，正文覆盖交替。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
