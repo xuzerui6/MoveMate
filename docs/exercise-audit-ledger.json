@@ -1615,22 +1615,37 @@
     {
       "id": "exdb:0972",
       "originalName": "bicycle crunch",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：全部步骤只描述徒手蹬车卷腹，没有带子佩戴、张力或锚点，不能用徒手版示范冒充。2026-11-10 目录裁决 Q2 改名（Edward 批准；框架卷宗 D14）：原名 band bicycle crunch 与正文不符——正文全程徒手、弹力带零落点，改名为 bicycle crunch，器械字段由 band 改为 body weight 并移入徒手类；旧中英文名保留于别名供搜索召回。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A12 · 徒手·动态子批，批次 101 接入）：种子意见指全部步骤只描述徒手蹬车卷腹，没有带子佩戴、张力或锚点，并记录 2026-11-10 目录裁决 Q2 改名：原名 band bicycle crunch 与正文不符，改名为 bicycle crunch、器械字段改为 body weight 并移入徒手类，旧中英文名保留于别名——定版双帧与改名后正文一致：画面中零弹力带、纯徒手呈现；起始帧双手放脑后、双脚抬离地面，关键帧对侧肘靠近抬起的膝盖、另一腿伸直低悬离地，蹬车交替的单侧相位可读（单侧呈现口径，正文覆盖另一侧）。双帧均首稿过门。正文 5 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "8a3a262d2f3aae86ce4628485ac92f9067fcc8f1bc68bf9651827d4906993456",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA12-0972",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch101.md",
+          "version": "2026-11-11 · 生成批次 101",
+          "sourceSha256": [
+            "20e164c7ac919eec010d7f0e87b8893cc620345b116beb4f15a018dcfdf21425",
+            "b0db87b471f45147ae9f9c1217c92fb8a285616da4c15935206cf5f3b4db4d5f"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0974",
@@ -14527,22 +14542,37 @@
     {
       "id": "exdb:1468",
       "originalName": "crab twist toe touch",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字确认手撑身后、抬臀后对侧手触脚；尚需核对三点支撑与左右转换，不用仰卧触脚图替代。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A12 · 徒手·动态子批，批次 101 接入）：种子意见指文字确认手撑身后、抬臀后对侧手触脚，尚需核对三点支撑与左右转换，不用仰卧触脚图替代——定版双帧正面回答：起始帧为蟹式基位（坐在地上、双手撑在身后、臀部抬离地面）；关键帧一条腿向前完全伸直、对侧手触到该腿脚趾，身体由一手两脚三点支撑，左右转换关系可读（单侧呈现口径，正文覆盖另一侧）。双帧均首稿过门。正文 5 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "fb34717b3b94bf1ae27ff5c1c4910bac9d888163dba65287eda20778e0d37fd5",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA12-1468",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch101.md",
+          "version": "2026-11-11 · 生成批次 101",
+          "sourceSha256": [
+            "e2e5e800253472d5c2561a81ea0d763bc7e17be7a3ace4745146520704504a28",
+            "1295c987257a1f776a71ccca338ac26d9a33c147c35df0657e07738a5fdc7c96"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0262",
@@ -15009,22 +15039,37 @@
     {
       "id": "exdb:0284",
       "originalName": "donkey calf raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：候选同伴坐在背上增加负重，当前条目为徒手扶物提踵。 当前不发布此候选，不计完整覆盖。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A12 · 徒手·动态子批，批次 101 接入）：种子意见指候选为同伴坐在背上增加负重的形式、与当前条目（徒手扶物提踵）不符，不予发布——定版双帧按正文构型正面回答：不采用同伴负重形式（种子已否决该候选）；徒手将脚趾站在台阶边缘、双手扶栏杆保持平衡，起始帧脚后跟沉至台阶下方，关键帧脚后跟抬至最高、重量转移到脚掌上，鞋履完整。双帧均首稿过门。正文 5 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "bdcd55777cc3a90f3014cbbce6e403df27b9cc025762036845603fbd80a689e2",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA12-0284",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch101.md",
+          "version": "2026-11-11 · 生成批次 101",
+          "sourceSha256": [
+            "513bb81ee49bfb2f2371a0fd17984eb9c01c9f2a147e7ac8234cebc52864691a",
+            "0fcaf35cba7b7edbb12ab058ae86c2ab2fefbb05c2886407fa55f3dd8b0f71bc"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1275",
@@ -27214,22 +27259,37 @@
     {
       "id": "exdb:1761",
       "originalName": "hanging oblique knee raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字确认抬膝同时向一侧扭转，需核对骨盆与躯干的实际旋转及左右回位；直线举膝不能替代。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A13 · 徒手·动态子批，批次 102 接入）：种子意见指文字确认抬膝同时向一侧扭转，需核对骨盆与躯干的实际旋转及左右回位，直线举膝不能替代——定版双帧正面回答：起始帧正握死悬垂、双臂完全伸展、双腿伸直并拢、脚离地；关键帧屈膝将膝盖抬向胸部，骨盆/躯干明显扭转到一侧、双膝斜指一边，双臂全程伸直。双帧均首稿过门。正文 5 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "6a5a47765af8b85e29347c0aaa7ea1bb18c49fc52373d9c091477e61b93cb5c8",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA13-1761",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch102.md",
+          "version": "2026-11-11 · 生成批次 102",
+          "sourceSha256": [
+            "bc862aca6c0b3e85c3c874fd5580a51fafc1a8874b09ddb78eca8b3aefdb38e6",
+            "f42ff640eb29124e2aad6f6da7d0ee36b58f50722f4c2fed769cc8a26bfc99d2"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0473",
@@ -27340,22 +27400,37 @@
     {
       "id": "exdb:0476",
       "originalName": "hanging straight twisting leg hip raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：步骤先抬腿再向一侧转髋，需明确水平腿位、左右旋转与回垂顺序；现有直腿举图不能表达旋转。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A12 · 徒手·动态子批，批次 101 接入）：种子意见指步骤先抬腿再向一侧转髋，需明确水平腿位、左右旋转与回垂顺序，现有直腿举图不能表达旋转——定版双帧正面回答：起始帧悬垂、双臂完全伸展、双腿伸直；关键帧双腿保持伸直抬至与地面平行、且同一帧内臀部向一侧扭转（水平腿位与转髋同帧可读），双臂全程完全伸直。转髋以一侧呈现（单侧呈现口径，正文覆盖另一侧与交替顺序）。双帧均首稿过门。正文原样不改；接入时定稿 6 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 5、6 步以分号合并，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "b05eed87a4fe6efe4bac7c2a770745a30131a84db6dbe1e5c87944b6b82e2b16",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA12-0476",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch101.md",
+          "version": "2026-11-11 · 生成批次 101",
+          "sourceSha256": [
+            "d0c07ceff74562b0d04edfc54bda0bd16eb0576361ba6bc31b8a8e4f23ca3e99",
+            "24b00d1dd4d3dad0c31bf4f91aa8f5fdc330195d671e4fe3f389b3f01772a8ab"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3636",
@@ -32864,22 +32939,37 @@
     {
       "id": "exdb:1688",
       "originalName": "lunge with twist",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字确认前迈后向前腿侧转体、对侧肘靠近膝；须区分弓步、转体和回位，后撤弓步图不适用。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A13 · 徒手·动态子批，批次 102 接入）：种子意见指文字确认前迈后向前腿侧转体、对侧肘靠近膝，须区分弓步、转体和回位，后撤弓步图不适用——定版双帧按正文构型正面回答：起始帧站立、双脚分开与肩同宽；关键帧右脚向前迈出至弓步底位，躯干向右扭转、左肘拉向右膝（肘靠近膝、未实际接触）；画右侧（单侧呈现口径，正文覆盖另一侧）。双帧均首稿过门。正文 6 步按目录存储形制合并为 5 步（暂停回位步与换侧步合并），定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "42c753f5b8d7ee36a1cd0e637bb8e8c4089dae5450ad540f04f106ac450a87a2",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA13-1688",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch102.md",
+          "version": "2026-11-11 · 生成批次 102",
+          "sourceSha256": [
+            "afedf237f112743df950a8839e267d4ade4a14efa619b5ce2250c85d25ada36b",
+            "85fca8c28aabbe269aaacdbda1e1421072e905ac5b0d160fa011e6022dd7c611"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0613",
@@ -33031,22 +33121,37 @@
     {
       "id": "exdb:0624",
       "originalName": "march sit (wall)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源确认背靠墙屈膝后左右抬膝；需核对单脚承重、背部接触和左右阶段，不能用静态靠墙蹲或扶墙高抬腿替代。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A12 · 徒手·动态子批，批次 101 接入）：种子意见指来源确认背靠墙屈膝后左右抬膝，需核对单脚承重、背部接触和左右阶段，不能用静态靠墙蹲或扶墙高抬腿替代——定版双帧正面回答：起始帧背部贴墙滑至膝盖弯曲 90 度、双脚承重（动态动作的基位，非静态终点图）；关键帧背部仍全程贴墙，一脚抬离地面、膝盖靠近胸部，另一脚单脚承重。双帧均首稿过门。正文 5 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "7dbde6fc6e81440042df9cf9493f97d4ec801370dec3ff8ae2c492cb1b4ba987",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA12-0624",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch101.md",
+          "version": "2026-11-11 · 生成批次 101",
+          "sourceSha256": [
+            "da1abdafa1f15c20814431ab8160cdca47750fbf941802be65ed06aad52f91bb",
+            "2380d32d1c73349de51d0fb55fc762a60a322f24c3e850f1753164138d2b9227"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1353",
@@ -33763,22 +33868,37 @@
     {
       "id": "exdb:1355",
       "originalName": "one arm against wall",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源直臂撑墙，图片为屈肘靠墙。 当前不发布此候选，不计完整覆盖。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A12 · 徒手·动态子批，批次 101 接入）：种子意见指来源为直臂撑墙、而候选图为屈肘靠墙，不予发布（本条严点即工作臂须完全伸直）——定版双帧正面回答：起始帧面向墙壁站立、一只手臂完全伸直、手掌靠在墙上；关键帧整身向前倾斜、背部平坦，工作臂仍完全伸直、无屈肘。双帧均首稿过门。正文 5 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "ba3b7b619ac27cf8721d9e7474d53194d4e7513a9a7ae01d6a831a8b812ab4f7",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA12-1355",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch101.md",
+          "version": "2026-11-11 · 生成批次 101",
+          "sourceSha256": [
+            "d4b77991110e4c8ed31f9176d8a37fedbd99e711e344824a47ccc5a5d9eeded8",
+            "a629612d95675aaf0b665b75b9064368ec9a06ed15d555c13027264579a68a64"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0638",
@@ -34060,22 +34180,37 @@
     {
       "id": "exdb:0642",
       "originalName": "outside leg kick push-up",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字确认推起时一腿侧踢后回位，再交替；需明确推起与踢腿的时序和左右支撑，普通俯卧撑不足以示范。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A12 · 徒手·动态子批，批次 101 接入）：种子意见指文字确认推起时一腿侧踢后回位、再交替，需明确推起与踢腿的时序和左右支撑，普通俯卧撑不足以示范——定版双帧按组合终点跨帧呈现：起始帧为俯卧撑底部（屈肘下放、背部挺直），关键帧为推起顶端、一条腿完全伸展踢向体侧线外，推起与踢腿的时序关系成立。已接受的柔软点：关键帧踢腿向量带轻微后斜读感，经终门裁定为本 3/4 侧机位的投影所致，侧踢读法本身无歧义，记录不改判。双帧均首稿过门。正文 5 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "46db9677923543cd376a650c804acf8fbd1d9b22c061c143eaf8edff913b1ec2",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA12-0642",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch101.md",
+          "version": "2026-11-11 · 生成批次 101",
+          "sourceSha256": [
+            "0d6869887318f050a6b7080a8a79904a20ec57d2403f6bcecc0d6160f43f3025",
+            "ade9c07f2c7d3f29116764d3cd4ee0237d078c9400bbea4ada72eed5c3e5c865"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0643",
@@ -34116,22 +34251,37 @@
     {
       "id": "exdb:3147",
       "originalName": "pelvic tilt",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字确认屈膝仰卧、收腹使下背贴地；运动幅度很小，需能表达骨盆旋转而非臀桥抬臀的专门图，现有骨架线稿不宜冒充。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A13 · 徒手·动态子批，批次 102 接入）：种子意见指文字确认屈膝仰卧、收腹使下背贴地，运动幅度很小，需能表达骨盆旋转而非臀桥抬臀的专门图，现有骨架线稿不宜冒充——定版双帧正面回答：起始帧屈膝仰卧、双脚平放、双臂体侧，腰下有空隙；关键帧骨盆后倾、下背压平贴地，髋部不离地（非臀桥）。全幅对比弱，骨盆区放大裁切核对：起始腰段拱起有空隙，关键帧腰段贴平，骨盆后倾成立；幅度小是动作本身固有，不烧修复稿。双帧均首稿过门。正文 6 步按目录存储形制合并为 5 步（释放与重复步合并），定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a495384b334a104fe8d3c1df8207349608f3c79dee328ea990f40eddff2a73b7",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA13-3147",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch102.md",
+          "version": "2026-11-11 · 生成批次 102",
+          "sourceSha256": [
+            "6b3d97128e083c21f701fb25180c76596d7b3bb5cfc3bcd304eb7515efc90574",
+            "340d5c6f34d898090674aa438e4f18640459aa41f0f9621cb3f7550c17554c32"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1422",
@@ -35014,22 +35164,37 @@
     {
       "id": "exdb:3145",
       "originalName": "push-up plus",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源确认普通俯卧撑推起后增加肩胛前伸；现有普通俯卧撑图没有肩胛追加阶段，不能算完整示范。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A13 · 徒手·动态子批，批次 102 接入）：种子意见指来源确认普通俯卧撑推起后增加肩胛前伸，现有普通俯卧撑图没有肩胛追加阶段，不能算完整示范——定版双帧正面回答：起始帧俯卧撑底部、胸刚离地、肘贴体侧；关键帧手臂全伸后上背明显向上顶起、肩胛前伸，超出普通平板顶端的那一段可读。双帧均首稿过门。正文 6 步按目录存储形制合并为 5 步（反转与重复步合并），定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "048055394e04edcb51707ee0d876d6b7d39a5d86489446dd4a102a0ab072eb18",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA13-3145",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch102.md",
+          "version": "2026-11-11 · 生成批次 102",
+          "sourceSha256": [
+            "fdfef96c627ec3c4d05cfcfe2451bcef647e5cd5564fc594e4ab6491ed10c78c",
+            "d99f6c6a5d0cbfd0c1f56007c9dc7cad12cb01fc1e0a3ef0704c536418dbe452"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0664",
@@ -39592,22 +39757,37 @@
     {
       "id": "exdb:2329",
       "originalName": "spine twist",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字说向右转体却让右肘接近左膝，方向描述可能互相冲突；需确认左右及躯干活动而非按名称套图。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A13 · 徒手·动态子批，批次 102 接入）：种子意见指文字说向右转体却让右肘接近左膝，方向描述可能互相冲突，需确认左右及躯干活动而非按名称套图——定版双帧按正文第 4 步的肘膝终点画（右肘拉向左膝），不以「向右转」一词另改配对：起始帧坐姿屈膝、双脚平放地面、双手脑后肘外张；关键帧躯干大幅转体、对侧肘拉向对侧膝，肘膝终点可读（3/4 机位下具体哪侧肘→哪侧膝不可 certify，按对侧肘膝配对成立口径裁决）；垫上赤脚，两帧一致。双帧均首稿过门。正文 7 步按目录存储形制合并为 5 步（入位两步合并、换侧两步合并），定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "48c230de1e6ca1d238b4e4b4014c5a401905c52bf2375f445b25a6b54b9d3519",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA13-2329",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch102.md",
+          "version": "2026-11-11 · 生成批次 102",
+          "sourceSha256": [
+            "a66c5253b2d66cdf39ecaa5e548e548eb1c64a5c9ff483503ba1be62f56005bf",
+            "acbd80817b34aca9db294649e5e6e60fbddd7b62b1a287db43f396a4208f9dd0"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2368",
@@ -39739,22 +39919,37 @@
     {
       "id": "exdb:1686",
       "originalName": "squat to overhead reach with twist",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：文字明确站起时双手过顶并左右转体，但没说明髋、脚跟是否随转；不能复用不转体的深蹲上伸图。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A12 · 徒手·动态子批，批次 101 接入）：种子意见指文字明确站起时双手过顶并左右转体，但没说明髋、脚跟是否随转，不能复用不转体的深蹲上伸图——定版双帧正面回答：起始帧为深蹲底部；关键帧完全站起、双臂举过头顶，躯干明确扭转（肩线相对骨盆的旋转可读）；正文未规定髋、脚随转，定版不虚构，双脚保持原地正对、髋不跟随转动（1684 先例：正文未钉死处不虚构旋转）。转体以一侧呈现（单侧呈现口径，正文覆盖另一侧）。双帧均首稿过门。正文 5 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "8df8ba4bd4be4b4f53e95083a2db97e5241b0caac50c36b85ad1f3565fdb5783",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA12-1686",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch101.md",
+          "version": "2026-11-11 · 生成批次 101",
+          "sourceSha256": [
+            "4e031ddd9b2edc6884070cb85074937d2d3b8ec5424264afd5ae983e3f6a276e",
+            "f49ee09fc30a6bccaf443d16d661df0743daefc7cabf5d9a27602e7a9ee83a33"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2297",
@@ -40908,42 +41103,72 @@
     {
       "id": "exdb:2802",
       "originalName": "twisted leg raise",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源明确仰卧直腿抬起时髋转一侧、腿向对侧肩靠近；需专门核对骨盆和左右轨迹，直线举腿不算示范。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A13 · 徒手·动态子批，批次 102 接入）：种子意见指来源明确仰卧直腿抬起时髋转一侧、腿向对侧肩靠近，需专门核对骨盆和左右轨迹，直线举腿不算示范——定版双帧正面回答：起始帧仰卧、双腿伸展、双手垫臀下；关键帧双腿伸直抬起并斜向对侧肩膀、骨盆带转，扭转可读（峰值首稿为直腿近垂直、无可读扭转，已废弃；修复稿以起始帧为锚、仅改扭转后通过）。柔软点：修复稿机位较起始略近；横向扭转分量在侧面机位下偏软，但斜向终点明确，不判缺。正文 7 步按目录存储形制合并为 5 步（入位两步合并、重复与交替步合并），定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "dd442f204fc60cde5ab3d2502f82ae0f9c0c3800a2a3ccab7e056e8203397c40",
-        "steps": 7
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA13-2802",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch102.md",
+          "version": "2026-11-11 · 生成批次 102",
+          "sourceSha256": [
+            "4bac14003b186ab76ed526a59a45e66a5f3883098ea5d22ae9db7ec800057d6a",
+            "1e7e3547154c60bb23b7096994d61a0663bc495647ef469c6b4f26f7c31f42ab"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2801",
       "originalName": "twisted leg raise (female)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：同名带人物性别后缀，步骤却是屈膝而 exdb:2802 为直腿；按具体腿形分别保留，不以人物性别判断变式。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A13 · 徒手·动态子批，批次 102 接入）：种子意见指同名带人物性别后缀，步骤却是屈膝而 exdb:2802 为直腿，按具体腿形分别保留，不以人物性别判断变式——定版双帧按腿形区分：起始帧仰卧、双腿伸展、双臂放体侧；关键帧屈膝将双腿抬向胸部、臀部扭向一侧、膝盖移向对侧肩膀，与 2802 的直腿版区分成立。双帧均首稿过门。正文 6 步按目录存储形制合并为 5 步（重复与交替步合并），定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "caa878253ba5d36f8520ea7f4f87870ea190bc3dad371e56a50c5e11648765e0",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA13-2801",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch102.md",
+          "version": "2026-11-11 · 生成批次 102",
+          "sourceSha256": [
+            "dec7058baeff4db0ae57598706cf3fabd53f7d12fb7bea111bea97ed2145a267",
+            "45b2425b1dcdd3df41be4a75aab6e92eaabe3a938a2d22f5e3b236531305ab7a"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3231",
@@ -41013,22 +41238,37 @@
     {
       "id": "exdb:1366",
       "originalName": "upward facing dog",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源明确手撑地、躯干和大腿抬离地面，需区分眼镜蛇式的大腿贴地形式及足部支撑；示范待独立核对。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A12 · 徒手·动态子批，批次 101 接入）：种子意见指来源明确手撑地、躯干和大腿抬离地面，需区分眼镜蛇式的大腿贴地形式及足部支撑，示范待独立核对——定版双帧正面回答：起始帧俯卧、双手放在下肋骨旁边；关键帧手臂伸直撑起，大腿与膝盖明确离地、只有手掌与脚背触地，与眼镜蛇式区分清晰。双帧均首稿过门。正文原样不改；接入时定稿 6 步按目录存储形制（checked 条目 3–5 步）存储为 5 步：第 5、6 步以分号合并，定稿句子无一删减。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "91d64895ebc98cb634429e4c8dcacf0b889be6d4cdacb2dc4f7148052132b078",
-        "steps": 6
+        "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA12-1366",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch101.md",
+          "version": "2026-11-11 · 生成批次 101",
+          "sourceSha256": [
+            "6e9a9ae6dc1e52caf545cd1304f30626b2b6412339d68ed75d37dae88281b57b",
+            "1d4efc427c4ce63b7ea6e85b0a418f8f0a9e6ea2dc5216bba354f326eefd1ac9"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3420",
@@ -42482,22 +42722,37 @@
     {
       "id": "exdb:1428",
       "originalName": "wrist circles",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "候选已对照：来源手臂向前伸，候选手臂下垂，手腕环绕动作难从两帧核实。 当前不发布此候选，不计完整覆盖。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A12 · 徒手·动态子批，批次 101 接入）：种子意见指来源手臂向前伸、而候选手臂下垂，且手腕环绕动作难从两帧核实，不予发布——定版双帧正面回答严点：双臂向前伸直至肩高、两帧臂位一致（非下垂）；两帧之间仅拳面方向不同，绕环的相位差可读。终门裁定：双帧静图对微幅圆周运动天然幅度受限，相位差可读即为本类条目的接受上限，按此口径定版，记录不改判。双帧均首稿过门。正文 4 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a503c72d9d351dcd9330f7a4bac802bbc12ea447afe181e0b5c95a1caa506271",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA12-1428",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch101.md",
+          "version": "2026-11-11 · 生成批次 101",
+          "sourceSha256": [
+            "f4809a3fed071d71b3ff47ef7d1fe02fe646f8343e2092a00384b1f4a178695f",
+            "c4d72431d9cb9cf005928570f69018bd11bbf84bc90916548c659379f9861d2f"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0859",
