@@ -37259,22 +37259,37 @@
     {
       "id": "exdb:3213",
       "originalName": "side-to-side toe touch (male)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源为同侧手向同侧脚伸、另一臂侧伸，需区分侧屈与前屈转体；普通交叉触脚示范不符合。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A13 · 徒手·动态余下 3 条，批次 103 接入）：定版双帧正面回答：起始帧站立 T 位、双臂向两侧平伸；关键帧纯侧屈向一侧、同侧手沿腿下伸、另一臂仍向侧面伸展，髋部正对镜头、无前屈无转体。已接受的柔软点：伸向脚的手停在脚踝/胫骨高度、未实际触到鞋面，按终门裁定为自然柔韧性终点、侧屈读法本身无歧义，记录不改判。双帧均首稿过门。正文 4 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "a8770388db93d7af5e3f28ca85411a6839173b14e12940ebfa1f0c9bc5d7a242",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA13-3213",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch103.md",
+          "version": "2026-11-11 · 生成批次 103",
+          "sourceSha256": [
+            "33ea2e054778e1bdd6e7e036ca96067ccc791acde7d682c7136645b6a52bafac",
+            "d27b1052dd1fe3478a3f96bcde0436b5450371b6cc36543817f4f7cc6b44f7e5"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0725",
@@ -40673,22 +40688,37 @@
     {
       "id": "exdb:3433",
       "originalName": "swimmer kicks v. 2 (male)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源明确俯卧手臂过顶、胸腿抬起交替打腿，但缺少与其他游泳打腿的版本区别；不能沿用仰卧打腿图。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A13 · 徒手·动态余下 3 条，批次 103 接入）：定版双帧正面回答：全程俯卧；起始帧全身贴垫、双臂过顶；关键帧胸部与头部抬离垫面、双臂过顶微抬，双腿均离地且一高一低交替打腿分叉清晰、膝近直，垫上赤脚。双帧均首稿过门。正文 5 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "802d8645b7a1fa353cb590169584fbb196d615776a9b26cd8deadb33edb39fa5",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA13-3433",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch103.md",
+          "version": "2026-11-11 · 生成批次 103",
+          "sourceSha256": [
+            "387fe60085bfc3dad3a6711538c5c05ae493fadc727e47b871a7b2f24e9d5032",
+            "6b78b5dbb53a633cbafc283c0b03f874b2f229295f8d01de9b370f7d0ada12f5"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3318",
@@ -41173,22 +41203,37 @@
     {
       "id": "exdb:3231",
       "originalName": "two toe touch (male)",
-      "status": "needs_review",
+      "status": "checked",
       "reviewStage": "editorial",
-      "reason": "逐项对照固定版本名称、器械和完整步骤：来源起始双臂侧伸后双手同时下触脚趾，与 arms-at-sides 的普通触脚起始不同；需要明确视角和臂路径图，暂不套用已有触脚示意。",
+      "reason": "2026-11-11 Codex CLI 图像生成双帧已逐帧对照 + 主理人终门亲核（普查 A13 · 徒手·动态余下 3 条，批次 103 接入）：定版双帧正面回答：起始帧站立 T 位、双臂向两侧平伸；关键帧腰部前屈、背部挺直、双腿近直，双手同时下触双脚脚趾、左右对称。双帧均首稿过门。正文 5 步原样不改，原文直存、无合并。素材检查为来源、变式与可见过程核验，非专业教学认证。",
       "text": {
-        "status": "reviewed_with_issues",
+        "status": "source_compared",
         "source": "exercises-dataset",
         "revision": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
         "license": "MIT",
         "sourceRecordSha256": "c6c29b5194a20053f2ef9ddd0184a070f91142eae4bb78c300a0a69db3fd39d2",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
-      "complete": false,
-      "sources": []
+      "complete": true,
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fillA13-3231",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch103.md",
+          "version": "2026-11-11 · 生成批次 103",
+          "sourceSha256": [
+            "61e57fad63f91bbdfd5fe7495615cb85d7698343d84fe8bed2242b137687acd2",
+            "67cf8a1bd1aed8b492b4e34bbe5ea50a649fd6b12a0ef28c6a8731ac5c3141e4"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1365",
