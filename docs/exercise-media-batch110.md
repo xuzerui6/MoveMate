@@ -61,4 +61,4 @@
 - 集成提交 `4ef54dd`；GitHub CI 运行 43068399186 success。
 - 双站部署：生产 Version `632766f8-9300-4f57-8c03-0f9a39ff0362`；预演 Version `06363324-d309-4d3b-99c2-7f2df1ce262e`（preview 分支 tip `95817fb` = cea57ec + 合并本批 main；合并后在预演工作树复跑 client `test:repository` 534/534 通过后部署）。
 - 在线核查：新图 28 张双站 sha256 **56/56 一致**；双站 attribution.json 条目数 **1064**；被替换的旧图解文件在生产返回 404（清理一致）；预演三张测试页（thunder-gate-test / step5-heavy-test-v2 / nodepend-speed-test）均 200。
-- 「动伴进度」空间同轮同步（待填）。
+- 「动伴进度」空间已同轮同步（1064/1278、图解 100、批次 110 记录置顶，页脚日期 2026-11-12）。
