@@ -12,6 +12,7 @@ import { useAuthStore } from '../../stores/authStore';
 import * as authApi from '../../api/auth';
 import type { Campus } from '../../types';
 import client, {getErrorMessage} from '../../api/client';
+import {prefetchPoseModels} from '../../features/motion/lib/posePrepare';
 import './Login.css';
 
 const Login: React.FC = () => {
@@ -173,6 +174,9 @@ const Login: React.FC = () => {
         campus_id: Number(campusId),
         qq_email: qqEmail.trim() || undefined,
       });
+      // Registration succeeded: quietly warm the pose-model cache in the
+      // background so the first training start is not a long download.
+      prefetchPoseModels();
     }
   };
 

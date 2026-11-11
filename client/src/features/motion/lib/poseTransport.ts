@@ -20,6 +20,20 @@ async function readModelCache(item:ModelItem):Promise<ArrayBuffer|null>{
 async function writeModelCache(item:ModelItem,bytes:ArrayBuffer){
  try{if(typeof caches==='undefined')return;const cache=await caches.open(modelCacheName);await cache.put(item.src,new Response(bytes.slice(0),{headers:{'Content-Type':'application/octet-stream'}}));}catch{/* the cache is best-effort */}
 }
+/** Prepare-layer access to the same verified model cache: reads revalidate size + sha256. */
+export function poseModelItem(name:PoseModel):ModelItem{return models[name];}
+export async function readCachedModelBytes(name:PoseModel):Promise<ArrayBuffer|null>{return readModelCache(models[name]);}
+export async function writeCachedModelBytes(name:PoseModel,bytes:ArrayBuffer){await writeModelCache(models[name],bytes);}
+/** Presence check for non-model pose assets (the vision WASM set) in the same cache. */
+export async function hasCachedPoseAsset(src:string):Promise<boolean>{
+ try{if(typeof caches==='undefined')return false;const cache=await caches.open(modelCacheName);return !!(await cache.match(src));}catch{return false;}
+}
+export async function readCachedPoseAsset(src:string):Promise<ArrayBuffer|null>{
+ try{if(typeof caches==='undefined')return null;const cache=await caches.open(modelCacheName);const hit=await cache.match(src);return hit?await hit.arrayBuffer():null;}catch{return null;}
+}
+export async function writeCachedPoseAsset(src:string,bytes:ArrayBuffer){
+ try{if(typeof caches==='undefined')return;const cache=await caches.open(modelCacheName);await cache.put(src,new Response(bytes.slice(0),{headers:{'Content-Type':'application/octet-stream'}}));}catch{/* the cache is best-effort */}
+}
 async function fetchModelBytes(name:PoseModel,item:ModelItem,signal:AbortSignal){
  const download=new AbortController(),cancel=()=>download.abort();signal.addEventListener('abort',cancel,{once:true});if(signal.aborted)cancel();
  const timeout=setTimeout(cancel,60000);

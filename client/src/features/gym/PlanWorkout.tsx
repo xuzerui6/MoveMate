@@ -5,9 +5,11 @@ import { Header } from "../motion/components/Header";
 import { PoseCanvas } from "../motion/components/PoseCanvas";
 import { usePose } from "../motion/hooks/usePose";
 import { usePlanRecognition, type PlanRecognitionType } from "./usePlanRecognition";
-import {adaptiveEligible,loadPoseModelPreference,loadRecognitionPreference,savePoseModelPreference,saveRecognitionPreference,selectRecognitionStrategy,type RecognitionPreference} from '../motion/lib/adaptiveRecognition';
-import type {PoseModelPreference} from '../motion/lib/poseCompatibility';
-import {PoseDiagnostics,PoseModelExperimentSelect,RecognitionOverride} from '../motion/components/PoseDiagnostics';
+import {loadRecognitionPreference,selectRecognitionStrategy,type RecognitionPreference} from '../motion/lib/adaptiveRecognition';
+import {PrepDemoHero} from '../motion/components/PrepDemoHero';
+import {PrivacyConsentRow} from '../motion/components/PrivacyConsentRow';
+import {PosePreparePanel} from '../motion/components/PosePreparePanel';
+import {usePosePrepare} from '../motion/hooks/usePosePrepare';
 import { isRecognitionType } from '../motion/lib/recognition';
 import { PlanRecognitionStatus } from "./PlanRecognitionStatus";
 import { exerciseInfo,isCameraExercise } from "../motion/lib/exercises";
@@ -29,7 +31,6 @@ import { assessmentFromScore, axisStateText, totalScopeNote, totalWithheld, TOTA
 import ShareCardButton from "../share/ShareCardButton";
 import { buildGymSetCard, buildRecordCard, buildWorkoutCardData, completionRecognitionAverage } from "../share/cardData";
 import { milestoneCardSvg, setCardSvg, workoutCardSvg } from "../share/cardSvg";
-import {ExerciseDemo} from './ExerciseMedia';
 import { isUnreviewedOfficialExercise, workoutGuideInstruction } from './exerciseGuidance';
 import { WeightInput } from "./WeightInput";
 import { displayWeight } from "./trainingMath";
@@ -198,10 +199,17 @@ export default function PlanWorkout() {
   const capability=current?.exercise.planCamera;
   const canRecognize=supportedRecognition&&!current?.targetSeconds&&current?.side==='both';
   const restored=useMemo(()=>restoredSetMetrics(current),[current?.id,recoveryKey]);
-  const [preference,setPreference]=useState<RecognitionPreference>(()=>loadRecognitionPreference());
-  const changePreference=(value:RecognitionPreference)=>{setPreference(value);saveRecognitionPreference(value);};
-  const [modelPreference,setModelPreference]=useState<PoseModelPreference>(()=>loadPoseModelPreference());
-  const changeModelPreference=(value:PoseModelPreference)=>{setModelPreference(value);savePoseModelPreference(value);};
+  const [preference]=useState<RecognitionPreference>(()=>loadRecognitionPreference());
+  const posePrepare = usePosePrepare();
+  const [camPrep, setCamPrep] = useState<'download' | 'engine' | null>(null);
+  const [camDownloadFailed, setCamDownloadFailed] = useState(false);
+  const camPrepChoiceRef = useRef<((choice: 'ready' | 'lite' | 'failed' | 'cancelled') => void) | null>(null);
+  const waitForCamPrepare = () => new Promise<'ready' | 'lite' | 'failed' | 'cancelled'>(resolve => {
+    let settled = false;
+    const finish = (choice: 'ready' | 'lite' | 'failed' | 'cancelled') => { if (settled) return; settled = true; if (camPrepChoiceRef.current === finish) camPrepChoiceRef.current = null; resolve(choice); };
+    camPrepChoiceRef.current = finish;
+    void posePrepare.start().then(ok => finish(ok ? 'ready' : 'failed'));
+  });
   const savedStrategy = current?.recognitionStrategy ?? ((camera || current?.status !== 'pending' || preference === 'legacy') ? 'legacy' : undefined);
   const adaptive = canRecognize && selectRecognitionStrategy(type, savedStrategy) === 'adaptive-v1';
   const pose=usePose(camera&&supportedRecognition&&working&&!busy&&!blocked&&!offline&&!finishAttempted,{adaptive,warmWhenPaused:camera&&row?.phase==='paused'&&!blocked&&!offline&&!finishAttempted,type,key:current?.id||'none',target:current?.targetReps||20,restored:{...restored,reps:current?.reps||restored.reps}}),seconds=useSessionClock(row?.session,busy||blocked||offline||finishAttempted);
@@ -303,13 +311,13 @@ export default function PlanWorkout() {
   };
   const act = (action: string, values: any = {}) =>
     void run(action, values).catch(() => {});
-  const start = async (mode: "manual" | "camera", resume = false) => {
+  const start = async (mode: "manual" | "camera", resume = false, forceLite = false) => {
     if (controlLock.current) return;
     controlLock.current = true;
     setBusy(true);
     setError("");
     try {
-      if (mode === "camera" && (adaptive||pose.status !== "ready") && !(await pose.start()))
+      if (mode === "camera" && (adaptive||pose.status !== "ready") && !(await pose.start(forceLite)))
         throw new Error(
           pose.errorReason.current || "摄像头或模型未就绪。请允许摄像头后重试，或改为手动记录。",
         );
@@ -332,6 +340,19 @@ export default function PlanWorkout() {
       setBusy(false);
     }
   };
+  const startCamera = async () => {
+    if (!adaptive || posePrepare.ready) return start("camera");
+    setCamDownloadFailed(false);
+    setCamPrep("download");
+    const outcome = await waitForCamPrepare();
+    if (!alive.current) { setCamPrep(null); return; }
+    if (outcome === "failed") { setCamPrep(null); setCamDownloadFailed(true); return; }
+    if (outcome === "cancelled") { setCamPrep(null); return; }
+    setCamPrep("engine");
+    await start("camera", false, outcome === "lite");
+    if (alive.current) setCamPrep(null);
+  };
+  const cancelCamPrepare = () => { camPrepChoiceRef.current?.("cancelled"); setCamPrep(null); };
   const recover = async () => {
     if (!sync.current) return;
     if (!navigator.onLine) {
@@ -936,33 +957,24 @@ export default function PlanWorkout() {
                   />
                 </label>
               )}
-              {working&&<PoseDiagnostics telemetry={pose.telemetry}/>}
               {adaptive&&!working&&(camera||current?.status==='pending')&&<button className="secondary" disabled={busy} onClick={()=>void pose.start(true)}>使用 Lite 重新准备</button>}
               {adaptive&&pose.status==='loading'&&<button className="secondary" onClick={()=>{pose.errorReason.current='已取消准备';pose.stop();}}>取消摄像头准备</button>}
               {requestedType && !supportedRecognition && <p role="alert">当前页面不支持此动作识别，请刷新页面或切换手动记录。</p>}
-              {current && <ExerciseDemo exercise={current.exercise} suspended={working || busy || finished}/>}
+              {current && <PrepDemoHero exercise={current.exercise} suspended={working || busy || finished}/>}
               {!working && canRecognize && (
                 <section className="gym-camera-preparation">
-                  <RecognitionOverride eligible={adaptiveEligible(type)} disabled={busy||camera||current?.status!=='pending'} preference={preference} onChange={changePreference}/>
-                  <PoseModelExperimentSelect eligible={adaptiveEligible(type)} disabled={busy||camera||current?.status!=='pending'} value={modelPreference} onChange={changeModelPreference}/>
-                  <PoseDiagnostics telemetry={pose.telemetry}/>
                   <strong>摄像头自动记组{capability ? " · 试用" : ""}</strong>
                   <p>本组目标 {current.targetReps} {type === "high_knees" ? "对" : "次"}，达到目标后自动进入休息。</p>
                   <p>{capability?.placement || exerciseInfo(type).placement}</p>
                   <p>{capability?.instruction || exerciseInfo(type).instruction}</p>
                   {capability && <small>需看清：{capability.joints}。{capability.limitations}</small>}
                   <p className="gym-muted">计划内只按有效运动时长结算 XP，不按动作重复奖励。</p>
+                  {adaptive && posePrepare.ready && !camPrep && !camDownloadFailed && <p className="pose-ready-pill">✓ 识别模型已准备好</p>}
+                  {(camPrep || camDownloadFailed) && <PosePreparePanel snapshot={posePrepare.snapshot} phase={camPrep ?? 'download'} failed={camDownloadFailed} onCancel={cancelCamPrepare} onRetry={() => { setCamDownloadFailed(false); void startCamera(); }} onLiteStart={() => camPrepChoiceRef.current?.("lite")} onHome={() => navigate("/")}/>}
                 </section>
               )}
               {!working && canRecognize && (
-                <label className="gym-checkbox">
-                  <input
-                    type="checkbox"
-                    checked={consent}
-                    onChange={(e) => setConsent(e.target.checked)}
-                  />
-                  允许语音陪练复核关键帧（可选，本站不保存图片）
-                </label>
+                <PrivacyConsentRow allowed={consent} onChange={setConsent} disabled={busy}/>
               )}
               {adaptive&&camera&&row.phase==='paused'&&<p className="gym-muted" role="status">{pose.engine?.diagnostics.stage==='ready'&&pose.engine.metrics.poseFeedback.calibrated&&(pose.telemetry?.fps||0)>=8?'起始姿势已准备好，可直接继续':'休息不计时，继续后识别下一个完整动作。'}</p>}
               <div className="gym-main-actions">
@@ -979,7 +991,7 @@ export default function PlanWorkout() {
                         <button
                           className="secondary"
                           disabled={busy || blocked}
-                          onClick={() => void start("camera")}
+                          onClick={() => void startCamera()}
                         >
                           摄像头自动记组
                         </button>

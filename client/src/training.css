@@ -131,3 +131,81 @@
   .training-coach span{flex:none;font-size:11px;letter-spacing:.12em;color:var(--color-primary);font-weight:700}
 }
 @media (prefers-reduced-motion: reduce){.training-hud-dot{animation:none}}
+
+/* 开始训练流程 v2（设计板 2026-11-11 已批准）：选动作列表、准备页、等待状态、静默预下载 */
+.camera-picker-search{display:flex;align-items:center;gap:10px;background:#f4f7f5;border:1px solid var(--line);border-radius:14px;padding:0 14px;margin:14px 0 10px;color:var(--muted)}
+.camera-picker-search input{flex:1;min-width:0;border:0;background:transparent;font-size:16px;min-height:48px;color:var(--ink)}
+.camera-picker-search input:focus{outline:none}
+.camera-picker-search:focus-within{border-color:var(--color-primary);background:#fff}
+.camera-picker-chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.camera-picker-chips::-webkit-scrollbar{display:none}
+.camera-picker-chips button{flex:none;min-height:40px;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:14px;color:var(--ink)}
+.camera-picker-chips button.active{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:700}
+.camera-picker-section{margin-top:14px}
+.camera-picker-section h4{font-size:13px;color:var(--muted);margin:0 0 8px;font-weight:600}
+.camera-picker-rows{display:grid;gap:8px}
+.camera-picker-row{display:flex;align-items:center;gap:12px;width:100%;min-height:66px;padding:9px 14px 9px 10px;border:1px solid var(--line);border-radius:16px;background:#fff;text-align:left;cursor:pointer}
+.camera-picker-row.selected{border-color:var(--color-primary);background:var(--mint)}
+.camera-picker-thumb{flex:none;width:46px;height:46px;border-radius:10px;overflow:hidden;background:#eef3f0;display:flex;align-items:center;justify-content:center}
+.camera-picker-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.camera-picker-thumb span{font-size:10px;color:var(--muted);padding:2px;text-align:center;line-height:1.4}
+.camera-picker-name{flex:1;min-width:0;font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.trial-pill{flex:none;font-size:11px;font-weight:700;color:var(--color-primary-dark);background:#d9f5e2;border-radius:999px;padding:2px 8px;line-height:1.5}
+.camera-picker-meta{flex:none;font-size:13px;color:var(--muted)}
+.camera-picker-empty{color:var(--muted);font-size:14px;margin:18px 0}
+@media(min-width:700px){.camera-picker-rows{grid-template-columns:1fr 1fr}}
+.prep-demo{margin:4px 0 14px}
+.prep-demo-hero{position:relative;display:block;width:100%;aspect-ratio:4/3;border:0;border-radius:20px;overflow:hidden;padding:0;background:#dfe8e2;cursor:pointer}
+.prep-demo-hero img{width:100%;height:100%;object-fit:cover;display:block}
+.prep-demo-pill{position:absolute;left:14px;bottom:14px;display:inline-flex;align-items:center;gap:6px;background:rgba(20,28,24,.55);color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600}
+.prep-demo-ratio{position:absolute;right:14px;bottom:16px;color:rgba(255,255,255,.9);font-size:12px;background:rgba(20,28,24,.35);border-radius:8px;padding:4px 8px}
+.prep-chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px}
+.prep-chips span{background:#f0f5f1;border-radius:10px;padding:7px 12px;font-size:13px;font-weight:600;color:var(--ink)}
+.training-prep .prep-actions>.primary{background:linear-gradient(180deg,#0aa64c,#008a40);box-shadow:0 10px 24px rgba(0,138,64,.28)}
+.prep-companion{display:flex;gap:10px;align-items:flex-start;margin:16px 0 6px}
+.prep-companion-avatar{flex:none;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#35c26e,#07873c);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,138,64,.3)}
+.prep-companion p{margin:0;background:var(--mint);border-radius:4px 16px 16px 16px;padding:11px 14px;font-size:14px;line-height:1.65;color:var(--ink)}
+.pose-ready-pill{display:inline-flex;align-items:center;gap:6px;margin:2px 0 6px;background:var(--mint);color:var(--color-primary-dark);font-size:13px;font-weight:700;border-radius:999px;padding:7px 14px}
+.privacy-consent{margin:18px 0}
+.privacy-consent-row{display:flex;align-items:center;gap:10px;width:100%;min-height:52px;padding:10px 16px;border:1px solid var(--line);border-radius:14px;background:#fff;font-size:14px;text-align:left;cursor:pointer}
+.privacy-dot{flex:none;width:11px;height:11px;border-radius:50%;background:var(--color-primary)}
+.privacy-dot-on{background:#d97706}
+.privacy-consent-text{flex:1;font-weight:600}
+.privacy-consent-change{flex:none;color:var(--color-primary);font-weight:600}
+.privacy-consent-options{display:grid;gap:10px}
+.privacy-consent-options label{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--line);border-radius:14px;cursor:pointer;background:#fff;margin:0}
+.privacy-consent-options label:has(input:checked){background:var(--mint);border-color:var(--color-primary)}
+.privacy-consent-options input{width:20px;height:20px;accent-color:var(--color-primary);flex:none;margin-top:2px}
+.privacy-consent-options label>span{display:flex;flex-direction:column;gap:4px}
+.privacy-consent-options b{font-size:14px}
+.privacy-consent-options small{font-size:12px;color:var(--muted);line-height:1.6}
+.privacy-consent-collapse{justify-self:end;background:none;border:0;color:var(--color-primary);font-size:14px;min-height:40px;padding:4px 8px;cursor:pointer}
+.pose-prepare-panel{border:1px solid var(--line);border-radius:18px;padding:18px;margin:18px 0;background:#fff}
+.pose-prepare-title{display:flex;align-items:center;gap:10px}
+.pose-prepare-title b{font-size:16px}
+.pose-prepare-step{margin-left:auto;font-size:12px;color:var(--muted)}
+.pose-prepare-spinner{flex:none;width:18px;height:18px;border-radius:50%;border:3px solid var(--mint);border-top-color:var(--color-primary);animation:pose-prepare-spin 1s linear infinite}
+@keyframes pose-prepare-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.pose-prepare-spinner{animation:none}}
+.pose-prepare-steps{list-style:none;margin:16px 0 10px;padding:0;display:grid;gap:14px}
+.pose-prepare-steps li{display:flex;gap:12px;align-items:flex-start;color:var(--muted)}
+.pose-prepare-steps li.active{color:var(--ink);font-weight:600}
+.pose-prepare-steps li.done{color:var(--ink)}
+.pose-prepare-mark{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--color-primary-dark);margin-top:1px;background:#fff}
+.pose-prepare-steps li.done .pose-prepare-mark{background:var(--mint);border-color:var(--color-primary)}
+.pose-prepare-steps li.active .pose-prepare-mark{border-color:var(--color-primary)}
+.pose-prepare-step-body{flex:1;display:flex;flex-direction:column;gap:7px;min-width:0}
+.pose-prepare-step-body small{font-size:12px;color:var(--muted);font-weight:400}
+.pose-prepare-bar{display:block;height:6px;border-radius:99px;background:#e7efe9;overflow:hidden}
+.pose-prepare-bar span{display:block;height:100%;background:var(--color-primary);border-radius:99px;transition:width .3s ease}
+.pose-prepare-copy{font-size:13px;color:var(--muted);margin:8px 0 0;line-height:1.7}
+.pose-prepare-slow{margin-top:14px;background:var(--mint);border-radius:14px;padding:14px}
+.pose-prepare-slow p{margin:0 0 12px;font-size:14px;line-height:1.7;color:var(--ink)}
+.pose-prepare-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pose-prepare-actions .primary{flex:1;min-height:50px}
+.pose-prepare-lite{min-height:48px;padding:10px 18px;border-radius:12px;border:1.5px solid var(--color-primary);color:var(--color-primary-dark);background:#fff;font-weight:700;font-size:14px;cursor:pointer}
+.pose-prepare-text{background:none;border:0;color:var(--color-primary);font-size:14px;min-height:44px;padding:6px 10px;font-weight:600;cursor:pointer}
+.pose-prepare-foot{display:flex;justify-content:flex-end;margin-top:6px}
+.pose-prefetch-line{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);margin:12px 0 0}
+.pose-prefetch-bar{flex:none;width:120px;height:5px;border-radius:99px;background:#e7efe9;overflow:hidden}
+.pose-prefetch-bar span{display:block;height:100%;background:var(--color-primary);border-radius:99px;transition:width .3s ease}

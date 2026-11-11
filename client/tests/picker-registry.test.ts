@@ -24,7 +24,8 @@ test('picker registry: 4 base + 18 trial entries, trial count derived from the r
   assert.equal(Object.keys(BASE_CAMERA_EXERCISES).length,4);
   assert.equal(Object.keys(NEW_EXERCISES).length,18);
   assert.equal(Object.keys(CAMERA_EXERCISES).length,22);
-  // This is the exact derivation Training.tsx uses for the tab label.
+  // Trial membership is derived from the registry (pickerExercises reads the
+  // same isNewExercise split for the 试用 pill).
   assert.equal(Object.keys(CAMERA_EXERCISES).filter(id=>isNewExercise(id)).length,18);
   for(const type of TIER_PROFILES)assert.ok(isNewExercise(type),`${type} missing from the standalone registry`);
 });

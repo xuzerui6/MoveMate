@@ -22,10 +22,11 @@ export function saveRecognitionPreference(preference: RecognitionPreference) {
  try { globalThis.localStorage?.setItem(recognitionPreferenceKey, preference); } catch { /* best-effort device preference */ }
 }
 const poseModelPreferenceKey = 'movemate:pose-model-experiment';
-/** Device-local experiment switch for the MediaPipe model variant. 'auto' is the shipped
- * behaviour; Full/Heavy are larger official variants A/B-tested on this device only. */
+/** Device-local model choice (settings → 高级）. 'auto' is the shipped behaviour; Lite/Full
+ * pin the ladder start. A stored 'heavy' predates the Heavy route closing (2026-11-11)
+ * and falls back to 'auto'. */
 export function loadPoseModelPreference(): PoseModelPreference {
- try { const value = globalThis.localStorage?.getItem(poseModelPreferenceKey); return value === 'lite' || value === 'full' || value === 'heavy' ? value : 'auto'; } catch { return 'auto'; }
+ try { const value = globalThis.localStorage?.getItem(poseModelPreferenceKey); return value === 'lite' || value === 'full' ? value : 'auto'; } catch { return 'auto'; }
 }
 export function savePoseModelPreference(preference: PoseModelPreference) {
  try { globalThis.localStorage?.setItem(poseModelPreferenceKey, preference); } catch { /* best-effort device preference */ }

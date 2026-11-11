@@ -8,6 +8,7 @@ import { recoveryDraft, readRecoveryDraft, archivedDrafts, archiveDraft, forgetD
 import { SnapshotEditor, sameContent, changedFields } from "./editingState";
 import { writeDraft, removeDraft, draftWriteWarning } from "./draftStorage";
 import { Header } from "../motion/components/Header";
+import { RecognitionAdvancedSettings } from "../motion/components/RecognitionAdvancedSettings";
 import {
   useGymQuery,
   request,
@@ -208,6 +209,18 @@ export function TrainingSettings() {
       <InstallApp />
     </div>
   );
+  // Recognition prefs are device-local (localStorage), not part of the server
+  // settings draft/save flow above — this card stands on its own and applies
+  // immediately. Collapsed by default (高级）.
+  const advancedCard = (
+    <details className="gym-settings-card gym-settings-advanced">
+      <summary className="gym-settings-title">高级 · 识别设置</summary>
+      <p className="gym-settings-hint">
+        一般不用改。只有识别在这台手机上不稳时，才需要打开这里。
+      </p>
+      <RecognitionAdvancedSettings />
+    </details>
+  );
   return (
     <div className="page gym-page">
       <Header
@@ -254,6 +267,7 @@ export function TrainingSettings() {
               <div className="gym-settings-col gym-settings-col-rail">
                 {displayCard}
                 {effortCard}
+                {advancedCard}
               </div>
             </div>
           ) : (
@@ -261,6 +275,7 @@ export function TrainingSettings() {
               {displayCard}
               {equipmentCard}
               {effortCard}
+              {advancedCard}
               {installCard}
             </div>
           )}
@@ -271,7 +286,7 @@ export function TrainingSettings() {
           </div>
         </form>
       ) : q.loading ? <p role="status">正在读取设置…</p> : <p className="gym-muted">设置尚未读取成功，请重试；已有设置不会被清空。</p>}
-      {!v && <InstallApp />}
+      {!v && <>{advancedCard}<InstallApp /></>}
     </div>
   );
 }
