@@ -194,7 +194,13 @@ test('independent references correct specific source errors, retain licenses and
   assert.equal(exercises.find(e=>e.id==='exdb:0500')!.category,'strength');
   assert.ok(exercises.find(e=>e.id==='exdb:0500')!.form!.includes('掌撑'));
   assert.ok(exercises.find(e=>e.id==='exdb:0436')!.form!.includes('平凳仰卧'));
-  assert.equal(mediaFor('exdb:0332')!.kind,'illustration','The squat-and-raise photo must not replace this source’s standing lateral raise');
+  // Batch 112 replaced the 0332 illustration with a gated generated pair depicting this
+  // entry's own text (standing lateral raise only, no squat), so the guard now checks the
+  // replacement record instead of the deleted illustration — the rejected squat-and-raise
+  // source photo remains unused.
+  assert.equal(mediaFor('exdb:0332')!.kind,undefined,'Batch 112: 0332 illustration replaced by its own gated standing-lateral-raise pair');
+  assert.equal(mediaFor('exdb:0332')!.images.length,2);
+  assert.equal(mediaFor('exdb:0332')!.sources[0].name,'AI 生成 / ai-codex-replaceIllus-0332');
   assert.equal(mediaFor('exdb:0433')!.kind,'illustration','Cross-bench shoulder support must not replace this source’s full-length bench support');
   // Batch 19 replaced the 0660 illustration with a verified real photo: two separate
   // dumbbells on the ground (not one upright dumbbell), so the two-dumbbell guard now
