@@ -15659,6 +15659,186 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0014",
+   "expectedName": "assisted motion russian twist",
+   "sourceId": "ai-codex-fillA16-0014",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "def1510bf4e449eae46932654997753f644d1e052934677b8d075fcb7494b83f",
+    "f92cec0253a17b4ea1a65179bba7412f83c31a7c2b9e22ffe7cc85fa2b62089e"
+   ],
+   "phases": [
+    "起始：坐在地上，膝盖弯曲、双脚平放，小药球放在胸前。",
+    "关键：躯干向右扭转，小药球移向身体右侧，无同伴辅助。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0609",
+   "expectedName": "london bridge",
+   "sourceId": "ai-codex-fillA16-0609",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "4c67fc749caf6feb9f7a6786dbfaf03570c7edd8953c11b071eec9f11f48141f",
+    "f0c0e11e9be4323fe3c84ecbe8db0fb62b14c7541d57513a23b223bd7369c7b9"
+   ],
+   "phases": [
+    "起始：背对高锚点站立，正手握绳、双臂向后伸直。",
+    "关键：绳子拉向身体，肩胛骨挤压在一起，微前倾。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0663",
+   "expectedName": "push-up medicine ball",
+   "sourceId": "ai-codex-fillA16-0663",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e526561a311137782781148dc31ad0d773ffc508bcded36a89fffaf900ad3216",
+    "cb1b220dd3c302572197bee2f17ae8a260f18b5e7e5f0faa35f85cfa17a6d861"
+   ],
+   "phases": [
+    "起始：高平板支撑，双手同撑小药球。",
+    "关键：屈肘降低身体，胸部接近药球，身体保持一条直线。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0845",
+   "expectedName": "weighted russian twist (legs up)",
+   "sourceId": "ai-codex-fillA16-0845",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d64ba8fd3a1c2e47b0d4d8e0660a31dcbcda40a1ad5089c80f4a2db38e327e44",
+    "85371a1fc307670fdf6ed30f94c2fd7adf10d84120eb4c99c8278dbe1bc48de3"
+   ],
+   "phases": [
+    "起始：坐在地上，双脚离地、双腿并拢，杠铃片放在胸前。",
+    "关键：躯干向左扭转（本批呈现一侧），杠铃片移向左侧地面。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0846",
+   "expectedName": "weighted russian twist",
+   "sourceId": "ai-codex-fillA16-0846",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e030e85998ee4b40c967df29658495d749edb772ade763fef230dae51792a4eb",
+    "342d0aba960f861ace855e9f336d6133304cd858ea8aa53ed3a0458636f233aa"
+   ],
+   "phases": [
+    "起始：坐在地上，双脚平放，小药球放在胸前。",
+    "关键：躯干向右扭转，药球拉向右侧地面触地。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0849",
+   "expectedName": "weighted seated twist (on stability ball)",
+   "sourceId": "ai-codex-fillA16-0849",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "c0cf070155cf4149f162cc3d8b957c9be06d1057c477ee62b13cc7d44d7c35c8",
+    "07d22a176fd43e278ba3893aa1b8089d876e3d19bf58af415d5cd6d992dda430"
+   ],
+   "phases": [
+    "起始：坐在稳定球上，双脚平放、膝盖约 90 度，杠铃片放在胸前。",
+    "关键：躯干向一侧扭转，臀部仍正对前方。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1015",
+   "expectedName": "band vertical pallof press",
+   "sourceId": "ai-codex-fillA16-1015",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "4752ddaf450f637b4f9250f2013e955fbc464609991c7373306905bd50d708b9",
+    "56f67eac8c7f25200c061ef8ec5520f47be250ea31498c779693e1c1a622f62e"
+   ],
+   "phases": [
+    "起始：站立、弹力带在胸前，双手握带、双臂弯曲。",
+    "关键：双臂在胸前高度完全伸直，弹力带拉直成水平线，躯干抗旋。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1259",
+   "expectedName": "behind head chest stretch",
+   "sourceId": "ai-codex-fillA16-1259",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a281c94006ec74b687975c398661812f2812db84020e3636504ce0773ee28508",
+    "daafba1d21b684bb7c69a9e41ce571f345f569a3cea539317a33b4635b064069"
+   ],
+   "phases": [
+    "起始：站直，双脚分开与肩同宽，手指交叉放在脑后、肘部朝外。",
+    "关键：肩胛骨挤压、肘部向后拉，胸部向前推。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1391",
+   "expectedName": "sled calf press on leg press",
+   "sourceId": "ai-codex-fillA16-1391",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d3c48ccfc242881af01f6cf84b036e7d8d1c480bf49c3714abe696d24bc75833",
+    "6e2ec899a05a096023aa9710f13a08b0b9c50198abcdb0b1413e6a51f161c26a"
+   ],
+   "phases": [
+    "起始：坐在压腿机上，双脚与肩同宽踩雪橇，膝盖微弯、脚掌全贴。",
+    "关键：膝盖伸直将雪橇推出，脚跟离台、脚尖顶台蹬伸。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1582",
+   "expectedName": "reclining big toe pose with rope",
+   "sourceId": "ai-codex-fillA16-1582",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "c1872c6f0d6e19560873f10573a4b06c6abe3a4bfd40715f97a6d93eefade86c",
+    "9c3f72f6634b8fe7f48bdb7aa29a59c554783fed6546895050000407335f0a3e"
+   ],
+   "phases": [
+    "起始：仰卧、双腿伸展，绳子绕在右脚掌上、双手握住绳端。",
+    "关键：右腿直膝抬向胸前、脚弯曲，绳子拉直绷紧，左腿平放。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
