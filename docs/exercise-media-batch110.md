@@ -58,7 +58,7 @@
 - 名单核对：普查表名单、生成暂存帧、origin/main 状态三方一致（见上）；0154 确认接入前仍待补。
 - 串行全套测试（本地，接入工作树）：client `test:repository` **534/534** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。测试维护一处：`client/tests/exercise-media-batch4.test.ts` 的历史断言「未匹配变式无真人示范」名单移除本批已过门替换的 1373/1760/0292/2292（保留 0375/0061/0475），同文件非图解计数 13 → 17——均为本批媒体事实更新，非规则放宽。
 - 登记校验：`scripts/exercise-media-approved.json` 新增 14 行（13 × `ai-codex-replaceIllus-<id>` + `ai-codex-fillB1-0154`，登记总数 945 → 959），sourceSha256 全部由暂存候选字节程序化计算、无手抄；构建脚本批次号 109 → 110。发布链计数四方一致：build 输出 1064 image entries；publish-media-metadata 输出 1064 records；publish-exercise-documentation 输出 complete 1064 / photos 964 / illustrations 100 / pending 265（原始口径）；report 脚本 images 1064 / missing 265 / originalIds 100 / cameraImages 56 / cameraPending 空。
-- 集成提交 `待填`；GitHub CI 运行 **待填**。
-- 双站部署：生产 Version `待填`；预演 Version `待填`。
-- 在线核查：新图 28 张双站 sha256 抽查 **待填**；双站 attribution.json 条数 **待填**。
-- 「动伴进度」空间同轮同步（待填）。
+- 集成提交 `4ef54dd`；GitHub CI 运行 43068399186 success。
+- 双站部署：生产 Version `632766f8-9300-4f57-8c03-0f9a39ff0362`；预演 Version `06363324-d309-4d3b-99c2-7f2df1ce262e`（preview 分支 tip `95817fb` = cea57ec + 合并本批 main；合并后在预演工作树复跑 client `test:repository` 534/534 通过后部署）。
+- 在线核查：新图 28 张双站 sha256 **56/56 一致**；双站 attribution.json 条目数 **1064**；被替换的旧图解文件在生产返回 404（清理一致）；预演三张测试页（thunder-gate-test / step5-heavy-test-v2 / nodepend-speed-test）均 200。
+- 「动伴进度」空间已同轮同步（1064/1278、图解 100、批次 110 记录置顶，页脚日期 2026-11-12）。
