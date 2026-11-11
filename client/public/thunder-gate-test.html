@@ -72,7 +72,7 @@ footer{color:#888;font-size:12.5px;line-height:1.6;margin-top:22px}
 <button id="copy" class="secondary">复制结果</button>
 <p id="errbox" class="err"></p>
 
-<footer>MoveMate Thunder 设备门（候选规格 candidate-control-thunder v1 §7，2026-11-09 冻结）· 组合配置：Full = 正式 App 相同的 pose.worker 与传输层（Worker，GPU delegate 优先、失败回退 CPU）＋ 正式 App 未改动的锤式弯举计数器（AdaptiveRecognition 打包）；Thunder = TFJS 4.22 执行 MoveNet Thunder 的 TFHub 官方 TFJS 部署件（google/tfjs-model/movenet/singlepose/thunder/4，fp16 权重、int32 输入，与离线参考的 fp32 TFLite 是同一模型的两份官方转换；逐文件 sha-256 见结果文本），后端固定顺序 WebGL → WASM；预处理与离线参考协议一致（翻转→等比缩放补边至 256²→原始 0–255 取整输入），每帧全帧推理（无裁剪跟踪），下游为同一套 TimeFilter＋上臂角度计算 · 冷下载为绕过浏览器缓存的真实下载（同 Step-5 页的既定偏差）· 模型字节写入同一 pose-models-v1 缓存并逐文件校验 SHA-256。<br>修复披露（2026-11-11）：第一次真机运行在第二段启动时因 Worker 探活超时中止，已修（第二段启动超时放宽至 init 30 秒 / 首帧 20 秒，运行期逐帧 1000ms 超时未动）；第二次真机运行（15:15）两段均只呈现 1 帧——本页帧泵的新鲜度规则未含正式 App 的同式规则与 Apple 停滞逃逸，第一帧之后被饿死，该次运行无效、不消耗设备门；帧泵已按正式 App useAdaptivePose 的同式新鲜度规则修复（mediaTime/currentTime 递增驱动、decoded 仅作仪表、含 Apple 停滞逃逸），并新增仪器有效性门：呈现帧过低时结论只读作「无效运行」，不再误报为未达到。第三次真机运行（18:34）死于加载期：加载阶段的两次打开仍用默认 init 12 秒，而本机 Full 冷初始化实测 11,731ms 只差一线，4G 下溢出且错误无阶段标注。随后 Codex 对抗审查给出 NOT SAFE：计数完整性在 Full 通道饿死时仍可假通过（只查相邻更新间隔、推理报错不否决）；提交时钟在两通道都忙时仍推进，与正式 App 口径不一致；零完成帧且呈现达标时判定生成崩溃；全局无效对分段卡片的「未达到」压制不完整且 overall 可为真；饥饿无早期诊断出口、取帧无单独时限。本轮已一并修复：加载冷/热与两段共四处打开统一 init 30 秒 / 首帧 20 秒且全部带阶段标注；计数完整性计入段首/段尾静默、要求计数器更新数与 Full 成功帧数逐段相等、任一 Full 推理错误即不成立；提交时钟仅当至少一个通道接受新画面才推进（每通道另有自己的提交/完成时钟，系双通道刻意适配，已在代码注释中写明）；零完成帧显式记因不再崩溃、部分失败后结果文本仍可生成；全局无效在渲染任何卡片之前算出，压制全部分段卡片的通道「未达到」标签且 overall 恒假；每段开始约 10 秒设仪器健康检查（呈现近乎为 0 或无任何通道完成一帧即中止本段、整场判无效并附诊断快照；第一段无效不再进入冷却与第二段）；createImageBitmap 取帧单独设 3 秒限、与 Worker 响应超时独立；非有限 mediaTime 按停滞处理不清除看门狗；移植正式 App 的回调消费防护。本轮修复经 Node-VM 函数级预飞测试（饥饿通道、零完成帧、单段无效、正常通过四类夹具）验证后才重新部署；桌面预飞不能证明真机相机行为，重跑仍是真机确认。冻结判定线未动。</footer>
+<footer>MoveMate Thunder 设备门（候选规格 candidate-control-thunder v1 §7，2026-11-09 冻结）· 组合配置：Full = 正式 App 相同的 pose.worker 与传输层（Worker，GPU delegate 优先、失败回退 CPU）＋ 正式 App 未改动的锤式弯举计数器（AdaptiveRecognition 打包）；Thunder = TFJS 4.22 执行 MoveNet Thunder 的 TFHub 官方 TFJS 部署件（google/tfjs-model/movenet/singlepose/thunder/4，fp16 权重、int32 输入，与离线参考的 fp32 TFLite 是同一模型的两份官方转换；逐文件 sha-256 见结果文本），后端固定顺序 WebGL → WASM；预处理与离线参考协议一致（翻转→等比缩放补边至 256²→原始 0–255 取整输入），每帧全帧推理（无裁剪跟踪），下游为同一套 TimeFilter＋上臂角度计算 · 冷下载为绕过浏览器缓存的真实下载（同 Step-5 页的既定偏差）· 模型字节写入同一 pose-models-v1 缓存并逐文件校验 SHA-256。<br>修复披露（2026-11-11）：第一次真机运行在第二段启动时因 Worker 探活超时中止，已修（第二段启动超时放宽至 init 30 秒 / 首帧 20 秒，运行期逐帧 1000ms 超时未动）；第二次真机运行（15:15）两段均只呈现 1 帧——本页帧泵的新鲜度规则未含正式 App 的同式规则与 Apple 停滞逃逸，第一帧之后被饿死，该次运行无效、不消耗设备门；帧泵已按正式 App useAdaptivePose 的同式新鲜度规则修复（mediaTime/currentTime 递增驱动、decoded 仅作仪表、含 Apple 停滞逃逸），并新增仪器有效性门：呈现帧过低时结论只读作「无效运行」，不再误报为未达到。第三次真机运行（18:34）死于加载期：加载阶段的两次打开仍用默认 init 12 秒，而本机 Full 冷初始化实测 11,731ms 只差一线，4G 下溢出且错误无阶段标注。随后 Codex 对抗审查给出 NOT SAFE：计数完整性在 Full 通道饿死时仍可假通过（只查相邻更新间隔、推理报错不否决）；提交时钟在两通道都忙时仍推进，与正式 App 口径不一致；零完成帧且呈现达标时判定生成崩溃；全局无效对分段卡片的「未达到」压制不完整且 overall 可为真；饥饿无早期诊断出口、取帧无单独时限。本轮已一并修复：加载冷/热与两段共四处打开统一 init 30 秒 / 首帧 20 秒且全部带阶段标注；计数完整性计入段首/段尾静默、要求计数器更新数与 Full 成功帧数逐段相等、任一 Full 推理错误即不成立；提交时钟仅当至少一个通道接受新画面才推进（每通道另有自己的提交/完成时钟，系双通道刻意适配，已在代码注释中写明）；零完成帧显式记因不再崩溃、部分失败后结果文本仍可生成；全局无效在渲染任何卡片之前算出，压制全部分段卡片的通道「未达到」标签且 overall 恒假；每段开始约 10 秒设仪器健康检查（呈现近乎为 0 或无任何通道完成一帧即中止本段、整场判无效并附诊断快照；第一段无效不再进入冷却与第二段）；createImageBitmap 取帧单独设 3 秒限、与 Worker 响应超时独立；非有限 mediaTime 按停滞处理不清除看门狗；移植正式 App 的回调消费防护。本轮修复经 Node-VM 函数级预飞测试（饥饿通道、零完成帧、单段无效、正常通过四类夹具）验证后才重新部署；桌面预飞不能证明真机相机行为，重跑仍是真机确认。冻结判定线未动。<br>下载容错披露（2026-11-11）：第四次真机运行（19:32）冷下载停滞逾两分钟、第五次（21:31）冷下载直接 Load failed——两次都死在加载期、读到本机缓存之前，均非设备门判定。本轮已改：两个模型的冷下载改为流式下载，状态行实时显示已下载量与当前速度；单次尝试连续 30 秒无新数据判停滞失败；失败自动重试最多 3 次（间隔 1 秒、3 秒）；三次全败则改用本机 pose-models-v1 缓存中已校验的字节继续全流程（冷初始化照常测、热加载照常进行），并在加载卡与结果文本中如实披露「冷下载失败、已跳过、时间未测」；冷下载与缓存都不可得时才止步，并提示换到网络更好的环境重试。冷下载耗时只是诊断记录，不是冻结判定线（判定线仍为组合段滚动帧率与延迟 p95、热加载比、内存、计数完整性与离线平价），本轮未动任何冻结判定线。</footer>
 </main>
 <script src="/pose/step5-tracker.js"></script>
 <script type="module">
@@ -127,15 +127,89 @@ async function sha256Hex(buf) {
   return [...new Uint8Array(d)].map(n => n.toString(16).padStart(2, '0')).join('');
 }
 
+/* ---- 冷下载容错（2026-11-11，attempt 4/5 教训）：冷下载改为流式读取、状态行
+ * 实时显示已下载量与速度；单次尝试连续 DL_STALL_MS 无任何新数据判停滞失败；
+ * 失败（网络错误/HTTP 错误/大小或 SHA-256 不符/停滞）自动重试，最多
+ * DL_ATTEMPTS 次，间隔 1 秒、3 秒；三次全败则回退本机缓存（见
+ * coldDownloadOutcome）。冷下载耗时只是报告诊断项，不是冻结判定线。 ---- */
+const DL_STALL_MS = 30000;
+const DL_ATTEMPTS = 3;
+const DL_BACKOFF_MS = [1000, 3000];
+const sleepMs = ms => new Promise(r => setTimeout(r, ms));
+async function fetchStreamed(url, onProgress) {
+  const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  let headTimer = ctrl ? setTimeout(() => { try { ctrl.abort(); } catch {} }, DL_STALL_MS) : null;
+  let r;
+  try {
+    r = await fetch(url, { cache: 'no-store', signal: ctrl ? ctrl.signal : undefined });
+  } catch (e) {
+    if (headTimer) clearTimeout(headTimer);
+    if (e && e.name === 'AbortError') throw new Error('下载停滞：' + (DL_STALL_MS / 1000) + ' 秒无响应');
+    throw e;
+  }
+  if (headTimer) { clearTimeout(headTimer); headTimer = null; }
+  if (!r.ok) throw new Error('下载失败 ' + url + ' HTTP ' + r.status);
+  if (!r.body || typeof r.body.getReader !== 'function') {
+    const buf = await r.arrayBuffer();
+    if (onProgress) onProgress(buf.byteLength);
+    return buf;
+  }
+  const reader = r.body.getReader();
+  const chunks = []; let received = 0;
+  for (;;) {
+    let timer = null;
+    const stall = new Promise((_, rej) => { timer = setTimeout(() => { try { reader.cancel(); } catch {} rej(new Error('下载停滞：' + (DL_STALL_MS / 1000) + ' 秒无新数据')); }, DL_STALL_MS); });
+    let res;
+    try { res = await Promise.race([reader.read(), stall]); }
+    finally { if (timer) clearTimeout(timer); }
+    if (res.done) break;
+    chunks.push(res.value); received += res.value.byteLength;
+    if (onProgress) onProgress(received);
+  }
+  const buf = new ArrayBuffer(received);
+  const view = new Uint8Array(buf); let off = 0;
+  for (const c of chunks) { view.set(c, off); off += c.byteLength; }
+  return buf;
+}
+async function fetchColdWithRetries(label, frac, totalBytes, once) {
+  let lastErr = null;
+  for (let attempt = 1; attempt <= DL_ATTEMPTS; attempt++) {
+    const t0 = performance.now();
+    try {
+      const data = await once(received => {
+        const dt = (performance.now() - t0) / 1000;
+        const speed = dt >= 0.25 ? (received / 1e6) / dt : 0;
+        setStatus(label + '：冷下载中 ' + mb(received) + ' / ' + mb(totalBytes) + ' MB' + (speed > 0 ? ' · ' + speed.toFixed(1) + ' MB/s' : '') + '（第 ' + attempt + '/' + DL_ATTEMPTS + ' 次）…', frac);
+      });
+      return { data, ms: performance.now() - t0, attempts: attempt, error: null };
+    } catch (e) {
+      lastErr = e;
+      if (attempt < DL_ATTEMPTS) {
+        setStatus(label + '：冷下载第 ' + attempt + ' 次失败（' + (e && e.message ? e.message : String(e)) + '），' + (DL_BACKOFF_MS[attempt - 1] / 1000) + ' 秒后重试…', frac);
+        await sleepMs(DL_BACKOFF_MS[attempt - 1]);
+      }
+    }
+  }
+  return { data: null, ms: null, attempts: DL_ATTEMPTS, error: lastErr };
+}
+/* 冷下载收尾裁决（纯函数，预飞可测）：冷下载成功 → measured（时间/速度入册）；
+ * 冷下载失败但本机缓存有已校验字节 → cache-fallback（继续全流程，冷下载记
+ * 失败/已跳过、时间未测，绝不编造时长与速度）；两者皆无 → stop（明确止步）。 */
+function coldDownloadOutcome(coldOk, hasCache) {
+  if (coldOk) return 'measured';
+  return hasCache ? 'cache-fallback' : 'stop';
+}
+
 /* ---- Full 模型字节：与 Step-5 页/正式 App 相同（分片拼合→校验→写缓存；读回复验） ---- */
-async function fetchModelCold(item) {
+async function fetchModelColdOnce(item, onProgress) {
   const cache = await caches.open(CACHE_NAME);
   await cache.delete(item.src);
   const chunks = [];
+  let base = 0;
   for (const part of item.parts || [item.src]) {
-    const r = await fetch(part, { cache: 'no-store' });
-    if (!r.ok) throw new Error('下载失败 ' + part + ' HTTP ' + r.status);
-    chunks.push(await r.arrayBuffer());
+    const off0 = base;
+    const buf = await fetchStreamed(part, n => { if (onProgress) onProgress(off0 + n); });
+    chunks.push(buf); base += buf.byteLength;
   }
   const bytes = new ArrayBuffer(chunks.reduce((s, c) => s + c.byteLength, 0));
   const view = new Uint8Array(bytes); let off = 0;
@@ -157,15 +231,16 @@ async function readModelCache(item) {
 }
 
 /* ---- Thunder 模型字节：逐文件下载（no-store）→逐文件校验→写同一缓存；读回逐文件复验 ---- */
-async function fetchThunderCold() {
+async function fetchThunderColdOnce(onProgress) {
   const cache = await caches.open(CACHE_NAME);
   const files = new Map();
+  let base = 0;
   for (const f of THUNDER_FILES) {
     const url = THUNDER_BASE + f.path;
     await cache.delete(url);
-    const r = await fetch(url, { cache: 'no-store' });
-    if (!r.ok) throw new Error('Thunder 下载失败 ' + f.path + ' HTTP ' + r.status);
-    const buf = await r.arrayBuffer();
+    const off0 = base;
+    const buf = await fetchStreamed(url, n => { if (onProgress) onProgress(off0 + n); });
+    base += buf.byteLength;
     if (buf.byteLength !== f.bytes) throw new Error('Thunder 文件大小校验失败 ' + f.path);
     if (await sha256Hex(buf) !== f.sha256) throw new Error('Thunder 文件完整性校验失败 ' + f.path);
     files.set(f.path, buf);
@@ -648,12 +723,32 @@ const item = MODELS.full;
 const out = { label: item.label, mb: mb(item.bytes)};
 R.fullLoad = out;
 setStatus('Full：冷下载中（' + mb(item.bytes) + ' MB）…', 0);
-let t = performance.now();
-const bytes = await fetchModelCold(item);
-out.coldDownloadMs = performance.now() - t;
-out.downloadMBs = item.bytes / 1e6 / (out.coldDownloadMs / 1000);
+const cold = await fetchColdWithRetries('Full', 0, item.bytes, onP => fetchModelColdOnce(item, onP));
+const preCached = cold.data ? null : await readModelCache(item);
+const coldOutcome = coldDownloadOutcome(!!cold.data, !!preCached);
+if (coldOutcome === 'stop') {
+throw new Error('Full 模型下载失败（已重试 ' + DL_ATTEMPTS + ' 次，最后错误：' + (cold.error && cold.error.message ? cold.error.message : String(cold.error)) + '），且本机没有缓存副本——首次运行必须先成功下载一次模型。请换到网络更好的环境（或连接 WiFi）后重新打开本页。');
+}
+let bytes;
+if (coldOutcome === 'measured') {
+out.coldSkipped = false;
+out.coldAttempts = cold.attempts;
+out.coldDownloadMs = cold.ms;
+out.downloadMBs = item.bytes / 1e6 / (cold.ms / 1000);
+bytes = cold.data;
+} else {
+/* attempt 4/5 的教训：宿舍 4G 下冷下载可停滞数分钟或直接 Load failed，页面
+ * 死在读到本机缓存之前——而字节早已由正式 App 与此前运行写入同一
+ * pose-models-v1 缓存。冷下载只是诊断项、不是冻结判定线：失败后改用缓存
+ * 字节继续全流程，记录为失败/已跳过、时间未测，绝不编造时长与速度。 */
+out.coldSkipped = true;
+out.coldAttempts = cold.attempts;
+out.coldError = cold.error && cold.error.message ? cold.error.message : String(cold.error);
+bytes = preCached;
+setStatus('Full：冷下载失败，已改用本机缓存的模型字节继续…', 0.01);
+}
 setStatus('Full：冷初始化中（Worker）…', 0.02);
-t = performance.now();
+let t = performance.now();
 /* 加载期打开与两段统一放宽到 init 30 秒 / 首帧 20 秒并带阶段标注（第三次真机
  * 运行的教训：本机 Full 冷初始化实测 11,731ms，与旧默认 12 秒只差一线，4G 下
  * 溢出后页面死在加载期且错误无阶段标注；放宽的只是启动脚手架，运行期逐帧
@@ -684,12 +779,29 @@ const totalBytes = THUNDER_FILES.reduce((s, f) => s + f.bytes, 0);
 const out = { label: 'Thunder（MoveNet · TFJS）', mb: mb(totalBytes), files: THUNDER_FILES.length};
 R.thunderLoad = out;
 setStatus('Thunder：冷下载中（' + mb(totalBytes) + ' MB，' + THUNDER_FILES.length + ' 个文件）…', 0.06);
-let t = performance.now();
-const files = await fetchThunderCold();
-out.coldDownloadMs = performance.now() - t;
-out.downloadMBs = totalBytes / 1e6 / (out.coldDownloadMs / 1000);
+const cold = await fetchColdWithRetries('Thunder', 0.06, totalBytes, onP => fetchThunderColdOnce(onP));
+const preCachedFiles = cold.data ? null : await readThunderCache();
+const coldOutcome = coldDownloadOutcome(!!cold.data, !!preCachedFiles);
+if (coldOutcome === 'stop') {
+throw new Error('Thunder 模型下载失败（已重试 ' + DL_ATTEMPTS + ' 次，最后错误：' + (cold.error && cold.error.message ? cold.error.message : String(cold.error)) + '），且本机没有缓存副本——首次运行必须先成功下载一次模型。请换到网络更好的环境（或连接 WiFi）后重新打开本页。');
+}
+let files;
+if (coldOutcome === 'measured') {
+out.coldSkipped = false;
+out.coldAttempts = cold.attempts;
+out.coldDownloadMs = cold.ms;
+out.downloadMBs = totalBytes / 1e6 / (cold.ms / 1000);
+files = cold.data;
+} else {
+/* 同 Full：冷下载三败后改用本机缓存字节继续，披露口径一致（见 loadFull）。 */
+out.coldSkipped = true;
+out.coldAttempts = cold.attempts;
+out.coldError = cold.error && cold.error.message ? cold.error.message : String(cold.error);
+files = preCachedFiles;
+setStatus('Thunder：冷下载失败，已改用本机缓存的模型字节继续…', 0.08);
+}
 setStatus('Thunder：冷初始化中（选择后端 WebGL → WASM）…', 0.1);
-t = performance.now();
+let t = performance.now();
 out.backend = await setupThunderBackend();
 let model = await loadGraphModel(thunderIOHandler(files));
 const scorer0 = new ThunderScorer();
@@ -734,20 +846,24 @@ return cardEl(h);
 function renderLoadCards() {
 const f = R.fullLoad, th = R.thunderLoad;
 let h = '<h2>加载 · Full（计数）</h2><p class="size">模型 ' + f.mb + ' MB · 路径 ' + f.mode + '（Worker · ' + f.delegate + '）</p><div class="grid">' +
-metric('冷下载（真实网络）', sec(f.coldDownloadMs), '秒') +
-metric('下载速度', f.downloadMBs.toFixed(1), 'MB/s') +
+(f.coldSkipped
+? metric('冷下载（真实网络）', '失败，已跳过', '') + metric('下载速度', '未测', '')
+: metric('冷下载（真实网络）', sec(f.coldDownloadMs), '秒') + metric('下载速度', f.downloadMBs.toFixed(1), 'MB/s')) +
 metric('冷初始化（Worker 建模+探活帧）', Math.round(f.coldInitMs), 'ms') +
 metric('热加载（缓存+初始化）', Math.round(f.warmMs), 'ms') + '</div>';
+if (f.coldSkipped) h += '<div class="series"><b>冷下载披露：</b>冷下载重试 ' + f.coldAttempts + ' 次均失败（最后错误：' + f.coldError + '），本次改用本机缓存的模型字节完成冷初始化与全部后续流程；冷下载耗时记为未测。冷下载只是诊断记录，不是冻结判定线。</div>';
 $('cards').appendChild(cardEl(h));
 const ratio = th.warmMs / f.warmMs;
 R.warmRatio = ratio;
 h = '<h2>加载 · Thunder（评分）</h2><p class="size">TFJS 部署包 ' + th.mb + ' MB（' + th.files + ' 个文件，逐个 SHA-256 校验通过）· 后端 ' + th.backend + ' · TFHub 官方 TFJS 部署件（fp16 权重；离线参考 TFLite sha-256 ' + THUNDER_TFLITE_SHA256.slice(0, 8) + '…）</p><div class="grid">' +
-metric('冷下载（真实网络）', sec(th.coldDownloadMs), '秒') +
-metric('下载速度', th.downloadMBs.toFixed(1), 'MB/s') +
+(th.coldSkipped
+? metric('冷下载（真实网络）', '失败，已跳过', '') + metric('下载速度', '未测', '')
+: metric('冷下载（真实网络）', sec(th.coldDownloadMs), '秒') + metric('下载速度', th.downloadMBs.toFixed(1), 'MB/s')) +
 metric('冷初始化（后端+建模+首帧）', Math.round(th.coldInitMs), 'ms') +
 metric('热加载（缓存+初始化+首帧）', Math.round(th.warmMs), 'ms') +
 metric('热加载比 Full（线 ≤1.5 倍）', ratio.toFixed(2), '倍') + '</div>' +
 '<div class="series"><b>热加载判定：</b>' + (ratio <= 1.5? '达到': '未达到——Thunder 热加载是 Full 的 ' + ratio.toFixed(2) + ' 倍，超过 1.5 倍线') + '</div>';
+if (th.coldSkipped) h += '<div class="series"><b>冷下载披露：</b>冷下载重试 ' + th.coldAttempts + ' 次均失败（最后错误：' + th.coldError + '），本次改用本机缓存的模型字节完成冷初始化与全部后续流程；冷下载耗时记为未测。冷下载只是诊断记录，不是冻结判定线。</div>';
 $('cards').appendChild(cardEl(h));
 }
 function perfGrid(p, durS) {
@@ -846,10 +962,14 @@ L.push('「数值平价（离线前置）」' + (PARITY.pending? '未回填': (P
 if (!PARITY.pending) for (const c of PARITY.clips) L.push(' ' + c.id + '：右侧 n=' + c.right.n + ' 中位数 ' + c.right.med + '° / p90 ' + c.right.p90 + '°；左侧 n=' + c.left.n + ' 中位数 ' + c.left.med + '° / p90 ' + c.left.p90 + '°（线：中位数 ≤3°、p90 ≤8°，每侧）');
 L.push('');
 L.push('「加载 · Full」模型 ' + f.mb + ' MB · 路径 ' + f.mode + '（Worker · ' + f.delegate + '）');
-L.push('冷下载：' + sec(f.coldDownloadMs) + ' 秒（' + f.downloadMBs.toFixed(1) + ' MB/s，大小+SHA-256 校验通过）');
+L.push(f.coldSkipped
+? '冷下载：失败（网络，已重试 ' + f.coldAttempts + ' 次；最后错误：' + f.coldError + '），已改用本机缓存字节继续；冷下载时间未测（诊断项，非判定线）'
+: '冷下载：' + sec(f.coldDownloadMs) + ' 秒（' + f.downloadMBs.toFixed(1) + ' MB/s，大小+SHA-256 校验通过）');
 L.push('冷初始化：' + Math.round(f.coldInitMs) + ' ms；热加载（缓存 ' + Math.round(f.cacheReadMs) + ' ms + 初始化）：' + Math.round(f.warmMs) + ' ms');
 L.push('「加载 · Thunder」TFJS 包 ' + th.mb + ' MB（' + th.files + ' 个文件，逐个 SHA-256 校验通过；TFHub 官方部署件 google/tfjs-model/movenet/singlepose/thunder/4，fp16 权重；离线平价参考 TFLite sha-256 ' + THUNDER_TFLITE_SHA256 + '）· 后端 ' + th.backend);
-L.push('冷下载：' + sec(th.coldDownloadMs) + ' 秒（' + th.downloadMBs.toFixed(1) + ' MB/s）');
+L.push(th.coldSkipped
+? '冷下载：失败（网络，已重试 ' + th.coldAttempts + ' 次；最后错误：' + th.coldError + '），已改用本机缓存字节继续；冷下载时间未测（诊断项，非判定线）'
+: '冷下载：' + sec(th.coldDownloadMs) + ' 秒（' + th.downloadMBs.toFixed(1) + ' MB/s）');
 L.push('冷初始化（后端+建模+首帧）：' + Math.round(th.coldInitMs) + ' ms；热加载（缓存 ' + Math.round(th.cacheReadMs) + ' ms + 初始化+首帧）：' + Math.round(th.warmMs) + ' ms；为 Full 热加载的 ' + R.warmRatio.toFixed(2) + ' 倍（线 ≤1.5）');
 L.push('');
 const segLine = (name, durS, p) => {
