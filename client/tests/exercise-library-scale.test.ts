@@ -44,7 +44,7 @@ test('every official ID has an honest separate documentation decision; custom ID
 });
 
 test('alternating illustrations show both sides and mark only the moving side',()=>{
-  for(const id of ['exdb:0388','exdb:0415','exdb:0387','exdb:1648','exdb:1739']){
+  for(const id of ['exdb:1648','exdb:1739']){
     const recipe=diagrams.entries[id] as {phasePoseIndices:number[];poseArrows:number[][][]};
     assert.deepEqual(recipe.phasePoseIndices,[0,1,0,2,0]);
     assert.equal(recipe.poseArrows[1].length,1);assert.equal(recipe.poseArrows[2].length,1);
@@ -64,6 +64,21 @@ test('alternating illustrations show both sides and mark only the moving side',(
     assert.equal(mediaFor(id)!.images.length,2);
     assert.equal(mediaFor(id)!.sources[0].name,source);
     assert.ok(exercises.find(e=>e.id===id)!.form!.includes('另一侧镜像'));
+  }
+  // Batch 113 replaced the 0387, 0388 and 0415 illustrations with verified
+  // generated photo pairs: each pair freezes one working side mid-alternation
+  // and the entry instructions state the other arm repeats the movement, so
+  // the both-sides guard now checks the photo record instead of the deleted
+  // illustration entries.
+  for(const id of ['exdb:0387','exdb:0388','exdb:0415']){
+    assert.equal(diagrams.entries[id],undefined,'Batch 113 removed the '+id+' illustration when the photo pair replaced it');
+    const m=mediaFor(id)!;
+    assert.equal(mediaIndex[id].kind,'photo',id);
+    assert.equal(m.images.length,2,id);
+    assert.equal(m.sources[0].name,'AI 生成 / ai-codex-replaceIllus-'+id.slice(5),id);
+    assert.ok(exercises.find(e=>e.id===id)!.instructions.some(s=>s.includes('另一侧')),id);
+    assert.equal(m.video,undefined,'Two still frames must never be presented as a continuous video');
+    assert.equal(exercises.find(e=>e.id===id)!.planCamera,undefined);
   }
 });
 
