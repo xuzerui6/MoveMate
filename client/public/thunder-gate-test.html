@@ -72,7 +72,7 @@ footer{color:#888;font-size:12.5px;line-height:1.6;margin-top:22px}
 <button id="copy" class="secondary">复制结果</button>
 <p id="errbox" class="err"></p>
 
-<footer>MoveMate Thunder 设备门（候选规格 candidate-control-thunder v1 §7，2026-11-09 冻结）· 组合配置：Full = 正式 App 相同的 pose.worker 与传输层（Worker，GPU delegate 优先、失败回退 CPU）＋ 正式 App 未改动的锤式弯举计数器（AdaptiveRecognition 打包）；Thunder = TFJS 4.22 执行 MoveNet Thunder 的 TFHub 官方 TFJS 部署件（google/tfjs-model/movenet/singlepose/thunder/4，fp16 权重、int32 输入，与离线参考的 fp32 TFLite 是同一模型的两份官方转换；逐文件 sha-256 见结果文本），后端固定顺序 WebGL → WASM；预处理与离线参考协议一致（翻转→等比缩放补边至 256²→原始 0–255 取整输入），每帧全帧推理（无裁剪跟踪），下游为同一套 TimeFilter＋上臂角度计算 · 冷下载为绕过浏览器缓存的真实下载（同 Step-5 页的既定偏差）· 模型字节写入同一 pose-models-v1 缓存并逐文件校验 SHA-256。</footer>
+<footer>MoveMate Thunder 设备门（候选规格 candidate-control-thunder v1 §7，2026-11-09 冻结）· 组合配置：Full = 正式 App 相同的 pose.worker 与传输层（Worker，GPU delegate 优先、失败回退 CPU）＋ 正式 App 未改动的锤式弯举计数器（AdaptiveRecognition 打包）；Thunder = TFJS 4.22 执行 MoveNet Thunder 的 TFHub 官方 TFJS 部署件（google/tfjs-model/movenet/singlepose/thunder/4，fp16 权重、int32 输入，与离线参考的 fp32 TFLite 是同一模型的两份官方转换；逐文件 sha-256 见结果文本），后端固定顺序 WebGL → WASM；预处理与离线参考协议一致（翻转→等比缩放补边至 256²→原始 0–255 取整输入），每帧全帧推理（无裁剪跟踪），下游为同一套 TimeFilter＋上臂角度计算 · 冷下载为绕过浏览器缓存的真实下载（同 Step-5 页的既定偏差）· 模型字节写入同一 pose-models-v1 缓存并逐文件校验 SHA-256。<br>修复披露（2026-11-11）：第一次真机运行在第二段启动时因 Worker 探活超时中止，已修（第二段启动超时放宽至 init 30 秒 / 首帧 20 秒，运行期逐帧 1000ms 超时未动）；第二次真机运行（15:15）两段均只呈现 1 帧——本页帧泵的新鲜度规则未含正式 App 的同式规则与 Apple 停滞逃逸，第一帧之后被饿死，该次运行无效、不消耗设备门；帧泵已按正式 App useAdaptivePose 的同式新鲜度规则修复（mediaTime/currentTime 递增驱动、decoded 仅作仪表、含 Apple 停滞逃逸），并新增仪器有效性门：呈现帧过低时结论只读作「无效运行」，不再误报为未达到。冻结判定线未动。</footer>
 </main>
 <script src="/pose/step5-tracker.js"></script>
 <script type="module">
@@ -261,6 +261,9 @@ async function openWorkerTransport(bytes, timeouts = { init: 12000, firstFrame: 
   throw lastErr || new Error('Worker 初始化失败');
 }
 
+/* 与正式 App useAdaptivePose 相同的 Apple 相机流判定（poseCompatibility.usesMainThreadLite 同式） */
+const APPLE_CAMERA = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
 /* 与正式 App poseCompatibility.decodedFrameCount 相同 */
 function decodedFrameCount(standard, webkit) {
   if (typeof standard === 'number' && standard > 0) return standard;
@@ -363,7 +366,12 @@ throw new Error('Thunder 后端初始化失败（WebGL 与 WASM 均不可用）'
 }
 
 /* ---- 分段帧泵：调度与 Step-5 v2 页/正式 App 相同（rvfc 驱动、只提交新画面、
-* 每通道串行在途一帧）；Full 通道结果逐帧喂正式计数器（计数完整性检查）。 ---- */
+* 每通道串行在途一帧）；Full 通道结果逐帧喂正式计数器（计数完整性检查）。
+* 新鲜度与正式 App useAdaptivePose 相同（2026-11-11 自 Step-5 v2 修复页移植）：
+* 由 mediaTime/currentTime 严格递增驱动；decoded 计数只作仪表，且仅在「无 metadata
+* 且非 Apple 相机流」时才作门；含 Apple 停滞逃逸（rVFC 的 mediaTime 停滞 >500ms
+* 时改走 rAF + currentTime）。此前本页的旧规则在 iOS 上第一帧之后即饿死
+* （2026-11-11 第二次真机运行两段均只测到 1 帧、无效，见页脚披露）。 ---- */
 function segmentRun(opts) {
 return new Promise(resolveRun => {
 const durS = opts.durS;
@@ -372,6 +380,7 @@ const F = mkChan();
 const T = opts.thunder? mkChan(): null;
 let presented = 0;
 let lastMedia = -1, lastDecoded = -1, origin = null, stopped = false, forceRaf = false, callbackId = 0, fallbackTimer = null;
+let lastSubmittedAt = -Infinity; /* 最近一次新画面被接受（分发给通道）的时刻，供 Apple 停滞逃逸判定 */
 let frameId = 0;
 const trk = opts.tracker? { updates: 0, errors: 0, maxGapMs: 0, stalls: 0, lastAt: null}: null;
 const memSamples = [];
@@ -411,15 +420,23 @@ setStatus(phaseText(el) + ' ' + Math.min(el, durS).toFixed(0) + ' / ' + durS + '
 function onFrame(now, metadata) {
 if (stopped) return;
 if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null;}
+/* 与正式 App useAdaptivePose 相同的 Apple 逃逸：rVFC 的 mediaTime 停滞 >500ms 时改走 rAF + currentTime */
+if (APPLE_CAMERA && metadata && typeof metadata.mediaTime === 'number' && metadata.mediaTime <= lastMedia && now - lastSubmittedAt > 500) {
+forceRaf = true;
+metadata = undefined;
+}
 schedule();
 const decoded = decodedFrameCount(video.getVideoPlaybackQuality && video.getVideoPlaybackQuality().totalVideoFrames, video.webkitDecodedFrameCount);
 const media = metadata && typeof metadata.mediaTime === 'number'? metadata.mediaTime: video.currentTime;
-const fresh = Number.isFinite(media) && media > lastMedia && (!!metadata || decoded === null || decoded > lastDecoded);
-if (!fresh) return;
+/* 新鲜度与正式 App useAdaptivePose 相同：由 mediaTime/currentTime 严格递增驱动；
+ * decoded 计数只作仪表，且仅在「无 metadata 且非 Apple 相机流」时才作门（正式 App 同式）。 */
+if (!Number.isFinite(media) || media <= lastMedia) return;
+if (!metadata && !APPLE_CAMERA && decoded !== null && decoded <= lastDecoded) return;
 if (video.readyState < 2) return;
 presented++;
 if (decoded!== null) lastDecoded = decoded;
 lastMedia = media;
+lastSubmittedAt = performance.now();
 if (origin === null) origin = now - media * 1000;
 const capturedAt = Math.min(now, origin + media * 1000);
 /* Full 通道 */
@@ -494,6 +511,10 @@ function computePerf(raw, durS) {
 const frames = raw.frames.slice().sort((a, b) => a.capturedAt - b.capturedAt);
 const out = { completed: frames.length, presented: raw.presented, skippedBusy: raw.skippedBusy,
 submitted: raw.submitted, duplicates: raw.duplicates, errors: raw.errors, timeouts: raw.timeouts};
+/* 仪器有效性门（2026-11-11 新增，镜像 Step-5 v2 页）：呈现帧过低 ⇒ 帧泵未正常工作，
+ * 本次运行无效——结论只能读作「无效运行」，不得读作通道「未达到」。
+ * 门槛按时长比例：180 秒段 <300 帧、60 秒段 <100 帧（即 presented < durS × 5/3）。 */
+out.invalidRun = raw.presented < durS * 5 / 3;
 if (!frames.length) { out.empty = true; return out;}
 const t0 = frames[0].capturedAt;
 const rel = f => (f.capturedAt - t0) / 1000;
@@ -637,7 +658,7 @@ metric('热加载比 Full（线 ≤1.5 倍）', ratio.toFixed(2), '倍') + '</di
 $('cards').appendChild(cardEl(h));
 }
 function perfGrid(p, durS) {
-if (p.empty) return metric('持续推理', '无完成帧', '');
+if (p.empty) return metric('持续推理', p.invalidRun? '无完成帧——无效运行（帧泵未正常工作），本次测试无效': '无完成帧', '');
 return metric('新鲜帧处理率（' + durS + ' 秒平均）', p.freshAvg.toFixed(1), 'FPS') +
 metric('最低滚动 10 秒窗口（新鲜帧率）', p.minRolling === null? '不适用': p.minRolling.toFixed(1), 'FPS') +
 metric('末 30 秒新鲜帧率', p.final30Rate.toFixed(1), 'FPS') +
@@ -647,7 +668,9 @@ metric('错误 / 超时', p.errors + ' / ' + p.timeouts, '次');
 }
 function perfSeries(p, name) {
 if (p.empty) return '';
-return '<div class="series"><b>' + name + ' 判定：</b>' + (p.gateApplicable
+return '<div class="series"><b>' + name + ' 判定：</b>' + (p.invalidRun
+? '无效运行——帧泵未正常工作（呈现帧数过低），本次测试无效，不构成通道判定'
+: p.gateApplicable
 ? (p.pass? '达到——所有滚动窗口 ≥15 FPS 且 p95 ≤150ms': '未达到——' + p.failReasons.join('；'))
 : '时长不足，无完整窗口，不判定') +
 ' · 低于 15 的窗口 ' + p.windowsBelow + '/' + p.windowsTotal +
@@ -677,15 +700,19 @@ $('cards').appendChild(cardEl(h));
 }
 function computeVerdict() {
 const B = R.segB;
+/* 仪器有效性门：任一段呈现帧过低 ⇒ 整场无效运行，FPS 分项不作判定（见 computePerf 的 invalidRun） */
+const invalid = !!(R.segA.fullPerf.invalidRun || B.fullPerf.invalidRun || B.thunderPerf.invalidRun);
+R.invalidRun = invalid;
+const invalidDetail = '无效运行——帧泵未正常工作（呈现帧数过低：第一段 ' + R.segA.fullPerf.presented + ' 帧、第二段 ' + B.fullPerf.presented + ' 帧），不构成判定';
 const comps = [];
 comps.push({ name: '数值平价前置条件', state: PARITY.pending? 'na': (PARITY.pass? 'pass': 'fail'),
 detail: PARITY.pending? '平价数据未回填': (PARITY.pass? 'TFJS 执行与离线参考一致': 'TFJS 执行与离线参考不一致')});
-comps.push({ name: '组合段 Full 通道（帧率+延迟）', state: B.fullPerf.pass? 'pass': 'fail', detail: B.fullPerf.pass? '所有滚动窗口 ≥15 FPS 且 p95 ≤150ms': B.fullPerf.failReasons.join('；')});
-comps.push({ name: '组合段 Thunder 通道（帧率+延迟）', state: B.thunderPerf.pass? 'pass': 'fail', detail: B.thunderPerf.pass? '所有滚动窗口 ≥15 FPS 且 p95 ≤150ms': B.thunderPerf.failReasons.join('；')});
+comps.push({ name: '组合段 Full 通道（帧率+延迟）', state: invalid? 'na': (B.fullPerf.pass? 'pass': 'fail'), detail: invalid? invalidDetail: (B.fullPerf.pass? '所有滚动窗口 ≥15 FPS 且 p95 ≤150ms': B.fullPerf.failReasons.join('；'))});
+comps.push({ name: '组合段 Thunder 通道（帧率+延迟）', state: invalid? 'na': (B.thunderPerf.pass? 'pass': 'fail'), detail: invalid? invalidDetail: (B.thunderPerf.pass? '所有滚动窗口 ≥15 FPS 且 p95 ≤150ms': B.thunderPerf.failReasons.join('；'))});
 comps.push({ name: 'Thunder 热加载 ≤ Full 的 1.5 倍', state: R.warmRatio <= 1.5? 'pass': 'fail', detail: '实测 ' + R.warmRatio.toFixed(2) + ' 倍'});
 comps.push({ name: '内存不单调增长', state: B.memVerdict.state, detail: B.memVerdict.state === 'na'? '浏览器无此 API，未测': (B.memVerdict.state === 'pass'? '末段中位数 ≤ 首段 ×1.2': '末段中位数超过首段 ×1.2')});
 const integ = R.integrity;
-comps.push({ name: '计数完整性（页面口径）', state: integ.pass? 'pass': 'fail', detail: integ.detail});
+comps.push({ name: '计数完整性（页面口径）', state: invalid? 'na': (integ.pass? 'pass': 'fail'), detail: invalid? '无效运行——帧泵未正常工作，计数完整性无从成立': integ.detail});
 R.components = comps;
 const hardFail = comps.some(c => c.state === 'fail');
 const hasNa = comps.some(c => c.state === 'na');
@@ -726,12 +753,12 @@ const mv = B.memVerdict;
 L.push('内存：' + (mv.state === 'na'? '浏览器无 performance.memory，未测；运行完整结束无崩溃': '前30秒中位数 ' + mv.firstMed.toFixed(1) + ' MB → 末30秒中位数 ' + mv.lastMed.toFixed(1) + ' MB —— ' + (mv.state === 'pass'? '达到': '未达到')));
 L.push('内存采样（秒:MB）：' + B.memSamples.map(s => s.tS.toFixed(0) + ':' + (s.mb === null? '—': s.mb.toFixed(0))).join(' '));
 L.push('');
-L.push('「计数完整性（页面口径）」' + R.integrity.detail);
+L.push('「计数完整性（页面口径）」' + (R.invalidRun? '无效运行——帧泵未正常工作，计数完整性无从成立': R.integrity.detail));
 L.push('说明：本页能证明的是组合负载下计数通道持续工作、无报错、无 >2 秒停顿、无帧饥饿（提交/完成核算与重复提交计数）。两次现场做的组不是同一组动作，计数是否相同取决于两次实际做的次数；冻结方案中「同一组动作两种负载下计数完全一致」的严格形式需要相同输入，现场无法提供，不在本页结论内。');
 L.push('');
 L.push('「分项判定」');
 for (const c of R.components) L.push((c.state === 'pass'? '✓ ': c.state === 'fail'? '✗ ': '? ') + c.name + '：' + c.detail);
-L.push('总判定：' + (R.overall? '达到——结论限于「在本次测试的组合配置下可行」（Full Worker 计数 + Thunder TFJS/' + th.backend + ' 评分同时运行）': '未达到（见分项）'));
+L.push('总判定：' + (R.invalidRun? '无效运行——帧泵未正常工作（第一段呈现 ' + A.fullPerf.presented + ' 帧、第二段呈现 ' + B.fullPerf.presented + ' 帧，过低），本次运行没有测到有效数据，不构成未达到判定，设备门未被消耗；修复后重跑。': (R.overall? '达到——结论限于「在本次测试的组合配置下可行」（Full Worker 计数 + Thunder TFJS/' + th.backend + ' 评分同时运行）': '未达到（见分项）')));
 L.push('注：下载为绕过 HTTP 缓存的真实下载；视频只在本机处理，不上传。');
 return L.join('\n');
 }
@@ -832,7 +859,10 @@ renderSegCards();
 computeVerdict();
 const v = $('verdict');
 const fails = R.components.filter(c => c.state === 'fail');
-if (R.overall) {
+if (R.invalidRun) {
+v.className = 'verdict wait';
+v.textContent = '结论：无效运行——帧泵未正常工作（呈现帧数过低：第一段 ' + rawA.presented + ' 帧、第二段 ' + rawB.presented + ' 帧），没有测到有效数据；这不是未达到判定，设备门未被消耗。请把本页截图发回，我们修好后重跑。';
+} else if (R.overall) {
 v.className = 'verdict pass';
 v.textContent = '结论：达到——在本次测试的组合配置下可行（Full Worker 计数 + Thunder 评分同时运行）。' +
 (R.components.some(c => c.state === 'na')? '（注：' + R.components.filter(c => c.state === 'na').map(c => c.name).join('、') + ' 在本浏览器未测，见结果文本。）': '') + '请把本页截图发回。';
