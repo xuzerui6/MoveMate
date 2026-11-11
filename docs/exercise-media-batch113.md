@@ -30,7 +30,7 @@
 
 - 串行全套测试（本地，接入工作树）：client `test:repository` **534/534** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过（首跑 2 例为已知 miniflare 冷启动 flake，重跑 34/34）。测试维护三处（均为「图解被核验替换后守卫改写为校验新记录」，沿批次 34/112 先例，非规则放宽）：①`client/tests/exercise-library-scale.test.ts` 交替图解守卫——0387/0388/0415 移出图解配方循环（1648/1739 保留），新增照片记录守卫（图解配置已删、双帧、来源 `AI 生成 / ai-codex-replaceIllus-<id>`、正文含「另一侧」交替表述、无视频、planCamera 为空）；②`client/tests/exercise-media-batch4.test.ts` 中 0375 的「无演示」守卫——改写为校验批次 113 定版对（双帧 + 来源名）；③同文件批 4 目标计数 18 → 19（0375 由图解转为照片），附批次注记。
 - 登记校验：发布链计数四方一致：build 输出 1064 image entries；publish-media-metadata 输出 1064 records；publish-exercise-documentation 输出 complete 1064 / photos 1000 / illustrations 64 / pending 265（原始口径）；report 脚本 images 1064 / originalIds 64 / missing 265 / cameraImages 56 / cameraPending 空。
-- 集成提交 `待填`；GitHub CI 运行 **待填**。
-- 双站部署：生产 Version `待填`；预演 Version `待填`。
-- 在线核查：新图 24 张双站 sha256 **待填**；双站 attribution.json 条数 **待填**。
-- 「动伴进度」空间同轮同步（待填）。
+- 集成提交 `079c6a4`；GitHub CI 运行 43088768071 success。
+- 双站部署：生产 Version `7716e2c2-2345-4409-a303-1767eb878df5`；预演 Version `8b043a21-0857-418f-bfd6-445bed21e01c`（preview 分支 tip `1e75d99` = 0b7f29c + 合并本批 main；预演工作树复跑 client `test:repository` 534/534 通过后部署）。
+- 在线核查：新图 24 张双站 sha256 **48/48 一致**；双站 attribution.json 条目数 **1064**；被替换的旧图解文件在生产返回 404；预演四张测试页均 200。
+- 「动伴进度」空间同轮同步已派发（图解 64、照片 1000、批次 113 记录置顶）。
