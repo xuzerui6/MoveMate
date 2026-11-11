@@ -16883,6 +16883,222 @@
       ],
       "generated": true,
       "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0375",
+      "expectedName": "dumbbell pullover",
+      "sourceId": "ai-codex-replaceIllus-0375",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "4662d04eabb04f3b3a1bbaa407dd6a9548644744b60a8ee72a3af8988b7a5770",
+        "72319b5b0db5fdf5a65bdddc64b6af9e106ce7f5784a0065fd51549a4d7f6655"
+      ],
+      "phases": [
+        "沿凳仰卧，双手握一只哑铃于胸部上方。",
+        "哑铃沿弧线下放至头后。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0387",
+      "expectedName": "dumbbell seated alternate front raise",
+      "sourceId": "ai-codex-replaceIllus-0387",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "1e8aeef1e536e349fd2ff47a6aab183d4ac84909276160bfef41e68b89150fc1",
+        "296b1bdddb857461483555396babbd362e2ea5700512d1c1fe67e3d1a3632f96"
+      ],
+      "phases": [
+        "坐姿，双哑铃垂于身体两侧。",
+        "单臂前举至与地面平行，另一臂保持下垂。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0388",
+      "expectedName": "dumbbell seated alternate press",
+      "sourceId": "ai-codex-replaceIllus-0388",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "c11d736094894c9b1036b4b4988e18b08969b8574c0c3ef4bf0638402f4e356b",
+        "ae242e0f58cc7fe0efe72ff459d08d2c014458c1d30280a20c9a546b662d023e"
+      ],
+      "phases": [
+        "坐姿，双哑铃位于肩部高度，掌心向前。",
+        "单臂推举过头顶完全伸展，另一臂保持肩高。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0389",
+      "expectedName": "dumbbell seated bench extension",
+      "sourceId": "ai-codex-replaceIllus-0389",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "29242973544b2e11e49496ef3818983362180ea2344828d3b27ac2077985ed56",
+        "6abd672fd6fe5138422c369da4ef811163f05a6db0e98e014b1e4d19c75ca83f"
+      ],
+      "phases": [
+        "坐姿，双手握一只哑铃伸直于头顶上方。",
+        "哑铃下放至脑后，肘部靠近耳朵。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0390",
+      "expectedName": "dumbbell seated biceps curl (on stability ball)",
+      "sourceId": "ai-codex-replaceIllus-0390",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "0454efe61ba4b183315bd8331314b2f2437756b963031aa041cf9564a86ef3a3",
+        "60736863df3c7a5ea5c2a6a15139696cc28416b696c5375a28c67afd8e5788ab"
+      ],
+      "phases": [
+        "坐在稳定球上，双哑铃垂于体侧，掌心向前。",
+        "双臂弯举至肩部高度。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0392",
+      "expectedName": "dumbbell seated front raise",
+      "sourceId": "ai-codex-replaceIllus-0392",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "3b84e2aab1971e6941cfe2ffe5b3905c1d3b2210f28b2ed9a216fe2f66c7e94c",
+        "0f251956f00ba9cc58d68033abdad0842b031123628d59978f1a553d860cdeca"
+      ],
+      "phases": [
+        "坐姿，双哑铃位于大腿两侧。",
+        "双臂前举至肩部高度，掌心向下。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0394",
+      "expectedName": "dumbbell seated kickback",
+      "sourceId": "ai-codex-replaceIllus-0394",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "b138a9b7e5a0bcaeac199411a86e95bb6c20734add3a7480a1d7d3be6fa77809",
+        "a7211c720ce94b9d73b0139f6b9c799a30545ebf79272966efc34520806e0562"
+      ],
+      "phases": [
+        "坐姿俯身，双肘弯曲约90度，上臂贴于体侧。",
+        "双臂向后伸直。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0398",
+      "expectedName": "dumbbell seated one arm kickback",
+      "sourceId": "ai-codex-replaceIllus-0398",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "01cd4bd7659a96a160031ab440c2b93e6d677689adff060fb7a0c8bfba4c6dcd",
+        "4fac75f18395a8280cca0aeafa219a46f7c7c5999490f928ee950546d65198ce"
+      ],
+      "phases": [
+        "坐姿俯身，单手握哑铃，肘部弯曲，另一手扶膝。",
+        "单臂向后伸直。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0408",
+      "expectedName": "dumbbell side lying one hand raise",
+      "sourceId": "ai-codex-replaceIllus-0408",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "efa4accbbf7dd97726dd7f2697b00f6875c8aa95504149f3c5c1c3c5e6e550fa",
+        "8417286798ea23571fbbec048e044b659a772529648b729126859cee4ffd21bf"
+      ],
+      "phases": [
+        "侧卧，下侧手臂支撑头部，上手握哑铃置于髋侧。",
+        "上手直臂上举至肩部高度以上。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0411",
+      "expectedName": "dumbbell single leg squat",
+      "sourceId": "ai-codex-replaceIllus-0411",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "80d799be90d42c1d43e071291e1deef9514ba3bddd61a13020fad217198587ee",
+        "43e1c26f9bbd2335667aca27e0ae1e5408ced61d3534faf3fd952b468c3bb5e8"
+      ],
+      "phases": [
+        "单腿站立，另一腿向前伸展离地，双手各握一哑铃。",
+        "单腿深蹲，自由腿保持前伸离地。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0415",
+      "expectedName": "dumbbell standing alternate raise",
+      "sourceId": "ai-codex-replaceIllus-0415",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "5fe9933c0ce563ba4327bfdcdcf9550d837723dcd478432d8b55de9e51025feb",
+        "4634a121b4d4d6f8483533038d5812e8229c98a87aa8af6dacf9b56167a7e6f4"
+      ],
+      "phases": [
+        "站立，双哑铃垂于体侧，掌心朝向身体。",
+        "单臂侧举至与地面平行，掌心向下。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+    },
+    {
+      "exerciseId": "exdb:0425",
+      "expectedName": "dumbbell standing one arm reverse curl",
+      "sourceId": "ai-codex-replaceIllus-0425",
+      "sourceUrl": "",
+      "license": "AI-generated",
+      "author": "MoveMate Codex CLI generation",
+      "sourceSha256": [
+        "9c237f991efa2344ae25ae1f0984f28bd320f2e3df21f00f0a7c872907f27655",
+        "c744844c5e50c46ce4cf7a2da8aa85f63514a9a4bb5bb85944f53c8ce21ef3a9"
+      ],
+      "phases": [
+        "站立，单手正握哑铃垂于体侧，掌心向下。",
+        "正握弯举至肩前，上臂保持静止。"
+      ],
+      "generated": true,
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。"
     }
   ],
   "videos": [

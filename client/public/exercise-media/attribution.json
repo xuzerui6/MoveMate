@@ -3314,53 +3314,6 @@
         }
       ]
     },
-    "exdb:0375": {
-      "kind": "illustration",
-      "note": "头和躯干沿平凳支撑，双脚踩地；双手握一只哑铃，不是仅肩部横卧凳面。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0375-0.af3e7b8699ef.webp",
-          "bytes": 5776,
-          "sha256": "af3e7b8699ef4594710e5bcb3e0de69a8591b84f19525b4b58f561e66bbc4222",
-          "phase": "起始位置",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0375-1.40a3424b554b.webp",
-          "bytes": 6396,
-          "sha256": "40a3424b554b24d0e5d35321dfa3cb4d064fe5b679d5ac26ad9c90ed036374bc",
-          "phase": "关键阶段",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0375-2.af3e7b8699ef.webp",
-          "bytes": 5776,
-          "sha256": "af3e7b8699ef4594710e5bcb3e0de69a8591b84f19525b4b58f561e66bbc4222",
-          "phase": "控制回位",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0375",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "ecf15cce874851ff22d93e20782b5ec25ced6e9d41933f978e746bcef5e2293d",
-            "c65870a7902df7558e32e9bf72e2ea39943cf3caf4f5a83a90eb7002b99b1726",
-            "368ceb82ae9c47c35c4206cea07085349570158a2ce01e523f5387bbd67d6323"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
     "exdb:0475": {
       "kind": "illustration",
       "note": "正手单杠悬垂，双腿保持自然伸展抬向前方；不是屈膝举腿。 原创静态三阶段示意，不是连续视频。",
@@ -6434,136 +6387,6 @@
         }
       ]
     },
-    "exdb:0388": {
-      "kind": "illustration",
-      "note": "坐稳平凳、双脚着地，双手各持一铃、掌心朝前；一侧推顶另一侧留肩侧，放回后换侧，五帧分别显示两侧。 原创静态分阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0388-0.a8d02318045f.webp",
-          "bytes": 5364,
-          "sha256": "a8d02318045fc66aa2ed207f1578d299511fad560efd95f1fc5a6d75e420ca64",
-          "phase": "双铃肩侧准备",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0388-1.725ad6f06edd.webp",
-          "bytes": 6434,
-          "sha256": "725ad6f06edd25666153353f5aff9ba194e3a6b9c0887d1f0fddb5850cb0c2ae",
-          "phase": "一侧推过头顶",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0388-2.a8d02318045f.webp",
-          "bytes": 5364,
-          "sha256": "a8d02318045fc66aa2ed207f1578d299511fad560efd95f1fc5a6d75e420ca64",
-          "phase": "回到双铃肩侧",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0388-3.1f59968d25e9.webp",
-          "bytes": 6284,
-          "sha256": "1f59968d25e9777c8d3d271bec109bfae209f21c9694694257d3a7e547ec327a",
-          "phase": "另一侧推过头顶",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0388-4.a8d02318045f.webp",
-          "bytes": 5364,
-          "sha256": "a8d02318045fc66aa2ed207f1578d299511fad560efd95f1fc5a6d75e420ca64",
-          "phase": "回到准备位",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0388",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "81af84e3ab458622a3348d3567186d96f0ba0cc425418b9bf351cf31c9af70da",
-            "df2a24f2c0963fed0edf88e1da8bdebcb12391bf7a03b6713ae94ff1595e9b3a",
-            "6f5bcd52ee28eda76c740b8263210970ce1e307cb15663cc82c5e1cdc848d6b9",
-            "2064bc25a34d8bba54d5569f94534a594dc4973916ab05d77e57572abeba36a6",
-            "c7b6a5f204baac66c01cb9e6ca99780383c8e69a450774377bf47452f71e4409"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
-    "exdb:0415": {
-      "kind": "illustration",
-      "note": "站姿双手各持一铃，左右交替向身体侧方抬至肩高附近，每侧放回后换侧；五帧不冒充连续动画。 原创静态分阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0415-0.e63843fd7344.webp",
-          "bytes": 6514,
-          "sha256": "e63843fd7344c8a4ba98e91518e402b2bb325720d84e9271d5759db6edc97f8b",
-          "phase": "双铃体侧准备",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0415-1.6516b2a73ee7.webp",
-          "bytes": 6952,
-          "sha256": "6516b2a73ee7621da2c26199d28e4e7cb292d23f9895aa8885385ea58c84574c",
-          "phase": "一侧向侧方抬起",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0415-2.e63843fd7344.webp",
-          "bytes": 6514,
-          "sha256": "e63843fd7344c8a4ba98e91518e402b2bb325720d84e9271d5759db6edc97f8b",
-          "phase": "放回体侧",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0415-3.d02be6caee1a.webp",
-          "bytes": 7228,
-          "sha256": "d02be6caee1a98d656f86ae17bd39316e6d2e8ea6be25c4824847410ba2b0ed3",
-          "phase": "另一侧向侧方抬起",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0415-4.e63843fd7344.webp",
-          "bytes": 6514,
-          "sha256": "e63843fd7344c8a4ba98e91518e402b2bb325720d84e9271d5759db6edc97f8b",
-          "phase": "放回准备位",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0415",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "bceb5d996f3a08788b39a1fcc9353be255c990d8a07595b2357b6f08f2c33af8",
-            "9b1789c3e2cb54b361e13337b73811d766e46254999671616112ec2e9df54715",
-            "5d71314171e17adcc251fe4eb17bcf5eb60491f663941e476610f817a7febbf6",
-            "a01cd255f7343ac6972c8337ef1a1cb440b8b160fdc9d7436fd9d1faec6d0742",
-            "3fb61b2fbf2fb69131a289a4d8bd61d07354d2ae142ea0bbf835721271aad6ed"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
     "exdb:2317": {
       "kind": "illustration",
       "note": "坐稳平凳、双脚着地，双肘保持约直角，抬起上臂至侧方肩高；不是直臂或过顶推举。 原创静态三阶段示意，不是连续视频。",
@@ -8829,165 +8652,6 @@
         }
       ]
     },
-    "exdb:0425": {
-      "kind": "illustration",
-      "note": "站姿单手持铃，掌心朝下正握，工作侧上臂固定在体侧；不是双侧或反握形式。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0425-0.83a6d4a82e40.webp",
-          "bytes": 5956,
-          "sha256": "83a6d4a82e40ed3ba4062853ead573ac61f3aad36635a4570da245b5392c9525",
-          "phase": "单臂持铃下垂",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0425-1.9c0e89e2d78e.webp",
-          "bytes": 6864,
-          "sha256": "9c0e89e2d78e48c332937d7cb615b24db741f1574b04e7ca35132ea70c91aba8",
-          "phase": "固定上臂屈肘",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0425-2.83a6d4a82e40.webp",
-          "bytes": 5956,
-          "sha256": "83a6d4a82e40ed3ba4062853ead573ac61f3aad36635a4570da245b5392c9525",
-          "phase": "控制伸肘回位",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0425",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "ed1723f48940d98a20909cc7e55a5598ca6e3053f9834a20610b17ff8d7e2200",
-            "d84fdfe958d050ed4fa2de2f95696c9876a8f118a8b856766c765c50a41712ef",
-            "262874dcae242b070699ec68e17af67c13a26687aebe359f119a2c66bad54f6f"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
-    "exdb:0392": {
-      "kind": "illustration",
-      "note": "坐稳平凳、双脚踩地、双手各持一铃，双臂同时向身体前方抬至肩高。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0392-0.4b5e5ba84aab.webp",
-          "bytes": 4348,
-          "sha256": "4b5e5ba84aab4bb68a2951ced89a7a142a1e8c3f4e41fb856a24a1c91689a290",
-          "phase": "坐稳·双铃垂下",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0392-1.1b0b2e48968a.webp",
-          "bytes": 5792,
-          "sha256": "1b0b2e48968a2b870c1f8982c2c60932e1fc38de909129d3ffc7c9fd5cb260ed",
-          "phase": "双臂前举至肩高",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0392-2.4b5e5ba84aab.webp",
-          "bytes": 4348,
-          "sha256": "4b5e5ba84aab4bb68a2951ced89a7a142a1e8c3f4e41fb856a24a1c91689a290",
-          "phase": "缓慢放回",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0392",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "c908df3db6103012449b3b4384622063ea0a6d6c8284305308b63010ea5d692c",
-            "29af73e2ce815c077ad6b7a6288b3026f8a9eb88248966bb99b7ad660285936d",
-            "3fdd3e24e708864dffc27ee367421837f49ff226d5e7f984a40b54f3dcdb6f62"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
-    "exdb:0387": {
-      "kind": "illustration",
-      "note": "坐稳平凳、双脚踩地，一侧前举放回后另一侧再前举。 原创静态分阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0387-0.4b5e5ba84aab.webp",
-          "bytes": 4348,
-          "sha256": "4b5e5ba84aab4bb68a2951ced89a7a142a1e8c3f4e41fb856a24a1c91689a290",
-          "phase": "坐稳·双铃垂下",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0387-1.7f0a6432c913.webp",
-          "bytes": 5710,
-          "sha256": "7f0a6432c91302f93ed6e455608dcfc40d557756ed97043436e5ed2a6363fedc",
-          "phase": "一侧向前举起",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0387-2.4b5e5ba84aab.webp",
-          "bytes": 4348,
-          "sha256": "4b5e5ba84aab4bb68a2951ced89a7a142a1e8c3f4e41fb856a24a1c91689a290",
-          "phase": "控制放回",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0387-3.f01bf3fe9b1e.webp",
-          "bytes": 5856,
-          "sha256": "f01bf3fe9b1ed036645036edb7a68edb461c38eedff86ad44896f787f9e5d3c3",
-          "phase": "另一侧向前举起",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0387-4.4b5e5ba84aab.webp",
-          "bytes": 4348,
-          "sha256": "4b5e5ba84aab4bb68a2951ced89a7a142a1e8c3f4e41fb856a24a1c91689a290",
-          "phase": "放回准备位",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0387",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "7d73a5267d3b11098e6b32e3a8ef8b5d699486d450e3aba0496165d1c82a9abb",
-            "19ff9ecbc7397d980ee7e736d6fc83ded32dbc6e92bad23bd55f7693d41bff1d",
-            "2e3ce413cb8a0a203cea0d37d130ef6c37bff1d86d7325805ce1356960d430cc",
-            "e9a41b1f29545e6254194d437894ec8b72d34ef762631dda9f2b650e24b8b8ed",
-            "92d6dd77855d1f58dffb4ec6faccfc81e37ef749cf8898a8453e7d089fff2efa"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
     "exdb:1648": {
       "kind": "illustration",
       "note": "坐稳平凳、双脚踩地，双手中立握持铃，一侧屈肘放回后换侧。 原创静态分阶段示意，不是连续视频。",
@@ -9047,100 +8711,6 @@
             "d2119bfe8b2ddeb3849603136bcf2fb9187ab35ea3314ad034c9f8254347f9b4",
             "f40abc35902efcfa1cf0f750792e1dfb3a430b7d06e40f0229d9a228f43fded0",
             "aa007b160f784592ae2f2506db5e873218ab7b6812cd8a3240ae4c29f79e470c"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
-    "exdb:0389": {
-      "kind": "illustration",
-      "note": "坐稳平凳、双脚踩地，双手共同握一只哑铃，在头后屈伸双肘。 与 2188 是同一明确形式，保留独立ID。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0389-0.bfc6aba5962a.webp",
-          "bytes": 4578,
-          "sha256": "bfc6aba5962a35ca84745ee94466f6551cd914463792493cf7c3d8c490e77119",
-          "phase": "双手托一铃在上方",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0389-1.7e90ec128f8c.webp",
-          "bytes": 5304,
-          "sha256": "7e90ec128f8c92470e0ec593508be55a65e720e2017c365930532bd0d5a2ecfa",
-          "phase": "屈肘下放头后",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0389-2.bfc6aba5962a.webp",
-          "bytes": 4578,
-          "sha256": "bfc6aba5962a35ca84745ee94466f6551cd914463792493cf7c3d8c490e77119",
-          "phase": "伸肘推回",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0389",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "59992f7a0f5bb4f31b9bde5d5a4842cc217b1ad209ed5f78c7189e22d268a4f4",
-            "e98f8a4fe76432f76937d02d8b04835ff4fa472ca128aab8f79b13a50ba40bfb",
-            "4f85b8c29b67057542a77458925ca5a418218ef837532eb2dcc29ca6a8140d66"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
-    "exdb:0390": {
-      "kind": "illustration",
-      "note": "坐在健身球上、双脚踩地、双手各持一铃，掌心朝前同时屈肘。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0390-0.ed6a0c4ab492.webp",
-          "bytes": 7462,
-          "sha256": "ed6a0c4ab492ca5c8ce0ee9d0d1308c3f15366229acb48b6046f6ef8f83a383d",
-          "phase": "坐稳·双臂下垂",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0390-1.dc4e0746923c.webp",
-          "bytes": 9306,
-          "sha256": "dc4e0746923c804917312ea0adcb3aa5c4ee7e864d3e60083d0cc3c8d8e53432",
-          "phase": "双臂同时屈肘",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0390-2.ed6a0c4ab492.webp",
-          "bytes": 7462,
-          "sha256": "ed6a0c4ab492ca5c8ce0ee9d0d1308c3f15366229acb48b6046f6ef8f83a383d",
-          "phase": "控制伸肘回位",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0390",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "a4bbcbf2ff97e8ef4dbaef3573e61421b382dc0d270ea5a1842fce999e5a3d31",
-            "4a872369bf03b3512f65bbebc29c3cd862195bb128737c3c68b92fc2a8c6f60d",
-            "db0c5b3162538a8486715e65d57d021fb27d16e79ab6a33cdde02bb6c603b075"
           ],
           "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
           "distribution": "repository"
@@ -9235,147 +8805,6 @@
             "f6aa6f049ef7ae5a1d74ee7d2d03113f825f802df3d4d03a480c10ece10f00ec",
             "87b06444c4b7d8c4518592ca8c47565b364cb5aa44af176323d0733e636e88aa",
             "f327068ae494d8a4c8d5cdf1e400d1822d046a31142e3a6ad92725bc691e15c2"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
-    "exdb:0411": {
-      "kind": "illustration",
-      "note": "双手各持一铃在体侧，一腿前伸保持离地，另一腿下蹲后站起；示意一侧，不增加摄像头识别能力。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0411-0.1b9918c46863.webp",
-          "bytes": 4722,
-          "sha256": "1b9918c468636aae7826051e90fd216be0eac18094a6dda3feb29bfcc7d05ba9",
-          "phase": "单腿站立前伸",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0411-1.ce6e65dc95f1.webp",
-          "bytes": 6238,
-          "sha256": "ce6e65dc95f16d90c264d8d02bbca919a79c21f24f54427781aed5a0400b937a",
-          "phase": "支撑腿屈膝下蹲",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0411-2.1b9918c46863.webp",
-          "bytes": 4722,
-          "sha256": "1b9918c468636aae7826051e90fd216be0eac18094a6dda3feb29bfcc7d05ba9",
-          "phase": "支撑腿推起",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0411",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "132ab76c4d6b35b9c398d5776522c45c3d6712affe1bd9f4550534ab8f7c2f36",
-            "31e0ee4b1edae4f2999a6186241f96fe30bb77cbc57f6950e0574231ce9bf91b",
-            "2f54568d9120d081c6406ca94c99534a2fc03bfcba9ac61b5cdfdb8437b676a6"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
-    "exdb:0394": {
-      "kind": "illustration",
-      "note": "坐稳平凳、双脚着地，屈髋俯身、上臂贴体侧，双手各持一铃，同时向后伸肘。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0394-0.802acde8490a.webp",
-          "bytes": 5214,
-          "sha256": "802acde8490a989333a72d1b8b57e74734c022b74b6130e9ad32f3218490fd4d",
-          "phase": "屈肘准备",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0394-1.83a1355cc5a5.webp",
-          "bytes": 6400,
-          "sha256": "83a1355cc5a5279dcab434062b9d61b944e3f24c09755ece819ae0fefaeed3a8",
-          "phase": "向后伸肘",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0394-2.802acde8490a.webp",
-          "bytes": 5214,
-          "sha256": "802acde8490a989333a72d1b8b57e74734c022b74b6130e9ad32f3218490fd4d",
-          "phase": "控制屈肘回位",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0394",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "b6f97db6a924c60e5bd9f957b5ec1c5cbe325ee0d30fcfb4193e850e20846dc6",
-            "b140eb44e2265338c928de6e47b6f125651655bc95865cda03e956978ad87bed",
-            "3bf256f59acd1a8213a16bdbe0e1abc7c1b7ef7241cd8bede5729591fd6cc5c6"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
-    "exdb:0398": {
-      "kind": "illustration",
-      "note": "坐稳平凳、双脚着地，屈髋俯身、上臂贴体侧，单手一铃，另一手轻扶大腿。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0398-0.e9da2df5bbd8.webp",
-          "bytes": 4936,
-          "sha256": "e9da2df5bbd8936801f85f660a7e0031a2cdf8f4abcf91a4dddee5e2e3f3d3f7",
-          "phase": "屈肘准备",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0398-1.46b08cdfea4c.webp",
-          "bytes": 6312,
-          "sha256": "46b08cdfea4c0d274c0607565f9b2ed550fa01a2cba576675d2bf769a7319a6e",
-          "phase": "向后伸肘",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0398-2.e9da2df5bbd8.webp",
-          "bytes": 4936,
-          "sha256": "e9da2df5bbd8936801f85f660a7e0031a2cdf8f4abcf91a4dddee5e2e3f3d3f7",
-          "phase": "控制屈肘回位",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0398",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "d0747c9691ff56b788441008d8c6fae23f5023f4e44861bfc5651db35ac45adb",
-            "a43d7f8dea736b087741dcdfbb7be675859d1796e007426ed74dc0b091a1daa5",
-            "6341cbf536a9ddb8d4aa9ab16e38bdd5dac910f1daad81dbb73e49cb74624cc0"
           ],
           "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
           "distribution": "repository"
@@ -10592,53 +10021,6 @@
             "102a95b6097ed99f6bd3ef0b55e74e475b7567efad9cfab8cdfc4ff5dc3675e8",
             "b369d22d3e454f1971f7e3de81ccc65e42402a5693eedb6a762a1a4b029f329f",
             "c7251d3c8f8e109a1cf5a6e39e60952b2a871b49303ca7fe85aeeac753f20443"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
-    "exdb:0408": {
-      "kind": "illustration",
-      "note": "侧卧、双腿伸直，下臂托头支撑；上手握哑铃、手掌朝下，手臂伸直举至肩高，停顿后缓慢放回，图示一侧，完成后换边。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-0408-0.d1bdcb6d3122.webp",
-          "bytes": 3976,
-          "sha256": "d1bdcb6d312240188a776c78d44b7f636177e7974f2f668dc21aa04e6bbb174d",
-          "phase": "侧卧·下臂托头·上手持铃",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0408-1.0d9069ebabfd.webp",
-          "bytes": 5344,
-          "sha256": "0d9069ebabfdc56910512f12fca1e88083cde893481c413a9719e3f4322240dc",
-          "phase": "上手伸直举至肩高",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-0408-2.d1bdcb6d3122.webp",
-          "bytes": 3976,
-          "sha256": "d1bdcb6d312240188a776c78d44b7f636177e7974f2f668dc21aa04e6bbb174d",
-          "phase": "控制放回",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:0408",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "ac388c12a6353c7f85643196c45cd484751caca5d2c7dfce65b8c6691453bb05",
-            "a84e0f17f6db5d71288c8acdc2f43004d967f8d97bdc0c565b5ef0bf0f4fd39c",
-            "40ac9c0466a9a41634fa731060a24d6234b050c0b8e4cb1b8404912331d51466"
           ],
           "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
           "distribution": "repository"
@@ -40923,6 +40305,450 @@
           "sourceSha256": [
             "9e62dcf3c8b588b4c43ffa45308296f27c6d065539b3c3313ff8257a02f5ee80",
             "7515761985ddc07e0dc909a898627fdfa7ef2025617015b2f23912976990f650"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0375": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0375-0.04c58ed145dc.webp",
+          "sha256": "04c58ed145dc69524de3e4f055e5e59401658a0dd29e54292ec8355e120b83de",
+          "bytes": 77068,
+          "distribution": "repository",
+          "phase": "沿凳仰卧，双手握一只哑铃于胸部上方。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0375-1.9f4a7d9966bd.webp",
+          "sha256": "9f4a7d9966bde18f8c500108788315f6fceee8d19297feba7952e4a8fc667ffc",
+          "bytes": 70392,
+          "distribution": "repository",
+          "phase": "哑铃沿弧线下放至头后。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-0375",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch113.md",
+          "version": "2026-11-12 · 生成批次 113",
+          "sourceSha256": [
+            "4662d04eabb04f3b3a1bbaa407dd6a9548644744b60a8ee72a3af8988b7a5770",
+            "72319b5b0db5fdf5a65bdddc64b6af9e106ce7f5784a0065fd51549a4d7f6655"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0387": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0387-0.24a25c6cfc36.webp",
+          "sha256": "24a25c6cfc365c1ba4d4e926c06637877af8761b91bfb1e74041865e301a63b0",
+          "bytes": 74212,
+          "distribution": "repository",
+          "phase": "坐姿，双哑铃垂于身体两侧。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0387-1.a1a8433a3733.webp",
+          "sha256": "a1a8433a37337473579006b53b9a54bce7370bb1bd8e65b74535ffe5d6eb70c6",
+          "bytes": 72304,
+          "distribution": "repository",
+          "phase": "单臂前举至与地面平行，另一臂保持下垂。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-0387",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch113.md",
+          "version": "2026-11-12 · 生成批次 113",
+          "sourceSha256": [
+            "1e8aeef1e536e349fd2ff47a6aab183d4ac84909276160bfef41e68b89150fc1",
+            "296b1bdddb857461483555396babbd362e2ea5700512d1c1fe67e3d1a3632f96"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0388": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0388-0.1ff2da434297.webp",
+          "sha256": "1ff2da434297cf8592f738535e10d0a52ac492ed5c3dbc51b7698e19f6967572",
+          "bytes": 91388,
+          "distribution": "repository",
+          "phase": "坐姿，双哑铃位于肩部高度，掌心向前。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0388-1.9cf284650da9.webp",
+          "sha256": "9cf284650da9cb0946e7cf3e0e24e63350384ca468d61c0434b7d0a83d1d7fee",
+          "bytes": 89280,
+          "distribution": "repository",
+          "phase": "单臂推举过头顶完全伸展，另一臂保持肩高。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-0388",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch113.md",
+          "version": "2026-11-12 · 生成批次 113",
+          "sourceSha256": [
+            "c11d736094894c9b1036b4b4988e18b08969b8574c0c3ef4bf0638402f4e356b",
+            "ae242e0f58cc7fe0efe72ff459d08d2c014458c1d30280a20c9a546b662d023e"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0389": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0389-0.1736a1a0e548.webp",
+          "sha256": "1736a1a0e548707e188dc3b57af29611b42a61a2fa574f330a84dcf26be49995",
+          "bytes": 55914,
+          "distribution": "repository",
+          "phase": "坐姿，双手握一只哑铃伸直于头顶上方。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0389-1.7185a7f11521.webp",
+          "sha256": "7185a7f11521dbc31e17650e992dc23de83ddb5c8082610b688b49223f545d47",
+          "bytes": 53842,
+          "distribution": "repository",
+          "phase": "哑铃下放至脑后，肘部靠近耳朵。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-0389",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch113.md",
+          "version": "2026-11-12 · 生成批次 113",
+          "sourceSha256": [
+            "29242973544b2e11e49496ef3818983362180ea2344828d3b27ac2077985ed56",
+            "6abd672fd6fe5138422c369da4ef811163f05a6db0e98e014b1e4d19c75ca83f"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0390": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0390-0.88f2cf2e2176.webp",
+          "sha256": "88f2cf2e2176fb7771e726b13f4fe12124aa1c46c61cad8a2a6d480cd9a14ffd",
+          "bytes": 68470,
+          "distribution": "repository",
+          "phase": "坐在稳定球上，双哑铃垂于体侧，掌心向前。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0390-1.e5d571a3d358.webp",
+          "sha256": "e5d571a3d3586072e07d4ef6ef36b653190b7ea37ee077cdacdc249600cc0b55",
+          "bytes": 68854,
+          "distribution": "repository",
+          "phase": "双臂弯举至肩部高度。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-0390",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch113.md",
+          "version": "2026-11-12 · 生成批次 113",
+          "sourceSha256": [
+            "0454efe61ba4b183315bd8331314b2f2437756b963031aa041cf9564a86ef3a3",
+            "60736863df3c7a5ea5c2a6a15139696cc28416b696c5375a28c67afd8e5788ab"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0392": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0392-0.0f36ca6788d5.webp",
+          "sha256": "0f36ca6788d590da34e337857e4d238a5083bc0b02a7d873847d0a5acc3b7b24",
+          "bytes": 77520,
+          "distribution": "repository",
+          "phase": "坐姿，双哑铃位于大腿两侧。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0392-1.a5739b653949.webp",
+          "sha256": "a5739b6539492eb07328b5a2e7e4f040ee59da19ec08de49b53c03a3f5927cda",
+          "bytes": 73190,
+          "distribution": "repository",
+          "phase": "双臂前举至肩部高度，掌心向下。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-0392",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch113.md",
+          "version": "2026-11-12 · 生成批次 113",
+          "sourceSha256": [
+            "3b84e2aab1971e6941cfe2ffe5b3905c1d3b2210f28b2ed9a216fe2f66c7e94c",
+            "0f251956f00ba9cc58d68033abdad0842b031123628d59978f1a553d860cdeca"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0394": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0394-0.da0b9938f151.webp",
+          "sha256": "da0b9938f151dd595f43a3fa03d59f7c67acbc020a5c4b302a7d198e123be7b2",
+          "bytes": 72390,
+          "distribution": "repository",
+          "phase": "坐姿俯身，双肘弯曲约90度，上臂贴于体侧。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0394-1.f4a329dac8bc.webp",
+          "sha256": "f4a329dac8bcfa1fe920fb512cbb3319cb85169974a6f251b09188e7e51e0783",
+          "bytes": 68256,
+          "distribution": "repository",
+          "phase": "双臂向后伸直。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-0394",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch113.md",
+          "version": "2026-11-12 · 生成批次 113",
+          "sourceSha256": [
+            "b138a9b7e5a0bcaeac199411a86e95bb6c20734add3a7480a1d7d3be6fa77809",
+            "a7211c720ce94b9d73b0139f6b9c799a30545ebf79272966efc34520806e0562"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0398": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0398-0.62b7000998ad.webp",
+          "sha256": "62b7000998adae72f25ee1ca20640aba2e9bfb3cd906fbd57a338a65bf39e431",
+          "bytes": 89796,
+          "distribution": "repository",
+          "phase": "坐姿俯身，单手握哑铃，肘部弯曲，另一手扶膝。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0398-1.d39466d76482.webp",
+          "sha256": "d39466d7648255b949995fa0868cdd869ab467a2453bd828f1946be41c2e84e0",
+          "bytes": 80456,
+          "distribution": "repository",
+          "phase": "单臂向后伸直。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-0398",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch113.md",
+          "version": "2026-11-12 · 生成批次 113",
+          "sourceSha256": [
+            "01cd4bd7659a96a160031ab440c2b93e6d677689adff060fb7a0c8bfba4c6dcd",
+            "4fac75f18395a8280cca0aeafa219a46f7c7c5999490f928ee950546d65198ce"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0408": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0408-0.26b8ba7739ab.webp",
+          "sha256": "26b8ba7739ab65d6d89de5097f065ff913f971657540ad1d792138954877b671",
+          "bytes": 53160,
+          "distribution": "repository",
+          "phase": "侧卧，下侧手臂支撑头部，上手握哑铃置于髋侧。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0408-1.23528de9cd4a.webp",
+          "sha256": "23528de9cd4a651b3d2fcc624f1ab11a721ed0b4ffeb907d133ad486ad59100d",
+          "bytes": 53178,
+          "distribution": "repository",
+          "phase": "上手直臂上举至肩部高度以上。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-0408",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch113.md",
+          "version": "2026-11-12 · 生成批次 113",
+          "sourceSha256": [
+            "efa4accbbf7dd97726dd7f2697b00f6875c8aa95504149f3c5c1c3c5e6e550fa",
+            "8417286798ea23571fbbec048e044b659a772529648b729126859cee4ffd21bf"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0411": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0411-0.0602a216350a.webp",
+          "sha256": "0602a216350ac3b62eccaf3de904621d58f60fa5a017ed19d5add16e83d4f691",
+          "bytes": 84252,
+          "distribution": "repository",
+          "phase": "单腿站立，另一腿向前伸展离地，双手各握一哑铃。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0411-1.0999ea3feb8c.webp",
+          "sha256": "0999ea3feb8c06615a78358cdafc9a871b7d0f58b8fa1732ccb48578b9e23fac",
+          "bytes": 82470,
+          "distribution": "repository",
+          "phase": "单腿深蹲，自由腿保持前伸离地。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-0411",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch113.md",
+          "version": "2026-11-12 · 生成批次 113",
+          "sourceSha256": [
+            "80d799be90d42c1d43e071291e1deef9514ba3bddd61a13020fad217198587ee",
+            "43e1c26f9bbd2335667aca27e0ae1e5408ced61d3534faf3fd952b468c3bb5e8"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0415": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0415-0.abe7b8c6e83d.webp",
+          "sha256": "abe7b8c6e83d3a2a23e3b98e6913409ba7863d6db0cbeff2708ead0dfd3c0d4c",
+          "bytes": 94310,
+          "distribution": "repository",
+          "phase": "站立，双哑铃垂于体侧，掌心朝向身体。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0415-1.d3bca32be324.webp",
+          "sha256": "d3bca32be32470131ccd8b6f27d16b4e2a1a38c02d32c1439ebf7b332d10bf68",
+          "bytes": 88264,
+          "distribution": "repository",
+          "phase": "单臂侧举至与地面平行，掌心向下。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-0415",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch113.md",
+          "version": "2026-11-12 · 生成批次 113",
+          "sourceSha256": [
+            "5fe9933c0ce563ba4327bfdcdcf9550d837723dcd478432d8b55de9e51025feb",
+            "4634a121b4d4d6f8483533038d5812e8229c98a87aa8af6dacf9b56167a7e6f4"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:0425": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0425-0.067c544bd5b5.webp",
+          "sha256": "067c544bd5b561d793bcbf734ee37c9871ea397e0d11470bfeaad4e2f1176477",
+          "bytes": 75264,
+          "distribution": "repository",
+          "phase": "站立，单手正握哑铃垂于体侧，掌心向下。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-0425-1.048762b4ff97.webp",
+          "sha256": "048762b4ff97b22f091ee57f113de1fa249fbd6fe7ada00a56a99b9d3f5b8401",
+          "bytes": 70400,
+          "distribution": "repository",
+          "phase": "正握弯举至肩前，上臂保持静止。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-0425",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch113.md",
+          "version": "2026-11-12 · 生成批次 113",
+          "sourceSha256": [
+            "9c237f991efa2344ae25ae1f0984f28bd320f2e3df21f00f0a7c872907f27655",
+            "c744844c5e50c46ce4cf7a2da8aa85f63514a9a4bb5bb85944f53c8ce21ef3a9"
           ],
           "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"

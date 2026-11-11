@@ -27,7 +27,7 @@
 
 - 串行全套测试（本地，接入工作树）：client `test:repository` **534/534** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **34/34** + typecheck 通过。测试维护两处（均为「图解被核验替换后守卫改写为校验新记录」，沿本文件内批次 19/0660 先例，非规则放宽）：①`client/tests/exercise-library-scale.test.ts` 中 0332 的「深蹲举照片不得替换站立侧平举图解」守卫——被拒的来源照片仍未使用，改写为校验批次 112 定版对（来源 `AI 生成 / ai-codex-replaceIllus-0332`、双帧）；②`client/tests/exercise-media.test.ts` 中 0354 的图解守卫——0354 现有自有单臂定版对（纯静图），守卫改写为校验新记录且**「不得继承双臂后踢视频」条款原样保留**。
 - 登记校验：发布链计数四方一致：build 输出 1064 image entries；publish-media-metadata 输出 1064 records；publish-exercise-documentation 输出 complete 1064 / photos 988 / illustrations 76 / pending 265（原始口径）。
-- 集成提交 `待填`；GitHub CI 运行 **待填**。
-- 双站部署：生产 Version `待填`；预演 Version `待填`。
-- 在线核查：新图 24 张双站 sha256 **待填**；双站 attribution.json 条数 **待填**。
-- 「动伴进度」空间同轮同步（待填）。
+- 集成提交 `4249ee6`；GitHub CI 运行 43081076368 success。
+- 双站部署：生产 Version `3afdb96d-2d97-4185-ad40-6d48b7c99819`；预演 Version `2d33ac36-bb55-4a89-84f2-906d5681e51f`（preview 分支 tip `0b7f29c` = d0028f1 + 合并本批 main；预演工作树复跑 client `test:repository` 534/534 通过后部署）。
+- 在线核查：新图 24 张双站 sha256 **48/48 一致**；双站 attribution.json 条目数 **1064**；被替换的旧图解文件在生产返回 404；预演三张测试页均 200。
+- 「动伴进度」空间同轮同步已派发（图解 76、照片 988、批次 112 记录置顶）。
