@@ -4,6 +4,7 @@ import paths from "./muscle-paths.json";
 import { label } from "./api";
 import { mediaSummaryFor, muscleRegions, type ExerciseMedia as Media } from "./media";
 import {useExerciseMedia} from './mediaLoader';
+import {cdnAssetUrl, useCdnFirstImage} from '../motion/lib/cdnAssets';
 import { demoPlayback } from "./mediaPlayback";
 import { isUnreviewedOfficialExercise } from './exerciseGuidance';
 import "./exercise-media.css";
@@ -58,7 +59,7 @@ function Video({ media, suspended }: { media: Media; suspended: boolean }) {
       <div className="exercise-media-stage" style={{aspectRatio:media.video?.aspectRatio||16/9}}>
         <video
           ref={video}
-          poster={media.video!.poster}
+          poster={cdnAssetUrl(media.video!.poster)}
           preload="none"
           muted
           playsInline
@@ -154,6 +155,7 @@ function Video({ media, suspended }: { media: Media; suspended: boolean }) {
 function Still({ src, alt }: { src: string; alt: string }) {
   const [failed, setFailed] = useState(false),
     [attempt, setAttempt] = useState(0);
+  const image = useCdnFirstImage(src);
   useEffect(() => setFailed(false), [src]);
   return failed ? (
     <div className="media-error" role="status">
@@ -171,11 +173,13 @@ function Still({ src, alt }: { src: string; alt: string }) {
   ) : (
     <img
       key={attempt}
-      src={src}
+      src={image.src}
       alt={alt}
       loading="lazy"
       decoding="async"
-      onError={() => setFailed(true)}
+      onError={() => {
+        if (!image.onError()) setFailed(true);
+      }}
     />
   );
 }
@@ -485,16 +489,19 @@ export function ExerciseThumb({ exercise }: { exercise: any }) {
   const m = mediaSummaryFor(exercise.id),
     src = m?.thumb,
     [failed, setFailed] = useState(false);
+  const image = useCdnFirstImage(src ?? null);
   useEffect(() => setFailed(false), [src]);
   return (
     <span className="exercise-thumbnail">
       {src && !failed ? (
         <img
-          src={src}
+          src={image.src}
           alt=""
           loading="lazy"
           decoding="async"
-          onError={() => setFailed(true)}
+          onError={() => {
+            if (!image.onError()) setFailed(true);
+          }}
         />
       ) : (
         <span>{failed ? "加载失败" : "示范待补"}</span>

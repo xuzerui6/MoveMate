@@ -18,6 +18,11 @@ import {
 } from './lib/pickerExercises'
 import { usePosePrefetchLine } from './hooks/usePosePrepare'
 import { PosePrefetchLine } from './components/PosePrefetchLine'
+import { useCdnFirstImage } from './lib/cdnAssets'
+function PickerThumb({ movement }: { movement: PickerMovement }) {
+  const image = useCdnFirstImage(movement.thumb)
+  return <span className="camera-picker-thumb">{movement.thumb ? <img src={image.src} onError={() => { image.onError() }} alt="" loading="lazy" decoding="async"/> : <span>示范待补</span>}</span>
+}
 const Workout = lazy(() => import('./pages/Workout').then(m => ({ default: m.Workout })))
 const Summary = lazy(() => import('./pages/Summary').then(m => ({ default: m.Summary })))
 export default function Training() {
@@ -36,7 +41,7 @@ export default function Training() {
   useEffect(() => { document.querySelector('.motion-screen')?.scrollTo({ top: 0 }) }, [mode])
   const pickerRow = (movement: PickerMovement, meta?: string) => (
     <button key={movement.type} type="button" aria-pressed={exercise === movement.type} className={`camera-picker-row${exercise === movement.type ? ' selected' : ''}`} onClick={() => setExercise(movement.type as CameraExerciseType)}>
-      <span className="camera-picker-thumb">{movement.thumb ? <img src={movement.thumb} alt="" loading="lazy" decoding="async"/> : <span>示范待补</span>}</span>
+      <PickerThumb movement={movement}/>
       <span className="camera-picker-name">{movement.name}{movement.trial && <span className="trial-pill">试用</span>}</span>
       <span className="camera-picker-meta">{meta ?? `每${movement.unit} 2 XP`}</span>
     </button>

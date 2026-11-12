@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { NormalizedLandmark, PoseLandmarker } from '@mediapipe/tasks-vision'
 import { ResourceScope } from '../lib/sessionRuntime'
+import { CDN_WASM_BASE, cdnAssetUrl } from '../lib/cdnAssets'
 
 export function useLegacyPose(active: boolean) {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -31,14 +32,23 @@ export function useLegacyPose(active: boolean) {
       cameraOpened = true
       if (current.cancelled) return false
       const { FilesetResolver, PoseLandmarker } = await import('@mediapipe/tasks-vision')
-      const vision = await FilesetResolver.forVisionTasks('/pose/wasm')
-      if (current.cancelled) return false
       const options = { runningMode: 'VIDEO' as const, numPoses: 1, minPoseDetectionConfidence: .55, minTrackingConfidence: .55 }
+      // WASM + model load CDN-first (GPU, then CPU); if the CDN route fails
+      // outright, the whole attempt repeats against the app origin.
+      const attempt = async (wasmBase: string, assetPath: string) => {
+        const vision = await FilesetResolver.forVisionTasks(wasmBase)
+        if (current.cancelled) throw new Error('cancelled')
+        try { return await PoseLandmarker.createFromOptions(vision, { ...options, baseOptions: { modelAssetPath: assetPath, delegate: 'GPU' } }) }
+        catch {
+          if (current.cancelled) throw new Error('cancelled')
+          return PoseLandmarker.createFromOptions(vision, { ...options, baseOptions: { modelAssetPath: assetPath, delegate: 'CPU' } })
+        }
+      }
       let instance: PoseLandmarker
-      try { instance = await PoseLandmarker.createFromOptions(vision, { ...options, baseOptions: { modelAssetPath: '/pose/pose_landmarker_lite.task', delegate: 'GPU' } }) }
+      try { instance = await attempt(CDN_WASM_BASE, cdnAssetUrl('/pose/pose_landmarker_lite.task')) }
       catch {
         if (current.cancelled) return false
-        instance = await PoseLandmarker.createFromOptions(vision, { ...options, baseOptions: { modelAssetPath: '/pose/pose_landmarker_lite.task', delegate: 'CPU' } })
+        instance = await attempt('/pose/wasm', '/pose/pose_landmarker_lite.task')
       }
       if (!current.own(() => instance.close())) return false
       model.current = instance; setStatus('ready'); return true
