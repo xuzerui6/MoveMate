@@ -17,7 +17,6 @@ interface Options {
   enabled: boolean
   context: WorkoutContext
   videoRef: React.RefObject<HTMLVideoElement>
-  visionConsent: boolean
   testSlot?: number
 }
 
@@ -53,7 +52,7 @@ const resultText = (result: unknown): string => {
   return '视觉复核已完成，实时计数仍以本地姿态模型为准。'
 }
 
-export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent, testSlot }: Options) {
+export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Options) {
   const [state, setState] = useState<XiaozhiState>('off')
   const [transcript, setTranscript] = useState('')
   const [reply, setReply] = useState('')
@@ -76,7 +75,6 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent, tes
   const contextRef = useRef(context)
   const stateRef = useRef(state)
   const mutedRef = useRef(muted)
-  const consentRef = useRef(visionConsent)
   const identityModeRef = useRef<XiaozhiIdentityMode>('personal')
   const socketRef = useRef<WebSocket | null>(null)
   const sessionIdRef = useRef('')
@@ -102,7 +100,6 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent, tes
   useEffect(() => { contextRef.current = context }, [context])
   useEffect(() => { stateRef.current = state }, [state])
   useEffect(() => { mutedRef.current = muted }, [muted])
-  useEffect(() => { consentRef.current = visionConsent }, [visionConsent])
 
   const fallbackContext = useMemo(() => ({
     exerciseType:context.exerciseType,countUnit:context.countUnit,plan:context.plan,
@@ -230,7 +227,6 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent, tes
       return sendJson(mcpTextResult(payload.id, status, sessionId))
     }
     if (params?.name !== 'self.camera.take_photo') return sendJson(mcpError(payload.id, '只允许读取训练状态和当前关键帧', sessionId))
-    if (!consentRef.current) return sendJson(mcpTextResult(payload.id, '用户未授权云端关键帧复核；本地矫姿仍在运行', sessionId, true))
     const image = videoRef.current ? frameDataUrl(videoRef.current) : null
     if (!image) return sendJson(mcpTextResult(payload.id, '当前摄像头画面不可用', sessionId, true))
     const requestId = crypto.randomUUID()
@@ -609,7 +605,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent, tes
   }, [fallbackMode, sendJson])
 
   const requestVision = useCallback((question: string, trigger: 'user' | 'repeated_issue', issue: PoseIssue | null) => {
-    if (fallbackMode || !visionAvailableRef.current || !consentRef.current || !videoRef.current) return false
+    if (fallbackMode || !visionAvailableRef.current || !videoRef.current) return false
     const image = frameDataUrl(videoRef.current)
     if (!image) return false
     const requestId = crypto.randomUUID()
@@ -620,7 +616,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent, tes
   }, [enqueueVision, fallbackMode, videoRef])
 
   const captureRepFrame = useCallback(() => {
-    if (fallbackMode || !visionAvailableRef.current || !consentRef.current || !videoRef.current) return false
+    if (fallbackMode || !visionAvailableRef.current || !videoRef.current) return false
     const image = frameDataUrl(videoRef.current)
     if (!image) return false
     repFrameCandidateRef.current = image
@@ -642,7 +638,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, visionConsent, tes
       pendingProgressRef.current = pendingProgressRef.current.slice(-Math.max(1, contextRef.current.targetReps))
     }
 
-    if (fallbackMode || !visionAvailableRef.current || !consentRef.current) {
+    if (fallbackMode || !visionAvailableRef.current) {
       repFrameCandidateRef.current = null
       return false
     }

@@ -18,10 +18,9 @@ import type { CameraFit } from '../lib/cameraFrame'
 import { useStore, type SportSession } from '../lib/store'
 import type { WorkoutContext, WorkoutSession, XiaozhiState } from '../types'
 import { PrepDemoHero } from '../components/PrepDemoHero'
-import { PrivacyConsentRow } from '../components/PrivacyConsentRow'
+import { VisionReviewNote } from '../components/VisionReviewNote'
 import { PosePreparePanel } from '../components/PosePreparePanel'
 import { usePosePrepare } from '../hooks/usePosePrepare'
-import { loadVisionConsent, saveVisionConsent } from '../lib/visionConsent'
 import { sessionStartMs } from '../lib/pickerExercises'
 
 import {COPY_CALIBRATED,COPY_PREPARE,framingCopyFor,milestoneLine} from '../lib/companionCopy'
@@ -58,8 +57,6 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     window.addEventListener('keydown', close); desktop.addEventListener('change', resized)
     return () => { window.removeEventListener('keydown', close); desktop.removeEventListener('change', resized) }
   }, [cameraExpanded])
-  const [visionConsent, setVisionConsentState] = useState<boolean>(() => loadVisionConsent())
-  const setVisionConsent = (value: boolean) => { setVisionConsentState(value); saveVisionConsent(value) }
   const testSlotValue = new URLSearchParams(window.location.search).get('voiceTestSlot')
   const testSlot = testSlotValue ? Number(testSlotValue) : undefined
   const [preference]=useState<RecognitionPreference>(()=>loadRecognitionPreference())
@@ -119,7 +116,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     active: active && !paused && !busy && !ending, poseStatus: metrics.poseFeedback.status, poseIssues: metrics.poseFeedback.issues,
     recentScore: metrics.formScore, lastRepAt: null, lastRepIssues: metrics.lastRepIssues, latestVisionInsight: null,
   }), [exerciseType, exercise.unit, metrics, seconds, heartRate.connected, heartRate.signalInterrupted, heartRate.currentBpm, active, paused, busy, ending])
-  const voice = useXiaozhiCoach({ enabled: active && voiceEnabled && !ending, context: voiceContext, videoRef: pose.videoRef, visionConsent, testSlot })
+  const voice = useXiaozhiCoach({ enabled: active && voiceEnabled && !ending, context: voiceContext, videoRef: pose.videoRef, testSlot })
   const conversationCount = Number(restored?.metrics?.conversationTurnCount || 0) + voice.conversationTurnCount
   progress.current = { ...session, ...metrics, conversationTurnCount: conversationCount,recognitionStrategy:adaptive&&!simulatedPose?'adaptive-v1':'legacy' }
   const voiceRef = useRef(voice)
@@ -154,11 +151,11 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   // 每次动作首次到达最低点时保留候选帧，只存在内存；动作完整完成后才上传。
   const capturedBottomRepRef = useRef(-1)
   useEffect(() => {
-    if (!active || paused || busy || simulatedPose || !visionConsent || metrics.phase !== 'bottom') return
+    if (!active || paused || busy || simulatedPose || metrics.phase !== 'bottom') return
     if (capturedBottomRepRef.current === metrics.reps) return
     capturedBottomRepRef.current = metrics.reps
     voiceRef.current.captureRepFrame()
-  }, [active, paused, simulatedPose, visionConsent, metrics.phase, metrics.reps])
+  }, [active, paused, simulatedPose, metrics.phase, metrics.reps])
 
   useEffect(()=>{if(paused || !metrics.poseFeedback.calibrated)capturedBottomRepRef.current=-1},[paused,metrics.poseFeedback.calibrated])
   const syncedRepRef = useRef(existing?.reps||0)
@@ -357,7 +354,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
         <span>目标 20 {exercise.unit}</span>
       </div>
       <p>{exercise.instruction}</p>
-      {restored?.source !== 'demo' && <PrivacyConsentRow allowed={visionConsent} onChange={setVisionConsent} disabled={busy}/>}
+      {restored?.source !== 'demo' && <VisionReviewNote/>}
       {isNewExercise(exerciseType)&&<p className="prep-privacy">新动作识别还在试用，可能不太稳。按标准形式练就好；重量和握法我这边没法确认。</p>}
       {downloadFailed || prepPhase ? <PosePreparePanel snapshot={posePrepare.snapshot} phase={prepPhase ?? 'download'} failed={downloadFailed} onCancel={cancelPrepare} onRetry={() => { setDownloadFailed(false); void begin(false) }} onLiteStart={() => prepChoiceRef.current?.('lite')} onHome={back}/> : <>
       <div className="prep-actions">
@@ -408,7 +405,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
         </div>
         <details className="training-details"><summary>连接与设备详情</summary><p>{voiceEnabled ? voice.errorMessage || VOICE_LABEL[voice.state] : '语音尚未开启，不占用设备。'} 本站不保存完整录音。</p>{voiceEnabled && <div className="training-detail-actions"><button className="secondary" onClick={toggleVoice}>关闭语音</button>{voice.source === 'xiaozhi' && <button className="secondary" onClick={voice.toggleMute}>{voice.muted ? '打开声音' : '静音'}</button>}</div>}
           {voice.state === 'activating' && voice.identityMode === 'personal' && <p>本机个人模式绑定码：<strong>{voice.activationCode}</strong>。<a href="https://xiaozhi.me" target="_blank" rel="noreferrer">前往小智绑定</a></p>}
-          {voiceEnabled && <p>{voice.source === 'xiaozhi' ? '云端语音已连接' : '当前使用本地文字反馈'}{voice.dataSyncState.lastRepSynced ? ` · 已同步第 ${voice.dataSyncState.lastRepSynced} ${exercise.unit}` : ''}{voice.visionAvailable && visionConsent ? ' · 关键帧复核可用' : ''}</p>}
+          {voiceEnabled && <p>{voice.source === 'xiaozhi' ? '云端语音已连接' : '当前使用本地文字反馈'}{voice.dataSyncState.lastRepSynced ? ` · 已同步第 ${voice.dataSyncState.lastRepSynced} ${exercise.unit}` : ''}{voice.visionAvailable ? ' · 关键帧复核可用' : ''}</p>}
           {voiceEnabled && voice.transcript && <p>你：{voice.transcript}</p>}{voiceEnabled && voice.reply && <p>陪练：{voice.reply}</p>}
           {testSlot !== undefined && <p>管理员测试设备 {testSlot}</p>}
           <p>{heartRate.connected ? `心率 ${heartRate.signalInterrupted ? '信号中断' : heartRate.currentBpm || '等待数据'} BPM` : '未连接心率设备'}</p>
