@@ -139,8 +139,8 @@ export function Analytics() {
         <>
           <AnalysisExtras data={a} />
           <p className="gym-muted">
-            统计计划训练及导入的逐组记录；独立动作与个人计时可在运动记录查看。外部负重训练量
-            = kg × 次数，每侧记录按两侧合计。徒手动作不估算体重负重。
+            这里统计的是计划训练和导入的记录；自己随手练的和个人计时，去运动记录里看。训练量按「重量
+            × 次数」算；左右分开记的，按两边合起来算。徒手动作没有外加重量，就不估了。
           </p>
           <div className="gym-stat-grid">
             {[
@@ -166,7 +166,7 @@ export function Analytics() {
               </button>
             </div>
             <p className="gym-muted">
-              展示记录覆盖与最近训练日期，不代表确定的身体恢复状态。选择区域可查看对应动作。
+              按你的记录显示练过哪些部位、最近一次练是什么时候；练过不等于恢复好了。点一个部位，可以看对应的动作。
             </p>
             <div className="gym-muscle-layout">
               <svg
@@ -230,8 +230,8 @@ export function Analytics() {
               </div>
             </div>
             <small className="gym-muted">
-              人体图形：MuscleMap（MIT）。
-              <a href="/licenses/MuscleMap-MIT.txt">许可与署名</a>
+              人体图来自 MuscleMap（MIT）·
+              <a href="/licenses/MuscleMap-MIT.txt">来源与授权</a>
             </small>
           </section>
           <section className="gym-form">
@@ -509,7 +509,7 @@ export function WorkoutRecords() {
     <Page title="逐组训练记录">
       <Status query={q} />
       <p className="gym-muted">
-        编辑历史只重新计算训练分析，不改变已经结算的时长、XP 或识别成长。
+        在这里改历史，只会让统计分析跟着变；已经到手的时长和 XP 不会动。
       </p>
       {q.data?.length
         ? q.data.map((w: any) => (
@@ -534,7 +534,7 @@ export function WorkoutRecords() {
                 组完成 ·{" "}
                 {w.session
                   ? formatTime(w.session.effectiveSeconds)
-                  : "无可结算时长"}
+                  : "没有可计入的时长"}
               </p>
               {w.phase !== "finished" ? (
                 <Link to={"/train/workout/" + w.id} className="primary">
@@ -593,7 +593,7 @@ export function WorkoutRecords() {
       {editing && (
         <Dialog title="编辑训练历史" onClose={() => !busy && setEditing(null)}>
           <div className="gym-page">
-            <p>保存后这些组标为手动记录，保留原始已结算 XP。</p>
+            <p>保存后，这些组会记成手动记录；原来拿到的 XP 不变。</p>
             {editing.sets.map((s: any, i: number) => (
               <div className="gym-form" key={s.id}>
                 <b>{s.exercise.nameZh}</b>
@@ -703,8 +703,8 @@ export function DataManagement() {
     <Page title="训练数据管理">
       <FullTransfer />
       <p className="gym-muted">
-        下方粘贴入口只处理单批内容，导入和补录均不补发 XP；每批最多 100
-        次训练、2000 组、1.8 MB。所有未知动作匹配后才会写入。
+        下面这个入口适合少量粘贴导入：一次最多 100 次训练、2000 组，内容不超过
+        1.8 MB。导入和补录的记录都不加 XP；里面认不出的动作，先选好对应的是哪个，才会存进去。
       </p>
       <details className="gym-form">
         <summary>粘贴记录／导入分享计划</summary>
@@ -732,7 +732,7 @@ export function DataManagement() {
             </select>
           </label>
           <label>
-            CSV 原始重量单位
+            原文件用的重量单位
             <select
               value={unit}
               onChange={(e) => {
@@ -800,14 +800,14 @@ export function DataManagement() {
             })
           }
         >
-          解析并预览，不写入
+          先看看内容（先不导入）
         </button>
         {planFile && (
           <div className="gym-preview">
             <h3>计划：{planFile.plan?.name}</h3>
             <p>
               {planFile.plan?.routines?.length}{" "}
-              个训练日，自定义动作会复制到当前账号，进阶修改仍需本人确认。
+              个训练日。里面的自定义动作会一并复制到你的账号；进阶设置不会自动改，要你自己确认。
             </p>
             <button
               disabled={busy}
@@ -839,7 +839,7 @@ export function DataManagement() {
               发现 {preview.count} 次训练，{preview.duplicates} 次重复
             </h3>
             <p>
-              本次预计新增 {preview.count - preview.duplicates} 次历史 · 0 XP
+              这次会新增 {preview.count - preview.duplicates} 条历史记录（不加 XP）
             </p>
             {preview.workouts.slice(0, 10).map((w: any, i: number) => (
               <p key={i}>
@@ -848,7 +848,7 @@ export function DataManagement() {
             ))}
             {preview.missing.map((name: string) => (
               <div className="gym-list-row" key={name}>
-                <span>无法匹配：{name}</span>
+                <span>认不出：{name}</span>
                 <button className="secondary" onClick={() => setPick(name)}>
                   {mapping[name] ? "重新匹配" : "选择对应动作"}
                 </button>
@@ -865,14 +865,14 @@ export function DataManagement() {
                     payload,
                   );
                   setMessage(
-                    `已导入 ${r.imported} 次，跳过 ${r.duplicates} 次重复，不补发 XP`,
+                    `已导入 ${r.imported} 次，跳过 ${r.duplicates} 次重复；导入的不加 XP`,
                   );
                   setPreview(null);
                   setText("");
                 })
               }
             >
-              确认写入历史
+              确认导入
             </button>
           </div>
         )}
@@ -880,8 +880,8 @@ export function DataManagement() {
       <section className="gym-form">
         <h2>导出本人数据</h2>
         <p>
-          「动伴完整备份」（JSON）包含计划、自定义动作、逐组记录、身体记录及个人设置；CSV
-          用于表格查看，不包含账号凭据。计划在编辑页可打印为 PDF。
+          下载一份「动伴完整备份」（JSON），里面有你的计划、自定义动作、逐组记录、身体记录和个人设置，不含账号和密码；这个文件以后可以再导回来。CSV
+          是表格版，适合在电脑上打开看。计划在编辑页可以打印为 PDF。
         </p>
         <div className="gym-links">
           <button
@@ -945,8 +945,8 @@ export function DataManagement() {
           </button>
         </div>
         <p>
-          <a href="/licenses/Exercises-dataset-MIT.txt">动作文本数据许可</a> ·{" "}
-          <a href="/licenses/MuscleMap-MIT.txt">人体图数据许可</a>
+          <a href="/licenses/Exercises-dataset-MIT.txt">动作文字来源与授权说明</a> ·{" "}
+          <a href="/licenses/MuscleMap-MIT.txt">人体图来源与授权说明</a>
         </p>
       </section>
       {error && (
@@ -960,7 +960,7 @@ export function DataManagement() {
         </p>
       )}
       {pick && (
-        <Dialog title={"匹配动作：" + pick} onClose={() => setPick("")}>
+        <Dialog title={"给「" + pick + "」选对应动作"} onClose={() => setPick("")}>
           <div className="gym-page">
             <ExerciseLibrary
               onPick={(e) => {

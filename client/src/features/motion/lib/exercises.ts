@@ -9,5 +9,5 @@ export const BASE_CAMERA_EXERCISES = {
 } as const
 export const CAMERA_EXERCISES = {...BASE_CAMERA_EXERCISES,...NEW_EXERCISES}
 export const isCameraExercise = (value: string): value is CameraExerciseType => Object.prototype.hasOwnProperty.call(CAMERA_EXERCISES, value)
-const unknownExercise={name:'未知动作，请刷新页面',english:'UNSUPPORTED',unit:'次',placement:'当前客户端不支持此动作，请刷新后恢复或切换手动记录。',instruction:'请刷新页面核对动作，不能用其他识别器代替。',breathing:'保持自然呼吸。',axes:['幅度','控制','姿态','协调']}
+const unknownExercise={name:'这个动作还没认出来',english:'UNSUPPORTED',unit:'次',placement:'先刷新一下页面再试；还是不行，这一组用手动记录就好。',instruction:'刷新后让我再看看；认不出来时，我不会拿别的动作替你数。',breathing:'保持自然呼吸。',axes:['幅度','控制','姿态','协调']}
 export const exerciseInfo = (value: string) => isCameraExercise(value)?CAMERA_EXERCISES[value]:unknownExercise

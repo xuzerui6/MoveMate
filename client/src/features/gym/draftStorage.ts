@@ -16,7 +16,7 @@ export function removeDraft(key: string, storage?: Store) {
   try { (storage || localStorage).removeItem(key); return true; }
   catch { return false; }
 }
-export const draftWriteWarning = '本机草稿未能保存，刷新可能丢失未保存编辑；当前仍可编辑并联网保存到账号。';
+export const draftWriteWarning = '草稿没存上，刷新会丢掉没保存的修改；现在还能继续改，联网后可以存到账号里。';
 export function validPlanDraft(p: any): boolean {
   return !!p && typeof p.name === 'string' && ['weekly','rotation'].includes(p.mode) &&
     !!p.progression && typeof p.progression.mode === 'string' && Array.isArray(p.routines) &&

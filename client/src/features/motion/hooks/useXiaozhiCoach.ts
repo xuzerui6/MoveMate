@@ -49,7 +49,7 @@ const resultText = (result: unknown): string => {
     if (typeof data.result === 'string') return data.result
     if (typeof data.response === 'string') return data.response
   }
-  return '视觉复核已完成，实时计数仍以本地姿态模型为准。'
+  return '复核完成啦，次数还是按刚才实时数的算。'
 }
 
 export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Options) {
@@ -176,7 +176,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
       sendJson(listenMessage('start', sessionIdRef.current))
     } catch (error) {
       if (audio && audioRef.current !== audio) return
-      setErrorMessage(error instanceof Error ? error.message : '麦克风或 Opus 初始化失败')
+      setErrorMessage(error instanceof Error ? error.message : '麦克风没能打开，请检查后重试')
       setFallbackMode(true)
       setState('fallback')
     }
@@ -277,7 +277,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
         socket.send(JSON.stringify({ bridge: 'ping' }))
       }, 15_000)
       handshakeTimer = window.setTimeout(() => {
-        setErrorMessage('小智语音握手超时，请稍后重试')
+        setErrorMessage('小智语音连接超时，请稍后重试')
         socket.close(4000, 'voice handshake timeout')
       }, 20_000)
       socket.onmessage = event => {
@@ -298,7 +298,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
           setVisionAvailable(true)
           return
         }
-        if (message.bridge === 'error') return setErrorMessage(message.message || '小智桥接异常')
+        if (message.bridge === 'error') return setErrorMessage(message.message || '小智连接出了点问题')
         if (message.bridge === 'vision_result') {
           const job = visionPendingRef.current.get(message.requestId)
           if (!job) return
@@ -387,30 +387,30 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
         mcpReadyRef.current = false
         setDataSyncState(current => ({ ...current, mcpReady: false }))
         if (event.code === 4001 && identityModeRef.current === 'shared') {
-          setErrorMessage('语音已释放（空闲超时或服务已停用），可手动重新开启')
+          setErrorMessage('语音已断开（有一阵没说话，或语音服务停了），点一下可以重新开启')
           setFallbackMode(true)
           setState('fallback')
           return
         }
         if (event.code === 4401) {
           if (identityModeRef.current === 'shared') {
-            setErrorMessage('语音会话已过期，正在恢复连接')
+            setErrorMessage('连接过期了，正在重新连')
             void initialize()
             return
           }
           setFallbackMode(true)
           setState('fallback')
-          setErrorMessage('小智设备尚未激活，已切换到文字反馈')
+          setErrorMessage('小智还没激活好，先用文字陪练')
           return
         }
         if (event.code === 4403) {
-          setErrorMessage('语音连接被服务端拒绝，请检查小智是否启用及当前网址是否在语音白名单中。')
+          setErrorMessage('语音没连上：本站的语音可能还没开通。先用文字陪练陪你。')
           setFallbackMode(true)
           setState('fallback')
           return
         }
         if (reconnectIndex >= RECONNECT_DELAYS.length) {
-          setErrorMessage('小智语音连接连续失败，已切换到本地陪练。可点击重试重新连接。')
+          setErrorMessage('小智语音试了几次都没连上，已切换到文字陪练，点重试可以再连。')
           setFallbackMode(true)
           setState('fallback')
           return
@@ -428,11 +428,11 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
       setState('connecting')
       try {
         const statusResponse = await fetch('/ai/__status',{headers:{Authorization:'Bearer '+accountToken}})
-        if (!statusResponse.ok) throw new Error(statusResponse.status === 401 ? '登录已过期，请重新登录后使用语音陪练。' : `语音配置读取失败（HTTP ${statusResponse.status}）`)
+        if (!statusResponse.ok) throw new Error(statusResponse.status === 401 ? '登录已过期，请重新登录后使用语音陪练。' : '语音设置没加载出来，请稍后重试')
         const status = await statusResponse.json()
         if(disposed) return
         if (status.xiaozhiMode === 'shared') { identityModeRef.current = 'shared'; setIdentityMode('shared') }
-        if(!status.xiaozhiEnabled){setErrorMessage('语音服务尚未启用，当前可继续使用本地文字反馈。');setFallbackMode(true);setState('fallback');return}
+        if(!status.xiaozhiEnabled){setErrorMessage('语音还没开通，先用文字陪练。');setFallbackMode(true);setState('fallback');return}
         const response = await fetch('/api/xiaozhi/device', { method: 'POST', credentials: 'include',headers:{Authorization:'Bearer '+accountToken,'Content-Type':'application/json'},body:JSON.stringify({clientId,...(testSlot !== undefined ? {testSlot} : {})}) })
         const body = await response.json() as XiaozhiDeviceBootstrap & { error?: string }
         if (body.status === 'ready' && body.leaseId) leaseId = body.leaseId
@@ -460,7 +460,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
               if (result.status !== 202) throw new Error((await result.json()).error || '激活失败')
             } catch (error) {
               if(disposed) return
-              setErrorMessage(error instanceof Error ? error.message : '激活轮询失败')
+              setErrorMessage(error instanceof Error ? error.message : '激活没等到结果，请重试')
             }
             activationTimer = window.setTimeout(poll, 5_000)
           }
@@ -671,7 +671,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
       error => {
         if (audioRef.current !== audio) return
         setXiaozhiVoiceReady(false)
-        setErrorMessage(error instanceof Error ? error.message : '小智音频初始化失败')
+        setErrorMessage(error instanceof Error ? error.message : '小智声音没准备好，请重试')
       },
     )
   }, [fallbackMode])

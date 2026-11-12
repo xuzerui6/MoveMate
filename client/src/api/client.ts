@@ -71,5 +71,5 @@ export function getErrorMessage(error: unknown): string {
   if (error instanceof Error) {
     return error.message;
   }
-  return '未知错误';
+  return '出了点问题，请稍后再试';
 }

@@ -13,7 +13,7 @@ export default function FreeWorkout() {
   const [picked, setPicked] = useState<any[]>(() => (restored.value || []).slice(0,30)),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
-  const [storageWarning,setStorageWarning]=useState(restored.state==='invalid'?'本机自由训练草稿损坏，未自动载入。':restored.state==='unavailable'?'本机草稿无法读取，仍可选择动作并联网开始。':'');
+  const [storageWarning,setStorageWarning]=useState(restored.state==='invalid'?'上次的自由训练草稿坏了，没能自动打开。':restored.state==='unavailable'?'草稿读不出来，没关系：选好动作、联网就能开始。':'');
   const [invalidDraft,setInvalidDraft]=useState(restored.state==='invalid');
   const navigate = useNavigate();
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function FreeWorkout() {
       <p className="gym-muted">
         先选动作，再开始。训练中可以调整，结束后可以另存为新计划。
       </p>
-      {storageWarning && <div className="gym-cache-notice" role="status"><p>{storageWarning}</p>{invalidDraft && <button onClick={()=>{if(removeDraft(draftKey)){setInvalidDraft(false);setStorageWarning('');}else setStorageWarning('本机草稿暂时无法清理，仍可重新选择动作。');}}>放弃损坏草稿</button>}</div>}
+      {storageWarning && <div className="gym-cache-notice" role="status"><p>{storageWarning}</p>{invalidDraft && <button onClick={()=>{if(removeDraft(draftKey)){setInvalidDraft(false);setStorageWarning('');}else setStorageWarning('这份草稿暂时清不掉，不影响重新选动作。');}}>放弃损坏草稿</button>}</div>}
       {error && (
         <p className="gym-error" role="alert">
           {error}

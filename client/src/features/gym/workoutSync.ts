@@ -87,7 +87,7 @@ export class WorkoutSync {
         // to the next set merely because the user pressed retry.
         throw new Error("上一项操作已核对，请检查当前组后再确认结束");
       }
-      if (this.row.__offline) throw new Error("当前为缓存记录，请联网核对后结束");
+      if (this.row.__offline) throw new Error("现在是离线存的记录，联网后才能结束");
       if (this.row.phase === "finished") return this.row;
       const body = {
         ...frozen, action: "finish", operationId: crypto.randomUUID(),
@@ -95,7 +95,7 @@ export class WorkoutSync {
       };
       this.pending.set(body);
       const latest = await this.transmit(body);
-      if (latest.phase !== "finished") throw new Error("服务端尚未确认结束，请核对训练状态");
+      if (latest.phase !== "finished") throw new Error("结束还没确认成功，请检查网络后再试");
       return latest;
     }).catch(error => {
       // A definitive rejection can itself read back a finish committed by
@@ -127,7 +127,7 @@ export class WorkoutSync {
   }
   private async reconcile() {
       const latest = await this.read();
-      if (latest.__offline) throw new Error("当前只能读取缓存，请联网后再核对服务端");
+      if (latest.__offline) throw new Error("现在看到的是之前存下的记录，联网后再继续");
       this.row = latest;
       this.accept(latest);
       if (latest.phase === "finished") {

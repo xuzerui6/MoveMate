@@ -36,7 +36,7 @@ test('uncertain retry first reads, then reuses the original snapshot rather than
 test('a newer server version is a conflict, not permission to overwrite it',async()=>{
   const e=new SnapshotEditor(plan());e.edit(p=>{p.name='local'});let sends=0;
   await assert.rejects(e.save(async()=>{sends++;throw Error('lost')},async()=>{throw Error('offline')},planSaveConfirmed,merge));
-  await assert.rejects(e.save(async()=>{sends++;return plan()},async()=>({...plan(),name:'other',version:5}),planSaveConfirmed,merge,(a,b)=>a.version!==b.version),/服务器版本已变化/);
+  await assert.rejects(e.save(async()=>{sends++;return plan()},async()=>({...plan(),name:'other',version:5}),planSaveConfirmed,merge,(a,b)=>a.version!==b.version),/云端那份已经变了/);
   assert.equal(e.value.name,'local');assert.equal(e.dirty,true);assert.equal(sends,1);
 });
 test('a definitive validation rejection retains edits and unlocks saving',async()=>{
@@ -47,7 +47,7 @@ test('a definitive validation rejection retains edits and unlocks saving',async(
 test('cached state cannot confirm or discard an uncertain save',async()=>{
   const e=new SnapshotEditor(plan());
   await assert.rejects(e.save(async()=>{throw Error('lost')},async()=>({...plan(),version:2,__offline:true}),planSaveConfirmed,merge));
-  await assert.rejects(e.save(async()=>plan(),async()=>({...plan(),version:2,__offline:true}),planSaveConfirmed,merge),/缓存/);
+  await assert.rejects(e.save(async()=>plan(),async()=>({...plan(),version:2,__offline:true}),planSaveConfirmed,merge),/联网后核对/);
   assert.equal(e.uncertain,true);assert.equal(e.busy,false);
 });
 test('settings merge preserves server defaults and newer edits, including reverting a submitted field',async()=>{

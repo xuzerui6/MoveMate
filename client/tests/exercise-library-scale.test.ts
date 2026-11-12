@@ -137,7 +137,7 @@ test('lazy media failures retry, overlapping reads deduplicate, and a mismatched
     globalThis.fetch=async()=>{calls++;return new Response('unavailable',{status:503});};
     await assert.rejects(loadMedia(id));assert.equal(calls,1);
     globalThis.fetch=async()=>{calls++;return Response.json({exerciseId:'user:1760',...exerciseMedia[id]});};
-    await assert.rejects(loadMedia(id),/不一致/);assert.equal(calls,2);
+    await assert.rejects(loadMedia(id),/对不上/);assert.equal(calls,2);
     let done:(r:Response)=>void=()=>{};
     globalThis.fetch=()=>{calls++;return new Promise<Response>(r=>done=r);};
     const a=loadMedia(id),b=loadMedia(id);assert.equal(calls,3);

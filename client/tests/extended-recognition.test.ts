@@ -226,7 +226,7 @@ test('standing curls reject high knees and switching sides before returning, and
   r.feed('right',1000,p=>p.forEach(x=>x.visibility=.65));r.feed('neutral',1200);assert.equal(r.tracker.metrics.reps,1);assert.equal(r.tracker.metrics.scoreAccumulator.count,0);assert.equal(r.tracker.metrics.scoreAccumulator.rightReps,1);
 });
 test('unknown profiles fail closed and never reuse squat or push-up algorithms',()=>{
-  assert.throws(()=>createRecognitionTracker('unsupported'),/不支持/);assert.match(exerciseInfo('unsupported').name,/未知/);
+  assert.throws(()=>createRecognitionTracker('unsupported'),/不支持/);assert.match(exerciseInfo('unsupported').name,/还没认出来/);
 });
 test('hammer curls count alternating single-arm cycles as one rep per arm',()=>{
   const r=run('hammer_curl');r.feed('neutral',3000);assert.equal(r.tracker.diagnostics.stage,'ready');

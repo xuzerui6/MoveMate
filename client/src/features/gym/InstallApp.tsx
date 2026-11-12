@@ -22,7 +22,7 @@ export default function InstallApp() {
   return (
     <section className="gym-settings-card">
       <h3 className="gym-settings-title">安装与离线使用</h3>
-      <p className="gym-settings-hint">{online ? "当前在线" : "当前离线 · 缓存只供查看，正式计时需联网"}</p>
+      <p className="gym-settings-hint">{online ? "当前在线" : "当前离线 · 之前打开过的内容还能看，开始计时要联网"}</p>
       <button
         type="button"
         className="secondary"
@@ -43,7 +43,7 @@ export default function InstallApp() {
         安装动伴／添加到主屏幕
       </button>
       <p className="gym-muted">
-        已访问的静态页面与本人训练只读缓存可离线查看。断网不能新建正式计时；语音、登录接口、原始音视频不会缓存。退出账号会清理该账号的缓存和草稿。
+        打开过的页面和你的训练记录，没网时也能看。没网时不能开始新的计时；语音陪练和登录也要联网。你的录音和视频不会存在这台设备里。退出账号时，这个账号在这台设备上存的内容和草稿会清掉。
       </p>
       {message && <p role="status">{message}</p>}
     </section>

@@ -149,7 +149,7 @@ export function AnalysisExtras({ data }: { data: any }) {
       <section className="gym-form">
         <h2>一年活动日历</h2>
         <p className="gym-muted">
-          按 {data.timeZone || "账号时区"} 展示；深绿色代表更多训练。
+          颜色越深，那天练得越多。
         </p>
         <div
           className="gym-year-calendar"
@@ -293,7 +293,7 @@ export function AnalysisExtras({ data }: { data: any }) {
           ),
         )}
         <p className="gym-muted">
-          依据训练记录展示覆盖，不推断确定的生理恢复状态。
+          按你的训练记录统计的，只表示练过哪些部位，不说明身体恢复得怎么样。
         </p>
       </details>
       <PlateCalculator />

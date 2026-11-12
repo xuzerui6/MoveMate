@@ -141,7 +141,7 @@ export default function PlanWorkout() {
             token,
           );
           if (next.__offline)
-            throw new Error("当前只能读取缓存，请联网后再核对服务端");
+            throw new Error("现在看到的是之前存下的记录，联网后再继续");
           if (force) {
             const replay = reconcileNetworkRecovery(pending, next);
             if (replay) recovery.setPending(replay);
@@ -291,7 +291,7 @@ export default function PlanWorkout() {
   const run = async (action: string, values: any = {}, control = true) => {
     if (!sync.current || (control && controlLock.current)) return;
     if (!navigator.onLine)
-      throw new Error("当前离线，已停止本地识别；联网后先恢复同步");
+      throw new Error("现在没网，识别先停了；联网后恢复一下就能继续");
     if (control) {
       controlLock.current = true;
       setBusy(true);
@@ -364,7 +364,7 @@ export default function PlanWorkout() {
   const recover = async () => {
     if (!sync.current) return;
     if (!navigator.onLine) {
-      setError("请先联网，再读取服务端状态");
+      setError("先连上网，再试一次");
       return;
     }
     setBusy(true);
@@ -431,7 +431,7 @@ export default function PlanWorkout() {
     const on = () => {
       setOffline(false);
       setBlocked(true);
-      setError("网络已恢复，请先读取服务端并恢复同步；离线时段不补计 XP");
+      setError("网络回来了，点一下「恢复同步」继续；刚才离线那段时间不计 XP");
     };
     window.addEventListener("offline", off);
     window.addEventListener("online", on);
@@ -624,22 +624,22 @@ export default function PlanWorkout() {
       )}
       {blocked && (
         <div className="gym-error">
-          <p>有一项操作尚未确认，识别已停止。联网后先核对服务端。</p>
+          <p>有一步还没确认好，识别先停了。联网后点下面恢复一下。</p>
           <button
             disabled={busy}
             onClick={() => {
               void recover();
             }}
           >
-            读取并恢复同步
+            恢复同步
           </button>
-          {recovery.checkpoint && <button disabled={busy} onClick={()=>{recovery.setCheckpoint(null);void recover();}}>放弃未上传快照，使用服务器记录</button>}
+          {recovery.checkpoint && <button disabled={busy} onClick={()=>{recovery.setCheckpoint(null);void recover();}}>不用这份没传上去的，用之前保存好的</button>}
         </div>
       )}
       {finished ? (
         <>
           <section className="gym-result">
-            <span className="eyebrow">{row.__offline ? "本机缓存 · 尚未核对最新状态" : "服务器已确认保存"}</span>
+            <span className="eyebrow">{row.__offline ? "手机里存的 · 可能不是最新" : "已保存好了"}</span>
             <h2>{row.name}</h2>
             <strong>
               {row.session
@@ -652,11 +652,11 @@ export default function PlanWorkout() {
               {row.session
                 ? row.session.settled
                   ? `+${row.session.xpEarned} XP`
-                  : "待活动结束，按到场情况结算"
-                : "历史导入不补发 XP"}
+                  : "等活动结束，按到场情况发 XP"
+                : "导入的历史不加 XP"}
             </p>
             <p className="gym-muted">
-              计划每有效分钟 1 XP，摄像头计数不额外发放 XP。
+              计划训练按运动时间发 XP：运动 1 分钟 1 XP；摄像头记的次数不另外加。
             </p>
             {completionAverage !== null && <p>训练识别均分 <AnimatedNumber value={completionAverage} fromZero/> 分 · 仅统计可评分的完整动作</p>}
             <Link className="primary" to="/train/records">
@@ -1090,12 +1090,12 @@ export default function PlanWorkout() {
                           speaking: "正在回复",
                           thinking: "正在思考",
                           connecting: "连接中",
-                          reconnecting: "网络恢复中",
-                          fallback: "本地文字反馈",
+                          reconnecting: "正在重连",
+                          fallback: "文字陪练",
                           failed: "语音暂不可用",
                         } as any
                       )[voice.state] || voice.state
-                    : "手动开启，共用现有语音设备池"}
+                    : "手动开启 · 语音设备大家共用"}
                 </p>
                 {voice.errorMessage && (
                   <p role="status">{voice.errorMessage}</p>
@@ -1182,10 +1182,10 @@ export default function PlanWorkout() {
           onClose={() => {setFinishDialog(false);setFinishAttempted(false);finishSnapshot.current=null;}}
         >
           <p>
-            以服务端有效运动时长结算，休息不计 XP。未开始的组不会记录为完成。
+            XP 按你实际运动的时间算，休息不算；还没开始的组不会记成完成。
           </p>
           {error && <p className="gym-error" role="alert">{error}</p>}
-          {offline && <p role="status">当前离线，请联网后读取状态并重试；本次统计已保留。</p>}
+          {offline && <p role="status">现在没网，联网后再试；这次的记录都还在。</p>}
           <button
             className="primary workout-finish-action"
             disabled={busy || offline}
@@ -1204,7 +1204,7 @@ export default function PlanWorkout() {
                 .catch(() => {});
             }}
           >
-            {busy ? "正在核对并保存…" : finishAttempted ? "读取状态并重试结束" : "确认结束并保存"}
+            {busy ? "正在保存…" : finishAttempted ? "重试结束" : "确认结束并保存"}
           </button>
         </Dialog>
       )}

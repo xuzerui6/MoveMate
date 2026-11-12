@@ -17,7 +17,7 @@ export async function request(
       path,
     );
   if (method.toUpperCase() !== "GET" && !navigator.onLine)
-    throw new Error("当前离线，正式操作需联网；草稿与未确认操作会保留");
+    throw new Error("现在没网，联网后才能操作；你填的内容和草稿都还在");
   try {
     const response: any = await client.request({
       method,
@@ -43,7 +43,7 @@ export async function request(
 }
 export async function beginWorkout(values: any) {
   if (!navigator.onLine)
-    throw new Error("离线不能新建正式计时，请联网后再开始");
+    throw new Error("没网不能开始计时，联网后再开始");
   const uid = useAuthStore.getState().user?.id,
     token = localStorage.getItem("token"),
     key = "gym:start:" + uid + ":" + JSON.stringify(values);

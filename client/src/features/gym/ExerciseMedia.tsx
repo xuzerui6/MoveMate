@@ -50,7 +50,7 @@ function Video({ media, suspended }: { media: Media; suspended: boolean }) {
       setError(
         navigator.onLine
           ? "视频暂时无法播放，请重试。"
-          : "当前离线，动态示范未缓存；可查看图片和文字。",
+          : "当前离线，视频还没存下来；先看图片和文字。",
       );
     }
   }
@@ -80,7 +80,7 @@ function Video({ media, suspended }: { media: Media; suspended: boolean }) {
             setError(
               navigator.onLine
                 ? "视频加载失败，请重试或查看动作分解。"
-                : "当前离线，动态示范未缓存。",
+                : "当前离线，视频还没存下来。",
             )
           }
           aria-label="连续动作示范视频"
@@ -159,7 +159,7 @@ function Still({ src, alt }: { src: string; alt: string }) {
   useEffect(() => setFailed(false), [src]);
   return failed ? (
     <div className="media-error" role="status">
-      图片未加载，离线时可能尚未缓存。
+      图片没加载出来，离线时可能是还没存下来。
       <button
         type="button"
         onClick={() => {
@@ -228,7 +228,7 @@ export function ExerciseMuscles({ exercise }: { exercise: any }) {
         协同肌群：{exercise?.secondaryMuscles?.map(label).join("、") || "未标注"}
       </p>
       <small>
-        肌群位置示意；未标注的区域不推断。非动作示范或身体恢复评估。图形来自 <a href="/licenses/MuscleMap-MIT.txt" target="_blank" rel="noreferrer">MuscleMap · MIT</a>。
+        这张图只标肌群大概位置，没标到的就是没标到；它不是动作示范，也不评价恢复情况。图形来自 <a href="/licenses/MuscleMap-MIT.txt" target="_blank" rel="noreferrer">MuscleMap · MIT</a>。
       </small>
       {!!unoutlined.length&&<small>图中暂无独立轮廓：{[...new Set(unoutlined)].map(t=>label(String(t))).join('、')}。未着色不表示没有参与。</small>}
     </div>
@@ -362,7 +362,7 @@ function LoadedViewer({exercise,suspended=false,media,layout="tabs"}:{exercise:a
       </div>
       {!media && (
         <p className="media-pending">
-          {mediaSummaryFor(exercise.id)?'示范暂不可用 · 可继续查看肌群、适用形式与文字，或重试读取示范资料。':'示范待补 · 肌群图只表示部位；下方来源步骤尚待核对，不用相近动作替代。'}
+          {mediaSummaryFor(exercise.id)?'示范暂时看不了 · 可以先看肌群、适用形式和文字，或重试一次。':'示范待补 · 肌群图只表示练的部位；下面的步骤还没核对完，不拿相近动作冒充。'}
         </p>
       )}
       {detail && (

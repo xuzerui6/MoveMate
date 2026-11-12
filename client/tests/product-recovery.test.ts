@@ -44,14 +44,14 @@ test('recovery of a prior set completion never finishes the next set with the ol
 test('cache cannot confirm a finish or erase an uncertain operation',async()=>{
   const q=setup(async()=>{throw Error('lost')},async()=>({...row(),phase:'finished',__offline:true}));
   await assert.rejects(q.sync.finish());const original=q.pending();
-  await assert.rejects(q.sync.finish(),/缓存/);assert.deepEqual(q.pending(),original);assert.equal(q.accepted.length,0);
+  await assert.rejects(q.sync.finish(),/之前存下的记录/);assert.deepEqual(q.pending(),original);assert.equal(q.accepted.length,0);
 });
 test('a conflict can confirm a finish committed by another page',async()=>{
   const q=setup(async()=>{throw {response:{status:409}}},async()=>({...row(),phase:'finished',version:5}));
   assert.equal((await q.sync.finish()).phase,'finished');assert.equal(q.pending(),null);
 });
 test('unconfirmed finish response is never treated as a saved result',async()=>{
-  const q=setup(async()=>row(),async()=>row());await assert.rejects(q.sync.finish(),/尚未确认结束/);
+  const q=setup(async()=>row(),async()=>row());await assert.rejects(q.sync.finish(),/还没确认成功/);
 });
 const ready=(data:any)=>({loading:false,error:'',data});
 test('today schedule failures and loading cannot masquerade as rest days or empty plans',()=>{
@@ -72,7 +72,7 @@ test('timed, paired and repetition targets use distinct labels without rewriting
 });
 test('cached query markup states its source, offers retry and does not imply server confirmation',()=>{
   const markup=renderToStaticMarkup(createElement(CachedDataNotice,{data:{__offline:true},label:'今日安排',reload:()=>{},busy:true}));
-  assert.match(markup,/今日安排来自本机缓存/);assert.match(markup,/只读浏览/);assert.match(markup,/disabled/);
+  assert.match(markup,/今日安排是之前存下来的/);assert.match(markup,/只能看/);assert.match(markup,/disabled/);
   assert.equal(renderToStaticMarkup(createElement(CachedDataNotice,{data:{}})),'');
 });
 test('favorites are locked per account and exercise, while unrelated items remain independent',async()=>{
