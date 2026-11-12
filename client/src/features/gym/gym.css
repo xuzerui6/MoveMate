@@ -606,6 +606,16 @@
 .gym-controls {
   min-width: 0;
 }
+.gym-current {
+  display: flex;
+  flex-direction: column;
+}
+/* 准备阶段左栏内容少（摄像头未开启），把动作步骤推到栏底，
+   免得左栏下方留出一大片空白、与右栏高度脱节；
+   左栏内容本身够高时 auto 边距为 0，不影响其他阶段。 */
+.gym-current .gym-instructions {
+  margin-top: auto;
+}
 .gym-camera {
   position: relative;
   overflow: hidden;
