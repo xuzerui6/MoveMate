@@ -48,3 +48,34 @@ test('prep set-plan card fills the left column middle with equal-height rows', (
   const current = declarations(gymCss, '.gym-set-plan-list li.is-current');
   assert.match(current, /background:\s*var\(--mint\)/);
 });
+
+function allDeclarations(css: string, selector: string): string[] {
+  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return [...css.matchAll(new RegExp(escaped + '\\s*\\{([^}]*)\\}', 'g'))].map(m => m[1]);
+}
+
+// 3) The settings + plan-editor save bars must NOT ride as position:sticky
+//    inside the .motion-screen sub-scroller on phone/tablet widths: iOS
+//    Safari composites sticky-in-subscroller separately and repaints the
+//    tiles under it late during momentum scrolls (owner's 2026-11-12 screen
+//    recording: chips overprinting under the save button, dead white band
+//    above the bottom nav). Below 1100px both bars anchor to the viewport
+//    like .training-controls; the desktop forms stay untouched.
+test('settings save bar is viewport-anchored below 1100px, static on desktop', () => {
+  const blocks = allDeclarations(gymCss, '.gym-settings-savebar');
+  const mobile = blocks.find(b => /position:\s*fixed/.test(b) && /bottom:\s*calc\(80px \+ env\(safe-area-inset-bottom/.test(b));
+  assert.ok(mobile, 'phone save bar must be fixed above the bottom nav (80px + safe-area)');
+  const tablet = blocks.find(b => /position:\s*fixed/.test(b) && /left:\s*86px/.test(b));
+  assert.ok(tablet, 'tablet save bar must be fixed beside the 86px rail');
+  assert.ok(blocks.some(b => /position:\s*static/.test(b)), 'desktop save bar stays static (≥1100px rule)');
+  const forms = allDeclarations(gymCss, '.gym-settings-form');
+  assert.ok(forms.some(b => /padding-bottom:\s*96px/.test(b)), 'settings form clears the fixed bar');
+});
+
+test('plan editor save bar is viewport-anchored below 1100px, keyboard still unfixes it', () => {
+  const blocks = allDeclarations(gymCss, '.gym-editor-save-bar');
+  assert.ok(blocks.some(b => /position:\s*fixed/.test(b) && /bottom:\s*calc\(80px \+ env\(safe-area-inset-bottom/.test(b)), 'phone editor bar must be fixed above the bottom nav');
+  assert.ok(blocks.some(b => /position:\s*fixed/.test(b) && /left:\s*86px/.test(b)), 'tablet editor bar must be fixed beside the rail');
+  const keyboard = declarations(gymCss, '.keyboard-open .gym-editor-save-bar');
+  assert.match(keyboard, /position:\s*static/);
+});

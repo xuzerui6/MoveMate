@@ -1065,7 +1065,21 @@ fieldset.gym-settings-equipment{padding:24px}
   .gym-settings-form .gym-settings-card{margin:0}
   fieldset.gym-settings-equipment{padding:18px}
   .gym-settings-form select,.gym-settings-form input{font-size:16px}
-  .gym-settings-savebar{margin:0 -20px;padding:10px 20px 12px}
+}
+
+/* 保存条在 <1100px 改为锚定壳层的 fixed（与 .training-controls 同范式），不再用
+   内层滚动容器 .motion-screen 里的 position:sticky：iOS Safari 对子滚动容器内
+   sticky 元素单独合成，动量滚动时被它覆盖的 tiles 重绘滞后——实测录屏中按钮
+   冻结在同一像素行、按钮下方 chips 续滚且文字叠印、底部留白带。fixed 锚定
+   视口后不经过这条重绘路径；表单补底部内边距，保证最后一张卡不被固定条遮住。
+   ≥1100px 仍走既有 static 规则（上方 min-width:1100px 块），不受影响。 */
+@media (max-width:699px){
+  .gym-settings-savebar{position:fixed;left:0;right:0;bottom:calc(80px + env(safe-area-inset-bottom,0px));margin:0;padding:10px 20px 12px;z-index:60}
+  .gym-settings-form{padding-bottom:96px}
+}
+@media (min-width:700px) and (max-width:1099px){
+  .gym-settings-savebar{position:fixed;left:86px;right:0;bottom:0;margin:0;padding:10px 32px calc(12px + env(safe-area-inset-bottom,0px));z-index:60}
+  .gym-settings-form{padding-bottom:96px}
 }
 
 .gym-year-calendar{display:grid;grid-template-rows:repeat(7,12px);grid-auto-flow:column;grid-auto-columns:12px;gap:3px;overflow-x:auto;padding:8px 0}.gym-year-calendar span{background:#f6f8f7;border-radius:2px}.gym-year-calendar [data-level="1"]{background:#e5faee}.gym-year-calendar [data-level="2"]{background:#00c65e}.gym-year-calendar [data-level="3"]{background:#008a40}.gym-table-scroll{max-width:100%;overflow-x:auto}.gym-table-scroll table{width:100%;border-collapse:collapse;min-width:520px}.gym-table-scroll th,.gym-table-scroll td{padding:12px 10px;border-bottom:1px solid #e3e9e6;text-align:left;white-space:nowrap}.gym-trend-bars{height:150px;display:flex;gap:6px;align-items:flex-end;padding-bottom:25px}.gym-trend-bars>div{height:100%;flex:1;display:flex;justify-content:flex-end;flex-direction:column;position:relative;min-width:8px}.gym-trend-bars span{display:block;background:#00c65e;border-radius:4px 4px 0 0}.gym-trend-bars small{position:absolute;bottom:-25px;font-size:12px;white-space:nowrap;max-width:100%;overflow:hidden}
@@ -1098,9 +1112,15 @@ fieldset.gym-settings-equipment{padding:24px}
   .gym-editor{padding-bottom:100px}
   .gym-editor-secondary-actions{display:none}
   .gym-page .gym-editor-save-bar>.gym-editor-more-toggle{display:flex}
-  .gym-editor-save-bar{position:sticky;bottom:0;display:grid;grid-template-columns:1fr 88px;gap:12px;margin:16px 0 0;padding:12px 0;min-height:76px;box-sizing:border-box}
+  .gym-editor-save-bar{position:fixed;left:0;right:0;bottom:calc(80px + env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:1fr 88px;gap:12px;margin:0;padding:12px 20px;min-height:76px;box-sizing:border-box;z-index:60}
   .gym-page .gym-editor-save-bar>button{min-width:0;min-height:48px;margin:0}
   .keyboard-open .gym-editor-save-bar{position:static}
+}
+/* 计划编辑保存条与设置页保存条同因同修：700–1099px（侧栏布局）也锚定视口，
+   背景与上边框由 .gym-save-bar 基础规则提供；≥1100px 保持既有 sticky。 */
+@media (min-width:700px) and (max-width:1099px){
+  .gym-editor-save-bar{position:fixed;left:86px;right:0;bottom:0;margin:0;padding:12px 32px calc(12px + env(safe-area-inset-bottom,0px));z-index:60}
+  .gym-editor{padding-bottom:120px}
 }
 
 /* 按部位找动作（人体图浏览） */
