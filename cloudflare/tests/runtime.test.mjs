@@ -35,6 +35,29 @@ await test('Workers runtime migration and business regression', async t=>{
  const missing=await mf.dispatchFetch('http://localhost/assets/missing.js');assert.equal(missing.status,404);assert.equal(missing.headers.get('Cache-Control'),'no-store');
  const asset=await mf.dispatchFetch('http://localhost/assets/valid.js');assert.equal(asset.status,200);assert.match(asset.headers.get('Cache-Control'),/immutable/);
  });
+ await t.test('CDN-routed asset paths carry CORS headers and answer preflight',async()=>{
+ const origin={Origin:'https://dongban.xyz'};
+ const model=await mf.dispatchFetch('http://localhost/pose/pose_landmarker_full.task',{headers:origin});
+ assert.equal(model.status,200);assert.equal(model.headers.get('Access-Control-Allow-Origin'),'*');
+ const head=await mf.dispatchFetch('http://localhost/pose/pose_landmarker_full.task',{method:'HEAD',headers:origin});
+ assert.equal(head.headers.get('Access-Control-Allow-Origin'),'*');
+ const wasm=await mf.dispatchFetch('http://localhost/pose/wasm/vision_wasm_internal.wasm',{headers:origin});
+ assert.equal(wasm.headers.get('Access-Control-Allow-Origin'),'*');
+ const image=await mf.dispatchFetch('http://localhost/exercise-media/photo.webp',{headers:origin});
+ assert.equal(image.status,200);assert.equal(image.headers.get('Access-Control-Allow-Origin'),'*');
+ const preflight=await mf.dispatchFetch('http://localhost/pose/pose_landmarker_full.task',{method:'OPTIONS',headers:{...origin,'Access-Control-Request-Method':'GET'}});
+ assert.equal(preflight.status,204);assert.equal(preflight.headers.get('Access-Control-Allow-Origin'),'*');
+ assert.match(preflight.headers.get('Access-Control-Allow-Methods')||'',/GET/);assert.match(preflight.headers.get('Access-Control-Allow-Methods')||'',/HEAD/);
+ assert.ok(preflight.headers.get('Access-Control-Max-Age'));
+ const mediaPreflight=await mf.dispatchFetch('http://localhost/exercise-media/photo.webp',{method:'OPTIONS',headers:{...origin,'Access-Control-Request-Method':'GET'}});
+ assert.equal(mediaPreflight.status,204);assert.equal(mediaPreflight.headers.get('Access-Control-Allow-Origin'),'*');
+ });
+ await t.test('API and non-routed paths get no CDN CORS header',async()=>{
+ const api=await call('/api/cron');
+ assert.equal(api.headers.get('Access-Control-Allow-Origin'),null);
+ const chunk=await mf.dispatchFetch('http://localhost/assets/valid.js',{headers:{Origin:'https://dongban.xyz'}});
+ assert.equal(chunk.headers.get('Access-Control-Allow-Origin'),null);
+ });
  await t.test('unimported instance stays closed and migration endpoint requires a secret',async()=>{
  assert.equal((await call('/health')).status,503);assert.equal((await call('/api/migration/status')).status,401);
  });

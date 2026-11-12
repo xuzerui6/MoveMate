@@ -393,6 +393,21 @@ export default {
       const id = env.BACKEND.idFromName(env.INSTANCE || 'production');
       return env.BACKEND.get(id, { locationHint: 'apac' }).fetch(request);
     }
+    // Public static assets (pose models/WASM, library media) are read
+    // cross-origin: the CDN host pose.xzrcloud.xyz origin-pulls these very
+    // responses, and client fetch() of model/WASM bytes only accepts them
+    // with CORS headers. Answer preflight here — Workers Assets replies 405
+    // to OPTIONS — and stamp the allow-origin header on the responses below.
+    // Public, non-credentialed bytes only: no credentials header, and no
+    // other path (API included) gets these headers.
+    const corsAssetPath = url.pathname.startsWith('/pose/') || url.pathname.startsWith('/exercise-media/');
+    if (corsAssetPath && request.method === 'OPTIONS') {
+      return new Response(null, { status: 204, headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+        'Access-Control-Max-Age': '86400',
+      } });
+    }
     const demoVideo=url.pathname.startsWith('/exercise-media/')&&url.pathname.endsWith('.mp4');
     const assetHeaders=new Headers(request.headers);
     if(demoVideo){assetHeaders.delete('Range');assetHeaders.set('Accept-Encoding','identity');}
@@ -410,7 +425,7 @@ export default {
       // chunk's HTML response for a year: that would keep a tab broken even
       // after the matching asset is deployed.
       if ((!response.ok&&response.status!==304&&response.status!==416) || headers.get('Content-Type')?.includes('text/html')) {
-        return new Response('Asset not found', { status: 404, headers: { 'Cache-Control': 'no-store', 'Content-Type': 'text/plain', 'X-Content-Type-Options': 'nosniff' } });
+        return new Response('Asset not found', { status: 404, headers: { 'Cache-Control': 'no-store', 'Content-Type': 'text/plain', 'X-Content-Type-Options': 'nosniff', ...(corsAssetPath ? { 'Access-Control-Allow-Origin': '*' } : {}) } });
       }
       headers.set('Cache-Control', response.status===416?'no-store': /\.[a-f0-9]{12}\./.test(url.pathname) || url.pathname.startsWith('/assets/') ? 'public, max-age=31536000, immutable' : 'public, max-age=0, must-revalidate');
     }
@@ -418,6 +433,7 @@ export default {
     headers.set('X-Content-Type-Options', 'nosniff');
     headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
     headers.set('Permissions-Policy', 'camera=(self), microphone=(self)');
+    if (corsAssetPath) headers.set('Access-Control-Allow-Origin', '*');
     return new Response(response.body, { status: response.status, headers });
   },
 } satisfies ExportedHandler<Env>;
