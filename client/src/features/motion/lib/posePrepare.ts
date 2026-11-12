@@ -18,6 +18,7 @@ import {
 } from './poseTransport';
 import {loadPoseVerdict, planPoseSession, usesMainThreadLite} from './poseCompatibility';
 import {loadPoseModelPreference} from './adaptiveRecognition';
+import {cdnAssetUrl} from './cdnAssets';
 
 export interface PrepareSnapshot {
   model: PoseModel;
@@ -96,56 +97,70 @@ function emit(run: PrepareRun, model: PoseModel, phaseEvent?: Parameters<typeof 
 const digestHex = async (bytes: ArrayBuffer) => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))).map(n => n.toString(16).padStart(2, '0')).join('');
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-/** Streams one file with real byte progress. Throws on network/HTTP problems
+/** Streams one file with real byte progress. Every download is attempted from
+ * the CDN first and, on ANY failure (network, HTTP status, size/integrity),
+ * retried once from the app origin before the error reaches the caller's retry
+ * policy — a CDN failure therefore looks like an ordinary retry, never a hard
+ * error while the origin route works. Throws on network/HTTP problems
  * (retryable by the caller) and on size/integrity problems (final). */
 async function downloadFile(run: PrepareRun, model: PoseModel, file: PrepareFileSpec): Promise<void> {
   const tracker = run.tracker!;
   if (file.kind === 'model') {
     const item = poseModelItem(model);
     const parts = (item as {parts?: string[]}).parts?.length ? (item as {parts?: string[]}).parts! : [item.src];
-    const chunks: ArrayBuffer[] = [];
+    const downloadFrom = async (mapUrl: (path: string) => string): Promise<ArrayBuffer> => {
+      const chunks: ArrayBuffer[] = [];
+      tracker.setLoaded(file.key, 0, Date.now());
+      for (const part of parts) {
+        const response = await fetch(mapUrl(part));
+        if (!response.ok) throw Error(`模型文件读取失败（${response.status}）`);
+        if (!response.body) { chunks.push(await response.arrayBuffer()); tracker.addBytes(file.key, chunks[chunks.length - 1].byteLength, Date.now()); emit(run, model); continue; }
+        const reader = response.body.getReader();
+        for (;;) {
+          const {done, value} = await reader.read();
+          if (done) break;
+          if (value) { chunks.push(value.buffer.slice(value.byteOffset, value.byteOffset + value.byteLength) as ArrayBuffer); tracker.addBytes(file.key, value.byteLength, Date.now()); emit(run, model); }
+        }
+      }
+      const bytes = new ArrayBuffer(chunks.reduce((sum, chunk) => sum + chunk.byteLength, 0));
+      const view = new Uint8Array(bytes); let offset = 0;
+      for (const chunk of chunks) { view.set(new Uint8Array(chunk), offset); offset += chunk.byteLength; }
+      if (bytes.byteLength !== item.bytes) throw Error('模型大小校验失败');
+      if (await digestHex(bytes) !== item.sha256) throw Error('模型完整性校验失败');
+      return bytes;
+    };
+    let bytes: ArrayBuffer;
+    try { bytes = await downloadFrom(cdnAssetUrl); } catch { bytes = await downloadFrom(path => path); }
+    await writeCachedModelBytes(model, bytes);
+    tracker.markDone(file.key, Date.now());
+    return;
+  }
+  const downloadFrom = async (mapUrl: (path: string) => string): Promise<{bytes: ArrayBuffer; contentLength: number}> => {
+    const response = await fetch(mapUrl(file.src));
+    if (!response.ok) throw Error(`识别文件读取失败（${response.status}）`);
+    const length = Number(response.headers.get('content-length'));
+    if (Number.isFinite(length) && length > 0) tracker.setTotal(file.key, length);
     tracker.setLoaded(file.key, 0, Date.now());
-    for (const part of parts) {
-      const response = await fetch(part);
-      if (!response.ok) throw Error(`模型文件读取失败（${response.status}）`);
-      if (!response.body) { chunks.push(await response.arrayBuffer()); tracker.addBytes(file.key, chunks[chunks.length - 1].byteLength, Date.now()); emit(run, model); continue; }
+    const chunks: ArrayBuffer[] = [];
+    if (!response.body) chunks.push(await response.arrayBuffer());
+    else {
       const reader = response.body.getReader();
       for (;;) {
         const {done, value} = await reader.read();
         if (done) break;
-        if (value) { chunks.push(value.buffer.slice(value.byteOffset, value.byteOffset + value.byteLength) as ArrayBuffer); tracker.addBytes(file.key, value.byteLength, Date.now()); emit(run, model); }
+        if (value) { chunks.push(value.buffer.slice(value.byteOffset, value.byteLength) as ArrayBuffer); tracker.addBytes(file.key, value.byteLength, Date.now()); emit(run, model); }
       }
     }
     const bytes = new ArrayBuffer(chunks.reduce((sum, chunk) => sum + chunk.byteLength, 0));
     const view = new Uint8Array(bytes); let offset = 0;
     for (const chunk of chunks) { view.set(new Uint8Array(chunk), offset); offset += chunk.byteLength; }
-    if (bytes.byteLength !== item.bytes) throw Error('模型大小校验失败');
-    if (await digestHex(bytes) !== item.sha256) throw Error('模型完整性校验失败');
-    await writeCachedModelBytes(model, bytes);
-    tracker.markDone(file.key, Date.now());
-    return;
-  }
-  const response = await fetch(file.src);
-  if (!response.ok) throw Error(`识别文件读取失败（${response.status}）`);
-  const length = Number(response.headers.get('content-length'));
-  if (Number.isFinite(length) && length > 0) tracker.setTotal(file.key, length);
-  tracker.setLoaded(file.key, 0, Date.now());
-  const chunks: ArrayBuffer[] = [];
-  if (!response.body) chunks.push(await response.arrayBuffer());
-  else {
-    const reader = response.body.getReader();
-    for (;;) {
-      const {done, value} = await reader.read();
-      if (done) break;
-      if (value) { chunks.push(value.buffer.slice(value.byteOffset, value.byteOffset + value.byteLength) as ArrayBuffer); tracker.addBytes(file.key, value.byteLength, Date.now()); emit(run, model); }
-    }
-  }
-  const bytes = new ArrayBuffer(chunks.reduce((sum, chunk) => sum + chunk.byteLength, 0));
-  const view = new Uint8Array(bytes); let offset = 0;
-  for (const chunk of chunks) { view.set(new Uint8Array(chunk), offset); offset += chunk.byteLength; }
-  if (bytes.byteLength === 0) throw Error('识别文件完整性校验失败');
-  await writeCachedPoseAsset(file.src, bytes);
-  if (!Number.isFinite(length) || length <= 0) tracker.setTotal(file.key, bytes.byteLength);
+    if (bytes.byteLength === 0) throw Error('识别文件完整性校验失败');
+    return {bytes, contentLength: length};
+  };
+  let downloaded: {bytes: ArrayBuffer; contentLength: number};
+  try { downloaded = await downloadFrom(cdnAssetUrl); } catch { downloaded = await downloadFrom(path => path); }
+  await writeCachedPoseAsset(file.src, downloaded.bytes);
+  if (!Number.isFinite(downloaded.contentLength) || downloaded.contentLength <= 0) tracker.setTotal(file.key, downloaded.bytes.byteLength);
   tracker.markDone(file.key, Date.now());
 }
 

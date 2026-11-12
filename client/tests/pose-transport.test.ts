@@ -3,12 +3,12 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {openPoseTransport,modelBytes} from '../src/features/motion/lib/poseTransport';
 import models from '../src/features/motion/lib/pose-models.json';
-function environment(t:any,failGPU=false,hold=false,failGPUFrame=false){
+function environment(t:any,failGPU=false,hold=false,failGPUFrame=false,failCdnWasm=false){
  const saved=Object.getOwnPropertyDescriptors(globalThis),instances:any[]=[];let closed=0;
  class WorkerStub {
-  onmessage:any;onerror:any;terminated=false;delegate="";
+  onmessage:any;onerror:any;terminated=false;delegate="";wasmAttempts:string[]=[];
   constructor(..._:any[]){instances.push(this);}
-  postMessage(data:any){queueMicrotask(()=>{if(this.terminated)return;if(data.kind==='init'){this.delegate=data.delegate;this.onmessage?.({data:{id:data.id,...(failGPU&&data.delegate==='GPU'?{error:'GPU unavailable'}:{ready:true})}});}else if(!hold){data.image.close();this.onmessage?.({data:{id:data.id,...(failGPUFrame&&this.delegate==='GPU'?{error:'GPU first frame failed'}:{landmarks:[],worldLandmarks:[]})}});}});}
+  postMessage(data:any){queueMicrotask(()=>{if(this.terminated)return;if(data.kind==='init'){this.delegate=data.delegate;this.wasmAttempts.push(data.wasm);this.onmessage?.({data:{id:data.id,...(failGPU&&data.delegate==='GPU'?{error:'GPU unavailable'}:failCdnWasm&&String(data.wasm).startsWith('https://pose.xzrcloud.xyz')?{error:'CDN wasm unavailable'}:{ready:true})}});}else if(!hold){data.image.close();this.onmessage?.({data:{id:data.id,...(failGPUFrame&&this.delegate==='GPU'?{error:'GPU first frame failed'}:{landmarks:[],worldLandmarks:[]})}});}});}
   terminate(){this.terminated=true;}
  }
  Object.defineProperty(globalThis,'Worker',{configurable:true,value:WorkerStub});Object.defineProperty(globalThis,'OffscreenCanvas',{configurable:true,value:class{}});Object.defineProperty(globalThis,'location',{configurable:true,value:{origin:'http://localhost'}});
@@ -20,6 +20,21 @@ function environment(t:any,failGPU=false,hold=false,failGPUFrame=false){
 test('worker GPU initialization, frame transfer and disposal release worker and image',async t=>{
  const env=environment(t),control=new AbortController(),runtime=await openPoseTransport('full',control.signal);assert.equal(runtime.mode,'worker-gpu');assert.deepEqual((await runtime.infer({} as any,100)).landmarks,[]);assert.ok(env.closed()>0);runtime.close();assert.ok(env.instances.every(w=>w.terminated));
 });
+test('worker init receives the CDN WASM base first',async t=>{
+ const env=environment(t),runtime=await openPoseTransport('lite',new AbortController().signal);
+ assert.equal(runtime.mode,'worker-gpu');
+ assert.deepEqual((env.instances[0] as any).wasmAttempts,['https://pose.xzrcloud.xyz/pose/wasm']);
+ runtime.close();
+});
+
+test('a failed CDN WASM init retries with the origin base on the same worker',async t=>{
+ const env=environment(t,false,false,false,true),runtime=await openPoseTransport('lite',new AbortController().signal);
+ assert.equal(runtime.mode,'worker-gpu');
+ assert.equal(env.instances.length,1);
+ assert.deepEqual((env.instances[0] as any).wasmAttempts,['https://pose.xzrcloud.xyz/pose/wasm','http://localhost/pose/wasm']);
+ runtime.close();
+});
+
 test('worker GPU failure falls back to worker CPU and closes rejected worker',async t=>{
  const env=environment(t,true),runtime=await openPoseTransport('lite',new AbortController().signal);assert.equal(runtime.mode,'worker-cpu');assert.equal(env.instances.length,2);assert.ok(env.instances[0].terminated);runtime.close();assert.ok(env.instances[1].terminated);
 });
@@ -44,12 +59,22 @@ test('verified model bytes persist in the on-device cache; corrupt entries are d
  t.mock.method(globalThis,'fetch',async(input:any)=>new Response(readFileSync(new URL('../public'+String(input),import.meta.url))));
  const third=await modelBytes('lite',new AbortController().signal);assert.equal(third.byteLength,models.lite.bytes);
 });
-test('a transient network failure is retried once; a size failure is not retried',async t=>{
+test('a transient network failure falls back from the CDN to the origin; a size failure surfaces only after both routes fail',async t=>{
  environment(t);
  let calls=0;t.mock.method(globalThis,'fetch',async(input:any)=>{calls++;if(calls===1)throw new TypeError('fetch failed');return new Response(readFileSync(new URL('../public'+String(input),import.meta.url)));});
  const bytes=await modelBytes('lite',new AbortController().signal);assert.equal(bytes.byteLength,models.lite.bytes);assert.equal(calls,2);
  let bad=0;t.mock.method(globalThis,'fetch',async()=>{bad++;return new Response(new Uint8Array([1,2,3]));});
- await assert.rejects(modelBytes('full',new AbortController().signal),/大小/);assert.equal(bad,1);
+ await assert.rejects(modelBytes('full',new AbortController().signal),/大小/);assert.equal(bad,2);
+});
+
+test('corrupt CDN bytes fall back to the verified origin copy',async t=>{
+ environment(t);
+ const seen:string[]=[];
+ t.mock.method(globalThis,'fetch',async(input:any)=>{seen.push(String(input));if(String(input).startsWith('https://pose.xzrcloud.xyz'))return new Response(new Uint8Array([9,9,9]));return new Response(readFileSync(new URL('../public'+String(input),import.meta.url)));});
+ const bytes=await modelBytes('lite',new AbortController().signal);
+ assert.equal(bytes.byteLength,models.lite.bytes);
+ assert.ok(seen[0].startsWith('https://pose.xzrcloud.xyz/pose/'));
+ assert.ok(seen.includes(models.lite.src));
 });
 
 // Initialization alone is insufficient: first inference may fail on a browser GPU.

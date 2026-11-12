@@ -1,6 +1,7 @@
 import type {PoseLandmarker} from '@mediapipe/tasks-vision';
 import type {PoseModel,PoseMode} from './poseProtocol';
 import models from './pose-models.json';
+import {cdnAssetUrl,wasmBaseCandidates} from './cdnAssets';
 export type PoseResult={landmarks:any;worldLandmarks:any};
 export type PoseTransport={mode:PoseMode;infer:(video:HTMLVideoElement,timestamp:number)=>Promise<PoseResult>;close:()=>void};
 type ModelItem=(typeof models)[PoseModel];
@@ -41,11 +42,21 @@ async function fetchModelBytes(name:PoseModel,item:ModelItem,signal:AbortSignal)
   // Models above the hosting per-file limit ship as ordered parts; the pinned
   // byte size and sha256 always cover the reassembled whole file.
   const parts=(item as {parts?:string[]}).parts?.length?(item as {parts?:string[]}).parts!:[item.src];
-  const chunks:ArrayBuffer[]=[];
-  for(const part of parts){const response=await fetch(part,{signal:download.signal});if(!response.ok)throw Error(`${poseModelLabel[name]} 模型文件读取失败（${response.status}）`);chunks.push(await response.arrayBuffer());}
-  const bytes=new ArrayBuffer(chunks.reduce((sum,chunk)=>sum+chunk.byteLength,0));const view=new Uint8Array(bytes);let offset=0;for(const chunk of chunks){view.set(new Uint8Array(chunk),offset);offset+=chunk.byteLength;}
-  if(bytes.byteLength!==item.bytes)throw Error('模型大小校验失败');
-  if(await digestHex(bytes)!==item.sha256)throw Error('模型完整性校验失败');return bytes;
+  const assembleFrom=async(mapUrl:(path:string)=>string)=>{
+   const chunks:ArrayBuffer[]=[];
+   for(const part of parts){const response=await fetch(mapUrl(part),{signal:download.signal});if(!response.ok)throw Error(`${poseModelLabel[name]} 模型文件读取失败（${response.status}）`);chunks.push(await response.arrayBuffer());}
+   const bytes=new ArrayBuffer(chunks.reduce((sum,chunk)=>sum+chunk.byteLength,0));const view=new Uint8Array(bytes);let offset=0;for(const chunk of chunks){view.set(new Uint8Array(chunk),offset);offset+=chunk.byteLength;}
+   if(bytes.byteLength!==item.bytes)throw Error('模型大小校验失败');
+   if(await digestHex(bytes)!==item.sha256)throw Error('模型完整性校验失败');return bytes;
+  };
+  // CDN first; ANY CDN failure (network, status, size, checksum) retries the
+  // whole assembly from the app origin before an error is allowed to surface.
+  let lastError:unknown;
+  for(const mapUrl of [(path:string)=>cdnAssetUrl(path),(path:string)=>path]){
+   try{return await assembleFrom(mapUrl);}
+   catch(e){if(download.signal.aborted)throw e;lastError=e;}
+  }
+  throw lastError;
  }catch(e){if(download.signal.aborted&&!signal.aborted)throw Error('模型下载超时，请检查网络后重试');throw e;}
  finally{clearTimeout(timeout);signal.removeEventListener('abort',cancel);}
 }
@@ -67,7 +78,15 @@ async function workerTransport(bytes:ArrayBuffer,delegate:'GPU'|'CPU',signal:Abo
  const fail=(message:string)=>{for(const p of pending.values()){clearTimeout(p.timer);p.reject(Error(message));}pending.clear();};worker.onerror=()=>fail('Worker 推理初始化失败');
  worker.onmessage=({data})=>{const p=pending.get(data.id);if(!p)return;pending.delete(data.id);clearTimeout(p.timer);data.error?p.reject(Error(data.error)):p.resolve(data);};
  const call=(data:any,transfer:Transferable[]=[])=>new Promise<any>((resolve,reject)=>{if(closed||signal.aborted){reject(Error('推理已取消'));return;}const id=++next,timer=setTimeout(()=>{pending.delete(id);reject(Error('推理响应超时'));},data.kind==='init'?timeouts.init:firstFrame?timeouts.firstFrame:1000);pending.set(id,{resolve,reject,timer});try{worker.postMessage({...data,id},transfer);}catch(e){clearTimeout(timer);pending.delete(id);reject(e);}});
- try{const copy=bytes.slice(0);await call({kind:'init',bytes:copy,delegate,wasm:new URL('/pose/wasm',location.origin).href},[copy]);}catch(e){close();throw e;}
+ // WASM loads CDN-first; a failed init retries once on the same worker with the
+ // origin WASM base before the worker is given up on (a failed init leaves the
+ // worker responsive — its model is still unset).
+ let initError:unknown=null;
+ for(const wasm of wasmBaseCandidates(new URL('/pose/wasm',location.origin).href)){
+  try{const copy=bytes.slice(0);await call({kind:'init',bytes:copy,delegate,wasm},[copy]);initError=null;break;}
+  catch(e){initError=e;if(closed||signal.aborted)break;}
+ }
+ if(initError){close();throw initError;}
  return {mode:delegate==='GPU'?'worker-gpu':'worker-cpu',close,infer:async(video,timestamp)=>{const image=await createImageBitmap(video);if(closed||signal.aborted){image.close();throw Error('推理已取消');}try{const result=await call({kind:'frame',image,timestamp},[image]);firstFrame=false;return result;}catch(e){image.close();throw e;}}};
 }
 export async function openPoseTransport(name:PoseModel,signal:AbortSignal,video?:HTMLVideoElement,options:{mainThread?:boolean;initTimeoutMs?:number;firstFrameTimeoutMs?:number}={}):Promise<PoseTransport>{
@@ -78,8 +97,15 @@ export async function openPoseTransport(name:PoseModel,signal:AbortSignal,video?
  // Larger variants need the worker unless the caller explicitly runs them on the main
  // thread (the iOS experiment path); the caller recovers to Lite when this throws.
  if(name!=='lite'&&!options.mainThread)throw Error(`${poseModelLabel[name]} Worker 不可用，降级到 Lite`);
- const {FilesetResolver,PoseLandmarker}=await import('@mediapipe/tasks-vision');const vision=await FilesetResolver.forVisionTasks('/pose/wasm');let model:PoseLandmarker|null=null,mode:PoseMode='main-gpu';
- for(const delegate of ['GPU','CPU'] as const){try{model=await PoseLandmarker.createFromOptions(vision,{runningMode:'VIDEO',numPoses:1,minPoseDetectionConfidence:.55,minPosePresenceConfidence:.55,minTrackingConfidence:.55,baseOptions:{modelAssetBuffer:new Uint8Array(bytes),delegate}});mode=delegate==='GPU'?'main-gpu':'main-cpu';if(signal.aborted)throw Error('推理已取消');if(video)model.detectForVideo(video,performance.now());break;}catch(e){model?.close();model=null;if(signal.aborted)throw e;}}
+ const {FilesetResolver,PoseLandmarker}=await import('@mediapipe/tasks-vision');let model:PoseLandmarker|null=null,mode:PoseMode='main-gpu';
+ // The vision fileset is created CDN-first; if no delegate can be created from
+ // it (the WASM fetch inside createFromOptions is where a bad base surfaces),
+ // the whole creation is retried against the origin WASM base.
+ for(const wasmBase of wasmBaseCandidates('/pose/wasm')){
+  let vision;try{vision=await FilesetResolver.forVisionTasks(wasmBase);}catch{continue;}
+  for(const delegate of ['GPU','CPU'] as const){try{model=await PoseLandmarker.createFromOptions(vision,{runningMode:'VIDEO',numPoses:1,minPoseDetectionConfidence:.55,minPosePresenceConfidence:.55,minTrackingConfidence:.55,baseOptions:{modelAssetBuffer:new Uint8Array(bytes),delegate}});mode=delegate==='GPU'?'main-gpu':'main-cpu';if(signal.aborted)throw Error('推理已取消');if(video)model.detectForVideo(video,performance.now());break;}catch(e){model?.close();model=null;if(signal.aborted)throw e;}}
+  if(model||signal.aborted)break;
+ }
  if(!model)throw Error(`${poseModelLabel[name]} 模型初始化失败`);const instance=model;let closed=false;
  const close=()=>{if(closed)return;closed=true;instance.close();signal.removeEventListener('abort',close);};signal.addEventListener('abort',close,{once:true});if(signal.aborted){close();throw Error('推理已取消');}
  return {mode,close,infer:async(video,timestamp)=>{if(closed)throw Error('推理已取消');const r=instance.detectForVideo(video,timestamp);return {landmarks:r.landmarks[0]||null,worldLandmarks:r.worldLandmarks[0]||null};}};
