@@ -169,7 +169,7 @@ export function AnalysisExtras({ data }: { data: any }) {
       <section className="gym-form">
         <h2>逐动作历史与趋势</h2>
         {!entries.length ? (
-          <p>完成训练后显示趋势。</p>
+          <p>完成有逐组记录的训练（计划、自由训练或导入）后，这里会显示每个动作的历史趋势。</p>
         ) : (
           <>
             <label>
