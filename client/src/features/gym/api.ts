@@ -163,7 +163,7 @@ export const partNames: Record<string, string> = {
   assisted: "辅助器械",
   "medicine ball": "药球",
   "stability ball": "健身球",
-  rope: "绳索",
+  rope: "绳子",
   "ez barbell": "曲杠",
   "sled machine": "雪橇器械",
   "upper body ergometer": "上肢功率车",
