@@ -1122,6 +1122,22 @@ export async function analytics(uid: number) {
       weeks[week] = (weeks[week] || 0) + v;
     }
   }
+  // Activity outside the set-by-set store: finished standalone / group
+  // sessions live only in sport_sessions (that is what the home page counts).
+  // They carry no per-set load data, so they join only the activity calendar
+  // and the workout count — never the set-level aggregates below. Sessions
+  // linked from a gym workout are already counted through that workout, and
+  // demo sessions are practice simulations, so both are excluded here.
+  const standalone = (
+    await pool.query(
+      "SELECT s.created_at FROM sport_sessions s LEFT JOIN gym_workouts w ON w.sport_session_id=s.id WHERE s.user_id=$1 AND s.status='finished' AND s.source<>'demo' AND w.id IS NULL",
+      [uid],
+    )
+  ).rows;
+  for (const s of standalone) {
+    const date = dateInZone(s.created_at, prefs.timeZone);
+    days[date] = (days[date] || 0) + 1;
+  }
   const sorted = (r: Record<string, number>) =>
     Object.fromEntries(
       Object.entries(r).sort(([a], [b]) => a.localeCompare(b)),
@@ -1136,7 +1152,7 @@ export async function analytics(uid: number) {
         rows.sort((a, b) => a.date.localeCompare(b.date)),
       ]),
     ),
-    workouts: workouts.length,
+    workouts: workouts.length + standalone.length,
     volume: Math.round(volume * 10) / 10,
     reps,
     sets,

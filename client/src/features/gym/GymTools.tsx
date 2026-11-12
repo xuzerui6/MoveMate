@@ -139,12 +139,12 @@ export function Analytics() {
         <>
           <AnalysisExtras data={a} />
           <p className="gym-muted">
-            这里统计的是计划训练和导入的记录；自己随手练的和个人计时，去运动记录里看。训练量按「重量
+            日历和运动次数，也算上自己随手练的和组局；完成组数、累计次数、训练量和每个动作的趋势，只统计有逐组记录的训练（计划训练、自由训练和导入的记录）。训练量按「重量
             × 次数」算；左右分开记的，按两边合起来算。徒手动作没有外加重量，就不估了。
           </p>
           <div className="gym-stat-grid">
             {[
-              ["训练次数", a.workouts],
+              ["运动次数", a.workouts],
               ["完成组数", a.sets],
               ["累计次数", a.reps],
               ["外部训练量 " + unit, displayWeight(a.volume, unit)],
