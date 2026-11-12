@@ -42,6 +42,7 @@ import {
   WorkoutEditor,
   SaveAsPlan,
 } from "./WorkoutOptions";
+import { SetPlanCard } from "./SetPlanCard";
 const stamp = (w: any) => ({
   ...w,
   session: w.session ? { ...w.session, receivedAt: Date.now() } : null,
@@ -191,6 +192,15 @@ export default function PlanWorkout() {
     camera = !!current && current.inputMode === "camera",
     working = row?.phase === "working",
     finished = row?.phase === "finished";
+  const arrangementRef = useRef<HTMLDivElement>(null);
+  // 「本组安排」卡的「调整 ›」：展开下方「调整本次训练安排」并滚动到它。
+  const openArrangement = () => {
+    const wrap = arrangementRef.current;
+    if (!wrap) return;
+    const details = wrap.querySelector("details");
+    if (details) details.open = true;
+    wrap.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
   const requestedType = current?.exercise.planCamera?.profile || current?.exercise.cameraType;
   const supportedRecognition = !!requestedType && isRecognitionType(requestedType);
   const type:PlanRecognitionType=supportedRecognition?requestedType as PlanRecognitionType:'squat';
@@ -792,6 +802,14 @@ export default function PlanWorkout() {
                   {type==='standing_leg_curl'&&<p className="recognition-side-count">左侧 {metrics.scoreAccumulator.leftReps||0} 次 · 右侧 {metrics.scoreAccumulator.rightReps||0} 次 · 左右合计</p>}
                 </div>
               )}
+              {current && row.phase === "ready" && (
+                <SetPlanCard
+                  sets={row.sets}
+                  cursor={row.cursor}
+                  unit={options.prefs?.unit}
+                  onAdjust={openArrangement}
+                />
+              )}
               {current && (
                 <details className="gym-instructions">
                   <summary>{isUnreviewedOfficialExercise(current.exercise)?'本次记录的来源步骤（待核对）':'动作步骤与注意事项'}</summary>
@@ -1109,7 +1127,9 @@ export default function PlanWorkout() {
       )}
       {!finished && (
         <>
-          <WorkoutEditor row={row} run={run} busy={busy || blocked} />
+          <div ref={arrangementRef}>
+            <WorkoutEditor row={row} run={run} busy={busy || blocked} />
+          </div>
           {options.settings}
           <PlateCalculator />
           {options.deviceMessage && (
