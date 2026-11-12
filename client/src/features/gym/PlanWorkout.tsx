@@ -7,7 +7,7 @@ import { usePose } from "../motion/hooks/usePose";
 import { usePlanRecognition, type PlanRecognitionType } from "./usePlanRecognition";
 import {loadRecognitionPreference,selectRecognitionStrategy,type RecognitionPreference} from '../motion/lib/adaptiveRecognition';
 import {PrepDemoHero} from '../motion/components/PrepDemoHero';
-import {PrivacyConsentRow} from '../motion/components/PrivacyConsentRow';
+import {VisionReviewNote} from '../motion/components/VisionReviewNote';
 import {PosePreparePanel} from '../motion/components/PosePreparePanel';
 import {usePosePrepare} from '../motion/hooks/usePosePrepare';
 import { isRecognitionType } from '../motion/lib/recognition';
@@ -70,7 +70,6 @@ export default function PlanWorkout() {
     [manualReps, setManualReps] = useState(0),
     [weight, setWeight] = useState(0),
     [voiceOn, setVoiceOn] = useState(false),
-    [consent, setConsent] = useState(false),
     [finishDialog, setFinishDialog] = useState(false),
     [finishAttempted, setFinishAttempted] = useState(false),
     [expanded, setExpanded] = useState(false),
@@ -556,7 +555,6 @@ export default function PlanWorkout() {
     enabled: voiceOn && !finished,
     context: voiceContext,
     videoRef: pose.videoRef,
-    visionConsent: camera && consent,
   });
   useEffect(
     () => voice.sendWorkoutContext(voiceContext),
@@ -967,9 +965,7 @@ export default function PlanWorkout() {
                   {(camPrep || camDownloadFailed) && <PosePreparePanel snapshot={posePrepare.snapshot} phase={camPrep ?? 'download'} failed={camDownloadFailed} onCancel={cancelCamPrepare} onRetry={() => { setCamDownloadFailed(false); void startCamera(); }} onLiteStart={() => camPrepChoiceRef.current?.("lite")} onHome={() => navigate("/")}/>}
                 </section>
               )}
-              {!working && canRecognize && (
-                <PrivacyConsentRow allowed={consent} onChange={setConsent} disabled={busy}/>
-              )}
+              {!working && canRecognize && <VisionReviewNote/>}
               {adaptive&&camera&&row.phase==='paused'&&<p className="gym-muted" role="status">{pose.engine?.diagnostics.stage==='ready'&&pose.engine.metrics.poseFeedback.calibrated&&(pose.telemetry?.fps||0)>=8?'起始姿势已准备好，可直接继续':'休息不计时，继续后识别下一个完整动作。'}</p>}
               <div className="gym-main-actions">
                 {current && ["ready", "resting"].includes(row.phase) && (

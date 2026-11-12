@@ -166,20 +166,8 @@
 .prep-companion-avatar{flex:none;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#35c26e,#07873c);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,138,64,.3)}
 .prep-companion p{margin:0;background:var(--mint);border-radius:4px 16px 16px 16px;padding:11px 14px;font-size:14px;line-height:1.65;color:var(--ink)}
 .pose-ready-pill{display:inline-flex;align-items:center;gap:6px;margin:2px 0 6px;background:var(--mint);color:var(--color-primary-dark);font-size:13px;font-weight:700;border-radius:999px;padding:7px 14px}
-.privacy-consent{margin:18px 0}
-.privacy-consent-row{display:flex;align-items:center;gap:10px;width:100%;min-height:52px;padding:10px 16px;border:1px solid var(--line);border-radius:14px;background:#fff;font-size:14px;text-align:left;cursor:pointer}
 .privacy-dot{flex:none;width:11px;height:11px;border-radius:50%;background:var(--color-primary)}
-.privacy-dot-on{background:#d97706}
-.privacy-consent-text{flex:1;font-weight:600}
-.privacy-consent-change{flex:none;color:var(--color-primary);font-weight:600}
-.privacy-consent-options{display:grid;gap:10px}
-.privacy-consent-options label{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--line);border-radius:14px;cursor:pointer;background:#fff;margin:0}
-.privacy-consent-options label:has(input:checked){background:var(--mint);border-color:var(--color-primary)}
-.privacy-consent-options input{width:20px;height:20px;accent-color:var(--color-primary);flex:none;margin-top:2px}
-.privacy-consent-options label>span{display:flex;flex-direction:column;gap:4px}
-.privacy-consent-options b{font-size:14px}
-.privacy-consent-options small{font-size:12px;color:var(--muted);line-height:1.6}
-.privacy-consent-collapse{justify-self:end;background:none;border:0;color:var(--color-primary);font-size:14px;min-height:40px;padding:4px 8px;cursor:pointer}
+.vision-review-note{display:flex;align-items:center;gap:10px;margin:18px 0;min-height:52px;padding:10px 16px;border:1px solid var(--line);border-radius:14px;background:#fff;font-size:14px;font-weight:600}
 .pose-prepare-panel{border:1px solid var(--line);border-radius:18px;padding:18px;margin:18px 0;background:#fff}
 .pose-prepare-title{display:flex;align-items:center;gap:10px}
 .pose-prepare-title b{font-size:16px}
