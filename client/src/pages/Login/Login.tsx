@@ -1,5 +1,4 @@
 import Dialog from '../../components/Dialog';
-import loginAvatar from '../../features/motion/assets/avatars/outfits/male/default/front.png';
 /**
  * 登录/注册页面 —— 校园邮箱验证 + 邮箱注册和登录
  * 支持切换登录/注册模式
@@ -14,6 +13,66 @@ import type { Campus } from '../../types';
 import client, {getErrorMessage} from '../../api/client';
 import {prefetchPoseModels} from '../../features/motion/lib/posePrepare';
 import './Login.css';
+
+/**
+ * 页眉星图带（桌面）——按分享卡定版 BAND_MOTIF 的几何关系在白底重绘：
+ * 一条主链 + 虚线支链 + 一条大弧线，节点三级（圆环大点 / 实心小点 / 极小点），
+ * 标签只用大白话、不带数字。纯装饰，aria-hidden。
+ */
+const StarBand: React.FC = () => (
+  <svg className="login-band" viewBox="0 0 360 128" aria-hidden="true" focusable="false">
+    <path d="M28 96 A120 120 0 0 1 140 26" fill="none" stroke="#9fd8b4" strokeWidth="1.6" strokeDasharray="3 4" opacity=".6" />
+    <path d="M96 64 L140 26" fill="none" stroke="#9fd8b4" strokeWidth="1.6" strokeDasharray="3 4" opacity=".6" />
+    <path d="M168 78 L206 104" fill="none" stroke="#9fd8b4" strokeWidth="1.6" strokeDasharray="3 4" opacity=".6" />
+    <path d="M28 96 L96 64 L168 78 L238 38 L312 58 L338 30" fill="none" stroke="#008a40" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" opacity=".9" />
+    <path d="M190 16 H202 M196 10 V22" stroke="#00c65e" strokeWidth="2" strokeLinecap="round" opacity=".55" fill="none" />
+    <circle cx="206" cy="104" r="3" fill="#008a40" />
+    <circle cx="140" cy="26" r="6" fill="#ffffff" stroke="#008a40" strokeWidth="1.8" />
+    <circle cx="140" cy="26" r="2.8" fill="#00c65e" />
+    <circle cx="28" cy="96" r="3.8" fill="#008a40" />
+    <circle cx="96" cy="64" r="10" fill="#ffffff" stroke="#008a40" strokeWidth="2" />
+    <circle cx="96" cy="64" r="5" fill="#00c65e" />
+    <circle cx="96" cy="64" r="1.8" fill="#08783b" />
+    <circle cx="168" cy="78" r="3.8" fill="#008a40" />
+    <circle cx="238" cy="38" r="10" fill="#ffffff" stroke="#008a40" strokeWidth="2" />
+    <circle cx="238" cy="38" r="5" fill="#00c65e" />
+    <circle cx="238" cy="38" r="1.8" fill="#08783b" />
+    <circle cx="312" cy="58" r="3.8" fill="#008a40" />
+    <circle cx="338" cy="30" r="2.2" fill="#00c65e" />
+    <circle cx="96" cy="84" r="1.5" fill="#00c65e" />
+    <circle cx="238" cy="20" r="1.5" fill="#00c65e" />
+    <circle cx="312" cy="73" r="1.5" fill="#00c65e" />
+    <text x="96" y="101" textAnchor="middle" className="login-band-label">动作更稳了</text>
+    <text x="238" y="12" textAnchor="middle" className="login-band-label">这周没偷懒</text>
+    <text x="312" y="89" textAnchor="middle" className="login-band-label">搭子在等你</text>
+  </svg>
+);
+
+/**
+ * 页眉星链（手机）——横向重排的一条链（5 个节点、一条虚线支链、一个星芒），
+ * 只留两个标签。仅登录态显示，注册态页眉收成紧凑版。纯装饰，aria-hidden。
+ */
+const StarChain: React.FC = () => (
+  <svg className="login-chain" viewBox="0 0 350 52" aria-hidden="true" focusable="false">
+    <path d="M168 28 L206 44" fill="none" stroke="#9fd8b4" strokeWidth="1.6" strokeDasharray="3 4" opacity=".6" />
+    <path d="M14 32 L88 18 L168 28 L248 12 L330 22" fill="none" stroke="#008a40" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity=".9" />
+    <path d="M312 33 V47 M305 40 H319" stroke="#00c65e" strokeWidth="2" strokeLinecap="round" opacity=".55" fill="none" />
+    <circle cx="206" cy="44" r="2.5" fill="#008a40" />
+    <circle cx="14" cy="32" r="3" fill="#008a40" />
+    <circle cx="88" cy="18" r="7" fill="#ffffff" stroke="#008a40" strokeWidth="2" />
+    <circle cx="88" cy="18" r="3.2" fill="#00c65e" />
+    <circle cx="88" cy="18" r="1.4" fill="#08783b" />
+    <circle cx="168" cy="28" r="3" fill="#008a40" />
+    <circle cx="248" cy="12" r="7" fill="#ffffff" stroke="#008a40" strokeWidth="2" />
+    <circle cx="248" cy="12" r="3.2" fill="#00c65e" />
+    <circle cx="248" cy="12" r="1.4" fill="#08783b" />
+    <circle cx="330" cy="22" r="3" fill="#008a40" />
+    <circle cx="88" cy="33" r="1.5" fill="#00c65e" />
+    <circle cx="248" cy="27" r="1.5" fill="#00c65e" />
+    <text x="88" y="47" textAnchor="middle" className="login-chain-label">动作更稳了</text>
+    <text x="248" y="41" textAnchor="middle" className="login-chain-label">搭子在等你</text>
+  </svg>
+);
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -181,32 +240,68 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="ui-pages-login-login-container">
-      {/* Logo 区域 */}
-      <div className="ui-pages-login-login-logoArea">
-        <img className="auth-avatar pixel-art" src={loginAvatar} alt="动伴运动分身"/>
-        <h1 className="ui-pages-login-login-logoTitle">动伴</h1>
-        <p className="ui-pages-login-login-logoDesc">和 AI 训练，也和搭子一起运动</p>
-      </div>
+    <div className="ui-pages-login-login-container login-star" data-mode={mode}>
+      {/* 页眉：字标 + 星图（方向四「数据星图」优化版） */}
+      <header className="login-head">
+        <div className="login-head-main">
+          <div className="login-wordmark">
+            <h1 className="login-wordmark-text">动伴</h1>
+            <span className="login-wordmark-dot" aria-hidden="true" />
+          </div>
+          <p className="login-subtitle">和 AI 训练，也和搭子一起运动</p>
+          <StarChain />
+          <div className="login-starline">
+            <span>你的运动星图，正在一点点亮起来</span>
+            <span className="login-xpbar" aria-hidden="true"><i /></span>
+          </div>
+        </div>
+        <StarBand />
+      </header>
 
-      {/* 登录/注册切换 */}
-      <div className="ui-pages-login-login-tabs">
-        <button
-          className="ui-pages-login-login-tab" style={{color: mode === 'login' ? '#008a40' : '#68767e',borderBottomColor: mode === 'login' ? '#008a40' : 'transparent'}}
-          onClick={() => setMode('login')}
-        >
-          登录
-        </button>
-        <button
-          className="ui-pages-login-login-tab" style={{color: mode === 'register' ? '#008a40' : '#68767e',borderBottomColor: mode === 'register' ? '#008a40' : 'transparent'}}
-          onClick={() => setMode('register')}
-        >
-          注册
-        </button>
-      </div>
+      <div className="login-body">
+        {/* 左列价值点（桌面） */}
+        <aside className="login-values">
+          <svg className="login-values-spark" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false">
+            <path d="M9 1 V17 M1 9 H17" stroke="#00c65e" strokeWidth="2" strokeLinecap="round" opacity=".55" fill="none" />
+          </svg>
+          <div className="login-val">
+            <h3>AI 陪练</h3>
+            <p>练的时候有人陪，动作不对会提醒你</p>
+          </div>
+          <div className="login-val">
+            <h3>找搭子一起练</h3>
+            <p>想跑步、打球，喊一声就有人</p>
+          </div>
+          <div className="login-val">
+            <h3>进步看得见</h3>
+            <p>每一次运动，都会帮你记下来</p>
+          </div>
+        </aside>
 
-      {/* 表单 */}
-      <form onSubmit={handleSubmit} className="ui-pages-login-login-form">
+        {/* 表单卡 */}
+        <section className="login-card">
+          <span className="login-cardline" aria-hidden="true" />
+
+          {/* 登录/注册切换（分段胶囊） */}
+          <div className="login-seg">
+            <button
+              type="button"
+              className={`login-seg-btn${mode === 'login' ? ' is-on' : ''}`}
+              onClick={() => setMode('login')}
+            >
+              登录
+            </button>
+            <button
+              type="button"
+              className={`login-seg-btn${mode === 'register' ? ' is-on' : ''}`}
+              onClick={() => setMode('register')}
+            >
+              注册
+            </button>
+          </div>
+
+          {/* 表单 */}
+          <form onSubmit={handleSubmit} className="ui-pages-login-login-form">
 {bootstrapError&&<div className="inline-error" role="alert"><p>校区和场地信息暂时无法读取：{bootstrapError}</p><button type="button" className="btn btn--secondary" onClick={()=>window.location.reload()}>重新加载</button></div>}
         {/* 全局错误 */}
         {error && <div className="ui-pages-login-login-globalError">{error}</div>}
@@ -432,7 +527,9 @@ const Login: React.FC = () => {
             </>
           )}
         </p>
-      </form>
+          </form>
+        </section>
+      </div>
 
       {/* 协议弹窗 */}
       {showAgreement && (
