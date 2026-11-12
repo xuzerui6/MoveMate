@@ -350,6 +350,23 @@ await test('Workers runtime migration and business regression', async t=>{
  const again=await call('/api/v1/training-imports/transfer-commit',{method:'POST',token,body:op});assert.equal(again.data.data.imported,first.data.data.imported);
  assert.equal((await call('/api/v1/training-imports/batches/'+op.batchId,{token:tokens[1]})).data.data.cursor,0);
  });
+ await t.test('training analytics counts finished standalone sessions once, never demo or gym-linked sessions',async()=>{
+ const token = tokens.at(1);
+ const before=(await call('/api/v1/training-analytics',{token})).data.data,todayKey=before.today,daysBefore=before.days[todayKey]||0;
+ const solo=(await call('/api/v1/sport-sessions',{method:'POST',token,body:{sportType:'squat',source:'timer'}})).data.data;
+ assert.equal((await call('/api/v1/sport-sessions/'+solo.id+'/finish',{method:'POST',token,body:{}})).status,200);
+ const mid=(await call('/api/v1/training-analytics',{token})).data.data;
+ assert.equal(mid.workouts,before.workouts+1);assert.equal(mid.days[todayKey]||0,daysBefore+1);assert.equal(mid.sets,before.sets);
+ const demo=(await call('/api/v1/sport-sessions',{method:'POST',token,body:{sportType:'squat',source:'demo'}})).data.data;
+ await call('/api/v1/sport-sessions/'+demo.id+'/finish',{method:'POST',token,body:{}});
+ const afterDemo=(await call('/api/v1/training-analytics',{token})).data.data;
+ assert.equal(afterDemo.workouts,mid.workouts);assert.equal(afterDemo.days[todayKey]||0,daysBefore+1);
+ let r=await call('/api/v1/workout-sessions',{method:'POST',token,body:{id:crypto.randomUUID(),free:{exercises:[{exerciseId:'motion:squat',sets:[{reps:2}]}]}}});assert.equal(r.status,200,JSON.stringify(r.data));let w=r.data.data;
+ const act=async(action,extra={})=>{const rr=await call('/api/v1/workout-sessions/'+w.id+'/actions',{method:'POST',token,body:{operationId:crypto.randomUUID(),version:w.version,setId:w.sets[w.cursor]?.id,action,...extra}});assert.equal(rr.status,200,JSON.stringify(rr.data));w=rr.data.data;};
+ await act('start');await act('complete',{reps:2});await act('finish');
+ const end=(await call('/api/v1/training-analytics',{token})).data.data;
+ assert.equal(end.workouts,mid.workouts+1);assert.equal(end.days[todayKey]||0,daysBefore+2);
+ });
  await voicePoolTests(t,{mf,call,tokens,adminToken,sockets,password});
  }finally{for(const ws of sockets){try{ws.close()}catch{}}await mf.dispose()}
 });
