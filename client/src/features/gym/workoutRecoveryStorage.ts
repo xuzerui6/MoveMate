@@ -1,6 +1,6 @@
 type StorageLike = Pick<Storage,'getItem'|'setItem'|'removeItem'>;
 const sessions = new Map<string,WorkoutRecoveryStorage>();
-export const recoveryStorageWarning='未能保存到本机，请勿刷新或关闭；联网后先核对服务器，未上传的内容无法保证在刷新后恢复。';
+export const recoveryStorageWarning='没存到这台设备上，先别刷新、也别关页面；联网后先和云端对一下，没传上去的内容刷新后可能就没了。';
 export class WorkoutRecoveryStorage {
   pending: any = null;
   checkpoint: {setId:string;values:any}|null = null;
@@ -10,7 +10,7 @@ export class WorkoutRecoveryStorage {
   private disposed = false;
   private listeners = new Set<() => void>();
   constructor(public key: string, private storage: StorageLike) {
-    const read=(load:()=>void)=>{try{load();}catch{this.unknown=true;this.warning='本机同步记录无法读取，已停止操作；请先读取服务器恢复已保存内容。';}};
+    const read=(load:()=>void)=>{try{load();}catch{this.unknown=true;this.warning='这台设备上的同步记录读不出来，先停一下；用云端保存的内容恢复就好。';}};
     read(()=>{
       const raw=storage.getItem(key);
       if(raw){const p=JSON.parse(raw);if(!p || typeof p.operationId!=='string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(p.operationId) || !Number.isInteger(p.version) || p.version<1 || !['start','resume','pause','progress','complete','skip','finish','heartbeat','rest','edit','manual'].includes(p.action))throw Error();this.pending=p;}
@@ -32,7 +32,7 @@ export class WorkoutRecoveryStorage {
     catch {this.warning=recoveryStorageWarning;}
     this.emit();
   }
-  getPending(){if(this.disposed)throw Error('账号会话已结束');if(this.unknown)throw Error('本机同步记录尚未核对，请读取服务器恢复同步');return this.pending;}
+  getPending(){if(this.disposed)throw Error('账号会话已结束');if(this.unknown)throw Error('这台设备上的记录还没对好，先用云端保存的恢复');return this.pending;}
   setPending(value:any){if(this.disposed)return;this.pending=value===null?null:structuredClone(value);this.persist(this.key,this.pending);}
   setCheckpoint(value:typeof this.checkpoint){if(this.disposed)return;this.checkpoint=value===null?null:structuredClone(value);this.persist(this.key+':snapshot',this.checkpoint);}
   setNetwork(version:number){if(this.disposed)return;this.network=version;this.persist(this.key+':network',version||null);}
@@ -44,7 +44,7 @@ export class WorkoutRecoveryStorage {
     // The network marker can be damaged while its operation is still valid.
     // Preserve the operation already reconciled by the fresh read.
     this.unknown=false;this.network=0;
-    this.warning='旧同步记录无法读取，当前已恢复服务器保存的内容；未上传数据可能无法找回。';
+    this.warning='旧的同步记录读不出来，已经换回云端保存的内容；没传上去的部分可能找不回来了。';
     this.persist(this.key,this.pending);this.persist(this.key+':network',null);this.persist(this.key+':snapshot',this.checkpoint);
   }
 }
@@ -52,7 +52,7 @@ export class WorkoutRecoveryStorage {
 export function checkpointUpdate(checkpoint:WorkoutRecoveryStorage['checkpoint'],row:any){
   if(!checkpoint)return null;
   const current=row.sets[row.cursor];
-  if(row.phase==='finished'||current?.id!==checkpoint.setId||!['working','paused'].includes(row.phase))throw Error('服务器已结束或切换了本组，未上传快照已保留；请核对后选择服务器记录。');
+  if(row.phase==='finished'||current?.id!==checkpoint.setId||!['working','paused'].includes(row.phase))throw Error('云端那边这一组已经结束或换掉了，这份没传上去的先留着；对完之后用云端那份。');
   if(current.inputMode==='camera')return checkpoint.values.reps>current.reps?{reps:checkpoint.values.reps,score:checkpoint.values.score}:null;
   return null;
 }

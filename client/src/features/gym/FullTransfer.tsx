@@ -31,7 +31,7 @@ export default function FullTransfer() {
           if (alive) setDraft(v || null);
         })
         .catch(() =>
-          setMessage("本地草稿存储不可用，可以重新选文件；服务端断点仍保留"),
+          setMessage("草稿没法存到这台设备上，可以重新选文件；已经传到云端的进度不会丢"),
         );
     return () => {
       alive = false;
@@ -60,12 +60,12 @@ export default function FullTransfer() {
   });
   return (
     <section className="gym-form">
-      <h2>完整恢复与分批导入</h2>
+      <h2>恢复备份／导入记录</h2>
       <p className="gym-muted">
-        支持动伴版本 1／2、可识别的 openGym 计划／历史／体重，以及
-        Strong、Hevy、FitNotes
-        CSV。逐批先预览再确认；未知动作须映射。历史只恢复为手动记录，不补
-        XP、摄像头评分或解锁。未结束计时不恢复为正式计时。
+        可以导入：动伴自己的备份文件（新旧版本都行）、openGym
+        的计划和记录，还有从 Strong、Hevy、FitNotes
+        导出的表格文件。文件会分成几小批，一批先给你看清楚，你确认一批、存一批。里面认不出的动作，需要你手动选一下对应的是哪个。导入的历史只会变成手动记录：不加
+        XP，也不会有摄像头评分和解锁。没练完的计时，不会当成正式记录恢复。
       </p>
       <div className="gym-two">
         <label>
@@ -89,7 +89,7 @@ export default function FullTransfer() {
           </select>
         </label>
         <label>
-          原始 CSV 重量单位
+          原文件用的重量单位
           <select value={unit} onChange={(e) => setUnit(e.target.value)}>
             <option value="kg">kg</option>
             <option value="lb">lb</option>
@@ -106,7 +106,7 @@ export default function FullTransfer() {
             const file = e.target.files?.[0];
             if (!file) return;
             void perform(async () => {
-              if (file.size > 20000000) throw Error("文件超过20MB");
+              if (file.size > 20000000) throw Error("文件超过 20MB，请换一个小一点的文件");
               const { parts, format: kind } = chunkFile(
                   await file.text(),
                   format,
@@ -130,7 +130,7 @@ export default function FullTransfer() {
               });
               setPreview(null);
               setChoices({});
-              setMessage("文件已分成 " + parts.length + " 批，请逐批预览。");
+              setMessage("文件已分成 " + parts.length + " 批，一批一批来，先预览再确认。");
             });
           }}
         />
@@ -150,7 +150,7 @@ export default function FullTransfer() {
           />
           <p>
             已确认 {cursor} / {draft.parts.length}{" "}
-            批；断网或关闭页面后可继续。退出账号清理本机文件草稿。
+            批；断网、关掉页面都没事，下次能接着来。退出登录会清掉这台设备上没导完的草稿。
           </p>
           <div className="gym-inline-actions">
             <button
@@ -165,7 +165,7 @@ export default function FullTransfer() {
                   const next = { ...draft, cursor: status.cursor || 0 };
                   await persist(next);
                   if (next.cursor >= next.parts.length) {
-                    setMessage("该文件已全部处理");
+                    setMessage("这个文件已经全部导完了");
                     return;
                   }
                   setChoices({});
@@ -179,7 +179,7 @@ export default function FullTransfer() {
                 })
               }
             >
-              从服务端断点读取并预览下一批
+              接着预览下一批
             </button>
             <button
               disabled={busy}
@@ -189,11 +189,11 @@ export default function FullTransfer() {
                 setPreview(null);
               }}
             >
-              清除本机文件草稿
+              清掉这份没导完的草稿
             </button>
           </div>
           {done && (
-            <p className="gym-success">全部批次已由服务端确认。导入 XP：0。</p>
+            <p className="gym-success">全部导完了。这次导入不加 XP。</p>
           )}
         </>
       )}
@@ -225,27 +225,27 @@ export default function FullTransfer() {
           ))}
           {preview.missing.map((name: string) => (
             <div className="gym-list-row" key={name}>
-              <span>未匹配：{name}</span>
+              <span>认不出：{name}</span>
               <button onClick={() => setPick(name)}>选择对应动作</button>
             </div>
           ))}
           {preview.conflicts.map((c: any) => (
             <label key={c.key}>
-              冲突：{c.name}
+              这个和现在的不一样：{c.name}
               <select
                 value={choices[c.key] || ""}
                 onChange={(e) =>
                   setChoices({ ...choices, [c.key]: e.target.value })
                 }
               >
-                <option value="">请选择；当前数据保留</option>
-                <option value="keep">保留现有，跳过导入项</option>
+                <option value="">请选择（不选就用现在的）</option>
+                <option value="keep">用现在的，跳过这条</option>
                 <option value={c.kind === "settings" ? "apply" : "copy"}>
                   {c.kind === "settings"
-                    ? "明确采用导入的个人偏好"
+                    ? "改用导入的设置"
                     : c.kind === "body"
-                      ? "仅补充现有记录缺少的字段"
-                      : "导入为独立副本"}
+                      ? "只补上现在没有的"
+                      : "另外存一份，两个都留"}
                 </option>
               </select>
             </label>
@@ -275,18 +275,18 @@ export default function FullTransfer() {
                 setPreview(null);
                 setChoices({});
                 setMessage(
-                  "本批已确认，累计新增 " + result.imported + " 条 · 0 XP",
+                  "这一批存好了，一共新增 " + result.imported + " 条（导入不加 XP）",
                 );
               })
             }
           >
-            确认上述内容并写入这一批
+            确认，存这一批
           </button>
         </div>
       )}
       {pick && (
         <div>
-          <h3>映射 {pick}</h3>
+          <h3>给「{pick}」选对应的动作</h3>
           <button onClick={() => setPick("")}>取消</button>
           <ExerciseLibrary
             onPick={(e) => {

@@ -44,18 +44,18 @@ test('conflicts archive separately, deduplicate, and delete only the acknowledge
 test('quota failure retains an immutable pending snapshot in memory',()=>{
   const store=memory();store.setItem=()=>{throw Error('quota')};const r=new WorkoutRecoveryStorage('one',store),body=operation();
   r.setPending(body);body.reps=99;body.score.total=0;r.setNetwork(1);
-  assert.equal(r.getPending().reps,4);assert.equal(r.getPending().score.total,350);assert.equal(r.network,1);assert.match(r.warning,/请勿刷新或关闭/);
+  assert.equal(r.getPending().reps,4);assert.equal(r.getPending().score.total,350);assert.equal(r.network,1);assert.match(r.warning,/先别刷新/);
 });
 test('blocked reads and corrupt records require a fresh read before any operation',()=>{
   for(const value of ['{bad',JSON.stringify({action:'pause',operationId:'invalid',version:1})]){
     const store=memory();store.setItem('one',value);const r=new WorkoutRecoveryStorage('one',store);
-    assert.equal(r.blocked,true);assert.throws(()=>r.getPending(),/尚未核对/);r.acknowledgeRead();assert.equal(r.unknown,false);assert.equal(r.getPending(),null);
+    assert.equal(r.blocked,true);assert.throws(()=>r.getPending(),/还没对好/);r.acknowledgeRead();assert.equal(r.unknown,false);assert.equal(r.getPending(),null);
   }
   const r=new WorkoutRecoveryStorage('one',{getItem:()=>{throw Error('blocked')},setItem:()=>{},removeItem:()=>{}});assert.equal(r.unknown,true);
 });
 test('failed cleanup uses the in-memory tombstone instead of replaying an old disk operation',()=>{
   const store=memory(),body=operation();store.setItem('one',JSON.stringify(body));store.removeItem=()=>{throw Error('blocked')};const r=new WorkoutRecoveryStorage('one',store);
-  r.setPending(null);assert.equal(r.getPending(),null);assert.ok(store.getItem('one'));assert.match(r.warning,/未能保存/);
+  r.setPending(null);assert.equal(r.getPending(),null);assert.ok(store.getItem('one'));assert.match(r.warning,/没存到这台设备上/);
 });
 test('a damaged network marker cannot discard a readable original operation after server reconciliation',()=>{
   const store=memory(),body=operation();store.setItem('one',JSON.stringify(body));store.setItem('one:network','broken');
@@ -83,7 +83,7 @@ test('a newer camera snapshot survives an in-flight immutable progress operation
   assert.equal(r.getPending().reps,2);assert.equal(r.checkpoint?.values.reps,4);
   const row={phase:'paused',cursor:0,sets:[{id:'one',inputMode:'camera',reps:2}]};const patch=checkpointUpdate(r.checkpoint,row);assert.equal(patch?.reps,4);
   assert.equal(checkpointUpdate(r.checkpoint,{...row,sets:[{...row.sets[0],reps:5}]}),null);
-  assert.throws(()=>checkpointUpdate(r.checkpoint,{...row,sets:[{id:'another'}]}),/本组/);
-  assert.throws(()=>checkpointUpdate(r.checkpoint,{...row,phase:'finished'}),/本组/);
+  assert.throws(()=>checkpointUpdate(r.checkpoint,{...row,sets:[{id:'another'}]}),/这一组/);
+  assert.throws(()=>checkpointUpdate(r.checkpoint,{...row,phase:'finished'}),/这一组/);
   r.setPending(null);assert.equal(r.blocked,true);r.setCheckpoint(null);assert.equal(r.blocked,false);
 });

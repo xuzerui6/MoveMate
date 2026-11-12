@@ -26,7 +26,7 @@ export class SnapshotEditor<T> {
     if (this.busy) return false;
     this.busy = true;
     const acknowledge = (server: T, submitted: {value: T; revision: number}) => {
-      if ((server as any)?.__offline) throw Error('缓存不能确认保存，请联网核对');
+      if ((server as any)?.__offline) throw Error('离线存的内容不能确认保存成功，请联网后核对');
       this.value = this.revision === submitted.revision ? server : merge(this.value, server, submitted.value);
       this.savedRevision = submitted.revision;
       this.pending = null;
@@ -34,13 +34,13 @@ export class SnapshotEditor<T> {
     try {
       if (this.pending) {
         const latest = await read();
-        if ((latest as any)?.__offline) throw Error('当前只能读取缓存，请联网后核对保存结果');
+        if ((latest as any)?.__offline) throw Error('现在只能看到离线存的内容，请联网后核对保存结果');
         if (matches(latest, this.pending.value)) {
           acknowledge(latest, this.pending); return true;
         }
         if (conflicts(latest, this.pending.value)) {
           this.pending = null;
-          throw Error('服务器版本已变化，本机草稿已保留，请先核对服务器版本');
+          throw Error('云端那份已经变了，你这份草稿先留着，对一下再继续');
         }
       }
       const submitted = this.pending || {value: structuredClone(this.value), revision: this.revision};

@@ -17,7 +17,7 @@ export default function PlanDraft() {
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     navigate = useNavigate();
-  const [storageWarning,setStorageWarning] = useState(restored.state==='invalid'?'本机计划草稿损坏或格式不兼容，未自动载入。':restored.state==='unavailable'?'本机计划草稿无法读取，仍可生成和编辑新草稿。':'');
+  const [storageWarning,setStorageWarning] = useState(restored.state==='invalid'?'之前存的计划草稿坏了或太旧，没能自动打开。':restored.state==='unavailable'?'之前存的计划草稿读不出来，不过可以照常生成、编辑新草稿。':'');
   const [invalidDraft,setInvalidDraft]=useState(restored.state==='invalid');
   const parsed = draft ? JSON.parse(draft) : null;
   const ids = [
@@ -43,7 +43,7 @@ export default function PlanDraft() {
   return (
     <details className="gym-form">
       <summary>生成可编辑的计划草稿</summary>
-      {storageWarning && <div className="gym-cache-notice" role="status"><p>{storageWarning}</p>{invalidDraft && <button disabled={busy} onClick={()=>{if(removeDraft(draftKey)){setInvalidDraft(false);setStorageWarning('');}else setStorageWarning('本机草稿暂时无法清理，仍可生成新草稿。');}}>放弃损坏计划草稿</button>}</div>}
+      {storageWarning && <div className="gym-cache-notice" role="status"><p>{storageWarning}</p>{invalidDraft && <button disabled={busy} onClick={()=>{if(removeDraft(draftKey)){setInvalidDraft(false);setStorageWarning('');}else setStorageWarning('这份草稿暂时清不掉，不影响生成新草稿。');}}>放弃损坏计划草稿</button>}</div>}
       <p className="gym-muted">
         草稿不会自动保存或开始训练；目标、动作和重量须本人确认。
       </p>
@@ -77,7 +77,7 @@ export default function PlanDraft() {
           delete base.key;
           try {
             let next = base;
-            setSource("本地模板与规则草稿 · 未使用云端 AI");
+            setSource("本地模板生成的草稿 · 没用 AI 陪练");
             if (await probeCoach()) {
               if (useAuthStore.getState().user?.id !== uid) return;
               const result = await askCoach([
@@ -171,15 +171,15 @@ export default function PlanDraft() {
                       };
                     }),
                   };
-                  setSource("已配置 HTTP 陪练生成 · 等待本人编辑确认");
+                  setSource("AI 陪练生成的 · 请你检查确认后再用");
                 } catch {
-                  setSource("AI 返回格式无法验证 · 已回退本地模板草稿");
+                  setSource("AI 这次没生成好 · 已换成本地模板草稿");
                 }
               }
             }
             setDraft(JSON.stringify(next, null, 2));
           } catch {
-            setSource("HTTP 陪练不可用 · 本地模板草稿");
+            setSource("AI 陪练暂时连不上 · 已用本地模板草稿");
             setDraft(JSON.stringify(base, null, 2));
           } finally {
             setBusy(false);

@@ -18,6 +18,11 @@ import {
 } from './lib/pickerExercises'
 import { usePosePrefetchLine } from './hooks/usePosePrepare'
 import { PosePrefetchLine } from './components/PosePrefetchLine'
+import { useCdnFirstImage } from './lib/cdnAssets'
+function PickerThumb({ movement }: { movement: PickerMovement }) {
+  const image = useCdnFirstImage(movement.thumb)
+  return <span className="camera-picker-thumb">{movement.thumb ? <img src={image.src} onError={() => { image.onError() }} alt="" loading="lazy" decoding="async"/> : <span>示范待补</span>}</span>
+}
 const Workout = lazy(() => import('./pages/Workout').then(m => ({ default: m.Workout })))
 const Summary = lazy(() => import('./pages/Summary').then(m => ({ default: m.Summary })))
 export default function Training() {
@@ -36,7 +41,7 @@ export default function Training() {
   useEffect(() => { document.querySelector('.motion-screen')?.scrollTo({ top: 0 }) }, [mode])
   const pickerRow = (movement: PickerMovement, meta?: string) => (
     <button key={movement.type} type="button" aria-pressed={exercise === movement.type} className={`camera-picker-row${exercise === movement.type ? ' selected' : ''}`} onClick={() => setExercise(movement.type as CameraExerciseType)}>
-      <span className="camera-picker-thumb">{movement.thumb ? <img src={movement.thumb} alt="" loading="lazy" decoding="async"/> : <span>示范待补</span>}</span>
+      <PickerThumb movement={movement}/>
       <span className="camera-picker-name">{movement.name}{movement.trial && <span className="trial-pill">试用</span>}</span>
       <span className="camera-picker-meta">{meta ?? `每${movement.unit} 2 XP`}</span>
     </button>
@@ -47,7 +52,7 @@ export default function Training() {
     setMode('summary')
   }
   const restore = () => { if (active && isCameraExercise(active.sportType)) {setExercise(active.sportType);setMode('workout')} }
-  if(source!=='server' && mode==='select')return <div className="page training-page training-entry"><h2>今天，怎么动？</h2><div className="gym-cache-notice" role="status"><p>{source==='cache'?'当前只能读取缓存，未确认最新运动状态。':'运动状态尚未读取，暂不能开始独立摄像头训练或个人计时。'}</p><button className="secondary" disabled={loading} onClick={()=>void refresh()}>{loading?'正在核对…':'重试运动状态'}</button></div><p>可以先查看动作库、整理计划；计划训练会通过自己的服务器接口核对。</p><nav className="gym-mini-tiles"><Link to="/train/library"><Icon name="dumbbell" size={26}/>查看动作库</Link><Link to="/train/plans"><Icon name="clipboard" size={26}/>管理计划</Link><Link to="/train/settings"><Icon name="sliders" size={26}/>训练设置</Link></nav></div>;
+  if(source!=='server' && mode==='select')return <div className="page training-page training-entry"><h2>今天，怎么动？</h2><div className="gym-cache-notice" role="status"><p>{source==='cache'?'现在看到的是之前存下的，还没确认最新状态。':'运动状态尚未读取，暂不能开始独立摄像头训练或个人计时。'}</p><button className="secondary" disabled={loading} onClick={()=>void refresh()}>{loading?'正在确认…':'再确认一次'}</button></div><p>可以先看看动作库、整理计划；计划训练打开时会自己再确认一次。</p><nav className="gym-mini-tiles"><Link to="/train/library"><Icon name="dumbbell" size={26}/>查看动作库</Link><Link to="/train/plans"><Icon name="clipboard" size={26}/>管理计划</Link><Link to="/train/settings"><Icon name="sliders" size={26}/>训练设置</Link></nav></div>;
   return <Suspense fallback={<div className="motion-loading">正在载入训练…</div>}>
     {mode === 'workout' ? <Workout key={exercise} exerciseType={exercise} back={() => setMode('select')} finish={finish} existing={active && !active.gameId && active.source !== 'timer' ? active : undefined}/> : mode === 'summary' && result ? <Summary result={result} avatar={() => navigate('/avatar')} home={() => { setMode('select'); setResult(null) }}/> : <div className="page training-page training-entry">
       <span className="eyebrow">每次运动，都算数</span><h2>今天，怎么动？</h2><p className="muted">跟着动作练，或记录自己的运动。</p>

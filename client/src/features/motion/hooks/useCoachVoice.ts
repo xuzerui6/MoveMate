@@ -37,9 +37,9 @@ export type VoiceState =
 /** 把识别器的错误码翻译成用户看得懂、且能据此行动的说明 */
 const ERROR_MESSAGE: Record<string, string> = {
   // Chrome 的语音识别是云端服务，要连 Google，国内网络通常不通
-  network: '语音识别连不上服务器（Chrome 的识别需要访问 Google），请挂代理后刷新，或改用手动按钮',
+  network: '语音识别连不上网络，先改用手动按钮；换个网络后刷新也许能恢复',
   'not-allowed': '麦克风权限被拒绝，请在地址栏左侧的图标里允许麦克风，然后刷新',
-  'service-not-allowed': '浏览器拒绝了语音服务，请确认使用 https 或 localhost 访问',
+  'service-not-allowed': '浏览器没放行语音服务，刷新页面再试一次',
   'audio-capture': '找不到麦克风，请检查设备是否插好',
   'language-not-supported': '当前浏览器不支持中文识别，建议用电脑版 Chrome',
 }
@@ -332,14 +332,14 @@ export function useCoachVoice(enabled: boolean, context: CoachContext, options: 
     }
     const Recognizer = getRecognizer()
     if (!Recognizer) {
-      setErrorMessage('当前浏览器不支持语音识别；文字反馈仍可使用。可用桌面 Chrome 或 Edge 重试。')
+      setErrorMessage('当前浏览器不支持语音识别；可以先用文字和手动按钮。电脑上用 Chrome 或 Edge 打开可以用语音。')
       setVoiceState('unsupported')
       return
     }
     // 非安全上下文（如用 http://192.168.x.x 打开）浏览器会直接禁用麦克风，
     // 表现就是「喊了完全没反应」。这里提前拦住并说清原因。
     if (!window.isSecureContext) {
-      setErrorMessage('当前用非 https 地址打开，浏览器禁用了麦克风。请改用 http://localhost:3001 访问')
+      setErrorMessage('现在这个打开方式用不了麦克风，请用正式网址打开再试')
       setVoiceState('failed')
       return
     }
@@ -376,7 +376,7 @@ export function useCoachVoice(enabled: boolean, context: CoachContext, options: 
       // 权限和服务类错误重试没有意义，直接停并告知用户怎么处理
       if (event.error === 'not-allowed' || event.error === 'service-not-allowed' || event.error === 'audio-capture' || event.error === 'language-not-supported') {
         wantListeningRef.current = false
-        setErrorMessage(ERROR_MESSAGE[event.error] || `语音识别不可用（${event.error}）`)
+        setErrorMessage(ERROR_MESSAGE[event.error] || '语音识别暂时用不了，可以先用手动按钮')
         setVoiceState('failed')
         return
       }
@@ -386,7 +386,7 @@ export function useCoachVoice(enabled: boolean, context: CoachContext, options: 
       failureCountRef.current += 1
       if (failureCountRef.current >= 3) {
         wantListeningRef.current = false
-        setErrorMessage(ERROR_MESSAGE[event.error] || `语音识别反复失败（${event.error}），已暂停`)
+        setErrorMessage(ERROR_MESSAGE[event.error] || '语音有点听不清，我先停一下，可以先用手动按钮继续')
         setVoiceState('failed')
       }
     }

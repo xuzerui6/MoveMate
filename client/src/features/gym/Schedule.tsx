@@ -63,8 +63,8 @@ export function TrainingSettings() {
         if(!archiveDraft(draftKey,draft.value,validSettingsDraft))protectedDraft.current=draft.value;
         if(!list.some(d=>sameContent(d,draft.value)))list=[...list,draft.value];
         setReview({record:draft.value,server,keys:restored.conflicts});setSelected([]);
-        setMessage(draft.value.base?'这台手机和服务器各改了几处，下面逐项选要哪份。':'这份本机存档比较旧，先不自动套用，你逐项挑要不要用。');
-      }else setMessage('已把你在这台手机上的改动放回来，服务器上的其他设置保持最新');
+        setMessage(draft.value.base?'这台手机和云端各改了几处，下面逐项选要哪份。':'这份本机存档比较旧，先不自动套用，你逐项挑要不要用。');
+      }else setMessage('已把你在这台手机上的改动放回来，云端其他的设置保持最新');
     }
     setReviews(list);
     editor.current=new SnapshotEditor(value,!sameContent(server,value));setValue(editor.current.value);
@@ -74,10 +74,10 @@ export function TrainingSettings() {
   const persist = () => {
     if(unreadActive.current){
       const original=readRecoveryDraft(draftKey,validSettingsDraft);
-      if(original.state==='invalid'||original.state==='unavailable'){setStorageWarning('原草稿仍无法读取，新编辑仅在内存中，请勿刷新。');return;}
+      if(original.state==='invalid'||original.state==='unavailable'){setStorageWarning('原草稿还是读不出来，新改的只在当前页面里，先别刷新。');return;}
       protectedDraft.current=original.value||null;unreadActive.current=false;
     }
-    if(protectedDraft.current){if(!archiveDraft(draftKey,protectedDraft.current,validSettingsDraft)){setStorageWarning('原草稿未能单独备份，已保护原稿；新编辑仅在内存中，请勿刷新或关闭。');return;}protectedDraft.current=null;}
+    if(protectedDraft.current){if(!archiveDraft(draftKey,protectedDraft.current,validSettingsDraft)){setStorageWarning('原草稿还没单独存一份，先保护着；新改的只在当前页面里，先别刷新或关页面。');return;}protectedDraft.current=null;}
     const ok=editor.current!.dirty?writeDraft(draftKey,recoveryDraft(base.current,editor.current!.value)):removeDraft(draftKey);
     setStorageWarning(ok?'':editor.current!.dirty?draftWriteWarning:'设置已保存，但本机草稿暂时无法清理。');
     if(ok)setInvalidDraft(false);
@@ -99,7 +99,7 @@ export function TrainingSettings() {
   const change = (key: string, value: any) => {
     if(!editor.current||review)return;
     setValue(editor.current.edit(p => {p[key]=value}));persist();setFailed(false);
-    setMessage(editor.current.busy?'正在保存提交版本，当前还有未保存修改':'未保存');
+    setMessage(editor.current.busy?'正在保存，还有没存的改动':'未保存');
   };
   const save = async () => {
     const session=editor.current;if(!session || session.busy || readOnly || review)return;
@@ -108,9 +108,9 @@ export function TrainingSettings() {
     try{
       await session.save(async value => {
         const latest=await request('GET','/training-settings',undefined,token);
-        if(latest.__offline)throw Error('缓存不能用于核对设置保存');
+        if(latest.__offline)throw Error('现在是离线存的，没法核对保存好没');
         const merge=restoreFields(latest,recoveryDraft(base.current,value));
-        if(merge.conflicts.length){conflictingServer=latest;throw Object.assign(new Error('服务器同一字段已变化，请先逐项确认'),{status:409});}
+        if(merge.conflicts.length){conflictingServer=latest;throw Object.assign(new Error('云端同一项也改过了，先逐项确认用哪份'),{status:409});}
         return confirmed=await request('PUT','/training-settings',changedFields(base.current,value),token);
       },async()=>confirmed=await request('GET','/training-settings',undefined,token),
         (server,submitted)=>sameContent(Object.fromEntries(Object.keys(changedFields(base.current,submitted)).map(k=>[k,server[k]])),changedFields(base.current,submitted)),
@@ -241,8 +241,8 @@ export function TrainingSettings() {
       <CachedDataNotice data={q.data} reload={q.reload} busy={q.loading || busy}/>
       {storageWarning && <div className="gym-cache-notice" role="status"><p>{storageWarning}</p>{invalidDraft && <button disabled={busy} onClick={()=>{if(removeDraft(draftKey)){unreadActive.current=false;setInvalidDraft(false);setStorageWarning('');}else setStorageWarning('本机草稿暂时无法清理，仍可编辑并联网保存。');}}>放弃损坏设置草稿</button>}</div>}
       {!!reviews.length && <details className="gym-cache-notice"><summary>保留的设置草稿 · {reviews.length}</summary>{reviews.map((d,i)=><button key={i} className="secondary" disabled={busy} onClick={()=>reviewDraft(d)}>查看设置草稿 {i+1}</button>)}</details>}
-      {review && <section className="gym-form" aria-label="逐项确认设置"><h3>{review.record.base?'两边都改过的设置':'旧存档：挑要用的设置'}</h3><p>不勾的用服务器那份，勾了的用这台手机这份；器械和杠铃片是一整组一起选。</p>
-        {review.keys.map(k=><label className="gym-draft-field" key={k}><input type="checkbox" checked={selected.includes(k)} onChange={e=>setSelected(v=>e.target.checked?[...v,k]:v.filter(x=>x!==k))}/><span><b>{settingNames[k]||k}</b><small>服务器那份：{settingValue(k,review.server[k])}</small><small>这台手机那份：{settingValue(k,review.current?editor.current?.value[k]:review.record.value[k])}</small></span></label>)}
+      {review && <section className="gym-form" aria-label="逐项确认设置"><h3>{review.record.base?'两边都改过的设置':'旧存档：挑要用的设置'}</h3><p>不勾的用云端那份，勾了的用这台手机这份；器械和杠铃片是一整组一起选。</p>
+        {review.keys.map(k=><label className="gym-draft-field" key={k}><input type="checkbox" checked={selected.includes(k)} onChange={e=>setSelected(v=>e.target.checked?[...v,k]:v.filter(x=>x!==k))}/><span><b>{settingNames[k]||k}</b><small>云端那份：{settingValue(k,review.server[k])}</small><small>这台手机那份：{settingValue(k,review.current?editor.current?.value[k]:review.record.value[k])}</small></span></label>)}
         <button className="secondary" disabled={busy} onClick={applyReview}>确认选择（先不保存）</button>
       </section>}
       {message && (

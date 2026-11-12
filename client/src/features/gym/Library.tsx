@@ -432,7 +432,7 @@ export function ExerciseLibrary({
         {result.loading || searching
           ? cursor ? `正在加载更多 · 已显示 ${items.length} 个动作` : "正在读取动作…"
           : result.error && cursor === 0 ? "动作数量尚未读取，请重试。"
-          : `${total} 个匹配动作 · 按标识选择摄像头动作，新动作识别为试用`}
+          : `${total} 个动作 · 带摄像头标记的可以对着镜头练，新动作的识别还在试用`}
       </p>
       {selected && (
         <article className="gym-exercise-detail" ref={detail}>

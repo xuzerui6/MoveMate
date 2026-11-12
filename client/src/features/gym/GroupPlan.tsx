@@ -31,7 +31,7 @@ export default function GroupPlan({
     <section className="gym-page gym-group-plan">
       <div className="gym-section-title">
         <h3>一起按计划练</h3>
-        <span>各自记录，各自结算</span>
+        <span>各自记录，XP 各算各的</span>
       </div>
       {(q.error || error) && (
         <div className="gym-error">
@@ -118,7 +118,7 @@ export default function GroupPlan({
         )}
       {active?.workoutId ? (
         <Link className="primary" to={"/train/workout/" + active.workoutId}>
-          {active.status === "finished" ? "查看训练结算" : "继续计划训练"}
+          {active.status === "finished" ? "查看训练结果" : "继续计划训练"}
         </Link>
       ) : canTrain && q.data?.snapshot && !active ? (
         <button

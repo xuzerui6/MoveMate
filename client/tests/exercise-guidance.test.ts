@@ -7,7 +7,7 @@ test('unreviewed and legacy official snapshots never feed contradicted steps int
     const snapshot={id:'exdb:0137',reviewStatus,instructions:['坐到长凳边缘，以凳上臂屈伸作为Body-Up。']};
     const saved=structuredClone(snapshot),instruction=workoutGuideInstruction(snapshot);
     assert.ok(isUnreviewedOfficialExercise(snapshot));
-    assert.ok(instruction.includes('仅提供通用节奏'));
+    assert.ok(instruction.includes('只给通用的节奏'));
     assert.ok(!instruction.includes('长凳'));assert.deepEqual(snapshot,saved);
   }
 });
