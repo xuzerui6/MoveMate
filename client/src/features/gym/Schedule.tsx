@@ -54,7 +54,7 @@ export function TrainingSettings() {
     const {__offline,...server} = q.data;
     base.current=server;
     const draft=readRecoveryDraft(draftKey,validSettingsDraft), archived=archivedDrafts(draftKey,validSettingsDraft);
-    if(archived.state==='invalid'||archived.state==='unavailable')setStorageWarning('设置冲突草稿存档无法读取，原内容已保留；不会用新草稿覆盖。');
+    if(archived.state==='invalid'||archived.state==='unavailable')setStorageWarning('有一份对不上的设置存档读不出来，先原样留着，不会拿新内容盖掉它。');
     let list=archived.value||[];
     let value=server;
     if(draft.value){
@@ -63,8 +63,8 @@ export function TrainingSettings() {
         if(!archiveDraft(draftKey,draft.value,validSettingsDraft))protectedDraft.current=draft.value;
         if(!list.some(d=>sameContent(d,draft.value)))list=[...list,draft.value];
         setReview({record:draft.value,server,keys:restored.conflicts});setSelected([]);
-        setMessage(draft.value.base?'有字段双方都已修改，请逐项确认。':'旧格式草稿缺少基线，默认不覆盖任何字段。');
-      }else setMessage('已恢复本人修改，服务器其他字段保持最新');
+        setMessage(draft.value.base?'这台手机和服务器各改了几处，下面逐项选要哪份。':'这份本机存档比较旧，先不自动套用，你逐项挑要不要用。');
+      }else setMessage('已把你在这台手机上的改动放回来，服务器上的其他设置保持最新');
     }
     setReviews(list);
     editor.current=new SnapshotEditor(value,!sameContent(server,value));setValue(editor.current.value);
@@ -237,13 +237,13 @@ export function TrainingSettings() {
           ) : undefined
         }
       />
-      {q.error && <div className="gym-error" role="alert">设置读取失败：{q.error}<button disabled={q.loading || busy} onClick={q.reload}>重试读取设置</button></div>}
+      {q.error && <div className="gym-error" role="alert">设置暂时没读出来，稍后再试<button disabled={q.loading || busy} onClick={q.reload}>重试读取设置</button></div>}
       <CachedDataNotice data={q.data} reload={q.reload} busy={q.loading || busy}/>
       {storageWarning && <div className="gym-cache-notice" role="status"><p>{storageWarning}</p>{invalidDraft && <button disabled={busy} onClick={()=>{if(removeDraft(draftKey)){unreadActive.current=false;setInvalidDraft(false);setStorageWarning('');}else setStorageWarning('本机草稿暂时无法清理，仍可编辑并联网保存。');}}>放弃损坏设置草稿</button>}</div>}
       {!!reviews.length && <details className="gym-cache-notice"><summary>保留的设置草稿 · {reviews.length}</summary>{reviews.map((d,i)=><button key={i} className="secondary" disabled={busy} onClick={()=>reviewDraft(d)}>查看设置草稿 {i+1}</button>)}</details>}
-      {review && <section className="gym-form" aria-label="设置草稿字段确认"><h3>{review.record.base?'双方修改的字段':'旧格式草稿：选择需要恢复的字段'}</h3><p>默认使用服务器值；只有勾选的字段使用本机值。器械与杠铃片按整个字段处理。</p>
-        {review.keys.map(k=><label className="gym-draft-field" key={k}><input type="checkbox" checked={selected.includes(k)} onChange={e=>setSelected(v=>e.target.checked?[...v,k]:v.filter(x=>x!==k))}/><span><b>{settingNames[k]||k}</b><small>服务器：{settingValue(k,review.server[k])}</small><small>本机：{settingValue(k,review.current?editor.current?.value[k]:review.record.value[k])}</small></span></label>)}
-        <button className="secondary" disabled={busy} onClick={applyReview}>确认字段选择，保留为未保存草稿</button>
+      {review && <section className="gym-form" aria-label="逐项确认设置"><h3>{review.record.base?'两边都改过的设置':'旧存档：挑要用的设置'}</h3><p>不勾的用服务器那份，勾了的用这台手机这份；器械和杠铃片是一整组一起选。</p>
+        {review.keys.map(k=><label className="gym-draft-field" key={k}><input type="checkbox" checked={selected.includes(k)} onChange={e=>setSelected(v=>e.target.checked?[...v,k]:v.filter(x=>x!==k))}/><span><b>{settingNames[k]||k}</b><small>服务器那份：{settingValue(k,review.server[k])}</small><small>这台手机那份：{settingValue(k,review.current?editor.current?.value[k]:review.record.value[k])}</small></span></label>)}
+        <button className="secondary" disabled={busy} onClick={applyReview}>确认选择（先不保存）</button>
       </section>}
       {message && (
         <p
@@ -281,7 +281,7 @@ export function TrainingSettings() {
           )}
           <div className="gym-settings-savebar">
             <button className="primary gym-settings-save" disabled={busy || readOnly || !!review}>
-              {busy ? "正在保存…" : editor.current?.uncertain ? "核对并重试保存设置" : "保存个人设置"}
+              {busy ? "正在保存…" : editor.current?.uncertain ? "先核对结果，再保存设置" : "保存个人设置"}
             </button>
           </div>
         </form>

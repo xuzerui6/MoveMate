@@ -35,7 +35,7 @@ class ErrorBoundary extends React.Component<Props, State> {
             页面加载出错
           </h2>
           <p className="ui-components-errorboundary-inline-3">
-            {this.state.error?.message || '发生了未知错误，请刷新页面重试'}
+            页面刚才出了点小问题，回到首页再试试就好。
           </p>
           <button
             onClick={() => {

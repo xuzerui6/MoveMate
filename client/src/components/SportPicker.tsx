@@ -127,7 +127,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   recommendCurrent: {
     fontSize: '0.75rem',
-    color: '#64748B',
+    color: '#68767e',
     fontWeight: 500,
   },
   grid: {
@@ -174,7 +174,7 @@ const styles: Record<string, React.CSSProperties> = {
     lineHeight: 1.4,
   },
   iconWrapper: {
-    color: '#64748B',
+    color: '#68767e',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -185,7 +185,7 @@ const styles: Record<string, React.CSSProperties> = {
   label: {
     fontSize: '0.875rem',
     fontWeight: 600,
-    color: '#64748B',
+    color: '#68767e',
   },
   labelActive: {
     color: '#FFFFFF',

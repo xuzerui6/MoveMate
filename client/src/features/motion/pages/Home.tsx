@@ -26,7 +26,7 @@ export function Home({start}:{start:()=>void}){
  </section>
  <section className="today-section"><div className="section-title"><h2>今日运动</h2><time dateTime={today}>{new Date().toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'short'})}</time></div><div className="today-metrics"><div><Icon name="clock" size={29}/><span><small>有效运动时长</small><strong>{format(seconds)}</strong></span></div><div><Icon name="bolt" size={29}/><span><small>获得经验</small><strong>+{xp}<em> XP</em></strong></span></div></div></section>
  <div className="gym-links"><Link to="/train/plans">今日计划与训练安排 →</Link><Link to="/train/stats">查看训练进步 →</Link></div>
- <section className="home-support"><div><Icon name="flame"/><span><small>持续运动</small><b>连续 <AnimatedNumber value={state.streakDays}/> 天</b></span></div><button onClick={heart.connect} disabled={heart.connected||['unsupported','connecting'].includes(heart.status)}><Icon name="heart"/><span><small>心率设备</small><b>{heart.connected?(heart.currentBpm?heart.currentBpm+' BPM':'等待数据'):heart.status==='unsupported'?'浏览器不支持 BLE':heart.status==='connecting'?'正在连接…':'连接心率带'}</b></span></button></section>
+ <section className="home-support"><div><Icon name="flame"/><span><small>持续运动</small><b>连续 <AnimatedNumber value={state.streakDays}/> 天</b></span></div><button onClick={heart.connect} disabled={heart.connected||['unsupported','connecting'].includes(heart.status)}><Icon name="heart"/><span><small>心率设备</small><b>{heart.connected?(heart.currentBpm?heart.currentBpm+' BPM':'等待数据'):heart.status==='unsupported'?'这个浏览器连不了心率带':heart.status==='connecting'?'正在连接…':'连接心率带'}</b></span></button></section>
  {heart.errorMessage&&<p className="form-error" role="alert">{heart.errorMessage}</p>}
  </div>;
 }

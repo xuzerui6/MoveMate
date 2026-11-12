@@ -336,7 +336,7 @@ ul,ol {
 .ui-pages-creategame-creategame-gridSection{display:flex;margin-bottom:1.75rem}
 .ui-pages-creategame-creategame-venueChipActive{border-width:1px;border-style:solid;border-color:var(--ink);background:var(--ink);color:#FFFFFF;outline:none;box-shadow:0 10px 20px rgba(15, 23, 42, 0.12)}
 .ui-pages-creategame-creategame-venueMoreToggle{display:flex;align-items:center;justify-content:center;width:100%;margin-top:0.5rem;padding:0.5rem 0;font-size:0.8125rem;color:#6B7280;font-weight:500;background:none;border:1px dashed #D1D5DB;border-radius:0.75rem;cursor:pointer}
-.ui-pages-creategame-creategame-counterRow{display:flex;align-items:center;justify-content:space-between;background:#f3f6f3;border:1px solid #E2E8F0;border-radius:12px}
+.ui-pages-creategame-creategame-counterRow{display:flex;align-items:center;justify-content:space-between;background:#f3f6f3;border:1px solid #e3e9e6;border-radius:12px}
 .ui-pages-creategame-creategame-counterBtn{width:32px;height:32px;padding:0;border-radius:8px;font-size:1.25rem;background:#FFFFFF;border:none}
 .ui-pages-creategame-creategame-submitArea{margin-top:2.5rem}
 .ui-pages-feedback-feedback-page{margin:0 auto}
@@ -351,7 +351,7 @@ ul,ol {
 .ui-pages-gamedetail-gameheader-topRow{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem}
 .ui-pages-gamedetail-gameheader-titleBlock{display:flex;flex-direction:column;gap:0.25rem}
 .ui-pages-gamedetail-gameheader-titleRow{display:flex;align-items:center;gap:0.5rem}
-.ui-pages-gamedetail-gameheader-tag{font-size:0.75rem;font-weight:500;color:#64748B}
+.ui-pages-gamedetail-gameheader-tag{font-size:0.75rem;font-weight:500;color:#68767e}
 .ui-pages-gamedetail-gameheader-detailsBox{display:flex;flex-direction:column;gap:0.75rem}
 .ui-pages-gamedetail-gameheader-detailRow{display:flex;align-items:baseline}
 .ui-pages-gamedetail-gameheader-detailLabel{font-weight:600;flex-shrink:0}
@@ -364,13 +364,13 @@ ul,ol {
 .ui-pages-gamedetail-memberlist-name{color:var(--ink);font-weight:500}
 .ui-pages-leaderboard-leaderboard-title{font-weight:900;color:var(--ink);letter-spacing:-0.03em}
 .ui-pages-leaderboard-leaderboard-name{color:var(--ink)}
-.ui-pages-leaderboard-leaderboard-points{font-weight:700;color:#008a49;flex-shrink:0}
+.ui-pages-leaderboard-leaderboard-points{font-weight:700;color:#008a40;flex-shrink:0}
 .ui-pages-lobby-gamecard-card{margin-bottom:1rem}
 .ui-pages-lobby-gamecard-sportIconWrapper{display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .ui-pages-lobby-gamecard-sportName{color:var(--ink);letter-spacing:-0.02em}
 .ui-pages-lobby-gamecard-relationChipHost{font-size:.75rem;font-weight:700;padding:0.125rem 0.4rem;border-radius:4px;background:var(--ink);color:#FFFFFF}
 .ui-pages-lobby-gamecard-relationChipMember{font-size:.75rem;font-weight:700;padding:0.125rem 0.4rem;border-radius:4px;background:#edf2ee;color:#475569}
-.ui-pages-lobby-gamecard-hostName{color:#64748B;font-weight:600}
+.ui-pages-lobby-gamecard-hostName{color:#68767e;font-weight:600}
 .ui-pages-lobby-gamecard-hostLevelChip{font-weight:700;color:#7C3AED;background:#F5F3FF;border-radius:9999px;padding:0.15rem 0.5rem}
 .ui-pages-lobby-gamecard-infoBox{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.25rem}
 .ui-pages-lobby-gamecard-infoLabel{font-weight:600;width:2rem;flex-shrink:0}
@@ -384,7 +384,7 @@ ul,ol {
 .ui-pages-lobby-lobby-campusBar{display:flex;align-items:center}
 .ui-pages-lobby-lobby-scopeChipActive{background:var(--ink);color:#FFFFFF;box-shadow:0 2px 6px rgba(15, 23, 42, 0.15)}
 .ui-pages-lobby-lobby-selectWrapper{flex:1}
-.ui-pages-lobby-lobby-campusSelect{margin-bottom:0;height:34px;padding:0 2rem 0 1rem;border-radius:9999px;font-size:0.8125rem;font-weight:500;border:1px solid #E2E8F0;background:#FFFFFF;color:#334155}
+.ui-pages-lobby-lobby-campusSelect{margin-bottom:0;height:34px;padding:0 2rem 0 1rem;border-radius:9999px;font-size:0.8125rem;font-weight:500;border:1px solid #e3e9e6;background:#FFFFFF;color:#334155}
 .ui-pages-lobby-lobby-endTip{color:#d3ddd5;font-weight:500}
 .ui-pages-lobby-lobby-dateQuickBtnActive{color:#FFFFFF;background:var(--ink);border:1px solid var(--ink)}
 .ui-pages-login-login-container{flex-direction:column;justify-content:center}
@@ -394,23 +394,23 @@ ul,ol {
 .ui-pages-login-login-form{flex:1}
 .ui-pages-login-login-globalError{padding:0.75rem 1rem;background:#FEE2E2;color:#991B1B;border-radius:0.5rem;font-size:0.875rem;margin-bottom:1rem;text-align:center}
 .ui-pages-login-login-switchHint{text-align:center;color:#9CA3AF}
-.ui-pages-login-login-agreementText{color:#64748B}
+.ui-pages-login-login-agreementText{color:#68767e}
 .ui-pages-login-login-agreementLink{color:var(--color-primary);font-weight:600;background:none;border:none;cursor:pointer;padding:0}
 .ui-pages-login-login-modalP{font-size:0.875rem;color:#334155;line-height:1.7;margin-bottom:0.75rem}
 .ui-pages-login-login-modalFooter{padding:0.75rem 1.25rem;border-top:1px solid #edf2ee;flex-shrink:0}
 .ui-pages-login-login-modalAgreeBtn{width:100%;padding:0.6rem 0;font-size:0.9375rem;font-weight:700;color:#FFFFFF;background:var(--color-primary);border-radius:10px;border:none;cursor:pointer}
 .ui-pages-notifications-notifications-header{display:flex;justify-content:space-between;padding:0.5rem 0}
 .ui-pages-notifications-notifications-title{font-weight:900;color:var(--ink);letter-spacing:-0.03em}
-.ui-pages-notifications-notifications-readAllBtn{font-size:0.8125rem;font-weight:600;color:#008a49;background:#edf8f0;padding:0.4rem 0.8rem;border-radius:9999px}
+.ui-pages-notifications-notifications-readAllBtn{font-size:0.8125rem;font-weight:600;color:#008a40;background:#edf8f0;padding:0.4rem 0.8rem;border-radius:9999px}
 .ui-pages-notifications-notifications-list{display:flex;flex-direction:column;background:#FFFFFF}
 .ui-pages-notifications-notifications-titleRow{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.25rem}
 .ui-pages-notifications-notifications-time{color:var(--muted);flex-shrink:0}
-.ui-pages-notifications-notifications-selectBtn{font-size:0.8125rem;font-weight:600;color:#64748B;background:#edf2ee;padding:0.4rem 0.8rem;border-radius:9999px;border:none;cursor:pointer}
+.ui-pages-notifications-notifications-selectBtn{font-size:0.8125rem;font-weight:600;color:#68767e;background:#edf2ee;padding:0.4rem 0.8rem;border-radius:9999px;border:none;cursor:pointer}
 .ui-pages-notifications-notifications-selectAllBtn{font-size:0.8125rem;font-weight:600;color:var(--ink);background:#edf2ee;padding:0.4rem 0.8rem;border-radius:9999px;border:none;cursor:pointer}
 .ui-components-sportpicker-recommendHeader{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.875rem;padding:0.85rem 1rem;border-radius:0.9rem;background:#f3f6f3;border:1px solid #EEF2F7}
 .ui-components-sportpicker-recommendMeta{display:flex;flex-direction:column;gap:0.2rem}
 .ui-components-sportpicker-recommendTitle{font-size:0.875rem;font-weight:700;color:var(--ink)}
-.ui-components-sportpicker-recommendCurrent{font-size:0.75rem;color:#64748B;font-weight:500}
+.ui-components-sportpicker-recommendCurrent{font-size:0.75rem;color:#68767e;font-weight:500}
 .ui-components-sportpicker-selectedBadge{position:absolute;top:0.55rem;right:0.55rem;font-size:.75rem;font-weight:700;color:var(--ink);background:#FFFFFF;padding:0.12rem 0.4rem;border-radius:9999px;line-height:1.4}
 .ui-components-sportpicker-customSection{margin-top:0.875rem}
 .ui-components-sportpicker-customLabel{display:block;font-size:0.8125rem;color:#6B7280;margin-bottom:0.5rem}
@@ -610,7 +610,7 @@ button,a{touch-action:manipulation}
 .ui-pages-lobby-lobby-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 .ui-pages-lobby-lobby-endTip{grid-column:1/-1;text-align:center;padding:16px;font-size:13px}
 .ui-pages-lobby-gamecard-card{padding:24px;border-radius:18px;box-shadow:none;margin:0;min-width:0}
-.ui-pages-lobby-gamecard-sportIconWrapper{width:48px;height:48px;border-radius:14px;background:#eaf7ef;color:#008a49}
+.ui-pages-lobby-gamecard-sportIconWrapper{width:48px;height:48px;border-radius:14px;background:#eaf7ef;color:#008a40}
 .ui-pages-lobby-gamecard-sportName{font-size:21px;font-weight:800}
 .ui-pages-lobby-gamecard-infoBox{padding:18px 0;background:transparent;border-radius:0;border-bottom:1px solid var(--line);margin:10px 0 16px}
 .ui-pages-lobby-gamecard-infoLabel{font-size:13px;color:var(--muted);min-width:28px}
@@ -766,8 +766,8 @@ button{min-height:44px}
 .ui-components-errorboundary-inline-4{padding:0.75rem 2rem;background:#FF6B35;color:#fff;border:none;border-radius:0.5rem;font-size:0.9375rem;font-weight:600;cursor:pointer}
 .ui-components-sporticon-inline-0{display:inline-flex}
 .ui-components-sportpicker-item{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;padding:1rem 0.5rem;border-radius:0.75rem;border-width:2px;border-style:solid;border-color:#edf2ee;background:#FFFFFF;cursor:pointer;transition:all 150ms ease;outline:none;box-shadow:none}
-.ui-components-sportpicker-iconWrapper{color:#64748B;display:flex;align-items:center;justify-content:center}
-.ui-components-sportpicker-label{font-size:0.875rem;font-weight:600;color:#64748B}
+.ui-components-sportpicker-iconWrapper{color:#68767e;display:flex;align-items:center;justify-content:center}
+.ui-components-sportpicker-label{font-size:0.875rem;font-weight:600;color:#68767e}
 .ui-components-sportpicker-inline-0{display:inline-block;transition:transform 0.2s;margin-left:4px;font-size:12px}
 .ui-components-sportpicker-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:0.75rem;width:100%}
 .ui-components-sportpicker-inline-1{margin-top:0.75rem}

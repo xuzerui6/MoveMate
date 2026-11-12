@@ -46,7 +46,7 @@ export function useLegacyPose(active: boolean) {
       const cancelled = current.cancelled; current.cancel()
       if (!mounted.current || scope.current !== current || cancelled) return false
       model.current = null; clearSample()
-      errorReason.current = error instanceof DOMException && error.name === 'NotAllowedError' ? '摄像头权限被拒绝，请在浏览器允许摄像头后重试，或改为手动记录。' : error instanceof DOMException && error.name === 'NotFoundError' ? '未找到摄像头，请连接设备后重试，或改为手动记录。' : error instanceof DOMException && error.name === 'NotReadableError' ? '摄像头无法读取，可能被其他应用占用，请关闭占用后重试。' : cameraOpened ? '姿态模型加载失败，请检查网络后重试；摄像头资源已释放，本组尚未开始。' : '无法启动摄像头，请检查设备和浏览器支持后重试，或改为手动记录。'
+      errorReason.current = error instanceof DOMException && error.name === 'NotAllowedError' ? '摄像头权限被拒绝，请在浏览器允许摄像头后重试，或改为手动记录。' : error instanceof DOMException && error.name === 'NotFoundError' ? '未找到摄像头，请连接设备后重试，或改为手动记录。' : error instanceof DOMException && error.name === 'NotReadableError' ? '摄像头无法读取，可能被其他应用占用，请关闭占用后重试。' : cameraOpened ? '识别没能准备好，请检查网络后重试；摄像头已经关好，本组还没有开始。' : '无法启动摄像头，请检查设备和浏览器支持后重试，或改为手动记录。'
       setStatus(error instanceof DOMException && error.name === 'NotAllowedError' ? 'denied' : 'error')
       return false
     }

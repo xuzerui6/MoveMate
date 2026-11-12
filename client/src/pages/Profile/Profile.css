@@ -116,13 +116,13 @@
 .profile-page .ui-pages-profile-profile-gameWrapper{position:relative;min-width:0}
 .profile-page .ui-pages-profile-profile-inline-4{padding:2rem 0}
 .profile-page .ui-pages-profile-profile-confirmGroup{display:flex;align-items:center;gap:0.4rem}
-.profile-page .ui-pages-profile-profile-deleteBtn{font-size:.75rem;font-weight:600;color:#475569;background:#f3f6f3;padding:.35rem 1rem;border-radius:9999px;border:1px solid #E2E8F0}
+.profile-page .ui-pages-profile-profile-deleteBtn{font-size:.75rem;font-weight:600;color:#475569;background:#f3f6f3;padding:.35rem 1rem;border-radius:9999px;border:1px solid #e3e9e6}
 .profile-page .ui-pages-profile-profile-confirmDeleteBtn{font-size:.75rem;font-weight:700;color:#fff;background:#ef4444;padding:.35rem .8rem;border-radius:9999px}
-.profile-page .ui-pages-profile-profile-cancelDeleteBtn{font-size:.75rem;font-weight:600;color:#64748b;background:#f3f6f3;padding:.35rem .8rem;border-radius:9999px;border:1px solid #E2E8F0}
+.profile-page .ui-pages-profile-profile-cancelDeleteBtn{font-size:.75rem;font-weight:600;color:#68767e;background:#f3f6f3;padding:.35rem .8rem;border-radius:9999px;border:1px solid #e3e9e6}
 .profile-page .ui-pages-profile-profile-confirmCancelBtn{font-size:.75rem;font-weight:700;color:#fff;background:#ef4444;padding:.35rem .8rem;border-radius:9999px}
 .profile-page .ui-pages-profile-profile-confirmLeaveBtn{font-size:.75rem;font-weight:700;color:#fff;background:var(--color-primary);padding:.35rem .8rem;border-radius:9999px}
 .profile-page .ui-pages-profile-profile-cancelBtn{font-size:.75rem;font-weight:600;color:#ef4444;background:#fef2f2;padding:.35rem 1rem;border-radius:9999px}
-.profile-page .ui-pages-profile-profile-leaveBtn{font-size:.75rem;font-weight:600;color:#64748b;background:var(--mint);padding:.35rem 1rem;border-radius:9999px}
+.profile-page .ui-pages-profile-profile-leaveBtn{font-size:.75rem;font-weight:600;color:#68767e;background:var(--mint);padding:.35rem 1rem;border-radius:9999px}
 
 /* ---------- 历史积分 (折叠卡) ---------- */
 .profile-page .legacy-rewards summary{list-style:none;display:flex;align-items:center;gap:10px;cursor:pointer;min-height:44px}

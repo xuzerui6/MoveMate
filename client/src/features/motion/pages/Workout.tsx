@@ -3,7 +3,6 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Header } from '../components/Header'
 import { Icon } from '../components/Icons'
 import { PoseCanvas } from '../components/PoseCanvas'
-import { RecognitionStatus } from '../components/RecognitionStatus'
 import { useXiaozhiCoach } from '../hooks/useXiaozhiCoach'
 import { createCueState, pickCue } from '../lib/coachCues'
 import { createCorrectionGateState, decideCorrectionCue, POSE_ISSUE_COPY } from '../lib/poseFeedback'
@@ -282,14 +281,14 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const poseFailed = !simulatedPose && ['denied', 'error'].includes(pose.status)
   const poseFailureTitles = {
     camera: '摄像头未就绪',
-    model: '模型加载失败',
+    model: '识别没准备好',
     framing: '动作所需关节未清晰入镜',
-    performance: '识别性能未达要求',
-    inference: '动作识别中断',
+    performance: '画面跟不上啦',
+    inference: '识别断了一下',
   }
   const poseFailureTitle = pose.status === 'denied'
     ? '摄像头权限未开启'
-    : pose.failurePhase ? poseFailureTitles[pose.failurePhase] : '摄像头或模型加载失败'
+    : pose.failurePhase ? poseFailureTitles[pose.failurePhase] : '摄像头或识别没准备好'
   useEffect(() => {
     if (failure || poseFailed) document.querySelector('.training-workout .training-error')?.scrollIntoView({ block: 'center' })
   }, [failure, poseFailed])
@@ -403,7 +402,6 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
       {active && <section className="training-live-info" aria-label="本组训练数据">
         <div className="training-numbers"><div className={"training-reps"+(metrics.reps>0&&metrics.reps>=metrics.targetReps?" motion-set-done":"")}><strong key={metrics.reps} className="motion-rep-num">{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}</span></div>{calibratedOnce.current&&<div><strong>{format(seconds)}</strong><span>有效时长</span></div>}</div>
         <p className="training-coach" role="status"><span>{paused ? '已暂停' : '陪练说'}</span>{coachLine}</p>
-        <RecognitionStatus type={exerciseType} diagnostics={diagnostics} paused={paused || busy || ending} demo={simulatedPose}/>
         {['standing_leg_curl','one_arm_row','mountain_climber','split_squat'].includes(exerciseType)&&<p className="recognition-side-count">左侧 {metrics.scoreAccumulator.leftReps||0} 次 · 右侧 {metrics.scoreAccumulator.rightReps||0} 次 · 左右合计</p>}
         <div className="training-voice"><Icon name="mic" size={26}/><span><b>{voiceEnabled ? VOICE_LABEL[voice.state] : '语音陪练'}</b><small>{voiceEnabled ? voice.errorMessage || (voice.state === 'speaking' ? voice.reply : voice.transcript) || '连接后点击对话' : '语音指导你的动作节奏与要点'}</small></span>
           <button className="secondary" disabled={ending} onClick={!voiceEnabled ? toggleVoice : voice.state === 'idle' ? voice.wake : ['failed', 'fallback'].includes(voice.state) ? voice.retry : voice.inConversation ? voice.interrupt : toggleVoice}>{!voiceEnabled ? '开启' : voice.state === 'idle' ? '对话' : ['failed', 'fallback'].includes(voice.state) ? '重试' : voice.inConversation ? '打断' : '关闭'}</button>
@@ -418,8 +416,8 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
       </section>}
     </div>
     {poseFailed && <div className="training-error" role="alert"><b>{poseFailureTitle}</b><p>{pose.errorReason.current || (active ? '识别已停止，请检查设备后重试。' : '尚未创建新训练记录，请允许摄像头或重新加载模型。')}</p>{!active&&<p>本次尚未开始计时，也未创建新的训练记录。</p>}{active && <button className="secondary" disabled={busy} onClick={() => void retryCamera()}>重试摄像头</button>}</div>}
-    {adaptive&&poseFailed&&!active&&<button className="secondary" disabled={busy} onClick={()=>void begin(false,true)}>使用 Lite 兼容模式重试</button>}
-    {adaptive&&paused&&<button className="secondary" disabled={busy} onClick={()=>void pose.start(true)}>使用 Lite 重新准备</button>}
+    {adaptive&&poseFailed&&!active&&<button className="secondary" disabled={busy} onClick={()=>void begin(false,true)}>换个更稳的方式再试一次</button>}
+    {adaptive&&paused&&<button className="secondary" disabled={busy} onClick={()=>void pose.start(true)}>换个更稳的方式重新准备</button>}
     {failure && <div className="training-error" role="alert"><p>{failure}</p>{ending ? <p>统计已保留，请重试结束，系统会先核对已保存记录。</p> : syncFailed && <button className="secondary" disabled={busy} onClick={() => void retrySync()}>重试同步</button>}</div>}
     {active && <div className="training-controls"><button className="secondary" disabled={busy || ending || poseFailed} onClick={() => void togglePause()}><Icon name={paused ? 'play' : 'pause'}/>{pendingAction ? '重试确认' : paused ? '继续' : '暂停'}</button><button className="primary" disabled={busy} onClick={() => void done()}><Icon name="stop" weight="fill"/>{busy && ending ? '正在保存…' : ending ? '重试结束' : '结束训练'}</button></div>}
   </div>

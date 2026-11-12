@@ -880,7 +880,7 @@ export function DataManagement() {
       <section className="gym-form">
         <h2>导出本人数据</h2>
         <p>
-          版本 2 JSON 包含计划、自定义动作、逐组记录、身体记录及个人设置；CSV
+          「动伴完整备份」（JSON）包含计划、自定义动作、逐组记录、身体记录及个人设置；CSV
           用于表格查看，不包含账号凭据。计划在编辑页可打印为 PDF。
         </p>
         <div className="gym-links">
