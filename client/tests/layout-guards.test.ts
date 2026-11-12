@@ -37,3 +37,14 @@ test('workout left column distributes content instead of leaving a dead hole', (
   const instructions = declarations(gymCss, '.gym-current .gym-instructions');
   assert.match(instructions, /margin-top:\s*auto/);
 });
+
+test('prep set-plan card fills the left column middle with equal-height rows', () => {
+  const card = declarations(gymCss, '.gym-set-plan');
+  assert.match(card, /display:\s*flex/);
+  assert.match(card, /flex-direction:\s*column/);
+  assert.match(card, /flex:\s*1/);
+  const row = declarations(gymCss, '.gym-set-plan-list li');
+  assert.match(row, /flex:\s*1/);
+  const current = declarations(gymCss, '.gym-set-plan-list li.is-current');
+  assert.match(current, /background:\s*var\(--mint\)/);
+});
