@@ -376,7 +376,7 @@ export function useCoachVoice(enabled: boolean, context: CoachContext, options: 
       // 权限和服务类错误重试没有意义，直接停并告知用户怎么处理
       if (event.error === 'not-allowed' || event.error === 'service-not-allowed' || event.error === 'audio-capture' || event.error === 'language-not-supported') {
         wantListeningRef.current = false
-        setErrorMessage(ERROR_MESSAGE[event.error] || `语音识别不可用（${event.error}）`)
+        setErrorMessage(ERROR_MESSAGE[event.error] || '语音识别暂时用不了，可以先用手动按钮')
         setVoiceState('failed')
         return
       }
@@ -386,7 +386,7 @@ export function useCoachVoice(enabled: boolean, context: CoachContext, options: 
       failureCountRef.current += 1
       if (failureCountRef.current >= 3) {
         wantListeningRef.current = false
-        setErrorMessage(ERROR_MESSAGE[event.error] || `语音识别反复失败（${event.error}），已暂停`)
+        setErrorMessage(ERROR_MESSAGE[event.error] || '语音有点听不清，我先停一下，可以先用手动按钮继续')
         setVoiceState('failed')
       }
     }
