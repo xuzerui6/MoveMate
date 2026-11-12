@@ -26,7 +26,7 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
  const publish=(r:Runtime,reason:string,f?:PoseFrame)=>{if(!mounted.current||runtime.current!==r)return;lastStats.current={key:r.key,metrics:structuredClone(r.engine.metrics)};const elapsed=r.times.length>1?r.times[r.times.length-1]-r.times[0]:0;setState({landmarks:f?.landmarks||null,worldLandmarks:f?.worldLandmarks||null,frame:f||null,key:r.key,engine:{metrics:{...r.engine.metrics},diagnostics:{...r.engine.diagnostics}},telemetry:{model:r.model,mode:r.transport?.mode||null,fps:elapsed>0?(r.times.length-1)*1000/elapsed:0,latency:Number.isFinite(percentile95(r.latencies))?percentile95(r.latencies):0,latency50:Number.isFinite(percentile50(r.latencies))?percentile50(r.latencies):0,inference:Number.isFinite(percentile95(r.inferTimes))?percentile95(r.inferTimes):0,experiment:r.experiment,recoveredFrom:r.recoveredFrom,reason,preparing:r.preparing,lowPerformance:r.slowSince!==null&&performance.now()-r.slowSince>=3000,rung:poseRungId(r.ladder[r.rungIndex]),selection:r.selection,events:[...r.events]}});};
  const release=(r:Runtime)=>{r.runId=++serial.current;r.controller.abort();r.transport?.close();r.stream?.getTracks().forEach(t=>t.stop());if(r.timer)clearTimeout(r.timer);if(r.probeTimer)clearTimeout(r.probeTimer);if(r.fallbackTimer)clearTimeout(r.fallbackTimer);r.finish?.(false);r.finish=null;const v=videoRef.current as Video|null;if(v){if(r.raf)cancelAnimationFrame(r.callback);else v.cancelVideoFrameCallback?.(r.callback);v.srcObject=null;}};
  const stop=useCallback(()=>{const r=runtime.current;if(r){release(r);runtime.current=null;}if(mounted.current){setStatus('idle');setFailurePhase(null);setState(s=>({...s,landmarks:null,worldLandmarks:null,frame:null}));}},[]);
- const performanceFailure=(r:Runtime)=>{setFailurePhase('performance');r.engine.interrupt('有效识别帧率过低，已冻结计数，请暂停后使用 Lite 或转手动');activeRef.current=false;errorReason.current='有效识别帧率低于 8 FPS，统计已冻结，请使用 Lite 重试或转手动';release(r);setStatus('error');publish(r,errorReason.current);};
+ const performanceFailure=(r:Runtime)=>{setFailurePhase('performance');r.engine.interrupt('画面有点跟不上，我先停在这里。这一组就先数到这儿，歇一下再试，或者改用手动记数。');activeRef.current=false;errorReason.current='这台设备刚才有点跟不上，我先停了下来。歇一下重新开始，或者改用手动记数就好。';release(r);setStatus('error');publish(r,errorReason.current);};
  const frameDeadline=(r:Runtime)=>{if(r.timer)clearTimeout(r.timer);r.timer=setTimeout(()=>{
   if(runtime.current!==r||r.controller.signal.aborted)return;
   const now=performance.now();
@@ -82,7 +82,7 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
  const stepDown=async(r:Runtime,reason:ProbeFailureReason)=>{
   if(runtime.current!==r||r.controller.signal.aborted||r.stepping)return;
   const from=r.ladder[r.rungIndex],next=r.ladder[r.rungIndex+1];
-  if(!next){setFailurePhase('model');errorReason.current='识别模型初始化失败，请重试。';release(r);setStatus('error');publish(r,errorReason.current);return;}
+  if(!next){setFailurePhase('model');errorReason.current='识别没能启动起来，歇一下再试一次。';release(r);setStatus('error');publish(r,errorReason.current);return;}
   r.stepping=true;
   recordStep(r,from,next,reason);
   if(r.probeTimer){clearTimeout(r.probeTimer);r.probeTimer=null;}
@@ -105,7 +105,7 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
   r.degradeReason=null;
   r.startedAt=performance.now();
   r.lastReceived=performance.now();
-  publish(r,`正在切换到${rungLabel(next)}`);
+  publish(r,'刚才有点跟不上，正在换个更稳的方式');
   try{
    const opened=await openRung(r);
    r.stepping=false;
@@ -126,7 +126,7 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
    if(runtime.current!==r||r.controller.signal.aborted)return;
    if(r.rungIndex<r.ladder.length-1){void stepDown(r,'init-error');return;}
    setFailurePhase('model');
-   errorReason.current=error instanceof Error?error.message:'Lite 模型加载失败，请重试。';
+   console.error(error);errorReason.current='识别没能启动起来，歇一下再试一次。';
    release(r);
    setStatus('error');
    publish(r,errorReason.current);
@@ -218,7 +218,7 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
      }
      publish(r,r.engine.metrics.feedback,f);
     }
-   }).catch(e=>{if(r.controller.signal.aborted||runtime.current!==r||runId!==r.runId)return;if(r.probePhase!=='off'||r.rungIndex<r.ladder.length-1){void stepDown(r,'inference-error');return;}setFailurePhase('inference');errorReason.current=e instanceof Error?e.message:'姿态推理失败';r.engine.interrupt(errorReason.current);release(r);setStatus('error');publish(r,errorReason.current);}).finally(()=>{if(r.transport===transport)r.inFlight=false;});
+   }).catch(e=>{if(r.controller.signal.aborted||runtime.current!==r||runId!==r.runId)return;if(r.probePhase!=='off'||r.rungIndex<r.ladder.length-1){void stepDown(r,'inference-error');return;}setFailurePhase('inference');console.error(e);errorReason.current='识别刚才断了一下，我先停在这里，歇一下再重新开始。';r.engine.interrupt(errorReason.current);release(r);setStatus('error');publish(r,errorReason.current);}).finally(()=>{if(r.transport===transport)r.inFlight=false;});
   };
   if(v.requestVideoFrameCallback&&!r.forceRaf){r.raf=false;r.callback=v.requestVideoFrameCallback(callback);r.fallbackTimer=setTimeout(()=>{if(r.controller.signal.aborted)return;v.cancelVideoFrameCallback?.(r.callback);r.forceRaf=true;callback(performance.now());},500);}else{r.raf=true;r.callback=requestAnimationFrame(callback);}
  };
@@ -261,10 +261,10 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
     schedule(r);
    }
    return await new Promise<boolean>(resolve=>{r.finish=resolve;if(reuse)frameDeadline(r);else if(r.rungIndex>=r.ladder.length-1)settleProbed(r);else armProbe(r,r.selection==='cache'?'sanity':'full');});
-  }catch(e){if(r.controller.signal.aborted)return false;release(r);setFailurePhase(phase);errorReason.current=e instanceof DOMException&&e.name==='NotAllowedError'?'摄像头权限被拒绝，请允许后重试':e instanceof Error?e.message:'模型或摄像头准备失败';setStatus(e instanceof DOMException&&e.name==='NotAllowedError'?'denied':'error');publish(r,errorReason.current);return false;}
+  }catch(e){if(r.controller.signal.aborted)return false;release(r);setFailurePhase(phase);if(!(e instanceof DOMException&&e.name==='NotAllowedError'))console.error(e);errorReason.current=e instanceof DOMException&&e.name==='NotAllowedError'?'摄像头权限被拒绝，请允许后重试':phase==='camera'?'没找到能用的摄像头，检查一下设备再试。':'识别没能准备好，检查一下网络，再试一次。';setStatus(e instanceof DOMException&&e.name==='NotAllowedError'?'denied':'error');publish(r,errorReason.current);return false;}
  },[status]);
- useEffect(()=>{const r=runtime.current;if(!r||r.preparing||r.controller.signal.aborted)return;if(!active){if(!opts.current.warmWhenPaused){r.passive=false;r.runId=++serial.current;r.engine.interrupt();publish(r,'识别已冻结，等待操作确认');return;}if(r.key!==opts.current.key){r.passive=false;r.engine.interrupt();return;}const saved=structuredClone(r.engine.metrics);r.runId=++serial.current;r.frameId=0;r.engine=new AdaptiveRecognition(opts.current.type,opts.current.target,saved,r.runId);r.passive=true;r.times=[];publish(r,'已暂停 · 回到起始姿势后自动准备，不计次数或时长');}else{r.passive=false;r.startedAt=performance.now();r.lastReceived=performance.now();r.times=[];r.slowSince=null;r.degradeReason=null;}},[active,options.warmWhenPaused]);
+ useEffect(()=>{const r=runtime.current;if(!r||r.preparing||r.controller.signal.aborted)return;if(!active){if(!opts.current.warmWhenPaused){r.passive=false;r.runId=++serial.current;r.engine.interrupt();publish(r,'我先停一下，等你回来继续');return;}if(r.key!==opts.current.key){r.passive=false;r.engine.interrupt();return;}const saved=structuredClone(r.engine.metrics);r.runId=++serial.current;r.frameId=0;r.engine=new AdaptiveRecognition(opts.current.type,opts.current.target,saved,r.runId);r.passive=true;r.times=[];publish(r,'已暂停 · 回到起始姿势后自动准备，不计次数或时长');}else{r.passive=false;r.startedAt=performance.now();r.lastReceived=performance.now();r.times=[];r.slowSince=null;r.degradeReason=null;}},[active,options.warmWhenPaused]);
  useEffect(()=>{mounted.current=true;return()=>{mounted.current=false;const r=runtime.current;if(r)release(r);runtime.current=null;};},[]);
- useEffect(()=>{const hide=()=>{const r=runtime.current;if(document.hidden&&r&&!r.controller.signal.aborted){r.engine.interrupt('页面已转入后台，已冻结识别，请返回后继续训练');errorReason.current='页面已转入后台，已冻结识别，请返回后继续训练';release(r);setStatus('error');publish(r,errorReason.current);}};document.addEventListener('visibilitychange',hide);return()=>document.removeEventListener('visibilitychange',hide);},[]);
+ useEffect(()=>{const hide=()=>{const r=runtime.current;if(document.hidden&&r&&!r.controller.signal.aborted){r.engine.interrupt('页面切到后台啦，我先停一下，回来我们接着练');errorReason.current='页面切到后台啦，我先停一下，回来我们接着练';release(r);setStatus('error');publish(r,errorReason.current);}};document.addEventListener('visibilitychange',hide);return()=>document.removeEventListener('visibilitychange',hide);},[]);
  return {videoRef,errorReason,status,failurePhase,start,stop,landmarks:state.landmarks,worldLandmarks:state.worldLandmarks,frame:state.frame,telemetry:state.telemetry,engine:state.key===options.key?state.engine:null};
 }

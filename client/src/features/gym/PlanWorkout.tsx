@@ -11,7 +11,6 @@ import {PrivacyConsentRow} from '../motion/components/PrivacyConsentRow';
 import {PosePreparePanel} from '../motion/components/PosePreparePanel';
 import {usePosePrepare} from '../motion/hooks/usePosePrepare';
 import { isRecognitionType } from '../motion/lib/recognition';
-import { PlanRecognitionStatus } from "./PlanRecognitionStatus";
 import { exerciseInfo,isCameraExercise } from "../motion/lib/exercises";
 import { useXiaozhiCoach } from "../motion/hooks/useXiaozhiCoach";
 import { useSessionClock } from "../motion/hooks/useSessionClock";
@@ -793,11 +792,6 @@ export default function PlanWorkout() {
                   </p>
                   {type === "reverse_lunge" && <p>左侧 {metrics.scoreAccumulator.leftReps || 0} 次 · 右侧 {metrics.scoreAccumulator.rightReps || 0} 次 · 每侧完成计一次</p>}
                   {type==='standing_leg_curl'&&<p className="recognition-side-count">左侧 {metrics.scoreAccumulator.leftReps||0} 次 · 右侧 {metrics.scoreAccumulator.rightReps||0} 次 · 左右合计</p>}
-                  <PlanRecognitionStatus
-                    type={type}
-                    diagnostics={diagnostics}
-                    paused={!working || busy || blocked}
-                  />
                 </div>
               )}
               {current && (
@@ -957,7 +951,7 @@ export default function PlanWorkout() {
                   />
                 </label>
               )}
-              {adaptive&&!working&&(camera||current?.status==='pending')&&<button className="secondary" disabled={busy} onClick={()=>void pose.start(true)}>使用 Lite 重新准备</button>}
+              {adaptive&&!working&&(camera||current?.status==='pending')&&<button className="secondary" disabled={busy} onClick={()=>void pose.start(true)}>换个更稳的方式重新准备</button>}
               {adaptive&&pose.status==='loading'&&<button className="secondary" onClick={()=>{pose.errorReason.current='已取消准备';pose.stop();}}>取消摄像头准备</button>}
               {requestedType && !supportedRecognition && <p role="alert">当前页面不支持此动作识别，请刷新页面或切换手动记录。</p>}
               {current && <PrepDemoHero exercise={current.exercise} suspended={working || busy || finished}/>}

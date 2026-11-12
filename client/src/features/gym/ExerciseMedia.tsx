@@ -259,7 +259,7 @@ function LoadedViewer({exercise,suspended=false,media,layout="tabs"}:{exercise:a
     ? undefined : media?.sources[currentFrame.sourceIndex];
   return (
     <>
-      {exercise.reviewStatus==='needs_review'&&<p className="media-pending" role="note"><strong>资料待核对</strong> · {exercise.reviewReason}</p>}
+      {exercise.reviewStatus==='needs_review'&&<p className="media-pending" role="note">这个动作的示范还在核对中，先看肌群图和文字步骤。</p>}
       {media&&isUnreviewedOfficialExercise(exercise)&&<p className="media-note" role="note">示范按当前动作库提供，请对照本次实际动作。旧记录中的说明不会自动改写。</p>}
       {exercise.form&&!detail&&<p className="media-note"><strong>适用形式：</strong>{exercise.form}</p>}
       {(!detail||media?.video||media?.images.length)&&<div

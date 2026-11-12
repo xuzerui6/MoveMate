@@ -163,6 +163,23 @@ test("playing one demonstration pauses others; released player cannot pause a ca
   assert.deepEqual(calls, []);
   assert.ok(camera); // Unregistered streams are outside this group.
 });
+test("exercise detail UI never renders the internal reviewReason", () => {
+  // F7 (UI audit 2026-11-11): reviewReason is internal editorial text and
+  // must never reach the detail page; needs_review entries show one human
+  // line instead. Guard the component source so a regression fails here.
+  const source = fs.readFileSync(
+    new URL("../src/features/gym/ExerciseMedia.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.ok(
+    !source.includes("reviewReason"),
+    "ExerciseMedia.tsx must not read reviewReason (internal data only)",
+  );
+  assert.ok(
+    source.includes("这个动作的示范还在核对中，先看肌群图和文字步骤"),
+    "needs_review entries must show the human placeholder line",
+  );
+});
 test("service worker never caches video/range replies and does cache viewed demonstration images", () => {
   const sw = fs.readFileSync(publicDir + "/sw.js", "utf8");
   assert.ok(sw.includes("req.headers.has('range')"));

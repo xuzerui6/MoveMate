@@ -29,7 +29,7 @@
 .ui-pages-gamedetail-chatlist-emptyHint{font-size:0.8125rem;color:#D1D5DB;margin-top:0.375rem}
 .ui-pages-gamedetail-gameheader-container{background:#FFFFFF;border-radius:1.25rem;padding:1.25rem;margin-bottom:1rem;border:1px solid #edf2ee;box-shadow:0 2px 4px rgba(0,0,0,0.02)}
 .ui-pages-gamedetail-gameheader-sportInfo{display:flex;align-items:center;gap:0.875rem}
-.ui-pages-gamedetail-gameheader-remaining{color:#008a49;font-weight:600}
+.ui-pages-gamedetail-gameheader-remaining{color:#008a40;font-weight:600}
 .ui-pages-gamedetail-hostactions-container{padding:0.75rem 0;flex-shrink:0;position:relative}
 .ui-pages-gamedetail-hostactions-confirmCancelBtn{padding:0.5rem 1rem;border-radius:8px;background:#F3F4F6;color:#6B7280;font-size:0.875rem;font-weight:600;border:none;cursor:pointer}
 .ui-pages-gamedetail-hostactions-creatorActions{display:flex;flex-direction:column}
@@ -41,18 +41,18 @@
 .ui-pages-gamedetail-memberlist-infoCol{display:flex;flex-direction:column;gap:0.15rem;flex:1}
 .ui-pages-gamedetail-memberlist-nameRow{display:flex;align-items:center;gap:0.45rem;flex-wrap:wrap}
 .ui-pages-gamedetail-memberlist-levelChip{font-size:.75rem;color:#7C3AED;background:#F5F3FF;padding:0.12rem 0.45rem;border-radius:9999px;font-weight:700;white-space:nowrap}
-.ui-pages-gamedetail-memberlist-statusText{font-size:0.75rem;color:#64748B;font-weight:500}
+.ui-pages-gamedetail-memberlist-statusText{font-size:0.75rem;color:#68767e;font-weight:500}
 .ui-pages-gamedetail-memberlist-creatorBadge{font-size:.75rem;color:var(--color-primary);background:#FFF3EE;padding:0.125rem 0.5rem;border-radius:9999px;font-weight:600;flex-shrink:0}
 .ui-pages-gamedetail-memberlist-confirmBtn{font-size:0.75rem;color:var(--ink);background:#f3f6f3;padding:0.4rem 0.65rem;border-radius:9999px;font-weight:700;white-space:nowrap;flex-shrink:0}
-.ui-pages-gamedetail-memberlist-popupCard{margin-left:3rem;margin-top:0.5rem;padding:0.75rem 0.875rem;background:#f3f6f3;border-radius:10px;border:1px solid #E2E8F0}
+.ui-pages-gamedetail-memberlist-popupCard{margin-left:3rem;margin-top:0.5rem;padding:0.75rem 0.875rem;background:#f3f6f3;border-radius:10px;border:1px solid #e3e9e6}
 .ui-pages-gamedetail-memberlist-popupLoading{font-size:0.75rem;color:var(--muted);text-align:center}
 .ui-pages-gamedetail-memberlist-popupHeader{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem}
 .ui-pages-gamedetail-memberlist-popupName{font-size:0.875rem;font-weight:700;color:var(--ink)}
-.ui-pages-gamedetail-memberlist-popupDept{font-size:0.75rem;color:#64748B;font-weight:500}
-.ui-pages-gamedetail-memberlist-popupSection{border-top:1px solid #E2E8F0;padding-top:0.45rem}
+.ui-pages-gamedetail-memberlist-popupDept{font-size:0.75rem;color:#68767e;font-weight:500}
+.ui-pages-gamedetail-memberlist-popupSection{border-top:1px solid #e3e9e6;padding-top:0.45rem}
 .ui-pages-gamedetail-memberlist-popupSectionTitle{font-size:.75rem;color:var(--muted);font-weight:600;margin-bottom:0.35rem;display:block}
 .ui-pages-gamedetail-memberlist-popupSportTags{display:flex;flex-wrap:wrap;gap:0.3rem}
-.ui-pages-gamedetail-memberlist-popupSportTag{display:inline-flex;align-items:center;gap:0.2rem;padding:0.15rem 0.45rem;border-radius:6px;background:#edf8f0;color:#008a49;font-size:.75rem;font-weight:600}
+.ui-pages-gamedetail-memberlist-popupSportTag{display:inline-flex;align-items:center;gap:0.2rem;padding:0.15rem 0.45rem;border-radius:6px;background:#edf8f0;color:#008a40;font-size:.75rem;font-weight:600}
 .ui-pages-gamedetail-memberlist-popupEmpty{font-size:0.75rem;color:var(--muted)}
 .game-detail-page .page-header strong{font-size:24px}
 @media (max-width:700px){.game-detail-page .page-header strong{font-size:22px}}

@@ -117,7 +117,7 @@
 .ui-pages-lobby-gamecard-sportInfo{display:flex;align-items:flex-start;gap:0.75rem}
 .ui-pages-lobby-gamecard-sportTitleBlock{display:flex;flex-direction:column;gap:0.25rem}
 .ui-pages-lobby-gamecard-titleRow{display:flex;align-items:center;gap:0.5rem}
-.ui-pages-lobby-gamecard-tag{font-size:0.75rem;font-weight:500;color:#64748B}
+.ui-pages-lobby-gamecard-tag{font-size:0.75rem;font-weight:500;color:#68767e}
 .ui-pages-lobby-gamecard-hostMetaRow{display:flex;align-items:center;gap:0.45rem;flex-wrap:wrap;margin-top:0.05rem}
 .ui-pages-lobby-gamecard-infoRow{display:flex;align-items:baseline}
 .ui-pages-lobby-gamecard-bottomRow{display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:1px solid #edf2ee}
@@ -129,16 +129,16 @@
 .ui-pages-lobby-lobby-dot{width:6px;height:6px;border-radius:50%;background:#10B981}
 .ui-pages-lobby-lobby-avatarImg{width:100%;height:100%;object-fit:cover}
 .ui-pages-lobby-lobby-avatarPlaceholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#f3f6f3;color:var(--ink);font-weight:700;font-size:1rem}
-.ui-pages-lobby-lobby-dateFilterBar{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;background:#f3f6f3;border:1px solid #E2E8F0;border-radius:16px;padding:0.75rem 0.875rem;margin-bottom:0.85rem}
+.ui-pages-lobby-lobby-dateFilterBar{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;background:#f3f6f3;border:1px solid #e3e9e6;border-radius:16px;padding:0.75rem 0.875rem;margin-bottom:0.85rem}
 .ui-pages-lobby-lobby-dateFilterInfo{display:flex;flex-direction:column;gap:0.15rem}
 .ui-pages-lobby-lobby-dateFilterLabel{font-size:.75rem;color:var(--muted);font-weight:700}
 .ui-pages-lobby-lobby-dateFilterValue{font-size:0.88rem;color:var(--ink);font-weight:700}
 .ui-pages-lobby-lobby-dateFilterActions{display:flex;align-items:center;gap:0.5rem;flex-shrink:0}
 .ui-pages-lobby-lobby-dateInput{position:absolute;inset:0;margin-bottom:0;width:100%;min-width:0;height:2.2rem;padding:0;border-radius:9999px;font-size:0.8125rem;border:none;background:transparent;opacity:0;cursor:pointer}
-.ui-pages-lobby-lobby-dateInputWrap{position:relative;display:flex;align-items:center;justify-content:space-between;gap:0.5rem;width:8.5rem;min-width:8rem;height:2.2rem;padding:0 0.75rem;border-radius:9999px;border:1px solid #E2E8F0;background:#FFFFFF;overflow:hidden;cursor:pointer;appearance:none}
+.ui-pages-lobby-lobby-dateInputWrap{position:relative;display:flex;align-items:center;justify-content:space-between;gap:0.5rem;width:8.5rem;min-width:8rem;height:2.2rem;padding:0 0.75rem;border-radius:9999px;border:1px solid #e3e9e6;background:#FFFFFF;overflow:hidden;cursor:pointer;appearance:none}
 .ui-pages-lobby-lobby-dateInputText{font-size:0.8125rem;color:#334155;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ui-pages-lobby-lobby-dateInputIcon{font-size:.75rem;color:var(--muted);font-weight:700;flex-shrink:0}
-.ui-pages-lobby-lobby-dateClearBtn{font-size:0.75rem;color:#64748B;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:9999px;padding:0.42rem 0.75rem;font-weight:600}
+.ui-pages-lobby-lobby-dateClearBtn{font-size:0.75rem;color:#68767e;background:#FFFFFF;border:1px solid #e3e9e6;border-radius:9999px;padding:0.42rem 0.75rem;font-weight:600}
 .ui-pages-lobby-lobby-header>.ui-pages-lobby-lobby-avatarBtn{display:none}
 .ui-pages-lobby-gamecard-topRow{align-items:flex-start;gap:14px}
 .ui-pages-lobby-gamecard-infoRow{gap:14px;margin:8px 0}
@@ -146,7 +146,7 @@
 .ui-pages-lobby-gamecard-remainingText{font-size:12px;color:#008849}
 @media (max-width:700px){.ui-pages-lobby-lobby-locationMeta{clear:both;padding-top:12px}}
 .sport-filter-track-arrow{font-size:16px}
-.ui-pages-lobby-lobby-scopeChip{border-radius:9999px;padding:0.4rem 1rem;background:#edf2ee;color:#64748B;font-size:0.8125rem;font-weight:600;border:1px solid transparent;transition:all 0.2s}
-.ui-pages-lobby-lobby-dateQuickBtn{font-size:0.75rem;color:#64748B;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:9999px;padding:0.42rem 0.72rem;font-weight:700;white-space:nowrap}
+.ui-pages-lobby-lobby-scopeChip{border-radius:9999px;padding:0.4rem 1rem;background:#edf2ee;color:#68767e;font-size:0.8125rem;font-weight:600;border:1px solid transparent;transition:all 0.2s}
+.ui-pages-lobby-lobby-dateQuickBtn{font-size:0.75rem;color:#68767e;background:#FFFFFF;border:1px solid #e3e9e6;border-radius:9999px;padding:0.42rem 0.72rem;font-weight:700;white-space:nowrap}
 .ui-pages-lobby-lobby-inline-0{padding:1rem}
 .ui-pages-lobby-sportfilter-inline-0{display:flex;align-items:center;gap:0.25rem}

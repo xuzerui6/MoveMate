@@ -1,11 +1,11 @@
 /* 通知页页面自有样式 (参照 Profile.css 模式)。2026-11-06 自 foundation.css 迁入 (foundation 退役)。 */
 .ui-pages-notifications-notifications-indicatorCol{width:12px;display:flex;justify-content:center;padding-top:6px;margin-right:0.5rem;flex-shrink:0}
-.ui-pages-notifications-notifications-dot{width:8px;height:8px;border-radius:50%;background:#008a49}
+.ui-pages-notifications-notifications-dot{width:8px;height:8px;border-radius:50%;background:#008a40}
 .ui-pages-notifications-notifications-content{flex:1;min-width:0}
-.ui-pages-notifications-notifications-cancelSelectBtn{font-size:0.8125rem;font-weight:600;color:#64748B;background:transparent;padding:0.4rem 0.4rem;border-radius:9999px;border:none;cursor:pointer}
+.ui-pages-notifications-notifications-cancelSelectBtn{font-size:0.8125rem;font-weight:600;color:#68767e;background:transparent;padding:0.4rem 0.4rem;border-radius:9999px;border:none;cursor:pointer}
 .ui-pages-notifications-notifications-dialogDesc{font-size:0.875rem;color:var(--muted);margin-bottom:1rem}
 .ui-pages-notifications-notifications-dialogActions{display:flex;gap:0.75rem;justify-content:center}
-.ui-pages-notifications-notifications-cancelBtn{font-size:0.85rem;font-weight:600;color:#64748B;background:#edf2ee;border:none;padding:0.5rem 1.5rem;border-radius:10px;cursor:pointer}
+.ui-pages-notifications-notifications-cancelBtn{font-size:0.85rem;font-weight:600;color:#68767e;background:#edf2ee;border:none;padding:0.5rem 1.5rem;border-radius:10px;cursor:pointer}
 .ui-pages-notifications-notifications-dangerBtn{font-size:0.85rem;font-weight:600;color:#FFFFFF;background:#DC2626;border:none;padding:0.5rem 1.5rem;border-radius:10px;cursor:pointer}
 @media (max-width:700px){.ui-pages-notifications-notifications-header>div{gap:8px}}
 .ui-pages-notifications-notifications-inline-0{display:flex;gap:0.5rem;align-items:center}

@@ -244,7 +244,7 @@
 .motion-view .inventory-tip{font-size:14px;line-height:1.8;margin:30px 0}
 .motion-view .inventory-tip span{font-size:13px}
 .motion-view .rarity-label{font-size:13px}
-.history-xp{color:#008a49;font-size:20px;white-space:nowrap;font-weight:800}
+.history-xp{color:#008a40;font-size:20px;white-space:nowrap;font-weight:800}
 .history-empty{padding:60px 20px;text-align:center;color:var(--muted);line-height:1.8}
 .history-filters{display:flex;gap:10px;margin:0 0 24px}
 .history-filters button{min-height:44px;border:1px solid var(--line);border-radius:12px;background:white;font-size:14px;padding:10px 20px}

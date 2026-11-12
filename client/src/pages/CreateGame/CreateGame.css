@@ -12,7 +12,7 @@
     font-size: 0.875rem;
     padding-right: 0.625rem;
   }}
-.ui-pages-creategame-creategame-backBtn{font-size:0.9375rem;color:#64748B;padding:0.25rem 0}
+.ui-pages-creategame-creategame-backBtn{font-size:0.9375rem;color:#68767e;padding:0.25rem 0}
 .ui-pages-creategame-creategame-fieldHint{margin-top:-0.35rem;margin-bottom:0.55rem;font-size:0.75rem;color:var(--muted);line-height:1.5}
 .ui-pages-creategame-creategame-halfWidth{flex:1;min-width:0}
 .ui-pages-creategame-creategame-venueList{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.75rem}
@@ -23,5 +23,5 @@
 .ui-pages-creategame-creategame-counterValue{font-size:1rem;font-weight:700;color:var(--ink)}
 .ui-pages-creategame-creategame-tagRow{display:flex;flex-wrap:wrap;gap:0.4rem}
 .ui-pages-creategame-creategame-inline-0{width:3rem}
-.ui-pages-creategame-creategame-venueChip{padding:0.4rem 0.75rem;border-radius:8px;border-width:1px;border-style:solid;border-color:#E2E8F0;background:#f3f6f3;color:#475569;font-size:0.8125rem;font-weight:600;cursor:pointer;transition:all 150ms ease;outline:none;box-shadow:none;-webkit-tap-highlight-color:transparent;user-select:none}
+.ui-pages-creategame-creategame-venueChip{padding:0.4rem 0.75rem;border-radius:8px;border-width:1px;border-style:solid;border-color:#e3e9e6;background:#f3f6f3;color:#475569;font-size:0.8125rem;font-weight:600;cursor:pointer;transition:all 150ms ease;outline:none;box-shadow:none;-webkit-tap-highlight-color:transparent;user-select:none}
 .ui-pages-creategame-creategame-inline-1{display:inline-block;transition:transform 0.2s;margin-left:4px;font-size:12px}
