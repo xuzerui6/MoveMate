@@ -18,6 +18,9 @@ import {
   ForbiddenError,
 } from '../utils/errors';
 import { pushToUser, broadcastToGame, removeUserFromGame } from '../websocket/notification.handler';
+import { assertNoSensitiveWord } from '../utils/sensitive-words';
+import { ValidationError } from '../utils/errors';
+import { isBlockedEitherWay, areFriends, getFriendIds, relationshipStatus } from './social-helpers';
 
 // ================================================================
 // 类型定义
@@ -64,6 +67,9 @@ export interface GameRow {
   completed_at: Date | null;
   status: GameStatus;
   tag: GameTag | null;
+  visibility: 'public' | 'friends';
+  fill_open: boolean;
+  auto_fill: boolean;
   member_count: number;
   is_host?: boolean;
   is_member?: boolean;
@@ -87,6 +93,8 @@ export interface CreateGameInput {
   start_time: string; // ISO 8601
   end_time?: string;
   tag?: GameTag;
+  visibility?: 'public' | 'friends';
+  auto_fill?: boolean;
 }
 
 /** 大厅列表查询参数 */
@@ -253,6 +261,9 @@ function toGameRow(row: any): GameRow {
     completed_at: row.completed_at ? new Date(row.completed_at) : null,
     status: row.status,
     tag: row.tag || null,
+    visibility: row.visibility === 'friends' ? 'friends' : 'public',
+    fill_open: Boolean(Number(row.fill_open || 0)),
+    auto_fill: Boolean(Number(row.auto_fill || 0)),
     member_count: Number(row.member_count),
     is_host: Boolean(row.is_host),
     is_member: Boolean(row.is_member),
@@ -262,6 +273,33 @@ function toGameRow(row: any): GameRow {
     host_reward_level: progress(Number(row.host_reward_points || 0)).level,
     host_reward_points: row.host_reward_points != null ? Number(row.host_reward_points) : undefined,
   };
+}
+
+/**
+ * 好友局是否正对大厅开放补位：
+ * - 发起人手动打开 fill_open，或
+ * - 勾了 auto_fill 且开局在 24 小时内、还没满员（自动开放补位）。
+ * listGames 的 SQL 里有一份等价判断，两处要一起改。
+ */
+export function isFillOpenNow(game: Pick<GameRow, 'visibility' | 'fill_open' | 'auto_fill' | 'member_count' | 'max_players' | 'start_time'>): boolean {
+  if (game.visibility !== 'friends') return true;
+  if (game.fill_open) return true;
+  if (game.auto_fill && game.member_count < game.max_players) {
+    const start = new Date(game.start_time).getTime();
+    return start - Date.now() <= 24 * 60 * 60 * 1000;
+  }
+  return false;
+}
+
+/** SQL 版开放补位判断（别名 g） */
+const FILL_OPEN_SQL = `(g.visibility IS NULL OR g.visibility = 'public' OR g.fill_open = 1 OR (g.auto_fill = 1 AND g.member_count < g.max_players AND g.start_time <= datetime('now', '+24 hours')))`;
+
+function parseDbTime(raw: unknown): number {
+  if (!raw) return 0;
+  const s = String(raw);
+  const iso = s.includes('T') ? s : s.replace(' ', 'T') + 'Z';
+  const t = new Date(iso).getTime();
+  return Number.isNaN(t) ? 0 : t;
 }
 
 /**
@@ -400,6 +438,11 @@ export async function createGame(input: CreateGameInput): Promise<GameRow> {
 
     const sportType = input.sport_type.trim();
     const title = input.title || generateTitle(sportType);
+    assertNoSensitiveWord(title, '局标题');
+    assertNoSensitiveWord(input.meeting_note, '集合说明');
+    assertNoSensitiveWord(input.location, '场地');
+    const visibility = input.visibility === 'friends' ? 'friends' : 'public';
+    const autoFill = input.auto_fill ? 1 : 0;
     const userContext = await getUserContext(input.host_id);
     const campus = await getCampusContext(input.campus_id);
     if (campus.school_id !== userContext.school_id) {
@@ -437,9 +480,10 @@ export async function createGame(input: CreateGameInput): Promise<GameRow> {
     const { rows: gameRows } = await client.query(
       `INSERT INTO games (
          host_id, school_id, campus_id, venue_id, venue_name_snapshot,
-         sport_type, title, location, meeting_note, max_players, start_time, end_time, status, tag, member_count
+         sport_type, title, location, meeting_note, max_players, start_time, end_time, status, tag, member_count,
+         visibility, fill_open, auto_fill
        )
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'recruiting', $13, 1)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'recruiting', $13, 1, $14, 0, $15)
        RETURNING *`,
       [
         input.host_id,
@@ -455,6 +499,8 @@ export async function createGame(input: CreateGameInput): Promise<GameRow> {
         input.start_time,
         input.end_time || null,
         input.tag || null,
+        visibility,
+        autoFill,
       ],
     );
 
@@ -510,6 +556,27 @@ export async function joinGame(
     );
     if (existingMembers.length > 0) {
       throw new AlreadyJoinedError();
+    }
+
+    // --- 拉黑：和发起人互相拉黑的人不能进局 ---
+    if (game.host_id !== userId && await isBlockedEitherWay(game.host_id, userId)) {
+      throw new ForbiddenError('你暂时没法加入这个局');
+    }
+
+    // --- 被发起人请出过：24 小时内不能重新加入 ---
+    const { rows: removalRows } = await client.query(
+      `SELECT created_at FROM game_removals WHERE game_id = $1 AND user_id = $2 ORDER BY created_at DESC LIMIT 1`,
+      [gameId, userId],
+    );
+    if (removalRows[0] && Date.now() - parseDbTime(removalRows[0].created_at) < 24 * 60 * 60 * 1000) {
+      throw new ForbiddenError('你刚被请出这个局，24 小时内不能重新加入');
+    }
+
+    // --- 好友局：只有发起人的好友（或已开放补位时任何人）可以加入 ---
+    if (game.visibility === 'friends' && game.host_id !== userId && !isFillOpenNow(game)) {
+      if (!(await areFriends(game.host_id, userId))) {
+        throw new ForbiddenError('这是好友局，只有发起人的好友可以加入');
+      }
     }
 
     // --- 写入成员记录 ---
@@ -1045,6 +1112,9 @@ export async function listGames(query: ListGamesQuery, requestUserId?: number): 
     conditions.push(`g.status IN ('recruiting', 'full', 'ready')`);
   }
 
+  // 大厅只展示公开局 + 已开放补位（含自动补位已触发）的好友局
+  conditions.push(FILL_OPEN_SQL);
+
   const targetCampusId = campus_id || userContext?.campus_id;
   if (scope !== 'school' && targetCampusId) {
     conditions.push(`g.campus_id = $${paramIdx++}`);
@@ -1194,6 +1264,13 @@ export async function getGameDetail(
   const is_host = userId === game.host_id;
   const is_member = is_host || memberRows.some((m) => m.user_id === userId);
 
+  // 好友局对局外人不可见（装作不存在）：除非已开放补位，或查看者是发起人的好友
+  if (game.visibility === 'friends' && !is_host && !is_member && !isFillOpenNow(game)) {
+    if (!userId || !(await areFriends(game.host_id, userId))) {
+      throw new NotFoundError('运动局不存在');
+    }
+  }
+
   return {
     game,
     members: memberRows.map((m) => ({
@@ -1215,6 +1292,249 @@ export async function getGameDetail(
 }
 
 // ================================================================
+// 组局社交化一期：好友动态流 / 邀请 / 开放补位 / 约下周再练 / 结束页 / 请人离局
+// ================================================================
+
+/**
+ * 好友动态流：好友发起的好友局 + 我已在里面的好友局（不进大厅的那些）。
+ * 邀请没有单独的表：好友局的被邀请人必然是发起人的好友，所以好友局
+ * 对好友可见这一条已经覆盖了「被邀请」的场景。
+ */
+export async function listFriendsFeed(userId: number): Promise<ListGamesResult> {
+  const friendIds = [...(await getFriendIds(userId))];
+  const friendClause = friendIds.length
+    ? `OR g.host_id IN (${friendIds.map((_, i) => `$${i + 2}`).join(',')})`
+    : '';
+  const { rows } = await pool.query(
+    `SELECT g.*, s.name AS school_name, c.name AS campus_name,
+            COALESCE(v.name, g.venue_name_snapshot) AS venue_name,
+            u.nickname AS creator_name, COALESCE(mp.total_xp,0) AS host_reward_points
+     FROM games g
+     LEFT JOIN schools s ON s.id = g.school_id
+     LEFT JOIN campuses c ON c.id = g.campus_id
+     LEFT JOIN venues v ON v.id = g.venue_id
+     LEFT JOIN users u ON u.id = g.host_id
+     LEFT JOIN motion_profiles mp ON mp.user_id = u.id
+     WHERE g.visibility = 'friends'
+       AND g.status IN ('recruiting', 'full', 'ready')
+       AND (g.host_id = $1
+            OR EXISTS (SELECT 1 FROM game_members gm WHERE gm.game_id = g.id AND gm.user_id = $1 AND gm.left_at IS NULL)
+            ${friendClause})
+     ORDER BY g.start_time ASC
+     LIMIT 50`,
+    [userId, ...friendIds],
+  );
+  const games = rows.map(toGameRow);
+  return { games, pagination: { page: 1, page_size: games.length, total: games.length, total_pages: 1 } };
+}
+
+/** 邀请好友进局（仅发起人；邀请不占名额，通知里带剩余位置快照） */
+export async function inviteToGame(
+  gameId: number,
+  inviterId: number,
+  userIds: number[],
+): Promise<{ invited: number[]; skipped: Array<{ user_id: number; reason: string }> }> {
+  const { rows } = await pool.query('SELECT * FROM games WHERE id = $1', [gameId]);
+  if (!rows[0]) throw new NotFoundError('运动局不存在');
+  const game = toGameRow(rows[0]);
+  if (game.host_id !== inviterId) throw new ForbiddenError('只有发起人可以邀请人进这个局');
+  if (game.status !== 'recruiting' && game.status !== 'full') {
+    throw new InvalidStateError('这个局现在不能再邀请人了');
+  }
+  const slots = Math.max(0, game.max_players - game.member_count);
+  const { rows: inviterRows } = await pool.query('SELECT nickname FROM users WHERE id = $1', [inviterId]);
+  const inviterName = inviterRows[0]?.nickname || '有人';
+  const invited: number[] = [];
+  const skipped: Array<{ user_id: number; reason: string }> = [];
+  for (const uid of [...new Set(userIds)]) {
+    if (uid === inviterId) { skipped.push({ user_id: uid, reason: '不能邀请自己' }); continue; }
+    if (!(await areFriends(inviterId, uid))) { skipped.push({ user_id: uid, reason: '只能邀请你的好友' }); continue; }
+    if (await isBlockedEitherWay(inviterId, uid)) { skipped.push({ user_id: uid, reason: '你们之间暂时没法邀请' }); continue; }
+    const { rows: memberRows } = await pool.query(
+      'SELECT id FROM game_members WHERE game_id = $1 AND user_id = $2 AND left_at IS NULL',
+      [gameId, uid],
+    );
+    if (memberRows.length) { skipped.push({ user_id: uid, reason: '对方已经在这个局里了' }); continue; }
+    await createNotification({
+      user_id: uid,
+      type: 'game_invite',
+      title: '邀请你一起运动',
+      content: `${inviterName} 邀请你参加「${game.title}」，还剩 ${slots} 个位置`,
+      game_id: gameId,
+    });
+    invited.push(uid);
+  }
+  return { invited, skipped };
+}
+
+/** 开放补位开关（仅发起人、仅好友局） */
+export async function setFillOpen(gameId: number, hostId: number, open: boolean): Promise<GameRow> {
+  const { rows } = await pool.query('SELECT * FROM games WHERE id = $1', [gameId]);
+  if (!rows[0]) throw new NotFoundError('运动局不存在');
+  const game = toGameRow(rows[0]);
+  if (game.host_id !== hostId) throw new ForbiddenError('只有发起人可以开放补位');
+  if (game.visibility !== 'friends') throw new ValidationError('公开局本来就在大厅里，不用开放补位');
+  const { rows: updated } = await pool.query(
+    'UPDATE games SET fill_open = $2, updated_at = NOW() WHERE id = $1 RETURNING *',
+    [gameId, open ? 1 : 0],
+  );
+  notifyGameChanged(gameId).catch(() => {});
+  return toGameRow(updated[0]);
+}
+
+/** 局分享链接（应用内路径，不建新表） */
+export async function getShareLink(gameId: number, requestUserId: number) {
+  const detail = await getGameDetail(gameId, requestUserId);
+  return { game_id: gameId, path: `/games/${gameId}`, title: detail.game.title };
+}
+
+/** 约下周再练：按原局克隆一个 +7 天的新局，老成员逐个收到邀请、自己点加入确认 */
+export async function rebookGame(gameId: number, hostId: number): Promise<GameRow> {
+  const { rows } = await pool.query('SELECT * FROM games WHERE id = $1', [gameId]);
+  if (!rows[0]) throw new NotFoundError('运动局不存在');
+  const original = toGameRow(rows[0]);
+  if (original.host_id !== hostId) throw new ForbiddenError('只有发起人可以约下周再练');
+  if (original.status !== 'completed' && original.status !== 'archived') {
+    throw new InvalidStateError('这个局还没结束，先打完这一场再约下周吧');
+  }
+  const { rows: existing } = await pool.query(
+    'SELECT id FROM games WHERE rebooked_from_id = $1 LIMIT 1',
+    [gameId],
+  );
+  if (existing[0]) throw new InvalidStateError('已经约好下周的局了，去看看那一场吧');
+
+  const start = new Date(original.start_time); start.setDate(start.getDate() + 7);
+  const end = original.end_time ? new Date(original.end_time) : null;
+  if (end) end.setDate(end.getDate() + 7);
+
+  const created = await createGame({
+    host_id: hostId,
+    sport_type: original.sport_type,
+    title: original.title,
+    campus_id: original.campus_id,
+    venue_id: original.venue_id || undefined,
+    location: original.location,
+    meeting_note: original.meeting_note,
+    max_players: original.max_players,
+    start_time: start.toISOString(),
+    end_time: end ? end.toISOString() : undefined,
+    tag: original.tag || undefined,
+    visibility: original.visibility,
+    auto_fill: original.auto_fill,
+  });
+  await pool.query('UPDATE games SET rebooked_from_id = $2 WHERE id = $1', [created.id, gameId]);
+
+  // 邀请原班人马（不自动加入，各自点加入才算确认）
+  const { rows: attendees } = await pool.query<{ user_id: number }>(
+    'SELECT user_id FROM game_members WHERE game_id = $1 AND left_at IS NULL AND user_id != $2',
+    [gameId, hostId],
+  );
+  const slots = Math.max(0, created.max_players - created.member_count);
+  for (const attendee of attendees) {
+    const uid = Number(attendee.user_id);
+    if (await isBlockedEitherWay(hostId, uid)) continue;
+    await createNotification({
+      user_id: uid,
+      type: 'game_invite',
+      title: '约好下周再练',
+      content: `上次的「${original.title}」约了下周同一时间，还剩 ${slots} 个位置，点开就能加入`,
+      game_id: created.id,
+    }).catch(() => {});
+  }
+  return created;
+}
+
+/** 结束页数据：成员墙（含我与每个人的好友状态）+ 我自己的纪念卡数据 */
+export async function getEndSummary(gameId: number, requestUserId: number) {
+  const detail = await getGameDetail(gameId, requestUserId);
+  if (!detail.is_member) throw new ForbiddenError('只有参加过这个局的人能看结束页');
+  const attendees = [] as Array<Record<string, unknown>>;
+  for (const member of detail.members) {
+    let friendship: string = 'self';
+    if (member.user_id !== requestUserId) {
+      const rel = await relationshipStatus(requestUserId, member.user_id);
+      friendship = rel === 'pending_out' || rel === 'pending_in' ? 'pending'
+        : rel === 'blocked_by_me' || rel === 'blocked_me' ? 'blocked'
+        : rel;
+    }
+    attendees.push({
+      user_id: member.user_id,
+      nickname: member.nickname,
+      avatar_url: member.avatar_url,
+      friendship_status: friendship,
+    });
+  }
+  const { rows: sessionRows } = await pool.query(
+    'SELECT xp, effective_ms, reps FROM sport_sessions WHERE game_id = $1 AND user_id = $2 LIMIT 1',
+    [gameId, requestUserId],
+  );
+  const session = sessionRows[0] as any;
+  const { rows: rebookRows } = await pool.query(
+    'SELECT id FROM games WHERE rebooked_from_id = $1 LIMIT 1',
+    [gameId],
+  );
+  return {
+    game: detail.game,
+    attendees,
+    my_stats: {
+      xp: Number(session?.xp || 0),
+      effective_ms: Number(session?.effective_ms || 0),
+      reps: Number(session?.reps || 0),
+    },
+    rebooked_game_id: rebookRows[0] ? Number((rebookRows[0] as any).id) : null,
+  };
+}
+
+/**
+ * 发起人请成员离局：开局前 30 分钟内不能请；留痕；被请出的人 24 小时内不能重进这个局；
+ * 给被请出的人一条中性通知。
+ */
+export async function removeMember(gameId: number, hostId: number, targetUserId: number): Promise<{ removed: boolean }> {
+  return withTransaction(async (client) => {
+    const { rows } = await client.query('SELECT * FROM games WHERE id = $1 FOR UPDATE', [gameId]);
+    if (!rows[0]) throw new NotFoundError('运动局不存在');
+    const game = toGameRow(rows[0]);
+    if (game.host_id !== hostId) throw new ForbiddenError('只有发起人可以请人离局');
+    if (targetUserId === hostId) throw new ValidationError('发起人不能把自己请出去');
+    if (game.status !== 'recruiting' && game.status !== 'full' && game.status !== 'ready') {
+      throw new InvalidStateError('局已经开始或结束了，不能再请人离局');
+    }
+    if (new Date(game.start_time).getTime() - Date.now() < 30 * 60 * 1000) {
+      throw new InvalidStateError('离开局开始不到 30 分钟了，这时候不能请人离局');
+    }
+    const { rows: memberRows } = await client.query(
+      'SELECT id FROM game_members WHERE game_id = $1 AND user_id = $2 AND left_at IS NULL',
+      [gameId, targetUserId],
+    );
+    if (!memberRows[0]) throw new NotMemberError();
+
+    await client.query(
+      'UPDATE game_members SET left_at = NOW() WHERE game_id = $1 AND user_id = $2 AND left_at IS NULL',
+      [gameId, targetUserId],
+    );
+    await client.query(
+      'INSERT INTO game_removals (game_id, user_id, host_id, created_at) VALUES ($1, $2, $3, NOW())',
+      [gameId, targetUserId, hostId],
+    );
+    const newCount = game.member_count - 1;
+    const newStatus = leaveStatus(game.status, newCount, game.max_players);
+    await client.query(
+      'UPDATE games SET member_count = $2, status = $3, updated_at = NOW() WHERE id = $1',
+      [gameId, newCount, newStatus],
+    );
+    await createNotification({
+      user_id: targetUserId,
+      type: 'member_removed',
+      title: '本局人员有调整',
+      content: `你参加的「${game.title}」人员有调整，这次先不用过来了`,
+      game_id: gameId,
+    });
+    afterCommit(() => notifyGameChanged(gameId, 'member_change'));
+    return { removed: true };
+  });
+}
+
+// ================================================================
 // 通知辅助
 // ================================================================
 
@@ -1229,7 +1549,12 @@ interface CreateNotificationInput {
   | 'game_full'
   | 'check_in_reminder'
   | 'reward_granted'
-  | 'penalty_applied';
+  | 'penalty_applied'
+  | 'friend_request'
+  | 'friend_accepted'
+  | 'game_invite'
+  | 'report_outcome'
+  | 'member_removed';
   title: string;
   content: string;
   game_id: number;

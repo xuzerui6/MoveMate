@@ -30,7 +30,12 @@ export type NotificationType =
   | 'game_full'
   | 'check_in_reminder'
   | 'reward_granted'
-  | 'penalty_applied';
+  | 'penalty_applied'
+  | 'friend_request'
+  | 'friend_accepted'
+  | 'game_invite'
+  | 'report_outcome'
+  | 'member_removed';
 
 /** 通知记录（数据库行映射） */
 export interface NotificationRow {
@@ -104,6 +109,26 @@ const TEMPLATES: Record<NotificationType, Template> = {
   penalty_applied: {
     title: '扣分提醒',
     content: '你在「{game_title}」触发了活动扣分规则，请留意出勤',
+  },
+  friend_request: {
+    title: '新的好友申请',
+    content: '{nickname} 想加你为好友',
+  },
+  friend_accepted: {
+    title: '你们已经是好友了',
+    content: '{nickname} 通过了你的好友申请，你们已经是好友了',
+  },
+  game_invite: {
+    title: '邀请你一起运动',
+    content: '{nickname} 邀请你参加「{game_title}」，还剩 {slots} 个位置',
+  },
+  report_outcome: {
+    title: '举报处理结果',
+    content: '你举报的内容已经处理好了：{outcome}',
+  },
+  member_removed: {
+    title: '本局人员有调整',
+    content: '你参加的「{game_title}」人员有调整，这次先不用过来了',
   },
 };
 

@@ -11,6 +11,8 @@
 import { pool } from '../db/pool';
 import { redis } from '../db/index';
 import * as NotificationService from './notification.service';
+import { assertNoSensitiveWord } from '../utils/sensitive-words';
+import { getBlockedIds } from './social-helpers';
 
 // ----------------------------------------------------------------
 // 类型定义
@@ -41,6 +43,8 @@ export interface ChatMessage {
   sender_avatar_url: string;
   content: string;
   created_at: string;
+  /** 发送者被当前查看者拉黑时为 true，content 已被清空（库里原文不动） */
+  masked?: boolean;
 }
 
 // ----------------------------------------------------------------
@@ -93,6 +97,7 @@ export async function saveMessage(
   senderId: number,
   content: string,
 ): Promise<ChatMessage> {
+  assertNoSensitiveWord(content, '消息内容');
   // 使用 datetime('now') 让 SQLite 自动填充，created_at 列有 DEFAULT datetime('now')
   const result = await pool.query<ChatMessage>(
     `INSERT INTO chat_messages (game_id, sender_id, content)
@@ -124,6 +129,7 @@ export async function getMessages(
   gameId: number,
   beforeId?: number,
   limit: number = 50,
+  requesterId?: number,
 ): Promise<ChatMessage[]> {
   // 限制单次最多 100 条
   const effectiveLimit = Math.min(Math.max(1, limit), 100);
@@ -161,7 +167,18 @@ export async function getMessages(
   }
 
   const result = await pool.query<ChatMessage>(query, params);
-  return result.rows;
+  const messages = result.rows;
+  // 拉黑屏蔽：我拉黑的人发的消息，我这边只看到一条占位（库里原文不改）
+  if (requesterId) {
+    const blocked = await getBlockedIds(requesterId).catch(() => new Set<number>());
+    for (const m of messages) {
+      if (blocked.has(Number(m.sender_id))) {
+        m.content = '';
+        m.masked = true;
+      }
+    }
+  }
+  return messages;
 }
 
 // ----------------------------------------------------------------

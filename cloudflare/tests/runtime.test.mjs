@@ -128,6 +128,21 @@ await test('Workers runtime migration and business regression', async t=>{
  for(const email of ['host@dajju.local','player1@dajju.local','player2@dajju.local']){const r=await call('/api/v1/auth/login',{method:'POST',body:{email,password}});assert.equal(r.status,200,JSON.stringify(r.data));tokens.push(r.data.data.token)}
  assert.equal((await call('/api/v1/auth/register',{method:'POST',body:{email:'test@mails.jlu.edu.cn',password:'password',nickname:'test',campus_id:1}})).status,400);
  });
+ await t.test('social phase 1: friend flow and friends-game visibility work in the Worker runtime',async()=>{
+ const sent=await call('/api/v1/friends/requests',{method:'POST',token:tokens[0],body:{userId:2,greeting:'一起打球'}});assert.equal(sent.status,200,JSON.stringify(sent.data));
+ const incoming=await call('/api/v1/friends/requests',{token:tokens[1]});const reqRow=incoming.data.data.requests.find(r=>r.requester_id===1);assert.ok(reqRow);
+ assert.equal((await call(`/api/v1/friends/requests/${reqRow.id}/accept`,{method:'POST',token:tokens[1],body:{}})).status,200);
+ const friends=await call('/api/v1/friends',{token:tokens[0]});assert.equal(friends.data.data.friends.length,1);
+ const created=await call('/api/v1/games',{method:'POST',token:tokens[0],body:{sport_type:'basketball',title:'好友局',campus_id:1,venue_id:10,max_players:4,start_time:new Date(Date.now()+48*3600000).toISOString(),visibility:'friends'}});assert.equal(created.status,200,JSON.stringify(created.data));
+ const fgid=created.data.data.game.id;
+ const lobby=await call('/api/v1/games',{token:tokens[2]});assert.ok(!lobby.data.data.games.some(g=>g.id===fgid));
+ assert.equal((await call(`/api/v1/games/${fgid}`,{token:tokens[2]})).status,404);
+ const feed=await call('/api/v1/games/friends-feed',{token:tokens[1]});assert.ok(feed.data.data.games.some(g=>g.id===fgid));
+ assert.equal((await call(`/api/v1/games/${fgid}/join`,{method:'POST',token:tokens[1],body:{}})).status,200);
+ const blocked=await call('/api/v1/blocks',{method:'POST',token:tokens[0],body:{userId:3}});assert.equal(blocked.status,200,JSON.stringify(blocked.data));
+ assert.equal((await call('/api/v1/friends/requests',{method:'POST',token:tokens[2],body:{userId:1}})).status,403);
+ const report=await call('/api/v1/reports',{method:'POST',token:tokens[1],body:{target_type:'user',target_id:3,reason:'测试举报'}});assert.equal(report.status,200,JSON.stringify(report.data));assert.equal(report.data.data.report.status,'pending');
+ });
  await t.test('native transactions rollback, isolate readers and unlock after errors',async()=>{
  const namespace=await mf.getDurableObjectNamespace('PROBE');const actor=namespace.get(namespace.idFromName('probe'));
  const failed=actor.fetch('http://test/write?id=1&fail=1');const reader=actor.fetch('http://test/read');
