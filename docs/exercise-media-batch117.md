@@ -32,4 +32,7 @@
 
 - 串行全套测试（本地，接入工作树）：client `test:repository` **612/612** + `tsc -b` 通过；server **171/171** + build 通过；cloudflare **43/43** + typecheck 通过。本批守卫改写一处：`client/tests/exercise-library-scale.test.ts` 交替图解守卫按批次 113 先例改查 1648/1739 照片记录（见裁定要点）。
 - 登记校验：发布链计数四方一致：build 输出 1064 image entries；publish-media-metadata 输出 1064 records；publish-exercise-documentation 输出 complete 1064 / photos 1046 / illustrations 18 / pending 265（原始口径）；report 脚本 images 1064 / originalIds 18 / missing 265 / cameraImages 56。
-- 集成提交与双站部署、在线核查见本文件后续补记与 REPLACE-STATUS.md。
+- 集成提交 `6b3e4bb`；GitHub CI 运行 43430921776 success。
+- 双站部署：生产 Version `08be3d35-3c06-4549-9c8c-9630341ed801`（scoped 树 = ef7bb2e6 生产树 92793e9 + cherry-pick `234edd1`，仅媒体变更，grep 验证无社交/打怪代码）；预演 Version `4a3b6b7e-b44c-4ee2-a947-ee2462b4dd7e`（preview 分支 tip `243bb4c` = 9444ede + 合并本批 main）。
+- 在线核查：新图 24 张双站 sha256 **48/48 一致**；被替换的旧图解文件（1460 首帧）双站均返回 404。
+- 「动伴进度」空间同轮同步（图解 18、照片 1046、AI 697、替换进度 95/113，批次 117 记录置顶）。
