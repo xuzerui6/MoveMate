@@ -66,11 +66,6 @@ export async function confirmEnd(gameId: string): Promise<any> {
   return client.post(`/games/${gameId}/complete`);
 }
 
-/** 约下周再练（仅发起人）：按下局参数克隆一场 +7 天的新局，成员逐个确认 */
-export async function rebookGame(gameId: string): Promise<Game> {
-  return client.post(`/games/${gameId}/rebook`);
-}
-
 /** 获取当前用户发起/加入的局 */
 export async function fetchMyGames(): Promise<Game[]> {
   return client.get('/users/me/games');
