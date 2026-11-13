@@ -311,7 +311,14 @@ export async function createFight(
   if (!isTier1Movement(movement)) {
     throw new ValidationError('这个动作暂时不能用来打怪，先用深蹲、开合跳、俯卧撑或高抬腿');
   }
-  const bossId = input.bossId && bossById(input.bossId) ? input.bossId : DEFAULT_BOSS_ID;
+  // 开放门禁（老板 2026-11-13 拍板）：只有目录里标了 availability='fight' 的怪能建场；
+  // 图鉴/周怪/活动怪绕过客户端直接调接口也建不出来，纪念章不会被提前刷走。
+  // 未知 bossId 沿用旧口径回落到默认怪；默认怪 kunkun 在目录里显式标了 fight，不受影响。
+  const boss = (input.bossId && bossById(input.bossId)) || bossById(DEFAULT_BOSS_ID)!;
+  if (boss.availability !== 'fight') {
+    throw new ValidationError(`「${boss.name}」还没开放，暂时不能发起挑战`);
+  }
+  const bossId = boss.boss_id;
   const durationSec = Math.min(1800, Math.max(60, Math.floor(Number(input.durationSec) || FIGHT_DURATION_SEC)));
   return withTransaction(async (client) => {
     const game = await loadGame(client, gameId);
