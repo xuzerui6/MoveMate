@@ -4,9 +4,16 @@
 import client from './client';
 import type { CreateGameData, Game, GameFilter, GameMeta, PaginatedResponse } from '../types';
 
+// 与 auth.ts 相同的解包约定：axios 拦截器解析出的是服务端信封
+// {code, message, data}，api 函数必须取内层 data 再交给页面。
+function unwrap<T>(response: T | { data: T }): T {
+  return (response as { data?: T }).data ?? (response as T);
+}
+
 /** 建局表单数据（仅当前用户学校的校区/场地，服务端按学校过滤） */
 export async function fetchGameMeta(): Promise<GameMeta> {
-  return client.get('/games/meta');
+  const response = await client.get('/games/meta');
+  return unwrap<GameMeta>(response);
 }
 
 /** 获取运动局列表（支持筛选） */
