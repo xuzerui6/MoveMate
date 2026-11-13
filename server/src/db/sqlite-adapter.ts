@@ -294,6 +294,79 @@ function ensureSchema(conn: DatabaseSync): void {
       contact TEXT DEFAULT '',
       created_at TEXT DEFAULT (datetime('now'))
     );
+
+    -- 组队打怪（附四一期）：一场打怪挂在一个组局上，服务端权威账本
+    CREATE TABLE IF NOT EXISTS boss_fights (
+      id TEXT PRIMARY KEY,
+      game_id INTEGER NOT NULL REFERENCES games(id),
+      boss_id TEXT NOT NULL DEFAULT 'kunkun',
+      movement TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'gathering',
+      max_hp INTEGER NOT NULL DEFAULT 0,
+      hp INTEGER NOT NULL DEFAULT 0,
+      version INTEGER NOT NULL DEFAULT 0,
+      duration_sec INTEGER NOT NULL DEFAULT 600,
+      created_by INTEGER NOT NULL REFERENCES users(id),
+      created_at TEXT NOT NULL,
+      started_at TEXT,
+      ends_at TEXT,
+      ended_at TEXT,
+      settle_key TEXT UNIQUE,
+      settled_at TEXT
+    );
+    CREATE UNIQUE INDEX IF NOT EXISTS one_open_boss_fight_per_game
+      ON boss_fights (game_id) WHERE status IN ('gathering', 'fighting');
+
+    CREATE TABLE IF NOT EXISTS boss_fight_participants (
+      fight_id TEXT NOT NULL REFERENCES boss_fights(id),
+      user_id INTEGER NOT NULL REFERENCES users(id),
+      ready INTEGER NOT NULL DEFAULT 0,
+      status TEXT NOT NULL DEFAULT 'joined',
+      session_id TEXT REFERENCES sport_sessions(id),
+      baseline_reps INTEGER NOT NULL DEFAULT 0,
+      accepted_reps INTEGER NOT NULL DEFAULT 0,
+      last_report_at TEXT,
+      joined_at TEXT NOT NULL,
+      PRIMARY KEY (fight_id, user_id)
+    );
+    CREATE UNIQUE INDEX IF NOT EXISTS one_fight_per_session
+      ON boss_fight_participants (session_id) WHERE session_id IS NOT NULL;
+
+    -- 首胜纪念物发放账本：一场胜局 × 一个队员 × 一件纪念物，只发一次
+    CREATE TABLE IF NOT EXISTS boss_fight_rewards (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      fight_id TEXT NOT NULL REFERENCES boss_fights(id),
+      user_id INTEGER NOT NULL REFERENCES users(id),
+      item_id TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'pending',
+      created_at TEXT NOT NULL,
+      granted_at TEXT,
+      UNIQUE (fight_id, user_id, item_id)
+    );
+
+    -- 形象纪念物收藏（独立于装备目录：装备带图鉴图片，纪念物先走收藏架）
+    CREATE TABLE IF NOT EXISTS avatar_souvenirs (
+      user_id INTEGER NOT NULL REFERENCES users(id),
+      item_id TEXT NOT NULL,
+      source TEXT NOT NULL DEFAULT 'boss_fight',
+      source_id TEXT,
+      granted_at TEXT NOT NULL,
+      PRIMARY KEY (user_id, item_id)
+    );
+
+    -- 延迟自检采样：每次被接受的次数上报记一行服务器处理耗时，
+    -- 供后续在真实宿舍网络上测 rep 上报 → 全队广播的 P95（不含网络往返的服务端部分）
+    CREATE TABLE IF NOT EXISTS boss_fight_latency (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      fight_id TEXT NOT NULL,
+      user_id INTEGER NOT NULL,
+      reported_total INTEGER NOT NULL,
+      accepted_delta INTEGER NOT NULL,
+      received_at TEXT NOT NULL,
+      processing_ms REAL NOT NULL,
+      client_ts INTEGER
+    );
+    CREATE INDEX IF NOT EXISTS idx_boss_fight_latency_fight ON boss_fight_latency (fight_id);
   `);
 
   conn.exec(gymSchema);

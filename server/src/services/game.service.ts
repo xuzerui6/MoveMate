@@ -1,6 +1,7 @@
 import { pool, PoolClient, withTransaction, afterCommit } from '../db';
 import { redis } from '../db/index';
 import { settleGameSessions, progress } from './motion.service';
+import { avatarDisplay } from './avatar.service';
 import {
   getUserContext,
   getCheckInDeadline,
@@ -119,6 +120,7 @@ export interface GameDetailResult {
     user_id: number;
     nickname: string;
     avatar_url: string;
+    avatar?: import('./avatar.service').AvatarDisplay;
     reward_level?: number;
     total_reward_points?: number;
     joined_at: Date;
@@ -1229,10 +1231,11 @@ export async function getGameDetail(
 
   return {
     game,
-    members: memberRows.map((m) => ({
+    members: await Promise.all(memberRows.map(async (m) => ({
       user_id: m.user_id,
       nickname: m.nickname,
       avatar_url: m.avatar_url,
+      avatar: await avatarDisplay(m.user_id),
       reward_level: progress(Number(m.total_reward_points || 0)).level,
       session_xp: Number((m as any).session_xp || 0),
       total_reward_points: Number(m.total_reward_points ?? 0),
@@ -1241,7 +1244,7 @@ export async function getGameDetail(
       attendance_confirmed_at: m.attendance_confirmed_at ? new Date(m.attendance_confirmed_at) : null,
       reward_points: Number(m.reward_points ?? 0),
       reward_granted_at: m.reward_granted_at ? new Date(m.reward_granted_at) : null,
-    })),
+    }))),
     is_member,
     is_host,
   };
