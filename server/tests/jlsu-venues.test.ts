@@ -47,7 +47,7 @@ test('吉林体育学院元数据：学校挂牌、两校区、四场地按校�
         ['南岭校区', '南岭校区室内篮球馆武术馆', ['basketball', 'fitness']],
         ['南岭校区', '南岭校区摔跤柔道馆', ['fitness']],
         ['临河校区', '临河校区田径场', ['running', 'soccer']],
-        ['临河校区', '临河校区健身馆', ['fitness', 'badminton']],
+        ['临河校区', '临河校区健身馆', ['fitness', 'basketball', 'volleyball', 'badminton']],
       ],
     );
     assert.ok(venues.every((v) => v.is_active === 0), '注册关闭期间场地不启用');
