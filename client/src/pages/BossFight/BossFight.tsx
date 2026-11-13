@@ -21,7 +21,7 @@ import {
   crossedRepMilestone, deriveFrameAlert, hpStageAnnouncement, isPoseFresh, FRAME_ALERT_WORD,
   type BossFightSnapshot, type BossHpState, type FrameAlert,
 } from '../../features/motion/lib/bossFightState'
-import { announceCue, announceFrameAlert, announceRepMilestone, loadBossSoundOn, playHit, primeBossAudio, saveBossSoundOn } from '../../features/motion/lib/bossSounds'
+import { announceCue, announceFrameAlert, announceRepMilestone, loadBossSoundOn, playHit, primeBossAudio, releaseBossAudio, saveBossSoundOn } from '../../features/motion/lib/bossSounds'
 import { exerciseInfo, type CameraExerciseType } from '../../features/motion/lib/exercises'
 import { getOutfitAvatar } from '../../features/motion/lib/outfits'
 import { useStore, type SportSession } from '../../features/motion/lib/store'
@@ -69,6 +69,7 @@ export default function BossFightPage() {
     setSoundOn(next)
     saveBossSoundOn(next)
     if (next) primeBossAudio()
+    else releaseBossAudio()
   }
 
   // ------------------------------------------------------------------
@@ -158,6 +159,8 @@ export default function BossFightPage() {
   // 离开页面时把计数暂停住（和训练页同款兜底，记录不会丢）
   const accountToken = useRef(localStorage.getItem('token'))
   useEffect(() => () => {
+    // 小智播报会话是页面级租约，离开必须还回池子
+    releaseBossAudio()
     const sid = sessionIdRef.current
     if (!sid || finishedRef.current || !accountToken.current) return
     void fetch('/api/v1/sport-sessions/' + sid + '/pause', {
@@ -243,6 +246,13 @@ export default function BossFightPage() {
       prevStatusRef.current = status
     }
   }, [snapshot?.status, snapshot?.hp, snapshot?.max_hp, sendProgress])
+
+  // 战斗结束：终局播报说完之后释放小智播报会话，租约不占着池子
+  useEffect(() => {
+    if (snapshot?.status !== 'won' && snapshot?.status !== 'escaped') return
+    const timer = window.setTimeout(() => releaseBossAudio(), 12_000)
+    return () => window.clearTimeout(timer)
+  }, [snapshot?.status])
 
   // 远距离模式语音：怪兽血量一掉档就喊（和画面换图同一档位：60% / 30%）
   useEffect(() => {

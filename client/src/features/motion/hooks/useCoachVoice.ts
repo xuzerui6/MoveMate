@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { askCoach, probeCoach, type ChatMessage } from '../lib/coachClient'
 import { applyPolicy, buildSystemPrompt, localReply, type CoachContext } from '../lib/coachPolicy'
-import { cancelSpeech, neuralStatus, prewarm, speakText, unlockAudio } from '../lib/tts'
+import { cancelAnnouncement, primeXiaozhiAnnouncer, speakWithLifecycle } from '../lib/xiaozhiAnnounce'
 import { matchesWakeWord, stripWakeWord } from '../lib/wakeWord'
 
 /**
@@ -75,7 +75,7 @@ export function useCoachVoice(enabled: boolean, context: CoachContext, options: 
   const [muted, setMuted] = useState(false)
   const [hasModel, setHasModel] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-  /** 当前用的是神经 TTS 还是浏览器合成。null = 尚未确定 */
+  /** 发声是否走云端语音通道（现统一为小智播报器）。null = 尚未确定 */
   const [neural, setNeural] = useState<boolean | null>(null)
 
   // 用 ref 持有随时变化的值，避免把它们塞进 effect 依赖导致识别器反复重建
@@ -97,7 +97,6 @@ export function useCoachVoice(enabled: boolean, context: CoachContext, options: 
   const recentAtRef = useRef(0)           // 上一段的时间，用于丢弃过期碎片
   const lastTalkRef = useRef(Date.now())    // 最后一次有效对话时间
   const conversationUntilRef = useRef(0)    // 对话窗口截止时间
-  const voiceRef = useRef<SpeechSynthesisVoice | null>(null)
   const disposedRef = useRef(false)
 
   useEffect(() => { contextRef.current = context }, [context])
@@ -109,21 +108,9 @@ export function useCoachVoice(enabled: boolean, context: CoachContext, options: 
     setState(next)
   }, [])
 
-  // ── 选一个中文发音 ────────────────────────────────────────────
-  useEffect(() => {
-    if (!audible || typeof window === 'undefined' || !('speechSynthesis' in window)) return
-    const pick = () => {
-      const voices = speechSynthesis.getVoices()
-      voiceRef.current =
-        voices.find(v => /zh[-_]CN/i.test(v.lang) && /female|婉|晓|Xiaoxiao|Huihui/i.test(v.name)) ||
-        voices.find(v => /zh[-_]CN/i.test(v.lang)) ||
-        voices.find(v => /zh/i.test(v.lang)) ||
-        null
-    }
-    pick()
-    speechSynthesis.addEventListener('voiceschanged', pick)
-    return () => speechSynthesis.removeEventListener('voiceschanged', pick)
-  }, [audible])
+  // 发声通道只有一个：小智（老板 2026-11-13 拍板「全都用小智」）。
+  // 本引擎不再自带任何合成音色——要出声就走 lib/xiaozhiAnnounce 的
+  // 播报器逐字播报，小智不可用时只剩字幕，绝不回退到浏览器/神经音色。
 
   // ── 探测中转站是否配置 ────────────────────────────────────────
   // 不受 enabled 限制：开练之前就要能告诉用户 key 配没配对。
@@ -137,28 +124,16 @@ export function useCoachVoice(enabled: boolean, context: CoachContext, options: 
     return () => { alive = false }
   }, [])
 
-  // ── 预热常用短语 ──────────────────────────────────────────────
-  // 报数是最高频的播报，如果每次都等一趟网络往返，「即时报数」就没了。
-  // 开练时先把数字和常用鼓励语合成好缓存住，之后播放是零延迟。
+  // ── 预热小智播报会话 ──────────────────────────────────────────
+  // 以前这里预合成神经 TTS 的常用短语；统一到小智后，预热 = 提前把
+  // 播报会话建好，第一句播报就不用等 bootstrap。
   useEffect(() => {
     if (!enabled || !audible) {
       setNeural(false)
       return
     }
-    unlockAudio()
-    const numbers = Array.from({ length: 30 }, (_, i) => String(i + 1))
-    prewarm(['我在，你说。', '第一个，开始了', '不着急，准备好了再来', ...numbers])
-    // 预热完成后才知道中转站到底支不支持 TTS，轮询几次拿结果
-    let ticks = 0
-    const timer = window.setInterval(() => {
-      const status = neuralStatus()
-      if (status !== null || ticks > 20) {
-        setNeural(status)
-        clearInterval(timer)
-      }
-      ticks += 1
-    }, 700)
-    return () => clearInterval(timer)
+    primeXiaozhiAnnouncer()
+    setNeural(true)
   }, [audible, enabled])
 
   // ── 识别器启停 ────────────────────────────────────────────────
@@ -208,8 +183,9 @@ export function useCoachVoice(enabled: boolean, context: CoachContext, options: 
     setReply(text)
 
     // 注意：这里**不能**立刻关麦克风。
-    // 取音频要走一趟网络（TTS 上游饱和时还要轮几个模型，可能好几秒），
-    // 如果一进来就关麦，而报数又很频繁，麦克风会被饿死——用户全程插不上话。
+    // 小智播报要等云端确认（sentence_start 验真后才开门出声，可能几百
+    // 毫秒到数秒），如果一进来就关麦，而报数又很频繁，麦克风会被饿
+    // 死——用户全程插不上话。
     // 所以关麦推迟到音频真正要出声的那一刻（onBeforePlay）。
     const beforePlay = () => {
       if (generation !== speechGenerationRef.current) return
@@ -241,11 +217,11 @@ export function useCoachVoice(enabled: boolean, context: CoachContext, options: 
         if (generation === speechGenerationRef.current && wantListeningRef.current) startRecognition()
       }, 350)
     }
-    // 走中转站的神经 TTS，失败时 tts.ts 内部自动退回浏览器合成。
-    // stillCurrent 让等待网络期间被新播报取代的旧请求安静退出，
+    // 走小智播报器逐字播报；小智不可用/被丢弃时 Promise 照样 resolve，
+    // resume() 在每种终止结果下都会恢复监听（丢弃、打断、失败、断线同理）。
+    // stillCurrent 让等待云端期间被新播报取代的旧请求安静退出，
     // 不去恢复监听——那本该由新的那一条负责。
-    void speakText(text, {
-      fallbackVoice: voiceRef.current,
+    void speakWithLifecycle(text, {
       stillCurrent: () => generation === speechGenerationRef.current,
       onBeforePlay: beforePlay,
     }).then(resume, resume)
@@ -429,8 +405,8 @@ export function useCoachVoice(enabled: boolean, context: CoachContext, options: 
       try { recognition.abort() } catch { /* ignore */ }
       runningRef.current = false
       recognitionRef.current = null
-      // 同上：离开训练页要把两种引擎都停掉，否则语音会继续播
-      cancelSpeech()
+      // 离开训练页要把正在播的事件语音停掉，否则人走了还在响
+      cancelAnnouncement()
     }
   }, [enabled, handleUtterance, setVoiceState, startRecognition])
 
@@ -507,9 +483,12 @@ export function useCoachVoice(enabled: boolean, context: CoachContext, options: 
   const toggleMute = useCallback(() => {
     setMuted(current => {
       const next = !current
-      // 必须用 cancelSpeech()——它同时停 Web Audio 和 speechSynthesis。
-      // 只停后者的话，神经 TTS 的音频会继续播完，静音按钮形同虚设。
-      if (next) cancelSpeech()
+      // 静音必须真停声：作废当前播报代次并打断播报器，
+      // 否则已经派出去的一句会继续播完，静音按钮形同虚设。
+      if (next) {
+        speechGenerationRef.current += 1
+        cancelAnnouncement()
+      }
       return next
     })
   }, [])
