@@ -9,8 +9,9 @@ import { bossFightEntryVisible, bossFightTeaserVisible } from '../src/features/m
  * (lazyWithRetry / RouteErrorBoundary / lobby CSS) are not part of the
  * production candidate, so the boss blocks live here on this lineage. */
 
+const root = path.resolve(import.meta.dirname, '..');
 const gameDetail = fs.readFileSync(
-  path.join(__dirname, '../src/pages/GameDetail/GameDetail.tsx'),
+  path.join(root, 'src/pages/GameDetail/GameDetail.tsx'),
   'utf8',
 );
 
