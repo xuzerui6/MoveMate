@@ -97,6 +97,31 @@ test('create fight: host only, tier-1 roster only, game must be in progress, one
   assert.equal((await request(`/games/${game.id}/boss-fight`, { movement: 'squat' }, host.token)).status, 409);
 });
 
+test('availability gate: only fight-availability bosses can be created (weekly/event/roster rejected server-side)', async () => {
+  const host = await account('boss-gate-host'), player = await account('boss-gate-player');
+  // 已开放的一期主线怪（熬夜魇狮，availability=fight）→ 正常发起
+  const openGame = await liveGame(host, [player]);
+  const ok = await request(`/games/${openGame.id}/boss-fight`, { movement: 'squat', bossId: 'aoye_yanshi' }, host.token);
+  assert.equal(ok.status, 200, JSON.stringify(ok.body));
+  assert.equal(ok.body.data.boss_id, 'aoye_yanshi');
+  // 历史默认怪 kunkun（目录里显式标了 fight）→ 显式指定也能发起
+  const defaultGame = await liveGame(host, [player]);
+  const explicitDefault = await request(`/games/${defaultGame.id}/boss-fight`, { movement: 'squat', bossId: 'kunkun' }, host.token);
+  assert.equal(explicitDefault.status, 200, JSON.stringify(explicitDefault.body));
+  assert.equal(explicitDefault.body.data.boss_id, 'kunkun');
+  // 周怪（碎月睡魔）/ 活动怪（子夜钟巨像）/ 图鉴怪（雾牙兽）→ 服务端直接拒（400 + 信封 + 大白话）
+  for (const [bossId, label] of [['suiyue_shoumo', 'weekly'], ['ziye_zhong', 'event'], ['wuya_shou', 'roster']] as const) {
+    const gatedGame = await liveGame(host, [player]);
+    const rejected = await request(`/games/${gatedGame.id}/boss-fight`, { movement: 'squat', bossId }, host.token);
+    assert.equal(rejected.status, 400, `${label}: ${JSON.stringify(rejected.body)}`);
+    assert.equal(rejected.body.code, 20000);
+    assert.match(String(rejected.body.message || ''), /还没开放/);
+    // 被拒不能留下半成品：之后用已开放的怪在同一局能正常发起
+    const after = await request(`/games/${gatedGame.id}/boss-fight`, { movement: 'squat', bossId: 'aoye_yanshi' }, host.token);
+    assert.equal(after.status, 200, `${label} aftermath: ${JSON.stringify(after.body)}`);
+  }
+});
+
 test('ready gate: start rejected until every joined fighter is ready; non-members and unsigned members rejected', async () => {
   const host = await account('boss-ready-host'), player = await account('boss-ready-player'), outsider = await account('boss-ready-outsider');
   const game = await liveGame(host, [player]);

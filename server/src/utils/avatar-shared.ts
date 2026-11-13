@@ -94,8 +94,12 @@ export function unlockedOutfitsMap(counts: AvatarCounts): Record<string, boolean
  * - 夜幕兽群其余成员（wuya_shou / yeyi_fu / chenyuan_yingjiao / lieyue_manniu）先只进图鉴；
  * - ziye_yanlong 子夜魇龙、suiyue_shoumo 碎月睡魔：周怪槽位，未开放；
  * - ziye_zhong 子夜钟巨像：活动槽位，未开放。
- * availability 只是图鉴/前端展示口径；kunkun 保留在首位是历史默认
- * （boss-fight 测试冻结了「不指定 boss 时默认 kunkun」），不要调整顺序。
+ * availability 是开放口径：图鉴/前端据此展示，服务端发起打怪时也按它把关
+ * （只有标了 fight 的怪能建场，见 boss-fight.service 的 createFight 门禁）。
+ * kunkun 保留在首位是历史默认（boss-fight 测试冻结了「不指定 boss 时默认
+ * kunkun」且默认场可打、赢了发 kunkun_medal），所以它显式标 fight；
+ * 官方客户端从不发 kunkun（图鉴里也没有它），标 fight 不新增用户可见面。
+ * 不要调整顺序。
  */
 export interface BossCatalogEntry {
   boss_id: string;
@@ -103,12 +107,12 @@ export interface BossCatalogEntry {
   souvenir_item_id: string;
   /** 图鉴档位（用户可见中文）：普通 / 精英 / 首领 / 周怪级 / 周怪 / 活动怪 */
   tier?: string;
-  /** fight=一期可打；roster=图鉴成员未开放；weekly=周怪未开放；event=活动未开放 */
+  /** fight=已开放可打（服务端建场门禁只放行它）；roster=图鉴成员未开放；weekly=周怪未开放；event=活动未开放 */
   availability?: 'fight' | 'roster' | 'weekly' | 'event';
 }
 
 export const BOSS_CATALOG: Array<BossCatalogEntry> = [
-  { boss_id: 'kunkun', name: '困困兽', souvenir_item_id: 'kunkun_medal' },
+  { boss_id: 'kunkun', name: '困困兽', souvenir_item_id: 'kunkun_medal', availability: 'fight' },
   { boss_id: 'aoye_yanshi', name: '熬夜魇狮', souvenir_item_id: 'aoye_yanshi_medal', tier: '首领', availability: 'fight' },
   { boss_id: 'wuya_shou', name: '雾牙兽', souvenir_item_id: 'wuya_shou_medal', tier: '普通', availability: 'roster' },
   { boss_id: 'yeyi_fu', name: '夜翼蝠', souvenir_item_id: 'yeyi_fu_medal', tier: '普通', availability: 'roster' },
