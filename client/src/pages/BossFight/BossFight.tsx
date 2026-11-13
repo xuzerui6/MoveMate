@@ -396,18 +396,6 @@ export default function BossFightPage() {
     navigate(`/game/${gameId}`)
   }
 
-  const rebook = async () => {
-    try {
-      const res: any = await gamesApi.rebookGame(gameId!)
-      const body = res.data || res
-      const next = body.data || body
-      showToast('下周的局已经约上了', 'success')
-      navigate(`/game/${next.id}`)
-    } catch (err) {
-      showToast(getErrorMessage(err), 'error')
-    }
-  }
-
   // ------------------------------------------------------------------
   // 渲染
   // ------------------------------------------------------------------
@@ -489,7 +477,6 @@ export default function BossFightPage() {
           sessionDone={sessionDone}
           finishing={finishing}
           onFinishSession={() => void finishSession()}
-          onRebook={() => void rebook()}
           onBack={() => navigate(`/game/${gameId}`)}
         />
       </div>
@@ -734,7 +721,6 @@ function SettlementPanel(props: {
   sessionDone: { xp: number } | null
   finishing: boolean
   onFinishSession: () => void
-  onRebook: () => void
   onBack: () => void
 }) {
   const { snapshot } = props
@@ -798,13 +784,7 @@ function SettlementPanel(props: {
           {props.finishing ? '正在保存…' : '结束训练并保存'}
         </button>
       )}
-      {props.isHost ? (
-        <button type="button" className="btn btn--primary btn--block bf-big-btn" onClick={props.onRebook}>
-          {won ? '约下次再战' : '再约一次打它'}
-        </button>
-      ) : (
-        <p className="bf-note">想再打一场，等发起人约下一局就好。</p>
-      )}
+      <p className="bf-note">想再打一场，回组局再约一局就好。</p>
       <button type="button" className="btn btn--secondary btn--block bf-big-btn" onClick={props.onBack}>回组局</button>
       <p className="bf-note">这张纪念卡只在动伴里看得到。</p>
     </section>
