@@ -6,6 +6,13 @@
 .form-input--error {
   border-color: var(--color-error);
 }
+/* 密码框显隐切换：按钮贴在输入框右端内侧（主流登录表单的通行做法），
+   输入框右侧预留 52px 避免文字滑到按钮下面；按钮 48px 宽、与输入框等高，保证触控面积 */
+.login-password-wrap{position:relative}
+.login-password-wrap .form-input{padding-right:52px}
+.login-password-toggle{position:absolute;top:0;bottom:0;right:2px;width:48px;min-height:48px;display:flex;align-items:center;justify-content:center;padding:0;background:none;border:none;border-radius:12px;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.login-password-toggle:active{color:var(--ink)}
+.login-password-toggle:focus-visible{outline:2px solid var(--color-primary);outline-offset:-2px}
 .ui-pages-login-login-switchBtn{color:var(--color-primary);font-weight:600;background:none;border:none;cursor:pointer;font-size:inherit}
 .ui-pages-login-login-agreementRow{display:flex;align-items:flex-start;gap:0.4rem;cursor:pointer}
 .ui-pages-login-login-checkbox{margin-top:0.15rem;flex-shrink:0}
