@@ -1,7 +1,7 @@
 import {exerciseInfo} from '../lib/exercises'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useCoachVoice } from './useCoachVoice'
-import { cancelSpeech, releaseAudio } from '../lib/tts'
+import { cancelAnnouncement } from '../lib/xiaozhiAnnounce'
 import { WakeWordWindow } from '../lib/wakeWord'
 import { XiaozhiAudio } from '../lib/xiaozhiAudio'
 import { abortMessage, helloMessage, listenMessage, mapXiaozhiEmotion, mcpError, mcpNotification, mcpResult, mcpTextResult } from '../lib/xiaozhiProtocol'
@@ -499,7 +499,6 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
       setTranscript(''); setReply(''); setVisionInsights([])
       setDataSyncState({ mcpReady:false,lastRepSynced:0,visionRep:null,visionStatus:'idle',wakeDetected:false })
       stopWakeRecognition()
-      releaseAudio()
       void audioRef.current?.dispose()
       audioRef.current = null
       setXiaozhiVoiceReady(false)
@@ -564,7 +563,6 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
 
   useEffect(() => () => {
     clearTimeout(wakeDetectedTimerRef.current)
-    releaseAudio()
     void audioRef.current?.dispose()
     audioRef.current = null
   }, [])
@@ -594,7 +592,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
   }, [fallbackMode, state, say])
 
   const interrupt = useCallback(() => {
-    if (fallbackMode) return cancelSpeech()
+    if (fallbackMode) return cancelAnnouncement()
     audioRef.current?.clearPlayback()
     audioRef.current?.setSending(true)
     sendJson(abortMessage('user_interrupt', sessionIdRef.current))
@@ -679,7 +677,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
   const toggleMute = useCallback(() => {
     setMuted(current => {
       if (!current) {
-        cancelSpeech()
+        cancelAnnouncement()
         audioRef.current?.clearPlayback()
       }
       return !current

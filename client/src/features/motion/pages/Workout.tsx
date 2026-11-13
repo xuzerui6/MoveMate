@@ -6,7 +6,6 @@ import { PoseCanvas } from '../components/PoseCanvas'
 import { useXiaozhiCoach } from '../hooks/useXiaozhiCoach'
 import { createCueState, pickCue } from '../lib/coachCues'
 import { createCorrectionGateState, decideCorrectionCue, POSE_ISSUE_COPY } from '../lib/poseFeedback'
-import { unlockAudio } from '../lib/tts'
 import { useHeartRateMonitor } from '../hooks/useHeartRateMonitor'
 import { usePose } from '../hooks/usePose'
 import { useExerciseMetrics } from '../hooks/useExerciseMetrics'
@@ -222,7 +221,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
         return
       }
       if (row.sportType !== exerciseType || row.source !== (demo ? 'demo' : 'camera')) throw new Error('请返回入口，恢复原动作和来源的记录')
-      serverId.current = row.id; unlockAudio(); setPaused(false); setActive(true)
+      serverId.current = row.id; setPaused(false); setActive(true)
     } catch (error) { if (alive.current) { pose.stop(); setFailure(getErrorMessage(error)) } }
     finally { if (alive.current && current === attempt.current) { setBusy(false); setPreparing(false); setCreating(false); locked.current = false; setPrepPhase(null) } }
   }
