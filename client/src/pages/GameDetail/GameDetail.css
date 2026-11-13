@@ -62,3 +62,19 @@
 .ui-pages-gamedetail-hostactions-inline-1{margin-bottom:0.5rem}
 .ui-pages-gamedetail-hostactions-inline-2{margin-bottom:0.5rem}
 .ui-pages-gamedetail-hostactions-inline-3{margin-bottom:0.5rem}
+
+/* 组队打怪预告卡：开打前给成员看的灰色预告，真入口亮起后自动让位 */
+.boss-fight-teaser {
+  border: 1px solid var(--line);
+  background: var(--soft);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+}
+.boss-fight-teaser h2 {
+  color: var(--muted);
+}
+.activity-attendance.boss-fight-teaser__badge {
+  background: #ecefee;
+  color: var(--muted) !important;
+}
