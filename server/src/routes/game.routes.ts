@@ -12,6 +12,13 @@ import {
   listGames,
   getGameDetail,
   getGameMeta,
+  listFriendsFeed,
+  inviteToGame,
+  setFillOpen,
+  getShareLink,
+  rebookGame,
+  getEndSummary,
+  removeMember,
   SportType,
   GameTag,
 } from '../services/game.service';
@@ -37,6 +44,9 @@ const createGameSchema = z.object({
   ),
   end_time: z.string().optional(),
   tag: z.enum(['casual', 'beginner_friendly', 'competitive', 'relaxed']).optional(),
+  visibility: z.enum(['public', 'friends']).optional(),
+  auto_fill: z.boolean().optional(),
+  autoFill: z.boolean().optional(),
 }).refine(
   (data) => Boolean(data.venue_id) || Boolean(data.location?.trim()),
   { message: '请选择场地或手动输入场地名称', path: ['venue_id'] }
@@ -102,6 +112,7 @@ router.post(
     const game = await createGame({
       host_id: req.user!.id,
       ...input,
+      auto_fill: (input as any).auto_fill ?? (input as any).autoFill,
     } as any);
     success(res, { game }, '运动局创建成功');
   }),
@@ -130,6 +141,18 @@ router.get(
   authRequired,
   asyncHandler(async (req: Request, res: Response) => {
     const result = await getGameMeta(req.user!.id);
+    success(res, result);
+  }),
+);
+
+// ================================================================
+// GET /api/v1/games/friends-feed —— 好友局动态流（必须在 /:id 之前）
+// ================================================================
+router.get(
+  '/friends-feed',
+  authRequired,
+  asyncHandler(async (req: Request, res: Response) => {
+    const result = await listFriendsFeed(req.user!.id);
     success(res, result);
   }),
 );
@@ -276,5 +299,56 @@ router.post(
     success(res, { game }, '局已确认结束');
   }),
 );
+
+// ================================================================
+// 组局社交化一期：邀请 / 开放补位 / 分享链接 / 约下周再练 / 结束页 / 请人离局
+// ================================================================
+
+const invitesSchema = z.object({
+  userIds: z.array(z.number().int().positive()).min(1, '请至少选一位好友').max(50),
+});
+const fillSchema = z.object({ open: z.boolean() });
+
+function parseGameId(req: Request, res: Response): number | null {
+  const gameId = parseInt(req.params.id, 10);
+  if (isNaN(gameId)) { fail(res, 40001, '无效的局 ID'); return null; }
+  return gameId;
+}
+
+router.post('/:id/invites', authRequired, emailVerifiedRequired, asyncHandler(async (req, res) => {
+  const gameId = parseGameId(req, res); if (!gameId) return;
+  const { userIds } = invitesSchema.parse(req.body);
+  success(res, await inviteToGame(gameId, req.user!.id, userIds), '邀请已发送');
+}));
+
+router.post('/:id/fill', authRequired, asyncHandler(async (req, res) => {
+  const gameId = parseGameId(req, res); if (!gameId) return;
+  const { open } = fillSchema.parse(req.body);
+  const game = await setFillOpen(gameId, req.user!.id, open);
+  success(res, { game }, open ? '已开放补位' : '已关闭补位');
+}));
+
+router.get('/:id/share-link', authRequired, asyncHandler(async (req, res) => {
+  const gameId = parseGameId(req, res); if (!gameId) return;
+  success(res, await getShareLink(gameId, req.user!.id));
+}));
+
+router.post('/:id/rebook', authRequired, emailVerifiedRequired, asyncHandler(async (req, res) => {
+  const gameId = parseGameId(req, res); if (!gameId) return;
+  const game = await rebookGame(gameId, req.user!.id);
+  success(res, { game }, '下周的局已经约好了');
+}));
+
+router.get('/:id/end-summary', authRequired, asyncHandler(async (req, res) => {
+  const gameId = parseGameId(req, res); if (!gameId) return;
+  success(res, await getEndSummary(gameId, req.user!.id));
+}));
+
+router.post('/:id/members/:userId/remove', authRequired, asyncHandler(async (req, res) => {
+  const gameId = parseGameId(req, res); if (!gameId) return;
+  const targetId = parseInt(req.params.userId, 10);
+  if (isNaN(targetId)) { return fail(res, 40001, '无效的用户 ID'); }
+  success(res, await removeMember(gameId, req.user!.id, targetId), '已请对方离局');
+}));
 
 export default router;
