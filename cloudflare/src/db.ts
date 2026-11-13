@@ -2,6 +2,46 @@ import type { DatabaseRuntime } from '../../server/src/db/scope';
 import { pgToSqlite, toSqliteDialect, coerceRow, coerceParams } from '../../server/src/db/sql-dialect';
 import bootstrap from './schema.json';
 
+/** 按顶层逗号拆分 CREATE TABLE 的列定义体（跳过括号与字符串字面量内的逗号）。 */
+function splitTopLevel(body: string): string[] {
+  const parts: string[] = [];
+  let depth = 0;
+  let quoted = false;
+  let current = '';
+  for (let i = 0; i < body.length; i++) {
+    const ch = body[i];
+    if (quoted) {
+      current += ch;
+      if (ch === "'") {
+        if (body[i + 1] === "'") { current += body[++i]; } else quoted = false;
+      }
+      continue;
+    }
+    if (ch === "'") { quoted = true; current += ch; continue; }
+    if (ch === '(') depth++;
+    if (ch === ')') depth--;
+    if (ch === ',' && depth === 0) { parts.push(current); current = ''; continue; }
+    current += ch;
+  }
+  if (current.trim()) parts.push(current);
+  return parts;
+}
+
+const TABLE_CONSTRAINT_HEADS = new Set(['PRIMARY', 'UNIQUE', 'FOREIGN', 'CHECK', 'CONSTRAINT']);
+
+/** 解析一条 CREATE TABLE 语句，返回表名与「列名 → 列定义」列表（表级约束跳过）。 */
+function parseCreateTable(statement: string): { table: string; columns: Array<{ name: string; definition: string }> } | null {
+  const match = /CREATE TABLE IF NOT EXISTS\s+"?([A-Za-z_][A-Za-z0-9_]*)"?\s*\(([\s\S]*)\)\s*;?\s*$/.exec(statement.trim());
+  if (!match) return null;
+  const columns: Array<{ name: string; definition: string }> = [];
+  for (const segment of splitTopLevel(match[2])) {
+    const head = /^"?([A-Za-z_][A-Za-z0-9_]*)"?\s+([\s\S]*)$/.exec(segment.trim());
+    if (!head || TABLE_CONSTRAINT_HEADS.has(head[1].toUpperCase())) continue;
+    columns.push({ name: head[1], definition: head[2].trim() });
+  }
+  return { table: match[1], columns };
+}
+
 export class ActorDatabase implements DatabaseRuntime {
   constructor(readonly storage: DurableObjectStorage) {}
   async init(): Promise<void> {}
@@ -26,6 +66,38 @@ export class ActorDatabase implements DatabaseRuntime {
         INSERT INTO event_outbox(event,payload) VALUES('member_change',json_object('gameId',NEW.id,'changes',json_object('status',NEW.status,'member_count',NEW.member_count)));
       END;
     `);
+    this.upgradeColumns();
+  }
+  /**
+   * 已有实例的列升级（每次启动幂等执行）：schema.json 里的 CREATE TABLE IF NOT EXISTS
+   * 只对新建的表生效，给已有表后加的列（社交一期：users.invite_code、
+   * games.visibility/fill_open/auto_fill/rebooked_from_id、chat_messages.kind）
+   * 到不了长期运行的实例，相关查询会直接报「no column」500。
+   * Node 侧有 sqlite-adapter 的 ensureColumn，DO 侧在这里按 schema.json 的目标结构
+   * 逐表比对、缺列就地 ADD COLUMN。只加列不写行：快照导入 begin 只校验行数，
+   * 不受影响；导入 open 后还会再跑一次（与 seedSchoolRegistry 同一模式）。
+   */
+  upgradeColumns(): void {
+    for (const statement of bootstrap.schema) {
+      const parsed = parseCreateTable(statement);
+      if (!parsed) continue;
+      const existing = this.storage.sql.exec(`PRAGMA table_info(${parsed.table})`).toArray().map(row => String(row.name));
+      if (!existing.length) continue;
+      for (const column of parsed.columns) {
+        if (!existing.includes(column.name)) this.addColumn(parsed.table, column.name, column.definition);
+      }
+    }
+  }
+  private addColumn(table: string, column: string, definition: string): void {
+    // SQLite 的 ADD COLUMN 不允许 UNIQUE / PRIMARY KEY / AUTOINCREMENT：退化为普通列补齐即可。
+    const plain = definition.replace(/\bPRIMARY\s+KEY\b/gi, '').replace(/\bAUTOINCREMENT\b/gi, '').replace(/\bUNIQUE\b/gi, '').replace(/\s+/g, ' ').trim();
+    try {
+      this.storage.sql.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${plain}`);
+    } catch {
+      // NOT NULL 且无默认值的列同样加不上：去掉 NOT NULL 再补（约束无法对存量数据追溯补建）。
+      const loosened = plain.replace(/\bNOT\s+NULL\b/gi, '').replace(/\s+/g, ' ').trim();
+      this.storage.sql.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${loosened}`);
+    }
   }
   seedMetadata(): void { for (const row of bootstrap.metadata) this.storage.sql.exec(row.sql, ...row.args); }
   /**

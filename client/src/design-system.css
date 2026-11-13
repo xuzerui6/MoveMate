@@ -845,3 +845,10 @@ html,body,#root{height:100%;min-width:320px;margin:0;width:100%}body{background:
 @media(max-width:389px){.growth-stage{grid-template-columns:minmax(0,1fr) 148px}}
 @media(min-width:700px) and (max-width:1099px){.growth-ground{height:123px;transform:translateY(16px)}}
 @media(min-width:1100px){.growth-copy b{font-size:34px}}
+
+/* 组局页顶部动作行：三个按钮（发起运动局/我的好友/怪兽图鉴）一行排开。
+   历史上 .group-create 是单按钮的绝对定位（right:0;top:0），三个按钮共用后在同一点叠死、
+   只有最上层可见。这里改为普通流的 flex 行，按钮一律静态定位，任何宽度都不重叠。 */
+.groups-page .group-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-bottom:16px}
+.groups-page .group-actions .group-create{position:static;float:none;margin:0}
+@media (max-width:700px){.groups-page .group-actions{justify-content:flex-start}}

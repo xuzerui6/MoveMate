@@ -6,6 +6,8 @@ export { default, MoveMateBackend } from '../src/worker';
 import { MoveMateBackend } from '../src/worker';
 import { VoicePool } from '../src/voice-pool';
 import { PitrOps, PitrError } from '../src/pitr';
+import { createGame, listGames } from '../../server/src/services/game.service';
+import { ensureInviteCode, listBlocks } from '../../server/src/services/social.service';
 
 export class TestBackend extends MoveMateBackend {
   async voiceMode(mode: string) { process.env.XIAOZHI_IDENTITY_MODE = mode; }
@@ -113,6 +115,112 @@ export class TestBackend extends MoveMateBackend {
     catch (error) { return { ok: false, error: error instanceof Error ? error.message : String(error) }; }
   }
   async pendingEvents() { return this.ctx.storage.sql.exec('SELECT COUNT(*) AS n FROM event_outbox').one().n; }
+  /**
+   * Existing-instance upgrade case (regression for the 2026-11-13 preview
+   * outage): rewinds users/games/chat_messages in this dedicated instance to
+   * their pre-social shape, proves the social-era operations fail there,
+   * replays the constructor boot path, and proves they recover with the
+   * pre-existing rows preserved.
+   */
+  async existingInstanceUpgradeCase() {
+    const sql = this.ctx.storage.sql;
+    const hostId = 9101, gameId = 9101;
+    sql.exec('DROP TABLE IF EXISTS chat_messages');
+    sql.exec('DROP TABLE IF EXISTS games');
+    sql.exec('DROP TABLE IF EXISTS users');
+    sql.exec(`CREATE TABLE users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nickname TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE,
+      password_hash TEXT NOT NULL,
+      avatar_url TEXT DEFAULT '',
+      department TEXT DEFAULT '',
+      student_id TEXT NOT NULL,
+      email_verified INTEGER DEFAULT 0,
+      school_id INTEGER DEFAULT 1,
+      campus_id INTEGER DEFAULT 1,
+      is_admin INTEGER NOT NULL DEFAULT 0,
+      reward_points INTEGER NOT NULL DEFAULT 0,
+      reward_level INTEGER NOT NULL DEFAULT 1,
+      reward_streak INTEGER NOT NULL DEFAULT 0,
+      completed_games INTEGER NOT NULL DEFAULT 0,
+      hosted_completed_games INTEGER NOT NULL DEFAULT 0,
+      reward_badges TEXT DEFAULT '[]',
+      last_rewarded_date TEXT,
+      qq_email TEXT DEFAULT '',
+      sport_preferences TEXT NOT NULL DEFAULT '[]',
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now'))
+    )`);
+    sql.exec(`CREATE TABLE games (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      host_id INTEGER NOT NULL REFERENCES users(id),
+      sport_type TEXT NOT NULL,
+      title TEXT DEFAULT '',
+      location TEXT NOT NULL,
+      max_players INTEGER NOT NULL,
+      start_time TEXT NOT NULL,
+      end_time TEXT,
+      completed_at TEXT,
+      status TEXT DEFAULT 'recruiting',
+      tag TEXT,
+      member_count INTEGER DEFAULT 1,
+      school_id INTEGER DEFAULT 1,
+      campus_id INTEGER DEFAULT 1,
+      venue_id INTEGER,
+      venue_name_snapshot TEXT DEFAULT '',
+      meeting_note TEXT DEFAULT '',
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now'))
+    )`);
+    sql.exec(`CREATE TABLE chat_messages (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      game_id INTEGER NOT NULL REFERENCES games(id),
+      sender_id INTEGER NOT NULL REFERENCES users(id),
+      content TEXT NOT NULL,
+      created_at TEXT DEFAULT (datetime('now'))
+    )`);
+    sql.exec("INSERT OR IGNORE INTO schools(id,code,name,is_active) VALUES(1,'jlu','吉林大学',1)");
+    sql.exec("INSERT OR IGNORE INTO campuses(id,school_id,code,name,is_active) VALUES(1,1,'qianwei-center','前卫校区（中心校区）',1)");
+    sql.exec("INSERT INTO users(id,nickname,email,password_hash,student_id,school_id,campus_id) VALUES(9101,'老实例房主','old-host@test.local','unused','old-1',1,1)");
+    sql.exec("INSERT INTO games(id,host_id,sport_type,title,location,max_players,start_time,status,member_count,school_id,campus_id) VALUES(9101,9101,'basketball','老实例的局','老场地',4,'2099-01-01 10:00:00','recruiting',1,1,1)");
+    sql.exec("INSERT INTO chat_messages(id,game_id,sender_id,content) VALUES(9101,9101,9101,'老消息你好')");
+    const before = await this.exerciseUpgradedOps(hostId);
+    await this.ctx.storage.transaction(async () => {
+      const db = new ActorDatabase(this.ctx.storage);
+      db.bootstrap();
+      db.seedSchoolRegistry();
+    });
+    const after = await this.exerciseUpgradedOps(hostId);
+    const columns = (table: string) => sql.exec(`PRAGMA table_info(${table})`).toArray().map(row => String(row.name));
+    return {
+      before,
+      after,
+      columns: { users: columns('users'), games: columns('games'), chat_messages: columns('chat_messages') },
+      preserved: {
+        game: sql.exec('SELECT title, member_count FROM games WHERE id=?', gameId).one(),
+        user: sql.exec('SELECT nickname FROM users WHERE id=?', hostId).one(),
+        chat: sql.exec('SELECT content FROM chat_messages WHERE id=?', gameId).one(),
+        createdGames: Number(sql.exec('SELECT COUNT(*) AS n FROM games WHERE host_id=? AND id!=?', hostId, gameId).one().n),
+      },
+    };
+  }
+  private async exerciseUpgradedOps(hostId: number) {
+    const attempt = async (fn: () => Promise<unknown>) => {
+      try { return { ok: true, value: await fn() }; }
+      catch (error) { return { ok: false, error: error instanceof Error ? error.message : String(error) }; }
+    };
+    return this.run(async () => ({
+      list: await attempt(async () => (await listGames({}, hostId)).pagination.total),
+      create: await attempt(async () => (await createGame({
+        host_id: hostId, sport_type: 'basketball', campus_id: 1, location: '新场地',
+        max_players: 2, start_time: '2099-01-02T11:00:00.000Z', end_time: '2099-01-02T13:00:00.000Z',
+        visibility: 'friends', auto_fill: false,
+      })).id),
+      invite: await attempt(() => ensureInviteCode(hostId)),
+      blocks: await attempt(async () => (await listBlocks(hostId)).length),
+    }));
+  }
   async brokenOutbox(repair = false) {
     if (repair) this.ctx.storage.sql.exec("UPDATE event_outbox SET payload='{}' WHERE payload='not-json'");
     else this.ctx.storage.sql.exec("INSERT INTO event_outbox(event,payload) VALUES('notification','not-json')");
