@@ -30,9 +30,10 @@ export class ActorDatabase implements DatabaseRuntime {
   }
   seedMetadata(): void { for (const row of bootstrap.metadata) this.storage.sql.exec(row.sql, ...row.args); }
   /**
-   * 学校/校区注册表（每次启动幂等执行）：只补 schools/campuses 两张注册表，
-   * 让「只挂列表、暂未开放注册」的学校（吉林体育学院）能落到已有库里。
-   * 不走 seedMetadata 全量补种：venues 含管理员可删数据，全量 INSERT OR IGNORE 会把删掉的场地塞回来。
+   * 学校/校区注册表（每次启动幂等执行）：补 schools/campuses 注册表行（另含吉体的
+   * 种子场地，见方法内注释），让「只挂列表、暂未开放注册」的学校（吉林体育学院）
+   * 能落到已有库里。不走 seedMetadata 全量补种：venues 含管理员可删数据，全量
+   * INSERT OR IGNORE 会把删掉的场地塞回来。
    */
   seedSchoolRegistry(): void {
     // 空库不补：全新实例要先走快照导入（begin 校验目标库必须为空），这里抢先写行会把导入挡死；
@@ -40,7 +41,19 @@ export class ActorDatabase implements DatabaseRuntime {
     const count = this.storage.sql.exec('SELECT COUNT(*) AS n FROM schools').one().n;
     if (!Number(count)) return;
     for (const row of bootstrap.metadata) {
-      if (/^INSERT OR IGNORE INTO (schools|campuses) /.test(row.sql)) this.storage.sql.exec(row.sql, ...row.args);
+      if (/^INSERT OR IGNORE INTO (schools|campuses) /.test(row.sql)) { this.storage.sql.exec(row.sql, ...row.args); continue; }
+      // 例外：吉林体育学院（school_id=2）的四间种子场地。它们从没进过任何长期实例
+      // （venues 只在全新实例全量播种时落库，存量实例靠这里补），不补的话吉体账号
+      // 建局时无场地可选。按「学校+校区+名称」判存、id 被占就顺延，与 Node 侧
+      // seedJlsuMetadata 同口径。吉大场地是管理员可删数据，仍不回补（见 seedMetadata 注释）。
+      if (/^INSERT OR IGNORE INTO venues /.test(row.sql) && Number(row.args[1]) === 2) {
+        const [id, schoolId, campusId, name, sportTypes, isActive] = row.args as [number, number, number, string, string, number];
+        const existing = this.storage.sql.exec('SELECT id FROM venues WHERE school_id = ? AND campus_id = ? AND name = ?', schoolId, campusId, name).toArray();
+        if (existing.length) continue;
+        const idTaken = this.storage.sql.exec('SELECT id FROM venues WHERE id = ?', id).toArray();
+        if (!idTaken.length) this.storage.sql.exec(row.sql, ...row.args);
+        else this.storage.sql.exec('INSERT INTO venues (school_id, campus_id, name, sport_types, is_active) VALUES (?, ?, ?, ?, ?)', schoolId, campusId, name, sportTypes, isActive);
+      }
     }
   }
   /**

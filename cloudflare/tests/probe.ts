@@ -154,7 +154,9 @@ export class TestBackend extends MoveMateBackend {
     )`);
     sql.exec("INSERT INTO schools(id,code,name,is_active) VALUES(1,'jlu','吉林大学',1),(2,'jlsu','吉林体育学院',1)");
     sql.exec("INSERT INTO campuses(id,school_id,code,name,is_active) VALUES(1,1,'qianwei-center','前卫校区（中心校区）',1),(4,2,'jlsu-nanling','南岭校区',0),(5,2,'jlsu-linhe','临河校区',0)");
-    sql.exec("INSERT INTO venues(id,school_id,campus_id,name,sport_types,is_active) VALUES(10,1,1,'宋治平体育馆篮球比赛馆','[\"basketball\"]',1),(37,2,4,'南岭校区室内篮球馆武术馆','[\"basketball\",\"fitness\"]',0),(38,2,4,'南岭校区摔跤柔道馆','[\"fitness\"]',0),(39,2,5,'临河校区田径场','[\"running\",\"soccer\"]',0),(40,2,5,'临河校区健身馆','[\"fitness\"]',0)");
+    sql.exec("INSERT INTO venues(id,school_id,campus_id,name,sport_types,is_active) VALUES(10,1,1,'宋治平体育馆篮球比赛馆','[\"basketball\"]',1)");
+    // 注意：吉体的四间场地故意不预置——存量实例里它们从没落过库（venues 不在注册表回补范围内），
+    // 启动路径必须能把种子场地补出来，否则吉体账号建局时无场地可选。
     const columns = () => sql.exec('PRAGMA table_info(schools)').toArray().map(row => String(row.name));
     const before = {
       columns: columns(),
@@ -173,8 +175,8 @@ export class TestBackend extends MoveMateBackend {
         jlu: sql.exec("SELECT registration_open FROM schools WHERE code='jlu'").one(),
         jlsu: sql.exec("SELECT registration_open FROM schools WHERE code='jlsu'").one(),
         jlsuCampuses: sql.exec('SELECT id, is_active FROM campuses WHERE school_id=2 ORDER BY id').toArray(),
-        jlsuVenues: sql.exec('SELECT id, is_active FROM venues WHERE school_id=2 ORDER BY id').toArray(),
-        linheGym: sql.exec("SELECT sport_types FROM venues WHERE id=40").one(),
+        jlsuVenues: sql.exec('SELECT id, name, is_active FROM venues WHERE school_id=2 ORDER BY id').toArray(),
+        linheGym: sql.exec("SELECT sport_types FROM venues WHERE school_id=2 AND name='临河校区健身馆'").one(),
       },
       preserved: {
         sentinel: sql.exec('SELECT name, is_active, sport_types FROM venues WHERE id=10').one(),
