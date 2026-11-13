@@ -141,8 +141,10 @@ await test('Workers runtime migration and business regression', async t=>{
  // After the boot path: the switch exists and reads closed for JLSU, open for JLU.
  assert.ok(c.after.columns.includes('registration_open'));
  assert.equal(Number(c.after.jlsu.registration_open),0);assert.equal(Number(c.after.jlu.registration_open),1);
- // JLSU campuses/venues are game-active now, and the stale Linhe gym sport list is corrected.
+ // JLSU campuses/venues are game-active now, the four venues were seeded by the boot path
+ // (they never existed in this rewound instance), and the Linhe gym sport list is the canonical one.
  assert.deepEqual(c.after.jlsuCampuses.map(r=>Number(r.is_active)),[1,1]);
+ assert.deepEqual(c.after.jlsuVenues.map(r=>r.name),['南岭校区室内篮球馆武术馆','南岭校区摔跤柔道馆','临河校区田径场','临河校区健身馆']);
  assert.deepEqual(c.after.jlsuVenues.map(r=>Number(r.is_active)),[1,1,1,1]);
  assert.equal(c.after.linheGym.sport_types,'["fitness","basketball","volleyball","badminton","dance","taekwondo"]');
  // Pre-existing rows are preserved untouched (registry seed may only add the missing JLU campuses 2/3).
