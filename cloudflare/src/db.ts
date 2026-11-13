@@ -34,6 +34,10 @@ export class ActorDatabase implements DatabaseRuntime {
    * 不走 seedMetadata 全量补种：venues 含管理员可删数据，全量 INSERT OR IGNORE 会把删掉的场地塞回来。
    */
   seedSchoolRegistry(): void {
+    // 空库不补：全新实例要先走快照导入（begin 校验目标库必须为空），这里抢先写行会把导入挡死；
+    // 已有学校数据的库才补齐缺失的注册表行。导入完成（open）后会再调用一次。
+    const count = this.storage.sql.exec('SELECT COUNT(*) AS n FROM schools').one().n;
+    if (!Number(count)) return;
     for (const row of bootstrap.metadata) {
       if (/^INSERT OR IGNORE INTO (schools|campuses) /.test(row.sql)) this.storage.sql.exec(row.sql, ...row.args);
     }
