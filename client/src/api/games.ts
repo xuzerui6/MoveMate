@@ -63,7 +63,8 @@ export async function confirmEnd(gameId: string): Promise<any> {
 
 /** 约下周再练（仅发起人）：按下局参数克隆一场 +7 天的新局，成员逐个确认 */
 export async function rebookGame(gameId: string): Promise<Game> {
-  return client.post(`/games/${gameId}/rebook`);
+  const res = await client.post(`/games/${gameId}/rebook`) as unknown as { data: { game: Game } };
+  return res.data?.game;
 }
 
 /** 好友局动态流（好友发起的好友局 + 我在里面的好友局） */
