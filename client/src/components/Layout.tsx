@@ -28,7 +28,7 @@ export default function Layout(){
  useEffect(()=>{screen.current?.scrollTo({top:0,behavior:'auto'});},[location.pathname]);
  useEffect(()=>{void fetchCount();const timer=setInterval(()=>void fetchCount(),30000);return()=>clearInterval(timer);},[fetchCount]);
  useEffect(()=>{const raw=sessionError||error;if(raw)console.error('[Layout] 数据读取问题（原始信息仅记日志）:',raw);},[sessionError,error]);
- const active=(path:string)=>path==='/groups'?['/groups','/create','/game/'].some(p=>location.pathname.startsWith(p)):path==='/profile'?['/profile','/avatar','/inventory','/history','/leaderboard','/feedback','/admin'].some(p=>location.pathname.startsWith(p)):path==='/train'?location.pathname.startsWith('/train'):location.pathname===path;
+ const active=(path:string)=>path==='/groups'?['/groups','/create','/game/','/friends','/invite/'].some(p=>location.pathname.startsWith(p)):path==='/profile'?['/profile','/avatar','/inventory','/history','/leaderboard','/feedback','/admin'].some(p=>location.pathname.startsWith(p)):path==='/train'?location.pathname.startsWith('/train'):location.pathname===path;
  return <div className="app-shell"><aside className="app-sidebar">
  <NavLink to="/" className="app-brand" aria-label="动伴首页"><strong>动伴<span>·</span></strong><small>MOTION BUDDY</small></NavLink>
  <nav className="motion-nav" aria-label="主导航">{tabs.map(t=><NavLink key={t.path} to={t.path} className={active(t.path)?'active':''} aria-current={active(t.path)?'page':undefined}><Icon name={t.icon} size={25} weight={active(t.path)?'fill':'regular'}/><span>{t.label}</span>{t.path==='/notifications'&&count>0&&<em aria-label={count+'条未读通知'}>{count>99?'99+':count}</em>}</NavLink>)}</nav>

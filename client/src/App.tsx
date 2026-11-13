@@ -11,6 +11,9 @@ const BossFight=lazy(()=>import('./pages/BossFight/BossFight'));
 const BossAtlas=lazy(()=>import('./pages/BossAtlas/BossAtlas'));
 const Leaderboard=lazy(()=>import('./pages/Leaderboard/Leaderboard'));
 const Notifications=lazy(()=>import('./pages/Notifications/Notifications'));
+const Friends=lazy(()=>import('./pages/Friends/Friends'));
+const InviteFriend=lazy(()=>import('./pages/InviteFriend/InviteFriend'));
+const GameSummary=lazy(()=>import('./pages/GameSummary/GameSummary'));
 const Profile=lazy(()=>import('./pages/Profile/Profile'));
 const Feedback=lazy(()=>import('./pages/Feedback/Feedback'));
 const Admin=lazy(()=>import('./pages/Admin/Admin'));
@@ -55,6 +58,8 @@ function Pages(){return <BrowserRouter><ErrorBoundary><AvatarPreview/><Suspense 
     <Route path="train/records" element={<div className="motion-view"><WorkoutRecords/></div>}/>
     <Route path="train/data" element={<div className="motion-view"><DataManagement/></div>}/>
     <Route path="groups" element={<Lobby/>}/><Route path="create" element={<CreateGame/>}/><Route path="game/:id" element={<GameDetail/>}/>
+    <Route path="game/:id/summary" element={<GameSummary/>}/>
+    <Route path="friends" element={<Friends/>}/><Route path="invite/:code" element={<InviteFriend/>}/>
     <Route path="game/:id/boss-fight" element={<BossFight/>}/><Route path="boss-Atlas" element={<BossAtlas/>}/>
     <Route path="notifications" element={<Notifications/>}/><Route path="profile" element={<Profile/>}/>
     <Route path="leaderboard" element={<Leaderboard/>}/><Route path="history" element={<MotionView><History/></MotionView>}/>

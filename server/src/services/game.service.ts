@@ -22,6 +22,7 @@ import { pushToUser, broadcastToGame, removeUserFromGame } from '../websocket/no
 import { assertNoSensitiveWord } from '../utils/sensitive-words';
 import { ValidationError } from '../utils/errors';
 import { isBlockedEitherWay, areFriends, getFriendIds, relationshipStatus } from './social-helpers';
+import { saveSystemMessage } from './chat.service';
 
 // ================================================================
 // 类型定义
@@ -612,6 +613,9 @@ export async function joinGame(
       );
       const joinerName = joinerRows[0]?.nickname || '某用户';
 
+      // 局内系统小提示：协调不用猜谁来了（方案第四节）
+      await saveSystemMessage(gameId, userId, `${joinerName} 加入了本局`).catch(() => {});
+
       await createNotification({
         user_id: game.host_id,
         type: 'member_joined',
@@ -706,6 +710,12 @@ export async function leaveGame(
 
     await (async () => {
       // --- 同事务保存通知；提交后推送 ---
+      // 局内系统小提示：剩下的人一眼知道谁走了（退局的人已读不到聊天，提示是给其余成员的）
+      const { rows: leaverTipRows } = await pool.query(
+        `SELECT nickname FROM users WHERE id = $1`, [userId],
+      );
+      await saveSystemMessage(gameId, userId, `${leaverTipRows[0]?.nickname || '某用户'} 离开了本局`).catch(() => {});
+
       const shouldNotify = game.status === 'full' || game.status === 'ready';
       if (shouldNotify) {
         const { rows: leaverRows } = await pool.query(

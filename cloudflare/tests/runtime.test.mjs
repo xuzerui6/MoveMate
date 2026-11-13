@@ -178,6 +178,8 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.equal((await call(`/api/v1/games/${fgid}`,{token:tokens[2]})).status,404);
  const feed=await call('/api/v1/games/friends-feed',{token:tokens[1]});assert.ok(feed.data.data.games.some(g=>g.id===fgid));
  assert.equal((await call(`/api/v1/games/${fgid}/join`,{method:'POST',token:tokens[1],body:{}})).status,200);
+ const fgMessages=await call(`/api/v1/games/${fgid}/messages`,{token:tokens[1]});assert.equal(fgMessages.status,200,JSON.stringify(fgMessages.data));
+ assert.ok(fgMessages.data.data.messages.some(m=>m.kind==='system'&&m.content.includes('加入了本局')),JSON.stringify(fgMessages.data.data.messages));
  const blocked=await call('/api/v1/blocks',{method:'POST',token:tokens[0],body:{userId:3}});assert.equal(blocked.status,200,JSON.stringify(blocked.data));
  assert.equal((await call('/api/v1/friends/requests',{method:'POST',token:tokens[2],body:{userId:1}})).status,403);
  const report=await call('/api/v1/reports',{method:'POST',token:tokens[1],body:{target_type:'user',target_id:3,reason:'测试举报'}});assert.equal(report.status,200,JSON.stringify(report.data));assert.equal(report.data.data.report.status,'pending');

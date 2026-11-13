@@ -2,13 +2,14 @@
  * 发局页 —— 创建运动局 (极简现代风格)
  */
 import React, { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { showToast } from '../../hooks/useAuth';
 import * as gamesApi from '../../api/games';
 import { getErrorMessage } from '../../api/client';
 import SportPicker from '../../components/SportPicker';
 import { useAuthStore } from '../../stores/authStore';
 import { SPORT_LABELS } from '../../types';
+import { createVisibilityPayload } from '../../features/social/socialLogic';
 import type { SportType, GameTag, Campus, Venue } from '../../types';
 import './CreateGame.css';
 
@@ -48,6 +49,8 @@ function formatDateTimeLocal(date: Date): string {
 
 const CreateGame: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const inviteUserId = Number(searchParams.get('invite')) || null;
   const user = useAuthStore((s) => s.user);
   const defaultStartTime = getDefaultTime();
   const minStartTime = useMemo(() => formatDateTimeLocal(new Date()), []);
@@ -64,6 +67,8 @@ const CreateGame: React.FC = () => {
   const [meetingNote, setMeetingNote] = useState('');
   const [maxParticipants, setMaxParticipants] = useState(2);
   const [tag, setTag] = useState<GameTag | undefined>();
+  const [visibility, setVisibility] = useState<'public' | 'friends'>('public');
+  const [autoFill, setAutoFill] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [showVenueRecommendations, setShowVenueRecommendations] = useState(false);
 
@@ -155,9 +160,21 @@ const CreateGame: React.FC = () => {
         end_time: new Date(endTime).toISOString(),
         max_players: maxParticipants,
         tag,
+        ...createVisibilityPayload(visibility, autoFill),
       }) as any;
       const game = res.data?.game || res.data || res;
-      showToast('发局成功！', 'success');
+      // 从好友页「邀请组局」进来：局建好后顺手把邀请发给他
+      if (inviteUserId) {
+        try {
+          const result = await gamesApi.inviteToGame(String(game.id), [inviteUserId]);
+          if (result.invited.length > 0) showToast('发局成功，邀请也发出去了！', 'success');
+          else showToast(`发局成功！${result.skipped[0]?.reason || '邀请没发出去，去局里再邀一次吧'}`, 'success');
+        } catch {
+          showToast('发局成功！邀请没发出去，去局里再邀一次吧', 'success');
+        }
+      } else {
+        showToast('发局成功！', 'success');
+      }
       navigate(`/game/${game.id}`, { replace: true });
     } catch (err) {
       showToast(getErrorMessage(err), 'error');
@@ -346,6 +363,57 @@ const CreateGame: React.FC = () => {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* 谁能看到这个局 */}
+      <div className="ui-pages-creategame-creategame-visibility">
+        <label className="ui-pages-creategame-creategame-label">谁能看到这个局</label>
+        <div className="create-visibility-options" role="radiogroup" aria-label="谁能看到这个局">
+          <button
+            type="button"
+            role="radio"
+            aria-checked={visibility === 'public'}
+            className={`create-visibility-option${visibility === 'public' ? ' create-visibility-option--active' : ''}`}
+            onClick={() => setVisibility('public')}
+          >
+            公开大厅（谁都能来）
+          </button>
+          <button
+            type="button"
+            role="radio"
+            aria-checked={visibility === 'friends'}
+            className={`create-visibility-option${visibility === 'friends' ? ' create-visibility-option--active' : ''}`}
+            onClick={() => setVisibility('friends')}
+          >
+            好友局（只给我的好友）
+          </button>
+        </div>
+        <p className="create-visibility-note">
+          {visibility === 'friends'
+            ? '不挂在大厅，好友能看到、能进来。'
+            : '挂在大厅里，任何人都能看到、能进来。'}
+        </p>
+        {visibility === 'friends' && (
+          <div className="create-autofill">
+            <div className="create-autofill-text">
+              <span className="create-autofill-title">人不够时，自动把空位开放到大厅补人</span>
+              <span className="create-autofill-desc">开局前 24 小时还没满员，才会开放。默认关着。</span>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={autoFill}
+              aria-label="人不够时，自动把空位开放到大厅补人"
+              className={`create-autofill-switch${autoFill ? ' create-autofill-switch--on' : ''}`}
+              onClick={() => setAutoFill((v) => !v)}
+            >
+              <span className="create-autofill-knob" />
+            </button>
+          </div>
+        )}
+        {inviteUserId && (
+          <p className="create-visibility-note">局建好后，会顺手把邀请发给这位好友。</p>
+        )}
       </div>
 
       <div className="ui-pages-creategame-creategame-submitArea">
