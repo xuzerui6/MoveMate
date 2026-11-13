@@ -19529,6 +19529,420 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0296",
+   "expectedName": "dumbbell close-grip press",
+   "sourceId": "ai-codex-fill123-0296",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "598198ff402e1e8c40dff95a7359dfb58d428cb9e1b5ea46d55e2368a868cfc2",
+    "93f1fd74fcf06f50bf5a584f1f807c886612788cc134ffec2739ce3887639974"
+   ],
+   "phases": [
+    "起始：仰卧平凳，双哑铃紧贴并拢举于胸上方，双臂伸直，掌心相对。",
+    "关键：哑铃下放至胸部两侧贴近胸面，双肘收紧贴体下压。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0316",
+   "expectedName": "dumbbell incline breeding",
+   "sourceId": "ai-codex-fill123-0316",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "91c72f02139a93f0bb78f6910ec0014eed738917ed6a5eaaa741096c63ba666d",
+    "5906e8505ff6af7de9b981d312ffd3fb084139551ca702d37aef7c7237432365"
+   ],
+   "phases": [
+    "起始：仰卧45度上斜凳，双哑铃竖直举于胸上方，双臂伸直，掌心朝前。",
+    "关键：哑铃下放至胸部两侧，双肘弯约90度，上臂与躯干齐平。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1278",
+   "expectedName": "dumbbell incline fly on exercise ball",
+   "sourceId": "ai-codex-fill123-1278",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f642522bceacbfa09399e0afa8efe2d71dad98bb46f5ea46be40973f3a7203fe",
+    "262d92bd225eb11a588f622e6c665ae2a4f935634b62d797b5c92ca1d3139d16"
+   ],
+   "phases": [
+    "起始：坐健身球、上背抵上斜凳，双哑铃并拢举于胸上方，双臂伸直，掌心相对。",
+    "关键：双哑铃以宽弧线向两侧下放至约与肩齐平，胸部充分拉伸。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0329",
+   "expectedName": "dumbbell incline shrug",
+   "sourceId": "ai-codex-fill123-0329",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "50408aa6ecb09464645bdff8eb09e4b6ecc3e30c93a2fd2fa3450588f3f6e4d2",
+    "61c510d689c790e406decff91595732ab4944e6e1234522a1ede454a8dd83f3e"
+   ],
+   "phases": [
+    "起始：坐45度上斜凳，双哑铃垂于体侧，双臂伸直，掌心朝向身体。",
+    "关键：双肩耸至最高贴近耳部，双臂保持伸直，仅靠耸肩抬起哑铃。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0339",
+   "expectedName": "dumbbell lying femoral",
+   "sourceId": "ai-codex-fill123-0339",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e8778e9da1f44dcd6157f66a4f0806abe02a4eba7518f798a229b9e4eb8c624c",
+    "03b9c05c625b0a12d44bf05561bf4ac9a8c5f99be20e43c3824118c0d1156fd3"
+   ],
+   "phases": [
+    "起始：仰卧地面，双腿伸直，哑铃置于骨盆上，双手扶住。",
+    "关键：屈膝踩实、臀部抬至最高成臀桥，身体从膝到肩成一条直线，哑铃仍在骨盆上。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2705",
+   "expectedName": "dumbbell lying pronation on floor",
+   "sourceId": "ai-codex-fill123-2705",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "fdf8a4e1f674d490c39b9bc0390a9199948c853be25da0671b9a929417bad168",
+    "bd44b5c945737b166ac824a77f31f4adf9da35d2a827e16d8890ba328666e861"
+   ],
+   "phases": [
+    "起始：俯卧地面，双臂在头前伸直，哑铃贴地，掌心朝下。",
+    "关键：双臂保持伸直，将哑铃抬离地面至约与肩齐平，前臂完全收缩。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0349",
+   "expectedName": "dumbbell lying supination",
+   "sourceId": "ai-codex-fill123-0349",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "12c9d5b608cfdf59a20d7574f3db2203635a75d922c42d0856c66dcd51a5f39f",
+    "215274a2eacfe4f7b676577754649b98a59eadad7690f91f29deb20f70c459d2"
+   ],
+   "phases": [
+    "起始：仰卧长凳，双哑铃垂于凳侧，双臂伸直，掌心朝上。",
+    "关键：双哑铃向肩部弯举，双肘全屈，前臂收至头部两侧，掌心仍朝上。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2706",
+   "expectedName": "dumbbell lying supination on floor",
+   "sourceId": "ai-codex-fill123-2706",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "865caa3a30d73830c699621d2fd5cfafbbfc03a105c3668c6087822489db028e",
+    "5c8fe6178c58d38e29c84eb24daf2ab4e83eb76ae12b5aa713ca81aba0344219"
+   ],
+   "phases": [
+    "起始：仰卧地面，双哑铃置于体侧，双臂伸直，掌心朝上。",
+    "关键：双哑铃向肩部弯举，双肘全屈，双肘仍贴紧体侧。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1286",
+   "expectedName": "dumbbell one arm chest fly on exercise ball",
+   "sourceId": "ai-codex-fill123-1286",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "254cfd9272456ea0d4e5ef12eedbcf06b8eab6f948dbcd9fbf4a62332dcc64fa",
+    "e223feb3b478e227673bd65a301400444e593e9b46430a525b49eda0af39f6f9"
+   ],
+   "phases": [
+    "起始：上背撑健身球成桥式，右手持哑铃伸直举于胸上方，掌心向内。",
+    "关键：右臂向外侧下放至与地面平行，双肘微屈，胸部充分拉伸，髋部保持抬起。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1291",
+   "expectedName": "dumbbell one arm pullover on exercise ball",
+   "sourceId": "ai-codex-fill123-1291",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "2230c42d7bf6168314eafa6bf744fda2604a6a969d3414cb34cabf7c88567934",
+    "83f716ed666335169c0a2cc5acb1bdb3448e82a998900a0b644766c16df259be"
+   ],
+   "phases": [
+    "起始：坐健身球，右手持哑铃伸直举于胸上方，左手放在大腿上。",
+    "关键：哑铃沿弧线降至脑后下方，双臂保持近伸直，胸部展开。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1415",
+   "expectedName": "dumbbell one arm seated neutral wrist curl",
+   "sourceId": "ai-codex-fill123-1415",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "0b385f7ac3d3c4fd67b4d4e2c13e2a13ca1504fa0cb8606af447f010ed552f81",
+    "3bc42edb6c0f404340fffa3b8406022799aabb9b15d55af739c742fd1198a418"
+   ],
+   "phases": [
+    "起始：坐凳，右前臂置于大腿、手腕悬于膝外，持哑铃掌心朝上，手腕下垂。",
+    "关键：手腕向上卷至最高，仅手腕发力，前臂保持贴腿静止。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1292",
+   "expectedName": "dumbbell one leg fly on exercise ball",
+   "sourceId": "ai-codex-fill123-1292",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "86eb031556154a47089dd2b0eea437ede8ad1db804956c485442af47e01c08b3",
+    "bea0ed7f95737950fc6afd0011bde99a8374d681c5a3fb8df12bdf51fcbe3f0d"
+   ],
+   "phases": [
+    "起始：坐健身球，左腿向前伸直，双哑铃并拢举于胸上方，掌心相对。",
+    "关键：双哑铃以宽弧线向两侧下放至约与肩齐平，胸部拉伸，左腿始终伸直在前。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0365",
+   "expectedName": "dumbbell over bench neutral wrist curl",
+   "sourceId": "ai-codex-fill123-0365",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "fc2b8431d459fbbffc463046dce58d8cb4904b5262a20588f7028c053cf19e5e",
+    "714a3edc707fdde9830dfa5916a8fc107c7677be4a50b07733c3bcb8913ac24f"
+   ],
+   "phases": [
+    "起始：双前臂平放在凳面、手腕悬于边缘，双手掌心朝上持铃，手腕下垂。",
+    "关键：双手腕向上卷至最高，仅手腕发力，前臂保持贴凳静止。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0366",
+   "expectedName": "dumbbell over bench one arm neutral wrist curl",
+   "sourceId": "ai-codex-fill123-0366",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a098f3497c6e90cb7778cc1fefc50ab125ebe97062bc7a93671c4b958b8562c8",
+    "ec40fc29f872f0b29c9b00da596a43dc9afe8c0a08b62c4b0a70d93c5fd57d01"
+   ],
+   "phases": [
+    "起始：右前臂平放在凳面、手腕悬于边缘，右手掌心朝上持铃，手腕下垂。",
+    "关键：右腕向上卷至最高，仅手腕发力，前臂保持贴凳静止。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0367",
+   "expectedName": "dumbbell over bench one arm wrist curl",
+   "sourceId": "ai-codex-fill123-0367",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e296b9fa3002cdabdfc9cb5263f873c597f3eec3630b23c30998d219df8a06af",
+    "36bd823702d1f2538a37c0f1f755488f475f6c6238a1172c1baae34a2e1e83ff"
+   ],
+   "phases": [
+    "起始：右前臂平放在凳面、手腕悬于边缘，右手掌心朝下持铃，手腕下垂。",
+    "关键：右腕向上伸至最高，哑铃被带回前臂方向，前臂保持贴凳静止。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0371",
+   "expectedName": "dumbbell plyo squat",
+   "sourceId": "ai-codex-fill123-0371",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "42dd84a90233157d023f6ca26bf5a450fe956247db927649cb4c3166f7f49249",
+    "9caaebff9006ba6e207ec98c6252f5a9fbae53a428cfd3e8c353f9a216e488bf"
+   ],
+   "phases": [
+    "起始：深蹲位到底：双膝弯曲、髋部后坐下沉，双哑铃垂于体侧，双脚并排踩地。",
+    "关键：腾空瞬间：双脚在空中换位成前后分立（一脚在前、一脚在后），双脚均离地，哑铃仍在体侧。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1673",
+   "expectedName": "dumbbell preacher curl over exercise ball",
+   "sourceId": "ai-codex-fill123-1673",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e0b835da628175ba91991cf208b17341aa01b00e2f7bc148c432aab4372e9972",
+    "e897af64991725ba84225fa07c37f6939dbc02e2db67f4f8ef6eefeaf70b5306"
+   ],
+   "phases": [
+    "起始：跪于健身球后，右上臂搭在球面上，右手反握哑铃下垂伸直。",
+    "关键：哑铃向肩部弯举至肘全屈，上臂始终贴球不动。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1293",
+   "expectedName": "dumbbell press on exercise ball",
+   "sourceId": "ai-codex-fill123-1293",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "6282db3554735fdf01f97fc39198627043eb3c4f1db1a1672df2deef0f852e6b",
+    "65d9d87a8d6f59d90e700e066109be9acdcf6255f9986987b7c30ce4b69021d3"
+   ],
+   "phases": [
+    "起始：下背撑健身球成桥式，双哑铃举至肩高、双肘弯曲，掌心朝前。",
+    "关键：双哑铃向上推至双臂完全伸展于胸上方，桥式保持不变。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1295",
+   "expectedName": "dumbbell pullover on exercise ball",
+   "sourceId": "ai-codex-fill123-1295",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a83e4be0c9651ed8b2e8d2847d695e123cf44679ccd96cd55c3c5af2d1a8f883",
+    "82186b81256be3e6c4c3659c37b7939aff8426c7d2e7bc62a307a8daac2f4c26"
+   ],
+   "phases": [
+    "起始：上背撑健身球成桥式，双手共握一只哑铃伸直于胸上方。",
+    "关键：哑铃沿弧线降至脑后下方，双臂保持近伸直，胸部展开。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0377",
+   "expectedName": "dumbbell rear delt row_shoulder",
+   "sourceId": "ai-codex-fill123-0377",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a3d67a856593b75ee391a846fcecd22d98c091e565d2854c07c21a911fedf14b",
+    "c659917ba08431bf883e94b790b460854cf7b4c8673a75b23f7e821c62c1c781"
+   ],
+   "phases": [
+    "起始：屈髋俯身、背部挺直，双哑铃垂于胸下，掌心朝向身体，双肘微屈。",
+    "关键：双哑铃向两侧抬至约与肩齐平，双臂打开，肩胛收紧，俯身姿势不变。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1330",
+   "expectedName": "dumbbell reverse grip incline bench one arm row",
+   "sourceId": "ai-codex-fill123-1330",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "ac5da0d2f9fbfefaec7ee9a8c17dd8169b779231ad9cbebe4a475ddbe0fe987b",
+    "4d4f1b7d97d543362836f4d2714c5cadbbd0306c38fed5d83728b84f40420196"
+   ],
+   "phases": [
+    "起始：左膝与左手撑45度上斜凳，右手反握（掌心朝上）哑铃，右臂伸直下垂。",
+    "关键：哑铃拉至胸部，右肘弯曲贴近身体，背部收紧，左膝左手保持支撑。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1675",
+   "expectedName": "dumbbell reverse spider curl",
+   "sourceId": "ai-codex-fill123-1675",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "2b958c6461a8de7b370e6d42d18838b3485eddfa4ea6fbad4602dd4938829786",
+    "5362f9da665b054f039c56969c5a6fa011a5ff0fb275ca41541c7297b8294569"
+   ],
+   "phases": [
+    "起始：站立，双哑铃垂于体侧，正握（掌心朝下），双臂完全伸直。",
+    "关键：双哑铃弯举至肩高，掌心仍朝下，双肘全屈，上臂贴体不动。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0397",
+   "expectedName": "dumbbell seated neutral wrist curl",
+   "sourceId": "ai-codex-fill123-0397",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "984dab773e1ab1e8fb0f5a67a664e0a5e51692f4f87703d0c5b2e3c04d0bb5b4",
+    "aae27927806b921a37d9da895902aefa61e20ca626889e7f87e57ed7c6fb269b"
+   ],
+   "phases": [
+    "起始：坐凳，双前臂置于大腿、手腕悬于膝外，中立握（掌心相对）持铃，手腕下垂。",
+    "关键：双手腕向上卷至最高，仅手腕发力，掌心仍相对，前臂贴腿不动。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
