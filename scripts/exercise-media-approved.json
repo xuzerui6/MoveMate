@@ -17927,6 +17927,222 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1759",
+   "expectedName": "single leg squat (pistol) male",
+   "sourceId": "ai-codex-replaceIllus-1759",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b537549f0307da629c33702b29576c9dcbbb5ede8c26665eaa8527f3380ca832",
+    "f8f698cc5c9796d981ec0b2945d72f725f8100d3c149b2c06df884c8d64024c8"
+   ],
+   "phases": [
+    "单腿站立，另一腿向前伸直离地，双臂向前伸展。",
+    "支撑腿深蹲到底，伸出腿仍前伸离地，双臂保持前伸。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1763",
+   "expectedName": "shoulder grip pull-up",
+   "sourceId": "ai-codex-replaceIllus-1763",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "663eb98799f7b4a7566db4630f6d6b53b5e7fd73f6c535c6d27658f9c6757670",
+    "3cd64108f08791baa71190149c04f0850ab1d4f0908b6e4e62af0e9c54fa16a7"
+   ],
+   "phases": [
+    "双手与肩同宽正握横杆，掌心背向自己，全臂伸直悬垂，双脚离地。",
+    "屈肘上拉至下巴过杆，躯干贴近横杆，双腿保持静止。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2311",
+   "expectedName": "walking on stepmill",
+   "sourceId": "ai-codex-replaceIllus-2311",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "bc8781fcffe0dabac67d5c08ee6991f15afc07bfff90b6395998c7df540542f9",
+    "df5d40d449bcc2e16841bdc0bcf393b37997a36f3742acb3224265522cf50cd0"
+   ],
+   "phases": [
+    "站上循环楼梯机的台阶，双手轻扶两侧栏杆，躯干直立。",
+    "一脚踏上更高一级台阶，另一脚留在低一级，仍只轻扶栏杆。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2312",
+   "expectedName": "lying elbow to knee",
+   "sourceId": "ai-codex-replaceIllus-2312",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "1f1b699ef09e7ea4819b735778dde14ba27dec80dca25977d5c90577cd5208a9",
+    "626c6120c24003f142b068ac974f910ee7f553fa2229d4891884fae9f9b9003f"
+   ],
+   "phases": [
+    "仰卧屈膝、双脚平放，双手放在脑后、双肘向外打开。",
+    "卷起转体，一侧肘触到对侧抬起的膝，另一腿伸直抬离地面。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2317",
+   "expectedName": "dumbbell seated bent arm lateral raise",
+   "sourceId": "ai-codex-replaceIllus-2317",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "9ae231f7859d838ac5fd37e112fad32a0f7af31d2db745f9ff5ae7ec26070ad6",
+    "e07dc568952fb41ebc6ea91bd749bd27962c133e83aa7daf145d629845dbe623"
+   ],
+   "phases": [
+    "坐在平凳上，每手握一只哑铃，双肘弯曲约九十度，哑铃停在腰前。",
+    "保持肘部弯曲角度，上臂向两侧抬到肩高。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2466",
+   "expectedName": "bridge - mountain climber (cross body)",
+   "sourceId": "ai-codex-replaceIllus-2466",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "bc83c97013e99d54bdfd2135bf0a363123ffe2bd820cc61a2cc08479d571363b",
+    "9ddd67d39ff81d1c4b92a9767217331395b795865694ed7c11777204937227d8"
+   ],
+   "phases": [
+    "高平板支撑，双手在肩膀正下方，身体从头到脚成一条直线。",
+    "一侧膝盖跨向对侧手肘下方，臀部保持低平，另一腿向后伸直。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2612",
+   "expectedName": "jump rope",
+   "sourceId": "ai-codex-replaceIllus-2612",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "3df19217217e952f0bb811ef4c3404e6c763fa0de24b1b65af5fc8ce33d67805",
+    "08e03b47e76deafa84fb8a6595b9aa95325fc59ff71dd6f7b917119fd445e521"
+   ],
+   "phases": [
+    "站立，双手握住绳柄，绳子落在脚跟后面的地面上。",
+    "双脚同时轻跳离地，绳子正从脚下通过。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3006",
+   "expectedName": "resistance band seated hip abduction",
+   "sourceId": "ai-codex-replaceIllus-3006",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b3af7189c9d7ad40ddd770ba65011a4685f9c48faef46e4a522d0a859a9cc54d",
+    "9f76837c81193fb766850bf2a2240ccfc3e4e168a91a79cbb2cb277bae87fbbf"
+   ],
+   "phases": [
+    "坐在凳子上，环形弹力带套在双膝上方，双膝并拢，双脚平踩地面。",
+    "双膝向外打开到可控位置，弹力带仍在膝盖上方并被拉伸。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3204",
+   "expectedName": "arms overhead full sit-up (male)",
+   "sourceId": "ai-codex-replaceIllus-3204",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "fd5d2ed24a42a72cf9fa8cfd87a32a34f77b22c91ae3c6f71af70384dc7f3ffd",
+    "960f503841fdc03f2584ebd8fe496045a00a2752a6b456bac704c41a389af808"
+   ],
+   "phases": [
+    "仰卧屈膝、双脚平放，双臂伸直放在头顶后方的地面上。",
+    "躯干完全坐起直立，双臂仍伸直举过头顶，双脚保持着地。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3212",
+   "expectedName": "basic toe touch (male)",
+   "sourceId": "ai-codex-replaceIllus-3212",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "57eb568fb37f143d123dff3b213387c66d4cf5360b89714dd01bdeb116e7f518",
+    "51abf449304a63cab6983bc0eaf243df0882a3b94cb973d2599a06b570b7cb39"
+   ],
+   "phases": [
+    "侧面站立，双脚稳稳站好，手臂放松垂在身体两侧。",
+    "从髋部向前俯身，双手伸向脚趾并触到鞋面，膝盖保持微屈，背部平直。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3360",
+   "expectedName": "bear crawl",
+   "sourceId": "ai-codex-replaceIllus-3360",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d83019686971bb28df1d60bd1c9f58fbddb695c9cb936dec8cb5532e61c2def3",
+    "648b65789852f87db1ce4069d10896d0834f7fd532983108cb671da393f793e9"
+   ],
+   "phases": [
+    "四肢着地，双手在肩膀下方、双膝在髋部下方并落在垫子上，背部平坦。",
+    "双膝悬空微微离地，对侧手脚同时向前迈出，背部保持平坦。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3470",
+   "expectedName": "forward lunge (male)",
+   "sourceId": "ai-codex-replaceIllus-3470",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a0b85cd23f218c8fbcad87ef14faae49a922a184e0881586f3d4f1cb46d9286b",
+    "705edba7718aeaf4db26b7e15bc15667eef967d225c84363131062f9ac13494e"
+   ],
+   "phases": [
+    "站立，双脚与臀同宽，双手扶在髋部。",
+    "一脚向前迈出一大步成弓步，前膝约九十度并与脚踝对齐，双手仍扶髋，躯干直立。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
