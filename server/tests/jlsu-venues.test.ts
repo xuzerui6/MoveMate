@@ -48,7 +48,7 @@ test('吉林体育学院元数据：学校挂牌、注册关闭、两校区四�
         ['南岭校区', '南岭校区室内篮球馆武术馆', ['basketball', 'fitness']],
         ['南岭校区', '南岭校区摔跤柔道馆', ['fitness']],
         ['临河校区', '临河校区田径场', ['running', 'soccer']],
-        ['临河校区', '临河校区健身馆', ['fitness', 'basketball', 'volleyball', 'badminton']],
+        ['临河校区', '临河校区健身馆', ['fitness', 'basketball', 'volleyball', 'badminton', 'dance', 'taekwondo']],
       ],
     );
     assert.ok(venues.every((v) => v.is_active === 1), '场地启用：内测账号可以组局');

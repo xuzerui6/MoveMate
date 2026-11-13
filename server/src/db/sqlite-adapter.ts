@@ -439,7 +439,7 @@ const JLSU_VENUES: Array<[number, number, string, string]> = [
   [2, 4, '南岭校区室内篮球馆武术馆', '["basketball","fitness"]'],
   [2, 4, '南岭校区摔跤柔道馆', '["fitness"]'],
   [2, 5, '临河校区田径场', '["running","soccer"]'],
-  [2, 5, '临河校区健身馆', '["fitness","basketball","volleyball","badminton"]'],
+  [2, 5, '临河校区健身馆', '["fitness","basketball","volleyball","badminton","dance","taekwondo"]'],
 ];
 
 /** 把学校开关维护到站立状态（存量库：吉体校区/场地启用、注册保持关闭）；空库跳过 */
