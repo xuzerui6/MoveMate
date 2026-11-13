@@ -180,10 +180,18 @@ test('an explicitly matched shared demonstration never grants another ID camera 
   assert.deepEqual(matched.video,existing.video);
   assert.deepEqual(matched.sources,existing.sources);
   assert.ok(matched.images.every(f=>f.distribution==='site-only'));
-  const paired=diagrams.entries['exdb:3636'];
-  assert.deepEqual(paired.phasePoseIndices,[0,1,0,2,0]);
-  assert.equal(new Set(paired.phases).size,5);
-  assert.notDeepEqual(paired.poses[1].legs,paired.poses[2].legs);
+  // Batch 119 replaced the last alternating illustration recipe (3636, the
+  // five-phase [0,1,0,2,0] wall high-knee diagram) with a verified generated
+  // photo pair, so the paired-recipe assertion now checks the photo record
+  // instead (batch 34/113/117 precedent): the pair freezes one raised knee
+  // and the entry instructions state the other side repeats.
+  assert.equal(diagrams.entries['exdb:3636'],undefined,'Batch 119 removed the exdb:3636 illustration when the photo pair replaced it');
+  const paired=mediaFor('exdb:3636')!;
+  assert.equal(mediaIndex['exdb:3636'].kind,'photo');
+  assert.equal(paired.images.length,2);
+  assert.equal(paired.sources[0].name,'AI 生成 / ai-codex-replaceIllus-3636');
+  assert.ok(exercises.find(e=>e.id==='exdb:3636')!.instructions.some(s=>s.includes('另一侧')));
+  assert.equal(paired.video,undefined,'Two still frames must never be presented as a continuous video');
 });
 
 test('corrected pull-up phases cover the actual ascent and return without changing the released video',()=>{
