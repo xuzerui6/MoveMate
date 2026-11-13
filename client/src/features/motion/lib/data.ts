@@ -27,4 +27,5 @@ export const initialState: AppState = {
   equipped: { head: 'penguin_hood', top: 'ocean_wave_top', bottom: 'purple_star_shorts', shoes: 'comet_running_shoes', prop: 'shiba_bottle', badge: 'emerald_star_medal' },
   history: [],
   dailyMissionProgress: { date: '', squatReps: 0, zone3Seconds: 0, hasHighScoreWorkout: false },
+  souvenirs: [],
 }

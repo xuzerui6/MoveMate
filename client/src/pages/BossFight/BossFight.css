@@ -1,0 +1,142 @@
+/* 组队打怪：白底、拇指区大按钮；舞台两层（怪兽/摄像头）靠几何过渡互换（方案 E） */
+.bf-page { max-width: 960px; margin: 0 auto; padding: 0 16px 40px; }
+.bf-header-actions { display: inline-flex; gap: 8px; align-items: center; }
+.bf-sound-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  border: 1px solid #d8d8de; background: #fff; color: #33333d;
+  border-radius: 999px; padding: 6px 12px; font-size: 13px; cursor: pointer; min-height: 36px;
+}
+.bf-privacy { color: #6d6d78; font-size: 13px; line-height: 1.6; margin: 18px 2px 0; }
+.bf-note { color: #55555f; font-size: 14px; line-height: 1.6; margin: 10px 0; }
+.bf-error { color: #c0362c; font-size: 14px; }
+.bf-big-btn { min-height: 52px; font-size: 17px; margin-top: 10px; }
+.bf-text-btn { background: none; border: none; color: #6d6d78; font-size: 14px; padding: 10px; cursor: pointer; display: block; margin: 4px auto 0; min-height: 44px; }
+
+/* ---- 血条与倒计时 ---- */
+.bf-hud { margin: 6px 0 12px; }
+.bf-hud-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.bf-hud-top b { font-size: 19px; }
+.bf-countdown { font-size: 30px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: 0.5px; }
+.bf-hpbar { height: 18px; border-radius: 999px; background: #ececf1; overflow: hidden; margin: 8px 0 6px; }
+.bf-hpbar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #e2483d, #f0734f); transition: width 0.45s ease; }
+.bf-hud-sub { display: flex; justify-content: space-between; gap: 12px; color: #55555f; font-size: 14px; flex-wrap: wrap; }
+.bf-hud-sub b { font-size: 17px; color: #1d1d24; }
+
+/* ---- 舞台（布局 E） ---- */
+.bf-stage {
+  position: relative; height: min(58vh, 520px); min-height: 340px;
+  border-radius: 18px; overflow: hidden; background: #17141f;
+  border: 1px solid #e3e0ee;
+}
+.bf-boss-layer, .bf-cam-layer {
+  position: absolute; overflow: hidden;
+  transition: top 0.45s cubic-bezier(0.32, 0.72, 0.24, 1), left 0.45s cubic-bezier(0.32, 0.72, 0.24, 1),
+    width 0.45s cubic-bezier(0.32, 0.72, 0.24, 1), height 0.45s cubic-bezier(0.32, 0.72, 0.24, 1),
+    border-radius 0.45s ease;
+}
+/* 看怪兽：怪兽铺满，摄像头右下角小窗 */
+.bf-stage.mode-boss .bf-boss-layer { inset: 0; width: 100%; height: 100%; border-radius: 0; }
+.bf-stage.mode-boss .bf-cam-layer {
+  top: auto; left: auto; right: 10px; bottom: 10px; width: 30%; max-width: 190px; height: 44%;
+  border-radius: 14px; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45); z-index: 3; background: #000;
+}
+/* 看自己：摄像头铺满，怪兽缩成顶部横条 */
+.bf-stage.mode-self .bf-cam-layer { inset: 0; width: 100%; height: 100%; border-radius: 0; z-index: 1; background: #000; }
+.bf-stage.mode-self .bf-boss-layer {
+  top: 10px; left: 10px; right: 10px; width: auto; height: 64px;
+  border-radius: 14px; z-index: 3; background: rgba(23, 20, 31, 0.88);
+  display: flex; align-items: center; gap: 10px; padding: 6px 12px 6px 6px;
+}
+.bf-boss-layer img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.bf-stage.mode-self .bf-boss-layer img { width: 52px; height: 52px; flex: none; }
+.bf-boss-tag {
+  position: absolute; left: 12px; bottom: 10px; color: #fff; font-weight: 700; font-size: 15px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+.bf-stage.mode-self .bf-boss-tag { position: static; text-shadow: none; font-size: 14px; }
+.bf-swap-cover { position: absolute; inset: 0; background: transparent; border: none; cursor: pointer; z-index: 4; }
+.bf-cam-layer canvas, .bf-cam-layer video { max-width: 100%; }
+.bf-cam-chip {
+  position: absolute; left: 8px; top: 8px; z-index: 2; background: rgba(20, 20, 28, 0.72); color: #fff;
+  font-size: 12px; padding: 4px 10px; border-radius: 999px; pointer-events: none;
+}
+/* 摄像头还没开：无论哪种布局都给一张居中大卡，按钮点得准 */
+.bf-cam-layer.idle {
+  inset: auto; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: min(88%, 430px); height: auto; max-height: 92%;
+  border-radius: 16px; background: #fffdf7; z-index: 5; box-shadow: 0 10px 34px rgba(0, 0, 0, 0.4);
+}
+.bf-cam-idle { padding: 20px; text-align: center; color: #33333d; }
+.bf-cam-idle p { line-height: 1.6; font-size: 14px; }
+.bf-cam-idle-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.bf-cam-idle-actions .btn { min-height: 48px; }
+
+/* ---- 队伍 ---- */
+.bf-team { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 4px; }
+.bf-member { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 76px; text-align: center; }
+.bf-member b { font-size: 13px; max-width: 76px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bf-member-status { font-size: 12px; color: #6d6d78; }
+.bf-member-rarity { font-size: 11px; color: #8a8a96; }
+.bf-avatar {
+  width: 52px; height: 52px; border-radius: 14px; overflow: hidden; flex: none;
+  display: inline-flex; align-items: center; justify-content: center; background: #f2f0fa;
+  border: 3px solid #c9c9d2;
+}
+.bf-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.bf-avatar.frame-N { border-color: #b9b9c4; }
+.bf-avatar.frame-R { border-color: #4a90d9; }
+.bf-avatar.frame-SR { border-color: #a259d9; }
+.bf-avatar.frame-SSR { border-color: #e3a008; box-shadow: 0 0 0 2px #ffe9a8 inset; }
+
+/* ---- 集结 / 战斗面板 ---- */
+.bf-gather, .bf-fight-panel { margin-top: 10px; }
+.bf-my-panel {
+  position: relative; display: flex; gap: 12px; background: #e9f9ee; border: 1px solid #bfe6cc;
+  border-radius: 14px; padding: 14px 16px; margin-top: 12px; flex-wrap: wrap;
+}
+.bf-my-panel > div { display: flex; flex-direction: column; gap: 2px; min-width: 104px; }
+.bf-my-panel span { font-size: 12px; color: #3f6212; }
+.bf-my-panel b { font-size: 28px; font-variant-numeric: tabular-nums; }
+.bf-my-floaters { position: absolute; right: 18px; top: 2px; pointer-events: none; }
+.bf-floater {
+  position: absolute; right: 0; color: #1d9e4b; font-weight: 800; font-size: 19px;
+  animation: bf-float-up 0.95s ease-out forwards; white-space: nowrap;
+}
+@keyframes bf-float-up {
+  from { opacity: 0; transform: translateY(8px); }
+  25% { opacity: 1; }
+  to { opacity: 0; transform: translateY(-30px); }
+}
+
+/* ---- 发起面板 ---- */
+.bf-create { text-align: center; padding: 10px 0 0; }
+.bf-create-boss { width: min(68vw, 320px); height: auto; }
+.bf-create h2 { margin: 6px 0 4px; }
+.bf-create h3 { text-align: left; margin: 18px 0 8px; font-size: 16px; }
+.bf-create h3 small { color: #6d6d78; font-weight: 400; margin-left: 6px; }
+.bf-create p { color: #55555f; line-height: 1.7; }
+.bf-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.bf-chips button {
+  border: 1.5px solid #d8d8de; background: #fff; border-radius: 999px; padding: 10px 18px;
+  font-size: 15px; cursor: pointer; min-height: 48px;
+}
+.bf-chips button.active { border-color: #5b4bc4; background: #efeaff; font-weight: 700; }
+.bf-create .bf-note { text-align: left; }
+
+/* ---- 结算 ---- */
+.bf-settle { text-align: center; padding-top: 8px; }
+.bf-settle-boss { width: min(60vw, 280px); height: auto; }
+.bf-lineup { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 12px 0; }
+.bf-souvenir {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: #fff8e6; border: 1px solid #f0d48a; border-radius: 16px; padding: 16px; margin: 14px 0;
+}
+.bf-souvenir img { width: 96px; height: 96px; }
+.bf-souvenir.pending img { filter: grayscale(0.7); opacity: 0.75; }
+.bf-souvenir-tag { background: #e3a008; color: #fff; font-size: 12px; padding: 3px 10px; border-radius: 999px; font-weight: 700; }
+.bf-my-panel.settle { text-align: left; justify-content: center; }
+
+@media (min-width: 700px) {
+  .bf-stage { height: min(64vh, 560px); }
+  .bf-countdown { font-size: 36px; }
+}
