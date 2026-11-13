@@ -367,6 +367,28 @@ await test('Workers runtime migration and business regression', async t=>{
  const end=(await call('/api/v1/training-analytics',{token})).data.data;
  assert.equal(end.workouts,mid.workouts+1);assert.equal(end.days[todayKey]||0,daysBefore+2);
  });
+ await t.test('training analytics folds finished camera sessions into sets, reps, muscles and history without inventing load',async()=>{
+ const token=tokens.at(1),headers={'X-MoveMate-Recognition-Version':'2'};
+ const before=(await call('/api/v1/training-analytics',{token})).data.data;
+ const bicepsBefore=before.muscleDetails?.biceps?.primary||0,forearmsBefore=before.muscleDetails?.forearms?.secondary||0,armsBefore=before.muscles?.['upper arms']?.sets||0;
+ const histBefore=(before.exerciseHistory?.['exdb:0313']||[]).reduce((n,p)=>n+p.reps,0);
+ const recBefore=before.records.find(r=>r.name==='哑铃锤式弯举')?.reps||0;
+ const cam=(await call('/api/v1/sport-sessions',{method:'POST',token,headers,body:{sportType:'hammer_curl',source:'camera'}})).data.data;
+ const fin=await call('/api/v1/sport-sessions/'+cam.id+'/finish',{method:'POST',token,headers,body:{reps:12,scoreAccumulator:{count:12,total:960,depth:960,stability:960,trunk:960,symmetry:960}}});
+ assert.equal(fin.status,200,JSON.stringify(fin.data));assert.equal(fin.data.data.xpEarned,24);
+ const after=(await call('/api/v1/training-analytics',{token})).data.data;
+ assert.equal(after.workouts,before.workouts+1);assert.equal(after.sets,before.sets+1);assert.equal(after.reps,before.reps+12);assert.equal(after.volume,before.volume);
+ assert.equal(after.muscleDetails.biceps.primary,bicepsBefore+1);assert.equal(after.muscleDetails.forearms.secondary,forearmsBefore+1);assert.equal(after.muscles['upper arms'].sets,armsBefore+1);
+ const hist=after.exerciseHistory['exdb:0313']||[];assert.equal(hist.reduce((n,p)=>n+p.reps,0),histBefore+12);
+ const todayPoint=hist.find(p=>p.date===after.today);assert.ok(todayPoint);assert.equal(todayPoint.loadKg,0);assert.equal(todayPoint.volume,0);assert.equal(todayPoint.e1rm,null);
+ const rec=after.records.find(r=>r.name==='哑铃锤式弯举');assert.ok(rec);assert.equal(rec.reps,Math.max(recBefore,12));assert.equal(rec.loadKg,0);assert.equal(rec.volume,0);
+ const demo=(await call('/api/v1/sport-sessions',{method:'POST',token,headers,body:{sportType:'hammer_curl',source:'demo'}})).data.data;
+ await call('/api/v1/sport-sessions/'+demo.id+'/finish',{method:'POST',token,headers,body:{reps:10,scoreAccumulator:{count:10,total:800,depth:800,stability:800,trunk:800,symmetry:800}}});
+ const zero=(await call('/api/v1/sport-sessions',{method:'POST',token,headers,body:{sportType:'hammer_curl',source:'camera'}})).data.data;
+ await call('/api/v1/sport-sessions/'+zero.id+'/finish',{method:'POST',token,headers,body:{reps:0}});
+ const end=(await call('/api/v1/training-analytics',{token})).data.data;
+ assert.equal(end.workouts,after.workouts+1);assert.equal(end.sets,after.sets);assert.equal(end.reps,after.reps);assert.equal(end.muscleDetails.biceps.primary,bicepsBefore+1);
+ });
  await voicePoolTests(t,{mf,call,tokens,adminToken,sockets,password});
  }finally{for(const ws of sockets){try{ws.close()}catch{}}await mf.dispose()}
 });
