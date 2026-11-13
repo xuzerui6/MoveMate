@@ -547,6 +547,10 @@ function seedJluMetadata(conn: DatabaseSync): void {
 // 场地只收录有公开来源可查证的（2026-11-13 调研）：
 // - 临河校区健身馆：全国统考考点通知（2024/2025，中国运动文化教育网/国家体育总局）
 //   + 吉林省政务服务网「吉林体院健身馆」场馆登记（临河校区内）
+//   运动类型 2026-11-13 本校学生一手补正：该馆为多用途馆，可健身、练舞蹈、
+//   打篮球、打排球、打羽毛球、练跆拳道。现有运动词表（validator SPORT_TYPES）
+//   无「舞蹈」「跆拳道」条目，沿用武术馆/摔跤柔道馆归入 fitness 的先例，
+//   两者先并入 fitness，待词表扩充时再单列。
 // - 临河校区田径场：中国吉林网 2026 年迎新晚会报道（临河校区田径场）
 //   + 田径成绩系统「吉林体育学院第二十九届田径运动会 · 临河校区田径场」
 // - 南岭校区室内篮球馆武术馆、摔跤柔道馆：OpenStreetMap 场馆数据
@@ -562,7 +566,7 @@ const JLSU_VENUES: Array<[number, number, string, string]> = [
   [2, 4, '南岭校区室内篮球馆武术馆', '["basketball","fitness"]'],
   [2, 4, '南岭校区摔跤柔道馆', '["fitness"]'],
   [2, 5, '临河校区田径场', '["running","soccer"]'],
-  [2, 5, '临河校区健身馆', '["fitness","badminton"]'],
+  [2, 5, '临河校区健身馆', '["fitness","basketball","volleyball","badminton"]'],
 ];
 
 function seedJlsuMetadata(conn: DatabaseSync): void {
