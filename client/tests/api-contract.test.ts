@@ -786,24 +786,19 @@ test('contract: fight action request bodies carry their inputs', async () => {
   } finally { restore(); }
 });
 
-// FINDING（todo：断言保持严格；注意 todo 不会「修好自动转正」——
-// 修复提交必须同时摘掉下面的 {todo} 标记，否则通过了也仍计 todo）：
+// 回归锁（原 FINDING，2026-11-14 已修复并摘掉 todo）：
 // 服务端没人发起打怪时 GET /games/:id/boss-fight 返回 data: null
 // （boss-fight.service getFightForGame 实测 return null），消费方
 // useBossFight 的契约是 fetchFight 解析为 null（apply(null) 清空快照）。
-// 但 bossFight.ts 的 unwrap 是双层剥：body = res?.data ?? res 先把
+// 旧 bossFight.ts 的 unwrap 是双层剥：body = res?.data ?? res 先把
 // data:null 回退成信封本体，body?.data ?? body 再回退成信封——解析值是
 // {code, message, data:null} 而不是 null。useBossFight 会把信封当快照
 // 存下（acceptSnapshot(null, 信封) 直接接受），页面随后读 participants
 // 等快照字段即出错。这正是打怪页首次打开（还没人发起）的常态路径。
 // 与 2026-11-13 fetchGameMeta 同类：接口层自查全过、真页面坏。
-// 修复方向（不在本轮改运行时行为）：unwrap 只剥一层且 null 原样保留
-// ——正式版候选分支 release/2026-11-13-boss-candidate 已按此修法落地，
-// 预览分支尚未跟进。此 todo 即预览分支的跟进提醒。Codex 2026-11-14
-// 复核确认此缺陷成立，并建议单独成一笔修复提交、不与类型清理混行。
+// 修复 = unwrap 只剥一层且 null 原样保留（与正式版已上线实现逐字一致）。
 test(
   'contract: fetchFight resolves to null when the server has no fight yet',
-  { todo: 'FINDING: bossFight unwrap 双层剥把 data:null 回退成信封，fetchFight 应解析为 null（见上方注释）' },
   async () => {
     const restore = installAdapter();
     handler = route('get', /^\/games\/9\/boss-fight$/, null);
