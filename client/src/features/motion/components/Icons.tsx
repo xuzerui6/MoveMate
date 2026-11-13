@@ -33,6 +33,8 @@ import {TennisBallIcon} from '@phosphor-icons/react/dist/csr/TennisBall';
 import {PersonSimpleRunIcon} from '@phosphor-icons/react/dist/csr/PersonSimpleRun';
 import {PersonSimpleSwimIcon} from '@phosphor-icons/react/dist/csr/PersonSimpleSwim';
 import {PersonSimpleSnowboardIcon as PersonSimpleSkateboardIcon} from '@phosphor-icons/react/dist/csr/PersonSimpleSnowboard';
+import {MusicNotesIcon} from '@phosphor-icons/react/dist/csr/MusicNotes';
+import {PersonSimpleTaiChiIcon} from '@phosphor-icons/react/dist/csr/PersonSimpleTaiChi';
 import type { Icon as IconType, IconWeight } from '@phosphor-icons/react';
 import {CalendarBlankIcon} from '@phosphor-icons/react/dist/csr/CalendarBlank';
 import {MapPinIcon} from '@phosphor-icons/react/dist/csr/MapPin';
@@ -43,7 +45,7 @@ import {SlidersHorizontalIcon} from '@phosphor-icons/react/dist/csr/SlidersHoriz
 import {ClipboardTextIcon} from '@phosphor-icons/react/dist/csr/ClipboardText';
 import {ListChecksIcon} from '@phosphor-icons/react/dist/csr/ListChecks';
 import {ChartLineIcon} from '@phosphor-icons/react/dist/csr/ChartLine';
-const icons:Record<string,IconType>={stop:StopIcon,home:HouseIcon,users:UsersIcon,bell:BellIcon,dumbbell:BarbellIcon,user:UserIcon,bag:BackpackIcon,heart:HeartIcon,flame:FireIcon,bluetooth:BluetoothIcon,arrow:ArrowRightIcon,back:ArrowLeftIcon,check:CheckIcon,pause:PauseIcon,play:PlayIcon,spark:SparkleIcon,reset:ArrowCounterClockwiseIcon,mic:MicrophoneIcon,micOff:MicrophoneSlashIcon,volume:SpeakerHighIcon,volumeOff:SpeakerSlashIcon,clock:ClockIcon,bolt:LightningIcon,camera:CameraIcon,close:XIcon,lock:LockKeyIcon,trophy:TrophyIcon,basketball:BasketballIcon,soccer:SoccerBallIcon,tennis:TennisBallIcon,running:PersonSimpleRunIcon,swimming:PersonSimpleSwimIcon,skateboarding:PersonSimpleSkateboardIcon};
+const icons:Record<string,IconType>={stop:StopIcon,home:HouseIcon,users:UsersIcon,bell:BellIcon,dumbbell:BarbellIcon,user:UserIcon,bag:BackpackIcon,heart:HeartIcon,flame:FireIcon,bluetooth:BluetoothIcon,arrow:ArrowRightIcon,back:ArrowLeftIcon,check:CheckIcon,pause:PauseIcon,play:PlayIcon,spark:SparkleIcon,reset:ArrowCounterClockwiseIcon,mic:MicrophoneIcon,micOff:MicrophoneSlashIcon,volume:SpeakerHighIcon,volumeOff:SpeakerSlashIcon,clock:ClockIcon,bolt:LightningIcon,camera:CameraIcon,close:XIcon,lock:LockKeyIcon,trophy:TrophyIcon,basketball:BasketballIcon,soccer:SoccerBallIcon,tennis:TennisBallIcon,running:PersonSimpleRunIcon,swimming:PersonSimpleSwimIcon,skateboarding:PersonSimpleSkateboardIcon,dance:MusicNotesIcon,taekwondo:PersonSimpleTaiChiIcon};
 Object.assign(icons,{expand:ArrowsOutIcon,collapse:ArrowsInIcon,calendar:CalendarBlankIcon,pin:MapPinIcon,pencil:PencilSimpleIcon,send:PaperPlaneTiltIcon,caret:CaretRightIcon,sliders:SlidersHorizontalIcon,clipboard:ClipboardTextIcon,list:ListChecksIcon,chart:ChartLineIcon});
 export function Icon({name,size=22,weight='regular'}:{name:string;size?:number;weight?:IconWeight}){const Component=icons[name]||BarbellIcon;return <Component size={size} weight={weight} aria-hidden="true"/>;}
 

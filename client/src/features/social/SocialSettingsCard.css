@@ -1,0 +1,93 @@
+/* 好友与安全（个人中心卡片） */
+.social-settings-card {
+  background: var(--color-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+.social-settings-card h2 {
+  font-size: var(--font-size-xl);
+  color: var(--ink);
+  margin-bottom: var(--space-lg);
+}
+.social-settings-block {
+  margin-top: var(--space-xl);
+}
+.social-settings-block:first-of-type {
+  margin-top: 0;
+}
+.social-settings-block h3 {
+  font-size: var(--font-size-md);
+  color: var(--ink);
+  margin-bottom: var(--space-sm);
+}
+.social-settings-note {
+  color: var(--muted);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+}
+.social-settings-invite-row {
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+  margin-top: var(--space-md);
+  flex-wrap: wrap;
+}
+.social-settings-invite-link {
+  flex: 1;
+  min-width: 200px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  font-size: var(--font-size-sm);
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.social-settings-invite-row .btn {
+  min-height: 48px;
+}
+.social-settings-scope {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+.social-settings-scope-option {
+  min-height: 48px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  font-size: var(--font-size-md);
+  color: var(--ink);
+  background: #fff;
+}
+.social-settings-scope-option--active {
+  border-color: var(--color-primary);
+  background: var(--mint);
+  font-weight: 700;
+}
+.social-settings-blocks {
+  list-style: none;
+  margin: var(--space-md) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.social-settings-blocks li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.social-settings-block-name {
+  flex: 1;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--ink);
+}
+.social-settings-blocks .btn {
+  min-height: 48px;
+}

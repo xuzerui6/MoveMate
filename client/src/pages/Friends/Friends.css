@@ -1,0 +1,160 @@
+/* 我的好友 —— 手机单列（好友在上、一起练过的人在下），电脑双列 */
+.friends-page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-lg);
+}
+.friends-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+}
+.friends-heading {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+.friends-heading h2 {
+  font-size: var(--font-size-xl);
+  color: var(--ink);
+}
+.friends-heading span {
+  color: var(--muted);
+  font-size: var(--font-size-sm);
+}
+.friends-list,
+.friends-partner-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.friends-row,
+.friends-partner-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  background: var(--color-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+}
+.friends-row-main {
+  flex: 1;
+  min-width: 0;
+}
+.friends-row-name {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--ink);
+}
+.friends-row-meta {
+  font-size: var(--font-size-sm);
+  color: var(--muted);
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.friends-row-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.friends-action {
+  min-height: 48px;
+}
+.friends-more {
+  position: relative;
+}
+.friends-more-btn {
+  min-width: 48px;
+  min-height: 48px;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  border-radius: var(--radius-full);
+}
+.friends-more-menu {
+  position: absolute;
+  right: 0;
+  top: 52px;
+  z-index: 6;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  min-width: 132px;
+  overflow: hidden;
+}
+.friends-more-menu button {
+  min-height: 48px;
+  padding: 0 var(--space-lg);
+  text-align: left;
+  font-size: var(--font-size-md);
+  color: var(--ink);
+  white-space: nowrap;
+}
+.friends-more-menu button:hover {
+  background: var(--soft);
+}
+.friends-empty,
+.friends-invite-hint {
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  color: var(--muted);
+  font-size: var(--font-size-md);
+  line-height: 1.6;
+}
+.friends-invite-hint {
+  margin-top: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: flex-start;
+}
+.friends-invite-hint .btn {
+  min-height: 48px;
+}
+.friends-side-note {
+  color: var(--muted);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-md);
+}
+.friends-side-empty {
+  color: var(--muted);
+  font-size: var(--font-size-md);
+}
+.friends-dialog-text {
+  font-size: var(--font-size-md);
+  line-height: 1.6;
+  color: var(--ink);
+}
+.friends-dialog-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: flex-end;
+  margin-top: var(--space-lg);
+}
+.friends-dialog-actions .btn {
+  min-height: 48px;
+}
+@media (min-width: 900px) {
+  .friends-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    align-items: start;
+  }
+  .friends-side {
+    position: sticky;
+    top: var(--space-lg);
+  }
+}

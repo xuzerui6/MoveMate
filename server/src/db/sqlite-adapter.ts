@@ -271,6 +271,7 @@ function ensureSchema(conn: DatabaseSync): void {
       game_id INTEGER NOT NULL REFERENCES games(id),
       sender_id INTEGER NOT NULL REFERENCES users(id),
       content TEXT NOT NULL,
+      kind TEXT NOT NULL DEFAULT 'user',
       created_at TEXT DEFAULT (datetime('now'))
     );
 
@@ -462,6 +463,7 @@ function ensureSchema(conn: DatabaseSync): void {
   ensureColumn('games', 'fill_open', 'INTEGER DEFAULT 0');
   ensureColumn('games', 'auto_fill', 'INTEGER DEFAULT 0');
   ensureColumn('games', 'rebooked_from_id', 'INTEGER');
+  ensureColumn('chat_messages', 'kind', "TEXT NOT NULL DEFAULT 'user'");
 }
 
 // ================================================================
@@ -548,9 +550,9 @@ function seedJluMetadata(conn: DatabaseSync): void {
 // - 临河校区健身馆：全国统考考点通知（2024/2025，中国运动文化教育网/国家体育总局）
 //   + 吉林省政务服务网「吉林体院健身馆」场馆登记（临河校区内）
 //   运动类型 2026-11-13 本校学生一手补正：该馆为多用途馆，可健身、练舞蹈、
-//   打篮球、打排球、打羽毛球、练跆拳道。现有运动词表（validator SPORT_TYPES）
-//   无「舞蹈」「跆拳道」条目，沿用武术馆/摔跤柔道馆归入 fitness 的先例，
-//   两者先并入 fitness，待词表扩充时再单列。
+//   打篮球、打排球、打羽毛球、练跆拳道。2026-11-13 词表扩充（老板批准）：
+//   validator SPORT_TYPES 已新增 dance（舞蹈）/ taekwondo（跆拳道），
+//   本馆六项运动全部单列，不再并入 fitness。
 // - 临河校区田径场：中国吉林网 2026 年迎新晚会报道（临河校区田径场）
 //   + 田径成绩系统「吉林体育学院第二十九届田径运动会 · 临河校区田径场」
 // - 南岭校区室内篮球馆武术馆、摔跤柔道馆：OpenStreetMap 场馆数据
@@ -566,7 +568,7 @@ const JLSU_VENUES: Array<[number, number, string, string]> = [
   [2, 4, '南岭校区室内篮球馆武术馆', '["basketball","fitness"]'],
   [2, 4, '南岭校区摔跤柔道馆', '["fitness"]'],
   [2, 5, '临河校区田径场', '["running","soccer"]'],
-  [2, 5, '临河校区健身馆', '["fitness","basketball","volleyball","badminton"]'],
+  [2, 5, '临河校区健身馆', '["fitness","basketball","volleyball","badminton","dance","taekwondo"]'],
 ];
 
 function seedJlsuMetadata(conn: DatabaseSync): void {

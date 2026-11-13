@@ -14,6 +14,8 @@ function normalizeMessage(data: any): Message {
     sender_name: data.sender?.nickname || data.sender_nickname || data.sender_name || '未知用户',
     sender_avatar: data.sender?.avatar || data.sender_avatar_url || data.sender_avatar || '',
     content: data.content, created_at: normalizeServerTimestamp(data.createdAt || data.created_at),
+    kind: data.kind === 'system' ? 'system' : 'user',
+    masked: data.masked === true || data.masked === 1,
   };
 }
 function appendMessage(previous: Message[], message: Message): Message[] {
@@ -51,11 +53,16 @@ export function useChat(gameId: string | undefined) {
     const receive = (data: any) => {
       if (String(data.gameId) === String(gameId)) setMessages((previous) => appendMessage(previous, normalizeMessage(data)));
     };
+    // 有人进出局时局里会多一条系统小提示（「XX 加入了本局」），重新拉一次消息就能看到
+    const memberChanged = (data: any) => {
+      if (!data || String(data.gameId ?? data.game_id) === String(gameId)) void fetchHistory();
+    };
     socket.on('connect', enter);
     socket.on('new_message', receive);
+    socket.on('member_change', memberChanged);
     if (socket.connected) enter();
     return () => {
-      socket.off('connect', enter); socket.off('new_message', receive);
+      socket.off('connect', enter); socket.off('new_message', receive); socket.off('member_change', memberChanged);
       socket.emit('leave_room', { gameId: Number(gameId) });
     };
   }, [socket, gameId, fetchHistory]);

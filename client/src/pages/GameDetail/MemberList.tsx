@@ -1,12 +1,17 @@
 /**
  * 参与者列表 —— 头像（可点击查看公开资料） + 昵称 + 角色标签
+ * 资料卡里可以加好友、举报、拉黑；发起人还能请人离局。
  */
 import React, { useState, useCallback, useEffect } from 'react';
-import type { PublicUserInfo } from '../../types';
+import type { FriendshipStatus, PublicUserInfo } from '../../types';
 import { SPORT_LABELS } from '../../types';
 import * as authApi from '../../api/auth';
 import SportIcon from '../../components/SportIcon';
 import Avatar from '../../components/Avatar';
+import { useAuthStore } from '../../stores/authStore';
+import AddFriendButton from '../../features/social/AddFriend';
+import { BlockConfirmDialog, RemoveMemberDialog, ReportDialog } from '../../features/social/SafetyDialogs';
+import { REPORT_REASONS_USER } from '../../features/social/socialLogic';
 
 interface Props {
   participants: any[];
@@ -15,6 +20,16 @@ interface Props {
   gameState?: string;
   actionLoading?: boolean;
   onConfirmAttendance?: (userId: number | string) => void;
+  /** 局 id（请人离局用） */
+  gameId?: string;
+  /** 局开始时间 ISO（请人离局的 30 分钟锁用） */
+  gameStartTime?: string;
+  /** 我与每位成员的关系（加好友按钮形态） */
+  friendStatus?: Map<number, FriendshipStatus>;
+  /** 加好友/拉黑等关系变化后，通知父组件刷新关系表 */
+  onSocialChanged?: () => void;
+  /** 有人离局后刷新成员列表 */
+  onRemoved?: () => void;
 }
 
 const MemberList: React.FC<Props> = ({
@@ -24,10 +39,19 @@ const MemberList: React.FC<Props> = ({
   gameState,
   actionLoading = false,
   onConfirmAttendance,
+  gameId,
+  gameStartTime,
+  friendStatus,
+  onSocialChanged,
+  onRemoved,
 }) => {
+  const currentUser = useAuthStore((s) => s.user);
   const [popupUserId, setPopupUserId] = useState<string | null>(null);
   const [popupInfo, setPopupInfo] = useState<PublicUserInfo | null>(null);
   const [popupLoading, setPopupLoading] = useState(false);
+  const [reportFor, setReportFor] = useState<{ user_id: number; nickname: string } | null>(null);
+  const [blockFor, setBlockFor] = useState<{ user_id: number; nickname: string } | null>(null);
+  const [removeFor, setRemoveFor] = useState<{ user_id: number; nickname: string } | null>(null);
 
   const openPopup = useCallback(async (userId: string) => {
     if (popupUserId === userId && popupInfo) {
@@ -157,6 +181,44 @@ const MemberList: React.FC<Props> = ({
                           )}
                         </div>
                       </div>
+                      {Number(p.user_id) !== Number(currentUser?.id) && (
+                        <div className="ui-pages-gamedetail-memberlist-popupActions">
+                          <AddFriendButton
+                            target={{
+                              user_id: Number(p.user_id),
+                              nickname: popupInfo.nickname,
+                              avatar_url: popupInfo.avatar_url,
+                              department: popupInfo.department,
+                              sport_preferences: popupInfo.sport_preferences,
+                            }}
+                            status={friendStatus?.get(Number(p.user_id)) || 'none'}
+                            sourceGameId={gameId ? Number(gameId) : undefined}
+                            onStatusChange={() => onSocialChanged?.()}
+                          />
+                          <div className="ui-pages-gamedetail-memberlist-popupSafety">
+                            <button
+                              type="button"
+                              onClick={() => setReportFor({ user_id: Number(p.user_id), nickname: popupInfo.nickname })}
+                            >
+                              举报
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setBlockFor({ user_id: Number(p.user_id), nickname: popupInfo.nickname })}
+                            >
+                              拉黑
+                            </button>
+                            {isCreator && gameId && ['recruiting', 'full', 'ready'].includes(gameState || '') && (
+                              <button
+                                type="button"
+                                onClick={() => setRemoveFor({ user_id: Number(p.user_id), nickname: popupInfo.nickname })}
+                              >
+                                请他离局
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </>
                   ) : (
                     <div className="ui-pages-gamedetail-memberlist-popupLoading">加载失败</div>
@@ -167,6 +229,32 @@ const MemberList: React.FC<Props> = ({
           );
         })}
       </div>
+
+      {reportFor && (
+        <ReportDialog
+          targetType="user"
+          targetId={reportFor.user_id}
+          targetName={reportFor.nickname}
+          reasons={REPORT_REASONS_USER}
+          onClose={() => setReportFor(null)}
+        />
+      )}
+      {blockFor && (
+        <BlockConfirmDialog
+          user={blockFor}
+          onClose={() => setBlockFor(null)}
+          onBlocked={() => { setPopupUserId(null); setPopupInfo(null); onSocialChanged?.(); }}
+        />
+      )}
+      {removeFor && gameId && (
+        <RemoveMemberDialog
+          gameId={gameId}
+          gameStartTime={gameStartTime || ''}
+          member={removeFor}
+          onClose={() => setRemoveFor(null)}
+          onRemoved={() => { setPopupUserId(null); setPopupInfo(null); onRemoved?.(); }}
+        />
+      )}
     </div>
   );
 };

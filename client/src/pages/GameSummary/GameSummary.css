@@ -1,0 +1,96 @@
+/* 结束页 —— 头像墙 / 约下周再练 / 纪念卡 */
+.summary-page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-lg);
+}
+.summary-subtitle {
+  color: var(--muted);
+  font-size: var(--font-size-md);
+  margin-bottom: var(--space-xl);
+}
+.summary-card {
+  background: var(--color-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+.summary-card h2 {
+  font-size: var(--font-size-xl);
+  color: var(--ink);
+  margin-bottom: var(--space-sm);
+}
+.summary-note {
+  color: var(--muted);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  margin-top: var(--space-md);
+}
+.summary-wall {
+  list-style: none;
+  margin: var(--space-lg) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: var(--space-lg);
+}
+.summary-person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  text-align: center;
+}
+.summary-person-name {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--ink);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.summary-rebook-btn {
+  width: 100%;
+  min-height: 56px;
+  font-size: var(--font-size-lg);
+}
+.summary-confirm-line {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-top: var(--space-md);
+}
+.summary-actions {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-top: var(--space-lg);
+}
+.summary-actions .btn {
+  min-height: 48px;
+}
+.summary-memorial {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin-top: var(--space-md);
+}
+.summary-memorial-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding: var(--space-sm) 0;
+  font-size: var(--font-size-md);
+}
+.summary-memorial-row span {
+  color: var(--muted);
+}
+.summary-memorial-row strong {
+  color: var(--ink);
+}
+.summary-save-btn {
+  margin-top: var(--space-lg);
+  min-height: 48px;
+}

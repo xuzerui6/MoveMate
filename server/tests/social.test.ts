@@ -343,3 +343,25 @@ test('share link returns in-app path and respects friends-game visibility', asyn
   assert.equal(link.status, 200);
   assert.equal(link.body.data.path, `/games/${game.id}`);
 });
+
+test('join and leave leave system tips in the game chat', async () => {
+  const host = await account('soc-tip-host'), guest = await account('soc-tip-guest');
+  const game = await games.createGame(gameInput(host.user.id));
+  await games.joinGame(game.id, guest.user.id);
+  const afterJoin = await request(`/games/${game.id}/messages`, undefined, host.token);
+  assert.equal(afterJoin.status, 200, JSON.stringify(afterJoin.body));
+  const joinTip = afterJoin.body.data.messages.find((m: any) => m.kind === 'system');
+  assert.ok(joinTip, 'joining should leave a system tip');
+  assert.match(joinTip.content, /加入了本局/);
+  assert.ok(joinTip.content.includes(guest.user.nickname), 'tip names the joiner');
+  await games.leaveGame(game.id, guest.user.id);
+  const afterLeave = await request(`/games/${game.id}/messages`, undefined, host.token);
+  const leaveTip = afterLeave.body.data.messages.find((m: any) => m.kind === 'system' && /离开了本局/.test(m.content));
+  assert.ok(leaveTip, 'leaving should leave a system tip for the remaining members');
+  // 普通发言不受影响：kind 默认 user
+  const said = await request(`/games/${game.id}/messages`, { content: '大家好' }, host.token);
+  assert.equal(said.status, 201, JSON.stringify(said.body));
+  const afterSay = await request(`/games/${game.id}/messages`, undefined, host.token);
+  const userMsg = afterSay.body.data.messages.find((m: any) => m.content === '大家好');
+  assert.equal(userMsg.kind, 'user');
+});

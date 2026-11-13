@@ -5,7 +5,7 @@ import { useStore } from './lib/store';
 import { SPORT_LABELS } from '../../types';
 import { getErrorMessage } from '../../api/client';
 import Dialog from '../../components/Dialog';
-const rate=(sport:string)=>['running','swimming'].includes(sport)?3:['basketball','badminton','soccer','volleyball','tennis','table_tennis'].includes(sport)?2:1;
+const rate=(sport:string)=>['running','swimming'].includes(sport)?3:['basketball','badminton','soccer','volleyball','tennis','table_tennis','dance','taekwondo'].includes(sport)?2:1;
 export default function SportTimer({gameId,sportType='fitness',enabled=true,onComplete}:{gameId?:number;sportType?:string;enabled?:boolean;onComplete?:(row:SportSession)=>void}) {
   const {sessions,startSession,act}=useStore();
   const row=gameId?sessions.find(s=>s.gameId===gameId):sessions.find(s=>!s.gameId&&['running','paused'].includes(s.status));

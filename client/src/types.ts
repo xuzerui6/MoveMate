@@ -13,6 +13,8 @@ export const COMMON_SPORT_TYPES = [
   'swimming',
   'roller_skating',
   'skateboarding',
+  'dance',
+  'taekwondo',
 ] as const;
 
 export type CommonSportType = typeof COMMON_SPORT_TYPES[number];
@@ -42,7 +44,12 @@ export type NotificationType =
   | 'game_full_rollback'
   | 'check_in_reminder'
   | 'reward_granted'
-  | 'penalty_applied';
+  | 'penalty_applied'
+  | 'friend_request'
+  | 'friend_accepted'
+  | 'game_invite'
+  | 'report_outcome'
+  | 'member_removed';
 
 /* ========== 数据实体 ========== */
 
@@ -100,6 +107,12 @@ export interface PublicUserInfo {
   avatar_url: string;
   department: string;
   sport_preferences: string[];
+  /** 仅好友/本人可见：连续运动天数 */
+  reward_streak?: number;
+  /** 仅好友/本人可见：最近完成的局 */
+  recent_games?: { id: number; title: string; sport_type: string; start_time: string; status: string }[];
+  /** 仅好友/本人可见：和我一起练过的次数与最近一次 */
+  together?: { count: number; last_played_at: string | null };
 }
 
 export interface Participant {
@@ -141,6 +154,12 @@ export interface Game {
   completed_at: string | null;
   status: GameState;
   tag?: GameTag;
+  /** 谁能看到：public 公开大厅 / friends 好友局 */
+  visibility?: 'public' | 'friends';
+  /** 发起人手动开放补位 */
+  fill_open?: boolean;
+  /** 人不够时自动开放补位 */
+  auto_fill?: boolean;
   checked_in_at?: string | null;
   attendance_confirmed_at?: string | null;
   reward_points?: number;
@@ -162,6 +181,77 @@ export interface Message {
   sender_avatar: string;
   content: string;
   created_at: string;
+  /** 'user' 普通发言 / 'system' 系统小提示（如「XX 加入了本局」） */
+  kind?: 'user' | 'system';
+  /** 发送者被我拉黑：内容已屏蔽 */
+  masked?: boolean;
+}
+
+/* ========== 社交（好友）一期 ========== */
+
+/** 我与某人的关系（页面按钮状态由此派生） */
+export type FriendshipStatus = 'self' | 'friends' | 'none' | 'pending' | 'pending_out' | 'pending_in' | 'blocked';
+
+export interface FriendEntry {
+  user_id: number;
+  nickname: string;
+  avatar_url: string;
+  department: string;
+  sport_preferences: string[];
+  streak: number;
+  last_sport_at: string | null;
+  together_count: number;
+  last_played_at: string | null;
+}
+
+export interface RecentPartner {
+  user_id: number;
+  nickname: string;
+  avatar_url: string;
+  department: string;
+  sport_preferences: string[];
+  streak: number;
+  together_count: number;
+  last_played_at: string | null;
+}
+
+export interface FriendRequestItem {
+  id: number;
+  requester_id: number;
+  greeting: string;
+  source_game_id: number | null;
+  created_at: string;
+  nickname: string;
+  avatar_url: string;
+  department: string;
+  sport_preferences: string[];
+}
+
+export interface BlockEntry {
+  user_id: number;
+  nickname: string;
+  avatar_url: string;
+  created_at: string;
+}
+
+export interface EndSummaryAttendee {
+  user_id: number;
+  nickname: string;
+  avatar_url: string;
+  friendship_status: FriendshipStatus;
+}
+
+export interface EndSummary {
+  game: Game;
+  attendees: EndSummaryAttendee[];
+  my_stats: { xp: number; effective_ms: number; reps: number };
+  rebooked_game_id: number | null;
+}
+
+export interface MyInvite {
+  invite_code: string;
+  invite_path: string;
+  inviter: { id: number; nickname: string; avatar_url: string; department: string } | null;
 }
 
 export interface Notification {
@@ -225,6 +315,10 @@ export interface CreateGameData {
   end_time?: string;
   max_players: number;
   tag?: GameTag;
+  /** 谁能看到：public 公开大厅（默认）/ friends 好友局 */
+  visibility?: 'public' | 'friends';
+  /** 好友局人不够时自动开放补位（默认关） */
+  auto_fill?: boolean;
 }
 
 export interface GameFilter {
@@ -266,6 +360,8 @@ export const SPORT_LABELS: Record<string, string> = {
   swimming: '游泳',
   roller_skating: '轮滑',
   skateboarding: '滑板',
+  dance: '舞蹈',
+  taekwondo: '跆拳道',
 };
 
 /** 状态中文映射 */

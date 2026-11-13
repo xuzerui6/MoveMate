@@ -357,7 +357,7 @@ test('cron readiness, attendance and completion settle personal XP exactly once'
 });
 
 test('sport rates use only volume and round accumulated seconds', () => {
-  for(const sport of ['basketball','badminton','soccer','volleyball','tennis','table_tennis']) assert.equal(motion.calculateXp(sport,90,500,'timer'),3);
+  for(const sport of ['basketball','badminton','soccer','volleyball','tennis','table_tennis','dance','taekwondo']) assert.equal(motion.calculateXp(sport,90,500,'timer'),3);
   assert.equal(motion.calculateXp('running',40,0,'timer'),2);
   assert.equal(motion.calculateXp('swimming',60,0,'timer'),3);
   assert.equal(motion.calculateXp('fitness',59,0,'timer'),0);
