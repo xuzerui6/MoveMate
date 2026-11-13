@@ -89,10 +89,34 @@ export function unlockedOutfitsMap(counts: AvatarCounts): Record<string, boolean
 /**
  * 怪兽目录（数据驱动：怪兽图鉴/主题/纪念物都在这里扩展，
  * fight 表只存 boss_id，换怪、加怪都不动表结构）。
- * 一期只有一只占位怪；形象与命名由怪兽设计线另行定稿后替换 name 即可。
+ * 2026-11-13 怪兽设计定稿后补入正式阵容（老板拍板：三版方向全采纳）：
+ * - aoye_yanshi 熬夜魇狮：一期主线怪，前端发起打怪时显式指定它；
+ * - 夜幕兽群其余成员（wuya_shou / yeyi_fu / chenyuan_yingjiao / lieyue_manniu）先只进图鉴；
+ * - ziye_yanlong 子夜魇龙、suiyue_shoumo 碎月睡魔：周怪槽位，未开放；
+ * - ziye_zhong 子夜钟巨像：活动槽位，未开放。
+ * availability 只是图鉴/前端展示口径；kunkun 保留在首位是历史默认
+ * （boss-fight 测试冻结了「不指定 boss 时默认 kunkun」），不要调整顺序。
  */
-export const BOSS_CATALOG: Array<{ boss_id: string; name: string; souvenir_item_id: string }> = [
+export interface BossCatalogEntry {
+  boss_id: string;
+  name: string;
+  souvenir_item_id: string;
+  /** 图鉴档位（用户可见中文）：普通 / 精英 / 首领 / 周怪级 / 周怪 / 活动怪 */
+  tier?: string;
+  /** fight=一期可打；roster=图鉴成员未开放；weekly=周怪未开放；event=活动未开放 */
+  availability?: 'fight' | 'roster' | 'weekly' | 'event';
+}
+
+export const BOSS_CATALOG: Array<BossCatalogEntry> = [
   { boss_id: 'kunkun', name: '困困兽', souvenir_item_id: 'kunkun_medal' },
+  { boss_id: 'aoye_yanshi', name: '熬夜魇狮', souvenir_item_id: 'aoye_yanshi_medal', tier: '首领', availability: 'fight' },
+  { boss_id: 'wuya_shou', name: '雾牙兽', souvenir_item_id: 'wuya_shou_medal', tier: '普通', availability: 'roster' },
+  { boss_id: 'yeyi_fu', name: '夜翼蝠', souvenir_item_id: 'yeyi_fu_medal', tier: '普通', availability: 'roster' },
+  { boss_id: 'chenyuan_yingjiao', name: '沉渊影蛟', souvenir_item_id: 'chenyuan_yingjiao_medal', tier: '精英', availability: 'roster' },
+  { boss_id: 'lieyue_manniu', name: '裂月蛮牛', souvenir_item_id: 'lieyue_manniu_medal', tier: '精英', availability: 'roster' },
+  { boss_id: 'ziye_yanlong', name: '子夜魇龙', souvenir_item_id: 'ziye_yanlong_medal', tier: '周怪级', availability: 'weekly' },
+  { boss_id: 'suiyue_shoumo', name: '碎月睡魔', souvenir_item_id: 'suiyue_shoumo_medal', tier: '周怪', availability: 'weekly' },
+  { boss_id: 'ziye_zhong', name: '子夜钟巨像', souvenir_item_id: 'ziye_zhong_medal', tier: '活动怪', availability: 'event' },
 ];
 
 export function bossById(bossId: string) {
@@ -102,4 +126,12 @@ export function bossById(bossId: string) {
 /** 纪念物目录：item_id → 展示名与来源怪兽 */
 export const SOUVENIR_CATALOG: Record<string, { name: string; boss_id: string }> = {
   kunkun_medal: { name: '困困兽首胜纪念章', boss_id: 'kunkun' },
+  aoye_yanshi_medal: { name: '魇狮月牙勋章', boss_id: 'aoye_yanshi' },
+  wuya_shou_medal: { name: '雾牙兽首胜纪念章', boss_id: 'wuya_shou' },
+  yeyi_fu_medal: { name: '夜翼蝠首胜纪念章', boss_id: 'yeyi_fu' },
+  chenyuan_yingjiao_medal: { name: '沉渊影蛟首胜纪念章', boss_id: 'chenyuan_yingjiao' },
+  lieyue_manniu_medal: { name: '裂月蛮牛首胜纪念章', boss_id: 'lieyue_manniu' },
+  ziye_yanlong_medal: { name: '子夜魇龙首胜纪念章', boss_id: 'ziye_yanlong' },
+  suiyue_shoumo_medal: { name: '碎月睡魔首胜纪念章', boss_id: 'suiyue_shoumo' },
+  ziye_zhong_medal: { name: '子夜钟巨像首胜纪念章', boss_id: 'ziye_zhong' },
 };

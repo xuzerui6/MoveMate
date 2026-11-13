@@ -1,0 +1,17 @@
+.ba-page { max-width: 960px; margin: 0 auto; padding: 0 16px 40px; }
+.ba-intro { color: #55555f; line-height: 1.7; margin: 8px 0 16px; }
+.ba-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+.ba-card { border: 1px solid #e6e3f0; border-radius: 16px; padding: 12px; background: #fff; }
+.ba-card.open { border-color: #c9bdf5; background: #faf8ff; }
+.ba-img-wrap { position: relative; display: flex; justify-content: center; }
+.ba-img-wrap img { width: 100%; max-width: 190px; height: auto; }
+.ba-silhouette { filter: brightness(0); opacity: 0.5; }
+.ba-lock {
+  position: absolute; right: 4px; bottom: 4px; background: rgba(23, 20, 31, 0.8); color: #fff;
+  border-radius: 999px; padding: 5px; display: inline-flex;
+}
+.ba-meta { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.ba-meta b { font-size: 16px; }
+.ba-tier { font-size: 12px; background: #efeaff; color: #5b4bc4; border-radius: 999px; padding: 2px 9px; }
+.ba-card p { color: #55555f; font-size: 13px; line-height: 1.6; margin: 6px 0; }
+.ba-card small { color: #8a8a96; font-size: 12px; }
