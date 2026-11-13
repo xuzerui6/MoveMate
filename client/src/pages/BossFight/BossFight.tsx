@@ -18,9 +18,10 @@ import {
 import {
   HP_STATE_NAME, estimateServerNow, formatClock, hpStateKey, nextLayout,
   publicParticipantView, recordLatencySample, remainingSeconds, teammateStatusLabel,
-  INITIAL_LAYOUT, type BossFightSnapshot, type FightLayoutState,
+  INITIAL_LAYOUT, crossedRepMilestone, deriveFrameAlert, hpStageAnnouncement, FRAME_ALERT_WORD,
+  type BossFightSnapshot, type BossHpState, type FightLayoutState, type FrameAlert,
 } from '../../features/motion/lib/bossFightState'
-import { announceCue, loadBossSoundOn, playHit, primeBossAudio, saveBossSoundOn } from '../../features/motion/lib/bossSounds'
+import { announceCue, announceFrameAlert, announceRepMilestone, loadBossSoundOn, playHit, primeBossAudio, saveBossSoundOn } from '../../features/motion/lib/bossSounds'
 import { exerciseInfo, type CameraExerciseType } from '../../features/motion/lib/exercises'
 import { getOutfitAvatar } from '../../features/motion/lib/outfits'
 import { useStore, type SportSession } from '../../features/motion/lib/store'
@@ -119,6 +120,8 @@ export default function BossFightPage() {
   snapshotRef.current = snapshot
   const camOnRef = useRef(camOn)
   camOnRef.current = camOn
+  const landmarksRef = useRef(pose.landmarks)
+  landmarksRef.current = pose.landmarks
 
   // 计数上报（带 clientTs，打怪伤害由服务端账本在这条上报里入账）
   const pendingTsRef = useRef<number | null>(null)
@@ -209,10 +212,15 @@ export default function BossFightPage() {
   // ------------------------------------------------------------------
   const baselineRef = useRef(0)
   const prevStatusRef = useRef<string>('')
-  const prevFracRef = useRef(1)
+  const prevHpStateRef = useRef<BossHpState>('full')
+  const prevMilestoneRef = useRef(0)
   const [floaters, setFloaters] = useState<Array<{ id: number; value: number }>>([])
   const floaterId = useRef(0)
   const prevRepsRef = useRef(0)
+  // 远距离模式：出画状态（持续确认后才亮闪烁边框 + 播报，防抖）
+  const [frameAlert, setFrameAlert] = useState<FrameAlert | null>(null)
+  const alertTrackRef = useRef<{ kind: FrameAlert; since: number } | null>(null)
+  const lastFrameVoiceRef = useRef(0)
 
   useEffect(() => {
     const status = snapshot?.status
@@ -220,7 +228,8 @@ export default function BossFightPage() {
     if (prevStatusRef.current !== status) {
       if (status === 'fighting') {
         baselineRef.current = metricsRef.current.reps
-        prevFracRef.current = snapshot.max_hp ? snapshot.hp / snapshot.max_hp : 1
+        prevHpStateRef.current = hpStateKey(snapshot.hp, snapshot.max_hp)
+        prevMilestoneRef.current = 0
         setLayout((s) => nextLayout(s, { type: 'fight-started' }))
         announceCue('start', soundOnRef.current)
         sendProgress()
@@ -231,13 +240,16 @@ export default function BossFightPage() {
     }
   }, [snapshot?.status, snapshot?.hp, snapshot?.max_hp, sendProgress])
 
+  // 远距离模式语音：怪兽血量一掉档就喊（和画面换图同一档位：60% / 30%）
   useEffect(() => {
-    if (!snapshot || snapshot.status !== 'fighting' || !snapshot.max_hp) return
-    const frac = snapshot.hp / snapshot.max_hp
-    const prev = prevFracRef.current
-    if (prev > 0.5 && frac <= 0.5) announceCue('half', soundOnRef.current)
-    if (prev >= 0.3 && frac < 0.3) announceCue('low', soundOnRef.current)
-    prevFracRef.current = frac
+    if (!snapshot || snapshot.status !== 'fighting') return
+    const st = hpStateKey(snapshot.hp, snapshot.max_hp)
+    const prev = prevHpStateRef.current
+    if (st === prev) return
+    prevHpStateRef.current = st
+    const ann = hpStageAnnouncement(prev, st)
+    if (ann === 'mid') announceCue('stageMid', soundOnRef.current)
+    if (ann === 'low') announceCue('low', soundOnRef.current)
   }, [snapshot?.hp, snapshot?.status, snapshot?.max_hp])
 
   useEffect(() => {
@@ -248,9 +260,47 @@ export default function BossFightPage() {
       const id = ++floaterId.current
       setFloaters((f) => [...f.slice(-4), { id, value: gained }])
       window.setTimeout(() => setFloaters((f) => f.filter((x) => x.id !== id)), 950)
+      // 远距离模式语音：本场次数每跨一个整十，喊一次现在的数
+      const fightReps = Math.max(0, reps - baselineRef.current)
+      const milestone = crossedRepMilestone(prevMilestoneRef.current, fightReps)
+      if (milestone) announceRepMilestone(milestone, soundOnRef.current)
+      prevMilestoneRef.current = fightReps
     }
     prevRepsRef.current = reps
   }, [metrics.reps])
+
+  // 远距离模式：出画监测。追踪状态 300ms 探一次，同一种出画持续约 1 秒才
+  // 亮闪烁边框；语音最密 6 秒一句，免得人刚走回画面又被念叨。还没找准人
+  // （未校准）时不报，取景阶段的提示在集结画面里给。
+  useEffect(() => {
+    if (snapshot?.status !== 'fighting' || !camOn) {
+      alertTrackRef.current = null
+      setFrameAlert(null)
+      return
+    }
+    const timer = window.setInterval(() => {
+      if (!metricsRef.current.poseFeedback?.calibrated) return
+      const raw = deriveFrameAlert(landmarksRef.current)
+      const now = Date.now()
+      if (!raw) {
+        alertTrackRef.current = null
+        setFrameAlert(null)
+        return
+      }
+      if (alertTrackRef.current?.kind !== raw) {
+        alertTrackRef.current = { kind: raw, since: now }
+        return
+      }
+      if (now - alertTrackRef.current.since >= 900) {
+        setFrameAlert(raw)
+        if (now - lastFrameVoiceRef.current >= 6000) {
+          lastFrameVoiceRef.current = now
+          announceFrameAlert(raw, soundOnRef.current)
+        }
+      }
+    }, 300)
+    return () => window.clearInterval(timer)
+  }, [snapshot?.status, camOn])
 
   // 倒计时（按服务端时钟推算）
   const [nowMs, setNowMs] = useState(Date.now())
@@ -406,7 +456,14 @@ export default function BossFightPage() {
   const myParticipant = fight.myParticipant
 
   return (
-    <div className="bf-page">{header}
+    <div className={`bf-page${fighting ? ' far' : ''}`}>{header}
+      {/* 远距离模式：出画时全屏闪烁边框 + 大字方向，几米外也看得清 */}
+      {fighting && frameAlert && (
+        <>
+          <div className="bf-frame-flash" aria-hidden="true" />
+          <div className="bf-frame-word" role="alert">{FRAME_ALERT_WORD[frameAlert]}</div>
+        </>
+      )}
       {/* 血条与倒计时：全程最大字号 */}
       <section className="bf-hud" aria-label="怪兽血量">
         <div className="bf-hud-top">
@@ -478,8 +535,12 @@ export default function BossFightPage() {
             <div key={p.user_id} className={`bf-member${mine ? ' mine' : ''}`}>
               <AvatarWithFrame avatar={pub.avatar} name={pub.nickname} />
               <b>{pub.nickname}{mine ? '（我）' : ''}</b>
-              <span className="bf-member-status">{mine && !fighting ? (p.ready ? '已准备' : '还没准备') : teammateStatusLabel(pub, fighting ? 'fighting' : 'gathering')}</span>
-              {pub.avatar && <span className="bf-member-rarity">{pub.avatar.highest_rarity_name}</span>}
+              {fighting ? (
+                <span className={`bf-dot ${pub.status === 'joined' && pub.has_session ? 'on' : 'off'}`} role="img" aria-label={teammateStatusLabel(pub, 'fighting')} />
+              ) : (
+                <span className="bf-member-status">{mine ? (p.ready ? '已准备' : '还没准备') : teammateStatusLabel(pub, 'gathering')}</span>
+              )}
+              {!fighting && pub.avatar && <span className="bf-member-rarity">{pub.avatar.highest_rarity_name}</span>}
             </div>
           )
         })}
@@ -529,18 +590,16 @@ export default function BossFightPage() {
             <div className="bf-my-floaters" aria-hidden="true">
               {floaters.map((f) => <span key={f.id} className="bf-floater">+{f.value}</span>)}
             </div>
-            <div><span>我的次数 · 只有我看得到</span><b>{myFightReps}</b></div>
-            <div><span>我打出的伤害</span><b>{fight.myDamage ?? '…'}</b></div>
+            <div><span>我的次数</span><b className="bf-reps-huge">{myFightReps}</b></div>
+            <div className="bf-dmg-small"><span>我打出的伤害</span><b>{fight.myDamage ?? '…'}</b></div>
           </div>
-          <p className="bf-note">队友看不到你的伤害，你也看不到他们的，大家一起看血条就好。</p>
           <button type="button" className="btn btn--secondary btn--block bf-big-btn" onClick={() => void leaveFlow()}>
             先歇一下
           </button>
-          <p className="bf-note">随时能退出，练到的经验照常算，不扣任何东西。</p>
         </section>
       )}
 
-      <p className="bf-privacy">{PRIVACY_LINE}</p>
+      {!fighting && <p className="bf-privacy">{PRIVACY_LINE}</p>}
     </div>
   )
 }
