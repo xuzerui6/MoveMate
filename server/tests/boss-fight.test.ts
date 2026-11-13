@@ -481,7 +481,9 @@ test('regression: finishing a session drains the rate-cap backlog while the figh
   assert.equal(state.participants.find((p: any) => p.user_id === host.user.id).my_damage, 10);
 });
 
-test('avatar display plumbing: game members and end-summary attendees carry avatar + rarity', async () => {
+test('avatar display plumbing: game members carry avatar + rarity', async () => {
+  // 正式版谱系适配：getEndSummary（纪念页）是社交一期的函数，本谱系没有，
+  // main 原测试的 attendees 半段随社交一期再引入；成员半段在此完整保留。
   const host = await account('boss-avatar-host'), player = await account('boss-avatar-player');
   const game = await liveGame(host, [player]);
   const detail = await games.getGameDetail(game.id, host.user.id);
@@ -490,12 +492,5 @@ test('avatar display plumbing: game members and end-summary attendees carry avat
     assert.equal(member.avatar.outfit, 'default');
     assert.equal(member.avatar.highest_rarity, 'N');
     assert.equal(member.avatar.highest_rarity_name, '日常');
-  }
-  await pool.query("UPDATE games SET status = 'completed', completed_at = NOW() WHERE id = $1", [game.id]);
-  const summary = await games.getEndSummary(game.id, host.user.id);
-  assert.equal(summary.attendees.length, 2);
-  for (const attendee of summary.attendees) {
-    assert.ok(attendee.avatar, 'attendee should carry avatar');
-    assert.equal(attendee.avatar.highest_rarity_name, '日常');
   }
 });
