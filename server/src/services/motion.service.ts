@@ -13,7 +13,7 @@ export const CAMERA_TYPES = new Set(['squat','jumping_jack','high_knees','push_u
 // leftReps/rightReps in the score accumulator (their sum always equals reps).
 // Side counts are accepted — and required to add up — only for these types.
 export const SIDE_COUNT_TYPES = new Set(['standing_leg_curl','one_arm_row','mountain_climber','split_squat']);
-export const SPORT_RATES: Record<string, number> = { running: 3, swimming: 3, basketball: 2, badminton: 2, soccer: 2, volleyball: 2, tennis: 2, table_tennis: 2 };
+export const SPORT_RATES: Record<string, number> = { running: 3, swimming: 3, basketball: 2, badminton: 2, soccer: 2, volleyball: 2, tennis: 2, table_tennis: 2, dance: 2, taekwondo: 2 };
 export function calculateXp(type: string, seconds: number, reps: number, source: string): number {
   if (source === 'demo') return 0;
   return CAMERA_TYPES.has(type) && source === 'camera' ? reps * 2 : Math.floor(seconds * (SPORT_RATES[type] || 1) / 60);

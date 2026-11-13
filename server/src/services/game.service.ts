@@ -233,6 +233,8 @@ const SPORT_NAMES: Record<string, string> = {
   swimming: '游泳',
   roller_skating: '轮滑',
   skateboarding: '滑板',
+  dance: '舞蹈',
+  taekwondo: '跆拳道',
 };
 
 

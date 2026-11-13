@@ -13,6 +13,8 @@ export const COMMON_SPORT_TYPES = [
   'swimming',
   'roller_skating',
   'skateboarding',
+  'dance',
+  'taekwondo',
 ] as const;
 
 export type CommonSportType = typeof COMMON_SPORT_TYPES[number];
@@ -358,6 +360,8 @@ export const SPORT_LABELS: Record<string, string> = {
   swimming: '游泳',
   roller_skating: '轮滑',
   skateboarding: '滑板',
+  dance: '舞蹈',
+  taekwondo: '跆拳道',
 };
 
 /** 状态中文映射 */
