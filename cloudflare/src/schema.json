@@ -43,6 +43,15 @@
       ]
     },
     {
+      "sql": "INSERT OR IGNORE INTO schools (id,code,name,is_active) VALUES (?,?,?,?)",
+      "args": [
+        2,
+        "jlsu",
+        "吉林体育学院",
+        1
+      ]
+    },
+    {
       "sql": "INSERT OR IGNORE INTO campuses (id,school_id,code,name,is_active) VALUES (?,?,?,?,?)",
       "args": [
         1,
@@ -70,6 +79,26 @@
         "chaoyang",
         "朝阳校区（地质宫校区）",
         1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO campuses (id,school_id,code,name,is_active) VALUES (?,?,?,?,?)",
+      "args": [
+        4,
+        2,
+        "jlsu-nanling",
+        "南岭校区",
+        0
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO campuses (id,school_id,code,name,is_active) VALUES (?,?,?,?,?)",
+      "args": [
+        5,
+        2,
+        "jlsu-linhe",
+        "临河校区",
+        0
       ]
     },
     {
@@ -466,6 +495,50 @@
         "朝阳体育馆健身室",
         "[\"fitness\"]",
         1
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        37,
+        2,
+        4,
+        "南岭校区室内篮球馆武术馆",
+        "[\"basketball\",\"fitness\"]",
+        0
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        38,
+        2,
+        4,
+        "南岭校区摔跤柔道馆",
+        "[\"fitness\"]",
+        0
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        39,
+        2,
+        5,
+        "临河校区田径场",
+        "[\"running\",\"soccer\"]",
+        0
+      ]
+    },
+    {
+      "sql": "INSERT OR IGNORE INTO venues (id,school_id,campus_id,name,sport_types,is_active) VALUES (?,?,?,?,?,?)",
+      "args": [
+        40,
+        2,
+        5,
+        "临河校区健身馆",
+        "[\"fitness\",\"badminton\"]",
+        0
       ]
     }
   ]

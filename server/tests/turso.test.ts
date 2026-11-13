@@ -11,7 +11,7 @@ test('cloud adapter initializes fresh metadata, preserves committed data on rest
   let db=new TursoDatabase(url);
   try {
     await db.init();
-    assert.equal((await db.query('SELECT COUNT(*) AS n FROM campuses')).rows[0].n,3);
+    assert.equal((await db.query('SELECT COUNT(*) AS n FROM campuses')).rows[0].n,5);
     assert.equal((await db.query('SELECT COUNT(*) AS n FROM users')).rows[0].n,0);
     await db.query('BEGIN IMMEDIATE');
     const created=await db.query('INSERT INTO users(nickname,email,password_hash,student_id,email_verified) VALUES($2,$1,$3,$4,TRUE) RETURNING *',['cloud@test.local','云端用户','not-a-login-hash','cloud-test-student']);
@@ -25,7 +25,7 @@ test('cloud adapter initializes fresh metadata, preserves committed data on rest
     assert.equal((await db.query('SELECT nickname FROM users WHERE id=$1',[userId])).rows[0].nickname,'云端用户');
     db.close();db=new TursoDatabase(url);await db.init();
     assert.equal((await db.query('SELECT COUNT(*) AS n FROM users')).rows[0].n,1);
-    assert.equal((await db.query('SELECT COUNT(*) AS n FROM campuses')).rows[0].n,3);
+    assert.equal((await db.query('SELECT COUNT(*) AS n FROM campuses')).rows[0].n,5);
     await db.query('BEGIN IMMEDIATE');await db.query('UPDATE users SET nickname=$1 WHERE id=$2',['after-recovery',userId]);await db.query('COMMIT');
     assert.equal((await db.query('SELECT nickname FROM users WHERE id=$1',[userId])).rows[0].nickname,'after-recovery');
   } finally {db.close()}
