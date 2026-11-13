@@ -5,6 +5,7 @@
  */
 
 import { ValidationError } from './errors';
+import { assertNoSensitiveWord } from './sensitive-words';
 
 /** 常见运动类型推荐值 */
 export const SPORT_TYPES = [
@@ -38,6 +39,8 @@ export const NOTIFICATION_TYPES = [
   'member_joined', 'game_ready', 'new_message',
   'game_cancelled', 'member_left', 'game_full',
   'check_in_reminder', 'reward_granted', 'penalty_applied',
+  'friend_request', 'friend_accepted', 'game_invite',
+  'report_outcome', 'member_removed',
 ] as const;
 export type NotificationType = typeof NOTIFICATION_TYPES[number];
 
@@ -51,6 +54,7 @@ export function validateNickname(nickname: unknown): asserts nickname is string 
   if (nickname.length > 20) {
     throw new ValidationError('昵称不能超过20个字符');
   }
+  assertNoSensitiveWord(nickname, '昵称');
 }
 
 /**

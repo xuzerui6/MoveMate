@@ -292,6 +292,59 @@ function ensureSchema(conn: DatabaseSync): void {
       contact TEXT DEFAULT '',
       created_at TEXT DEFAULT (datetime('now'))
     );
+
+    -- 组局社交化一期：好友 / 拉黑 / 请人离局留痕 / 举报 / 社交设置
+    CREATE TABLE IF NOT EXISTS friends (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      requester_id INTEGER NOT NULL REFERENCES users(id),
+      addressee_id INTEGER NOT NULL REFERENCES users(id),
+      user_a INTEGER NOT NULL REFERENCES users(id),
+      user_b INTEGER NOT NULL REFERENCES users(id),
+      status TEXT NOT NULL DEFAULT 'pending',
+      source_game_id INTEGER REFERENCES games(id),
+      greeting TEXT DEFAULT '',
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now')),
+      UNIQUE(user_a, user_b)
+    );
+
+    CREATE TABLE IF NOT EXISTS blocks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      blocker_id INTEGER NOT NULL REFERENCES users(id),
+      blocked_id INTEGER NOT NULL REFERENCES users(id),
+      created_at TEXT DEFAULT (datetime('now')),
+      UNIQUE(blocker_id, blocked_id)
+    );
+
+    CREATE TABLE IF NOT EXISTS game_removals (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      game_id INTEGER NOT NULL REFERENCES games(id),
+      user_id INTEGER NOT NULL REFERENCES users(id),
+      host_id INTEGER NOT NULL REFERENCES users(id),
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS reports (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      reporter_id INTEGER NOT NULL REFERENCES users(id),
+      target_type TEXT NOT NULL,
+      target_id TEXT NOT NULL,
+      reason TEXT DEFAULT '',
+      evidence TEXT DEFAULT '{}',
+      status TEXT NOT NULL DEFAULT 'pending',
+      resolution_note TEXT DEFAULT '',
+      appeal TEXT,
+      appeal_status TEXT,
+      handled_by INTEGER REFERENCES users(id),
+      handled_at TEXT,
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS user_social_settings (
+      user_id INTEGER PRIMARY KEY REFERENCES users(id),
+      friend_request_scope TEXT NOT NULL DEFAULT 'anyone',
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
   `);
 
   conn.exec(gymSchema);
@@ -331,6 +384,11 @@ function ensureSchema(conn: DatabaseSync): void {
   ensureColumn('game_members', 'reward_points', 'INTEGER NOT NULL DEFAULT 0');
   ensureColumn('game_members', 'reward_granted_at', 'TEXT');
   ensureColumn('game_members', 'hidden_in_profile_at', 'TEXT');
+  ensureColumn('users', 'invite_code', 'TEXT');
+  ensureColumn('games', 'visibility', "TEXT DEFAULT 'public'");
+  ensureColumn('games', 'fill_open', 'INTEGER DEFAULT 0');
+  ensureColumn('games', 'auto_fill', 'INTEGER DEFAULT 0');
+  ensureColumn('games', 'rebooked_from_id', 'INTEGER');
 }
 
 // ================================================================
