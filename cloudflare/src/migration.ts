@@ -104,6 +104,10 @@ export class Migration {
         const manifest = JSON.parse(this.meta('manifest') || 'null') as Manifest | null;
         if (!manifest || this.meta('verified') !== manifest.id) throw new Error('Snapshot has not passed verification');
         await withTransaction(async () => { this.db.storage.sql.exec('DELETE FROM event_outbox'); this.set('active', 'true'); });
+        // 导入的数据可能早于学校注册表：开放后补齐缺失的学校/校区行（如只挂牌的吉林体育学院）
+        this.db.seedSchoolRegistry();
+        // 同理，导入前建好的表可能缺后加的列：开放后按当前结构再补一次（幂等）
+        this.db.upgradeColumns();
         return Response.json({ ok: true, active: true });
       }
       return Response.json({ error: 'Unknown migration action' }, { status: 404 });

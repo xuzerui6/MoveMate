@@ -114,6 +114,25 @@ await test('Workers runtime migration and business regression', async t=>{
  const undef=await actor.pitrUnitCase('test');
  assert.equal(undef.restoreError.status,403);assert.deepEqual(undef.calls,[]);
  });
+ await t.test('existing-instance upgrade: pre-social schema gains social columns in place, rows preserved',async()=>{
+ const namespace=await mf.getDurableObjectNamespace('BACKEND');const actor=namespace.get(namespace.idFromName('existing-instance-upgrade'));
+ const c=await actor.existingInstanceUpgradeCase();
+ // The pre-social fixture reproduces the preview outage: every social-era op dies on the missing columns.
+ assert.equal(c.before.list.ok,false);assert.match(c.before.list.error,/no such column|has no column/);
+ assert.equal(c.before.create.ok,false);assert.match(c.before.create.error,/no such column|has no column/);
+ assert.equal(c.before.invite.ok,false);assert.match(c.before.invite.error,/no such column|has no column/);
+ // After the boot-path upgrade the same operations succeed against the same rows.
+ assert.equal(c.after.list.ok,true,JSON.stringify(c.after.list));assert.ok(Number(c.after.list.value)>=1);
+ assert.equal(c.after.create.ok,true,JSON.stringify(c.after.create));
+ assert.equal(c.after.invite.ok,true,JSON.stringify(c.after.invite));assert.match(String(c.after.invite.value),/^mv[0-9a-f]{16}$/);
+ assert.equal(c.after.blocks.ok,true,JSON.stringify(c.after.blocks));assert.equal(c.after.blocks.value,0);
+ for(const col of ['visibility','fill_open','auto_fill','rebooked_from_id'])assert.ok(c.columns.games.includes(col),'games.'+col);
+ assert.ok(c.columns.users.includes('invite_code'));assert.ok(c.columns.chat_messages.includes('kind'));
+ // Nothing the old instance held was lost.
+ assert.equal(c.preserved.game.title,'老实例的局');assert.equal(Number(c.preserved.game.member_count),1);
+ assert.equal(c.preserved.user.nickname,'老实例房主');assert.equal(c.preserved.chat.content,'老消息你好');
+ assert.equal(c.preserved.createdGames,1);
+ });
  const {manifest,parts}=fixture({largeAvatar:true});
  await t.test('snapshot import resumes, validates checkpoints and preserves hashes',async()=>{
  assert.equal((await migrate('begin',manifest)).status,200);
@@ -128,6 +147,15 @@ await test('Workers runtime migration and business regression', async t=>{
  for(const email of ['host@dajju.local','player1@dajju.local','player2@dajju.local']){const r=await call('/api/v1/auth/login',{method:'POST',body:{email,password}});assert.equal(r.status,200,JSON.stringify(r.data));tokens.push(r.data.data.token)}
  assert.equal((await call('/api/v1/auth/register',{method:'POST',body:{email:'test@mails.jlu.edu.cn',password:'password',nickname:'test',campus_id:1}})).status,400);
  });
+ await t.test('school registry: Jilin Sport University is listed but its registration stays closed',async()=>{
+ const boot=await call('/api/v1/auth/bootstrap');assert.equal(boot.status,200,JSON.stringify(boot.data));
+ const schools=boot.data.data.schools;assert.equal(schools.length,2);
+ const jlu=schools.find(s=>s.code==='jlu');assert.equal(jlu.name,'吉林大学');assert.equal(jlu.registration_open,true);
+ const jlsu=schools.find(s=>s.code==='jlsu');assert.equal(jlsu.name,'吉林体育学院');assert.equal(jlsu.registration_open,false);
+ assert.ok(boot.data.data.campuses.every(c=>c.school_id!==jlsu.id),'closed school campuses stay out of the selectable list');
+ const rejected=await call('/api/v1/auth/register',{method:'POST',body:{email:'hopeful@mails.jlu.edu.cn',password:'password',nickname:'新生',campus_id:4,verify_code:'123456'}});
+ assert.equal(rejected.status,400,JSON.stringify(rejected.data));assert.match(rejected.data.message,/小范围测试/);
+ });
  await t.test('social phase 1: friend flow and friends-game visibility work in the Worker runtime',async()=>{
  const sent=await call('/api/v1/friends/requests',{method:'POST',token:tokens[0],body:{userId:2,greeting:'一起打球'}});assert.equal(sent.status,200,JSON.stringify(sent.data));
  const incoming=await call('/api/v1/friends/requests',{token:tokens[1]});const reqRow=incoming.data.data.requests.find(r=>r.requester_id===1);assert.ok(reqRow);
@@ -139,6 +167,8 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.equal((await call(`/api/v1/games/${fgid}`,{token:tokens[2]})).status,404);
  const feed=await call('/api/v1/games/friends-feed',{token:tokens[1]});assert.ok(feed.data.data.games.some(g=>g.id===fgid));
  assert.equal((await call(`/api/v1/games/${fgid}/join`,{method:'POST',token:tokens[1],body:{}})).status,200);
+ const fgMessages=await call(`/api/v1/games/${fgid}/messages`,{token:tokens[1]});assert.equal(fgMessages.status,200,JSON.stringify(fgMessages.data));
+ assert.ok(fgMessages.data.data.messages.some(m=>m.kind==='system'&&m.content.includes('加入了本局')),JSON.stringify(fgMessages.data.data.messages));
  const blocked=await call('/api/v1/blocks',{method:'POST',token:tokens[0],body:{userId:3}});assert.equal(blocked.status,200,JSON.stringify(blocked.data));
  assert.equal((await call('/api/v1/friends/requests',{method:'POST',token:tokens[2],body:{userId:1}})).status,403);
  const report=await call('/api/v1/reports',{method:'POST',token:tokens[1],body:{target_type:'user',target_id:3,reason:'测试举报'}});assert.equal(report.status,200,JSON.stringify(report.data));assert.equal(report.data.data.report.status,'pending');

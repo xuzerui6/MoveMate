@@ -89,6 +89,9 @@ const GameCard: React.FC<Props> = ({ game, hideActionBtn = false, customActionBt
                   {relationLabel}
                 </span>
               )}
+              {game.visibility === 'friends' && (
+                <span className="ui-pages-lobby-gamecard-friendsChip">好友局</span>
+              )}
             </div>
             {game.tag && (
               <span className="ui-pages-lobby-gamecard-tag">

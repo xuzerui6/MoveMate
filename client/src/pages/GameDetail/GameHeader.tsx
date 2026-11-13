@@ -44,6 +44,9 @@ const GameHeader: React.FC<Props> = ({ game }) => {
           <div className="ui-pages-gamedetail-gameheader-titleBlock">
             <div className="ui-pages-gamedetail-gameheader-titleRow">
               <StateBadge state={game.status} />
+              {game.visibility === 'friends' && (
+                <span className="ui-pages-gamedetail-gameheader-friendsBadge">好友局</span>
+              )}
             </div>
             {game.tag && (
               <span className="ui-pages-gamedetail-gameheader-tag">

@@ -20,6 +20,8 @@ export const SPORT_TYPES = [
   'swimming',
   'roller_skating',
   'skateboarding',
+  'dance',
+  'taekwondo',
 ] as const;
 export type SportType = string;
 

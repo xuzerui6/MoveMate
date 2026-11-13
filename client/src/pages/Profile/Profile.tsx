@@ -14,11 +14,13 @@ import * as authApi from '../../api/auth';
 import * as gamesApi from '../../api/games';
 import { getErrorMessage } from '../../api/client';
 import { COMMON_SPORT_TYPES, SPORT_LABELS } from '../../types';
-import type { Game, Campus } from '../../types';
+import type { Game, Campus, School } from '../../types';
+import { isSchoolRegistrationOpen } from '../Login/schools';
 import GameCard from '../Lobby/GameCard';
 import SportIcon from '../../components/SportIcon';
 import Avatar from '../../components/Avatar';
 import ShareCardButton from '../../features/share/ShareCardButton';
+import SocialSettingsCard from '../../features/social/SocialSettingsCard';
 import { buildStreakCard } from '../../features/share/cardData';
 import { milestoneCardSvg } from '../../features/share/cardSvg';
 import './Profile.css';
@@ -72,6 +74,7 @@ const Profile: React.FC = () => {
     custom_sport: '',
   });
   const [campuses, setCampuses] = useState<Campus[]>([]);
+  const [schools, setSchools] = useState<School[]>([]);
   const [sportPrefsDirty, setSportPrefsDirty] = useState(false);
   const [savedSportPrefs, setSavedSportPrefs] = useState<string[]>([]);
 
@@ -110,10 +113,15 @@ const Profile: React.FC = () => {
     setSportPrefsDirty(false);
   }, [user]);
 
-  // 加载校区列表
+  // 加载校区列表（暂未开放注册的学校的校区不出现在改校区选项里；自己当前校区始终保留显示）
   useEffect(() => {
-    authApi.fetchBootstrap().then(b => setCampuses(b.campuses || [])).catch(() => {});
+    authApi.fetchBootstrap().then(b => { setCampuses(b.campuses || []); setSchools(b.schools || []); }).catch(() => {});
   }, []);
+  const selectableCampuses = campuses.filter((c) => {
+    if (c.id === user?.campus_id) return true;
+    const school = schools.find((s) => s.id === c.school_id);
+    return !school || isSchoolRegistrationOpen(school);
+  });
 
   const handleGameAction = async (game: Game, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -491,7 +499,7 @@ const Profile: React.FC = () => {
                     onChange={(e) => setProfileForm((prev) => ({ ...prev, campus_id: parseInt(e.target.value) || 0 }))}
                   >
                     <option value="">请选择校区</option>
-                    {campuses.map((c) => (
+                    {selectableCampuses.map((c) => (
                       <option key={c.id} value={c.id}>{c.name}</option>
                     ))}
                   </select>
@@ -578,6 +586,7 @@ const Profile: React.FC = () => {
         <h2>快捷入口</h2>
         <div className="motion-shortcuts">
           <Link to="/avatar"><span className="profile-shortcut-ic"><Icon name="user"/></span>我的形象</Link>
+          <Link to="/friends"><span className="profile-shortcut-ic"><Icon name="users"/></span>我的好友</Link>
           <Link to="/inventory"><span className="profile-shortcut-ic"><Icon name="bag"/></span>装备背包</Link>
           <Link to="/history"><span className="profile-shortcut-ic"><Icon name="clock"/></span>训练历史</Link>
           <Link to="/train/plans"><span className="profile-shortcut-ic"><Icon name="dumbbell"/></span>训练计划</Link>
@@ -587,6 +596,8 @@ const Profile: React.FC = () => {
           <Link to="/feedback"><span className="profile-shortcut-ic"><Icon name="spark"/></span>意见反馈</Link>
         </div>
       </div>
+
+      <SocialSettingsCard />
 
       <div className="profile-preferences"><div className="section-title"><h3>我的运动偏好</h3><button onClick={handleStartEdit}>编辑偏好</button></div><div className="profile-preference-list">{(user.sport_preferences||[]).length?(user.sport_preferences||[]).map(sport=><span key={sport}><SportIcon sport={sport} size={14}/>{SPORT_LABELS[sport]||sport}</span>):<p>还未设置运动偏好</p>}</div></div>
 

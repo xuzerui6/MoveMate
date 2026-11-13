@@ -3,7 +3,8 @@ import { z } from 'zod';
 import * as motion from '../services/motion.service';
 const router=Router();
 const create=z.object({id:z.string().min(1).max(80).optional(),sportType:z.string().trim().min(1).max(30),source:z.enum(['camera','timer','demo']),recognitionStrategy:z.enum(['legacy','adaptive-v1']).optional(),gameId:z.number().int().positive().optional()});
-const metrics=z.object({reps:z.number().int().min(0).max(100000).optional()}).passthrough();
+// clientTs 只是延迟自检的遥测字段：不是有限数值就当作没传，绝不让它污染请求或落库时抛错
+const metrics=z.object({reps:z.number().int().min(0).max(100000).optional(),clientTs:z.preprocess((value)=>typeof value==='number'&&Number.isFinite(value)?value:undefined,z.number().optional())}).passthrough();
 const wrap=(handler:any)=>async(req:any,res:any,next:any)=>{try{res.json({code:0,message:'success',data:await handler(req)});}catch(error){next(error);}};
 router.get('/sport-sessions/active',wrap((req:any)=>motion.activeSession(req.user.id)));
 router.post('/sport-sessions',wrap((req:any)=>motion.createSession(req.user.id,create.parse(req.body),req.get('X-MoveMate-Recognition-Version'))));

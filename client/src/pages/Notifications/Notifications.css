@@ -10,3 +10,74 @@
 @media (max-width:700px){.ui-pages-notifications-notifications-header>div{gap:8px}}
 .ui-pages-notifications-notifications-inline-0{display:flex;gap:0.5rem;align-items:center}
 .ui-pages-notifications-notifications-checkbox{width:18px;height:18px;border-radius:50%;border:2px solid #d3ddd5;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
+
+/* 好友申请（通知页顶部入口 + 处理弹窗） */
+.friend-request-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  min-height: 48px;
+  text-align: left;
+  background: var(--mint);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+.friend-request-banner-title {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+.friend-request-banner-desc {
+  font-size: var(--font-size-sm);
+  color: var(--ink);
+}
+.friend-request-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+.friend-request-item {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+}
+.friend-request-person {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.friend-request-name {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--ink);
+}
+.friend-request-meta {
+  font-size: var(--font-size-sm);
+  color: var(--muted);
+  margin-top: 2px;
+}
+.friend-request-greeting {
+  font-size: var(--font-size-md);
+  color: var(--ink);
+  line-height: 1.6;
+  margin-top: var(--space-md);
+}
+.friend-request-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: flex-end;
+  margin-top: var(--space-md);
+}
+.friend-request-actions .btn {
+  min-height: 48px;
+}
+.friend-request-note {
+  font-size: var(--font-size-sm);
+  color: var(--muted);
+  margin-top: var(--space-lg);
+  line-height: 1.6;
+}

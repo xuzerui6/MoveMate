@@ -1,13 +1,17 @@
 import Dialog from '../../components/Dialog';
+import Avatar from '../../components/Avatar';
 import {Icon} from '../../features/motion/components/Icons';
 /**
  * 通知列表页（支持多选批量删除）
+ * 好友申请在这里处理：点开看申请人、同意/拒绝；拒绝不通知对方。
  */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../../hooks/useNotifications';
-import type { Notification, NotificationType } from '../../types';
+import type { FriendRequestItem, Notification, NotificationType } from '../../types';
 import client, { getErrorMessage } from '../../api/client';
+import * as socialApi from '../../api/social';
+import { commonSportsLabel } from '../../features/social/socialLogic';
 import { showToast } from '../../hooks/useAuth';
 import './Notifications.css';
 
@@ -34,6 +38,36 @@ const Notifications: React.FC = () => {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [friendRequests, setFriendRequests] = useState<FriendRequestItem[]>([]);
+  const [requestsOpen, setRequestsOpen] = useState(false);
+  const [handlingId, setHandlingId] = useState<number | null>(null);
+
+  const refreshRequests = useCallback(async () => {
+    try {
+      setFriendRequests(await socialApi.fetchIncomingRequests());
+    } catch {
+      setFriendRequests([]);
+    }
+  }, []);
+  useEffect(() => { void refreshRequests(); }, [refreshRequests]);
+
+  const handleRequest = async (req: FriendRequestItem, accept: boolean) => {
+    setHandlingId(req.id);
+    try {
+      if (accept) await socialApi.acceptFriendRequest(req.id);
+      else await socialApi.rejectFriendRequest(req.id);
+      if (accept) showToast(`你和${req.nickname}已经是好友了`, 'success');
+      setFriendRequests((prev) => {
+        const next = prev.filter((r) => r.id !== req.id);
+        if (next.length === 0) setRequestsOpen(false);
+        return next;
+      });
+    } catch (err) {
+      showToast(getErrorMessage(err), 'error');
+    } finally {
+      setHandlingId(null);
+    }
+  };
 
   const toggleSelect = useCallback((id: string) => {
     setSelected(prev => {
@@ -68,6 +102,9 @@ const Notifications: React.FC = () => {
   const handleClick = (notif: Notification) => {
     if (selectMode) { toggleSelect(notif.id); return; }
     if (!notif.is_read) markRead(notif.id);
+    // 好友申请：不跳局，打开处理面板（申请人可能就是从某个局里加的）
+    if (notif.type === 'friend_request') { setRequestsOpen(true); return; }
+    if (notif.type === 'friend_accepted') { navigate('/friends'); return; }
     if (notif.game_id) navigate(`/game/${notif.game_id}`);
   };
 
@@ -107,6 +144,15 @@ const Notifications: React.FC = () => {
           )}
         </div>
       </div>
+
+      {friendRequests.length > 0 && (
+        <button className="friend-request-banner" onClick={() => setRequestsOpen(true)}>
+          <span className="friend-request-banner-title">新的好友申请</span>
+          <span className="friend-request-banner-desc">
+            {friendRequests[0].nickname} 想加你为好友{friendRequests.length > 1 ? `，一共 ${friendRequests.length} 条` : ''} · 点开处理
+          </span>
+        </button>
+      )}
 
       {error&&<div className="inline-error" role="alert"><p>{error}</p><button className="btn btn--secondary" onClick={()=>void refresh()}>重试</button></div>}
       {loading && notifications.length === 0 ? (
@@ -170,6 +216,47 @@ const Notifications: React.FC = () => {
               <button className="ui-pages-notifications-notifications-cancelBtn" onClick={() => setShowClearConfirm(false)}>取消</button>
               <button className="ui-pages-notifications-notifications-dangerBtn" onClick={confirmClear}>确认清理</button>
             </div>
+        </Dialog>
+      )}
+
+      {/* 好友申请处理 */}
+      {requestsOpen && (
+        <Dialog title="新的好友申请" onClose={() => setRequestsOpen(false)}>
+          <div className="friend-request-list">
+            {friendRequests.map((req) => (
+              <div key={req.id} className="friend-request-item">
+                <div className="friend-request-person">
+                  <Avatar name={req.nickname} url={req.avatar_url} size={48} />
+                  <div>
+                    <p className="friend-request-name">{req.nickname}</p>
+                    <p className="friend-request-meta">
+                      {[req.department, commonSportsLabel(req.sport_preferences)].filter(Boolean).join(' · ') || '还没填院系'}
+                    </p>
+                  </div>
+                </div>
+                {req.greeting && (
+                  <p className="friend-request-greeting">他留的话：「{req.greeting}」</p>
+                )}
+                <div className="friend-request-actions">
+                  <button
+                    className="btn btn--secondary"
+                    disabled={handlingId === req.id}
+                    onClick={() => void handleRequest(req, false)}
+                  >
+                    拒绝
+                  </button>
+                  <button
+                    className="btn btn--primary"
+                    disabled={handlingId === req.id}
+                    onClick={() => void handleRequest(req, true)}
+                  >
+                    {handlingId === req.id ? '处理中...' : '同意'}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="friend-request-note">同意了，你们就能互相邀请组局。拒绝不会通知对方，不用有负担。</p>
         </Dialog>
       )}
     </div>

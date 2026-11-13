@@ -66,6 +66,49 @@ export async function rebookGame(gameId: string): Promise<Game> {
   return client.post(`/games/${gameId}/rebook`);
 }
 
+/** 好友局动态流（好友发起的好友局 + 我在里面的好友局） */
+export async function fetchFriendsFeed(): Promise<Game[]> {
+  const res = await client.get('/games/friends-feed') as unknown as { data: { games: Game[] } };
+  return res.data?.games || [];
+}
+
+/** 邀请好友进局（仅发起人；邀请不占名额） */
+export async function inviteToGame(
+  gameId: string,
+  userIds: number[]
+): Promise<{ invited: number[]; skipped: { user_id: number; reason: string }[] }> {
+  const res = await client.post(`/games/${gameId}/invites`, { userIds }) as unknown as {
+    data: { invited: number[]; skipped: { user_id: number; reason: string }[] };
+  };
+  return res.data;
+}
+
+/** 开放/关闭补位（仅发起人、仅好友局） */
+export async function setFillOpen(gameId: string, open: boolean): Promise<Game> {
+  const res = await client.post(`/games/${gameId}/fill`, { open }) as unknown as { data: { game: Game } };
+  return res.data?.game;
+}
+
+/** 局分享链接（服务端返回应用内路径） */
+export async function fetchShareLink(gameId: string): Promise<{ game_id: number; path: string; title: string }> {
+  const res = await client.get(`/games/${gameId}/share-link`) as unknown as {
+    data: { game_id: number; path: string; title: string };
+  };
+  return res.data;
+}
+
+/** 结束页数据（成员墙 + 我自己的纪念卡数据） */
+export async function fetchEndSummary(gameId: string): Promise<import('../types').EndSummary> {
+  const res = await client.get(`/games/${gameId}/end-summary`) as unknown as { data: import('../types').EndSummary };
+  return res.data;
+}
+
+/** 发起人请成员离局 */
+export async function removeMember(gameId: string, userId: number): Promise<{ removed: boolean }> {
+  const res = await client.post(`/games/${gameId}/members/${userId}/remove`, {}) as unknown as { data: { removed: boolean } };
+  return res.data;
+}
+
 /** 获取当前用户发起/加入的局 */
 export async function fetchMyGames(): Promise<Game[]> {
   return client.get('/users/me/games');

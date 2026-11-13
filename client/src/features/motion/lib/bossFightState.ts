@@ -1,6 +1,6 @@
 /**
- * 组队打怪前端纯逻辑：血量状态、画面布局（一键互换）、快照版本守卫、
- * 队友公开视图（隐私裁剪）、延迟采样。都不依赖 React，方便单测。
+ * 组队打怪前端纯逻辑：血量状态、快照版本守卫、
+ * 队友公开视图（隐私裁剪）、延迟采样、远距离模式判定。都不依赖 React，方便单测。
  *
  * 隐私红线：快照里只有本人条目带 my_damage；广播快照谁的伤害都不带。
  * 任何要渲染「别人」的地方都必须先过 publicParticipantView，把伤害类
@@ -22,37 +22,6 @@ export const HP_STATE_NAME: Record<BossHpState, string> = {
   full: '精神抖擞',
   mid: '有点喘了',
   low: '快撑不住了',
-}
-
-// ---------------------------------------------------------------------------
-// 布局一键互换（老板拍板方案 E）
-// self = 看自己（摄像头大、怪兽横条）；boss = 看怪兽（怪兽大、摄像头小窗）
-// 默认：集结/组间停在 self 方便取景；开打自动切 boss；手动换过就整场听用户的。
-// ---------------------------------------------------------------------------
-
-export type FightLayoutMode = 'self' | 'boss'
-export interface FightLayoutState {
-  mode: FightLayoutMode
-  /** 用户手动换过布局后置 true，自动切换从此不再插手 */
-  touched: boolean
-}
-
-export const INITIAL_LAYOUT: FightLayoutState = { mode: 'self', touched: false }
-
-export type FightLayoutEvent =
-  | { type: 'fight-started' }
-  | { type: 'back-to-gathering' }
-  | { type: 'swap' }
-
-export function nextLayout(state: FightLayoutState, event: FightLayoutEvent): FightLayoutState {
-  switch (event.type) {
-    case 'swap':
-      return { mode: state.mode === 'self' ? 'boss' : 'self', touched: true }
-    case 'fight-started':
-      return state.touched ? state : { mode: 'boss', touched: false }
-    case 'back-to-gathering':
-      return state.touched ? state : { mode: 'self', touched: false }
-  }
 }
 
 // ---------------------------------------------------------------------------
@@ -271,6 +240,22 @@ export function crossedRepMilestone(prev: number, next: number, step = 10): numb
 }
 
 /**
+ * 局详情页「组队打怪」入口的显示条件（纯函数，口径只此一处）：
+ * 本人是本局成员 + 本人已签到 + 局正在进行中（in_progress）。
+ * 招募/待开始阶段不显示——打怪是活动开始后的玩法，签到也只在局
+ * 进入 ready/in_progress 后才可能发生。这是确定性派生：只取决于
+ * 局详情接口的一次返回，不受聊天、好友关系等并行请求影响，
+ * 不存在时有时无的闪烁。
+ */
+export function bossFightEntryVisible(input: {
+  isMember: boolean
+  checkedInAt?: string | null
+  gameStatus?: string | null
+}): boolean {
+  return Boolean(input.isMember && input.checkedInAt && input.gameStatus === 'in_progress')
+}
+
+/**
  * 出画判定（原始关键点坐标，前置摄像头）：页面预览是镜像显示的
  * （PoseCanvas 对视频做了 scale(-1,1)），所以显示横坐标 = 1 - 原始 x。
  * 返回的方向是「站在手机前的人自己的左右」：画面里的人像挤到右边，
@@ -315,5 +300,20 @@ export const FRAME_ALERT_WORD: Record<FrameAlert, string> = {
   left: '往左一点',
   right: '往右一点',
   back: '往后一步',
+}
+
+/**
+ * 骨骼新鲜度（布局 C 的纪律）：最新一帧超过这个岁数还没更新，就当已经跟丢。
+ * 页面据此立刻收起骨骼线——宁可只剩画面，也不能把一副死骨骼冻在屏上，
+ * 假装还在追踪。capturedAt 与 PoseCanvas 同钟（performance.now 时间轴）。
+ */
+export const POSE_STALE_MS = 700
+export function isPoseFresh(
+  capturedAt: number | null | undefined,
+  nowMs: number,
+  maxAgeMs: number = POSE_STALE_MS,
+): boolean {
+  if (!capturedAt || !Number.isFinite(capturedAt)) return false
+  return nowMs - capturedAt <= maxAgeMs
 }
 

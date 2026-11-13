@@ -1,0 +1,185 @@
+/* 组局社交化一期 —— 共享小组件样式（加好友 / 安全弹窗 / 资料卡） */
+.social-dialog-person {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+.social-dialog-name {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--ink);
+}
+.social-dialog-meta {
+  font-size: var(--font-size-sm);
+  color: var(--muted);
+  margin-top: 2px;
+}
+.social-dialog-text {
+  font-size: var(--font-size-md);
+  color: var(--ink);
+  line-height: 1.6;
+  margin-bottom: var(--space-md);
+}
+.social-dialog-label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: var(--space-sm);
+}
+.social-dialog-textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  font-size: var(--font-size-md);
+  resize: vertical;
+  background: #fff;
+}
+.social-dialog-textarea:focus {
+  border-color: var(--color-primary);
+}
+.social-dialog-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  margin-top: var(--space-lg);
+}
+.social-dialog-actions .btn {
+  min-height: 48px;
+}
+.social-dialog-note {
+  font-size: var(--font-size-sm);
+  color: var(--muted);
+  margin-top: var(--space-md);
+  line-height: 1.6;
+}
+.social-friend-btn {
+  min-height: 48px;
+}
+.social-friend-state {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  font-size: var(--font-size-sm);
+  color: var(--muted);
+  font-weight: 600;
+}
+.social-reason-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.social-reason {
+  min-height: 48px;
+  text-align: left;
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
+  color: var(--ink);
+  background: #fff;
+}
+.social-reason--active {
+  border-color: var(--color-primary);
+  background: var(--mint);
+  font-weight: 700;
+}
+.social-block-list {
+  list-style: none;
+  margin: 0 0 var(--space-sm);
+  padding: 0;
+}
+.social-block-list li {
+  position: relative;
+  padding-left: var(--space-lg);
+  font-size: var(--font-size-md);
+  line-height: 1.9;
+  color: var(--ink);
+}
+.social-block-list li::before {
+  content: '·';
+  position: absolute;
+  left: 4px;
+  font-weight: 700;
+}
+.social-profile-more {
+  margin-left: auto;
+  position: relative;
+}
+.social-more-btn {
+  min-width: 48px;
+  min-height: 48px;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  border-radius: var(--radius-full);
+}
+.social-more-menu {
+  position: absolute;
+  right: 0;
+  top: 52px;
+  z-index: 5;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  min-width: 132px;
+  overflow: hidden;
+}
+.social-more-menu button {
+  min-height: 48px;
+  padding: 0 var(--space-lg);
+  text-align: left;
+  font-size: var(--font-size-md);
+  color: var(--ink);
+}
+.social-more-menu button:hover {
+  background: var(--soft);
+}
+.social-profile-section {
+  margin-top: var(--space-lg);
+}
+.social-profile-label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: var(--space-sm);
+}
+.social-profile-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+.social-profile-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--mint);
+  color: var(--color-primary-dark);
+  border-radius: var(--radius-full);
+  padding: 4px 10px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+.social-profile-games {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.social-profile-games li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line);
+  font-size: var(--font-size-md);
+}
+.social-profile-games li:last-child {
+  border-bottom: none;
+}

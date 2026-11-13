@@ -150,3 +150,29 @@
 .ui-pages-lobby-lobby-dateQuickBtn{font-size:0.75rem;color:#68767e;background:#FFFFFF;border:1px solid #e3e9e6;border-radius:9999px;padding:0.42rem 0.72rem;font-weight:700;white-space:nowrap}
 .ui-pages-lobby-lobby-inline-0{padding:1rem}
 .ui-pages-lobby-sportfilter-inline-0{display:flex;align-items:center;gap:0.25rem}
+
+/* 好友的局（好友局动态流） */
+.lobby-friend-games {
+  margin-bottom: var(--space-xl);
+}
+.lobby-friend-games-title {
+  font-size: var(--font-size-lg);
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.lobby-friend-games-note {
+  color: var(--muted);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-md);
+}
+
+/* 好友局小徽标（卡片与详情页共用类名在各自文件里定义） */
+.ui-pages-lobby-gamecard-friendsChip {
+  font-size: .75rem;
+  font-weight: 700;
+  padding: 0.125rem 0.4rem;
+  border-radius: 4px;
+  background: var(--mint);
+  color: var(--color-primary-dark);
+  border: 1px solid var(--color-primary);
+}
