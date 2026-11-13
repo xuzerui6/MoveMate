@@ -18251,6 +18251,420 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3214",
+   "expectedName": "arms apart circular toe touch (male)",
+   "sourceId": "ai-codex-fill120-3214",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "dd863306167c8712a734d864ace170d69596609070ec20c14b3fc72f74639e32",
+    "30e23298337e9e1376a353b0d12c273469ad387610cadbbadaebe02b09794e90"
+   ],
+   "phases": [
+    "起始：双脚与肩同宽站立，双臂向两侧平伸成 T 形，双腿伸直。",
+    "关键：腰部前屈，右手下探触及右脚脚趾，左腿在身后伸直离地保持平衡。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1708",
+   "expectedName": "assisted lying calves stretch",
+   "sourceId": "ai-codex-fill120-1708",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "ebffb2b4f38c45e04192948ef251f31cccdd594f107349e011351c9603c7a7ca",
+    "bc86cf0a2e53641e47cf20f29b44860a1f9e8f01aadffa612d5bb4f5f4e02a85"
+   ],
+   "phases": [
+    "起始：仰卧双腿伸直，辅助者跪于脚端，双手轻放于左脚前掌。",
+    "关键：右膝弯曲脚平放，左腿伸直，辅助者将左脚脚趾轻推向小腿方向，小腿充分拉伸。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0016",
+   "expectedName": "assisted prone hamstring",
+   "sourceId": "ai-codex-fill120-0016",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "5dd4bfa8d65dbad766864a5a9ff2e82a9bd6b459b724affe49a4cc1bb4b5334b",
+    "b03669e3ef1bac23757930fc9afecf83c862d58554f42fdda912b108f90d3ae4"
+   ],
+   "phases": [
+    "起始：俯卧于平凳，双腿伸直垂出凳端，辅助者站于脚端握住双脚踝。",
+    "关键：双腿保持伸直整体向后上方抬起，髋部伸展，辅助者握踝抗阻引导。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1716",
+   "expectedName": "assisted seated pectoralis major stretch with stability ball",
+   "sourceId": "ai-codex-fill120-1716",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "66263387c8d76209f75972eba923a50917c40279dff2d5e799c63f823a611c3b",
+    "e149d04ca7a797dabe83245b338268dca7a7f4ceb3fcb00360b8fe16b3c824a0"
+   ],
+   "phases": [
+    "起始：坐于健身球上，双臂向前平伸，辅助者立于身后握住其前臂。",
+    "关键：辅助者将双臂轻轻向后外侧打开，胸部充分展开拉伸，人仍坐于球上。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1712",
+   "expectedName": "assisted side lying adductor stretch",
+   "sourceId": "ai-codex-fill120-1712",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "5d6556431e87851f882a593b85df90d3d5c1e7277ddac62a336a529d0295116e",
+    "ff610ed344fc7a52325c7ba0a10d2df6e6004c2bd90f88013da419cfd3264956"
+   ],
+   "phases": [
+    "起始：侧卧，下方腿微屈，上方腿伸直置于凳面，辅助者手轻放于上方大腿。",
+    "关键：上方腿低于凳面下沉，辅助者轻压大腿向下，大腿内侧充分拉伸。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0018",
+   "expectedName": "assisted standing triceps extension (with towel)",
+   "sourceId": "ai-codex-fill120-0018",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "3dad83f6b19e8d381a8ba173b6119d5e394f0ffda162a42c80b9b5d2198380d8",
+    "d634070ccf7e9815dd45587eae3c6379bac5988625ae781c94315ceca049ef8f"
+   ],
+   "phases": [
+    "起始：站立双手于脑后握住毛巾上端，肘部弯曲贴近双耳，辅助者在身后握住毛巾下端。",
+    "关键：双前臂向上完全伸直，毛巾在头顶拉紧竖直，上臂始终贴耳不动。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3672",
+   "expectedName": "back and forth step",
+   "sourceId": "ai-codex-fill120-3672",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "96c33aee01799d8a8926af9fa69a3f02b6ee5950ed33023adbe474f356957169",
+    "3153fe1530ede7ba23a67007e60558187a2cc997ce67372265bb4ba4963d195c"
+   ],
+   "phases": [
+    "起始：双脚与肩同宽站立，双臂自然下垂。",
+    "关键：右脚向前迈出成弓步，前膝弯曲约 90 度，后腿伸直脚跟抬起，躯干直立。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1405",
+   "expectedName": "back pec stretch",
+   "sourceId": "ai-codex-fill120-1405",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "9d7c8b61e5019b55306a0794286f2ead62dab19667d8528a3f3cde64cc3654f6",
+    "dd5ebf9367d10b2f710e26a59301bc0aad31fff82af1f019ed78418d12ddcacd"
+   ],
+   "phases": [
+    "起始：站立，双臂向前平伸与肩同高，手掌相对，尚未交叉。",
+    "关键：双臂于胸前交叉（右臂在上），手指交扣手掌外翻，手臂上抬远离身体，背部充分拉伸。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0971",
+   "expectedName": "band assisted wheel rollerout",
+   "sourceId": "ai-codex-fill120-0971",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "3e0a3757cd02f74400c86335c8670a86a9d3a942864d096149dce26a61ce411a",
+    "00e8c20192cdfa9b17b700a3d22c173f85b4fb0520a122169f1711101948cd8f"
+   ],
+   "phases": [
+    "起始：跪姿直立，健腹轮位于肩下双手握柄，弹力带由轮轴向后连接固定锚点。",
+    "关键：轮子前滚至最远，身体自膝至手成一条直线，躯干贴近地面，弹力带拉长辅助。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1002",
+   "expectedName": "band lying straight leg raise",
+   "sourceId": "ai-codex-fill120-1002",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b38837278c718f6679c211cf3b474834522dc4b068e2ee50ffd0d89e335041a4",
+    "ff55fe81b4e8e2222941cd986d78feef25b913ad4dae04d39a013a0771eb71a4"
+   ],
+   "phases": [
+    "起始：仰卧双腿伸直并拢，弹力带绕双脚足弓，两端握于双手置于髋侧。",
+    "关键：双腿伸直抬至垂直于地面，弹力带在脚与手之间拉紧，腰背贴垫。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0986",
+   "expectedName": "band one arm overhead biceps curl",
+   "sourceId": "ai-codex-fill120-0986",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a98ac495fcc456ea1332fdce4ff52d87bbe48e4c7d29acf59b8feb6f3647ef8d",
+    "44c4289bcafbd23d5e49e09c0ffb45fbd8f0962619454c5fd379d4650869f7e8"
+   ],
+   "phases": [
+    "起始：右脚踩住弹力带一端，右臂完全伸直举过头顶握带，手掌朝前。",
+    "关键：上臂保持竖直不动，前臂下弯至肩部，二头肌收紧，带始终绷直。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0987",
+   "expectedName": "band one arm single leg split squat",
+   "sourceId": "ai-codex-fill120-0987",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e8c260e8d805a71c0cef921715cc834298768ae0b4b3a2acb023344250803af2",
+    "dc02d50b9ba8ecfa775e0237404d0e861e43d1f8fd986c0898f6955726f80571"
+   ],
+   "phases": [
+    "起始：双踝套迷你弹力带，分腿站姿，前脚着地、后脚脚背置于身后平凳，一手轻扶架子。",
+    "关键：下蹲至前大腿接近与地面平行，后膝下沉，躯干直立，后脚仍在凳上。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0990",
+   "expectedName": "band one arm twisting seated row",
+   "sourceId": "ai-codex-fill120-0990",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "177520c2b479d73e1b694bf91ff951b71b1cb9ffaa2378ef8f075b3ccfad1503",
+    "174a07f65b878e82abfb0b7b6412ace4733e75aab06b61275620a8431de00917"
+   ],
+   "phases": [
+    "起始：坐于平凳，右臂向前完全伸直握住低位锚定的弹力带手柄。",
+    "关键：右肘回拉至肋侧、肩胛收紧，同时躯干向右侧明显扭转。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0992",
+   "expectedName": "band push sit-up",
+   "sourceId": "ai-codex-fill120-0992",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "105bf605ca5c069f80ad8f57de229c9d978f8dae4e34b4c32b13f7d7fcc06f03",
+    "b80f1dc84c98a5c86c2232f55bf103acd496113f570ef67c6f20cdf53c44272c"
+   ],
+   "phases": [
+    "起始：仰卧屈膝，双臂向天花板伸直握住身后锚定的弹力带两端。",
+    "关键：卷腹坐起至躯干约 45 度，双臂仍向天花板伸直推带，双脚平放不动。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1011",
+   "expectedName": "band seated twist",
+   "sourceId": "ai-codex-fill120-1011",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "82c5014ad3d440ff96771c648fb0feefaad92abd7bff7317f4f9575cae7a727d",
+    "21d712957c6351d42d5a8ac452f5ea1eb11af7fcf5fbbfeba3f67c31e42b9439"
+   ],
+   "phases": [
+    "起始：坐于地面双腿伸直，弹力带绕于腰间，双手于腹前握住两端。",
+    "关键：躯干向左侧明显扭转，双手随带移至左髋旁，背部保持挺直，双腿不动。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0998",
+   "expectedName": "band side triceps extension",
+   "sourceId": "ai-codex-fill120-0998",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "5316da84c5a5c34e0cab44f17048febe488193d79a31efd326907a3274bd43a4",
+    "8fbaa1f436eea49cd797f6b0530ff38bc1bd35eac74d53a4820a79df9603d893"
+   ],
+   "phases": [
+    "起始：站立，双臂向两侧平伸成 T 形，双手之间弹力带于肩高拉紧，手掌朝下。",
+    "关键：双肘弯曲，双手收至肩部，上臂保持水平静止。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1001",
+   "expectedName": "band single leg split squat",
+   "sourceId": "ai-codex-fill120-1001",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "fbf04dfaaddd40bb78e5c687b9d8a91ac6b4b99d81830d89c929a3c2c5eb3fb7",
+    "a4e39681858f15797621c4109cd9b1cfdf0bc60492e39e6d38b9010ef19516f8"
+   ],
+   "phases": [
+    "起始：双踝套迷你弹力带，前后分腿站立（右脚在前），躯干直立。",
+    "关键：下沉至右大腿与地面平行，左膝刚好离地，躯干直立，双脚均在地面。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1022",
+   "expectedName": "band standing rear delt row",
+   "sourceId": "ai-codex-fill120-1022",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "1b65da86cfa9c100fec4e88472cd7c84fa04fd2bdf33570eeb9ba212cad8f038",
+    "68cf8311a770cae4da83a67cc13267be2ef07a8e07869f00a82147ef7fa162bd"
+   ],
+   "phases": [
+    "起始：双脚踩住弹力带，髋部前屈约 45 度背部平直，双臂下垂握住手柄。",
+    "关键：双肘后拉将带拉至胸腹前，肩胛骨用力夹紧，身体保持前屈平背。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1007",
+   "expectedName": "band standing twisting crunch",
+   "sourceId": "ai-codex-fill120-1007",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "896fae7898fe873e06cac21760a62d9a956dc23b27bb39118664cb341157e507",
+    "1855e241b18bbc932989af1e79e02d005c225d7489bae7e79ceb9188482bfe9d"
+   ],
+   "phases": [
+    "起始：站立，弹力带绕上背并交叉于胸前，双手于肋侧握住两端，肘部收紧。",
+    "关键：躯干向左侧扭转卷曲，右肘斜向下压向左膝方向，双脚站稳不动。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1023",
+   "expectedName": "band straight back stiff leg deadlift",
+   "sourceId": "ai-codex-fill120-1023",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "3648db3212ecf34562c052dcac8c52fca89c7f46aefe61648906dc994c2d9cb8",
+    "fb37267f2538767bad81728334cf752a2e9735630dffe2586ef27b698201d9d0"
+   ],
+   "phases": [
+    "起始：站立双脚踩住弹力带，双手于大腿前握住两端，手臂伸直。",
+    "关键：髋部后推前屈，背部保持平直、膝盖近伸直，双手沿腿下放至小腿中段。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0023",
+   "expectedName": "barbell alternate biceps curl",
+   "sourceId": "ai-codex-fill120-0023",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "c194d289d68285beccbe1665707a673c1604fd2b7927965827beea1b8a1c3bd5",
+    "80f01e19e59f7f951b75691a9406181039b0e051ccc9d048251bb15d7a3a11d6"
+   ],
+   "phases": [
+    "起始：站立双手反握一只杠铃垂于大腿前，手臂伸直，肘贴体侧。",
+    "关键：杠铃以交替倾斜方式弯起，右端抬高至右肩附近、左端明显较低，双手不离杠。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0040",
+   "expectedName": "barbell front raise and pullover",
+   "sourceId": "ai-codex-fill120-0040",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "8ebf00396603794f89dda0b83cafac4624002d8e44bc9ba36aaede769ed28acc",
+    "efab1236240c9cc25cd8e992cdd6a44e80484ae245fe3a10f0a4a8a5400defe1"
+   ],
+   "phases": [
+    "起始：站立正手握杠铃垂于大腿前，手掌朝下，双臂伸直。",
+    "关键：双臂伸直将杠铃向前平举至与肩同高，躯干保持直立不后仰。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0059",
+   "expectedName": "barbell lying preacher curl",
+   "sourceId": "ai-codex-fill120-0059",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "ec6dacbbdaeb0b8b43cd8fe4e37facc3cf29550f54883becb864d3ca02f0c7c4",
+    "af82d67ae2d6a61a01c5a6786fd41acb6b642db54fdd405ec7d7fc6a2402bf2d"
+   ],
+   "phases": [
+    "起始：胸部贴紧牧师凳靠垫，双臂越过垫顶伸直下垂，反手握住杠铃。",
+    "关键：杠铃弯举至肩高，上臂与胸部始终贴垫，只有前臂上抬。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
