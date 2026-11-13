@@ -105,8 +105,10 @@ const Lobby: React.FC = () => {
 
   return (
     <div className="groups-page">
-      <button className="btn btn--primary group-create" onClick={()=>navigate('/create')}>发起运动局</button>
-      <button className="btn btn--secondary group-create" style={{ marginLeft: 8 }} onClick={()=>navigate('/boss-Atlas')}>怪兽图鉴</button>
+      <div className="group-create-row">
+        <button className="btn btn--primary group-create" onClick={()=>navigate('/create')}>发起运动局</button>
+        <button className="btn btn--secondary group-create" onClick={()=>navigate('/boss-Atlas')}>怪兽图鉴</button>
+      </div>
       {/* 极简页面头部 */}
       <div className="ui-pages-lobby-lobby-header">
         <div>

@@ -40,7 +40,8 @@
   width: 2.5rem;
   height: 100%;
   pointer-events: none;
-  background: var(--soft);
+  /* 必须是渐变淡出；此前误用纯色 var(--soft)，在 chip 行右端压出一块实心矩形 */
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), #ffffff);
 }
 .sport-filter-track-row {
   display: flex;
@@ -150,3 +151,29 @@
 .ui-pages-lobby-lobby-dateQuickBtn{font-size:0.75rem;color:#68767e;background:#FFFFFF;border:1px solid #e3e9e6;border-radius:9999px;padding:0.42rem 0.72rem;font-weight:700;white-space:nowrap}
 .ui-pages-lobby-lobby-inline-0{padding:1rem}
 .ui-pages-lobby-sportfilter-inline-0{display:flex;align-items:center;gap:0.25rem}
+
+/* 头部双按钮（发起运动局 + 怪兽图鉴）：容器统一锚在 .groups-page 右上角并排，
+   按钮本身不再各自绝对定位——此前两者同挂 .group-create 的 right:0/top:0，
+   锚点完全重合，图鉴按钮把发起运动局盖住只剩一条绿边（2026-11-14 机主截图）。 */
+.group-create-row {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.group-create-row .group-create {
+  position: static;
+  float: none;
+  min-height: 48px !important;
+}
+/* 校区 select 的度量在 design-system.css 里互相打架：自身的 height:34px 被
+   .motion-app .form-select 的 min-height:52px + padding:13px 压过，内容盒只剩 24px，
+   iOS 原生渲染会把文字裁成一条缝。这里给它一套自洽规格（48px 高、上下零内边距）。 */
+.motion-app .groups-page .ui-pages-lobby-lobby-campusSelect {
+  height: 48px;
+  min-height: 48px;
+  padding: 0 2rem 0 1rem;
+  line-height: 1.5;
+}
