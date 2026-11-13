@@ -259,6 +259,30 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.equal((await call('/api/v1/admin/'+panel,{token:tokens[0]})).status,403,panel);
  }
  });
+ await t.test('operator user provisioning creates ordinary accounts behind the migration secret only',async()=>{
+ const ns=await mf.getDurableObjectNamespace('BACKEND');const actor=ns.get(ns.idFromName('test'));
+ try{
+ const body={nickname:'内测队员',email:'provisioned@dajju.local',['password']:'Provisioned-Fixture-1',schoolId:2,campusId:5};
+ // An ordinary user token (or none) cannot open the operator door.
+ assert.equal((await call('/api/migration/provision-user',{method:'POST',token:tokens[0],body,headers:{Connection:'close'}})).status,401);
+ const first=await migrate('provision-user',body);assert.equal(first.status,200,JSON.stringify(first.data));assert.equal(first.data.created,true);assert.equal(first.data.account,'provisioned@dajju.local');
+ const dupe=await migrate('provision-user',body);assert.equal(dupe.status,409);assert.match(dupe.data.error,/Email already exists/);
+ const badCampus=await migrate('provision-user',{...body,email:'other@dajju.local',schoolId:2,campusId:1});assert.equal(badCampus.status,409);assert.match(badCampus.data.error,/Campus not found for school/);
+ // No /auth/login calls here: the suite shares one 10-per-minute auth rate-limit budget,
+ // and the voice block at the end needs its logins. The HTTP login path for provisioned
+ // users is covered by server/tests/provision-user.test.ts; here the stored credential
+ // is verified directly (bcrypt compare against the row the Worker actually wrote).
+ const row=await actor.userByEmail('provisioned@dajju.local');assert.ok(row);assert.equal(row.id,first.data.id);assert.equal(Number(row.is_admin),0);assert.equal(Number(row.email_verified),1);assert.equal(Number(row.school_id),2);assert.equal(Number(row.campus_id),5);
+ assert.equal(await bcrypt.compare('Provisioned-Fixture-1',row.password_hash),true);
+ assert.equal(await bcrypt.compare('wrong-password',row.password_hash),false);
+ // Provisioned members do not open the closed school.
+ const boot=await call('/api/v1/auth/bootstrap');const jlsu=boot.data.data.schools.find(s=>s.code==='jlsu');assert.equal(jlsu.registration_open,false);
+ assert.ok(boot.data.data.campuses.every(c=>c.school_id!==jlsu.id));
+ }finally{
+ // Remove the provisioned account so later fixed-id test seeding (voice users 5/6) is unaffected.
+ await actor.deleteUserByEmail('provisioned@dajju.local');
+ }
+ });
  await t.test('native plan operations persist, isolate accounts and settle once by valid time',async()=>{
  const token=tokens[0],p=(await call('/api/v1/training-plans',{method:'POST',token,body:{name:'Worker plan',routines:[{id:'a',name:'A',exercises:[{exerciseId:'motion:high_knees',sets:[{reps:2,restSec:60}]}]}]}})).data.data;
  const created=await call('/api/v1/workout-sessions',{method:'POST',token,body:{id:crypto.randomUUID(),planId:p.id,routineId:'a'}});assert.equal(created.status,200,JSON.stringify(created.data));let w=created.data.data;assert.equal(w.session.status,'paused');

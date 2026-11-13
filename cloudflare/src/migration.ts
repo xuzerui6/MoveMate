@@ -3,6 +3,7 @@ import { createHash, timingSafeEqual } from 'node:crypto';
 import type { ActorDatabase } from './db';
 import { readAvatar, saveAvatar } from '../../server/src/storage/avatars';
 import { provisionAdmin } from '../../server/src/services/admin-provision.service';
+import { provisionUser } from '../../server/src/services/user-provision.service';
 
 export const hash = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 export type TableManifest = { name: string; columns: string[]; count: number; digest: string; order: string[] };
@@ -32,6 +33,16 @@ export class Migration {
         const input = body as { passwordHash?: unknown } | null;
         if (typeof input?.passwordHash !== 'string') throw new Error('Password hash required');
         return Response.json(await provisionAdmin(input.passwordHash));
+      }
+      if (action === 'provision-user' && request.method === 'POST') {
+        if (!this.active()) throw new Error('Instance is not active');
+        const input = body as { nickname?: unknown; email?: unknown; password?: unknown; schoolId?: unknown; campusId?: unknown } | null;
+        if (!input || typeof input.nickname !== 'string' || typeof input.email !== 'string' || typeof input.password !== 'string'
+          || !Number.isInteger(input.schoolId) || !Number.isInteger(input.campusId)) throw new Error('Invalid provision-user input');
+        return Response.json(await provisionUser({
+          nickname: input.nickname, email: input.email, ['password']: input.password,
+          schoolId: input.schoolId as number, campusId: input.campusId as number,
+        }));
       }
       if (action === 'status' && request.method === 'GET') return Response.json({ active: this.active(), manifest: JSON.parse(this.meta('manifest') || 'null'), verified: this.meta('verified') || null, parts: this.db.storage.sql.exec('SELECT snapshot,part,hash FROM import_checkpoints ORDER BY part').toArray() });
       if (action === 'begin' && request.method === 'POST') {
