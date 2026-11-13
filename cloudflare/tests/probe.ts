@@ -185,6 +185,42 @@ export class TestBackend extends MoveMateBackend {
       },
     };
   }
+  /** Boss-tables upgrade: a pre-boss instance (no boss tables at all) with a
+   * game in progress must gain the five boss tables via the boot path, keep
+   * every pre-existing row, and be able to run a fight on that game. */
+  async bossTablesUpgradeCase() {
+    const sql = this.ctx.storage.sql;
+    for (const t of ['boss_fight_latency', 'boss_fight_rewards', 'boss_fight_participants', 'avatar_souvenirs', 'boss_fights'])
+      sql.exec(`DROP TABLE IF EXISTS ${t}`);
+    sql.exec("INSERT OR IGNORE INTO users(id,email,password_hash,nickname,student_id) VALUES(9001,'boss-upgrade@local','x','升级哨兵','sentinel-boss-upgrade')");
+    sql.exec("INSERT INTO games(id,host_id,sport_type,location,max_players,start_time,status) VALUES(9001,9001,'fitness','哨兵场馆',4,'2026-11-13T11:00:00.000Z','in_progress')");
+    sql.exec("INSERT INTO game_members(game_id,user_id,checked_in_at) VALUES(9001,9001,'2026-11-13T11:05:00.000Z')");
+    sql.exec("INSERT INTO sport_sessions(id,user_id,game_id,sport_type,source,status,created_at) VALUES('boss-upgrade-session',9001,9001,'squat','camera','running','2026-11-13T11:06:00.000Z')");
+    const tableNames = () => sql.exec("SELECT name FROM sqlite_master WHERE type='table'").toArray().map(row => String(row.name));
+    const before = { tables: tableNames() };
+    await this.ctx.storage.transaction(async () => {
+      const db = new ActorDatabase(this.ctx.storage);
+      db.bootstrap();
+    });
+    const after = { tables: tableNames() };
+    sql.exec("INSERT INTO boss_fights(id,game_id,boss_id,movement,status,max_hp,hp,duration_sec,created_by,created_at) VALUES('boss-upgrade-fight',9001,'aoye_yanshi','squat','gathering',160,160,600,9001,'2026-11-13T11:07:00.000Z')");
+    sql.exec("INSERT INTO boss_fight_participants(fight_id,user_id,joined_at) VALUES('boss-upgrade-fight',9001,'2026-11-13T11:07:00.000Z')");
+    let indexGuard = false;
+    try {
+      sql.exec("INSERT INTO boss_fights(id,game_id,boss_id,movement,status,created_by,created_at) VALUES('boss-upgrade-fight-2',9001,'aoye_yanshi','squat','gathering',9001,'2026-11-13T11:08:00.000Z')");
+    } catch { indexGuard = true; }
+    return {
+      before,
+      after,
+      indexGuard,
+      preserved: {
+        game: sql.exec('SELECT status, location FROM games WHERE id=9001').one(),
+        memberCount: Number(sql.exec('SELECT COUNT(*) AS n FROM game_members WHERE game_id=9001').one().n),
+        session: sql.exec("SELECT status, source FROM sport_sessions WHERE id='boss-upgrade-session'").one(),
+        fightCount: Number(sql.exec('SELECT COUNT(*) AS n FROM boss_fights WHERE game_id=9001').one().n),
+      },
+    };
+  }
   async brokenOutbox(repair = false) {
     if (repair) this.ctx.storage.sql.exec("UPDATE event_outbox SET payload='{}' WHERE payload='not-json'");
     else this.ctx.storage.sql.exec("INSERT INTO event_outbox(event,payload) VALUES('notification','not-json')");

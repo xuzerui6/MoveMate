@@ -132,6 +132,18 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.equal(c.preserved.sentinel.name,'宋治平体育馆篮球比赛馆');assert.equal(Number(c.preserved.sentinel.is_active),1);assert.equal(c.preserved.sentinel.sport_types,'["basketball"]');
  assert.equal(c.preserved.campusCount,5);assert.equal(c.preserved.venueCount,5);
  });
+ await t.test('boss tables upgrade: pre-boss instance gains all five tables; in-progress game rows preserved; open-fight index live',async()=>{
+ const namespace=await mf.getDurableObjectNamespace('BACKEND');const actor=namespace.get(namespace.idFromName('boss-upgrade'));
+ const c=await actor.bossTablesUpgradeCase();
+ const bossTables=['boss_fights','boss_fight_participants','boss_fight_rewards','avatar_souvenirs','boss_fight_latency'];
+ for(const name of bossTables)assert.ok(!c.before.tables.includes(name),`before should lack ${name}`);
+ for(const name of bossTables)assert.ok(c.after.tables.includes(name),`after should gain ${name}`);
+ assert.equal(c.preserved.game.status,'in_progress');assert.equal(c.preserved.game.location,'哨兵场馆');
+ assert.equal(c.preserved.memberCount,1);
+ assert.equal(c.preserved.session.status,'running');assert.equal(c.preserved.session.source,'camera');
+ assert.equal(c.preserved.fightCount,1); // the fight created on the upgraded instance, the index-rejected one excluded
+ assert.equal(c.indexGuard,true); // one_open_boss_fight_per_game rejects a second open fight for the same game
+ });
  const {manifest,parts}=fixture({largeAvatar:true});
  await t.test('snapshot import resumes, validates checkpoints and preserves hashes',async()=>{
  assert.equal((await migrate('begin',manifest)).status,200);
