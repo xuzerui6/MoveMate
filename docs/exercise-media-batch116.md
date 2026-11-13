@@ -33,7 +33,7 @@
 
 - 串行全套测试（本地，接入工作树）：client `test:repository` **557/557** + `tsc -b` 通过；server **131/131** + build 通过；cloudflare **36/36** + typecheck 通过。本批无测试守卫改写。
 - 登记校验：发布链计数四方一致：build 输出 1064 image entries；publish-media-metadata 输出 1064 records；publish-exercise-documentation 输出 complete 1064 / photos 1034 / illustrations 30 / pending 265（原始口径）；report 脚本 images 1064 / originalIds 30 / missing 265 / cameraImages 56 / cameraPending 空。
-- 集成提交 `PENDING`；GitHub CI 运行 `PENDING` success。
-- 双站部署：生产 Version `PENDING`；预演 Version `PENDING`。
-- 在线核查：新图 24 张双站 sha256 `PENDING`；双站 attribution.json 条目数 `PENDING`；被替换的旧图解文件（1013 首帧）在生产返回 404。
+- 集成提交 `6f63b4b`；GitHub CI 运行 43336013275 success。
+- 双站部署：生产 Version `8263b5f9-7f52-4a7b-b736-2b1e0f967e51`；预演 Version `9b829a77-01fc-4a2d-a3b2-cb9654b7711e`（preview 分支 tip `9af69b0` = f15ace3 + 合并本批 main）。
+- 在线核查：新图 24 张双站 sha256 **48/48 一致**；双站 attribution.json 条目数 **1064**；被替换的旧图解文件（1013 首帧）在生产返回 404。
 - 「动伴进度」空间同轮同步（图解 30、照片 1034、AI 685、替换进度 83/113，批次 116 记录置顶）。

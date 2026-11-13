@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { UploadSimple } from "@phosphor-icons/react";
 import { useAuthStore } from "../../stores/authStore";
 import { request, getErrorMessage } from "./api";
 import { transferDraft } from "./offline";
@@ -60,44 +61,53 @@ export default function FullTransfer() {
   });
   return (
     <section className="gym-form">
-      <h2>恢复备份／导入记录</h2>
-      <p className="gym-muted">
-        可以导入：动伴自己的备份文件（新旧版本都行）、openGym
-        的计划和记录，还有从 Strong、Hevy、FitNotes
-        导出的表格文件。文件会分成几小批，一批先给你看清楚，你确认一批、存一批。里面认不出的动作，需要你手动选一下对应的是哪个。导入的历史只会变成手动记录：不加
-        XP，也不会有摄像头评分和解锁。没练完的计时，不会当成正式记录恢复。
-      </p>
-      <div className="gym-two">
-        <label>
-          来源格式
-          <select
-            disabled={busy}
-            value={format}
-            onChange={(e) => setFormat(e.target.value)}
-          >
-            {[
-              ["movemate", "动伴完整 JSON"],
-              ["opengym", "openGym JSON"],
-              ["strong", "Strong CSV"],
-              ["hevy", "Hevy CSV"],
-              ["fitnotes", "FitNotes CSV"],
-            ].map(([k, v]) => (
-              <option value={k} key={k}>
-                {v}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          原文件用的重量单位
-          <select value={unit} onChange={(e) => setUnit(e.target.value)}>
-            <option value="kg">kg</option>
-            <option value="lb">lb</option>
-          </select>
-        </label>
+      <div className="gym-data-head">
+        <span className="gym-data-icon">
+          <UploadSimple size={20} />
+        </span>
+        <h2>从备份或文件恢复</h2>
       </div>
-      <label>
-        选择文件（最多 20MB）
+      <p className="gym-muted">
+        文件会分成几小批，一批先给你看清楚，你确认一批、存一批。导入的历史只会变成手动记录，不加
+        XP。
+      </p>
+      <details className="gym-more">
+        <summary>了解更多</summary>
+        <p className="gym-muted">
+          可以导入：动伴自己的备份文件（新旧版本都行）、openGym
+          的计划和记录，还有从 Strong、Hevy、FitNotes
+          导出的表格文件。文件会分成几小批，一批先给你看清楚，你确认一批、存一批。里面认不出的动作，需要你手动选一下对应的是哪个。导入的历史只会变成手动记录：不加
+          XP，也不会有摄像头评分和解锁。没练完的计时，不会当成正式记录恢复。
+        </p>
+      </details>
+      <label className="gym-chooser gym-chooser-first">
+        <span className="gym-chooser-label">来源格式</span>
+        <select
+          disabled={busy}
+          value={format}
+          onChange={(e) => setFormat(e.target.value)}
+        >
+          {[
+            ["movemate", "动伴完整 JSON"],
+            ["opengym", "openGym JSON"],
+            ["strong", "Strong CSV"],
+            ["hevy", "Hevy CSV"],
+            ["fitnotes", "FitNotes CSV"],
+          ].map(([k, v]) => (
+            <option value={k} key={k}>
+              {v}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="gym-chooser">
+        <span className="gym-chooser-label">原文件用的重量单位</span>
+        <select value={unit} onChange={(e) => setUnit(e.target.value)}>
+          <option value="kg">kg</option>
+          <option value="lb">lb</option>
+        </select>
+      </label>
+      <label className="gym-file-card">
         <input
           type="file"
           accept=".json,.csv"
@@ -134,6 +144,11 @@ export default function FullTransfer() {
             });
           }}
         />
+        <span className="gym-file-card-icon">
+          <UploadSimple size={26} />
+        </span>
+        <span className="gym-file-card-main">点按选择文件</span>
+        <span className="gym-file-card-sub">JSON / CSV 文件 · 最大 20MB</span>
       </label>
       {message && (
         <p role="status" className={failed ? "gym-error" : "gym-success"}>
@@ -152,7 +167,7 @@ export default function FullTransfer() {
             已确认 {cursor} / {draft.parts.length}{" "}
             批；断网、关掉页面都没事，下次能接着来。退出登录会清掉这台设备上没导完的草稿。
           </p>
-          <div className="gym-inline-actions">
+          <div className="gym-inline-actions gym-transfer-actions">
             <button
               disabled={busy || done}
               className="primary"

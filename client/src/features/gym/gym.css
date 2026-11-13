@@ -1181,3 +1181,44 @@ fieldset.gym-settings-equipment{padding:24px}
 .recognition-advanced label{display:flex;flex-direction:column;gap:8px;font-weight:700;font-size:15px;margin-top:14px}
 .recognition-advanced select{min-height:48px;font-size:16px;border:1px solid var(--line,#e3e9e6);border-radius:12px;padding:8px 12px;background:#fff;width:100%}
 .recognition-advanced .gym-settings-hint{margin-top:8px}
+
+/* —— 训练数据管理页改版（2026-11-13）：导出置顶三段式、选择行、选文件大卡片 —— */
+.gym-data-subtitle{color:#68767e;font-size:14px;margin:6px 0 0}
+.gym-data-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.gym-data-head h2{font-size:20px;line-height:1.35;font-weight:750;margin:0}
+.gym-data-icon{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:var(--mint,#e5faee);color:var(--color-primary-dark,#08783b);flex:none}
+.gym-more{margin-top:12px}
+.gym-more>summary{min-height:40px;padding:6px 0;font-size:14px;font-weight:600;color:var(--color-primary-dark,#08783b);display:flex;align-items:center;gap:6px;list-style:none;cursor:pointer}
+.gym-more>summary::-webkit-details-marker{display:none}
+.gym-more>summary::after{content:'›';font-size:17px;line-height:1;transition:transform .15s ease}
+.gym-more[open ]>summary::after{transform:rotate(90deg)}
+.gym-more>p{margin:2px 0 8px}
+.gym-license-line{margin:18px 0 0;padding-top:14px;border-top:1px solid #eef2ef;font-size:13px;color:#68767e}
+.gym-license-line a{color:var(--color-primary-dark,#08783b)}
+.gym-export-actions{display:flex;gap:12px;margin-top:16px}
+.gym-export-action{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.gym-export-action button{width:100%;min-height:56px}
+.gym-export-action small{color:#68767e;font-size:12px;text-align:center}
+.gym-page label.gym-chooser{flex-direction:row;align-items:center;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #eef2ef;font-size:15px}
+.gym-page label.gym-chooser-first{border-top:1px solid #eef2ef;margin-top:10px}
+.gym-chooser .gym-chooser-label{display:flex;flex-direction:column;gap:2px;font-weight:600;font-size:15px}
+.gym-chooser .gym-chooser-label small{font-weight:400;color:#68767e;font-size:12px}
+.gym-page .gym-chooser select{width:auto;max-width:62%;min-height:48px;border:0;background:transparent;color:var(--ink,#080b09);font-weight:700;font-size:15px;text-align:right;padding:8px 2px}
+.gym-page label.gym-file-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;border:1.5px dashed #a9d3b8;border-radius:16px;background:#f6f8f7;padding:26px 16px;margin-top:16px;cursor:pointer}
+.gym-file-card input{position:absolute;inset:0;width:100%;height:100%;min-height:0;padding:0;border:0;opacity:0;cursor:pointer}
+.gym-file-card:focus-within{outline:3px solid #00c65e;outline-offset:3px}
+.gym-file-card:has(input:disabled){opacity:.55}
+.gym-file-card-icon{color:var(--color-primary,#008a40);display:inline-flex}
+.gym-file-card-main{font-size:16px;font-weight:700;color:var(--color-primary-dark,#08783b)}
+.gym-file-card-sub{font-size:13px;font-weight:400;color:#68767e}
+.gym-transfer-actions button{min-height:52px}
+.gym-paste>summary.gym-paste-summary{display:flex;align-items:center;gap:10px;padding:6px 0;list-style:none;cursor:pointer}
+.gym-paste>summary::-webkit-details-marker{display:none}
+.gym-paste-titles{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.gym-paste-titles b{font-size:17px;font-weight:750}
+.gym-paste-titles small{font-weight:400;color:#68767e;font-size:13px}
+.gym-paste-caret{color:#68767e;flex:none;transition:transform .15s ease}
+.gym-paste[open ] .gym-paste-caret{transform:rotate(180deg)}
+.gym-page .gym-file-row input{width:auto;max-width:56%;min-height:44px;border:0;background:transparent;padding:6px 0}
+.gym-paste>button.primary{margin-top:16px}
+.gym-paste-note{margin-top:10px}
