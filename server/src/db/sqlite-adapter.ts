@@ -13,6 +13,7 @@ import { pgToSqlite, toSqliteDialect, coerceRow, coerceParams } from './sql-dial
 export { pgToSqlite, toSqliteDialect, coerceRow, coerceParams } from './sql-dialect';
 import { DatabaseSync } from 'node:sqlite';
 import { gymSchema } from '../gym/schema';
+import { SCHOOL_GATE_SQL } from './school-gates';
 import '../config';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -186,7 +187,8 @@ function ensureSchema(conn: DatabaseSync): void {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       code TEXT NOT NULL UNIQUE,
       name TEXT NOT NULL,
-      is_active INTEGER NOT NULL DEFAULT 1
+      is_active INTEGER NOT NULL DEFAULT 1,
+      registration_open INTEGER NOT NULL DEFAULT 1
     );
 
     CREATE TABLE IF NOT EXISTS campuses (
@@ -331,6 +333,8 @@ function ensureSchema(conn: DatabaseSync): void {
   ensureColumn('game_members', 'reward_points', 'INTEGER NOT NULL DEFAULT 0');
   ensureColumn('game_members', 'reward_granted_at', 'TEXT');
   ensureColumn('game_members', 'hidden_in_profile_at', 'TEXT');
+  // 注册开关与校区启用解耦：旧库的 schools 还没有这一列，补上后由 seed/门维护写正确值
+  ensureColumn('schools', 'registration_open', 'INTEGER NOT NULL DEFAULT 1');
 }
 
 // ================================================================
@@ -438,10 +442,19 @@ const JLSU_VENUES: Array<[number, number, string, string]> = [
   [2, 5, '临河校区健身馆', '["fitness","basketball","volleyball","badminton"]'],
 ];
 
+/** 把学校开关维护到站立状态（存量库：吉体校区/场地启用、注册保持关闭）；空库跳过 */
+function applySchoolGates(conn: DatabaseSync): void {
+  const count = (conn.prepare('SELECT COUNT(*) AS total FROM schools').get() as { total: number }).total;
+  if (!count) return;
+  for (const sql of SCHOOL_GATE_SQL) conn.exec(sql);
+}
+
 function seedJlsuMetadata(conn: DatabaseSync): void {
-  const insertSchool = conn.prepare('INSERT OR IGNORE INTO schools (id, code, name, is_active) VALUES (?, ?, ?, 1)');
-  const insertCampus = conn.prepare('INSERT OR IGNORE INTO campuses (id, school_id, code, name, is_active) VALUES (?, ?, ?, ?, 0)');
-  const insertVenue = conn.prepare('INSERT OR IGNORE INTO venues (id, school_id, campus_id, name, sport_types, is_active) VALUES (?, ?, ?, ?, ?, 0)');
+  // 注册开关与组局可用解耦：学校注册保持关闭（registration_open=0），
+  // 但校区/场地是启用的，内测账号能在自己学校里组局（注册拦截只看注册开关）。
+  const insertSchool = conn.prepare('INSERT OR IGNORE INTO schools (id, code, name, is_active, registration_open) VALUES (?, ?, ?, 1, 0)');
+  const insertCampus = conn.prepare('INSERT OR IGNORE INTO campuses (id, school_id, code, name, is_active) VALUES (?, ?, ?, ?, 1)');
+  const insertVenue = conn.prepare('INSERT OR IGNORE INTO venues (id, school_id, campus_id, name, sport_types, is_active) VALUES (?, ?, ?, ?, ?, 1)');
   const findVenue = conn.prepare('SELECT id FROM venues WHERE school_id = ? AND campus_id = ? AND name = ?');
 
   conn.exec('BEGIN');
@@ -550,6 +563,7 @@ export async function initSQLite(): Promise<void> {
     try {
       ensureSchema(connection);
       seedJluMetadata(connection);
+      applySchoolGates(connection);
       backfillLegacyData(connection);
       seedAdmin(connection);
       db = connection;

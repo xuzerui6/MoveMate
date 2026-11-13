@@ -2,7 +2,12 @@
  * 运动局 API: CRUD + 加入/退出 + 确认开始/结束
  */
 import client from './client';
-import type { CreateGameData, Game, GameFilter, PaginatedResponse } from '../types';
+import type { CreateGameData, Game, GameFilter, GameMeta, PaginatedResponse } from '../types';
+
+/** 建局表单数据（仅当前用户学校的校区/场地，服务端按学校过滤） */
+export async function fetchGameMeta(): Promise<GameMeta> {
+  return client.get('/games/meta');
+}
 
 /** 获取运动局列表（支持筛选） */
 export async function fetchGames(

@@ -4,7 +4,7 @@
     "CREATE TABLE IF NOT EXISTS sport_sessions (\n      id TEXT PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id), game_id INTEGER REFERENCES games(id),\n      sport_type TEXT NOT NULL, source TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'running',\n      active_since TEXT, effective_ms INTEGER NOT NULL DEFAULT 0, reps INTEGER NOT NULL DEFAULT 0,\n      metrics TEXT NOT NULL DEFAULT '{}', xp INTEGER NOT NULL DEFAULT 0, settled INTEGER NOT NULL DEFAULT 0,\n      created_at TEXT NOT NULL, ended_at TEXT\n    )",
     "CREATE TABLE IF NOT EXISTS sport_intervals (\n      id INTEGER PRIMARY KEY AUTOINCREMENT, session_id TEXT NOT NULL REFERENCES sport_sessions(id),\n      started_at TEXT NOT NULL, ended_at TEXT, effective_ms INTEGER NOT NULL DEFAULT 0\n    )",
     "CREATE TABLE IF NOT EXISTS xp_ledger (\n      session_id TEXT PRIMARY KEY REFERENCES sport_sessions(id), user_id INTEGER NOT NULL REFERENCES users(id),\n      xp INTEGER NOT NULL, created_at TEXT NOT NULL\n    )",
-    "CREATE TABLE IF NOT EXISTS schools (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      code TEXT NOT NULL UNIQUE,\n      name TEXT NOT NULL,\n      is_active INTEGER NOT NULL DEFAULT 1\n    )",
+    "CREATE TABLE IF NOT EXISTS schools (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      code TEXT NOT NULL UNIQUE,\n      name TEXT NOT NULL,\n      is_active INTEGER NOT NULL DEFAULT 1,\n      registration_open INTEGER NOT NULL DEFAULT 1\n    )",
     "CREATE TABLE IF NOT EXISTS campuses (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      school_id INTEGER NOT NULL REFERENCES schools(id),\n      code TEXT NOT NULL,\n      name TEXT NOT NULL,\n      is_active INTEGER NOT NULL DEFAULT 1\n    )",
     "CREATE TABLE IF NOT EXISTS venues (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      school_id INTEGER NOT NULL REFERENCES schools(id),\n      campus_id INTEGER NOT NULL REFERENCES campuses(id),\n      name TEXT NOT NULL,\n      sport_types TEXT DEFAULT '[]',\n      is_active INTEGER NOT NULL DEFAULT 1\n    )",
     "CREATE TABLE IF NOT EXISTS users (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      nickname TEXT NOT NULL,\n      email TEXT NOT NULL UNIQUE,\n      password_hash TEXT NOT NULL,\n      avatar_url TEXT DEFAULT '',\n      department TEXT DEFAULT '',\n      student_id TEXT NOT NULL,\n      email_verified INTEGER DEFAULT 0,\n      school_id INTEGER DEFAULT 1,\n      campus_id INTEGER DEFAULT 1,\n      is_admin INTEGER NOT NULL DEFAULT 0,\n      reward_points INTEGER NOT NULL DEFAULT 0,\n      reward_level INTEGER NOT NULL DEFAULT 1,\n      reward_streak INTEGER NOT NULL DEFAULT 0,\n      completed_games INTEGER NOT NULL DEFAULT 0,\n      hosted_completed_games INTEGER NOT NULL DEFAULT 0,\n      reward_badges TEXT DEFAULT '[]',\n      last_rewarded_date TEXT,\n      qq_email TEXT DEFAULT '',\n      sport_preferences TEXT NOT NULL DEFAULT '[]',\n      created_at TEXT DEFAULT (datetime('now')),\n      updated_at TEXT DEFAULT (datetime('now'))\n    )",
@@ -34,21 +34,23 @@
   ],
   "metadata": [
     {
-      "sql": "INSERT OR IGNORE INTO schools (id,code,name,is_active) VALUES (?,?,?,?)",
+      "sql": "INSERT OR IGNORE INTO schools (id,code,name,is_active,registration_open) VALUES (?,?,?,?,?)",
       "args": [
         1,
         "jlu",
         "吉林大学",
+        1,
         1
       ]
     },
     {
-      "sql": "INSERT OR IGNORE INTO schools (id,code,name,is_active) VALUES (?,?,?,?)",
+      "sql": "INSERT OR IGNORE INTO schools (id,code,name,is_active,registration_open) VALUES (?,?,?,?,?)",
       "args": [
         2,
         "jlsu",
         "吉林体育学院",
-        1
+        1,
+        0
       ]
     },
     {
@@ -88,7 +90,7 @@
         2,
         "jlsu-nanling",
         "南岭校区",
-        0
+        1
       ]
     },
     {
@@ -98,7 +100,7 @@
         2,
         "jlsu-linhe",
         "临河校区",
-        0
+        1
       ]
     },
     {
@@ -505,7 +507,7 @@
         4,
         "南岭校区室内篮球馆武术馆",
         "[\"basketball\",\"fitness\"]",
-        0
+        1
       ]
     },
     {
@@ -516,7 +518,7 @@
         4,
         "南岭校区摔跤柔道馆",
         "[\"fitness\"]",
-        0
+        1
       ]
     },
     {
@@ -527,7 +529,7 @@
         5,
         "临河校区田径场",
         "[\"running\",\"soccer\"]",
-        0
+        1
       ]
     },
     {
@@ -537,8 +539,8 @@
         2,
         5,
         "临河校区健身馆",
-        "[\"fitness\",\"basketball\",\"volleyball\",\"badminton\"]",
-        0
+        "[\"fitness\",\"basketball\",\"volleyball\",\"badminton\",\"dance\",\"taekwondo\"]",
+        1
       ]
     }
   ]

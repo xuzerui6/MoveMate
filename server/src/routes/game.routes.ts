@@ -11,6 +11,7 @@ import {
   completeGameWithAuth,
   listGames,
   getGameDetail,
+  getGameMeta,
   SportType,
   GameTag,
 } from '../services/game.service';
@@ -116,6 +117,19 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const query = listGamesSchema.parse(req.query);
     const result = await listGames(query, req.user!.id);
+    success(res, result);
+  }),
+);
+
+// ================================================================
+// GET /api/v1/games/meta —— 建局表单数据（仅当前用户学校的校区/场地）
+// 必须在 /:id 之前注册
+// ================================================================
+router.get(
+  '/meta',
+  authRequired,
+  asyncHandler(async (req: Request, res: Response) => {
+    const result = await getGameMeta(req.user!.id);
     success(res, result);
   }),
 );

@@ -1,5 +1,6 @@
 import type { DatabaseRuntime } from '../../server/src/db/scope';
 import { pgToSqlite, toSqliteDialect, coerceRow, coerceParams } from '../../server/src/db/sql-dialect';
+import { SCHOOL_GATE_SQL } from '../../server/src/db/school-gates';
 import bootstrap from './schema.json';
 
 export class ActorDatabase implements DatabaseRuntime {
@@ -41,6 +42,17 @@ export class ActorDatabase implements DatabaseRuntime {
     for (const row of bootstrap.metadata) {
       if (/^INSERT OR IGNORE INTO (schools|campuses) /.test(row.sql)) this.storage.sql.exec(row.sql, ...row.args);
     }
+  }
+  /**
+   * 学校开关解耦维护（每次启动幂等执行，与 seedSchoolRegistry 同一模式）：
+   * 吉林体育学院的校区/场地启用给内测账号组局用，注册开关保持关闭。
+   * 空库跳过（同上，快照导入契约）；调用前 schools.registration_open 列
+   * 必须已由 bootstrap()/upgradeColumns() 补齐。
+   */
+  applySchoolGates(): void {
+    const count = this.storage.sql.exec('SELECT COUNT(*) AS n FROM schools').one().n;
+    if (!Number(count)) return;
+    for (const sql of SCHOOL_GATE_SQL) this.storage.sql.exec(sql);
   }
   async query<T = any>(sql: string, params?: any[]): Promise<{ rows: T[]; rowCount: number }> {
     const converted = pgToSqlite(toSqliteDialect(sql), params);

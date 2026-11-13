@@ -58,6 +58,7 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
       await ctx.storage.transaction(async () => {
         this.db.bootstrap();
         this.db.seedSchoolRegistry();
+        this.db.applySchoolGates();
         if(beforeStage2) this.migration.set('pre_gym_stage2_bookmark',JSON.stringify({bookmark:beforeStage2,createdAt:new Date().toISOString()}));
         if (beforeGym) this.migration.set('pre_gym_bookmark', JSON.stringify({bookmark:beforeGym,createdAt:new Date().toISOString()}));
       });
