@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import {
   FRAME_ALERT_WORD,
-  INITIAL_LAYOUT,
+  POSE_STALE_MS,
   acceptSnapshot,
   crossedRepMilestone,
   deriveFrameAlert,
@@ -12,8 +12,8 @@ import {
   formatClock,
   hpStageAnnouncement,
   hpStateKey,
+  isPoseFresh,
   latencySummary,
-  nextLayout,
   publicParticipantView,
   readLatencySamples,
   recordLatencySample,
@@ -70,25 +70,39 @@ test('血量三档按 60% / 30% 两条线切换（boss-a-states 规范）', () =
   assert.equal(hpStateKey(0, 0), 'full')
 })
 
-test('布局 E：默认看自己，开打自动看怪兽，手动换过就不再自动切', () => {
-  let s = INITIAL_LAYOUT
-  assert.equal(s.mode, 'self')
-  s = nextLayout(s, { type: 'fight-started' })
-  assert.equal(s.mode, 'boss')
-  // 用户手动换回看自己
-  s = nextLayout(s, { type: 'swap' })
-  assert.equal(s.mode, 'self')
-  assert.equal(s.touched, true)
-  // 之后任何自动事件都不许再动他的选择
-  s = nextLayout(s, { type: 'fight-started' })
-  assert.equal(s.mode, 'self')
-  s = nextLayout(s, { type: 'back-to-gathering' })
-  assert.equal(s.mode, 'self')
-  // 没手动换过的：回集结自动看自己
-  let t = nextLayout(INITIAL_LAYOUT, { type: 'fight-started' })
-  t = nextLayout(t, { type: 'back-to-gathering' })
-  assert.equal(t.mode, 'self')
-  assert.equal(t.touched, false)
+test('布局 C：双布局互换已彻底移除，页面、样式、逻辑层都无残留', () => {
+  const page = fs.readFileSync(new URL('../src/pages/BossFight/BossFight.tsx', import.meta.url), 'utf8')
+  const css = fs.readFileSync(new URL('../src/pages/BossFight/BossFight.css', import.meta.url), 'utf8')
+  const state = fs.readFileSync(new URL('../src/features/motion/lib/bossFightState.ts', import.meta.url), 'utf8')
+  for (const gone of ['nextLayout', 'INITIAL_LAYOUT', 'swapLayout', 'bf-swap-cover', 'mode-self', 'mode-boss']) {
+    assert.equal(page.includes(gone), false, `页面不该再有 ${gone}`)
+    assert.equal(css.includes(gone), false, `样式不该再有 ${gone}`)
+    assert.equal(state.includes(gone), false, `逻辑层不该再有 ${gone}`)
+  }
+})
+
+test('骨骼新鲜度：帧龄超线就算跟丢，没帧永远不算新鲜', () => {
+  assert.equal(isPoseFresh(10_000, 10_000 + POSE_STALE_MS), true)
+  assert.equal(isPoseFresh(10_000, 10_000 + POSE_STALE_MS + 1), false)
+  assert.equal(isPoseFresh(null, 10_000), false)
+  assert.equal(isPoseFresh(undefined, 10_000), false)
+  assert.equal(isPoseFresh(0, 10_000), false)
+  assert.equal(isPoseFresh(10_000, 10_300, 300), true)
+  assert.equal(isPoseFresh(10_000, 10_301, 300), false)
+})
+
+test('重新取景工具：显式开关、无持久化、跟丢收骨骼的接线在位', () => {
+  const page = fs.readFileSync(new URL('../src/pages/BossFight/BossFight.tsx', import.meta.url), 'utf8')
+  assert.ok(page.includes('重新取景'))
+  assert.ok(page.includes('取景好了，回去'))
+  assert.ok(page.includes('setReframeOpen(true)'))
+  assert.ok(page.includes('setReframeOpen(false)'))
+  // 取景状态不许落本地存储：关掉、换一场，就应该忘掉
+  assert.equal(/localStorage[^\n]*[Rr]eframe/.test(page), false)
+  assert.equal(page.includes('boss-layout'), false)
+  // 跟丢收骨骼：页面按新鲜度决定给不给骨骼点，旧骨骼不许冻在屏上
+  assert.ok(page.includes('poseFresh ? pose.landmarks : null'))
+  assert.ok(page.includes('isPoseFresh'))
 })
 
 test('快照版本守卫：旧版本迟到不覆盖新版本，换一场直接接受', () => {

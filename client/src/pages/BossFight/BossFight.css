@@ -1,4 +1,4 @@
-/* 组队打怪：白底、拇指区大按钮；舞台两层（怪兽/摄像头）靠几何过渡互换（方案 E） */
+/* 组队打怪：白底、拇指区大按钮；舞台布局 C（怪兽铺满 + 摄像头右下角小窗） */
 .bf-page { max-width: 960px; margin: 0 auto; padding: 0 16px 40px; }
 .bf-header-actions { display: inline-flex; gap: 8px; align-items: center; }
 .bf-sound-btn {
@@ -22,47 +22,41 @@
 .bf-hud-sub { display: flex; justify-content: space-between; gap: 12px; color: #55555f; font-size: 14px; flex-wrap: wrap; }
 .bf-hud-sub b { font-size: 17px; color: #1d1d24; }
 
-/* ---- 舞台（布局 E） ---- */
+/* ---- 舞台（布局 C）：怪兽铺满，摄像头固定小窗 ---- */
 .bf-stage {
   position: relative; height: min(58vh, 520px); min-height: 340px;
   border-radius: 18px; overflow: hidden; background: #17141f;
   border: 1px solid #e3e0ee;
 }
-.bf-boss-layer, .bf-cam-layer {
-  position: absolute; overflow: hidden;
-  transition: top 0.45s cubic-bezier(0.32, 0.72, 0.24, 1), left 0.45s cubic-bezier(0.32, 0.72, 0.24, 1),
-    width 0.45s cubic-bezier(0.32, 0.72, 0.24, 1), height 0.45s cubic-bezier(0.32, 0.72, 0.24, 1),
-    border-radius 0.45s ease;
-}
-/* 看怪兽：怪兽铺满，摄像头右下角小窗 */
-.bf-stage.mode-boss .bf-boss-layer { inset: 0; width: 100%; height: 100%; border-radius: 0; }
-.bf-stage.mode-boss .bf-cam-layer {
-  top: auto; left: auto; right: 10px; bottom: 10px; width: 30%; max-width: 190px; height: 44%;
-  border-radius: 14px; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45); z-index: 3; background: #000;
-}
-/* 看自己：摄像头铺满，怪兽缩成顶部横条 */
-.bf-stage.mode-self .bf-cam-layer { inset: 0; width: 100%; height: 100%; border-radius: 0; z-index: 1; background: #000; }
-.bf-stage.mode-self .bf-boss-layer {
-  top: 10px; left: 10px; right: 10px; width: auto; height: 64px;
-  border-radius: 14px; z-index: 3; background: rgba(23, 20, 31, 0.88);
-  display: flex; align-items: center; gap: 10px; padding: 6px 12px 6px 6px;
-}
+.bf-boss-layer { position: absolute; inset: 0; overflow: hidden; }
 .bf-boss-layer img { width: 100%; height: 100%; object-fit: contain; display: block; }
-.bf-stage.mode-self .bf-boss-layer img { width: 52px; height: 52px; flex: none; }
 .bf-boss-tag {
   position: absolute; left: 12px; bottom: 10px; color: #fff; font-weight: 700; font-size: 15px;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
-.bf-stage.mode-self .bf-boss-tag { position: static; text-shadow: none; font-size: 14px; }
-.bf-swap-cover { position: absolute; inset: 0; background: transparent; border: none; cursor: pointer; z-index: 4; }
+/* 摄像头小窗：固定右下角——怪兽的脸在画面上方居中，不挡脸 */
+.bf-cam-layer {
+  position: absolute; right: 10px; bottom: 10px; width: 30%; max-width: 190px; height: 44%;
+  border-radius: 14px; overflow: hidden; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+  z-index: 3; background: #000;
+}
 .bf-cam-layer canvas, .bf-cam-layer video { max-width: 100%; }
+.bf-reframe-btn {
+  position: absolute; right: 6px; top: 6px; z-index: 4; min-height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.5); background: rgba(20, 20, 28, 0.78); color: #fff;
+  border-radius: 999px; padding: 6px 12px; font-size: 13px; cursor: pointer;
+}
+.bf-cam-moved {
+  height: 100%; display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 14px; background: rgba(255, 255, 255, 0.06);
+}
 .bf-cam-chip {
   position: absolute; left: 8px; top: 8px; z-index: 2; background: rgba(20, 20, 28, 0.72); color: #fff;
   font-size: 12px; padding: 4px 10px; border-radius: 999px; pointer-events: none;
 }
 /* 摄像头还没开：无论哪种布局都给一张居中大卡，按钮点得准 */
-.bf-cam-layer.idle {
-  inset: auto; top: 50%; left: 50%; transform: translate(-50%, -50%);
+.bf-stage .bf-cam-layer.idle {
+  right: auto; bottom: auto; top: 50%; left: 50%; transform: translate(-50%, -50%);
   width: min(88%, 430px); height: auto; max-height: 92%;
   border-radius: 16px; background: #fffdf7; z-index: 5; box-shadow: 0 10px 34px rgba(0, 0, 0, 0.4);
 }
@@ -170,3 +164,16 @@
   background: rgba(20, 16, 28, 0.93); color: #fff; text-align: center; white-space: nowrap;
   font-size: clamp(34px, 9.5vw, 58px); font-weight: 800; padding: 16px 34px; border-radius: 20px;
 }
+
+/* ---- 重新取景弹窗：显式打开、显式关闭，只做取景 ---- */
+.bf-reframe {
+  position: fixed; inset: 0; z-index: 55; background: #12101a; color: #fff;
+  display: flex; flex-direction: column; gap: 12px; padding: 16px;
+}
+.bf-reframe-head { display: flex; flex-direction: column; gap: 2px; }
+.bf-reframe-head b { font-size: 20px; }
+.bf-reframe-head span { color: #c9c9d4; font-size: 14px; line-height: 1.5; }
+.bf-reframe-view { position: relative; flex: 1; min-height: 0; border-radius: 16px; overflow: hidden; background: #000; }
+.bf-reframe-view canvas { width: 100%; height: 100%; }
+.bf-reframe-view video { max-width: 100%; }
+.bf-reframe .bf-cam-chip { top: 10px; left: 10px; font-size: 13px; }
