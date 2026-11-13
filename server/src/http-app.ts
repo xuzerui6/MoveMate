@@ -18,6 +18,7 @@ import verifyRoutes from './routes/verify.routes';
 import checkinRoutes from './routes/checkin.routes';
 import motionRoutes from './routes/motion.routes';
 import gymRoutes from './routes/gym.routes';
+import socialRoutes from './routes/social.routes';
 import { coachRouter } from './routes/coach.routes';
 import {cloudUploadsRouter} from './routes/cloud-uploads.routes';
 import { isAllowedOrigin } from './xiaozhi/identity';
@@ -95,6 +96,7 @@ app.use('/api/v1', (req, res, next) => {
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/verify', verifyRoutes);
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1', socialRoutes);
 app.use('/api/v1/games', gameRoutes);
 app.use('/api/v1/notifications', notificationRoutes);
 app.use('/api/v1/games/:id/messages', messageRoutes);

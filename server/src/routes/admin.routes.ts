@@ -321,6 +321,31 @@ router.delete('/feedback/:id', async (req: Request, res: Response, next: NextFun
   } catch (err) { next(err); }
 });
 
+// ---------- 举报管理（组局社交化一期安全闭环） ----------
+import * as SocialService from '../services/social.service';
+
+router.get('/reports', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const status = typeof req.query.status === 'string' ? req.query.status : undefined;
+    const reports = await SocialService.listReportsForAdmin(status);
+    res.json({ code: 0, message: 'success', data: { reports } });
+  } catch (err) { next(err); }
+});
+
+const resolveReportSchema = z.object({
+  outcome: z.enum(['resolved', 'insufficient']),
+  note: z.string().max(500).optional(),
+});
+
+router.post('/reports/:id/resolve', validate(resolveReportSchema), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) { res.status(400).json({ code: 40000, message: '无效的举报 ID', data: null }); return; }
+    const report = await SocialService.resolveReport(req.user!.id, id, req.body);
+    res.json({ code: 0, message: '已处理', data: { report } });
+  } catch (err) { next(err); }
+});
+
 // ---------- 验证管理员身份 ----------
 router.get('/me', async (req: Request, res: Response) => {
   res.json({ code: 0, message: 'success', data: { is_admin: true, user_id: req.user!.id, voice_pool_available: process.env.CLOUDFLARE === '1' } });
