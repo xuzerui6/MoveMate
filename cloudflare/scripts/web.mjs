@@ -35,5 +35,11 @@ execFileSync(process.execPath, [resolve(cwd, 'node_modules/vite/bin/vite.js'), '
 const current = await readdir(assets);
 const retained = [...new Set(history.slice(-2).flat())];
 const currentSet = new Set(current);
-await Promise.all(retained.filter(name => !currentSet.has(name)).map(name => copyFile(resolve(cache, name), resolve(assets, name))));
+// A history entry can outlive its cached file (pruned caches): skip names
+// whose file is gone instead of failing the whole build — retention is a
+// best-effort safety net for open tabs, never a build blocker.
+await Promise.all(retained.filter(name => !currentSet.has(name)).map(async name => {
+  try { await copyFile(resolve(cache, name), resolve(assets, name)); }
+  catch (error) { if (error.code !== 'ENOENT') throw error; }
+}));
 await writeFile(resolve(cache, 'history.json'), JSON.stringify([...history, current].slice(-2)));
