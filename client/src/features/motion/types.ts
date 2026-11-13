@@ -187,4 +187,6 @@ export interface AppState {
   equipped: Partial<Record<Slot, string>>
   history: WorkoutSession[]
   dailyMissionProgress: DailyMissionProgress
+  /** 打怪首胜纪念物（服务端 training/state 下发；旧缓存没有时为空数组） */
+  souvenirs: Array<{ item_id: string; name: string; granted_at: string }>
 }
