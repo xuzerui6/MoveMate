@@ -33,7 +33,7 @@
 
 - 串行全套测试（本地，集成工作树）：client `test:repository` **624/624** + tsc 通过；server **176/176** + build 通过；cloudflare **44/44** + typecheck 通过。守卫改写一处（见上）。
 - 登记校验：发布链计数四方一致：build 输出 1064 image entries / 18 video；publish-media-metadata 输出 1064 records；publish-exercise-documentation 输出 complete 1064 / photos 1064 / illustrations 0 / pending 265（原始口径）；report 脚本 images 1064 / originalIds 0 / missing 265 / cameraImages 56。
-- 集成提交 `03ed022`（预览分支 `feat/step5-heavy-testpage`）。
-- **本批只部署预演**：预演 Version `399546d6-d0b9-4cc6-bbe4-e537bfab79b6`（preview 分支 tip `03ed022`）。生产移植按主线排期另行执行——须在届时当前生产基线（boss 上线后的新基线）上 cherry-pick 本批集成提交，不得从本分支整包部署生产。
+- 集成提交 `03ed022`（预览分支 `feat/step5-heavy-testpage`）；其后 api 契约测试提交 `6e0be3a` 叠在本批之上（该线在 03ed022 推送后取的新基），文档回填提交重放至其上，分支 tip `1565752`；合并树 client 套件复跑 **667/667**。
+- **本批只部署预演**：首部署 Version `399546d6-d0b9-4cc6-bbe4-e537bfab79b6`（tip `03ed022`）；与分支 tip 对齐的最终部署 Version `3e775c81-8c7d-4f88-93a3-07029ae79124`（tip `1565752`）。生产移植按主线排期另行执行——须在届时当前生产基线上 cherry-pick 本批集成提交 `03ed022`，不得从本分支整包部署生产。
 - 在线核查（仅预演站）：新图 12 张 WebP 预演站 sha256 **12/12 一致**（curl 核对）；被替换的旧图解文件（3561 首帧）预演站返回 404；预演站 attribution 条目 1064、图解条目 0。
 - 「动伴进度」空间本轮**未同步**：该空间口径为生产计数，生产仍为图解 6 / 照片 1058 / 替换 107/113；待本批生产移植上线后同轮同步为 0 / 1064 / 113/113。
