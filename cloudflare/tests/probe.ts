@@ -227,6 +227,70 @@ export class TestBackend extends MoveMateBackend {
       blocks: await attempt(async () => (await listBlocks(hostId)).length),
     }));
   }
+  /**
+   * School-gate upgrade case (regression for the registration/games decoupling):
+   * rewinds schools/campuses/venues to their pre-decoupling shape (no
+   * registration_open column, JLSU campuses/venues inactive, stale sport types
+   * on the Linhe gym), replays the constructor boot path, and proves the
+   * instance lands on the decoupled standing state with rows preserved.
+   */
+  async schoolGateUpgradeCase() {
+    const sql = this.ctx.storage.sql;
+    sql.exec('DROP TABLE IF EXISTS venues');
+    sql.exec('DROP TABLE IF EXISTS campuses');
+    sql.exec('DROP TABLE IF EXISTS schools');
+    sql.exec(`CREATE TABLE schools (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      code TEXT NOT NULL UNIQUE,
+      name TEXT NOT NULL,
+      is_active INTEGER NOT NULL DEFAULT 1
+    )`);
+    sql.exec(`CREATE TABLE campuses (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      school_id INTEGER NOT NULL REFERENCES schools(id),
+      code TEXT NOT NULL,
+      name TEXT NOT NULL,
+      is_active INTEGER NOT NULL DEFAULT 1
+    )`);
+    sql.exec(`CREATE TABLE venues (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      school_id INTEGER NOT NULL REFERENCES schools(id),
+      campus_id INTEGER NOT NULL REFERENCES campuses(id),
+      name TEXT NOT NULL,
+      sport_types TEXT DEFAULT '[]',
+      is_active INTEGER NOT NULL DEFAULT 1
+    )`);
+    sql.exec("INSERT INTO schools(id,code,name,is_active) VALUES(1,'jlu','吉林大学',1),(2,'jlsu','吉林体育学院',1)");
+    sql.exec("INSERT INTO campuses(id,school_id,code,name,is_active) VALUES(1,1,'qianwei-center','前卫校区（中心校区）',1),(4,2,'jlsu-nanling','南岭校区',0),(5,2,'jlsu-linhe','临河校区',0)");
+    sql.exec("INSERT INTO venues(id,school_id,campus_id,name,sport_types,is_active) VALUES(10,1,1,'宋治平体育馆篮球比赛馆','[\"basketball\"]',1),(37,2,4,'南岭校区室内篮球馆武术馆','[\"basketball\",\"fitness\"]',0),(38,2,4,'南岭校区摔跤柔道馆','[\"fitness\"]',0),(39,2,5,'临河校区田径场','[\"running\",\"soccer\"]',0),(40,2,5,'临河校区健身馆','[\"fitness\"]',0)");
+    const columns = () => sql.exec('PRAGMA table_info(schools)').toArray().map(row => String(row.name));
+    const before = {
+      columns: columns(),
+      linheActive: Number(sql.exec('SELECT is_active FROM campuses WHERE id=5').one().is_active),
+    };
+    await this.ctx.storage.transaction(async () => {
+      const db = new ActorDatabase(this.ctx.storage);
+      db.bootstrap();
+      db.seedSchoolRegistry();
+      db.applySchoolGates();
+    });
+    return {
+      before,
+      after: {
+        columns: columns(),
+        jlu: sql.exec("SELECT registration_open FROM schools WHERE code='jlu'").one(),
+        jlsu: sql.exec("SELECT registration_open FROM schools WHERE code='jlsu'").one(),
+        jlsuCampuses: sql.exec('SELECT id, is_active FROM campuses WHERE school_id=2 ORDER BY id').toArray(),
+        jlsuVenues: sql.exec('SELECT id, is_active FROM venues WHERE school_id=2 ORDER BY id').toArray(),
+        linheGym: sql.exec("SELECT sport_types FROM venues WHERE id=40").one(),
+      },
+      preserved: {
+        sentinel: sql.exec('SELECT name, is_active, sport_types FROM venues WHERE id=10').one(),
+        campusCount: Number(sql.exec('SELECT COUNT(*) AS n FROM campuses').one().n),
+        venueCount: Number(sql.exec('SELECT COUNT(*) AS n FROM venues').one().n),
+      },
+    };
+  }
   async brokenOutbox(repair = false) {
     if (repair) this.ctx.storage.sql.exec("UPDATE event_outbox SET payload='{}' WHERE payload='not-json'");
     else this.ctx.storage.sql.exec("INSERT INTO event_outbox(event,payload) VALUES('notification','not-json')");

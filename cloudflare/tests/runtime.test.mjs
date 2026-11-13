@@ -133,6 +133,22 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.equal(c.preserved.user.nickname,'老实例房主');assert.equal(c.preserved.chat.content,'老消息你好');
  assert.equal(c.preserved.createdGames,1);
  });
+ await t.test('school gate upgrade: pre-decoupling instance gains the registration switch; JLSU venues open for games, registration stays closed',async()=>{
+ const namespace=await mf.getDurableObjectNamespace('BACKEND');const actor=namespace.get(namespace.idFromName('school-gate-upgrade'));
+ const c=await actor.schoolGateUpgradeCase();
+ // Before: no switch column, Linhe campus inactive (the coupled legacy state).
+ assert.ok(!c.before.columns.includes('registration_open'));assert.equal(c.before.linheActive,0);
+ // After the boot path: the switch exists and reads closed for JLSU, open for JLU.
+ assert.ok(c.after.columns.includes('registration_open'));
+ assert.equal(Number(c.after.jlsu.registration_open),0);assert.equal(Number(c.after.jlu.registration_open),1);
+ // JLSU campuses/venues are game-active now, and the stale Linhe gym sport list is corrected.
+ assert.deepEqual(c.after.jlsuCampuses.map(r=>Number(r.is_active)),[1,1]);
+ assert.deepEqual(c.after.jlsuVenues.map(r=>Number(r.is_active)),[1,1,1,1]);
+ assert.equal(c.after.linheGym.sport_types,'["fitness","basketball","volleyball","badminton","dance","taekwondo"]');
+ // Pre-existing rows are preserved untouched (registry seed may only add the missing JLU campuses 2/3).
+ assert.equal(c.preserved.sentinel.name,'宋治平体育馆篮球比赛馆');assert.equal(Number(c.preserved.sentinel.is_active),1);assert.equal(c.preserved.sentinel.sport_types,'["basketball"]');
+ assert.equal(c.preserved.campusCount,5);assert.equal(c.preserved.venueCount,5);
+ });
  const {manifest,parts}=fixture({largeAvatar:true});
  await t.test('snapshot import resumes, validates checkpoints and preserves hashes',async()=>{
  assert.equal((await migrate('begin',manifest)).status,200);
@@ -152,7 +168,7 @@ await test('Workers runtime migration and business regression', async t=>{
  const schools=boot.data.data.schools;assert.equal(schools.length,2);
  const jlu=schools.find(s=>s.code==='jlu');assert.equal(jlu.name,'吉林大学');assert.equal(jlu.registration_open,true);
  const jlsu=schools.find(s=>s.code==='jlsu');assert.equal(jlsu.name,'吉林体育学院');assert.equal(jlsu.registration_open,false);
- assert.ok(boot.data.data.campuses.every(c=>c.school_id!==jlsu.id),'closed school campuses stay out of the selectable list');
+ assert.ok(boot.data.data.campuses.some(c=>c.school_id===jlsu.id),'decoupled: closed school campuses are listed, they are for games');
  const rejected=await call('/api/v1/auth/register',{method:'POST',body:{email:'hopeful@mails.jlu.edu.cn',password:'password',nickname:'新生',campus_id:4,verify_code:'123456'}});
  assert.equal(rejected.status,400,JSON.stringify(rejected.data));assert.match(rejected.data.message,/小范围测试/);
  });
@@ -313,7 +329,7 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.equal(await bcrypt.compare('wrong-password',row.password_hash),false);
  // Provisioned members do not open the closed school.
  const boot=await call('/api/v1/auth/bootstrap');const jlsu=boot.data.data.schools.find(s=>s.code==='jlsu');assert.equal(jlsu.registration_open,false);
- assert.ok(boot.data.data.campuses.every(c=>c.school_id!==jlsu.id));
+ assert.ok(boot.data.data.campuses.some(c=>c.school_id===jlsu.id),'decoupled: campuses active for games, registration still closed');
  }finally{
  // Remove the provisioned account so later fixed-id test seeding (voice users 5/6) is unaffected.
  await actor.deleteUserByEmail('provisioned@dajju.local');

@@ -345,6 +345,12 @@ export interface BootstrapData {
   venues: Venue[];
 }
 
+/** 建局表单数据：服务端按当前用户学校过滤后的校区/场地 */
+export interface GameMeta {
+  campuses: Campus[];
+  venues: Venue[];
+}
+
 /* ========== 展示辅助 ========== */
 
 /** 运动类型中文映射 */

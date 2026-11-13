@@ -18,7 +18,7 @@ const { server } = require('../src/app');
 let base: string;
 
 const CLOSED_MESSAGE = '这所学校正在小范围测试，暂时还不能注册';
-// 吉林体育学院种子校区（两校区均未启用 = 学校只挂牌、注册关闭）
+// 吉林体育学院种子校区（校区启用供组局，注册开关关闭 = 只挂牌、注册关闭）
 const JLSU_CAMPUSES = [4, 5];
 
 before(async () => {
@@ -58,8 +58,8 @@ test('bootstrap lists both schools: Jilin University open, Jilin Sport Universit
   const jlsu = schools.find((s: any) => s.code === 'jlsu');
   assert.equal(jlsu.name, '吉林体育学院');
   assert.equal(jlsu.registration_open, false);
-  // 关闭期间，两校区不进可选校区列表（不会被注册/建局选中）
-  assert.ok(boot.body.data.campuses.every((c: any) => c.school_id !== jlsu.id));
+  // 解耦后吉体校区是启用的（出现在可选列表里，给内测账号组局用），注册仍由开关拦住
+  assert.ok(boot.body.data.campuses.some((c: any) => c.school_id === jlsu.id));
 });
 
 test('Jilin University registration still works exactly as before', async () => {
@@ -98,8 +98,9 @@ test('profile campus change cannot move a user into the closed school, but in-sc
   assert.equal(allowed.body.data.user.school_id, 1);
 });
 
-test('opening the school later is a single data flip: activate its campuses', async () => {
-  await pool.query('UPDATE campuses SET is_active = 1 WHERE school_id = 2');
+test('opening the school later is a single data flip: the registration switch', async () => {
+  // 解耦后校区一直是启用的；开放注册只需翻 schools.registration_open 一个开关
+  await pool.query('UPDATE schools SET registration_open = 1 WHERE id = 2');
   try {
     const boot = await request('/auth/bootstrap');
     const jlsu = boot.body.data.schools.find((s: any) => s.code === 'jlsu');
@@ -111,7 +112,7 @@ test('opening the school later is a single data flip: activate its campuses', as
     assert.equal(registered.body.data.user.school_id, 2);
     assert.equal(registered.body.data.user.school_name, '吉林体育学院');
   } finally {
-    await pool.query('UPDATE campuses SET is_active = 0 WHERE school_id = 2');
+    await pool.query('UPDATE schools SET registration_open = 0 WHERE id = 2');
   }
   const rejected = await registerAttempt('second-hopeful@mails.jlu.edu.cn', JLSU_CAMPUSES[0]);
   assert.equal(rejected.status, 400);
