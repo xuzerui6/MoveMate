@@ -185,3 +185,13 @@
   color: var(--color-primary-dark);
   border: 1px solid var(--color-primary);
 }
+
+/* 校区 select 的度量在 design-system.css 里互相打架：自身的 height:34px 被
+   .motion-app .form-select 的 min-height:52px + padding:13px 压过，内容盒只剩 24px，
+   iOS 原生渲染会把文字裁成一条缝。这里给它一套自洽规格（48px 高、上下零内边距）。 */
+.motion-app .groups-page .ui-pages-lobby-lobby-campusSelect {
+  height: 48px;
+  min-height: 48px;
+  padding: 0 2rem 0 1rem;
+  line-height: 1.5;
+}
