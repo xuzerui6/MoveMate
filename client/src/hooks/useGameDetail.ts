@@ -23,11 +23,9 @@ export function useGameDetail(gameId: string | undefined) {
     setError(null);
     try {
       const res = await gamesApi.fetchGameDetail(gameId) as any;
-      // API 返回 {code:0, data: {game: {...}, members: [...]}}
-      const body = res.data || res;
-      const gameData = body.game || body;
-      if (body.members) gameData.participants = body.members;
-      setGame(gameData);
+      // API 返回 {code:0, data: {game: {...}, members: [...]}}，提取规则与
+      // GameSummary 共用 api 层的 extractGameDetail（members → participants）。
+      setGame(gamesApi.extractGameDetail(res));
     } catch (err) {
       setError(getErrorMessage(err));
     } finally {
