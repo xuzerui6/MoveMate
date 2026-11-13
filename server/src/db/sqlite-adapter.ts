@@ -515,20 +515,74 @@ const JLU_VENUES: Array<[number, number, string, string]> = [
 
 function seedJluMetadata(conn: DatabaseSync): void {
   const schoolCount = (conn.prepare('SELECT COUNT(*) AS total FROM schools').get() as { total: number }).total;
-  if (schoolCount > 0) return;
+  if (schoolCount === 0) {
+    const insertSchool = conn.prepare('INSERT INTO schools (id, code, name, is_active) VALUES (?, ?, ?, 1)');
+    const insertCampus = conn.prepare('INSERT INTO campuses (id, school_id, code, name, is_active) VALUES (?, ?, ?, ?, 1)');
+    const insertVenue = conn.prepare('INSERT INTO venues (school_id, campus_id, name, sport_types, is_active) VALUES (?, ?, ?, ?, 1)');
 
-  const insertSchool = conn.prepare('INSERT INTO schools (id, code, name, is_active) VALUES (?, ?, ?, 1)');
-  const insertCampus = conn.prepare('INSERT INTO campuses (id, school_id, code, name, is_active) VALUES (?, ?, ?, ?, 1)');
-  const insertVenue = conn.prepare('INSERT INTO venues (school_id, campus_id, name, sport_types, is_active) VALUES (?, ?, ?, ?, 1)');
+    conn.exec('BEGIN');
+    try {
+      insertSchool.run(1, 'jlu', '吉林大学');
+      for (const [id, schoolId, code, name] of JLU_CAMPUSES) {
+        insertCampus.run(id, schoolId, code, name);
+      }
+      for (const [schoolId, campusId, name, sportTypes] of JLU_VENUES) {
+        insertVenue.run(schoolId, campusId, name, sportTypes);
+      }
+      conn.exec('COMMIT');
+    } catch (err) {
+      conn.exec('ROLLBACK');
+      throw err;
+    }
+  }
+
+  seedJlsuMetadata(conn);
+}
+
+// ================================================================
+// 吉林体育学院校园元数据 seed（2026-11-13 定：学校先挂上、注册不开，先小范围测）
+// 学校行 is_active=1（挂牌可见；注册仍由校园邮箱域名门禁关闭，不经此表放行）；
+// 校区与场地 is_active=0——关闭期间不进 bootstrap 列表、不能被注册/建局选中，
+// 学校开放时随开放改动一并置 1（INSERT OR IGNORE 不会翻转已写入的行，需显式 UPDATE）。
+// 场地只收录有公开来源可查证的（2026-11-13 调研）：
+// - 临河校区健身馆：全国统考考点通知（2024/2025，中国运动文化教育网/国家体育总局）
+//   + 吉林省政务服务网「吉林体院健身馆」场馆登记（临河校区内）
+// - 临河校区田径场：中国吉林网 2026 年迎新晚会报道（临河校区田径场）
+//   + 田径成绩系统「吉林体育学院第二十九届田径运动会 · 临河校区田径场」
+// - 南岭校区室内篮球馆武术馆、摔跤柔道馆：OpenStreetMap 场馆数据
+//   （运营方标注为吉林体育学院、馆名与坐标均在南岭校区内）
+// ================================================================
+
+const JLSU_CAMPUSES: Array<[number, number, string, string]> = [
+  [4, 2, 'jlsu-nanling', '南岭校区'],
+  [5, 2, 'jlsu-linhe', '临河校区'],
+];
+
+const JLSU_VENUES: Array<[number, number, string, string]> = [
+  [2, 4, '南岭校区室内篮球馆武术馆', '["basketball","fitness"]'],
+  [2, 4, '南岭校区摔跤柔道馆', '["fitness"]'],
+  [2, 5, '临河校区田径场', '["running","soccer"]'],
+  [2, 5, '临河校区健身馆', '["fitness","badminton"]'],
+];
+
+function seedJlsuMetadata(conn: DatabaseSync): void {
+  const insertSchool = conn.prepare('INSERT OR IGNORE INTO schools (id, code, name, is_active) VALUES (?, ?, ?, 1)');
+  const insertCampus = conn.prepare('INSERT OR IGNORE INTO campuses (id, school_id, code, name, is_active) VALUES (?, ?, ?, ?, 0)');
+  const insertVenue = conn.prepare('INSERT OR IGNORE INTO venues (id, school_id, campus_id, name, sport_types, is_active) VALUES (?, ?, ?, ?, ?, 0)');
+  const findVenue = conn.prepare('SELECT id FROM venues WHERE school_id = ? AND campus_id = ? AND name = ?');
 
   conn.exec('BEGIN');
   try {
-    insertSchool.run(1, 'jlu', '吉林大学');
-    for (const [id, schoolId, code, name] of JLU_CAMPUSES) {
+    insertSchool.run(2, 'jlsu', '吉林体育学院');
+    for (const [id, schoolId, code, name] of JLSU_CAMPUSES) {
       insertCampus.run(id, schoolId, code, name);
     }
-    for (const [schoolId, campusId, name, sportTypes] of JLU_VENUES) {
-      insertVenue.run(schoolId, campusId, name, sportTypes);
+    let nextVenueId = ((conn.prepare('SELECT COALESCE(MAX(id), 0) AS max_id FROM venues').get() as { max_id: number }).max_id) + 1;
+    for (const [schoolId, campusId, name, sportTypes] of JLSU_VENUES) {
+      if (!findVenue.get(schoolId, campusId, name)) {
+        insertVenue.run(nextVenueId, schoolId, campusId, name, sportTypes);
+        nextVenueId += 1;
+      }
     }
     conn.exec('COMMIT');
   } catch (err) {
