@@ -1,9 +1,11 @@
 /**
  * 打怪声音：击中音效是本机合成的短音（不占素材、不等网络），
- * 关键节点播报走产品已有的语音通道（lib/tts 的 speakText，神经语音、带缓存）。
+ * 关键节点播报走小智播报器（lib/xiaozhiAnnounce，全产品唯一的事件
+ * 发声通道，老板 2026-11-13 拍板「全都用小智」）。小智不可用时播报
+ * 静默降级——只剩音效和画面，绝不回退到其他音色。
  * 一个开关管全部声音，默认开，关了就彻底安静；选择记在本机。
  */
-import { speakText, unlockAudio } from './tts'
+import { primeXiaozhiAnnouncer, speakAnnouncement, stopXiaozhiAnnouncer, type AnnouncePriority } from './xiaozhiAnnounce'
 
 const SOUND_KEY = 'movemate:boss-sound'
 
@@ -38,10 +40,15 @@ function audio(): AudioContext | null {
   }
 }
 
-/** 用户手势里调用一次，解锁后续自动播放 */
+/** 用户手势里调用一次，解锁后续自动播放，并预热小智播报会话 */
 export function primeBossAudio(): void {
-  unlockAudio()
+  primeXiaozhiAnnouncer()
   audio()
+}
+
+/** 关声音 / 离开战斗页时调用：释放小智播报会话（租约还回池子） */
+export function releaseBossAudio(): void {
+  stopXiaozhiAnnouncer()
 }
 
 function blip(freqA: number, freqB: number, at: number, dur = 0.09, gainPeak = 0.16, type: OscillatorType = 'triangle') {
@@ -98,18 +105,23 @@ const ANNOUNCEMENTS: Record<BossCueKind, string> = {
   escape: '时间到啦，它跑了。没关系，你练的都算数。',
 }
 
+/** 胜负是终局播报，可以顶替正在播的一句；其余播报排队靠边、忙了就丢 */
+const CUE_PRIORITY: Record<BossCueKind, AnnouncePriority> = {
+  start: 'normal', half: 'normal', stageMid: 'normal', low: 'normal', win: 'high', escape: 'high',
+}
+
 let announceToken = 0
-/** 播报一句：走已有语音通道；新播报顶掉还没出声的旧播报（远距离模式的主通道） */
-export function announceText(text: string, on: boolean): void {
+/** 播报一句：走小智播报器；新播报顶掉还没出声的旧播报（远距离模式的主通道） */
+export function announceText(text: string, on: boolean, priority: AnnouncePriority = 'normal'): void {
   if (!on) return
   const token = ++announceToken
-  void speakText(text, { stillCurrent: () => token === announceToken }).catch(() => undefined)
+  void speakAnnouncement(text, { priority, stillCurrent: () => token === announceToken })
 }
 
 /** 节点播报：提示音 + 语音 */
 export function announceCue(kind: BossCueKind, on: boolean): void {
   playCue(kind, on)
-  announceText(ANNOUNCEMENTS[kind], on)
+  announceText(ANNOUNCEMENTS[kind], on, CUE_PRIORITY[kind])
 }
 
 /** 次数里程碑（远距离模式）：每跨一个整十喊一次现在的数 */

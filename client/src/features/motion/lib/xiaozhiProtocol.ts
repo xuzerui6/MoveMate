@@ -16,6 +16,18 @@ export const listenMessage = (state: 'start' | 'stop' | 'detect', sessionId?: st
   return session({ type: 'listen', state }, sessionId)
 }
 export const abortMessage = (reason = 'user_interrupt', sessionId?: string): XiaozhiEnvelope => session({ type: 'abort', reason }, sessionId)
+
+/**
+ * 设备来电通道：listen detect 文本带上这个前缀时，小智服务端把余下文本
+ * 逐字交给 TTS 播报（跳过 LLM），是协议里唯一的「主动逐字发声」原语。
+ * 兼容性以开源服务端 listenMessageHandler 的实现为准；商业云是否 honor
+ * 无法本地证实，所以播报器必须逐句验文本、未过验的音频不许出声（见
+ * xiaozhiAnnounce.ts 的播放门）。
+ */
+export const DEVICE_CALL_PREFIX = '[device_call]'
+export const deviceCallMessage = (text: string, sessionId?: string): XiaozhiEnvelope => (
+  session({ type: 'listen', state: 'detect', text: DEVICE_CALL_PREFIX + text }, sessionId)
+)
 export const mcpResult = (id: string | number, result: unknown, sessionId?: string): XiaozhiEnvelope => session({
   type: 'mcp', payload: { jsonrpc: '2.0', id, result },
 }, sessionId)
