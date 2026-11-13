@@ -21,6 +21,29 @@ const bindings: Record<string, NewPlanProfile> = {
   "exdb:0293": "bent_over_row", "exdb:1373": "calf_raise",
   "movemate:reverse_lunge": "reverse_lunge",
 };
+const exerciseByProfile: Record<string, string> = {
+  squat: "motion:squat",
+  jumping_jack: "motion:jumping_jack",
+  high_knees: "motion:high_knees",
+  push_up: "motion:push_up",
+  ...Object.fromEntries(
+    Object.entries(extended).flatMap(([profile, info]) =>
+      info.exerciseIds.length ? [[profile, info.exerciseIds[0]]] : [],
+    ),
+  ),
+  biceps_curl: "exdb:0294",
+  lateral_raise: "exdb:0334",
+  shoulder_press: "exdb:0405",
+  bent_over_row: "exdb:0293",
+  calf_raise: "exdb:1373",
+  reverse_lunge: "movemate:reverse_lunge",
+};
+/** The library exercise a camera session of this type trains (its canonical
+ * binding above). Analytics uses it to credit the session's reps and muscle
+ * coverage; unmapped types simply get no set-level credit. */
+export function cameraExerciseId(profile: string): string | undefined {
+  return exerciseByProfile[profile];
+}
 export function planCameraFor(id: string) {
   const profile = bindings[id];
   return profile ? { profile, status: "trial" as const, unit: "次", ...profiles[profile], limitations: "仅支持此标准动作；重量由本人填写，不能识别负重。变式、遮挡或拍摄角度不符时请改为手动。" } : undefined;
