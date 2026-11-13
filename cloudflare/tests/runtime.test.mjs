@@ -114,6 +114,25 @@ await test('Workers runtime migration and business regression', async t=>{
  const undef=await actor.pitrUnitCase('test');
  assert.equal(undef.restoreError.status,403);assert.deepEqual(undef.calls,[]);
  });
+ await t.test('existing-instance upgrade: pre-social schema gains social columns in place, rows preserved',async()=>{
+ const namespace=await mf.getDurableObjectNamespace('BACKEND');const actor=namespace.get(namespace.idFromName('existing-instance-upgrade'));
+ const c=await actor.existingInstanceUpgradeCase();
+ // The pre-social fixture reproduces the preview outage: every social-era op dies on the missing columns.
+ assert.equal(c.before.list.ok,false);assert.match(c.before.list.error,/no such column|has no column/);
+ assert.equal(c.before.create.ok,false);assert.match(c.before.create.error,/no such column|has no column/);
+ assert.equal(c.before.invite.ok,false);assert.match(c.before.invite.error,/no such column|has no column/);
+ // After the boot-path upgrade the same operations succeed against the same rows.
+ assert.equal(c.after.list.ok,true,JSON.stringify(c.after.list));assert.ok(Number(c.after.list.value)>=1);
+ assert.equal(c.after.create.ok,true,JSON.stringify(c.after.create));
+ assert.equal(c.after.invite.ok,true,JSON.stringify(c.after.invite));assert.match(String(c.after.invite.value),/^mv[0-9a-f]{16}$/);
+ assert.equal(c.after.blocks.ok,true,JSON.stringify(c.after.blocks));assert.equal(c.after.blocks.value,0);
+ for(const col of ['visibility','fill_open','auto_fill','rebooked_from_id'])assert.ok(c.columns.games.includes(col),'games.'+col);
+ assert.ok(c.columns.users.includes('invite_code'));assert.ok(c.columns.chat_messages.includes('kind'));
+ // Nothing the old instance held was lost.
+ assert.equal(c.preserved.game.title,'老实例的局');assert.equal(Number(c.preserved.game.member_count),1);
+ assert.equal(c.preserved.user.nickname,'老实例房主');assert.equal(c.preserved.chat.content,'老消息你好');
+ assert.equal(c.preserved.createdGames,1);
+ });
  const {manifest,parts}=fixture({largeAvatar:true});
  await t.test('snapshot import resumes, validates checkpoints and preserves hashes',async()=>{
  assert.equal((await migrate('begin',manifest)).status,200);
