@@ -18665,6 +18665,438 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0096",
+   "expectedName": "barbell side bent v. 2",
+   "sourceId": "ai-codex-fill121-0096",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "fa920b38edafd39f0a15c3e9f7c3ab52903cb50f7487ab765505df8b5f31ca8a",
+    "2f3874384d16f1284f095c93af96dace59ec6a38773571327f25373f7a25b044"
+   ],
+   "phases": [
+    "起始：双脚与肩同宽站立，双手在大腿前方握住杠铃，掌心向下，背部挺直。",
+    "关键：躯干向右侧弯曲，杠铃沿腿侧降向右膝，左侧腰拉伸。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0097",
+   "expectedName": "barbell side split squat v. 2",
+   "sourceId": "ai-codex-fill121-0097",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "3326fd49329da06d023aed955e5b7c7d1faa165b59bb79274b24eff5918eac26",
+    "df42cfbca46dcda297987981cd7b66c74156e9ce58d7495363aed75351909596"
+   ],
+   "phases": [
+    "起始：宽站距站立，杠铃置于上背部，双脚略外八。",
+    "关键：向右侧迈步下蹲，右腿屈膝、左腿伸直，杠铃仍在上背部。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2799",
+   "expectedName": "barbell sitted alternate leg raise",
+   "sourceId": "ai-codex-fill121-2799",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "635d6fbd557b7635a025535b1af1ec3004904837540c2ecbbd53b4da96b4e21b",
+    "4c06cba6467fe87a4a69b127d5f669eb71db1a0d74de83f9bd11ba85178bf4e9"
+   ],
+   "phases": [
+    "起始：坐在平凳上，背部挺直，双腿伸直，杠铃横放在大腿上。",
+    "关键：一条腿保持伸直尽可能高地抬起，另一条腿留在地面，杠铃仍放在大腿上。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2800",
+   "expectedName": "barbell sitted alternate leg raise (female)",
+   "sourceId": "ai-codex-fill121-2800",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "2921989a19dfb37f30db24e912c79028023c48172e18a59e7a23485ae9795fb7",
+    "e67ec79def86affc87c6a690624151488e500edb3fc47bcdfc2a91e89ca768e8"
+   ],
+   "phases": [
+    "起始：坐在平凳上，背部挺直，双腿伸直，杠铃横放在大腿上，双手扶凳。",
+    "关键：一条腿保持伸直抬高至与地面平行以上，另一条腿留在地面。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0100",
+   "expectedName": "barbell skier",
+   "sourceId": "ai-codex-fill121-0100",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "20b9fbe845ae11f1f49a8faf0a2064a5c4c94a6f72601d35c0e61ccdf7283915",
+    "6746e5370b0b1e30f7e2138c9fded41151b1b28e82441a15ff48c9748f3c8c4d"
+   ],
+   "phases": [
+    "起始：双脚与肩同宽站立，正手握杠铃于大腿前方，微屈膝、髋略前倾。",
+    "关键：将杠铃爆发提拉至肩高，脚跟微离地，肘部弯曲收紧。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2810",
+   "expectedName": "barbell split squat v. 2",
+   "sourceId": "ai-codex-fill121-2810",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e172ad0a88f27bc1845a65d12cceecedc59cb01e3d8111237a005ab9469a1015",
+    "57a18a8f8f6d792c3ecf195544baa98cb840110d600a6f05d03afe0cd0329883"
+   ],
+   "phases": [
+    "起始：杠铃置于上背部，前后分腿站立，躯干直立。",
+    "关键：垂直下蹲至前大腿与地面平行，后膝接近地面，躯干保持直立。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2798",
+   "expectedName": "barbell squat jump step rear lunge",
+   "sourceId": "ai-codex-fill121-2798",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d068cb7b83c5594eec5e3acc6b4ad5b8a1c181eeabb7801485deeaaa5a06e4d6",
+    "cb4d16eabc213f60a1347601d0276ed0eb03fc1e059c36ed4300df756f205e8c"
+   ],
+   "phases": [
+    "起始：杠铃置于上背部，蹲至大腿接近与地面平行，准备起跳。",
+    "关键：跳起后单腿向后落地成反向弓步，前大腿与地面平行。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2414",
+   "expectedName": "barbell standing concentration curl",
+   "sourceId": "ai-codex-fill121-2414",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e39b2da035c33d1c0df04225da6d6ed300abd463308e6db133c6a9aeffacfb69",
+    "9a40d0887e1ff754651d7dce6b1035bdaebdd9da0fe6e80f855424852093cab8"
+   ],
+   "phases": [
+    "起始：站立，单手握短杠铃垂于体侧，掌心向上，另一手扶大腿。",
+    "关键：上臂保持不动，将杠铃弯举至肩高，二头肌收紧。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0130",
+   "expectedName": "bench hip extension",
+   "sourceId": "ai-codex-fill121-0130",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "3875fc7a134d08681cef17a36df3cfc2db44011dc16797a8c0fdec47a25aa46f",
+    "0018a70c9a2b3fc2fe3d896b887c5dbdcb79dd557cb849d50fac551ea4107e0f"
+   ],
+   "phases": [
+    "起始：坐在凳沿，上背靠凳，双脚平放地面，双手扶凳。",
+    "关键：臀部抬离凳面，身体从膝盖到肩膀成一条直线，臀肌收紧。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3019",
+   "expectedName": "bench pull-ups",
+   "sourceId": "ai-codex-fill121-3019",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d0d789648024449af4ec830c903ab7b3b999d01873caf10a0ca0bd8433a5fb53",
+    "a2a92d75399b42f224893ee2310b82d14f2cd15f50b7eb0645c541f102086b3a"
+   ],
+   "phases": [
+    "起始：身体在胸高横杠下方伸直，双臂完全伸展，正手握杠。",
+    "关键：屈肘将胸部拉向横杠，肩胛收紧，身体保持一条直线。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1770",
+   "expectedName": "biceps leg concentration curl",
+   "sourceId": "ai-codex-fill121-1770",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "4af04759d80176cb1b02f93ba8d51005b15af8844523812f9f3f70ca4aef89e5",
+    "f47ebe245d01e6d7c919cb5015f892292f464c68164bc532dd1bd4c6b755885c"
+   ],
+   "phases": [
+    "起始：坐在平凳上双腿分开，肘部抵住大腿内侧，哑铃垂下。",
+    "关键：将哑铃向肩膀弯举，上臂与肘部保持抵住大腿不动。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3543",
+   "expectedName": "bodyweight drop jump squat",
+   "sourceId": "ai-codex-fill121-3543",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "76be29f45bf130addc60443c46e705e27df61a3ca33114c39e5d08fbf0e76fdf",
+    "8824519002967d839ba5b253914329e970eeeff85557e0344298bb2157dba11f"
+   ],
+   "phases": [
+    "起始：深蹲蓄势，双脚与肩同宽，臀部后坐。",
+    "关键：爆发跳起至空中，身体完全伸展，双脚在空中并拢。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1771",
+   "expectedName": "bodyweight kneeling triceps extension",
+   "sourceId": "ai-codex-fill121-1771",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "57dc3a71f41072502e34fa778633a4bd1abde2f9a5c11522ba9f8ec3fa1b7d74",
+    "a8ff200bd15d392714514542aeab61b3011353ca99adb313cdafad4676684aa1"
+   ],
+   "phases": [
+    "起始：平板支撑姿势，双手与肩同宽，手指朝前，身体成一条直线。",
+    "关键：屈肘下放上身，肘部紧贴体侧，身体保持一条直线。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1769",
+   "expectedName": "bodyweight side lying biceps curl",
+   "sourceId": "ai-codex-fill121-1769",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "0ee07c2812e0479d180139fef92fc078a0667dc3ffa8c737867419583b7c5984",
+    "856d5fc04e865e2c4c8dd4e06599da00b3719901d30ef52efdb60782bf2783be"
+   ],
+   "phases": [
+    "起始：侧躺，双腿伸直，头枕在下侧手臂上，上侧手臂放松垂在身前。",
+    "关键：上侧前臂向肩膀卷起，肘部保持贴在体侧。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3167",
+   "expectedName": "bodyweight squatting row (with towel)",
+   "sourceId": "ai-codex-fill121-3167",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a354234722769b5f27f1f0ca8da0971b3079e4f88c21417521795a1eac8f8628",
+    "1a447c291002d6461faea90c1f99401088057bf3da0860b0184d6d80ece8b1a3"
+   ],
+   "phases": [
+    "起始：站立，双手在胸前伸直握住毛巾两端。",
+    "关键：下蹲至深蹲底部，同时将毛巾拉向胸部，肩胛收紧。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3156",
+   "expectedName": "bodyweight standing close-grip one arm row",
+   "sourceId": "ai-codex-fill121-3156",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "3e61aa2c6dec3c3666a297f0a4d7cd62411b1fd284d262949b8ce5dded7aada8",
+    "0e7d4f78d401c8c36787e49ecbae77a8f32262e26771e0d3877f14bfa9677de5"
+   ],
+   "phases": [
+    "起始：俯身平背，单手握哑铃自然下垂，中立握法。",
+    "关键：将哑铃拉向下方肋骨，肘部贴近身体，肩胛收紧。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3158",
+   "expectedName": "bodyweight standing close-grip row",
+   "sourceId": "ai-codex-fill121-3158",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "bbdd9bd2bd12b8840860544f3b20df109226043618395773803bd74ba379f9af",
+    "5ceb915552bc329c2bcfb17fc7fe399087590b98f8c2bfb9c67ecb2b0f1e5d72"
+   ],
+   "phases": [
+    "起始：俯身平背，双手窄握杠铃，手臂向下伸直。",
+    "关键：将杠铃拉向腹部，双肘后驱，肩胛收紧，背部保持平直。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3162",
+   "expectedName": "bodyweight standing one arm row",
+   "sourceId": "ai-codex-fill121-3162",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "8c75f13562eab09ee9c7c8a0b008ef4a0deb0fbb89c5d536ef528dc228757306",
+    "351068bdac1f0aff588adcaa2e233f0a4f3f11b9ba79f5c21b33fbc57bf97170"
+   ],
+   "phases": [
+    "起始：俯身平背，单手握哑铃完全伸直垂下。",
+    "关键：将哑铃拉向胸部，肘部贴近身体，顶部肩胛收紧。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3161",
+   "expectedName": "bodyweight standing one arm row (with towel)",
+   "sourceId": "ai-codex-fill121-3161",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "88e0cfcbe11b92c79bea20c56e7188764f791b92df012d93bc627f117b04f00b",
+    "f8b5fbb778999ecfa9044d8c54c836e0953bc18774cb33e387901b800549312c"
+   ],
+   "phases": [
+    "起始：俯身平背，单手握住毛巾一端，手臂向下伸直，毛巾另一端固定在前方低处。",
+    "关键：将握毛巾的手拉向胸部，肩胛收紧，躯干保持俯身平背。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3166",
+   "expectedName": "bodyweight standing row",
+   "sourceId": "ai-codex-fill121-3166",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "c48af1d20cac854fa523a278feebe63c8d92fb1c8b9e3848e2660f9480b277d0",
+    "67b77ea19e638042d01e8fc406548210d071effbd928ceee4d732a43e257c00e"
+   ],
+   "phases": [
+    "起始：站立微俯身，正手握杠铃，手臂在身前伸直。",
+    "关键：将杠铃拉向腹部，肩胛收紧，然后停顿。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3165",
+   "expectedName": "bodyweight standing row (with towel)",
+   "sourceId": "ai-codex-fill121-3165",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "3ae7fbbbf9bc515b9c4fc5674af53a32256babc980027f70a0205bbaf112a98f",
+    "b2a930a036e65dac12847a63675afb65de92855c146521427f906eefc3b17573"
+   ],
+   "phases": [
+    "起始：站立微俯身，背部挺直，双手伸直握住毛巾。",
+    "关键：将毛巾拉向胸部，肩胛收紧，在最高点停顿。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1374",
+   "expectedName": "box jump down with one leg stabilization",
+   "sourceId": "ai-codex-fill121-1374",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "5d487cae4b6f35acf315e76df9b6519e6b010d1549cdfbe3c7170367de9040ef",
+    "03922405fc6239532d75db02a809ecd6e1ad96950bb095c4796d966eea90d709"
+   ],
+   "phases": [
+    "起始：站在跳箱前，双脚与肩同宽，微屈膝准备起跳。",
+    "关键：单脚站立于箱顶保持平衡，另一只脚悬空在箱缘外，小腿发力稳定。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3235",
+   "expectedName": "cable assisted inverse leg curl",
+   "sourceId": "ai-codex-fill121-3235",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "eb1a74a8e8af00aa7ac9ac09a30aedf9f355f1bcc43e66d3946a373fc67222ec",
+    "e5f5503caa7d5405962c4c28c955e90aad15ed891e682864cf9f47652de36f17"
+   ],
+   "phases": [
+    "起始：俯卧平凳，双腿伸直垂出凳端，双脚踝连接低位拉索。",
+    "关键：屈膝将双脚跟卷向臀部，腿筋收紧，上身保持贴凳。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1261",
+   "expectedName": "cable decline press",
+   "sourceId": "ai-codex-fill121-1261",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "3bbf3f79e50c5277127c4627f006d125f5415a619800c9225ae3aee64e84355a",
+    "b578da037f1c295fcb20aa57d232a3e7a64990800f7b586f9661b36ad9a010a0"
+   ],
+   "phases": [
+    "起始：坐在下斜凳上面向拉力器，手柄置于胸部水平，肘部弯曲。",
+    "关键：沿下斜方向将双手柄推至手臂完全伸展，胸部收紧。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
