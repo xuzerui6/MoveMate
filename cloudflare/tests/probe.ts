@@ -11,6 +11,12 @@ import { ensureInviteCode, listBlocks } from '../../server/src/services/social.s
 
 export class TestBackend extends MoveMateBackend {
   async voiceMode(mode: string) { process.env.XIAOZHI_IDENTITY_MODE = mode; }
+  async deleteUserByEmail(email: string) {
+    this.ctx.storage.sql.exec('DELETE FROM users WHERE email=?', email);
+  }
+  async userByEmail(email: string) {
+    return this.ctx.storage.sql.exec('SELECT id,email,password_hash,is_admin,email_verified,school_id,campus_id FROM users WHERE email=?', email).toArray()[0] || null;
+  }
   async seedVoiceUsers() {
     const original = this.ctx.storage.sql.exec('SELECT password_hash FROM users WHERE id=1').one();
     for (const id of [5, 6]) this.ctx.storage.sql.exec("INSERT OR IGNORE INTO users(id,email,password_hash,nickname,campus_id,email_verified,student_id) VALUES(?,?,?,?,1,1,?)", id, `voice${id}@dajju.local`, original.password_hash, 'Voice test ' + id, 'synthetic-voice-' + id);

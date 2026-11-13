@@ -44,17 +44,9 @@ test('every official ID has an honest separate documentation decision; custom ID
 });
 
 test('alternating illustrations show both sides and mark only the moving side',()=>{
-  for(const id of ['exdb:1648','exdb:1739']){
-    const recipe=diagrams.entries[id] as {phasePoseIndices:number[];poseArrows:number[][][]};
-    assert.deepEqual(recipe.phasePoseIndices,[0,1,0,2,0]);
-    assert.equal(recipe.poseArrows[1].length,1);assert.equal(recipe.poseArrows[2].length,1);
-    for(const stage of [1,3]){
-      const svg=fs.readFileSync(path.join(root,'assets/exercise-illustrations',id.replace(':','-')+'-'+stage+'.svg'),'utf8');
-      assert.equal((svg.match(/marker-end=/g)||[]).length,1);
-    }
-    assert.equal(mediaFor(id)?.video,undefined,'Five still frames must never be presented as a continuous video');
-    assert.equal(exercises.find(e=>e.id===id)!.planCamera,undefined);
-  }
+  // Batch 117 replaced the last two alternating illustration recipes (1648 and
+  // 1739) with verified generated photo pairs, so no illustration-recipe entry
+  // remains for this guard; the photo-record block below covers them.
   // Batch 34 replaced the 0414 and 1730 illustrations with verified real photos:
   // the two-frame photos show one working side and the entry text states the other
   // side is mirrored, so the both-sides guard now checks the photo record instead
@@ -72,6 +64,22 @@ test('alternating illustrations show both sides and mark only the moving side',(
   // illustration entries.
   for(const id of ['exdb:0387','exdb:0388','exdb:0415']){
     assert.equal(diagrams.entries[id],undefined,'Batch 113 removed the '+id+' illustration when the photo pair replaced it');
+    const m=mediaFor(id)!;
+    assert.equal(mediaIndex[id].kind,'photo',id);
+    assert.equal(m.images.length,2,id);
+    assert.equal(m.sources[0].name,'AI 生成 / ai-codex-replaceIllus-'+id.slice(5),id);
+    assert.ok(exercises.find(e=>e.id===id)!.instructions.some(s=>s.includes('另一侧')),id);
+    assert.equal(m.video,undefined,'Two still frames must never be presented as a continuous video');
+    assert.equal(exercises.find(e=>e.id===id)!.planCamera,undefined);
+  }
+  // Batch 117 replaced the 1648 and 1739 alternating illustrations with
+  // verified generated photo pairs: each pair freezes one working side
+  // mid-alternation (1648: right arm curled, left down; 1739: one arm extended
+  // back, the other still bent) and the entry instructions state the other
+  // side repeats, so the both-sides guard checks the photo record instead of
+  // the deleted illustration entries.
+  for(const id of ['exdb:1648','exdb:1739']){
+    assert.equal(diagrams.entries[id],undefined,'Batch 117 removed the '+id+' illustration when the photo pair replaced it');
     const m=mediaFor(id)!;
     assert.equal(mediaIndex[id].kind,'photo',id);
     assert.equal(m.images.length,2,id);
