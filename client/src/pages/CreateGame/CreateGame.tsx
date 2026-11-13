@@ -234,7 +234,7 @@ const CreateGame: React.FC = () => {
           onChange={(e) => setCampusId(e.target.value ? Number(e.target.value) : '')}
         >
           <option value="">请选择校区</option>
-          {campuses.map((campus) => (
+          {campuses.filter((campus) => !user?.school_id || campus.school_id === user.school_id).map((campus) => (
             <option key={campus.id} value={campus.id}>
               {campus.name}
             </option>

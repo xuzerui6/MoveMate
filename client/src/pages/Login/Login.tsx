@@ -9,7 +9,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useAuthStore } from '../../stores/authStore';
 import * as authApi from '../../api/auth';
-import type { Campus } from '../../types';
+import type { Campus, School } from '../../types';
+import { SCHOOL_CLOSED_MESSAGE, campusesForSchool, defaultSchoolId, isSchoolRegistrationOpen, schoolOptionLabel } from './schools';
 import client, {getErrorMessage} from '../../api/client';
 import {prefetchPoseModels} from '../../features/motion/lib/posePrepare';
 import { Eye } from '@phosphor-icons/react/dist/csr/Eye';
@@ -98,6 +99,8 @@ const Login: React.FC = () => {
   const [qqEmail, setQqEmail] = useState('');
   const [campusId, setCampusId] = useState<number | ''>('');
   const [campuses, setCampuses] = useState<Campus[]>([]);
+  const [schools, setSchools] = useState<School[]>([]);
+  const [schoolId, setSchoolId] = useState<number | ''>('');
 
   // 邮箱验证
   const [verifyCodeSent, setVerifyCodeSent] = useState(false);
@@ -122,6 +125,10 @@ const Login: React.FC = () => {
   };
 
   const handleSendCode = async () => {
+    if (schoolClosed) {
+      setValidationErrors({ school: SCHOOL_CLOSED_MESSAGE });
+      return;
+    }
     if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setValidationErrors({ email: '请先输入正确的邮箱地址' });
       return;
@@ -171,16 +178,35 @@ const Login: React.FC = () => {
   useEffect(() => {
     authApi.fetchBootstrap()
       .then((data) => {
-        setCampuses(data.campuses || []);
-        if (!campusId && data.campuses?.[0]) {
-          setCampusId(data.campuses[0].id);
+        const schoolList = data.schools || (data.school ? [data.school] : []);
+        const campusList = data.campuses || [];
+        setSchools(schoolList);
+        setCampuses(campusList);
+        const initialSchoolId = defaultSchoolId(schoolList, data.school);
+        setSchoolId(initialSchoolId);
+        if (!campusId) {
+          const firstCampus = campusesForSchool(campusList, typeof initialSchoolId === 'number' ? initialSchoolId : null)[0];
+          if (firstCampus) setCampusId(firstCampus.id);
         }
       })
       .catch((e) => {
         setBootstrapError(getErrorMessage(e));
         setCampuses([]);
+        setSchools([]);
       });
   }, []);
+
+  // 当前选中的学校与它的注册状态：只挂列表、暂未开放注册的学校要拦住整个注册流程
+  const selectedSchool = schools.find((s) => s.id === schoolId);
+  const schoolClosed = !!selectedSchool && !isSchoolRegistrationOpen(selectedSchool);
+  const visibleCampuses = campusesForSchool(campuses, typeof schoolId === 'number' ? schoolId : null);
+
+  const handleSchoolChange = (value: string) => {
+    const id = value ? Number(value) : '';
+    setSchoolId(id);
+    const firstCampus = campusesForSchool(campuses, typeof id === 'number' ? id : null)[0];
+    setCampusId(firstCampus ? firstCampus.id : '');
+  };
 
   const validate = (): boolean => {
     const errors: Record<string, string> = {};
@@ -205,7 +231,10 @@ const Login: React.FC = () => {
       } else if (nickname.trim().length > 20) {
         errors.nickname = '昵称不能超过 20 个字';
       }
-      if (!campusId) {
+      if (schoolClosed) {
+        errors.school = SCHOOL_CLOSED_MESSAGE;
+      }
+      if (!schoolClosed && !campusId) {
         errors.campus_id = '请选择默认校区';
       }
       if (!agreed) {
@@ -338,10 +367,26 @@ const Login: React.FC = () => {
 
         {mode === 'register' && (
           <div className="form-group">
-            <label className="form-label">
+            <label className="form-label" htmlFor="auth-schoolId">
               学校
             </label>
-            <input className="form-input" type="text" value="吉林大学" disabled />
+            <select
+              className="form-select"
+              id="auth-schoolId" value={schoolId}
+              onChange={(e) => handleSchoolChange(e.target.value)}
+            >
+              {schools.map((school) => (
+                <option key={school.id} value={school.id}>
+                  {schoolOptionLabel(school)}
+                </option>
+              ))}
+            </select>
+            {schoolClosed && (
+              <p className="ui-pages-login-login-inline-0" role="note">{SCHOOL_CLOSED_MESSAGE}</p>
+            )}
+            {validationErrors.school && (
+              <p className="form-error">{validationErrors.school}</p>
+            )}
           </div>
         )}
 
@@ -352,10 +397,11 @@ const Login: React.FC = () => {
             <select
               className={`form-select ${validationErrors.campus_id ? 'form-input--error' : ''}`}
               id="auth-campusId" value={campusId}
+              disabled={schoolClosed}
               onChange={(e) => setCampusId(e.target.value ? Number(e.target.value) : '')}
             >
               <option value="">请选择校区</option>
-              {campuses.map((campus) => (
+              {visibleCampuses.map((campus) => (
                 <option key={campus.id} value={campus.id}>
                   {campus.name}
                 </option>
@@ -397,7 +443,7 @@ const Login: React.FC = () => {
                 type="button"
                 
                 className={["btn btn--primary","ui-pages-login-login-inline-4"].filter(Boolean).join(" ")}
-                disabled={verifyCodeSending || verifyCountdown > 0}
+                disabled={verifyCodeSending || verifyCountdown > 0 || schoolClosed}
                 onClick={handleSendCode}
               >
                 {verifyCodeSending ? '发送中...' : verifyCountdown > 0 ? `${verifyCountdown}s` : '发送验证码'}
@@ -512,8 +558,8 @@ const Login: React.FC = () => {
         {/* 提交按钮 */}
         <button
           type="submit"
-          
-          disabled={loading}
+
+          disabled={loading || (mode === 'register' && schoolClosed)}
           className={["btn btn--primary btn--lg btn--block","ui-pages-login-login-inline-7"].filter(Boolean).join(" ")}
         >
           {loading
