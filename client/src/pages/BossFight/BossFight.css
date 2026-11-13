@@ -140,3 +140,33 @@
   .bf-stage { height: min(64vh, 560px); }
   .bf-countdown { font-size: 36px; }
 }
+
+/* ---- 远距离模式（开打后，.far）：人离手机几米，只留大信号 ----
+   倒计时/次数/血条放到最大；小字说明全部退场或降权；队友只剩圆点；
+   出画时全屏闪烁边框 + 大字方向，语音是主通道（bossSounds）。 */
+.bf-page.far .bf-countdown { font-size: clamp(56px, 15vw, 92px); line-height: 1.05; }
+.bf-page.far .bf-hud-top b { font-size: 22px; }
+.bf-page.far .bf-hpbar { height: 30px; }
+.bf-page.far .bf-hud-sub { font-size: 12px; color: #8a8a96; }
+.bf-page.far .bf-hud-sub b { font-size: 14px; color: #55555f; }
+.bf-page.far .bf-cam-chip { display: none; }
+.bf-page.far .bf-boss-tag { font-size: 17px; }
+.bf-page.far .bf-my-panel b.bf-reps-huge { font-size: clamp(76px, 24vw, 128px); line-height: 0.95; }
+.bf-page.far .bf-dmg-small { opacity: 0.72; align-self: flex-end; }
+.bf-page.far .bf-dmg-small b { font-size: 18px; }
+.bf-page.far .bf-floater { font-size: 30px; }
+.bf-dot { width: 14px; height: 14px; border-radius: 50%; margin-top: 3px; flex: none; }
+.bf-dot.on { background: #1d9e4b; box-shadow: 0 0 0 4px rgba(29, 158, 75, 0.18); animation: bf-dot-pulse 1.6s ease-in-out infinite; }
+.bf-dot.off { background: #c9c9d2; }
+@keyframes bf-dot-pulse { 50% { box-shadow: 0 0 0 8px rgba(29, 158, 75, 0.07); } }
+.bf-frame-flash {
+  position: fixed; inset: 0; z-index: 60; pointer-events: none;
+  border: 12px solid #e2483d; box-shadow: inset 0 0 0 5px rgba(226, 72, 61, 0.35);
+  animation: bf-flash 0.9s ease-in-out infinite;
+}
+@keyframes bf-flash { 50% { opacity: 0.3; } }
+.bf-frame-word {
+  position: fixed; top: 11%; left: 50%; transform: translateX(-50%); z-index: 61; pointer-events: none;
+  background: rgba(20, 16, 28, 0.93); color: #fff; text-align: center; white-space: nowrap;
+  font-size: clamp(34px, 9.5vw, 58px); font-weight: 800; padding: 16px 34px; border-radius: 20px;
+}
