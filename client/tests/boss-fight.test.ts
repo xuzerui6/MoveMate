@@ -2,11 +2,15 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import {
+  FRAME_ALERT_WORD,
   INITIAL_LAYOUT,
   acceptSnapshot,
+  crossedRepMilestone,
+  deriveFrameAlert,
   estimateMaxHp,
   estimateServerNow,
   formatClock,
+  hpStageAnnouncement,
   hpStateKey,
   latencySummary,
   nextLayout,
@@ -164,4 +168,54 @@ test('血量估算与服务端公式一致（定标原则：少算一人再打�
   assert.equal(estimateMaxHp('high_knees', 3, 180), 288)
   // 1 人也至少按 1 个出力人算：俯卧撑 15*1*1*0.8
   assert.equal(estimateMaxHp('push_up', 1, 60), 12)
+})
+
+test('远距离模式：血量掉档播报（和换图同一档位，升档不报）', () => {
+  assert.equal(hpStageAnnouncement('full', 'mid'), 'mid')
+  assert.equal(hpStageAnnouncement('mid', 'low'), 'low')
+  assert.equal(hpStageAnnouncement('full', 'low'), 'low')
+  assert.equal(hpStageAnnouncement('mid', 'full'), null)
+  assert.equal(hpStageAnnouncement('low', 'mid'), null)
+  assert.equal(hpStageAnnouncement('full', 'full'), null)
+})
+
+test('远距离模式：次数整十里程碑只在向上跨过时报', () => {
+  assert.equal(crossedRepMilestone(0, 9), null)
+  assert.equal(crossedRepMilestone(0, 10), 10)
+  assert.equal(crossedRepMilestone(9, 10), 10)
+  assert.equal(crossedRepMilestone(10, 19), null)
+  assert.equal(crossedRepMilestone(19, 25), 20)
+  assert.equal(crossedRepMilestone(25, 20), null)
+  assert.equal(crossedRepMilestone(10, 10), null)
+})
+
+function makePoints(patch: Record<number, Partial<{ x: number; y: number; visibility: number }>> = {}) {
+  return Array.from({ length: 33 }, (_, i) => ({ x: 0.5, y: 0.5, visibility: 0.99, ...(patch[i] || {}) }))
+}
+
+test('远距离模式：出画方向判定（原始坐标，预览镜像）', () => {
+  // 人在画面正中：不报警
+  assert.equal(deriveFrameAlert(makePoints()), null)
+  // 完全没点 / 躯干都看不见：gone
+  assert.equal(deriveFrameAlert(null), 'gone')
+  assert.equal(deriveFrameAlert(undefined), 'gone')
+  const noTorso: Record<number, Partial<{ visibility: number }>> = {}
+  for (const i of [0, 11, 12, 23, 24]) noTorso[i] = { visibility: 0 }
+  assert.equal(deriveFrameAlert(makePoints(noTorso)), 'gone')
+  // 原始重心偏小 → 镜像显示里人像挤在右侧 → 本人往左
+  const leftPatch: Record<number, Partial<{ x: number }>> = {}
+  for (const i of [0, 11, 12, 23, 24]) leftPatch[i] = { x: 0.15 }
+  assert.equal(deriveFrameAlert(makePoints(leftPatch)), 'left')
+  // 原始重心偏大 → 人像挤在左侧 → 本人往右
+  const rightPatch: Record<number, Partial<{ x: number }>> = {}
+  for (const i of [0, 11, 12, 23, 24]) rightPatch[i] = { x: 0.85 }
+  assert.equal(deriveFrameAlert(makePoints(rightPatch)), 'right')
+  // 脚踝掉出画面下沿 → 往后一步
+  assert.equal(deriveFrameAlert(makePoints({ 27: { y: 1.25 }, 28: { y: 1.25 } })), 'back')
+  // 髋在、膝踝都看不见 → 往后一步
+  const noLower: Record<number, Partial<{ visibility: number }>> = {}
+  for (const i of [25, 26, 27, 28]) noLower[i] = { visibility: 0 }
+  assert.equal(deriveFrameAlert(makePoints(noLower)), 'back')
+  // 四种报警都有大字文案
+  for (const kind of ['gone', 'left', 'right', 'back'] as const) assert.ok(FRAME_ALERT_WORD[kind].length > 0)
 })

@@ -72,12 +72,13 @@ export function playHit(on: boolean): void {
   blip(base, base * 0.55, 0, 0.08, 0.14)
 }
 
-export type BossCueKind = 'start' | 'half' | 'low' | 'win' | 'escape'
+export type BossCueKind = 'start' | 'half' | 'stageMid' | 'low' | 'win' | 'escape'
 
 const CUE_NOTES: Record<BossCueKind, Array<[number, number, number]>> = {
   // [起始频率, 结束频率, 延迟秒]
   start: [[392, 392, 0], [523, 523, 0.09], [659, 659, 0.18]],
   half: [[523, 494, 0], [392, 370, 0.1]],
+  stageMid: [[523, 494, 0], [440, 415, 0.1]],
   low: [[330, 262, 0], [262, 196, 0.12]],
   win: [[523, 523, 0], [659, 659, 0.1], [784, 784, 0.2], [1047, 1047, 0.3]],
   escape: [[392, 330, 0], [330, 262, 0.12]],
@@ -91,16 +92,39 @@ export function playCue(kind: BossCueKind, on: boolean): void {
 const ANNOUNCEMENTS: Record<BossCueKind, string> = {
   start: '开打啦，一起上！',
   half: '怪兽已经半血啦，继续加油！',
+  stageMid: '它喘起来了，再加把劲！',
   low: '它快撑不住啦，再加把劲！',
   win: '打赢啦！',
   escape: '时间到啦，它跑了。没关系，你练的都算数。',
 }
 
 let announceToken = 0
-/** 节点播报：走已有语音通道；新的播报会顶掉还没出声的旧播报 */
-export function announceCue(kind: BossCueKind, on: boolean): void {
-  playCue(kind, on)
+/** 播报一句：走已有语音通道；新播报顶掉还没出声的旧播报（远距离模式的主通道） */
+export function announceText(text: string, on: boolean): void {
   if (!on) return
   const token = ++announceToken
-  void speakText(ANNOUNCEMENTS[kind], { stillCurrent: () => token === announceToken }).catch(() => undefined)
+  void speakText(text, { stillCurrent: () => token === announceToken }).catch(() => undefined)
+}
+
+/** 节点播报：提示音 + 语音 */
+export function announceCue(kind: BossCueKind, on: boolean): void {
+  playCue(kind, on)
+  announceText(ANNOUNCEMENTS[kind], on)
+}
+
+/** 次数里程碑（远距离模式）：每跨一个整十喊一次现在的数 */
+export function announceRepMilestone(n: number, on: boolean): void {
+  announceText(`${n} 个啦，继续！`, on)
+}
+
+const FRAME_ALERT_VOICE = {
+  gone: '我看不到你啦，回到画面中间来。',
+  left: '往左一点。',
+  right: '往右一点。',
+  back: '往后一步，让我看到你全身。',
+} as const
+
+/** 出画播报（远距离模式）：方向照着追踪状态给，喊的节奏由页面节流 */
+export function announceFrameAlert(kind: keyof typeof FRAME_ALERT_VOICE, on: boolean): void {
+  announceText(FRAME_ALERT_VOICE[kind], on)
 }

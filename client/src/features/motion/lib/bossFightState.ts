@@ -246,3 +246,74 @@ export function latencySummary(storage: StorageLike | null = defaultStorage()): 
   return { count: values.length, p50: pick(0.5), p95: pick(0.95), max: values[values.length - 1] }
 }
 
+// ---------------------------------------------------------------------------
+// 远距离模式（老板 2026-11-13 拍板）：产品主要面向手机端，拍全身时人离手机
+// 好几米，屏幕上的字看不清。开打后界面只留大信号（怪兽与血量状态、血条、
+// 大倒计时、自己的大次数），反馈主通道改成语音：次数里程碑、怪兽血量阶段、
+// 出画方向。这里只放纯判定，播报与闪烁边框在页面/声音层。
+// ---------------------------------------------------------------------------
+
+/** 怪兽血量阶段一往下掉，要播报哪一句（和换图同一档位：60% / 30% 两条线） */
+export type BossStageAnnouncement = 'mid' | 'low'
+export function hpStageAnnouncement(prev: BossHpState, next: BossHpState): BossStageAnnouncement | null {
+  if (prev === next) return null
+  if (next === 'low') return 'low'
+  if (next === 'mid' && prev === 'full') return 'mid'
+  return null
+}
+
+/** 本场次数跨过一个新的整十里程碑时返回那个数，否则 null */
+export function crossedRepMilestone(prev: number, next: number, step = 10): number | null {
+  if (next <= prev) return null
+  const before = Math.floor(prev / step)
+  const after = Math.floor(next / step)
+  return after > before && after > 0 ? after * step : null
+}
+
+/**
+ * 出画判定（原始关键点坐标，前置摄像头）：页面预览是镜像显示的
+ * （PoseCanvas 对视频做了 scale(-1,1)），所以显示横坐标 = 1 - 原始 x。
+ * 返回的方向是「站在手机前的人自己的左右」：画面里的人像挤到右边，
+ * 本人往左挪一步就回中间。
+ * - gone：躯干关键点基本看不见（人不在画面里）
+ * - back：髋在、但脚踝/膝盖掉出画面下沿或完全看不见（站太近，往后一步）
+ * - left / right：人像明显偏到一侧
+ * 追踪给不出更细的信息时宁可只报 gone/back，不瞎报左右。
+ */
+export type FrameAlert = 'gone' | 'left' | 'right' | 'back'
+
+const TORSO_POINTS = [0, 11, 12, 23, 24] // 头、肩、髋
+const HIP_POINTS = [23, 24]
+const LOWER_POINTS = [25, 26, 27, 28] // 膝、踝
+
+export function deriveFrameAlert(
+  points: Array<{ x: number; y: number; visibility?: number }> | null | undefined,
+): FrameAlert | null {
+  if (!points || points.length < 29) return 'gone'
+  const seen = (i: number, minVis = 0.5) => {
+    const p = points[i]
+    return Boolean(p) && Number.isFinite(p.x) && Number.isFinite(p.y) && (p.visibility ?? 0) >= minVis
+  }
+  const torsoSeen = TORSO_POINTS.filter((i) => seen(i))
+  if (torsoSeen.length < 2) return 'gone'
+  // 脚掉出下沿：下肢关键点 y>1 是追踪器给的直接出画信号；或者髋看得见、
+  // 膝踝却一个都看不见（多半是下半身在画面外）。
+  const lowerOutBottom = LOWER_POINTS.some((i) => points[i] && Number.isFinite(points[i].y) && points[i].y > 1)
+  const hipsSeen = HIP_POINTS.some((i) => seen(i))
+  const anyLowerSeen = LOWER_POINTS.some((i) => seen(i, 0.25))
+  if (lowerOutBottom || (hipsSeen && !anyLowerSeen)) return 'back'
+  const cx = torsoSeen.reduce((sum, i) => sum + Math.min(1, Math.max(0, points[i].x)), 0) / torsoSeen.length
+  // 显示横坐标 = 1 - 原始 x：原始重心偏小 = 人像挤在显示画面右侧 → 本人往左
+  if (cx <= 0.34) return 'left'
+  if (cx >= 0.66) return 'right'
+  return null
+}
+
+/** 出画时屏幕上的大字（远处也能一眼看清） */
+export const FRAME_ALERT_WORD: Record<FrameAlert, string> = {
+  gone: '回到画面中间',
+  left: '往左一点',
+  right: '往右一点',
+  back: '往后一步',
+}
+
