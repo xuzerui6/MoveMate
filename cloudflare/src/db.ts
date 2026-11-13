@@ -28,6 +28,16 @@ export class ActorDatabase implements DatabaseRuntime {
     `);
   }
   seedMetadata(): void { for (const row of bootstrap.metadata) this.storage.sql.exec(row.sql, ...row.args); }
+  /**
+   * 学校/校区注册表（每次启动幂等执行）：只补 schools/campuses 两张注册表，
+   * 让「只挂列表、暂未开放注册」的学校（吉林体育学院）能落到已有库里。
+   * 不走 seedMetadata 全量补种：venues 含管理员可删数据，全量 INSERT OR IGNORE 会把删掉的场地塞回来。
+   */
+  seedSchoolRegistry(): void {
+    for (const row of bootstrap.metadata) {
+      if (/^INSERT OR IGNORE INTO (schools|campuses) /.test(row.sql)) this.storage.sql.exec(row.sql, ...row.args);
+    }
+  }
   async query<T = any>(sql: string, params?: any[]): Promise<{ rows: T[]; rowCount: number }> {
     const converted = pgToSqlite(toSqliteDialect(sql), params);
     if (/^\s*(BEGIN|COMMIT|ROLLBACK|SAVEPOINT)\b/i.test(converted.sql)) throw new Error('Use storage.transaction');

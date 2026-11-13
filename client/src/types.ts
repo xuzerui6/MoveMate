@@ -50,6 +50,8 @@ export interface School {
   id: number;
   code: string;
   name: string;
+  /** 是否开放注册；false = 只挂在列表里（内测中），暂不能注册 */
+  registration_open?: boolean;
 }
 
 export interface Campus {
@@ -244,6 +246,7 @@ export interface PaginatedResponse<T> {
 
 export interface BootstrapData {
   school: School | null;
+  schools: School[];
   campuses: Campus[];
   venues: Venue[];
 }

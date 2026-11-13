@@ -14,7 +14,8 @@ import * as authApi from '../../api/auth';
 import * as gamesApi from '../../api/games';
 import { getErrorMessage } from '../../api/client';
 import { COMMON_SPORT_TYPES, SPORT_LABELS } from '../../types';
-import type { Game, Campus } from '../../types';
+import type { Game, Campus, School } from '../../types';
+import { isSchoolRegistrationOpen } from '../Login/schools';
 import GameCard from '../Lobby/GameCard';
 import SportIcon from '../../components/SportIcon';
 import Avatar from '../../components/Avatar';
@@ -72,6 +73,7 @@ const Profile: React.FC = () => {
     custom_sport: '',
   });
   const [campuses, setCampuses] = useState<Campus[]>([]);
+  const [schools, setSchools] = useState<School[]>([]);
   const [sportPrefsDirty, setSportPrefsDirty] = useState(false);
   const [savedSportPrefs, setSavedSportPrefs] = useState<string[]>([]);
 
@@ -110,10 +112,15 @@ const Profile: React.FC = () => {
     setSportPrefsDirty(false);
   }, [user]);
 
-  // 加载校区列表
+  // 加载校区列表（暂未开放注册的学校的校区不出现在改校区选项里；自己当前校区始终保留显示）
   useEffect(() => {
-    authApi.fetchBootstrap().then(b => setCampuses(b.campuses || [])).catch(() => {});
+    authApi.fetchBootstrap().then(b => { setCampuses(b.campuses || []); setSchools(b.schools || []); }).catch(() => {});
   }, []);
+  const selectableCampuses = campuses.filter((c) => {
+    if (c.id === user?.campus_id) return true;
+    const school = schools.find((s) => s.id === c.school_id);
+    return !school || isSchoolRegistrationOpen(school);
+  });
 
   const handleGameAction = async (game: Game, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -491,7 +498,7 @@ const Profile: React.FC = () => {
                     onChange={(e) => setProfileForm((prev) => ({ ...prev, campus_id: parseInt(e.target.value) || 0 }))}
                   >
                     <option value="">请选择校区</option>
-                    {campuses.map((c) => (
+                    {selectableCampuses.map((c) => (
                       <option key={c.id} value={c.id}>{c.name}</option>
                     ))}
                   </select>
