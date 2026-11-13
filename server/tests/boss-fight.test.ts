@@ -351,6 +351,136 @@ test('SR alternative unlock: ten tier-1 camera sessions unlock SR outfits withou
   assert.equal(scorerState.unlockedOutfits.sakura, true);
 });
 
+test('regression: settle writes ended_at as the timestamp and settle_key as the key; the 24h grace really expires', async () => {
+  const host = await account('boss-settle-host'), player = await account('boss-settle-player');
+  const game = await liveGame(host, [player]);
+  const hostSession = await cameraSession(host);
+  const playerSession = await cameraSession(player);
+  const created = await request(`/games/${game.id}/boss-fight`, { movement: 'squat' }, host.token);
+  const fightId = created.body.data.id;
+  await request(`/games/${game.id}/boss-fight/join`, { sessionId: hostSession }, host.token);
+  await request(`/games/${game.id}/boss-fight/join`, { sessionId: playerSession }, player.token);
+  await request(`/games/${game.id}/boss-fight/ready`, { ready: true }, host.token);
+  await request(`/games/${game.id}/boss-fight/ready`, { ready: true }, player.token);
+  await request(`/games/${game.id}/boss-fight/start`, {}, host.token);
+  await backdateFightStart(fightId, 120);
+  await motion.sessionAction(playerSession, player.user.id, 'progress', { reps: 5 });
+  await pool.query('UPDATE boss_fights SET hp = 3 WHERE id = $1', [fightId]);
+  await motion.sessionAction(hostSession, host.user.id, 'progress', { reps: 3 });
+  assert.equal((await fightState(game.id, host)).status, 'won');
+
+  // 字段内容：ended_at/settled_at 必须是可解析的时间戳，settle_key 必须是 "won:<fightId>"
+  const row = (await pool.query('SELECT ended_at, settled_at, settle_key FROM boss_fights WHERE id = $1', [fightId])).rows[0];
+  assert.ok(Number.isFinite(Date.parse(row.ended_at)), `ended_at should be a timestamp, got ${row.ended_at}`);
+  assert.ok(Math.abs(Date.parse(row.ended_at) - Date.now()) < 120000, 'ended_at should be ~now');
+  assert.equal(row.settled_at, row.ended_at);
+  assert.equal(row.settle_key, `won:${fightId}`);
+
+  // player 的计数还没结束：待发
+  assert.equal((await fightState(game.id, player)).my_reward.status, 'pending');
+  // 模拟 player 的计数在胜局 48 小时后才正常结束落库（迟到同步的真实形态）：
+  // 宽限只有 24 小时，这时读状态必须把待发置为过期且不发纪念物
+  const lateEnd = new Date(Date.parse(row.ended_at) + 48 * 3600000).toISOString();
+  await pool.query("UPDATE sport_sessions SET status = 'finished', settled = 1, ended_at = $2 WHERE id = $1", [playerSession, lateEnd]);
+  const playerView = await fightState(game.id, player);
+  assert.equal(playerView.my_reward.status, 'expired');
+  const playerSouvenirs = (await pool.query('SELECT * FROM avatar_souvenirs WHERE user_id = $1', [player.user.id])).rows;
+  assert.equal(playerSouvenirs.length, 0);
+  // 对照：host 在宽限内正常结束 → 照常发放
+  await motion.sessionAction(hostSession, host.user.id, 'finish');
+  assert.equal((await fightState(game.id, host)).my_reward.status, 'granted');
+});
+
+test('regression: a malformed clientTs telemetry field cannot steal a won fight', async () => {
+  const host = await account('boss-ctsts-host'), player = await account('boss-ctsts-player');
+  const game = await liveGame(host, [player]);
+  const hostSession = await cameraSession(host);
+  const created = await request(`/games/${game.id}/boss-fight`, { movement: 'squat', durationSec: 60 }, host.token);
+  const fightId = created.body.data.id;
+  await request(`/games/${game.id}/boss-fight/join`, { sessionId: hostSession }, host.token);
+  await request(`/games/${game.id}/boss-fight/join`, {}, player.token);
+  await request(`/games/${game.id}/boss-fight/ready`, { ready: true }, host.token);
+  await request(`/games/${game.id}/boss-fight/ready`, { ready: true }, player.token);
+  const started = await request(`/games/${game.id}/boss-fight/start`, {}, host.token);
+  assert.equal(started.body.data.hp, 16); // 60 秒深蹲：20 * 1 * (2-1) * 0.8
+  await backdateFightStart(fightId, 10); // 模拟已开打 10 秒，速率额度足够 16 下
+  // Codex 复现：致命一击的上报里 clientTs 是个对象（路由 passthrough 会原样保留）
+  await motion.sessionAction(hostSession, host.user.id, 'progress', { reps: 16, clientTs: {} });
+  const state = await fightState(game.id, host);
+  assert.equal(state.status, 'won');
+  assert.equal(state.hp, 0);
+  // 奖励账本已建：挂了计数的 host 待发、没挂计数的 player 直接过期
+  const rewards = (await pool.query('SELECT user_id, status FROM boss_fight_rewards WHERE fight_id = $1', [fightId])).rows;
+  assert.equal(rewards.length, 2);
+  assert.equal(rewards.find((r: any) => r.user_id === host.user.id).status, 'pending');
+  assert.equal(rewards.find((r: any) => r.user_id === player.user.id).status, 'expired');
+  // 延迟采样照常落库，只是 client_ts 被安全地记为 NULL
+  const latency = (await pool.query('SELECT client_ts FROM boss_fight_latency WHERE fight_id = $1', [fightId])).rows;
+  assert.ok(latency.length >= 1);
+  assert.ok(latency.every((r: any) => r.client_ts === null));
+  await motion.sessionAction(hostSession, host.user.id, 'finish');
+  assert.equal((await fightState(game.id, host)).my_reward.status, 'granted');
+});
+
+test('regression: mid-fight session re-binding keeps a single damage ledger', async () => {
+  const host = await account('boss-rebind-host'), player = await account('boss-rebind-player');
+  const game = await liveGame(host, [player]);
+  const firstSession = await cameraSession(host);
+  const created = await request(`/games/${game.id}/boss-fight`, { movement: 'squat' }, host.token);
+  const fightId = created.body.data.id;
+  await request(`/games/${game.id}/boss-fight/join`, { sessionId: firstSession }, host.token);
+  await request(`/games/${game.id}/boss-fight/join`, {}, player.token);
+  await request(`/games/${game.id}/boss-fight/ready`, { ready: true }, host.token);
+  await request(`/games/${game.id}/boss-fight/ready`, { ready: true }, player.token);
+  await request(`/games/${game.id}/boss-fight/start`, {}, host.token);
+  await backdateFightStart(fightId, 120);
+  await motion.sessionAction(firstSession, host.user.id, 'progress', { reps: 10 });
+  let state = await fightState(game.id, host);
+  assert.equal(state.hp, 150);
+  assert.equal(state.participants.find((p: any) => p.user_id === host.user.id).my_damage, 10);
+
+  // 战斗中把同一个计数再绑一次：基准不得把已入账的 10 下再扣一遍
+  assert.equal((await request(`/games/${game.id}/boss-fight/link-session`, { sessionId: firstSession }, host.token)).status, 200);
+  await pool.query('UPDATE boss_fight_participants SET last_report_at = $3 WHERE fight_id = $1 AND user_id = $2',
+    [fightId, host.user.id, isoAgo(10)]);
+  await motion.sessionAction(firstSession, host.user.id, 'progress', { reps: 15 });
+  state = await fightState(game.id, host);
+  assert.equal(state.hp, 145); // 新增的 5 下分毫不差地入账
+  assert.equal(state.participants.find((p: any) => p.user_id === host.user.id).my_damage, 15);
+
+  // 结束旧计数、换一个全新的计数：新计数的次数从第一下起就该产生伤害，不用先"偿还"旧账
+  await motion.sessionAction(firstSession, host.user.id, 'finish');
+  const secondSession = await cameraSession(host);
+  assert.equal((await request(`/games/${game.id}/boss-fight/link-session`, { sessionId: secondSession }, host.token)).status, 200);
+  await pool.query('UPDATE boss_fight_participants SET last_report_at = $3 WHERE fight_id = $1 AND user_id = $2',
+    [fightId, host.user.id, isoAgo(10)]);
+  await motion.sessionAction(secondSession, host.user.id, 'progress', { reps: 5 });
+  state = await fightState(game.id, host);
+  assert.equal(state.hp, 140);
+  assert.equal(state.participants.find((p: any) => p.user_id === host.user.id).my_damage, 20);
+});
+
+test('regression: finishing a session drains the rate-cap backlog while the fight is live', async () => {
+  const host = await account('boss-drain-host'), player = await account('boss-drain-player');
+  const game = await liveGame(host, [player]);
+  const hostSession = await cameraSession(host);
+  const created = await request(`/games/${game.id}/boss-fight`, { movement: 'squat' }, host.token);
+  const fightId = created.body.data.id;
+  await request(`/games/${game.id}/boss-fight/join`, { sessionId: hostSession }, host.token);
+  await request(`/games/${game.id}/boss-fight/join`, {}, player.token);
+  await request(`/games/${game.id}/boss-fight/ready`, { ready: true }, host.token);
+  await request(`/games/${game.id}/boss-fight/ready`, { ready: true }, player.token);
+  await request(`/games/${game.id}/boss-fight/start`, {}, host.token);
+  await backdateFightStart(fightId, 2); // 开打才 2 秒：实时窗口最多放行 floor(2*2)+3 = 7 下
+  // 一次上报 10 下并直接结束：先入账 7 下，结束结算必须把剩下 3 下结清（不丢弃）
+  const finish = await motion.sessionAction(hostSession, host.user.id, 'finish', { reps: 10 });
+  assert.equal(finish.xpEarned, 20); // 训练 XP 照常按 10 次结算
+  const state = await fightState(game.id, host);
+  assert.equal(state.status, 'fighting');
+  assert.equal(state.hp, 150);
+  assert.equal(state.participants.find((p: any) => p.user_id === host.user.id).my_damage, 10);
+});
+
 test('avatar display plumbing: game members and end-summary attendees carry avatar + rarity', async () => {
   const host = await account('boss-avatar-host'), player = await account('boss-avatar-player');
   const game = await liveGame(host, [player]);

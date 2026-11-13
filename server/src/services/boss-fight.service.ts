@@ -132,7 +132,10 @@ async function transitionFight(
     `UPDATE boss_fights
      SET status = $2, ended_at = $3, settle_key = $4, settled_at = $3, version = version + 1
      WHERE id = $1 AND status IN ('gathering', 'fighting') RETURNING *`,
-    [fight.id, to, `${to}:${fight.id}`, endedAtIso],
+    // 参数顺序必须与占位符一一对应：$3 是结束时间、$4 才是结算键。
+    // 曾经写反过：ended_at 里存了 "won:<uuid>"、settle_key 里存了时间戳，
+    // 导致 Date.parse(ended_at)=NaN、24 小时领奖宽限永不触发（有回归测试盯着）。
+    [fight.id, to, endedAtIso, `${to}:${fight.id}`],
   )).rows[0];
   return updated || null;
 }
@@ -371,7 +374,23 @@ async function linkSessionInternal(db: Db, fight: FightRow, userId: number, sess
   const part = await loadParticipant(db, fight.id, userId);
   if (!part || part.status !== 'joined') throw new ForbiddenError('先加入队伍才能挂上计数');
   const session = await validateSessionLink(db, fight, userId, sessionId);
-  const baseline = fight.status === 'fighting' ? Number(session.reps || 0) : 0;
+  let baseline = 0;
+  if (fight.status === 'fighting') {
+    if (part.session_id) {
+      // 战斗中换绑/重绑：accepted_reps 是整场累计伤害（也是 my_damage 的口径），
+      // delta 公式是「本场相对进度 − 已入账」。若只把基准换成新计数的当前值、
+      // 却保留整场累计的 accepted，旧计数贡献的部分会被再扣一遍（增量变负、伤害被吞，
+      // 反复重绑还能不断抬高基准抹掉待入账积压）。正确做法：把旧计数已经贡献的
+      // 相对进度整体折进新基准——同一本账继续往下记，积压保留、已入账不重复。
+      const prev = part.session_id === sessionId
+        ? session
+        : (await db.query<{ reps: number }>('SELECT reps FROM sport_sessions WHERE id = $1', [part.session_id])).rows[0];
+      const prevContribution = Number(prev?.reps || 0) - Number(part.baseline_reps || 0);
+      baseline = Number(session.reps || 0) - prevContribution;
+    } else {
+      baseline = Number(session.reps || 0);
+    }
+  }
   await db.query(
     'UPDATE boss_fight_participants SET session_id = $3, baseline_reps = $4 WHERE fight_id = $1 AND user_id = $2',
     [fight.id, userId, sessionId, baseline],
@@ -530,10 +549,56 @@ interface SessionLike {
   reps: number;
 }
 
+/** 遥测时间戳只接受有限数值；其余一律当作没传——绝不能让它绑进 SQL 时抛错 */
+function coerceClientTs(clientTs: unknown): number | undefined {
+  return typeof clientTs === 'number' && Number.isFinite(clientTs) ? clientTs : undefined;
+}
+
+/**
+ * 把一段已接受的增量真正入账：推进队员累计、扣血、（打倒时）先结算胜局发奖，
+ * 最后才写延迟遥测。顺序是硬要求：遥测写入失败只能丢一条采样，
+ * 绝不能让它挡在胜负结算前面把已经打赢的战斗偷走。
+ */
+async function creditAcceptedDamage(
+  fight: FightRow,
+  part: ParticipantRow,
+  acceptedDelta: number,
+  reported: number,
+  nowMs: number,
+  perfStart: number,
+  clientTs: number | undefined,
+): Promise<void> {
+  await pool.query(
+    'UPDATE boss_fight_participants SET accepted_reps = $3, last_report_at = $4 WHERE fight_id = $1 AND user_id = $2',
+    [fight.id, part.user_id, Number(part.accepted_reps) + acceptedDelta, iso(nowMs)],
+  );
+  const updated = (await pool.query<FightRow>(
+    `UPDATE boss_fights SET hp = max(0, hp - $2), version = version + 1
+     WHERE id = $1 AND status = 'fighting' RETURNING *`,
+    [fight.id, acceptedDelta],
+  )).rows[0];
+  if (!updated) return;
+  if (updated.hp <= 0) {
+    const won = await settleWin(pool, updated, iso(nowMs));
+    if (won) await tryGrantRewards(won);
+  }
+  try {
+    await pool.query(
+      `INSERT INTO boss_fight_latency (fight_id, user_id, reported_total, accepted_delta, received_at, processing_ms, client_ts)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [fight.id, part.user_id, reported, acceptedDelta, iso(nowMs), performance.now() - perfStart, clientTs ?? null],
+    );
+  } catch (error) {
+    console.error('[boss-fight] latency insert failed', error);
+  }
+  scheduleBroadcast(fight.id);
+}
+
 /** 计数上报 → 伤害入账。运行在 sessionAction 的事务里（pool 自动加入该事务）。 */
 export async function applySessionProgress(session: SessionLike, clientTs?: number): Promise<void> {
   try {
     if (session.source !== 'camera') return;
+    const safeClientTs = coerceClientTs(clientTs);
     const startedAt = performance.now();
     const part = (await pool.query<ParticipantRow>(
       'SELECT * FROM boss_fight_participants WHERE session_id = $1',
@@ -570,35 +635,53 @@ export async function applySessionProgress(session: SessionLike, clientTs?: numb
       + (elapsedMs >= 2000 ? RATE_BURST_ALLOWANCE : 0);
     const acceptedDelta = Math.min(delta, allowance);
     if (acceptedDelta <= 0) return; // 窗口还没攒够，先不推进 last_report_at，让额度继续累计
-    await pool.query(
-      'UPDATE boss_fight_participants SET accepted_reps = $3, last_report_at = $4 WHERE fight_id = $1 AND user_id = $2',
-      [fight.id, part.user_id, Number(part.accepted_reps) + acceptedDelta, iso(nowMs)],
-    );
-    const updated = (await pool.query<FightRow>(
-      `UPDATE boss_fights SET hp = max(0, hp - $2), version = version + 1
-       WHERE id = $1 AND status = 'fighting' RETURNING *`,
-      [fight.id, acceptedDelta],
-    )).rows[0];
-    if (!updated) return;
-    await pool.query(
-      `INSERT INTO boss_fight_latency (fight_id, user_id, reported_total, accepted_delta, received_at, processing_ms, client_ts)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-      [fight.id, part.user_id, reported, acceptedDelta, iso(nowMs), performance.now() - startedAt, clientTs ?? null],
-    );
-    if (updated.hp <= 0) {
-      const won = await settleWin(pool, updated, iso(nowMs));
-      if (won) await tryGrantRewards(won);
-    }
-    scheduleBroadcast(fight.id);
+    await creditAcceptedDamage(fight, part, acceptedDelta, reported, nowMs, startedAt, safeClientTs);
   } catch (error) {
     console.error('[boss-fight] applySessionProgress failed', error);
   }
 }
 
-/** 计数正常结束 → 若所属打怪已胜，顺手把纪念物落袋 */
+/**
+ * 计数结束时的积压结清。账本口径是「未接受的差额留在账上后续入账、不丢弃」，
+ * 但计数一旦结束就再没有「后续」了：结束后的 progress 会被拒、重复 finish 直接返回、
+ * 读状态也不排空——积压若不在此刻结清就会被永久锁死，还可能把胜负翻盘
+ * （打怪还活着时，本该到账的最后几下永远到不了）。
+ * 结清仍走同一套前提与入账路径：战斗必须还活着（未超时、局未终局）、队员仍在队内，
+ * 结清量以这次计数的最终累计为界——速率上限管的是「活着的时候入账多快」，
+ * 一次已结束的计数，其最终总数就是它全部的贡献，不再有节奏可管。
+ */
+async function drainBacklogOnFinish(session: SessionLike): Promise<void> {
+  const perfStart = performance.now();
+  const part = (await pool.query<ParticipantRow>(
+    'SELECT * FROM boss_fight_participants WHERE session_id = $1',
+    [session.id],
+  )).rows[0];
+  if (!part || part.status !== 'joined' || Number(part.user_id) !== Number(session.user_id)) return;
+  const fight = (await pool.query<FightRow>('SELECT * FROM boss_fights WHERE id = $1', [part.fight_id])).rows[0];
+  if (!fight || fight.status !== 'fighting' || !fight.started_at || !fight.ends_at) return;
+  const nowMs = Date.now();
+  const game = (await pool.query<{ status: string }>('SELECT status FROM games WHERE id = $1', [fight.game_id])).rows[0];
+  if (!game || TERMINAL_GAME_STATUSES.includes(game.status)) {
+    const aborted = await transitionFight(pool, fight, 'aborted', iso(nowMs));
+    if (aborted) scheduleBroadcast(fight.id);
+    return;
+  }
+  if (nowMs > Date.parse(fight.ends_at)) {
+    const escaped = await transitionFight(pool, fight, 'escaped', fight.ends_at);
+    if (escaped) scheduleBroadcast(fight.id);
+    return;
+  }
+  const reported = Math.max(0, Number(session.reps || 0) - Number(part.baseline_reps || 0));
+  const delta = reported - Number(part.accepted_reps || 0);
+  if (delta <= 0) return;
+  await creditAcceptedDamage(fight, part, delta, reported, nowMs, perfStart, undefined);
+}
+
+/** 计数正常结束 → 先结清积压（可能正好打倒怪），再若所属打怪已胜，顺手把纪念物落袋 */
 export async function onSessionFinished(session: SessionLike): Promise<void> {
   try {
     if (session.source !== 'camera') return;
+    await drainBacklogOnFinish(session);
     const part = (await pool.query<ParticipantRow>(
       'SELECT * FROM boss_fight_participants WHERE session_id = $1',
       [session.id],
