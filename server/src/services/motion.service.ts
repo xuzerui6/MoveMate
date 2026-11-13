@@ -5,6 +5,8 @@ import { ForbiddenError, InvalidStateError, NotFoundError, ValidationError } fro
 import { pushToUser, broadcastToGame } from '../websocket/notification.handler';
 import extended from '../gym/new-recognition.json';
 import {isExtendedRecognition,requireRecognitionVersion,requireStrategyVersion} from '../gym/recognition-version';
+import * as BossFight from './boss-fight.service';
+import {SOUVENIR_CATALOG,SR_ALT_TIER1_SESSIONS,isTier1Movement,unlockedOutfitsMap} from '../utils/avatar-shared';
 
 export const CAMERA_TYPES = new Set(['squat','jumping_jack','high_knees','push_up',...Object.keys(extended)]);
 // Types whose trackers count every rep on exactly one side and report
@@ -235,6 +237,11 @@ export async function sessionAction(id:string,userId:number,action:'pause'|'resu
         row = (await pool.query<SessionRow>('UPDATE sport_sessions SET status=\'finished\',effective_ms=$2,active_since=NULL,reps=$3,metrics=$4,ended_at=$5 WHERE id=$1 RETURNING *',[id,elapsed(row,Date.parse(now)),reps,metrics,now])).rows[0];
         if (!row.game_id) row = await settle(row);
       }
+      // 组队打怪钩子：挂在这次计数上的打怪按服务端账本入账伤害（钩子内部自吞异常，不影响训练）
+      if (row.source === 'camera') {
+        await BossFight.applySessionProgress(row,(data as any)?.clientTs);
+        if (action === 'finish') await BossFight.onSessionFinished(row);
+      }
     }
     changed(row); return sessionView(row);
   });
@@ -283,12 +290,15 @@ export async function trainingState(userId:number) {
     const real=rows.filter(r=>r.settled && r.source!=='demo' && r.xp>0);
     const high=real.filter(r=>Number(decode<any>(r.metrics,{}).formScore || 0)>=90).length;
     const {level,xp}=progress(profile.total_xp);
-    const runningUnlocked=real.length>=3, courtUnlocked=high>=3, outdoorUnlocked=(real.length>=5 && profile.total_xp>=1000)||level>=5;
-    const unlockedOutfits={default:true,penguin:runningUnlocked,sakura:courtUnlocked,sunset_sakura:outdoorUnlocked,sea_runner:runningUnlocked,violet_court:courtUnlocked,sunlight_explorer:outdoorUnlocked};
+    // SR 替代路径（附四）：一级可信动作的摄像头训练累计达标也能解锁 SR，与 90+ 路径并行
+    const tier1Sessions=real.filter(r=>r.source==='camera' && isTier1Movement(r.sport_type)).length;
+    const unlockedOutfits=unlockedOutfitsMap({real:real.length,high,tier1:tier1Sessions,totalXp:profile.total_xp,level});
     const seen=decode<string[]>(profile.seen_outfits,['default']);
     const ownedIds=equipment.filter(id=>id!=='sakura_gloves'||high>0);
     const history=rows.filter(r=>r.status==='finished').map(r=>({ ...decode<any>(r.metrics,{}), id:r.id, workoutId:r.workout_id||undefined,exerciseType:r.sport_type, sportType:r.sport_type, source:r.source, gameId:r.game_id, startTime:r.created_at,endTime:r.ended_at,durationSeconds:Math.floor(r.effective_ms/1000),reps:r.reps,targetReps:20,formScore:Number(decode<any>(r.metrics,{}).formScore||0),xpEarned:r.xp,settled:Boolean(r.settled),unlocked:[],unlockedOutfits:[] }));
-    return {nickname:user.nickname,age:profile.age,totalXp:profile.total_xp,xp,level,avatarGender:profile.avatar_gender,activeOutfit:profile.active_outfit,unlockedOutfits,seenOutfits:seen,newlyUnlockedOutfits:Object.keys(unlockedOutfits).filter(k=>(unlockedOutfits as any)[k]&&!seen.includes(k)),equipped:{...defaultEquipment,...decode(profile.equipped,{})},ownedEquipment:ownedIds,completedWorkoutCount:real.length,workouts:real.length,highScoreWorkoutCount:high,totalSquats:real.reduce((sum,r)=>sum+(r.sport_type==='squat'?r.reps:decode<any>(r.metrics,{}).planSquatReps||0),0),history,sessions:rows.map(sessionView)};
+    const souvenirRows=(await pool.query<{item_id:string;granted_at:string}>('SELECT item_id,granted_at FROM avatar_souvenirs WHERE user_id=$1 ORDER BY granted_at',[userId])).rows;
+    const souvenirs=souvenirRows.map(r=>({item_id:r.item_id,name:SOUVENIR_CATALOG[r.item_id]?.name||r.item_id,granted_at:r.granted_at}));
+    return {nickname:user.nickname,age:profile.age,totalXp:profile.total_xp,xp,level,avatarGender:profile.avatar_gender,activeOutfit:profile.active_outfit,unlockedOutfits,seenOutfits:seen,newlyUnlockedOutfits:Object.keys(unlockedOutfits).filter(k=>(unlockedOutfits as any)[k]&&!seen.includes(k)),equipped:{...defaultEquipment,...decode(profile.equipped,{})},ownedEquipment:ownedIds,completedWorkoutCount:real.length,workouts:real.length,highScoreWorkoutCount:high,srAlternative:{tier1CameraSessions:tier1Sessions,required:SR_ALT_TIER1_SESSIONS,unlocked:tier1Sessions>=SR_ALT_TIER1_SESSIONS},souvenirs,totalSquats:real.reduce((sum,r)=>sum+(r.sport_type==='squat'?r.reps:decode<any>(r.metrics,{}).planSquatReps||0),0),history,sessions:rows.map(sessionView)};
   });
 }
 export async function updateAvatar(userId:number,data:any) {
