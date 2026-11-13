@@ -4555,71 +4555,6 @@
         }
       ]
     },
-    "exdb:3636": {
-      "kind": "illustration",
-      "note": "面向墙壁，双手扶墙，左右腿交替抬膝和落下；深色为左侧、浅色为右侧的简化侧面示意。 原创静态分阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-3636-0.44b5c4bacf76.webp",
-          "bytes": 5782,
-          "sha256": "44b5c4bacf768c8e926c1c15b8f14ed714e63d064ca665b793867adf980cd46a",
-          "phase": "双脚站稳",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3636-1.8c05f532f57b.webp",
-          "bytes": 6594,
-          "sha256": "8c05f532f57b3fa34e7ac53261a461208824aa67acb3ea68ed4784cbe04cdf72",
-          "phase": "左腿抬膝",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3636-2.44b5c4bacf76.webp",
-          "bytes": 5782,
-          "sha256": "44b5c4bacf768c8e926c1c15b8f14ed714e63d064ca665b793867adf980cd46a",
-          "phase": "左脚落下",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3636-3.869e2396165d.webp",
-          "bytes": 6760,
-          "sha256": "869e2396165d9d42c871f08b25fdb6549ac9d93a3019039a09d21b3c36173858",
-          "phase": "右腿抬膝",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3636-4.44b5c4bacf76.webp",
-          "bytes": 5782,
-          "sha256": "44b5c4bacf768c8e926c1c15b8f14ed714e63d064ca665b793867adf980cd46a",
-          "phase": "右脚落下",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:3636",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "f0104b0ed627d654b4d451c2318aa6b18229777e4e3b7a06fa4c9726e1ba1aa6",
-            "35bcdc07e92c76e328b81ba26677f0e8aaf8c3c98e20d5922426abd39f3a8cf2",
-            "0bf06fec4284e3333265233296196956677f83fb645a351e683b91bf0a815b8e",
-            "eb085f197d7854d2801dd5a55b65cc644806c020e7de0f3148ceab6fe0aab34c",
-            "a1dcb4d64b94976305e9c84b03f574b1c169ecb89a4ef4d7cbac223b0a6fd2e0"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
     "exdb:0674": {
       "note": "真人实拍双帧分解，按阶段查看；不是连续动画。",
       "images": [
@@ -7135,259 +7070,6 @@
             "89e2c1af87f286f5c3bccabc4dc378d294ad9dd503b19ba1a7d8d458152f7f65"
           ],
           "changes": "按原比例缩小并转为 WebP；未裁切、未生成或改绘人物。 按明确审核的源图索引排列动作阶段；未镜像制造另一侧动作。",
-          "distribution": "repository"
-        }
-      ]
-    },
-    "exdb:3561": {
-      "kind": "illustration",
-      "note": "仰卧臀桥、肩与双脚承重；保持骨盆水平，单侧屈膝抬向胸部，交替换侧。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-3561-0.061edd6120b5.webp",
-          "bytes": 4664,
-          "sha256": "061edd6120b5cb9dbf66fca0729079eb96f8a7a593006bdf2599792c1254e1aa",
-          "phase": "臀桥起始",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3561-1.f6f6147c9010.webp",
-          "bytes": 6056,
-          "sha256": "f6f6147c90108678710c2173acfc51e6fe952dd9ad47ea8ea13273f06e1a2481",
-          "phase": "单侧抬膝向胸",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3561-2.da604583d7ae.webp",
-          "bytes": 5814,
-          "sha256": "da604583d7ae0ba9bfc380ca3c9b424e8f3d8f9228861587628585ad36bf16a0",
-          "phase": "交替换侧",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:3561",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "6724a48262eb244d77253174053c7863accaaa174429d3e4b590e3f08a587680",
-            "e47e2f57e8dfe058fa43c5cf349e20b18be3772656ce1fe08bc689028ee5dbb6",
-            "4aa884ad2d6eefa66d5a1805092bbb6e7b5a2b6de7d8800b2267bb85d5bee554"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
-    "exdb:3769": {
-      "kind": "illustration",
-      "note": "徒手站立；一脚向斜后方交叉迈过另一腿后方、屈膝下蹲、躯干直立，前脚发力推回站立，左右交替。 原创静态分阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-3769-0.09bd04978892.webp",
-          "bytes": 3310,
-          "sha256": "09bd04978892062d224c098297d441da2a45e83fc0933359299846d8112d1349",
-          "phase": "站立准备",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3769-1.1aa6084c0952.webp",
-          "bytes": 4906,
-          "sha256": "1aa6084c09520928c775b5a73f5e17c9b9cf3e95c3adf708c14adf8190a4d2f2",
-          "phase": "右脚斜后交叉下蹲",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3769-2.09bd04978892.webp",
-          "bytes": 3310,
-          "sha256": "09bd04978892062d224c098297d441da2a45e83fc0933359299846d8112d1349",
-          "phase": "前脚推回站立",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3769-3.1a46d39fefac.webp",
-          "bytes": 4784,
-          "sha256": "1a46d39fefacd17c91b3f942924548a344615ef3974f4266dd44a067882452c4",
-          "phase": "左脚斜后交叉下蹲",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:3769",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "2d4dbf24b3ad02504e6a8977849205b71858e3ac004a3ca4354cde7feaa7cd0f",
-            "4cad055cbea12743ec24dff8ab0581fab2f57f13651399297cb2c6cc6648f1d5",
-            "277d0e846a75a8f48f7e8b4cb399d1d3e6c7ffa969de9b78544904e9d96980db",
-            "17b993a490ca3ee0b79de6b3cffd93a9669f3076b566a256ff952d5650bb610f"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
-    "exdb:3639": {
-      "kind": "illustration",
-      "note": "仰卧屈膝、双脚平放、双臂向两侧伸展与身体垂直；双膝并拢缓慢倒向一侧、膝触地附近停顿，核心发力回中，换侧交替。 原创静态分阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-3639-0.ddbf1bb6af11.webp",
-          "bytes": 3968,
-          "sha256": "ddbf1bb6af112cb02a9edf910c27cf0d238ac47f51a794bf7868660cff30ee3a",
-          "phase": "仰卧·双臂侧展",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3639-1.a729c0d8b750.webp",
-          "bytes": 4604,
-          "sha256": "a729c0d8b75008a0bcacb2fd61ce527053b1e58e04ed47a9c4255dcd1ed94c72",
-          "phase": "双膝倒向一侧",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3639-2.ddbf1bb6af11.webp",
-          "bytes": 3968,
-          "sha256": "ddbf1bb6af112cb02a9edf910c27cf0d238ac47f51a794bf7868660cff30ee3a",
-          "phase": "回到中立",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3639-3.d43561e0cb14.webp",
-          "bytes": 4478,
-          "sha256": "d43561e0cb14b5d2af02b22ea10fa13669c6e0a010e4640025239cba07310503",
-          "phase": "双膝倒向另一侧",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:3639",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "e869e4417097e09eebed9a670272e64193718fe95b7563270867911c25b00597",
-            "cbf70faaac85160b524c3475c388194c4b4b93d626218cae40568002a04ee7c4",
-            "ce73890f5099e1de0c9a95b99fb86d1b312a610e6799fd3c1d3d7b06dc77f286",
-            "29680299a9ace311208228642fcd2169a98e1069f874dea9458a3f7db5e2846b"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
-    "exdb:3665": {
-      "kind": "illustration",
-      "note": "从高平板开始，双手在肩下方、头脚一线；一次一臂落至前臂支撑，保持核心与臀收紧；再一次一臂推回高平板，每次重复左右交替先落/先起的手臂。注：来源步骤未指定回推先手，本批按左右交替定义并在文字中写明。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-3665-0.cc2fd87fc6b8.webp",
-          "bytes": 5296,
-          "sha256": "cc2fd87fc6b851e17239eac3a78dae4f9aef912ce15678143dad9d2d5e8576c4",
-          "phase": "高平板·双手撑地·头脚一线",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3665-1.8042c8b083ac.webp",
-          "bytes": 5864,
-          "sha256": "8042c8b083ac7fb34ce96b39e4e598e608a8ac49e9cf775228fc5883f9e591ad",
-          "phase": "逐臂落前臂·保持一线",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3665-2.cc2fd87fc6b8.webp",
-          "bytes": 5296,
-          "sha256": "cc2fd87fc6b851e17239eac3a78dae4f9aef912ce15678143dad9d2d5e8576c4",
-          "phase": "逐臂推回高平板",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:3665",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "770aa2903553a7fdb67fb7736d8cf787e7924db3c538c21a9da9b5130352ba0d",
-            "14e695fe13ac5c43dc7c65d4c8aa8696a85709da1c8657829fb7ec1bb141fa37",
-            "efdd1bb2c3c57ca7ea14cdd2e5e3105e5474a5f815793e883c7bbe57052b3cf0"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
-          "distribution": "repository"
-        }
-      ]
-    },
-    "exdb:3640": {
-      "kind": "illustration",
-      "note": "平躺屈膝、双脚平放，双手脑后、肘朝外；收腹卷起肩胛，同时一手伸向对侧膝盖，回落后再换另一手触对侧膝，左右交替。 原创静态三阶段示意，不是连续视频。",
-      "images": [
-        {
-          "src": "/exercise-media/original-exdb-3640-0.0670b6672e36.webp",
-          "bytes": 3826,
-          "sha256": "0670b6672e36a41be75f32969b01fcc5fe2cc5e849a6067e4189eb1ce2ed7d78",
-          "phase": "仰卧屈膝·双手脑后",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3640-1.05c6672a29bb.webp",
-          "bytes": 5142,
-          "sha256": "05c6672a29bbdc7832c8a7f2a3c6283d97e079daae5ecb81c89973985a985684",
-          "phase": "卷起肩胛·右手触左膝",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        },
-        {
-          "src": "/exercise-media/original-exdb-3640-2.0670b6672e36.webp",
-          "bytes": 3826,
-          "sha256": "0670b6672e36a41be75f32969b01fcc5fe2cc5e849a6067e4189eb1ce2ed7d78",
-          "phase": "回落·换左手触右膝",
-          "sourceIndex": 0,
-          "distribution": "repository"
-        }
-      ],
-      "sources": [
-        {
-          "name": "MoveMate 原创人体动作示意 / exdb:3640",
-          "author": "MoveMate contributors",
-          "license": "MIT",
-          "licenseUrl": "/exercise-media/ORIGINAL-MIT.txt",
-          "url": "https://github.com/xuzerui6/MoveMate/tree/main/assets/exercise-illustrations",
-          "version": "original-1",
-          "sourceSha256": [
-            "b9ff969714c07e91920c8444339e309196eb31441b41e1f7d941570f6b80a6b0",
-            "c77b172ed00a60b0a0fa1750aed0678cb85ac23984b12f8c2c13b39c932e9fe7",
-            "5d32c49ea66f35a9c3efdfbdc501e155af1db86323a03f3e724ef1103b5ca5e4"
-          ],
-          "changes": "按显式关节、器械及支撑配置绘制 SVG，浏览器渲染为 600×600，再等比例编码为 WebP；中性线条人物，不代表真人或族裔。",
           "distribution": "repository"
         }
       ]
@@ -40025,6 +39707,228 @@
           "sourceSha256": [
             "a0b85cd23f218c8fbcad87ef14faae49a922a184e0881586f3d4f1cb46d9286b",
             "705edba7718aeaf4db26b7e15bc15667eef967d225c84363131062f9ac13494e"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:3561": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-3561-0.6a7e9499b6fa.webp",
+          "sha256": "6a7e9499b6fa91d6c5749b2844b81a4c50bb6929d96dceced9590120f9ccbfc4",
+          "bytes": 60052,
+          "distribution": "repository",
+          "phase": "仰卧屈膝、双脚踩地，臀部抬起成桥，膝、髋、肩成一条直线，双臂贴垫。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-3561-1.951ab0ea7114.webp",
+          "sha256": "951ab0ea7114689868f6d06b5b6d48da723abb4ca11cf815651a29ac4bb95952",
+          "bytes": 60220,
+          "distribution": "repository",
+          "phase": "保持桥高，一侧脚离地、屈膝带向胸部，骨盆保持水平不塌。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-3561",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch119.md",
+          "version": "2026-11-14 · 生成批次 119",
+          "sourceSha256": [
+            "a13fe3a0913b04cf3d49af89651d82cdb34636c940b39ff70ee5d05708857762",
+            "ba49cf188c6b736e68a696c7d530a99cb8a956ecc3bf3f064b44ee635fa7ad1e"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:3636": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-3636-0.cfed97ffe022.webp",
+          "sha256": "cfed97ffe0229c541876b5d9e7f3dc88c90687ec4ea8d940b5d23222099f36d2",
+          "bytes": 58420,
+          "distribution": "repository",
+          "phase": "面向墙壁站立，双掌平贴墙面，躯干直立稳定。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-3636-1.fafac2ed4e52.webp",
+          "sha256": "fafac2ed4e52b9d12753d939e50395c5ed92d6dab546a5303a25307d49193356",
+          "bytes": 57988,
+          "distribution": "repository",
+          "phase": "一侧膝盖高高抬向身前，支撑脚着地，双手仍扶墙，躯干不扭不塌。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-3636",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch119.md",
+          "version": "2026-11-14 · 生成批次 119",
+          "sourceSha256": [
+            "25c978b1adc9dfc5e68fc991ebdf100cc3881b69a0e4ae91a5db5519c853dc31",
+            "958d438722a60f61162c0c06717423e36cba1198c39b7851eb9584e9101089f0"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:3639": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-3639-0.0ffc4cc7d51b.webp",
+          "sha256": "0ffc4cc7d51b4b346da76dbc7ac50013d230a815db56fbeab0c9054e7aaefd76",
+          "bytes": 65396,
+          "distribution": "repository",
+          "phase": "仰卧屈膝、双膝并拢朝上、双脚平放，双臂向两侧展开与身体垂直。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-3639-1.5752a301c221.webp",
+          "sha256": "5752a301c221ea95cff165acc65e25a0ba95357a0ec15ceb24845d15378a8e2c",
+          "bytes": 58872,
+          "distribution": "repository",
+          "phase": "双膝保持并拢弯曲，一起倒向一侧贴近地面，双肩仍贴地。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-3639",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch119.md",
+          "version": "2026-11-14 · 生成批次 119",
+          "sourceSha256": [
+            "956479226cf08ac27efc1603a9c7f66206d9abea9058dcdc8173d1c76fe13e11",
+            "4eb06d009f2818c5c6310a4289b138bc934a85357d16eb6eeecc8513f54895de"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:3640": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-3640-0.4728b4cc8474.webp",
+          "sha256": "4728b4cc8474b876c1f242965adc1391f98ce3799242b1e3cc63a24b9c6e5fe9",
+          "bytes": 59022,
+          "distribution": "repository",
+          "phase": "仰卧屈膝、双脚平放，双手脑后、肘朝外。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-3640-1.abd87593f624.webp",
+          "sha256": "abd87593f624b8e6d21bda405cc1f852bed28f5c294257c367bb99a0dee43f26",
+          "bytes": 58426,
+          "distribution": "repository",
+          "phase": "卷起肩胛，一手伸出触碰对侧膝盖，另一手仍在脑后。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-3640",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch119.md",
+          "version": "2026-11-14 · 生成批次 119",
+          "sourceSha256": [
+            "2895c749bf8391942697decba59f646468253d422842db31e81a07304eb4d3d7",
+            "5e1c6ebb17ec18bc4a096dfa545fdefa48d61f820b169b18dca70fb15dedbc8f"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:3665": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-3665-0.328247d4b2d0.webp",
+          "sha256": "328247d4b2d0665e2c4b4fe4ab0b8357a5adda5faf2e9619cabcb2412212e731",
+          "bytes": 57164,
+          "distribution": "repository",
+          "phase": "高平板：双手在肩膀正下方、手掌撑地，身体从头到脚成一条直线。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-3665-1.28034dcfd48b.webp",
+          "sha256": "28034dcfd48bfc1ae4524de72df5028dd9ef78b6e26ca99788d2ce47c79897f1",
+          "bytes": 59414,
+          "distribution": "repository",
+          "phase": "一臂已落至前臂支撑、另一臂仍手掌撑地，身体保持一线、骨盆水平。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-3665",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch119.md",
+          "version": "2026-11-14 · 生成批次 119",
+          "sourceSha256": [
+            "58c668266f0daa9c9eb5f4f36a9fcb3012ff22e659ab6ba5a29e05c870217527",
+            "f2c922bb26fac5d0fa98b20d196cbe89c1d141a7449f232809c417df41bdb543"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
+    },
+    "exdb:3769": {
+      "note": "生成图双帧分解，按顺序查看；不是连续动画。",
+      "images": [
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-3769-0.7a61d15c1f08.webp",
+          "sha256": "7a61d15c1f08c7e66bc9452f6a8d4329fc25d878f55eaf0606b62b392296bb52",
+          "bytes": 67818,
+          "distribution": "repository",
+          "phase": "站立，双脚与肩同宽，躯干直立。",
+          "sourceIndex": 0
+        },
+        {
+          "src": "/exercise-media/ai-codex-replaceillus-3769-1.1bc08fa2a3b7.webp",
+          "sha256": "1bc08fa2a3b7bc22986f5539d31ac12f7b1a2aa005f2fd0553be70cf81af220a",
+          "bytes": 64190,
+          "distribution": "repository",
+          "phase": "一脚向斜后方交叉跨到另一腿后面，双膝弯曲下降如行屈膝礼，躯干直立、体重在前脚。",
+          "sourceIndex": 0
+        }
+      ],
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-replaceIllus-3769",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch119.md",
+          "version": "2026-11-14 · 生成批次 119",
+          "sourceSha256": [
+            "becfac61eb17625e2eefefe6623ecc6d6528c6a79337c30765e02fe8a797077d",
+            "6676297b4a68345e38d2c6abab6bf890a4e16f504b2ebd73b31998f29199eacb"
           ],
           "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
           "distribution": "repository"

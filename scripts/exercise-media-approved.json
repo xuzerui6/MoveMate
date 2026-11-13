@@ -18143,6 +18143,114 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3561",
+   "expectedName": "glute bridge march",
+   "sourceId": "ai-codex-replaceIllus-3561",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a13fe3a0913b04cf3d49af89651d82cdb34636c940b39ff70ee5d05708857762",
+    "ba49cf188c6b736e68a696c7d530a99cb8a956ecc3bf3f064b44ee635fa7ad1e"
+   ],
+   "phases": [
+    "仰卧屈膝、双脚踩地，臀部抬起成桥，膝、髋、肩成一条直线，双臂贴垫。",
+    "保持桥高，一侧脚离地、屈膝带向胸部，骨盆保持水平不塌。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3636",
+   "expectedName": "high knee against wall",
+   "sourceId": "ai-codex-replaceIllus-3636",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "25c978b1adc9dfc5e68fc991ebdf100cc3881b69a0e4ae91a5db5519c853dc31",
+    "958d438722a60f61162c0c06717423e36cba1198c39b7851eb9584e9101089f0"
+   ],
+   "phases": [
+    "面向墙壁站立，双掌平贴墙面，躯干直立稳定。",
+    "一侧膝盖高高抬向身前，支撑脚着地，双手仍扶墙，躯干不扭不塌。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3639",
+   "expectedName": "bent knee lying twist (male)",
+   "sourceId": "ai-codex-replaceIllus-3639",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "956479226cf08ac27efc1603a9c7f66206d9abea9058dcdc8173d1c76fe13e11",
+    "4eb06d009f2818c5c6310a4289b138bc934a85357d16eb6eeecc8513f54895de"
+   ],
+   "phases": [
+    "仰卧屈膝、双膝并拢朝上、双脚平放，双臂向两侧展开与身体垂直。",
+    "双膝保持并拢弯曲，一起倒向一侧贴近地面，双肩仍贴地。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3640",
+   "expectedName": "knee touch crunch",
+   "sourceId": "ai-codex-replaceIllus-3640",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "2895c749bf8391942697decba59f646468253d422842db31e81a07304eb4d3d7",
+    "5e1c6ebb17ec18bc4a096dfa545fdefa48d61f820b169b18dca70fb15dedbc8f"
+   ],
+   "phases": [
+    "仰卧屈膝、双脚平放，双手脑后、肘朝外。",
+    "卷起肩胛，一手伸出触碰对侧膝盖，另一手仍在脑后。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3665",
+   "expectedName": "power point plank",
+   "sourceId": "ai-codex-replaceIllus-3665",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "58c668266f0daa9c9eb5f4f36a9fcb3012ff22e659ab6ba5a29e05c870217527",
+    "f2c922bb26fac5d0fa98b20d196cbe89c1d141a7449f232809c417df41bdb543"
+   ],
+   "phases": [
+    "高平板：双手在肩膀正下方、手掌撑地，身体从头到脚成一条直线。",
+    "一臂已落至前臂支撑、另一臂仍手掌撑地，身体保持一线、骨盆水平。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3769",
+   "expectedName": "curtsey squat",
+   "sourceId": "ai-codex-replaceIllus-3769",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "becfac61eb17625e2eefefe6623ecc6d6528c6a79337c30765e02fe8a797077d",
+    "6676297b4a68345e38d2c6abab6bf890a4e16f504b2ebd73b31998f29199eacb"
+   ],
+   "phases": [
+    "站立，双脚与肩同宽，躯干直立。",
+    "一脚向斜后方交叉跨到另一腿后面，双膝弯曲下降如行屈膝礼，躯干直立、体重在前脚。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
