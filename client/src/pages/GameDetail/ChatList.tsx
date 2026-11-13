@@ -53,6 +53,14 @@ const ChatList: React.FC<Props> = ({ messages, bottomRef }) => {
         </div>
       ) : (
         messages.map((msg, idx) => {
+          // 系统小提示（「XX 加入了本局」）：居中灰字，不带头像气泡
+          if (msg.kind === 'system') {
+            return (
+              <div key={msg.id} className="ui-pages-gamedetail-chatlist-systemTip">
+                <span>{msg.masked ? '（这条提示包含不适合展示的内容）' : msg.content}</span>
+              </div>
+            );
+          }
           const isMine = msg.sender_id === user?.id;
           const showDivider = shouldShowDivider(messages, idx);
 
@@ -86,7 +94,7 @@ const ChatList: React.FC<Props> = ({ messages, bottomRef }) => {
                   {!isMine && (
                     <div className="ui-pages-gamedetail-chatlist-senderName">{msg.sender_name}</div>
                   )}
-                  <div className="chat-message__bubble">{msg.content}</div>
+                  <div className="chat-message__bubble">{msg.masked ? '（这条消息包含不适合展示的内容）' : msg.content}</div>
                   <div className="chat-message__time">
                     {formatTime(msg.created_at)}
                   </div>

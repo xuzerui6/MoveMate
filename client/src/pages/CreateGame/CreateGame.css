@@ -25,3 +25,86 @@
 .ui-pages-creategame-creategame-inline-0{width:3rem}
 .ui-pages-creategame-creategame-venueChip{padding:0.4rem 0.75rem;border-radius:8px;border-width:1px;border-style:solid;border-color:#e3e9e6;background:#f3f6f3;color:#475569;font-size:0.8125rem;font-weight:600;cursor:pointer;transition:all 150ms ease;outline:none;box-shadow:none;-webkit-tap-highlight-color:transparent;user-select:none}
 .ui-pages-creategame-creategame-inline-1{display:inline-block;transition:transform 0.2s;margin-left:4px;font-size:12px}
+
+.ui-pages-creategame-creategame-visibility {
+  background: var(--color-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+.create-visibility-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+}
+.create-visibility-option {
+  min-height: 48px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  font-size: var(--font-size-md);
+  color: var(--ink);
+  background: #fff;
+}
+.create-visibility-option--active {
+  border-color: var(--color-primary);
+  background: var(--mint);
+  font-weight: 700;
+}
+.create-visibility-note {
+  color: var(--muted);
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-sm);
+  line-height: 1.6;
+}
+.create-autofill {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+  padding: var(--space-lg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+.create-autofill-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.create-autofill-title {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--ink);
+}
+.create-autofill-desc {
+  font-size: var(--font-size-sm);
+  color: var(--muted);
+  line-height: 1.5;
+}
+.create-autofill-switch {
+  flex-shrink: 0;
+  width: 56px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: #d6ddd8;
+  position: relative;
+  transition: background .2s;
+}
+.create-autofill-switch--on {
+  background: var(--color-primary);
+}
+.create-autofill-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #fff;
+  transition: left .2s;
+}
+.create-autofill-switch--on .create-autofill-knob {
+  left: 27px;
+}

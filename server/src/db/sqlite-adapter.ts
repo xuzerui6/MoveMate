@@ -271,6 +271,7 @@ function ensureSchema(conn: DatabaseSync): void {
       game_id INTEGER NOT NULL REFERENCES games(id),
       sender_id INTEGER NOT NULL REFERENCES users(id),
       content TEXT NOT NULL,
+      kind TEXT NOT NULL DEFAULT 'user',
       created_at TEXT DEFAULT (datetime('now'))
     );
 
@@ -462,6 +463,7 @@ function ensureSchema(conn: DatabaseSync): void {
   ensureColumn('games', 'fill_open', 'INTEGER DEFAULT 0');
   ensureColumn('games', 'auto_fill', 'INTEGER DEFAULT 0');
   ensureColumn('games', 'rebooked_from_id', 'INTEGER');
+  ensureColumn('chat_messages', 'kind', "TEXT NOT NULL DEFAULT 'user'");
 }
 
 // ================================================================

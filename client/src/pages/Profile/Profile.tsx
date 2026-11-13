@@ -20,6 +20,7 @@ import GameCard from '../Lobby/GameCard';
 import SportIcon from '../../components/SportIcon';
 import Avatar from '../../components/Avatar';
 import ShareCardButton from '../../features/share/ShareCardButton';
+import SocialSettingsCard from '../../features/social/SocialSettingsCard';
 import { buildStreakCard } from '../../features/share/cardData';
 import { milestoneCardSvg } from '../../features/share/cardSvg';
 import './Profile.css';
@@ -585,6 +586,7 @@ const Profile: React.FC = () => {
         <h2>快捷入口</h2>
         <div className="motion-shortcuts">
           <Link to="/avatar"><span className="profile-shortcut-ic"><Icon name="user"/></span>我的形象</Link>
+          <Link to="/friends"><span className="profile-shortcut-ic"><Icon name="users"/></span>我的好友</Link>
           <Link to="/inventory"><span className="profile-shortcut-ic"><Icon name="bag"/></span>装备背包</Link>
           <Link to="/history"><span className="profile-shortcut-ic"><Icon name="clock"/></span>训练历史</Link>
           <Link to="/train/plans"><span className="profile-shortcut-ic"><Icon name="dumbbell"/></span>训练计划</Link>
@@ -594,6 +596,8 @@ const Profile: React.FC = () => {
           <Link to="/feedback"><span className="profile-shortcut-ic"><Icon name="spark"/></span>意见反馈</Link>
         </div>
       </div>
+
+      <SocialSettingsCard />
 
       <div className="profile-preferences"><div className="section-title"><h3>我的运动偏好</h3><button onClick={handleStartEdit}>编辑偏好</button></div><div className="profile-preference-list">{(user.sport_preferences||[]).length?(user.sport_preferences||[]).map(sport=><span key={sport}><SportIcon sport={sport} size={14}/>{SPORT_LABELS[sport]||sport}</span>):<p>还未设置运动偏好</p>}</div></div>
 

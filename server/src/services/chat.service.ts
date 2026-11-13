@@ -43,6 +43,8 @@ export interface ChatMessage {
   sender_avatar_url: string;
   content: string;
   created_at: string;
+  /** 'user' 普通发言 / 'system' 系统小提示（如「XX 加入了本局」，内容由服务端生成） */
+  kind?: 'user' | 'system';
   /** 发送者被当前查看者拉黑时为 true，content 已被清空（库里原文不动） */
   masked?: boolean;
 }
@@ -109,6 +111,24 @@ export async function saveMessage(
   return result.rows[0];
 }
 
+/**
+ * 保存系统小提示（如「XX 加入了本局」「XX 离开了本局」）。
+ * 内容由服务端按成员事件生成，不经过敏感词（不是用户输入）；
+ * sender_id 记事件当事人（外键需要），kind='system' 让前端按提示样式渲染。
+ */
+export async function saveSystemMessage(
+  gameId: number,
+  actorId: number,
+  content: string,
+): Promise<ChatMessage> {
+  const result = await pool.query<ChatMessage>(
+    `INSERT INTO chat_messages (game_id, sender_id, content, kind)
+     VALUES ($1, $2, $3, 'system') RETURNING *`,
+    [gameId, actorId, content],
+  );
+  return result.rows[0];
+}
+
 // ----------------------------------------------------------------
 // 消息查询
 // ----------------------------------------------------------------
@@ -140,7 +160,7 @@ export async function getMessages(
   if (beforeId) {
     // 游标翻页：取 beforeId 之前的消息
     query = `
-      SELECT m.id, m.game_id, m.sender_id, m.content,
+      SELECT m.id, m.game_id, m.sender_id, m.content, m.kind,
              u.nickname AS sender_nickname,
              u.avatar_url AS sender_avatar_url,
              m.created_at
@@ -154,7 +174,7 @@ export async function getMessages(
   } else {
     // 首次加载：返回最新 limit 条
     query = `
-      SELECT m.id, m.game_id, m.sender_id, m.content,
+      SELECT m.id, m.game_id, m.sender_id, m.content, m.kind,
              u.nickname AS sender_nickname,
              u.avatar_url AS sender_avatar_url,
              m.created_at
@@ -169,10 +189,11 @@ export async function getMessages(
   const result = await pool.query<ChatMessage>(query, params);
   const messages = result.rows;
   // 拉黑屏蔽：我拉黑的人发的消息，我这边只看到一条占位（库里原文不改）
+  // 系统小提示不算「发言」（说的是成员变动这件事，成员名单里本来也看得到），不屏蔽
   if (requesterId) {
     const blocked = await getBlockedIds(requesterId).catch(() => new Set<number>());
     for (const m of messages) {
-      if (blocked.has(Number(m.sender_id))) {
+      if (m.kind !== 'system' && blocked.has(Number(m.sender_id))) {
         m.content = '';
         m.masked = true;
       }

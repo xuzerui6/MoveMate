@@ -6,11 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { useGames } from '../../hooks/useGames';
 import { useAuthStore } from '../../stores/authStore';
 import * as authApi from '../../api/auth';
+import * as gamesApi from '../../api/games';
 import { showToast } from '../../hooks/useAuth';
 import GameCard from './GameCard';
 import SportFilter from './SportFilter';
 import EmptyState from './EmptyState';
-import type { Campus, SportType } from '../../types';
+import type { Campus, Game, SportType } from '../../types';
 import './Lobby.css';
 
 function getDateText(offsetDays = 0): string {
@@ -35,6 +36,7 @@ const Lobby: React.FC = () => {
   const user = useAuthStore((s) => s.user);
   const { games, loading, error, hasMore, filter, refresh, loadMore, filterBySport, filterByCampus, filterByDate } = useGames();
   const [campuses, setCampuses] = useState<Campus[]>([]);
+  const [friendGames, setFriendGames] = useState<Game[]>([]);
   const dateInputRef = useRef<HTMLInputElement | null>(null);
   const todayText = getDateText(0);
   const tomorrowText = getDateText(1);
@@ -49,16 +51,23 @@ const Lobby: React.FC = () => {
       .catch(() => setCampuses([]));
   }, []);
 
+  // 好友的局（好友局不进大厅，单独一段给好友看）
+  const refreshFriendGames = React.useCallback(() => {
+    gamesApi.fetchFriendsFeed().then(setFriendGames).catch(() => setFriendGames([]));
+  }, []);
+  useEffect(() => { refreshFriendGames(); }, [refreshFriendGames]);
+
   // 页面重新可见时自动刷新列表（从发局页/详情页切回来时）
   useEffect(() => {
     const handleVisibility = () => {
       if (document.visibilityState === 'visible') {
         refresh();
+        refreshFriendGames();
       }
     };
     document.addEventListener('visibilitychange', handleVisibility);
     return () => document.removeEventListener('visibilitychange', handleVisibility);
-  }, [refresh]);
+  }, [refresh, refreshFriendGames]);
 
   useEffect(() => {
     const scrollArea = document.querySelector('.motion-screen');
@@ -106,6 +115,7 @@ const Lobby: React.FC = () => {
   return (
     <div className="groups-page">
       <button className="btn btn--primary group-create" onClick={()=>navigate('/create')}>发起运动局</button>
+      <button className="btn btn--secondary group-create" style={{ marginLeft: 8 }} onClick={()=>navigate('/friends')}>我的好友</button>
       <button className="btn btn--secondary group-create" style={{ marginLeft: 8 }} onClick={()=>navigate('/boss-Atlas')}>怪兽图鉴</button>
       {/* 极简页面头部 */}
       <div className="ui-pages-lobby-lobby-header">
@@ -219,6 +229,17 @@ const Lobby: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* 好友的局：好友局不挂大厅，只在这一段里给好友看 */}
+      {friendGames.length > 0 && (
+        <div className="ui-pages-lobby-lobby-list lobby-friend-games">
+          <h2 className="lobby-friend-games-title">好友的局</h2>
+          <p className="lobby-friend-games-note">这些局只给好友看，点开就能加入。</p>
+          {friendGames.map((game) => (
+            <GameCard key={game.id} game={game} />
+          ))}
+        </div>
+      )}
 
       {/* 列表区 */}
       <div className="ui-pages-lobby-lobby-list">
