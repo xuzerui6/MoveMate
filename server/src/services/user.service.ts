@@ -160,18 +160,19 @@ export const UserService = {
         throw new NotFoundError('用户不存在');
       }
       if (Number(input.campus_id) !== Number(current.campus_id)) {
-        const { rows } = await pool.query<{ school_id: number; school_open: number }>(
-          `SELECT c.school_id AS school_id,
-                  EXISTS(SELECT 1 FROM campuses oc WHERE oc.school_id = c.school_id AND oc.is_active = 1) AS school_open
+        const { rows } = await pool.query<{ school_id: number; registration_open: number }>(
+          `SELECT c.school_id AS school_id, s.registration_open AS registration_open
            FROM campuses c
+           JOIN schools s ON s.id = c.school_id
            WHERE c.id = $1`,
           [input.campus_id]
         );
         if (!rows[0]) {
           throw new ValidationError('所选校区不存在');
         }
-        // 目标学校一个启用校区都没有 = 还只挂牌、没开放（吉林体育学院内测中），不能靠改资料搬过去
-        if (Number(rows[0].school_id) !== Number(current.school_id) && Number(rows[0].school_open ?? 0) === 0) {
+        // 目标学校注册没开放（吉林体育学院内测中）就不能靠改资料搬过去；只看注册开关，
+        // 与目标校区是否启用无关（吉体校区启用是给内测账号组局用的）。
+        if (Number(rows[0].school_id) !== Number(current.school_id) && Number(rows[0].registration_open ?? 1) !== 1) {
           throw new ValidationError(SCHOOL_REGISTRATION_CLOSED_MESSAGE);
         }
       }

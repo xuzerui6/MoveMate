@@ -122,22 +122,23 @@ function toSafeUser(row: {
 export const SCHOOL_REGISTRATION_CLOSED_MESSAGE = '这所学校正在小范围测试，暂时还不能注册';
 
 async function resolveSchoolByCampus(campusId: number): Promise<number> {
-  const { rows } = await pool.query<{ school_id: number; campus_active: number; school_open: number }>(
+  const { rows } = await pool.query<{ school_id: number; campus_active: number; registration_open: number }>(
     `SELECT c.school_id AS school_id, c.is_active AS campus_active,
-            EXISTS(SELECT 1 FROM campuses oc WHERE oc.school_id = c.school_id AND oc.is_active = 1) AS school_open
+            s.registration_open AS registration_open
      FROM campuses c
+     JOIN schools s ON s.id = c.school_id
      WHERE c.id = $1`,
     [campusId]
   );
   if (!rows[0]) {
     throw new ValidationError('所选校区不存在');
   }
+  // 注册开关与校区启用已解耦：学校注册关着就直接拦（吉林体育学院内测中），
+  // 与所选校区是否启用无关——它的校区要留给内测账号组局用。
+  if (Number(rows[0].registration_open ?? 1) !== 1) {
+    throw new ValidationError(SCHOOL_REGISTRATION_CLOSED_MESSAGE);
+  }
   if (Number(rows[0].campus_active) !== 1) {
-    // 选的校区没启用：整所学校一个启用校区都没有，说明学校还只挂牌、没开放注册
-    // （吉林体育学院内测中）；学校有别的启用校区时，保持原有的「校区不存在」口径。
-    if (Number(rows[0].school_open ?? 0) === 0) {
-      throw new ValidationError(SCHOOL_REGISTRATION_CLOSED_MESSAGE);
-    }
     throw new ValidationError('所选校区不存在');
   }
   return Number(rows[0].school_id);

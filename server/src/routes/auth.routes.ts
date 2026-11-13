@@ -68,10 +68,10 @@ router.get(
       const school = schoolResult.rows[0] || null;
 
       // 全部学校（含只挂列表、暂不开放注册的），供注册页学校选择器展示状态。
-      // 是否开放注册看学校有没有启用中的校区：吉林体育学院两校区未启用 = 内测中。
+      // 是否开放注册只看 schools.registration_open：校区启用与否只决定组局能不能用，
+      // 吉林体育学院的校区是启用的（给内测账号组局），但注册开关仍关着。
       const schoolsResult = await pool.query(
-        `SELECT s.id, s.code, s.name,
-                EXISTS(SELECT 1 FROM campuses c WHERE c.school_id = s.id AND c.is_active = 1) AS registration_open
+        `SELECT s.id, s.code, s.name, s.registration_open AS registration_open
          FROM schools s
          WHERE s.is_active = 1
          ORDER BY s.id ASC`

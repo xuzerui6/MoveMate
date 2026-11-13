@@ -119,6 +119,8 @@ export class Migration {
         this.db.seedSchoolRegistry();
         // 同理，导入前建好的表可能缺后加的列：开放后按当前结构再补一次（幂等）
         this.db.upgradeColumns();
+        // 学校开关解耦：导入的数据里吉体校区还没启用、注册开关列可能刚补上，开放后再维护一次
+        this.db.applySchoolGates();
         return Response.json({ ok: true, active: true });
       }
       return Response.json({ error: 'Unknown migration action' }, { status: 404 });
