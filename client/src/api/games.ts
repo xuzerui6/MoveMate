@@ -4,9 +4,16 @@
 import client from './client';
 import type { CreateGameData, Game, GameFilter, GameMeta, PaginatedResponse } from '../types';
 
+// 与 auth.ts 相同的解包约定：axios 拦截器解析出的是服务端信封
+// {code, message, data}，api 函数必须取内层 data 再交给页面。
+function unwrap<T>(response: T | { data: T }): T {
+  return (response as { data?: T }).data ?? (response as T);
+}
+
 /** 建局表单数据（仅当前用户学校的校区/场地，服务端按学校过滤） */
 export async function fetchGameMeta(): Promise<GameMeta> {
-  return client.get('/games/meta');
+  const response = await client.get('/games/meta');
+  return unwrap<GameMeta>(response);
 }
 
 /** 获取运动局列表（支持筛选） */
@@ -68,7 +75,8 @@ export async function confirmEnd(gameId: string): Promise<any> {
 
 /** 约下周再练（仅发起人）：按下局参数克隆一场 +7 天的新局，成员逐个确认 */
 export async function rebookGame(gameId: string): Promise<Game> {
-  return client.post(`/games/${gameId}/rebook`);
+  const res = await client.post(`/games/${gameId}/rebook`) as unknown as { data: { game: Game } };
+  return res.data?.game;
 }
 
 /** 好友局动态流（好友发起的好友局 + 我在里面的好友局） */
