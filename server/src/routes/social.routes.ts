@@ -8,7 +8,11 @@ import { authRequired } from '../middleware/auth';
 import * as Social from '../services/social.service';
 
 const router = Router();
-router.use(authRequired);
+// 本路由挂在 /api/v1 根上，只对自己的路径鉴权，别截走其他路由的未匹配请求（要保持 404 语义）
+router.use((req: Request, res: Response, next: NextFunction) => {
+  if (/^\/(friends|blocks|reports|users\/me)(\/|$)/.test(req.path)) return authRequired(req, res, next);
+  return next();
+});
 
 function success(res: Response, data: any, message = 'success'): void {
   res.json({ code: 0, message, data });
