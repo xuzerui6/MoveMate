@@ -45,7 +45,7 @@ router.get('/', async (req: Request, res: Response) => {
       res.status(403).json({ code: 20008, message: '你还未加入该局，无法查看聊天', data: null });
       return;
     }
-    const messages = await ChatService.getMessages(gameId, beforeId, limit);
+    const messages = await ChatService.getMessages(gameId, beforeId, limit, userId);
     res.json({ code: 0, message: 'success', data: { messages } });
   } catch (err) {
     console.error('[Messages] GET error:', (err as Error).message);
@@ -115,6 +115,11 @@ router.post('/', async (req: Request, res: Response) => {
       },
     });
   } catch (err) {
+    const status = (err as any)?.httpStatus as number | undefined;
+    if (status) {
+      res.status(status).json({ code: (err as any).code ?? 40000, message: (err as Error).message, data: null });
+      return;
+    }
     console.error('[Messages] POST error:', (err as Error).message);
     res.status(500).json({ code: 50001, message: '服务器内部错误', data: null });
   }

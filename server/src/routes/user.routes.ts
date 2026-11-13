@@ -22,7 +22,8 @@ const updateProfileSchema = z.object({
   qq_email: z.string().max(200).optional(),
 });
 
-// GET /public/:id — 公开的用户信息（仅院系+运动偏好，不泄露隐私）
+// GET /public/:id — 公开的用户信息（资料卡）
+// 拉黑关系（任一方向）：只剩昵称和头像；运动动态（连续天数/最近的局）只给好友和本人看
 router.get('/public/:id', authRequired, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = parseInt(req.params.id, 10);
@@ -31,7 +32,7 @@ router.get('/public/:id', authRequired, async (req: Request, res: Response, next
       return;
     }
     const { rows } = await pool.query(
-      `SELECT id, nickname, avatar_url, department, sport_preferences
+      `SELECT id, nickname, avatar_url, department, sport_preferences, reward_streak
        FROM users WHERE id = $1 LIMIT 1`,
       [userId]
     );
@@ -40,18 +41,39 @@ router.get('/public/:id', authRequired, async (req: Request, res: Response, next
       return;
     }
     const row = rows[0];
-    res.json({
-      code: 0, message: 'success',
-      data: {
-        id: Number(row.id),
-        nickname: row.nickname,
-        avatar_url: row.avatar_url,
-        department: row.department || '',
-        sport_preferences: (() => {
-          try { return JSON.parse(row.sport_preferences || '[]'); } catch { return []; }
-        })(),
-      }
-    });
+    const requesterId = req.user!.id;
+    const { isBlockedEitherWay, areFriends } = await import('../services/social-helpers');
+    if (requesterId !== userId && await isBlockedEitherWay(requesterId, userId)) {
+      res.json({
+        code: 0, message: 'success',
+        data: { id: Number(row.id), nickname: row.nickname, avatar_url: row.avatar_url, department: '', sport_preferences: [] },
+      });
+      return;
+    }
+    const data: any = {
+      id: Number(row.id),
+      nickname: row.nickname,
+      avatar_url: row.avatar_url,
+      department: row.department || '',
+      sport_preferences: (() => {
+        try { return JSON.parse(row.sport_preferences || '[]'); } catch { return []; }
+      })(),
+    };
+    // 运动动态仅好友可见（隐私默认）
+    if (requesterId === userId || await areFriends(requesterId, userId)) {
+      data.reward_streak = Number(row.reward_streak || 0);
+      const { rows: recent } = await pool.query(
+        `SELECT g.id, g.title, g.sport_type, g.start_time, g.status
+         FROM games g JOIN game_members gm ON gm.game_id = g.id AND gm.user_id = $1 AND gm.left_at IS NULL
+         WHERE g.status IN ('completed', 'archived')
+         ORDER BY g.start_time DESC LIMIT 5`,
+        [userId],
+      );
+      data.recent_games = recent;
+      const { togetherStats } = await import('../services/social-helpers');
+      data.together = await togetherStats(requesterId, userId);
+    }
+    res.json({ code: 0, message: 'success', data });
   } catch (err) { next(err); }
 });
 
@@ -271,6 +293,14 @@ router.get('/:id', authRequired, async (req: Request, res: Response, next: NextF
     const userId = parseInt(req.params.id, 10);
     if (isNaN(userId)) { res.status(400).json({ code: 40000, message: '用户ID格式不正确', data: null }); return; }
     const profile = await UserService.getPublicProfile(userId);
+    // 拉黑关系下资料卡只剩昵称和头像
+    if (req.user && req.user.id !== userId) {
+      const { isBlockedEitherWay } = await import('../services/social-helpers');
+      if (await isBlockedEitherWay(req.user.id, userId)) {
+        res.json({ code: 0, message: 'success', data: { id: profile.id, nickname: profile.nickname, avatar_url: profile.avatar_url, department: '' } });
+        return;
+      }
+    }
     res.json({ code: 0, message: 'success', data: profile });
   } catch (err) { next(err); }
 });
