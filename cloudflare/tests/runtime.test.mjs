@@ -128,6 +128,15 @@ await test('Workers runtime migration and business regression', async t=>{
  for(const email of ['host@dajju.local','player1@dajju.local','player2@dajju.local']){const r=await call('/api/v1/auth/login',{method:'POST',body:{email,password}});assert.equal(r.status,200,JSON.stringify(r.data));tokens.push(r.data.data.token)}
  assert.equal((await call('/api/v1/auth/register',{method:'POST',body:{email:'test@mails.jlu.edu.cn',password:'password',nickname:'test',campus_id:1}})).status,400);
  });
+ await t.test('school registry: Jilin Sport University is listed but its registration stays closed',async()=>{
+ const boot=await call('/api/v1/auth/bootstrap');assert.equal(boot.status,200,JSON.stringify(boot.data));
+ const schools=boot.data.data.schools;assert.equal(schools.length,2);
+ const jlu=schools.find(s=>s.code==='jlu');assert.equal(jlu.name,'吉林大学');assert.equal(jlu.registration_open,true);
+ const jlsu=schools.find(s=>s.code==='jlsu');assert.equal(jlsu.name,'吉林体育学院');assert.equal(jlsu.registration_open,false);
+ assert.ok(boot.data.data.campuses.every(c=>c.school_id!==jlsu.id),'closed school campuses stay out of the selectable list');
+ const rejected=await call('/api/v1/auth/register',{method:'POST',body:{email:'hopeful@mails.jlu.edu.cn',password:'password',nickname:'新生',campus_id:4,verify_code:'123456'}});
+ assert.equal(rejected.status,400,JSON.stringify(rejected.data));assert.match(rejected.data.message,/小范围测试/);
+ });
  await t.test('native transactions rollback, isolate readers and unlock after errors',async()=>{
  const namespace=await mf.getDurableObjectNamespace('PROBE');const actor=namespace.get(namespace.idFromName('probe'));
  const failed=actor.fetch('http://test/write?id=1&fail=1');const reader=actor.fetch('http://test/read');
