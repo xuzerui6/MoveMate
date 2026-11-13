@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CaretDown, ClipboardText, DownloadSimple } from "@phosphor-icons/react";
 import { Link, useNavigate } from "react-router-dom";
 import { Header } from "../motion/components/Header";
 import Dialog from "../../components/Dialog";
@@ -701,52 +702,148 @@ export function DataManagement() {
   const payload = { format, text, unit, mapping };
   return (
     <Page title="训练数据管理">
-      <FullTransfer />
-      <p className="gym-muted">
-        下面这个入口适合少量粘贴导入：一次最多 100 次训练、2000 组，内容不超过
-        1.8 MB。导入和补录的记录都不加 XP；里面认不出的动作，先选好对应的是哪个，才会存进去。
-      </p>
-      <details className="gym-form">
-        <summary>粘贴记录／导入分享计划</summary>
-        <div className="gym-two">
-          <label>
-            文件格式
-            <select
-              value={format}
-              onChange={(e) => {
-                setFormat(e.target.value);
-                setPreview(null);
-              }}
-            >
-              {[
-                ["opengym", "openGym JSON"],
-                ["movemate", "动伴 JSON"],
-                ["strong", "Strong CSV"],
-                ["hevy", "Hevy CSV"],
-                ["fitnotes", "FitNotes CSV"],
-              ].map(([id, title]) => (
-                <option key={id} value={id}>
-                  {title}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            原文件用的重量单位
-            <select
-              value={unit}
-              onChange={(e) => {
-                setUnit(e.target.value);
-                setPreview(null);
-              }}
-            >
-              <option value="kg">千克 kg</option>
-              <option value="lb">磅 lb（将转换为 kg）</option>
-            </select>
-          </label>
+      <p className="gym-data-subtitle">备份、恢复、导入你的训练记录，都在这里。</p>
+      <section className="gym-form">
+        <div className="gym-data-head">
+          <span className="gym-data-icon">
+            <DownloadSimple size={20} />
+          </span>
+          <h2>导出我的数据</h2>
         </div>
-        <label>
-          选择本人导出文件
+        <p className="gym-muted">
+          一份文件，装下你的计划、自定义动作、逐组记录、身体记录和个人设置。
+        </p>
+        <div className="gym-export-actions">
+          <div className="gym-export-action">
+            <button
+              className="primary"
+              disabled={busy}
+              onClick={() =>
+                void perform(async () =>
+                  download(
+                    "movemate-training.json",
+                    JSON.stringify(
+                      await request("GET", "/training-export"),
+                      null,
+                      2,
+                    ),
+                  ),
+                )
+              }
+            >
+              导出 JSON
+            </button>
+            <small>完整备份 · 能恢复</small>
+          </div>
+          <div className="gym-export-action">
+            <button
+              className="secondary"
+              disabled={busy}
+              onClick={() =>
+                void perform(async () => {
+                  const d = await request("GET", "/training-export");
+                  const rows = [
+                    [
+                      "Date",
+                      "Workout Name",
+                      "Exercise Name",
+                      "Set Order",
+                      "Weight",
+                      "Reps",
+                      "Seconds",
+                    ],
+                    ...d.workouts.flatMap((w: any) =>
+                      w.sets
+                        .filter((s: any) => s.status === "completed")
+                        .map((s: any, i: number) => [
+                          w.createdAt,
+                          w.name,
+                          s.exercise.nameZh,
+                          i + 1,
+                          s.loadKg,
+                          s.reps,
+                          s.seconds,
+                        ]),
+                    ),
+                  ];
+                  download(
+                    "movemate-training.csv",
+                    "\uFEFF" +
+                      rows.map((r) => r.map(csvCell).join(",")).join("\r\n"),
+                    "text/csv;charset=utf-8",
+                  );
+                })
+              }
+            >
+              导出 CSV
+            </button>
+            <small>表格版，适合在电脑上打开看</small>
+          </div>
+        </div>
+        <details className="gym-more">
+          <summary>了解更多</summary>
+          <p className="gym-muted">
+            下载一份「动伴完整备份」（JSON），里面有你的计划、自定义动作、逐组记录、身体记录和个人设置，不含账号和密码；这个文件以后可以再导回来。CSV
+            是表格版，适合在电脑上打开看。计划在编辑页可以打印为 PDF。
+          </p>
+        </details>
+        <p className="gym-license-line">
+          数据来源许可：
+          <a href="/licenses/Exercises-dataset-MIT.txt">动作文字来源与授权说明</a>{" "}
+          · <a href="/licenses/MuscleMap-MIT.txt">人体图来源与授权说明</a>
+        </p>
+      </section>
+      <FullTransfer />
+      <details className="gym-form gym-paste">
+        <summary className="gym-paste-summary">
+          <span className="gym-data-icon">
+            <ClipboardText size={20} />
+          </span>
+          <span className="gym-paste-titles">
+            <b>粘贴导入</b>
+            <small>粘贴少量记录，或导入别人分享的计划</small>
+          </span>
+          <CaretDown className="gym-paste-caret" size={18} />
+        </summary>
+        <label className="gym-chooser">
+          <span className="gym-chooser-label">文件格式</span>
+          <select
+            value={format}
+            onChange={(e) => {
+              setFormat(e.target.value);
+              setPreview(null);
+            }}
+          >
+            {[
+              ["opengym", "openGym JSON"],
+              ["movemate", "动伴 JSON"],
+              ["strong", "Strong CSV"],
+              ["hevy", "Hevy CSV"],
+              ["fitnotes", "FitNotes CSV"],
+            ].map(([id, title]) => (
+              <option key={id} value={id}>
+                {title}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="gym-chooser">
+          <span className="gym-chooser-label">原文件用的重量单位</span>
+          <select
+            value={unit}
+            onChange={(e) => {
+              setUnit(e.target.value);
+              setPreview(null);
+            }}
+          >
+            <option value="kg">千克 kg</option>
+            <option value="lb">磅 lb（将转换为 kg）</option>
+          </select>
+        </label>
+        <label className="gym-chooser gym-file-row">
+          <span className="gym-chooser-label">
+            选择本人导出文件<small>最大 1.8MB</small>
+          </span>
           <input
             type="file"
             accept=".json,.csv,text/csv,application/json"
@@ -802,6 +899,11 @@ export function DataManagement() {
         >
           先看看内容（先不导入）
         </button>
+        <p className="gym-muted gym-paste-note">
+          一次最多 100 次训练、2000
+          组，内容不超过 1.8MB；导入和补录的记录都不加
+          XP，里面认不出的动作，先选好对应的是哪个，才会存进去。
+        </p>
         {planFile && (
           <div className="gym-preview">
             <h3>计划：{planFile.plan?.name}</h3>
@@ -877,78 +979,6 @@ export function DataManagement() {
           </div>
         )}
       </details>
-      <section className="gym-form">
-        <h2>导出本人数据</h2>
-        <p>
-          下载一份「动伴完整备份」（JSON），里面有你的计划、自定义动作、逐组记录、身体记录和个人设置，不含账号和密码；这个文件以后可以再导回来。CSV
-          是表格版，适合在电脑上打开看。计划在编辑页可以打印为 PDF。
-        </p>
-        <div className="gym-links">
-          <button
-            className="secondary"
-            disabled={busy}
-            onClick={() =>
-              void perform(async () =>
-                download(
-                  "movemate-training.json",
-                  JSON.stringify(
-                    await request("GET", "/training-export"),
-                    null,
-                    2,
-                  ),
-                ),
-              )
-            }
-          >
-            导出 JSON
-          </button>
-          <button
-            className="secondary"
-            disabled={busy}
-            onClick={() =>
-              void perform(async () => {
-                const d = await request("GET", "/training-export");
-                const rows = [
-                  [
-                    "Date",
-                    "Workout Name",
-                    "Exercise Name",
-                    "Set Order",
-                    "Weight",
-                    "Reps",
-                    "Seconds",
-                  ],
-                  ...d.workouts.flatMap((w: any) =>
-                    w.sets
-                      .filter((s: any) => s.status === "completed")
-                      .map((s: any, i: number) => [
-                        w.createdAt,
-                        w.name,
-                        s.exercise.nameZh,
-                        i + 1,
-                        s.loadKg,
-                        s.reps,
-                        s.seconds,
-                      ]),
-                  ),
-                ];
-                download(
-                  "movemate-training.csv",
-                  "\uFEFF" +
-                    rows.map((r) => r.map(csvCell).join(",")).join("\r\n"),
-                  "text/csv;charset=utf-8",
-                );
-              })
-            }
-          >
-            导出 CSV
-          </button>
-        </div>
-        <p>
-          <a href="/licenses/Exercises-dataset-MIT.txt">动作文字来源与授权说明</a> ·{" "}
-          <a href="/licenses/MuscleMap-MIT.txt">人体图来源与授权说明</a>
-        </p>
-      </section>
       {error && (
         <p className="gym-error" role="alert">
           {error}
