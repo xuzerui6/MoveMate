@@ -17495,6 +17495,222 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1013",
+   "expectedName": "band underhand pulldown",
+   "sourceId": "ai-codex-replaceIllus-1013",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "59d2b31442faddc29b360e4052e6c6e44f8a6d5d8b81b80faf7b487ee345aff8",
+    "719d4098dbf0fa38e1bde2942aefed153df4dd3e9e6783169df5e1a8d7234c85"
+   ],
+   "phases": [
+    "双臂过顶全伸，掌心向上反握高位弹力带。",
+    "屈肘将带拉至上胸，肩胛收紧。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1018",
+   "expectedName": "band shrug",
+   "sourceId": "ai-codex-replaceIllus-1018",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "eb4580d9920b16b17e02634271da57e5369c6dd731f356d491a273fc97166968",
+    "a0e871770ec6fde7e4c2e3bed607dbaaf2819ece904567737b806da3521ded6b"
+   ],
+   "phases": [
+    "踩住弹力带中段，双臂伸直垂于腿前，肩放松。",
+    "双肩向上耸至最高，双臂保持伸直。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1160",
+   "expectedName": "burpee",
+   "sourceId": "ai-codex-replaceIllus-1160",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b3f2573f83d6784f38b8b6bd413fddc8d61a128ef46845c53ef17c192fad4aa6",
+    "40991dd156f336ea82064fca2ff36e55b152899126d8c4a2c6a79c6ea32f5b48"
+   ],
+   "phases": [
+    "站立直立，双臂自然下垂。",
+    "爆发跳起，双脚离地，双臂过顶伸直。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1307",
+   "expectedName": "push up on bosu ball",
+   "sourceId": "ai-codex-replaceIllus-1307",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "804c3382ba787f56c2e488db36e7f0793732bc72924217b6496c63f07af6b1be",
+    "a15d7b962e8aaf53f24d28788c4c432db01739a819a7098e5c3ecd475c7061b8"
+   ],
+   "phases": [
+    "双手握住 BOSU 平面两侧边缘，身体成高平板。",
+    "屈肘下降，胸部接近平面。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1368",
+   "expectedName": "ankle circles",
+   "sourceId": "ai-codex-replaceIllus-1368",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "4e16e3e45881c92e096065c76a102edf13603c8b75d774ef8065d1842151cd2b",
+    "a8965a00a9bf148ea9d0a75936c90f826baf31edbd451c5f213f0e74e5912e60"
+   ],
+   "phases": [
+    "坐地双腿前伸，右脚离地。",
+    "右脚踝绕环至对侧位置。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1372",
+   "expectedName": "barbell standing calf raise",
+   "sourceId": "ai-codex-replaceIllus-1372",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "6d86f9e75d01c258ee01abb329388600b1ec96e5b1b1951267f202820e8dad50",
+    "d914a8d301d52fe95dfbafa5863770d992e78fe77bf9cae216844c73ef06a192"
+   ],
+   "phases": [
+    "杠铃置于上背，双脚平放于地面。",
+    "双脚跟抬起，以前脚掌支撑。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1387",
+   "expectedName": "one leg floor calf raise",
+   "sourceId": "ai-codex-replaceIllus-1387",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b352db5ed82a0e14d44e029dfb70254bd1cc24a7a54c14c29a25eef441489c88",
+    "384d3dcdc874cf84ce9c4cff4fe062769246f0974d228f9d6865867d3dce2481"
+   ],
+   "phases": [
+    "双掌轻扶墙，左脚单腿站立，右脚悬于身后。",
+    "左脚跟抬起至最高。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1397",
+   "expectedName": "standing calves",
+   "sourceId": "ai-codex-replaceIllus-1397",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "c842661aca8fe6893057bd8946cdd310e607a8869f7d1122a9ba34e47828eacb",
+    "46816fd08052b95f5b25a8a956d8f318b101f02a9532826dc5a994c59b330288"
+   ],
+   "phases": [
+    "徒手站立，双脚平放，脚趾朝前。",
+    "双脚跟同时抬起至最高。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1408",
+   "expectedName": "band hip lift",
+   "sourceId": "ai-codex-replaceIllus-1408",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "61d5111a51c4d48832978fd2e7a4c3d82c5ef07bba1c9d0ef8143d01207ef43b",
+    "a9cbb0f6e1a5f2cc1a0fa16c60369ae38bd011662ba3dc44f707c226253d5115"
+   ],
+   "phases": [
+    "仰卧屈膝，短环带绕于膝盖上方。",
+    "顶髋成桥，双膝向外推。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1410",
+   "expectedName": "barbell lateral lunge",
+   "sourceId": "ai-codex-replaceIllus-1410",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "c80a698f0c2f1580e2dc30e434434d44f5b506102f57339e9eebd21cc08504c3",
+    "65da54bcc7b03fbc0cb55e5d79c6fd9f34186caa0591c9e9ead2bb1700d99649"
+   ],
+   "phases": [
+    "杠铃置于上背，双脚站立。",
+    "向右侧迈步成侧弓步，右膝屈，左腿伸直。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1427",
+   "expectedName": "straight leg outer hip abductor",
+   "sourceId": "ai-codex-replaceIllus-1427",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "1363e0a07f0db817cdd4de23ab59580d191b3b42d1005f1a46b9067e0419ef82",
+    "e0f3170597b0b6f477ced08945d5567892acfbc0d1acdb61582006bcd626f7f4"
+   ],
+   "phases": [
+    "侧卧，双腿伸直叠放，下臂垫头。",
+    "上腿伸直抬高至最高。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1438",
+   "expectedName": "kettlebell seated two arm military press",
+   "sourceId": "ai-codex-replaceIllus-1438",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "15a63bcb9db725df9473f8eb7ea982f495a72812932f5858791492cbbe0641b0",
+    "7ef8eb03e3e1b59bdac478aa886d47239b4cd9278234d633394a2df4e3a16d0f"
+   ],
+   "phases": [
+    "坐于平凳，每手一只壶铃架于肩侧。",
+    "双臂同时推至过顶。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
