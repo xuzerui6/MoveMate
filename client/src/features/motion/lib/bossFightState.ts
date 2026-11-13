@@ -240,6 +240,22 @@ export function crossedRepMilestone(prev: number, next: number, step = 10): numb
 }
 
 /**
+ * 局详情页「组队打怪」入口的显示条件（纯函数，口径只此一处）：
+ * 本人是本局成员 + 本人已签到 + 局正在进行中（in_progress）。
+ * 招募/待开始阶段不显示——打怪是活动开始后的玩法，签到也只在局
+ * 进入 ready/in_progress 后才可能发生。这是确定性派生：只取决于
+ * 局详情接口的一次返回，不受聊天、好友关系等并行请求影响，
+ * 不存在时有时无的闪烁。
+ */
+export function bossFightEntryVisible(input: {
+  isMember: boolean
+  checkedInAt?: string | null
+  gameStatus?: string | null
+}): boolean {
+  return Boolean(input.isMember && input.checkedInAt && input.gameStatus === 'in_progress')
+}
+
+/**
  * 出画判定（原始关键点坐标，前置摄像头）：页面预览是镜像显示的
  * （PoseCanvas 对视频做了 scale(-1,1)），所以显示横坐标 = 1 - 原始 x。
  * 返回的方向是「站在手机前的人自己的左右」：画面里的人像挤到右边，
