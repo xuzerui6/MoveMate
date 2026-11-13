@@ -15,6 +15,10 @@ export class TursoDatabase {
       bootstrap.schema.push('CREATE TABLE IF NOT EXISTS uploaded_avatars (id TEXT PRIMARY KEY,user_id INTEGER NOT NULL REFERENCES users(id),content BLOB NOT NULL,content_type TEXT NOT NULL,created_at TEXT NOT NULL)');
       bootstrap.schema.push('CREATE TABLE IF NOT EXISTS email_codes (email TEXT PRIMARY KEY,code_hash TEXT NOT NULL,expires_at INTEGER NOT NULL,attempts INTEGER NOT NULL DEFAULT 0,last_sent_at INTEGER NOT NULL)');
       await this.client.batch(bootstrap.schema,'write');
+      // 学校/校区注册表幂等补齐：只挂列表、暂未开放注册的学校也能落到老库。
+      // 只补 schools/campuses，不动 venues——避免把管理员删掉的场地又塞回来。
+      const registry=bootstrap.metadata.filter(row=>/^INSERT OR IGNORE INTO (schools|campuses) /.test(row.sql));
+      if(registry.length)await this.client.batch(registry,'write');
       const schools=await this.client.execute('SELECT COUNT(*) AS n FROM schools');
       if(!schools.rows[0].n)await this.client.batch(bootstrap.metadata,'write');
       console.log('[DB] Turso database ready');

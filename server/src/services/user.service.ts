@@ -1,6 +1,8 @@
 import { UserModel, UpdateUserData } from '../models/user.model';
-import { NotFoundError } from '../utils/errors';
+import { NotFoundError, ValidationError } from '../utils/errors';
 import { validateNickname } from '../utils/validator';
+import { pool } from '../db/pool';
+import { SCHOOL_REGISTRATION_CLOSED_MESSAGE } from './auth.service';
 
 /** 用户安全资料（不含敏感字段） */
 export interface UserProfile {
@@ -149,6 +151,30 @@ export const UserService = {
     // 校验院系长度（如果提供了）
     if (input.department !== undefined && input.department.length > 100) {
       input.department = input.department.slice(0, 100);
+    }
+
+    // 改校区不能绕开学校注册开关：换到一所暂未开放注册的学校（且不是自己当前学校）时拦下
+    if (input.campus_id !== undefined) {
+      const current = await UserModel.findById(userId);
+      if (!current) {
+        throw new NotFoundError('用户不存在');
+      }
+      if (Number(input.campus_id) !== Number(current.campus_id)) {
+        const { rows } = await pool.query<{ school_id: number; school_open: number }>(
+          `SELECT c.school_id AS school_id,
+                  EXISTS(SELECT 1 FROM campuses oc WHERE oc.school_id = c.school_id AND oc.is_active = 1) AS school_open
+           FROM campuses c
+           WHERE c.id = $1`,
+          [input.campus_id]
+        );
+        if (!rows[0]) {
+          throw new ValidationError('所选校区不存在');
+        }
+        // 目标学校一个启用校区都没有 = 还只挂牌、没开放（吉林体育学院内测中），不能靠改资料搬过去
+        if (Number(rows[0].school_id) !== Number(current.school_id) && Number(rows[0].school_open ?? 0) === 0) {
+          throw new ValidationError(SCHOOL_REGISTRATION_CLOSED_MESSAGE);
+        }
+      }
     }
 
     const updateData: UpdateUserData = {};

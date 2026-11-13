@@ -118,12 +118,26 @@ function toSafeUser(row: {
   };
 }
 
+/** 学校挂在列表里但注册暂未开放时的统一提示（注册、资料改校区共用一处文案） */
+export const SCHOOL_REGISTRATION_CLOSED_MESSAGE = '这所学校正在小范围测试，暂时还不能注册';
+
 async function resolveSchoolByCampus(campusId: number): Promise<number> {
-  const { rows } = await pool.query<{ school_id: number }>(
-    'SELECT school_id FROM campuses WHERE id = $1 AND is_active = 1',
+  const { rows } = await pool.query<{ school_id: number; campus_active: number; school_open: number }>(
+    `SELECT c.school_id AS school_id, c.is_active AS campus_active,
+            EXISTS(SELECT 1 FROM campuses oc WHERE oc.school_id = c.school_id AND oc.is_active = 1) AS school_open
+     FROM campuses c
+     WHERE c.id = $1`,
     [campusId]
   );
   if (!rows[0]) {
+    throw new ValidationError('所选校区不存在');
+  }
+  if (Number(rows[0].campus_active) !== 1) {
+    // 选的校区没启用：整所学校一个启用校区都没有，说明学校还只挂牌、没开放注册
+    // （吉林体育学院内测中）；学校有别的启用校区时，保持原有的「校区不存在」口径。
+    if (Number(rows[0].school_open ?? 0) === 0) {
+      throw new ValidationError(SCHOOL_REGISTRATION_CLOSED_MESSAGE);
+    }
     throw new ValidationError('所选校区不存在');
   }
   return Number(rows[0].school_id);

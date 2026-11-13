@@ -16,10 +16,10 @@ import {
   FIGHT_DURATIONS, FIGHT_MOVEMENTS, PHASE1_BOSS_ID, bossInfo, estimateMaxHp,
 } from '../../features/motion/lib/bossCatalog'
 import {
-  HP_STATE_NAME, estimateServerNow, formatClock, hpStateKey, nextLayout,
+  HP_STATE_NAME, estimateServerNow, formatClock, hpStateKey,
   publicParticipantView, recordLatencySample, remainingSeconds, teammateStatusLabel,
-  INITIAL_LAYOUT, crossedRepMilestone, deriveFrameAlert, hpStageAnnouncement, FRAME_ALERT_WORD,
-  type BossFightSnapshot, type BossHpState, type FightLayoutState, type FrameAlert,
+  crossedRepMilestone, deriveFrameAlert, hpStageAnnouncement, isPoseFresh, FRAME_ALERT_WORD,
+  type BossFightSnapshot, type BossHpState, type FrameAlert,
 } from '../../features/motion/lib/bossFightState'
 import { announceCue, announceFrameAlert, announceRepMilestone, loadBossSoundOn, playHit, primeBossAudio, saveBossSoundOn } from '../../features/motion/lib/bossSounds'
 import { exerciseInfo, type CameraExerciseType } from '../../features/motion/lib/exercises'
@@ -72,10 +72,11 @@ export default function BossFightPage() {
   }
 
   // ------------------------------------------------------------------
-  // 布局（一键互换，方案 E）
+  // 重新取景工具（布局 C 的配套，老板 2026-11-13 拍板）：显式打开一个
+  // 大画面弹窗、只做取景，显式关掉就回战斗画面。不存偏好、没有阶段
+  // 默认、换一场自动关——状态只活在本次打开期间。
   // ------------------------------------------------------------------
-  const [layout, setLayout] = useState<FightLayoutState>(INITIAL_LAYOUT)
-  const swapLayout = useCallback(() => setLayout((s) => nextLayout(s, { type: 'swap' })), [])
+  const [reframeOpen, setReframeOpen] = useState(false)
 
   // ------------------------------------------------------------------
   // 摄像头计数（独立场次，挂到本场打怪上；管线与训练页同一套）
@@ -120,8 +121,12 @@ export default function BossFightPage() {
   snapshotRef.current = snapshot
   const camOnRef = useRef(camOn)
   camOnRef.current = camOn
+  // 取景弹窗不跨场、不跨摄像头开关留存：换一场或关摄像头就自动关
+  useEffect(() => { setReframeOpen(false) }, [snapshot?.id, camOn])
   const landmarksRef = useRef(pose.landmarks)
   landmarksRef.current = pose.landmarks
+  const frameRef = useRef(pose.frame)
+  frameRef.current = pose.frame
 
   // 计数上报（带 clientTs，打怪伤害由服务端账本在这条上报里入账）
   const pendingTsRef = useRef<number | null>(null)
@@ -230,7 +235,6 @@ export default function BossFightPage() {
         baselineRef.current = metricsRef.current.reps
         prevHpStateRef.current = hpStateKey(snapshot.hp, snapshot.max_hp)
         prevMilestoneRef.current = 0
-        setLayout((s) => nextLayout(s, { type: 'fight-started' }))
         announceCue('start', soundOnRef.current)
         sendProgress()
       }
@@ -269,6 +273,17 @@ export default function BossFightPage() {
     prevRepsRef.current = reps
   }, [metrics.reps])
 
+  // 骨骼新鲜度（布局 C 的纪律）：帧一停更就把骨骼线收起来——只剩画面
+  // 也比把一副死骨骼冻在屏上强。判定与 PoseCanvas 同钟（performance.now）。
+  const [poseFresh, setPoseFresh] = useState(false)
+  useEffect(() => {
+    if (!camOn) { setPoseFresh(false); return }
+    const check = () => setPoseFresh(isPoseFresh(frameRef.current?.capturedAt, performance.now()))
+    check()
+    const timer = window.setInterval(check, 300)
+    return () => window.clearInterval(timer)
+  }, [camOn])
+
   // 远距离模式：出画监测。追踪状态 300ms 探一次，同一种出画持续约 1 秒才
   // 亮闪烁边框；语音最密 6 秒一句，免得人刚走回画面又被念叨。还没找准人
   // （未校准）时不报，取景阶段的提示在集结画面里给。
@@ -280,7 +295,10 @@ export default function BossFightPage() {
     }
     const timer = window.setInterval(() => {
       if (!metricsRef.current.poseFeedback?.calibrated) return
-      const raw = deriveFrameAlert(landmarksRef.current)
+      // 帧停更 = 追踪已中断，按「人不在画面里」处理，不拿旧坐标瞎报方向
+      const raw = isPoseFresh(frameRef.current?.capturedAt, performance.now())
+        ? deriveFrameAlert(landmarksRef.current)
+        : ('gone' as FrameAlert)
       const now = Date.now()
       if (!raw) {
         alertTrackRef.current = null
@@ -390,6 +408,22 @@ export default function BossFightPage() {
     : boss?.image || ''
   const joined = snapshot?.participants.filter((p) => p.status === 'joined') || []
   const allReady = joined.length >= 2 && joined.every((p) => p.ready)
+  // 摄像头画面（小窗与取景弹窗共用同一个，切换时只是搬地方）：
+  // 帧不新鲜就只给画面、不给骨骼——追踪断了要立刻看得出来。
+  const camSurface = camOn ? (
+    <>
+      <PoseCanvas
+        videoRef={pose.videoRef}
+        landmarks={poseFresh ? pose.landmarks : null}
+        demo={false}
+        phase={metrics.phase}
+        fit="contain"
+        keepVideoRendering={adaptive}
+        frame={pose.frame}
+      />
+      <span className="bf-cam-chip">{metrics.poseFeedback.calibrated && poseFresh ? '识别中' : '正在找你 · 站到画面中间'}</span>
+    </>
+  ) : null
   const header = (
     <Header
       title="组队打怪"
@@ -481,30 +515,22 @@ export default function BossFightPage() {
         </div>
       </section>
 
-      {/* 舞台：布局 E，点小窗互换 */}
-      <section className={`bf-stage mode-${layout.mode}`} aria-label="打怪画面">
+      {/* 舞台：布局 C——怪兽铺满，摄像头固定右下角小窗（避开怪兽的脸） */}
+      <section className="bf-stage" aria-label="打怪画面">
         <div className="bf-boss-layer">
           <img src={bossImage} alt={`${snapshot.boss_name}（${HP_STATE_NAME[hpState]}）`} draggable={false} />
           <span className="bf-boss-tag">{snapshot.boss_name} · {HP_STATE_NAME[hpState]}</span>
-          {layout.mode === 'self' && (
-            <button type="button" className="bf-swap-cover" aria-label="切换画面：看怪兽" onClick={swapLayout} />
-          )}
         </div>
         <div className={`bf-cam-layer${camOn ? '' : ' idle'}`}>
           {camOn ? (
-            <>
-              <PoseCanvas
-                videoRef={pose.videoRef}
-                landmarks={pose.landmarks}
-                demo={false}
-                phase={metrics.phase}
-                fit="contain"
-                keepVideoRendering={adaptive}
-                frame={pose.frame}
-              />
-              <span className="bf-cam-chip">{metrics.poseFeedback.calibrated ? '识别中' : '正在找你 · 站到画面中间'}</span>
-              <button type="button" className="bf-swap-cover" aria-label={`切换画面：${layout.mode === 'boss' ? '看自己' : '看怪兽'}`} onClick={swapLayout} />
-            </>
+            reframeOpen ? (
+              <div className="bf-cam-moved">正在取景…</div>
+            ) : (
+              <>
+                {camSurface}
+                <button type="button" className="bf-reframe-btn" onClick={() => setReframeOpen(true)}>取景</button>
+              </>
+            )
           ) : (
             <div className="bf-cam-idle">
               <Icon name="camera" size={30} />
@@ -525,6 +551,20 @@ export default function BossFightPage() {
           )}
         </div>
       </section>
+
+      {/* 重新取景：大画面弹窗，只做取景；打开期间战斗照常（服务端时钟），关掉就回战斗画面 */}
+      {reframeOpen && camOn && (
+        <div className="bf-reframe" role="dialog" aria-modal="true" aria-label="重新取景">
+          <div className="bf-reframe-head">
+            <b>重新取景</b>
+            <span>{exercise.placement}</span>
+          </div>
+          <div className="bf-reframe-view">{camSurface}</div>
+          <button type="button" className="btn btn--primary btn--block bf-big-btn" onClick={() => setReframeOpen(false)}>
+            取景好了，回去
+          </button>
+        </div>
+      )}
 
       {/* 队伍一行：只有形象、名字和状态，没有任何人的伤害 */}
       <section className="bf-team" aria-label="队伍">
@@ -593,6 +633,9 @@ export default function BossFightPage() {
             <div><span>我的次数</span><b className="bf-reps-huge">{myFightReps}</b></div>
             <div className="bf-dmg-small"><span>我打出的伤害</span><b>{fight.myDamage ?? '…'}</b></div>
           </div>
+          <button type="button" className="btn btn--secondary btn--block bf-big-btn" onClick={() => setReframeOpen(true)}>
+            重新取景（看大画面）
+          </button>
           <button type="button" className="btn btn--secondary btn--block bf-big-btn" onClick={() => void leaveFlow()}>
             先歇一下
           </button>

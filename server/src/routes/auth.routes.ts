@@ -67,6 +67,22 @@ router.get(
       );
       const school = schoolResult.rows[0] || null;
 
+      // 全部学校（含只挂列表、暂不开放注册的），供注册页学校选择器展示状态。
+      // 是否开放注册看学校有没有启用中的校区：吉林体育学院两校区未启用 = 内测中。
+      const schoolsResult = await pool.query(
+        `SELECT s.id, s.code, s.name,
+                EXISTS(SELECT 1 FROM campuses c WHERE c.school_id = s.id AND c.is_active = 1) AS registration_open
+         FROM schools s
+         WHERE s.is_active = 1
+         ORDER BY s.id ASC`
+      );
+      const schools = schoolsResult.rows.map((row: any) => ({
+        id: Number(row.id),
+        code: row.code,
+        name: row.name,
+        registration_open: Number(row.registration_open ?? 0) !== 0,
+      }));
+
       const campusesResult = await pool.query(
         `SELECT id, school_id, code, name
          FROM campuses
@@ -86,6 +102,7 @@ router.get(
         message: 'success',
         data: {
           school,
+          schools,
           campuses: campusesResult.rows,
           venues: venuesResult.rows,
         },

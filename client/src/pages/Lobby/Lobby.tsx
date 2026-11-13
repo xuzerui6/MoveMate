@@ -155,7 +155,7 @@ const Lobby: React.FC = () => {
             
           >
             <option value="">全部校区</option>
-            {campuses.map((campus) => (
+            {campuses.filter((campus) => !user?.school_id || campus.school_id === user.school_id).map((campus) => (
               <option key={campus.id} value={campus.id}>{campus.name}</option>
             ))}
           </select>
