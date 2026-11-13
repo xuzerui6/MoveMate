@@ -13,6 +13,9 @@ import type { Campus, School } from '../../types';
 import { SCHOOL_CLOSED_MESSAGE, campusesForSchool, defaultSchoolId, isSchoolRegistrationOpen, schoolOptionLabel } from './schools';
 import client, {getErrorMessage} from '../../api/client';
 import {prefetchPoseModels} from '../../features/motion/lib/posePrepare';
+import { Eye } from '@phosphor-icons/react/dist/csr/Eye';
+import { EyeSlash } from '@phosphor-icons/react/dist/csr/EyeSlash';
+import { normalizePasswordForSubmit, passwordVisibilityToggleLabel } from './password';
 import './Login.css';
 
 /**
@@ -87,6 +90,8 @@ const Login: React.FC = () => {
   // 登录字段
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // 密码是否明文可见（眼睛切换）；默认遮住，切换登录/注册时回到遮住
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   // 注册额外字段
   const [nickname, setNickname] = useState('');
@@ -167,6 +172,7 @@ const Login: React.FC = () => {
     clearError();
     setValidationErrors({});
     setAgreed(false);
+    setPasswordVisible(false);
   }, [mode]);
 
   useEffect(() => {
@@ -211,9 +217,11 @@ const Login: React.FC = () => {
       errors.email = '请输入有效的邮箱地址';
     }
 
-    if (!password) {
+    // 校验按提交时真正会发出的密码（已裁掉首尾空白）来判断，避免「看着有密码却报空/不够长」
+    const submittedPassword = normalizePasswordForSubmit(password);
+    if (!submittedPassword) {
       errors.password = '请输入密码';
-    } else if (mode === 'register' && password.length < 6) {
+    } else if (mode === 'register' && submittedPassword.length < 6) {
       errors.password = '密码至少 6 位';
     }
 
@@ -250,13 +258,16 @@ const Login: React.FC = () => {
     e.preventDefault();
     if (!validate()) return;
 
+    // 粘贴带进来的首尾空白在提交前裁掉（只裁首尾，密码中间的空格原样保留）；
+    // 登录与注册共用同一条规则，注册时设好的密码登录时一定能输进来
+    const submittedPassword = normalizePasswordForSubmit(password);
     if (mode === 'login') {
-      await login({ email: email.trim(), password });
+      await login({ email: email.trim(), password: submittedPassword });
     } else {
       await register({
         verify_code: verifyCode.trim(),
         email: email.trim(),
-        password,
+        password: submittedPassword,
         nickname: nickname.trim(),
         student_id: studentId.trim() || undefined,
         campus_id: Number(campusId),
@@ -479,17 +490,30 @@ const Login: React.FC = () => {
           </div>
         )}
 
-        {/* 密码 */}
+        {/* 密码：右端内侧带显隐切换（眼睛），点一下明文、再点一下遮住，内容和光标不丢 */}
         <div className="form-group">
           <label className="form-label" htmlFor="auth-password">密码 <span className="form-label__required">*</span>
           </label>
-          <input
-            className={`form-input ${validationErrors.password ? 'form-input--error' : ''}`}
-            type="password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-            id="auth-password" value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder={mode === 'register' ? '至少 6 位密码' : '请输入密码'}
-          />
+          <div className="login-password-wrap">
+            <input
+              className={`form-input ${validationErrors.password ? 'form-input--error' : ''}`}
+              type={passwordVisible ? 'text' : 'password'} autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+              autoCapitalize="none" autoCorrect="off" spellCheck={false}
+              id="auth-password" value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={mode === 'register' ? '至少 6 位密码' : '请输入密码'}
+            />
+            <button
+              type="button"
+              className="login-password-toggle"
+              onClick={() => setPasswordVisible((v) => !v)}
+              onMouseDown={(e) => e.preventDefault()}
+              aria-label={passwordVisibilityToggleLabel(passwordVisible)}
+              aria-pressed={passwordVisible}
+            >
+              {passwordVisible ? <EyeSlash size={22} aria-hidden="true" /> : <Eye size={22} aria-hidden="true" />}
+            </button>
+          </div>
           {validationErrors.password && (
             <p className="form-error">{validationErrors.password}</p>
           )}
