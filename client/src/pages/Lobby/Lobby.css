@@ -152,22 +152,6 @@
 .ui-pages-lobby-lobby-inline-0{padding:1rem}
 .ui-pages-lobby-sportfilter-inline-0{display:flex;align-items:center;gap:0.25rem}
 
-/* 头部双按钮（发起运动局 + 怪兽图鉴）：容器统一锚在 .groups-page 右上角并排，
-   按钮本身不再各自绝对定位——此前两者同挂 .group-create 的 right:0/top:0，
-   锚点完全重合，图鉴按钮把发起运动局盖住只剩一条绿边（2026-11-14 机主截图）。 */
-.group-create-row {
-  position: absolute;
-  top: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.group-create-row .group-create {
-  position: static;
-  float: none;
-  min-height: 48px !important;
-}
 /* 校区 select 的度量在 design-system.css 里互相打架：自身的 height:34px 被
    .motion-app .form-select 的 min-height:52px + padding:13px 压过，内容盒只剩 24px，
    iOS 原生渲染会把文字裁成一条缝。这里给它一套自洽规格（48px 高、上下零内边距）。 */
