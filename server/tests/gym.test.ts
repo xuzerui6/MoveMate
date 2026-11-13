@@ -912,6 +912,86 @@ test("analytics uses account dates, excludes warmups and bodyweight from Epley e
   assert.ok(a.muscleDetails.quadriceps.primary > 0);
 });
 
+test("analytics credits a finished camera session as one set with its stored reps, never load", async () => {
+  const before = await gym.analytics(owner);
+  const created = await motion.createSession(
+    owner,
+    { sportType: "hammer_curl", source: "camera" },
+    2,
+  );
+  await motion.sessionAction(
+    created.id,
+    owner,
+    "finish",
+    {
+      reps: 12,
+      scoreAccumulator: {
+        count: 12,
+        total: 960,
+        depth: 960,
+        stability: 960,
+        trunk: 960,
+        symmetry: 960,
+      },
+    },
+    false,
+    2,
+  );
+  const after = await gym.analytics(owner);
+  assert.equal(after.workouts, before.workouts + 1);
+  assert.equal(after.sets, before.sets + 1);
+  assert.equal(after.reps, before.reps + 12);
+  assert.equal(after.volume, before.volume);
+  assert.equal(
+    after.muscleDetails.biceps.primary,
+    (before.muscleDetails.biceps?.primary || 0) + 1,
+  );
+  assert.equal(
+    after.muscleDetails.forearms.secondary,
+    (before.muscleDetails.forearms?.secondary || 0) + 1,
+  );
+  assert.equal(
+    after.muscles["upper arms"].sets,
+    (before.muscles["upper arms"]?.sets || 0) + 1,
+  );
+  const histBefore = (before.exerciseHistory["exdb:0313"] || []).reduce(
+    (n: number, p: any) => n + p.reps,
+    0,
+  );
+  const histAfter = (after.exerciseHistory["exdb:0313"] || []).reduce(
+    (n: number, p: any) => n + p.reps,
+    0,
+  );
+  assert.equal(histAfter, histBefore + 12);
+  const demo = await motion.createSession(
+    owner,
+    { sportType: "hammer_curl", source: "demo" },
+    2,
+  );
+  await motion.sessionAction(
+    demo.id,
+    owner,
+    "finish",
+    {
+      reps: 10,
+      scoreAccumulator: {
+        count: 10,
+        total: 800,
+        depth: 800,
+        stability: 800,
+        trunk: 800,
+        symmetry: 800,
+      },
+    },
+    false,
+    2,
+  );
+  const end = await gym.analytics(owner);
+  assert.equal(end.workouts, after.workouts);
+  assert.equal(end.sets, after.sets);
+  assert.equal(end.reps, after.reps);
+});
+
 test("versioned full transfer remaps ownership, resumes checkpoints and never restores XP or camera grades", async () => {
   const transfer = require("../src/gym/transfer");
   const c = await gym.saveExercise(owner, {

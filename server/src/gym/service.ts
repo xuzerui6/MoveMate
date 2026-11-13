@@ -3,7 +3,7 @@ import {reviewedMediaIds} from './media-filter';
 import { rankByQuery } from "./search";
 import { z } from "zod";
 import { refreshOnline, onlineCutoff } from "./online";
-import { snapshotCameraProfile } from "./camera";
+import { snapshotCameraProfile, cameraExerciseId } from "./camera";
 import {requireRecognitionVersion,requireStrategyVersion} from './recognition-version';
 import { editWorkout } from "./editing";
 import { settings, dateInZone, saveSettings } from "./preferences";
@@ -1124,19 +1124,80 @@ export async function analytics(uid: number) {
   }
   // Activity outside the set-by-set store: finished standalone / group
   // sessions live only in sport_sessions (that is what the home page counts).
-  // They carry no per-set load data, so they join only the activity calendar
-  // and the workout count — never the set-level aggregates below. Sessions
-  // linked from a gym workout are already counted through that workout, and
-  // demo sessions are practice simulations, so both are excluded here.
+  // Sessions linked from a gym workout are already counted through that
+  // workout, and demo sessions are practice simulations, so both are
+  // excluded here.
   const standalone = (
     await pool.query(
-      "SELECT s.created_at FROM sport_sessions s LEFT JOIN gym_workouts w ON w.sport_session_id=s.id WHERE s.user_id=$1 AND s.status='finished' AND s.source<>'demo' AND w.id IS NULL",
+      "SELECT s.created_at,s.sport_type,s.source,s.reps FROM sport_sessions s LEFT JOIN gym_workouts w ON w.sport_session_id=s.id WHERE s.user_id=$1 AND s.status='finished' AND s.source<>'demo' AND w.id IS NULL",
       [uid],
     )
   ).rows;
+  const exerciseById = new Map(exercises.map((e) => [e.id, e]));
   for (const s of standalone) {
     const date = dateInZone(s.created_at, prefs.timeZone);
     days[date] = (days[date] || 0) + 1;
+    // A finished camera bout persists exactly one set's worth of data (a
+    // single rep accumulator for the whole session) plus its movement type
+    // — never per-set rows and never a load. Credit it as one set of the
+    // movement's library exercise: the stored rep total joins 累计次数, the
+    // bout joins 完成组数, muscle coverage and the per-exercise history,
+    // while volume and load records stay untouched (no weight was ever
+    // recorded, so none is invented). Timer/group sessions carry no reps
+    // and stay calendar/count-only, as do zero-rep camera bouts.
+    const sessionReps = Number(s.reps) || 0;
+    if (s.source !== "camera" || sessionReps <= 0) continue;
+    const exerciseId = cameraExerciseId(s.sport_type);
+    const exercise = exerciseId ? exerciseById.get(exerciseId) : undefined;
+    if (!exercise) continue;
+    sets++;
+    reps += sessionReps;
+    if (Date.parse(s.created_at) >= Date.now() - 30 * 86400000) {
+      for (const [muscle, role] of [
+        [exercise.target, "primary"],
+        ...exercise.secondaryMuscles.map((name: string) => [
+          name,
+          "secondary",
+        ]),
+      ]) {
+        if (!muscle) continue;
+        const detail = (muscleDetails[muscle] ||= {
+          primary: 0,
+          secondary: 0,
+          lastAt: s.created_at,
+        });
+        detail[role]++;
+        if (s.created_at > detail.lastAt) detail.lastAt = s.created_at;
+      }
+      const cover = (muscles[exercise.bodyPart] ||= {
+        sets: 0,
+        lastAt: s.created_at,
+      });
+      cover.sets++;
+      if (s.created_at > cover.lastAt) cover.lastAt = s.created_at;
+    }
+    const history = (exerciseHistory[exercise.id] ||= []);
+    let point = history.find((p) => p.date === date);
+    if (!point) {
+      point = {
+        date,
+        name: exercise.nameZh,
+        loadKg: 0,
+        reps: 0,
+        volume: 0,
+        e1rm: null,
+      };
+      history.push(point);
+    }
+    point.reps += sessionReps;
+    if (!records[exercise.id])
+      records[exercise.id] = {
+        name: exercise.nameZh,
+        loadKg: 0,
+        reps: 0,
+        volume: 0,
+      };
+    records[exercise.id].reps = Math.max(records[exercise.id].reps, sessionReps);
   }
   const sorted = (r: Record<string, number>) =>
     Object.fromEntries(
