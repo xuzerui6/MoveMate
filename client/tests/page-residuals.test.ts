@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { bossFightEntryVisible } from '../src/features/motion/lib/bossFightState';
+import { bossFightEntryVisible, bossFightTeaserVisible } from '../src/features/motion/lib/bossFightState';
 import {
   chunkReloadAllowed,
   importWithChunkRecovery,
@@ -147,4 +147,43 @@ test('C: entry is visible only for a checked-in member while the game is in prog
 
 test('C: the detail page derives the entry from the shared predicate, not an inline condition', () => {
   assert.match(gameDetail, /bossFightEntryVisible\(\{isMember,checkedInAt:member\?\.checked_in_at,gameStatus:game\.status\}\)/);
+});
+
+/* ---------- Residual C2: boss-fight teaser card before the gate opens ---------- */
+
+test('C2: teaser shows only to members in pre-fight states, and never together with the entry', () => {
+  const ts = '2026-11-13T10:00:00.000Z';
+  const statuses = ['recruiting', 'full', 'ready', 'in_progress', 'completed', 'cancelled', 'archived'];
+  const preFight = ['recruiting', 'full', 'ready'];
+  for (const status of statuses) {
+    for (const isMember of [true, false]) {
+      for (const checkedInAt of [ts, null, undefined]) {
+        const input = { isMember, checkedInAt, gameStatus: status };
+        const expectedTeaser = isMember && preFight.includes(status);
+        assert.equal(
+          bossFightTeaserVisible(input),
+          expectedTeaser,
+          `teaser isMember=${isMember} checkedInAt=${checkedInAt} status=${status}`,
+        );
+        assert.ok(
+          !(bossFightEntryVisible(input) && bossFightTeaserVisible(input)),
+          `entry and teaser both visible: isMember=${isMember} checkedInAt=${checkedInAt} status=${status}`,
+        );
+      }
+    }
+  }
+});
+
+test('C2: the detail page renders the muted teaser from the shared predicate, with the unlock condition spelled out', () => {
+  assert.match(gameDetail, /bossFightTeaserVisible\(\{isMember,checkedInAt:member\?\.checked_in_at,gameStatus:game\.status\}\)/);
+  assert.match(gameDetail, /boss-fight-teaser/);
+  assert.match(gameDetail, /开局后开启/);
+  // 未签到：开局 + 签到两个条件都写明；已签到：只差开局，文案不能再要求签到。
+  assert.match(gameDetail, /活动开始、你签到之后/);
+  assert.match(gameDetail, /你已经签到啦，活动一开始/);
+  // 预告卡只能去图鉴看看，不能有直达打怪页的按钮冒充真入口。
+  const teaser = gameDetail.match(/bossFightTeaserVisible\(\{[^}]*\}\)&&<section[\s\S]*?<\/section>/);
+  assert.ok(teaser, 'teaser section missing');
+  assert.match(teaser[0], /navigate\('\/boss-Atlas'\)/);
+  assert.doesNotMatch(teaser[0], /boss-fight`/);
 });

@@ -256,6 +256,25 @@ export function bossFightEntryVisible(input: {
 }
 
 /**
+ * 打怪预告卡的显示条件（纯函数，与入口谓词同一处口径）：
+ * 本人是本局成员 + 局还在开打前的阶段（recruiting/full/ready）+
+ * 真入口还没亮。开打前成员先看到一张灰色预告卡，写清「开局并签到后」
+ * 才能打怪；入口亮起时预告卡自动让位（两者永不同时出现，这里直接
+ * 借用入口谓词做排除，口径不会漂）。非成员、已结束/取消/归档的局
+ * 都不显示——预告只给局里的人看将来的玩法。
+ */
+const BOSS_FIGHT_TEASER_STATUSES = ['recruiting', 'full', 'ready']
+export function bossFightTeaserVisible(input: {
+  isMember: boolean
+  checkedInAt?: string | null
+  gameStatus?: string | null
+}): boolean {
+  if (!input.isMember) return false
+  if (!input.gameStatus || !BOSS_FIGHT_TEASER_STATUSES.includes(input.gameStatus)) return false
+  return !bossFightEntryVisible(input)
+}
+
+/**
  * 出画判定（原始关键点坐标，前置摄像头）：页面预览是镜像显示的
  * （PoseCanvas 对视频做了 scale(-1,1)），所以显示横坐标 = 1 - 原始 x。
  * 返回的方向是「站在手机前的人自己的左右」：画面里的人像挤到右边，
