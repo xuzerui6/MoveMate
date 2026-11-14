@@ -183,6 +183,21 @@ export function decomposeOutfit(outfit: OutfitPreset): AvatarCustomCore {
 export const outfitLook = (outfit: OutfitPreset): AvatarLook => ({ v: 1, mode: 'outfit', outfit })
 
 /**
+ * 搭配核心深比较：组别/脸型/肤色 + 每个槽位的部件 id。
+ * 逐字段比，不用 JSON.stringify——部件记录的键序随构造路径不同
+ * （本地拼装、存档套用、服务端回读），键序不同不算改动。
+ * 编辑器用它判草稿是否已回到已保存的搭配（回到原样就不算未保存修改）。
+ */
+export function avatarCoresEqual(a: AvatarCustomCore, b: AvatarCustomCore): boolean {
+  if (a.group !== b.group || a.face !== b.face || a.skin !== b.skin) return false
+  const keys = new Set([...Object.keys(a.parts), ...Object.keys(b.parts)]) as Set<AvatarSlotKey>
+  for (const key of keys) {
+    if ((a.parts[key] ?? null) !== (b.parts[key] ?? null)) return false
+  }
+  return true
+}
+
+/**
  * 拼图计划：返回基底标识与自下而上的部件 id 顺序
  * （身体 → 鞋 → 裤子 → 上衣 → 发型 → 眼睛 → 眼镜 → 面饰，与量产 TEMPLATE 的叠放顺序一致）。
  * outfit 口径返回 null（走整套图）。兜帽/头巾戴上时发型层不出现。

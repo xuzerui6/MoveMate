@@ -15,7 +15,7 @@ import path from 'node:path';
 const root = path.resolve(import.meta.dirname, '..');
 const designSystem = fs.readFileSync(path.join(root, 'src/design-system.css'), 'utf8');
 const gymCss = fs.readFileSync(path.join(root, 'src/features/gym/gym.css'), 'utf8');
-const bossAtlasCss = fs.readFileSync(path.join(root, 'src/pages/BossAtlas/BossAtlas.css'), 'utf8');
+const motionCss = fs.readFileSync(path.join(root, 'src/features/motion/motion.css'), 'utf8');
 
 function declarations(css: string, selector: string): string {
   const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -97,15 +97,61 @@ test('avatar editor look-layout spans the full page width at ≥1100px', () => {
   }
 });
 
-// 5) Boss Atlas uses the shared .page-header outside .motion-view. Its base
-//    rule is position:sticky, but the ≥769px centering pair
-//    (left:50% + translateX(-50%)) only cancels out under position:relative
-//    (the .motion-view override) — under sticky the header is shoved half
-//    its width off the left edge, leaving a blank band where the title and
-//    back button should be (browser inspection 2026-11-14). BossAtlas.css
-//    must neutralize that pair inside the page scope.
-test('boss Atlas page header neutralizes the sticky-breaking centering pair', () => {
-  const rule = declarations(bossAtlasCss, '.ba-page .page-header');
-  assert.match(rule, /left:\s*auto/);
-  assert.match(rule, /transform:\s*none/);
+// 5) The shared .page-header base rule is position:sticky, and its ≥769px
+//    centering pair (left:50% + translateX(-50%)) only cancels out under
+//    position:relative — the .motion-view override, where left:% resolves
+//    against the container and translateX(%) against the header's own
+//    width:100%. Under sticky the pair does NOT cancel: pages that render
+//    Header OUTSIDE .motion-view (Friends /friends, InviteFriend
+//    /invite/:code, GameSummary, BossFight, BossAtlas — browser inspection
+//    2026-11-14) get shoved half a header-width off-screen at ≥769px,
+//    leaving a blank band and an unclickable back button. The pair must
+//    therefore be scoped to .motion-view .page-header only; bare headers
+//    keep the shared max-width + margin:auto centering, which is safe
+//    under both positioning models. (BossAtlas once carried a page-scoped
+//    neutralization; the shared fix subsumes it.)
+
+function mediaRules(css: string, query: string): Array<{selector: string; body: string}> {
+  const rules: Array<{selector: string; body: string}> = [];
+  let from = 0;
+  for (;;) {
+    const at = css.indexOf(`@media ${query}`, from);
+    if (at < 0) break;
+    const open = css.indexOf('{', at);
+    let depth = 0;
+    let end = css.length - 1;
+    for (let i = open; i < css.length; i++) {
+      if (css[i] === '{') depth++;
+      else if (css[i] === '}' && --depth === 0) { end = i; break; }
+    }
+    const inner = css.slice(open + 1, end);
+    for (const m of inner.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+      rules.push({selector: m[1].trim(), body: m[2]});
+    }
+    from = end + 1;
+  }
+  return rules;
+}
+
+test('bare .page-header never receives the centering pair at ≥769px', () => {
+  const rules = mediaRules(motionCss, '(min-width: 769px)').filter(r => r.selector === '.page-header');
+  assert.ok(rules.length > 0, 'a ≥769px bare .page-header rule must exist (desktop width/centering)');
+  for (const rule of rules) {
+    assert.doesNotMatch(rule.body, /left\s*:/, 'bare .page-header must not set left under position:sticky');
+    assert.doesNotMatch(rule.body, /transform\s*:/, 'bare .page-header must not be transformed under position:sticky');
+  }
+  const joined = rules.map(r => r.body).join('\n');
+  assert.match(joined, /max-width:\s*var\(--max-width\)/, 'bare header keeps the shared max-width column');
+  assert.match(joined, /margin:\s*0 auto/, 'bare header keeps margin:auto centering (safe under sticky)');
+});
+
+test('.motion-view .page-header keeps exactly its ≥769px rendering', () => {
+  const rules = mediaRules(motionCss, '(min-width: 769px)').filter(r => r.selector === '.motion-view .page-header');
+  const joined = rules.map(r => r.body).join('\n');
+  assert.match(joined, /left:\s*50%/, '.motion-view header keeps the centering pair (cancels under position:relative)');
+  assert.match(joined, /transform:\s*translateX\(-50%\)/);
+  const base = declarations(motionCss, '.page-header');
+  assert.match(base, /position:\s*sticky/, 'base header stays sticky for bare pages');
+  const overrides = allDeclarations(motionCss, '.motion-view .page-header');
+  assert.ok(overrides.some(b => /position:\s*relative/.test(b)), '.motion-view override keeps position:relative');
 });

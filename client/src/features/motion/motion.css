@@ -37,9 +37,16 @@
 @media (min-width: 769px){.page-header {
     max-width: var(--max-width);
     margin: 0 auto;
+    width: 100%;
+  }}
+/* 居中对（left:50% + translateX(-50%)）只能给 .motion-view 内的页头：那里页头是
+   position:relative，left 的百分比按容器算、translateX 按自身宽（100%）算，两者
+   正好抵消。基础规则是 position:sticky，百分比基准不同、抵消不了——.motion-view
+   外的页面（好友、邀请、战报、打怪、图鉴）页头会被整体推出画面（2026-11-14 浏览器
+   实测）。裸页头的居中靠上面共享的 max-width + margin:0 auto，在 sticky 下同样成立。 */
+@media (min-width: 769px){.motion-view .page-header {
     left: 50%;
     transform: translateX(-50%);
-    width: 100%;
   }}
 .motion-view *{box-sizing:border-box}
 .motion-view button{font:inherit}
