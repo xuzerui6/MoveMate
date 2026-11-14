@@ -323,6 +323,28 @@ export function bossFightTeaserVisible(input: {
 }
 
 /**
+ * 局详情页打怪卡的文案按模式分流（与打怪发起面板同一种说法，口径只此一处）：
+ * 健身局走摄像头计数口径；其他运动不用摄像头，走约定段口径。
+ * 运动类型缺失时按健身处理——与发起面板 isFitnessGame 的判定一致。
+ */
+export function bossEntryCopy(sportType?: string | null): string {
+  return !sportType || sportType === 'fitness'
+    ? '和队友一起开摄像头练，你做的每个动作都会打到同一只怪兽身上。打赢了，全队都有首胜纪念。'
+    : '和队友先把约定说好，打完一段记一格，格子打满就赢。打赢了，全队都有首胜纪念。'
+}
+
+export function bossTeaserCopy(sportType: string | null | undefined, hasCheckedIn: boolean): string {
+  if (!sportType || sportType === 'fitness') {
+    return hasCheckedIn
+      ? '你已经签到啦，活动一开始，全队就能一起开摄像头练，你做的每个动作都会打到同一只怪兽身上。打赢了，全队都有首胜纪念。'
+      : '活动开始、你签到之后，全队就能一起开摄像头练，你做的每个动作都会打到同一只怪兽身上。打赢了，全队都有首胜纪念。'
+  }
+  return hasCheckedIn
+    ? '你已经签到啦，活动一开始，全队就能一起打：先把约定说好，打完一段记一格，格子打满就赢。打赢了，全队都有首胜纪念。'
+    : '活动开始、你签到之后，全队就能一起打：先把约定说好，打完一段记一格，格子打满就赢。打赢了，全队都有首胜纪念。'
+}
+
+/**
  * 出画判定（原始关键点坐标，前置摄像头）：页面预览是镜像显示的
  * （PoseCanvas 对视频做了 scale(-1,1)），所以显示横坐标 = 1 - 原始 x。
  * 返回的方向是「站在手机前的人自己的左右」：画面里的人像挤到右边，

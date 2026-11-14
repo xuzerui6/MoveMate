@@ -10,7 +10,7 @@
 .bf-note { color: #55555f; font-size: 14px; line-height: 1.6; margin: 10px 0; }
 .bf-error { color: #c0362c; font-size: 14px; }
 .bf-big-btn { min-height: 52px; font-size: 17px; margin-top: 10px; }
-.bf-text-btn { background: none; border: none; color: #6d6d78; font-size: 14px; padding: 10px; cursor: pointer; display: block; margin: 4px auto 0; min-height: 44px; }
+.bf-text-btn { background: none; border: none; color: #6d6d78; font-size: 14px; padding: 10px; cursor: pointer; display: block; margin: 4px auto 0; min-height: 48px; }
 
 /* ---- 血条与倒计时 ---- */
 .bf-hud { margin: 6px 0 12px; }
@@ -67,8 +67,8 @@
 
 /* ---- 队伍 ---- */
 .bf-team { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 4px; }
-.bf-member { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 76px; text-align: center; }
-.bf-member b { font-size: 13px; max-width: 76px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bf-member { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 96px; text-align: center; }
+.bf-member b { font-size: 13px; max-width: 96px; white-space: normal; overflow-wrap: break-word; line-height: 1.35; }
 .bf-member-status { font-size: 12px; color: #6d6d78; }
 .bf-member-rarity { font-size: 11px; color: #8a8a96; }
 .bf-avatar {

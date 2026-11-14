@@ -41,7 +41,7 @@ function segSnapshot(patch: Partial<BossFightSnapshot> = {}): BossFightSnapshot 
     template_id: 'basketball',
     segment_format: 'minutes10',
     segment_label: '打完一轮 10 分钟的比赛，算一段',
-    total_label: '本场共 4 段，打满 4 轮就是打赢',
+    total_label: '本场共 4 段，打满 4 段就是打赢',
     segments_total: 4,
     segments_done: 0,
     segments: [],
@@ -65,6 +65,9 @@ test('segment templates mirror the approved server table', () => {
   // 篮球二选一打法、健身固定动作清单都在镜像里
   assert.deepEqual(SEGMENT_TEMPLATES.basketball.formats?.map((f) => f.value), ['minutes10', 'points21']);
   assert.match(SEGMENT_TEMPLATES.basketball.formats![1].segmentLabel, /21 分/);
+  // 篮球总述是两种打法共用的：只能按「段」说，不能用「轮」（21 分一局没有轮）
+  assert.equal(SEGMENT_TEMPLATES.basketball.totalLabel, '本场共 4 段，打满 4 段就是打赢');
+  assert.doesNotMatch(SEGMENT_TEMPLATES.basketball.totalLabel, /轮/);
   assert.equal(SEGMENT_TEMPLATES.fitness.movements?.length, 5);
   assert.match(SEGMENT_TEMPLATES.swimming.totalLabel, /800 米/);
   assert.match(SEGMENT_TEMPLATES.running.totalLabel, /4 公里/);
