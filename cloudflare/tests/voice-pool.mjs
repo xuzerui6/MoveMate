@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 
-export async function voicePoolTests(t, { mf, call, tokens, adminToken, sockets, password }) {
+export async function voicePoolTests(t, { mf, call, tokens, adminToken, sockets, password, migrate }) {
   const ns = await mf.getDurableObjectNamespace('BACKEND');
   const actor = ns.get(ns.idFromName('test'));
   await actor.voiceMode('shared');
@@ -106,5 +106,39 @@ export async function voicePoolTests(t, { mf, call, tokens, adminToken, sockets,
     assert.equal((await admin('', { validationUsers: [] })).status, 200);
     assert.equal((await acquire(tokens[0])).status, 503);
     const operator = await acquire(adminToken, { testSlot: 1 }); assert.equal(operator.status, 200); await release(operator, adminToken);
+  });
+  await t.test('operator voice-settings action snapshots and configures behind the migration secret only', async () => {
+    // 只有普通登录 token、没有迁移密钥：路由器先验密钥，进不来
+    assert.equal((await call('/api/migration/voice-settings', { token: tokens[0], headers: { Connection: 'close' } })).status, 401);
+    const before = await migrate('voice-settings');
+    assert.equal(before.status, 200, JSON.stringify(before.data));
+    assert.deepEqual(before.data.settings, { enabled: false, quotaConfirmed: true, validationUsers: [] });
+    assert.equal(before.data.devices.length, 5);
+    assert.ok(before.data.devices.every(d => d.state === 'bound' && d.enabled === true && d.verified === false), JSON.stringify(before.data.devices));
+    assert.equal(before.data.leases, (await actor.voiceLeaseRows()).length);
+    assert.ok(!JSON.stringify(before.data).includes('identity'), '快照不许带密封身份');
+    // 与管理员 PATCH 完全同一条校验：账号不存在、超量、形状不对、设备未验证时开总开关，都必须被拒
+    const ghost = await migrate('voice-settings', { validationUsers: [999999] });
+    assert.equal(ghost.status, 409); assert.match(ghost.data.error, /验证账号不存在/);
+    const tooMany = await migrate('voice-settings', { validationUsers: [1, 2, 3, 4, 5, 6] });
+    assert.equal(tooMany.status, 409); assert.match(tooMany.data.error, /最多五个/);
+    const badShape = await migrate('voice-settings', { enabled: 'yes' });
+    assert.equal(badShape.status, 409); assert.match(badShape.data.error, /Invalid voice-settings input/);
+    const premature = await migrate('voice-settings', { enabled: true });
+    assert.equal(premature.status, 409); assert.match(premature.data.error, /没有通过隔离验证的可用设备/);
+    assert.equal((await migrate('voice-settings')).data.settings.enabled, false, '被拒的开启不许留下半成品设置');
+    // 正常路径：写入后回读一致；设备验证通过后总开关能开
+    const set = await migrate('voice-settings', { validationUsers: [1] });
+    assert.equal(set.status, 200, JSON.stringify(set.data));
+    assert.deepEqual(set.data.settings.validationUsers, [1]);
+    for (let slot = 1; slot <= 5; slot++) await admin(`/devices/${slot}`, { verified: true });
+    const on = await migrate('voice-settings', { enabled: true });
+    assert.equal(on.status, 200, JSON.stringify(on.data));
+    assert.equal(on.data.settings.enabled, true);
+    const after = await migrate('voice-settings');
+    assert.equal(after.data.settings.enabled, true);
+    assert.ok(after.data.devices.every(d => d.verified === true));
+    // 收尾恢复关闭态
+    assert.equal((await migrate('voice-settings', { enabled: false, validationUsers: [] })).status, 200);
   });
 }

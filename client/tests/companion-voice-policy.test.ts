@@ -10,10 +10,6 @@ import {
 } from '../src/features/motion/lib/companionWindow'
 import { EVERY_REP_VOICED, milestoneForRep } from '../src/features/motion/lib/milestones'
 import { admitSpeech, pendingSpeechExpired, type SpeechEvent } from '../src/features/motion/lib/speechAdmission'
-import {
-  createTrackingLossState, pushTrackingSample, resetTrackingLoss,
-  TRACKING_REPEAT_MS, TRACKING_SUSTAIN_MS,
-} from '../src/features/motion/lib/trackingLoss'
 
 // ── echoGate：server stop 不等于本地放完 ─────────────────────────────
 
@@ -138,19 +134,4 @@ test('admission: tracking interrupts only automatic speech, never the user’s a
   assert.equal(userAnswer.action, 'hold', '用户问来的回复不抢，到空隙再说')
 })
 
-// ── trackingLoss：900ms 才算真丢，6 秒最多喊一次 ─────────────────────
-
-test('tracking loss: sustain 900ms before active, repeat at most every 6s', () => {
-  const state = createTrackingLossState()
-  assert.deepEqual(pushTrackingSample(state, true, 0), { active: false, cue: false })
-  assert.equal(pushTrackingSample(state, false, 1_000).active, false)
-  assert.equal(pushTrackingSample(state, false, 1_000 + TRACKING_SUSTAIN_MS - 1).active, false)
-  const first = pushTrackingSample(state, false, 1_000 + TRACKING_SUSTAIN_MS)
-  assert.deepEqual(first, { active: true, cue: true })
-  assert.equal(pushTrackingSample(state, false, 2_500).cue, false, '6 秒内不重复喊')
-  const again = pushTrackingSample(state, false, 1_900 + TRACKING_REPEAT_MS)
-  assert.equal(again.cue, true)
-  assert.deepEqual(pushTrackingSample(state, true, 9_000), { active: false, cue: false }, '人回来立刻解除')
-  resetTrackingLoss(state)
-  assert.equal(state.lastCueAt, 0)
-})
+// trackingLoss 的纪律测试已随存在性改造移到 tests/tracking-presence.test.ts。
