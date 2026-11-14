@@ -105,11 +105,15 @@ test('availability gate: unopened bosses are rejected in both modes, opened one 
   const cam = await request(`/games/${game.id}/boss-fight`, { movement: 'squat', bossId: 'ziye_zhong' }, host.token);
   assert.equal(cam.status, 400, JSON.stringify(cam.body));
   assert.match(cam.body.message, /还没开放/);
-  const unknown = await request(`/games/${game.id}/boss-fight`, { mode: 'segments', bossId: 'no_such_boss' }, host.token);
-  assert.equal(unknown.status, 400);
   const ok = await request(`/games/${game.id}/boss-fight`, { mode: 'segments', bossId: 'aoye_yanshi' }, host.token);
   assert.equal(ok.status, 200, JSON.stringify(ok.body));
   assert.equal(ok.body.data.boss_id, 'aoye_yanshi');
+  // 正式版谱系口径（与一期门禁一致，优先于预览线）：未知 bossId 回落默认怪
+  // kunkun（目录显式标 fight），不报错；预览线原断言为 400，在此按正式版改。
+  const unknownGame = await liveGame(host, [player]);
+  const unknown = await request(`/games/${unknownGame.id}/boss-fight`, { mode: 'segments', bossId: 'no_such_boss' }, host.token);
+  assert.equal(unknown.status, 200, JSON.stringify(unknown.body));
+  assert.equal(unknown.body.data.boss_id, 'kunkun');
 });
 
 test('create: basketball segment fight snapshots the contract; fitness defaults stay camera without explicit mode', async () => {
