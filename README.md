@@ -18,7 +18,7 @@
 
 </div>
 
-![动伴概念渲染：怪兽踏进宿舍房间，学生举着哑铃迎战——组队打怪的战场，就在你的房间里](docs/images/render-monster-room.jpg)
+![动伴概念渲染：摄像头就是教练——深蹲计数、动作评分与骨骼追踪](docs/images/render-hero.jpg)
 
 <div align="center">
 
