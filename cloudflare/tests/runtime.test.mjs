@@ -540,7 +540,7 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.equal(fin.status,200);assert.equal(fin.data.data.xpEarned,10);
  });
  await t.test('recognition gate diagnostics are user-scoped and operator-readable',async()=>{
- const counters={formInterrupts:{'请直立站稳，保持双上臂在体侧':7},softInterrupts:{'画面中断':2},framingRejects:3,freezeEpisodes:1,frozenMs:900,peaksConfirmed:[4,5],returnsConfirmed:[3,5],hammerPendingWipes:1,calibrationRelatches:2};
+ const counters={formInterrupts:{'请直立站稳，保持双上臂在体侧':7},softInterrupts:{'画面中断':2},framingRejects:3,freezeEpisodes:1,frozenMs:900,peaksConfirmed:[4,5],returnsConfirmed:[3,5],hammerPendingWipes:1,calibrationRelatches:2,returnAnchor:[148.4,150.2],returnThreshold:[138.4,140.2],returnBasis:['world','image'],returnMaxima:[[139.9,141],[138]],returnQualifyingMs:[1234,1500],returnWindowExpirations:[1,0],returnCompletionsAbsolute:[1,2],returnCompletionsRelative:[2,3],cycleReplacements:[1,1],freezeInvalidatedCycles:[0,1]};
  assert.equal((await call('/api/v1/diagnostics/recognition',{method:'POST',body:{exerciseType:'hammer_curl',counters}})).status,401);
  assert.equal((await call('/api/migration/diagnostics')).status,401);
  // A forged userId in the body is ignored: the row is keyed by the token's actor.
@@ -553,6 +553,8 @@ await test('Workers runtime migration and business regression', async t=>{
  const byUser=Object.fromEntries(diag.data.recognition.map(r=>[r.userId,r]));
  assert.equal(diag.data.recognition.length,2);
  assert.equal(byUser[1].exerciseType,'hammer_curl');assert.equal(byUser[1].counters.formInterrupts['请直立站稳，保持双上臂在体侧'],7);assert.deepEqual(byUser[1].counters.peaksConfirmed,[4,5]);assert.equal(byUser[1].counters.frozenMs,900);
+ // Return-gate round 2 fields survive the coercion with degree fidelity and basis whitelisting.
+ assert.deepEqual(byUser[1].counters.returnAnchor,[148.4,150.2]);assert.deepEqual(byUser[1].counters.returnThreshold,[138.4,140.2]);assert.deepEqual(byUser[1].counters.returnBasis,['world','image']);assert.deepEqual(byUser[1].counters.returnMaxima,[[139.9,141],[138]]);assert.deepEqual(byUser[1].counters.returnQualifyingMs,[1234,1500]);assert.deepEqual(byUser[1].counters.returnCompletionsRelative,[2,3]);assert.deepEqual(byUser[1].counters.cycleReplacements,[1,1]);assert.deepEqual(byUser[1].counters.freezeInvalidatedCycles,[0,1]);
  assert.equal(byUser[2].exerciseType,'squat');assert.equal(byUser[2].counters.framingRejects,9);
  // Latest set wins for the same user; the other user's row is untouched.
  const again=await call('/api/v1/diagnostics/recognition',{method:'POST',token:tokens[0],body:{exerciseType:'hammer_curl',counters:{...counters,framingRejects:4}}});

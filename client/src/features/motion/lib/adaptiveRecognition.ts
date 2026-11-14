@@ -49,6 +49,14 @@ export class AdaptiveRecognition {
  private weak:number|null=null;private weakWorld:number|null=null;private source:boolean|null=null;private shape:number[]|null=null;private previous:Point[]|null=null;private previousShoulder=11;
  private stepBridge=false;
  private frozenAt:number|null=null;private lastFreezeAt:number|null=null;
+ /** capturedAt of the last frame actually fed to the base tracker. Freeze
+  * spans are reported to the base as (lastFedAt, resumeAt) so the tracker's
+  * return gate can exclude exactly the frozen interval (round 2). */
+ private lastFedAt:number|null=null;
+ private noteSpanToBase(to:number){
+  if(this.lastFedAt===null||to<=this.lastFedAt)return;
+  (this.base as {noteFrozenSpan?:(from:number,at:number)=>void}).noteFrozenSpan?.(this.lastFedAt,to);
+ }
  /** WS2 gate counters owned by the wrapper itself (framing rejects, evidence
   * freezes); gateCountersSnapshot() merges in the base tracker's tallies. */
  private wrapperCounters=emptyGateCounters();
@@ -95,7 +103,7 @@ export class AdaptiveRecognition {
  interrupt(reason='识别已暂停，继续后识别下一个完整动作'){
   this.closeFreeze(this.lastFrameAt);
   this.usableFrame=false;
-  this.base.interrupt(reason);this.image.reset();this.world.reset();this.previous=null;this.shape=null;this.source=null;this.weak=null;this.weakWorld=null;this.scoring=true;this.frozenAt=null;this.lastFreezeAt=null;
+  this.base.interrupt(reason);this.image.reset();this.world.reset();this.previous=null;this.shape=null;this.source=null;this.weak=null;this.weakWorld=null;this.scoring=true;this.frozenAt=null;this.lastFreezeAt=null;this.lastFedAt=null;
  }
  /** Hammer-curl evidence freeze: hold the frozen message and feed nothing to the base
   * tracker, so its per-side cycle state (including an already-reached peak) survives.
@@ -185,13 +193,18 @@ export class AdaptiveRecognition {
    const gap=f.capturedAt-this.frozenAt;this.frozenAt=null;
    // No frames at all arrived during the freeze and it outlasted the grace: void as usual.
    if(gap>HAMMER_FREEZE_GRACE_MS)return this.reject(COPY_HALF_REP);
+   // Report the frozen span BEFORE feeding the resume frame: the base's
+   // return gate must treat this interval as a hole (zero credit, frozen
+   // time excluded), including for freezes far shorter than the grace.
+   this.noteSpanToBase(f.capturedAt);
    // The base tracker's own frame-gap guard must not void what the freeze preserved.
    (this.base as {bridgeFreezeGap?:(now:number)=>void}).bridgeFreezeGap?.(f.capturedAt);
   }
-  if(this.stepBridge){this.stepBridge=false;(this.base as {bridgeFreezeGap?:(now:number)=>void}).bridgeFreezeGap?.(f.capturedAt);}
+  if(this.stepBridge){this.stepBridge=false;this.noteSpanToBase(f.capturedAt);(this.base as {bridgeFreezeGap?:(now:number)=>void}).bridgeFreezeGap?.(f.capturedAt);}
   const before=structuredClone(this.metrics),stage=this.diagnostics.stage;
   this.closeFreeze(f.capturedAt);
   this.base.update(this.image.apply(raw,f.capturedAt),f.capturedAt,aspect,world?this.world.apply(world,f.capturedAt):null);
+  this.lastFedAt=f.capturedAt;
   this.usableFrame=this.diagnostics.stage!=='tracking_lost';
   if(stage!=='ready'||this.diagnostics.stage!=='ready'){
    const weakScore=this.type==='squat'

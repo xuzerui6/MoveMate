@@ -27,10 +27,35 @@ export interface GateCounters {
   hammerPendingWipes: number
   /** Calibration latches after the first one (re-arms inside a set). */
   calibrationRelatches: number
+  /** Hammer return gate (2026-11-14 round 2) — per-side trusted rest anchor
+   * captured at the calibration latch and the return threshold in force
+   * (null = no trusted anchor for that side / absolute 145° route). */
+  returnAnchor: [number | null, number | null]
+  returnThreshold: [number | null, number | null]
+  /** Measurement basis the anchor/threshold belong to ('world' | 'image', '' = none). */
+  returnBasis: [string, string]
+  /** Elbow maximum reached in each finished cycle's return phase (capped list). */
+  returnMaxima: [number[], number[]]
+  /** Cumulative qualifying in-zone measured ms credited at the threshold. */
+  returnQualifyingMs: [number, number]
+  /** Return windows that lapsed in measured time with credit unspent. */
+  returnWindowExpirations: [number, number]
+  /** Completed returns via the absolute 145° accumulation. */
+  returnCompletionsAbsolute: [number, number]
+  /** Completed returns via the anchor-relative threshold (below 145°). */
+  returnCompletionsRelative: [number, number]
+  /** Uncompleted cycles discarded when a distinct new peak replaced them. */
+  cycleReplacements: [number, number]
+  /** Cycles invalidated because frozen time exceeded the 2000 ms cap. */
+  freezeInvalidatedCycles: [number, number]
 }
 export const emptyGateCounters = (): GateCounters => ({
   formInterrupts: {}, softInterrupts: {}, framingRejects: 0, freezeEpisodes: 0, frozenMs: 0,
   peaksConfirmed: [0, 0], returnsConfirmed: [0, 0], hammerPendingWipes: 0, calibrationRelatches: 0,
+  returnAnchor: [null, null], returnThreshold: [null, null], returnBasis: ['', ''],
+  returnMaxima: [[], []], returnQualifyingMs: [0, 0], returnWindowExpirations: [0, 0],
+  returnCompletionsAbsolute: [0, 0], returnCompletionsRelative: [0, 0],
+  cycleReplacements: [0, 0], freezeInvalidatedCycles: [0, 0],
 });
 export function bumpReason(map: Record<string, number>, reason: string) { map[reason] = (map[reason] || 0) + 1; }
 export function cloneGateCounters(c: GateCounters): GateCounters {
@@ -39,6 +64,15 @@ export function cloneGateCounters(c: GateCounters): GateCounters {
     framingRejects: c.framingRejects, freezeEpisodes: c.freezeEpisodes, frozenMs: c.frozenMs,
     peaksConfirmed: [c.peaksConfirmed[0], c.peaksConfirmed[1]], returnsConfirmed: [c.returnsConfirmed[0], c.returnsConfirmed[1]],
     hammerPendingWipes: c.hammerPendingWipes, calibrationRelatches: c.calibrationRelatches,
+    returnAnchor: [c.returnAnchor[0], c.returnAnchor[1]], returnThreshold: [c.returnThreshold[0], c.returnThreshold[1]],
+    returnBasis: [c.returnBasis[0], c.returnBasis[1]],
+    returnMaxima: [[...c.returnMaxima[0]], [...c.returnMaxima[1]]],
+    returnQualifyingMs: [c.returnQualifyingMs[0], c.returnQualifyingMs[1]],
+    returnWindowExpirations: [c.returnWindowExpirations[0], c.returnWindowExpirations[1]],
+    returnCompletionsAbsolute: [c.returnCompletionsAbsolute[0], c.returnCompletionsAbsolute[1]],
+    returnCompletionsRelative: [c.returnCompletionsRelative[0], c.returnCompletionsRelative[1]],
+    cycleReplacements: [c.cycleReplacements[0], c.cycleReplacements[1]],
+    freezeInvalidatedCycles: [c.freezeInvalidatedCycles[0], c.freezeInvalidatedCycles[1]],
   };
 }
 /** Sum two partial counter sets (the adaptive wrapper merges its own tallies
@@ -53,5 +87,17 @@ export function mergeGateCounters(a: GateCounters, b: GateCounters): GateCounter
     peaksConfirmed: [a.peaksConfirmed[0] + b.peaksConfirmed[0], a.peaksConfirmed[1] + b.peaksConfirmed[1]],
     returnsConfirmed: [a.returnsConfirmed[0] + b.returnsConfirmed[0], a.returnsConfirmed[1] + b.returnsConfirmed[1]],
     hammerPendingWipes: a.hammerPendingWipes + b.hammerPendingWipes, calibrationRelatches: a.calibrationRelatches + b.calibrationRelatches,
+    /* Anchor/threshold/basis are point-in-time state, not tallies: the base
+     * tracker's values (b) win when set; the wrapper never sets them. */
+    returnAnchor: [b.returnAnchor[0] ?? a.returnAnchor[0], b.returnAnchor[1] ?? a.returnAnchor[1]],
+    returnThreshold: [b.returnThreshold[0] ?? a.returnThreshold[0], b.returnThreshold[1] ?? a.returnThreshold[1]],
+    returnBasis: [b.returnBasis[0] || a.returnBasis[0], b.returnBasis[1] || a.returnBasis[1]],
+    returnMaxima: [[...a.returnMaxima[0], ...b.returnMaxima[0]].slice(-64), [...a.returnMaxima[1], ...b.returnMaxima[1]].slice(-64)],
+    returnQualifyingMs: [a.returnQualifyingMs[0] + b.returnQualifyingMs[0], a.returnQualifyingMs[1] + b.returnQualifyingMs[1]],
+    returnWindowExpirations: [a.returnWindowExpirations[0] + b.returnWindowExpirations[0], a.returnWindowExpirations[1] + b.returnWindowExpirations[1]],
+    returnCompletionsAbsolute: [a.returnCompletionsAbsolute[0] + b.returnCompletionsAbsolute[0], a.returnCompletionsAbsolute[1] + b.returnCompletionsAbsolute[1]],
+    returnCompletionsRelative: [a.returnCompletionsRelative[0] + b.returnCompletionsRelative[0], a.returnCompletionsRelative[1] + b.returnCompletionsRelative[1]],
+    cycleReplacements: [a.cycleReplacements[0] + b.cycleReplacements[0], a.cycleReplacements[1] + b.cycleReplacements[1]],
+    freezeInvalidatedCycles: [a.freezeInvalidatedCycles[0] + b.freezeInvalidatedCycles[0], a.freezeInvalidatedCycles[1] + b.freezeInvalidatedCycles[1]],
   };
 }

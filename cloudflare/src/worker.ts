@@ -47,6 +47,16 @@ export function recognitionDiagnosticPayload(userId: number, input: any, receive
     return out;
   };
   const pair = (v: unknown): [number, number] => Array.isArray(v) ? [num(v[0]), num(v[1])] : [0, 0];
+  /* Return-gate round 2 fields carry degrees: keep 0.1° fidelity (num() would
+   * floor them away). Absent/null anchor reads back as 0 = "no anchor". */
+  const deg = (v: unknown) => typeof v === 'number' && Number.isFinite(v) && v > 0 ? Math.round(Math.min(360, v) * 10) / 10 : 0;
+  const degPair = (v: unknown): [number, number] => Array.isArray(v) ? [deg(v[0]), deg(v[1])] : [0, 0];
+  const degList = (v: unknown): number[] => Array.isArray(v) ? v.slice(0, 64).map(deg) : [];
+  const degLists = (v: unknown): [number[], number[]] => Array.isArray(v) ? [degList(v[0]), degList(v[1])] : [[], []];
+  const basisPair = (v: unknown): [string, string] => {
+    const one = (x: unknown) => x === 'world' || x === 'image' ? x : '';
+    return Array.isArray(v) ? [one(v[0]), one(v[1])] : ['', ''];
+  };
   const c = (input.counters && typeof input.counters === 'object' && !Array.isArray(input.counters)) ? input.counters : {};
   return {
     userId, exerciseType: typeof input.exerciseType === 'string' ? input.exerciseType.slice(0, 64) : '', receivedAt,
@@ -55,6 +65,11 @@ export function recognitionDiagnosticPayload(userId: number, input: any, receive
       framingRejects: num(c.framingRejects), freezeEpisodes: num(c.freezeEpisodes), frozenMs: num(c.frozenMs),
       peaksConfirmed: pair(c.peaksConfirmed), returnsConfirmed: pair(c.returnsConfirmed),
       hammerPendingWipes: num(c.hammerPendingWipes), calibrationRelatches: num(c.calibrationRelatches),
+      returnAnchor: degPair(c.returnAnchor), returnThreshold: degPair(c.returnThreshold), returnBasis: basisPair(c.returnBasis),
+      returnMaxima: degLists(c.returnMaxima), returnQualifyingMs: pair(c.returnQualifyingMs),
+      returnWindowExpirations: pair(c.returnWindowExpirations),
+      returnCompletionsAbsolute: pair(c.returnCompletionsAbsolute), returnCompletionsRelative: pair(c.returnCompletionsRelative),
+      cycleReplacements: pair(c.cycleReplacements), freezeInvalidatedCycles: pair(c.freezeInvalidatedCycles),
     },
   };
 }

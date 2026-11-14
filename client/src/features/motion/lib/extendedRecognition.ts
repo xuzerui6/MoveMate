@@ -19,7 +19,7 @@ const cross=(a:number[],b:number[])=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[
 const angle=(a:Point,b:Point,c:Point)=>Math.acos(Math.max(-1,Math.min(1,dot(norm(vector(a,b)),norm(vector(c,b))))))*180/Math.PI;
 const mean=(a:number,b:number)=>(a+b)/2;
 type Side='left'|'right';
-type Measurement={start:boolean;peak:boolean;amplitude:number;angle:number;confidence:number;scorable:boolean;posture:number;symmetry:number;controlPenalty:number;hint?:string;side?:Side;basis:string;motion:string;points:Point[];torso:number;tilt:number;elbows?:[number,number];raiseSides?:[RaiseSide,RaiseSide];legSides?:[LegSide,LegSide];framing?:'ok'|'weak'};
+type Measurement={start:boolean;peak:boolean;amplitude:number;angle:number;confidence:number;scorable:boolean;posture:number;symmetry:number;controlPenalty:number;hint?:string;side?:Side;basis:string;motion:string;points:Point[];torso:number;tilt:number;elbows?:[number,number];raiseSides?:[RaiseSide,RaiseSide];legSides?:[LegSide,LegSide];framing?:'ok'|'weak';channel:'world'|'image'};
 /** Per-leg channels for the tier-2 leg movements: hip and knee angles plus,
  * for the split squat, the ankle's forward projection relative to its hip
  * along the feet's facing direction (leg-length units) — the front leg is
@@ -36,11 +36,11 @@ type RaiseSide={raised:number;forward:boolean;latDom:boolean;elbow:number};
 type RaiseSample={t:number;raised:number;elbow:number;fwd:boolean;lat:boolean};
 /** A run of consecutive same-verdict direction samples (direction latch). */
 type SustainRun={start:number;last:number;n:number}|null;
-type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;otherBase:number;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number;controlSamples:TimedValue[];speedSpans:TimedSpan[];samples:RaiseSample[];overshoot:boolean;dirLatched:boolean;dirMixed:boolean;dirTurned:boolean;fwdRun:SustainRun;latRun:SustainRun;supportBase:Point|null;supportPeak:Point|null;peakWindows:{start:number;end:number}[];returnTouched:boolean;returnTouchAt:number|null;evidence:PeakEvidenceVerdict|null};
+type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;otherBase:number;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;retMeas:number;retWinMeas:number|null;retQual:number;retQualAbs:number;retNeedFresh:number;retMax:number;retChannel:string|null;retAnchor:number|null;retThreshold:number|null;reopenAccum:number;reopened:boolean;frozenCycleMs:number;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number;controlSamples:TimedValue[];speedSpans:TimedSpan[];samples:RaiseSample[];overshoot:boolean;dirLatched:boolean;dirMixed:boolean;dirTurned:boolean;fwdRun:SustainRun;latRun:SustainRun;supportBase:Point|null;supportPeak:Point|null;peakWindows:{start:number;end:number}[];returnTouched:boolean;returnTouchAt:number|null;evidence:PeakEvidenceVerdict|null};
 type SideCompletion={side:number;at:number;peakStart:number;peakEnd:number;peakAmp:number;peakPosture:number;peakOther:number;peakElbow:number;duration:number;scoring:boolean;control:number;shift:number;speed:number;peakWindows:{start:number;end:number}[];cycleStart:number;returnedAt:number};
 /** One side's confirmed peak: midpoint time + peak value in the movement's peak units (see lastPeak). */
 type PeakMark={at:number;value:number};
-const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,otherBase:180,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180,controlSamples:[],speedSpans:[],samples:[],overshoot:false,dirLatched:false,dirMixed:false,dirTurned:false,fwdRun:null,latRun:null,supportBase:null,supportPeak:null,peakWindows:[],returnTouched:false,returnTouchAt:null,evidence:null});
+const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,otherBase:180,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,retMeas:0,retWinMeas:null,retQual:0,retQualAbs:0,retNeedFresh:0,retMax:0,retChannel:null,retAnchor:null,retThreshold:null,reopenAccum:0,reopened:false,frozenCycleMs:0,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180,controlSamples:[],speedSpans:[],samples:[],overshoot:false,dirLatched:false,dirMixed:false,dirTurned:false,fwdRun:null,latRun:null,supportBase:null,supportPeak:null,peakWindows:[],returnTouched:false,returnTouchAt:null,evidence:null});
 /** Timestamped stability evidence: a point sample of the control penalty (held
  * until the next sample) or one angular-velocity window with its true span. */
 type TimedValue={t:number;v:number};
@@ -133,6 +133,33 @@ function zonePortion(prev:number,cur:number,threshold:number,above:boolean,prevA
  * is capped so a stalled frame stream cannot manufacture hold time. The generic cycle
  * in this file and the plan tracker reuse the same rule since 2026-11-07. */
 const RETURN_HOLD_MS=150,RETURN_WINDOW_MS=500,RETURN_FRAME_CAP_MS=100;
+/** Hammer-curl return gate, round 2 (2026-11-14; Codex consult
+ * 2026-11-14-hammer-return-gate). The 22:50 instrumented set lost 3 of 10 reps
+ * entirely at return confirmation (returnsConfirmed [7,7] against
+ * peaksConfirmed [9,10]): the absolute ≥145° dwell is unreachable when the
+ * bottom-edge channel reads a full re-extension as ~135–140°, and visibility
+ * freezes keep breaking the 500 ms wall window so the still-open cycle folds
+ * the next rep in and loses it too. The fix keeps the peak rules untouched and
+ * rebuilds only the return side, hammer curl only:
+ * — a trusted per-side rest anchor B is captured from the final 500 ms of the
+ *   successful calibration/re-arm hold (≥5 samples, no adjacent gap >150 ms,
+ *   p90−p10 ≤10°), per measurement basis, frozen for the whole set (never
+ *   re-learned from a rep, never ratcheted down);
+ * — the return threshold is T = min(145°, max(125°, B − 10°)) and the 150 ms
+ *   dwell / 500 ms window run on MEASURED time (frozen time excluded); a
+ *   parallel accumulation at the absolute 145° keeps the old route whenever it
+ *   genuinely reaches it (and classifies the completion reason);
+ * — freeze spans reported by the wrapper (noteFrozenSpan) contribute zero
+ *   credit and demand 100 ms of fresh qualifying evidence after resumption;
+ *   frozen time over 2000 ms (single span or cumulative per cycle) invalidates
+ *   the cycle through the existing tracking-loss re-arm;
+ * — a confirmed peak followed by a measured reopening (≥110° for 100 ms) and
+ *   then a DISTINCT new validated peak discards the uncompleted cycle instead
+ *   of folding the new rep into it. */
+const RETURN_ABSOLUTE_DEG=145,RETURN_FLOOR_DEG=125,RETURN_ANCHOR_MARGIN_DEG=10;
+const ANCHOR_WINDOW_MS=500,ANCHOR_MIN_SAMPLES=5,ANCHOR_MAX_GAP_MS=150,ANCHOR_MAX_SPREAD_DEG=10;
+const RETURN_REOPEN_DEG=110,RETURN_REOPEN_MS=100;
+const RETURN_FREEZE_CAP_MS=2000,RETURN_FRESH_AFTER_FREEZE_MS=100;
 /** Fast-tempo peak confirmation (2026-11-07 on-device report: counting is right at a
  * normal tempo but fast reps are missed). The old rule demanded sampled frames dwell
  * inside the peak zone for 120 ms; on a raised-cosine trajectory a 75° peak dwells
@@ -340,10 +367,10 @@ const COPY_FRAMING_WEAK='这个角度方向不好判断——稍微转成斜侧�
  * deepest sample so far (callers snapshot that frame's posture/validity), and
  * `closed` reports the episode's interpolated entry/exit times and its sampled
  * extremum when the signal leaves the zone. */
-type PeakTrack={prevAt:number|null;prevDepth:number;open:boolean;start:number;best:number;bestAt:number;beforeAt:number;beforeDepth:number;afterAt:number|null;afterDepth:number;gap:boolean};
-function freshPeakTrack():PeakTrack{return {prevAt:null,prevDepth:0,open:false,start:0,best:-Infinity,bestAt:0,beforeAt:0,beforeDepth:0,afterAt:null,afterDepth:0,gap:false};}
-type PeakClose={start:number;end:number;depth:number;valid:boolean};
-function feedPeakTrack(tr:PeakTrack,now:number,depth:number):{best:boolean;closed:PeakClose|null}{
+type PeakTrack={prevAt:number|null;prevDepth:number;open:boolean;start:number;best:number;bestAt:number;beforeAt:number;beforeDepth:number;afterAt:number|null;afterDepth:number;gap:boolean;measDwell:number};
+function freshPeakTrack():PeakTrack{return {prevAt:null,prevDepth:0,open:false,start:0,best:-Infinity,bestAt:0,beforeAt:0,beforeDepth:0,afterAt:null,afterDepth:0,gap:false,measDwell:0};}
+type PeakClose={start:number;end:number;depth:number;valid:boolean;dwellMs:number};
+function feedPeakTrack(tr:PeakTrack,now:number,depth:number,hole=false):{best:boolean;closed:PeakClose|null}{
   let best=false,closed:PeakClose|null=null;
   const prevAt=tr.prevAt,prevDepth=tr.prevDepth;
   if(prevAt!==null&&now-prevAt>PEAK_GAP_MS&&tr.open)tr.gap=true;
@@ -353,7 +380,7 @@ function feedPeakTrack(tr:PeakTrack,now:number,depth:number):{best:boolean;close
       tr.start=prevAt+(now-prevAt)*(span>0?(0-prevDepth)/span:0);
       tr.beforeAt=prevAt;tr.beforeDepth=prevDepth;
     }else{tr.start=now;tr.beforeAt=now;tr.beforeDepth=depth;}
-    tr.open=true;tr.gap=false;tr.best=-Infinity;tr.bestAt=now;tr.afterAt=null;
+    tr.open=true;tr.gap=false;tr.best=-Infinity;tr.bestAt=now;tr.afterAt=null;tr.measDwell=0;
   }
   if(tr.open){
     if(depth>tr.best){
@@ -361,6 +388,12 @@ function feedPeakTrack(tr:PeakTrack,now:number,depth:number):{best:boolean;close
       tr.best=depth;tr.bestAt=now;tr.afterAt=null;best=true;
     }else if(tr.afterAt===null&&now>tr.bestAt){tr.afterAt=now;tr.afterDepth=depth;}
   }
+  // Measured in-zone dwell (hammer return gate round 2): the interpolated
+  // in-zone portion of each NON-hole interval. Frozen intervals contribute
+  // zero, so a freeze can no longer stretch an unproven peak's dwell across
+  // the gap the way the wall-clock end−start does. Callers that never pass
+  // `hole` accumulate the same total the wall clock would give.
+  if(tr.open&&prevAt!==null&&!hole)tr.measDwell+=zonePortion(prevDepth,depth,0,true,prevAt,now).ms;
   if(tr.open&&prevAt!==null&&prevDepth>=0&&depth<0){
     const span=prevDepth-depth,end=prevAt+(now-prevAt)*(span>0?prevDepth/span:0);
     // The judged extremum is the SAMPLED extremum (counting-mechanism repair,
@@ -375,7 +408,7 @@ function feedPeakTrack(tr:PeakTrack,now:number,depth:number):{best:boolean;close
     // interpolated start/end above, and with it the dwell validity); only the
     // judged value is bounded to the sampled range.
     const depthEst=tr.best;
-    closed={start:tr.start,end,depth:depthEst,valid:end-tr.start>=PEAK_MIN_DWELL_MS};
+    closed={start:tr.start,end,depth:depthEst,valid:end-tr.start>=PEAK_MIN_DWELL_MS,dwellMs:tr.measDwell};
     tr.open=false;
   }
   tr.prevAt=now;tr.prevDepth=depth;
@@ -414,6 +447,56 @@ export class ExtendedExerciseTracker {
    * the bank only survives while set-up is plausibly still in progress. */
   private lastStartAt:number|null=null;
   private baseline:Measurement|null=null;
+  /** Hammer return gate round 2: start-pose elbow samples (hammer only),
+   * collected during the calibration/re-arm hold AND while the latched set
+   * still stands at rest before its first excursion (the production adaptive
+   * path arms on the first start frame, so the hold's final 500 ms often only
+   * exists there); the trusted rest anchors derived from them — per side,
+   * per measurement basis — and the freeze spans the adaptive wrapper
+   * reports so frozen time can be excluded from the return window instead
+   * of being interpolated across. */
+  private calibElbowSamples:{t:number;l:number;r:number;ch:'world'|'image'}[]=[];
+  /** The rest-sample window: open from a calibration latch until the set's
+   * first peak latches. Inter-rep rest never reopens it — an anchor is signed
+   * by the calibration hold (plus the pre-set rest an arm-on-start latch
+   * cuts short), never learned from anything a rep did. */
+  private anchorSampleOpen=true;
+  private hammerAnchors:{world:[number|null,number|null];image:[number|null,number|null]}={world:[null,null],image:[null,null]};
+  private frozenSpans:{from:number;to:number}[]=[];
+  /** Wrapper → tracker freeze notification (hammer curl only): the interval
+   * [from, to] produced no evidence frames, so any frame interval touching
+   * it is a hole — zero return/peak credit, frozen time excluded. */
+  noteFrozenSpan(from:number,to:number){
+    if(this.type!=='hammer_curl'||!(to>from))return;
+    this.frozenSpans.push({from,to});
+    if(this.frozenSpans.length>32)this.frozenSpans=this.frozenSpans.slice(-32);
+  }
+  private frozenOverlap(from:number,to:number):number{
+    let ms=0;for(const s of this.frozenSpans)ms+=Math.max(0,Math.min(to,s.to)-Math.max(from,s.from));
+    return ms;
+  }
+  /** Evaluate one side's trusted rest anchor from the final
+   * ANCHOR_WINDOW_MS of start-pose samples ending at endT: the trailing run
+   * with no adjacent gap over ANCHOR_MAX_GAP_MS must hold ≥ ANCHOR_MIN_SAMPLES
+   * samples spanning ≤ ANCHOR_MAX_SPREAD_DEG (p90−p10); the anchor is its
+   * median. Returns null when the hold cannot honestly sign a rest angle for
+   * this basis. */
+  private evalHammerAnchor(ch:'world'|'image',side:0|1,endT:number):number|null{
+    const win=this.calibElbowSamples.filter(s=>s.ch===ch&&s.t>endT-ANCHOR_WINDOW_MS&&s.t<=endT);
+    let run:typeof win=[];
+    for(let i=win.length-1;i>=0;i--){if(run.length&&win[i+1].t-win[i].t>ANCHOR_MAX_GAP_MS)break;run.push(win[i]);}
+    if(run.length<ANCHOR_MIN_SAMPLES)return null;
+    const vals=run.map(s=>side===0?s.l:s.r).sort((a,b)=>a-b);
+    const pct=(q:number)=>vals[Math.min(vals.length-1,Math.max(0,Math.floor(q*vals.length)))];
+    if(pct(.9)-pct(.1)>ANCHOR_MAX_SPREAD_DEG)return null;
+    return medianOf(vals);
+  }
+  private captureHammerAnchors(now:number){
+    if(this.type!=='hammer_curl')return;
+    this.hammerAnchors={world:[this.evalHammerAnchor('world',0,now),this.evalHammerAnchor('world',1,now)],image:[this.evalHammerAnchor('image',0,now),this.evalHammerAnchor('image',1,now)]};
+    this.calibElbowSamples=[];
+    this.anchorSampleOpen=true;
+  }
   private ready=false;
   /** Set when a latched ready is lost to a tracking-loss interrupt (and
    * for trackers restored from a latched session): re-arming then
@@ -565,7 +648,7 @@ export class ExtendedExerciseTracker {
     if(this.unmeasurableSince===null)this.unmeasurableSince=this.last??now;
     if(now-this.unmeasurableSince>=CANNOT_ASSESS_AFTER_MS)this.cannotAssess=true;
   }
-  private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.retSince=null;this.retAccum=0;this.retPrevAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;this.hammerSides=[freshSideCycle(),freshSideCycle()];this.hammerPending=null;this.rowSides=[freshSideCycle(),freshSideCycle()];this.raiseSides=[freshSideCycle(),freshSideCycle()];this.raisePending=null;this.climberSides=[freshSideCycle(),freshSideCycle()];this.squatSides=[freshSideCycle(),freshSideCycle()];this.squatFront=null;this.lastPeak=[null,null];this.controlSamples=[];this.speedSpans=[];this.upperArmDevAt=null;this.upperArmClearAt=null;this.freezeBridged=false;}
+  private resetCycle(){this.peak=null;this.peakAt=null;this.returnAt=null;this.retSince=null;this.retAccum=0;this.retPrevAt=null;this.movingAt=null;this.cycleSide=null;this.scoring=true;this.speed=0;this.shift=0;this.controlPenalty=0;this.controlAt=null;this.hammerSides=[freshSideCycle(),freshSideCycle()];this.hammerPending=null;this.rowSides=[freshSideCycle(),freshSideCycle()];this.raiseSides=[freshSideCycle(),freshSideCycle()];this.raisePending=null;this.climberSides=[freshSideCycle(),freshSideCycle()];this.squatSides=[freshSideCycle(),freshSideCycle()];this.squatFront=null;this.lastPeak=[null,null];this.controlSamples=[];this.speedSpans=[];this.upperArmDevAt=null;this.upperArmClearAt=null;this.freezeBridged=false;this.frozenSpans=[];}
   /** The adaptive wrapper deliberately froze frames during a hammer-curl evidence freeze
    * (see AdaptiveRecognition); the next frame gap is therefore known-benign and must not be
    * read as a tracking loss. Only arms when the pending gap actually exceeds the guard. */
@@ -608,13 +691,16 @@ export class ExtendedExerciseTracker {
     // The cycles and any pending completion still reset exactly as before.
     const preserve=!!opts?.preserveCalibration;
     const bank=preserve?this.calibrationBank:0,segment=preserve?this.calibration:null,ready=preserve&&opts?.preserveReady?this.ready:false,baseline=preserve?this.baseline:null,progress=preserve?this.diagnostics.calibrationProgress:0;
+    /* Hammer rest anchors follow the baseline's lifecycle: they belong to the
+     * latched calibration, so they survive exactly the interrupts it does. */
+    const anchors=preserve?this.hammerAnchors:{world:[null,null] as [number|null,number|null],image:[null,null] as [number|null,number|null]};
     const keepCycle=!!opts?.preserveCycle;
     const raiseSides=keepCycle?this.raiseSides:null,raisePending=keepCycle?this.raisePending:null,lastPeak=keepCycle?this.lastPeak:null;
     const peerPeaks=opts?.preservePeerPeak?this.peerPeakSnapshot():null;
     const keepHammer=!!opts?.preserveHammerCycle;
     const hammerSides=keepHammer?this.hammerSides:null,hammerPending=keepHammer?this.hammerPending:null,hammerPeak=keepHammer?this.lastPeak:null;
     const wasReady=this.ready;
-    this.frames=[];this.worlds=[];this.last=null;this.calibration=segment;this.calibrationBank=bank;this.baseline=baseline;this.ready=ready;this.side=null;this.times=[];this.previous=null;this.resetCycle();
+    this.frames=[];this.worlds=[];this.last=null;this.calibration=segment;this.calibrationBank=bank;this.baseline=baseline;this.hammerAnchors=anchors;this.calibElbowSamples=[];this.ready=ready;this.side=null;this.times=[];this.previous=null;this.resetCycle();
     if(wasReady&&!ready&&!preserve)this.strictRearm=true;
     if(keepCycle&&raiseSides&&lastPeak){this.raiseSides=raiseSides;this.raisePending=raisePending;this.lastPeak=lastPeak;}
     if(keepHammer&&hammerSides&&hammerPeak){this.hammerSides=hammerSides;this.hammerPending=hammerPending;this.lastPeak=hammerPeak;}
@@ -958,7 +1044,7 @@ export class ExtendedExerciseTracker {
       if(!start&&hips<150)hint='请让大腿保持向下，脚跟向后抬起，向前抬膝不计入';
     }
     const scorable=confidence>=.7&&[11,12,23,24,...(this.type==='romanian_deadlift'||this.type==='glute_bridge'||this.type==='barbell_deadlift'||this.type==='lying_leg_raise'?[25,26,27,28]:[])].every(i=>(points[i].visibility??0)>=.7);
-    return {start,peak,amplitude,angle:measured,confidence,scorable,posture,symmetry,controlPenalty,hint,side,basis,motion,points:p,torso,tilt,elbows:perSide,raiseSides:raiseData,legSides:legData,framing};
+    return {start,peak,amplitude,angle:measured,confidence,scorable,posture,symmetry,controlPenalty,hint,side,basis,motion,points:p,torso,tilt,elbows:perSide,raiseSides:raiseData,legSides:legData,framing,channel:validWorld?'world':'image'};
   }
   /** The peer-peak memory as it stands just before a cycle reset: each side's
    * completed peak record (lastPeak), superseded by fresher peak evidence its
@@ -1056,25 +1142,98 @@ export class ExtendedExerciseTracker {
   private updateHammerCurl(f:Measurement,now:number):ExerciseMetrics{
     const elbows=f.elbows!;
     let completed=false;
+    const pushReturnMax=(s:0|1,v:number)=>{const mx=this.gateCounters.returnMaxima[s];mx.push(Math.round(v*10)/10);if(mx.length>64)mx.splice(0,mx.length-64);};
     if(this.hammerPending&&now-this.hammerPending.at>600){const pending=this.hammerPending;this.hammerPending=null;if(this.emitHammerRep([pending],f,this.peerPeakFor(pending,this.hammerSides)))completed=true;}
     for(const s of [0,1] as const){
-      const cyc=this.hammerSides[s],e=elbows[s],other=elbows[1-s];
+      let cyc=this.hammerSides[s];const e=elbows[s],other=elbows[1-s];
+      // Return gate round 2 — interval facts. An interval touching a wrapper-
+      // reported freeze span is a HOLE: it advances neither the measured
+      // clock nor any dwell, and its frozen overlap is charged against the
+      // cycle's freeze cap. Un-notified intervals keep the shipped
+      // interpolation behaviour exactly.
+      const prevAt=cyc.prevAt,dt=prevAt===null?0:now-prevAt;
+      const frozenMs=prevAt===null?0:this.frozenOverlap(prevAt,now);
+      const hole=frozenMs>0,dtMeas=hole?0:dt;
+      if(hole&&(cyc.movingAt!==null||cyc.peakStart!==null||cyc.track.open)){
+        cyc.frozenCycleMs+=frozenMs;
+        if(frozenMs>RETURN_FREEZE_CAP_MS||cyc.frozenCycleMs>RETURN_FREEZE_CAP_MS){
+          this.gateCounters.freezeInvalidatedCycles[s]++;
+          return this.interrupt('画面中断',COPY_HALF_REP);
+        }
+      }
+      cyc.retMeas+=dtMeas;
       // Peak confirmation by sub-frame crossing (depth ≥ 0 ⇔ elbow ≤80°): the episode
       // refines the true peak between samples, so a fast rep whose sampled frames
       // merely clip the zone still confirms — with its interpolated depth scored.
-      const ev=feedPeakTrack(cyc.track,now,80-e);
+      // Validity now judges the MEASURED dwell (non-hole intervals only): the
+      // peak evidence rules themselves (≤80° zone, 25 ms) are unchanged, but
+      // frozen time can no longer stretch an unproven peak into a valid one.
+      const ev=feedPeakTrack(cyc.track,now,80-e,hole);
       if(ev.best){cyc.peakPosture=f.posture;cyc.peakOther=other;}
-      if(ev.closed?.valid){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=80-ev.closed.depth;cyc.peakAmp=cap((160-cyc.peakElbow)/95*100);cyc.peakWindows.push({start:ev.closed.start,end:ev.closed.end});this.gateCounters.peaksConfirmed[s]++;}
-      // Return confirmation: accumulate the interpolated in-zone dwell (≥145°) inside
-      // a 500 ms window, so elbow jitter cannot stall the rep and coarse sampling
-      // cannot shrink a genuine dwell below the hold (see zonePortion).
-      const portion=cyc.prevAt===null?{start:now,ms:0}:zonePortion(cyc.prevAngle,e,145,true,cyc.prevAt,now);
       let replaced=false;
-      if(cyc.peakStart!==null&&portion.ms>0){
-        if(cyc.returnSince===null||portion.start-cyc.returnSince>RETURN_WINDOW_MS){cyc.returnSince=portion.start;cyc.returnAccum=0;}
-        cyc.returnAccum+=Math.min(RETURN_FRAME_CAP_MS,portion.ms);
-        if(cyc.returnAccum>=RETURN_HOLD_MS){
+      if(ev.closed&&ev.closed.dwellMs>=PEAK_MIN_DWELL_MS){
+        this.anchorSampleOpen=false;
+        if(cyc.peakStart!==null&&cyc.reopened){
+          // Cycle identity: the open cycle was reopened (≥110° for 100 ms
+          // measured) and never completed, and this is a DISTINCT new peak —
+          // discard the old cycle and its return credit (never pay it out)
+          // instead of folding the new rep into it. The peak track carries
+          // over (it has already consumed this frame); a fragmented plateau
+          // without the reopening never reaches this branch and stays one
+          // peak episode group on the same cycle.
+          this.gateCounters.cycleReplacements[s]++;
+          if(cyc.retMax>0)pushReturnMax(s,cyc.retMax);
+          const keep=freshSideCycle();keep.track=cyc.track;keep.peakPosture=cyc.peakPosture;keep.peakOther=cyc.peakOther;keep.scoring=cyc.scoring;keep.prevAt=cyc.prevAt;keep.prevAngle=cyc.prevAngle;
+          this.hammerSides[s]=keep;cyc=keep;
+        }
+        cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=80-ev.closed.depth;cyc.peakAmp=cap((160-cyc.peakElbow)/95*100);cyc.peakWindows.push({start:ev.closed.start,end:ev.closed.end});this.gateCounters.peaksConfirmed[s]++;
+        // The return gate this cycle will be judged by: the trusted anchor of
+        // the CURRENT basis (frozen at the calibration latch), or the
+        // absolute 145° route when this basis has none. An anchor the latch
+        // could not sign (arm-on-start: no real hold yet) is filled here —
+        // once, from the pre-set rest samples — never from a rep.
+        if(this.hammerAnchors[f.channel][s]===null&&this.calibElbowSamples.length){const filled=this.evalHammerAnchor(f.channel,s,this.calibElbowSamples[this.calibElbowSamples.length-1].t);if(filled!==null)this.hammerAnchors[f.channel][s]=filled;}
+        cyc.retChannel=f.channel;cyc.retAnchor=this.hammerAnchors[f.channel][s];
+        cyc.retThreshold=cyc.retAnchor===null?RETURN_ABSOLUTE_DEG:Math.min(RETURN_ABSOLUTE_DEG,Math.max(RETURN_FLOOR_DEG,cyc.retAnchor-RETURN_ANCHOR_MARGIN_DEG));
+        cyc.retMax=Math.max(cyc.retMax,e);
+        this.gateCounters.returnAnchor[s]=cyc.retAnchor===null?null:Math.round(cyc.retAnchor*10)/10;
+        this.gateCounters.returnThreshold[s]=cyc.retThreshold;this.gateCounters.returnBasis[s]=f.channel;
+      }
+      // Return confirmation on MEASURED time: 150 ms of interpolated in-zone
+      // dwell at the cycle's threshold inside a 500 ms measured window. A
+      // parallel accumulation at the absolute 145° runs alongside — reaching
+      // it classifies the completion as absolute, so the shipped route stays
+      // available (and visible) whenever the channel truly gets there.
+      if(cyc.peakStart!==null){
+        if(cyc.retChannel!==f.channel){
+          // Basis change mid-cycle: return evidence never crosses bases. The
+          // relative route needs a trusted anchor for the NEW basis.
+          cyc.retChannel=f.channel;cyc.retQual=0;cyc.retQualAbs=0;cyc.retWinMeas=null;cyc.returnSince=null;
+          cyc.retAnchor=this.hammerAnchors[f.channel][s];
+          cyc.retThreshold=cyc.retAnchor===null?RETURN_ABSOLUTE_DEG:Math.min(RETURN_ABSOLUTE_DEG,Math.max(RETURN_FLOOR_DEG,cyc.retAnchor-RETURN_ANCHOR_MARGIN_DEG));
+          this.gateCounters.returnAnchor[s]=cyc.retAnchor===null?null:Math.round(cyc.retAnchor*10)/10;
+          this.gateCounters.returnThreshold[s]=cyc.retThreshold;this.gateCounters.returnBasis[s]=f.channel;
+        }
+        cyc.retMax=Math.max(cyc.retMax,e);
+        if(cyc.retWinMeas!==null&&cyc.retQual>0&&cyc.retMeas-cyc.retWinMeas>RETURN_WINDOW_MS){this.gateCounters.returnWindowExpirations[s]++;cyc.retQual=0;cyc.retQualAbs=0;cyc.retWinMeas=null;cyc.returnSince=null;}
+        if(prevAt!==null&&!hole){
+          const portion=zonePortion(cyc.prevAngle,e,cyc.retThreshold??RETURN_ABSOLUTE_DEG,true,prevAt,now);
+          if(portion.ms>0){
+            const credit=Math.min(RETURN_FRAME_CAP_MS,portion.ms);
+            if(cyc.retWinMeas===null){cyc.retWinMeas=cyc.retMeas-(now-portion.start);cyc.returnSince=portion.start;}
+            cyc.retQual+=credit;this.gateCounters.returnQualifyingMs[s]+=credit;
+            cyc.retQualAbs+=Math.min(RETURN_FRAME_CAP_MS,zonePortion(cyc.prevAngle,e,RETURN_ABSOLUTE_DEG,true,prevAt,now).ms);
+            if(cyc.retNeedFresh>0)cyc.retNeedFresh=Math.max(0,cyc.retNeedFresh-credit);
+          }
+        }
+        // Zero credit across a freeze boundary, and completion demands fresh
+        // qualifying evidence after resumption — one resumed high sample
+        // (or an interpolated crossing) can never finish a return alone.
+        if(hole)cyc.retNeedFresh=RETURN_FRESH_AFTER_FREEZE_MS;
+        if(cyc.retQual>=RETURN_HOLD_MS&&cyc.retNeedFresh<=0){
           this.gateCounters.returnsConfirmed[s]++;
+          if(cyc.retQualAbs>=RETURN_HOLD_MS)this.gateCounters.returnCompletionsAbsolute[s]++;else this.gateCounters.returnCompletionsRelative[s]++;
+          if(cyc.retMax>0)pushReturnMax(s,cyc.retMax);
           const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax),peakWindows:cyc.peakWindows,cycleStart:cyc.movingAt??cyc.peakStart,returnedAt:cyc.returnSince??now};
           this.lastPeak[s]={at:(done.peakStart+done.peakEnd)/2,value:done.peakElbow};
           this.hammerSides[s]=freshSideCycle();replaced=true;
@@ -1096,6 +1255,20 @@ export class ExtendedExerciseTracker {
             if(pending.side!==s&&overlap){this.hammerPending=null;if(this.emitHammerRep([pending,done],f))completed=true;}
             else{this.hammerPending=null;if(this.emitHammerRep([pending],f,this.peerPeakFor(pending,this.hammerSides)))completed=true;this.hammerPending=done;}
           }else this.hammerPending=done;
+        }
+      }
+      // Reopening evidence (cycle identity): after a confirmed peak, holding
+      // ≥110° for 100 ms of MEASURED time marks the excursion as reopened —
+      // the arm genuinely came back down. Only then can a later distinct peak
+      // replace this cycle (see the latch above); without it, fragments of
+      // one plateau keep accumulating on the same cycle as before.
+      if(!replaced){
+        const rcyc=this.hammerSides[s];
+        if(rcyc.peakStart!==null&&prevAt!==null&&!hole){
+          const rp=zonePortion(rcyc.prevAngle,e,RETURN_REOPEN_DEG,true,prevAt,now);
+          if(rp.ms>0)rcyc.reopenAccum+=Math.min(RETURN_FRAME_CAP_MS,rp.ms);
+          else if(e<RETURN_REOPEN_DEG)rcyc.reopenAccum=0;
+          if(rcyc.reopenAccum>=RETURN_REOPEN_MS)rcyc.reopened=true;
         }
       }
       if(!replaced){
@@ -1648,13 +1821,16 @@ export class ExtendedExerciseTracker {
       if(!f.start&&this.lastStartAt!==null&&now-this.lastStartAt>CALIBRATION_STALE_MS){this.calibrationBank=0;this.calibration=null;}
       if(f.start)this.lastStartAt=now;
       if(!f.start){if(this.calibration!==null){this.calibrationBank+=now-this.calibration;this.calibration=null;}this.baseline=null;}else{
+        // Hammer return gate round 2: collect this hold's elbow samples so the
+        // latch can sign a trusted rest anchor from its final 500 ms.
+        if(this.type==='hammer_curl'&&f.elbows){this.calibElbowSamples.push({t:now,l:f.elbows[0],r:f.elbows[1],ch:f.channel});if(this.calibElbowSamples.length>600)this.calibElbowSamples=this.calibElbowSamples.slice(-600);}
         // Continuity is measured, not wall-clock: a measurement gap banks
         // the open segment and restarts it (see SEGMENT_GAP_MS).
         if(this.calibration!==null&&prevMeasuredAt!==null&&now-prevMeasuredAt>SEGMENT_GAP_MS){this.calibrationBank+=prevMeasuredAt-this.calibration;this.calibration=now;}
         if(this.calibration===null)this.calibration=now;this.baseline=f;const segment=now-this.calibration;if((!this.strictRearm||segment>=REARM_MIN_SEGMENT_MS)&&(this.armOnStart||this.calibrationBank+segment>=2000))this.ready=true;}
       // WS2: count re-latches (the first latch of a fresh tracker is not one;
       // a restored/lost tracker re-arming is — see everLatched).
-      if(this.ready){if(this.everLatched)this.gateCounters.calibrationRelatches++;this.everLatched=true;}
+      if(this.ready){if(this.everLatched)this.gateCounters.calibrationRelatches++;this.everLatched=true;this.captureHammerAnchors(now);}
       // Progress reports distance to the latch: on a strict re-arm the
       // continuous hold is usually the binding requirement, so banked
       // fragments alone must not fill the ring (they cap at the current
@@ -1682,6 +1858,13 @@ export class ExtendedExerciseTracker {
       const message=this.ready?COPY_CALIBRATED:f.start?`就快好啦，保持起始姿势（${Math.round(progress*100)}%）`:calibHint||(this.armOnStart?'先回到起始姿势，陪我停两秒':'回到起始姿势，陪我停两秒');
       this.metrics={...this.metrics,feedback:message,poseFeedback:{...this.metrics.poseFeedback,status:'uncertain',calibrated:this.ready,confidence:f.confidence,message}};return this.metrics;
     }
+    // Hammer return gate round 2: while the latched set still stands in the
+    // start pose (no side has begun an excursion, nothing pending), keep
+    // collecting rest samples — an arm-on-start latch fires on the first
+    // start frame, so this pre-set rest is where the anchor's final 500 ms
+    // honestly comes from. Collection stops the moment any cycle starts and
+    // anchors are only ever filled while null (frozen for the set).
+    if(this.type==='hammer_curl'&&this.anchorSampleOpen&&f.start&&f.elbows&&this.hammerPending===null&&this.hammerSides.every(c=>c.movingAt===null&&c.peakStart===null&&!c.track.open)){this.calibElbowSamples.push({t:now,l:f.elbows[0],r:f.elbows[1],ch:f.channel});if(this.calibElbowSamples.length>600)this.calibElbowSamples=this.calibElbowSamples.slice(-600);}
     if(this.type==='hammer_curl')return this.updateHammerCurl(f,now);
     if(this.type==='front_raise')return this.updateFrontRaise(f,now);
     if(this.type==='one_arm_row')return this.updateOneArmRow(f,now);
