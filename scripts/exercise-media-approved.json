@@ -21671,6 +21671,186 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2138",
+   "expectedName": "stationary bike run v. 3",
+   "sourceId": "ai-codex-fill128-2138",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "6c41c590e3bb5a890b0712f98786fa55f4d46baf705eecc74ab044294ff4fa46",
+    "27c053138be33fc51941aa94acfae1984a25a2a9922b394ca1e28a9c53ba7aeb"
+   ],
+   "phases": [
+    "起始：坐于直立式固定单车，座高合适，双脚绑于踏板（左踏板在前上、右踏板在后下），双手握车把，背部挺直，稳定踩踏。",
+    "关键：发力踩踏中途：身体微前倾于车把，右踏板下压至最低、左踏板升至最高，双腿位置与起始互换，呈快速骑行发力姿，仍坐姿踩踏。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0798",
+   "expectedName": "stationary bike walk",
+   "sourceId": "ai-codex-fill128-0798",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f729bea6b1aa18022448353694b464b64af074d07caa152812a93275937d6f68",
+    "3471d5759937ee3ed7a8b2bb72a033c1b5fd5a5eedad0099438d60ba6c802f62"
+   ],
+   "phases": [
+    "起始：放松直立坐于固定单车，左踏板在前上方、右踏板在后下方，双手轻搭车把，背部挺直，准备轻松骑行。",
+    "关键：轻松踩踏半圈后，右踏板在前上方、左踏板在后下方，姿势仍放松直立，双手轻搭，慢速如步行。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3314",
+   "expectedName": "straddle maltese",
+   "sourceId": "ai-codex-fill128-3314",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "8775e6fa9be5184943d99b2731e47b2be18bfc8af97255622e8c80507cfe9173",
+    "0e3d69d128fc20ef1b8e66eef2f6d48d7e0ddbfacedc79d41d92218f4de99bc6"
+   ],
+   "phases": [
+    "起始：悬挂于一对吊环，双臂向上完全伸直，身体在其下成一条直线，双腿大幅分开伸直（分腿），脚尖绷直，双脚离地。",
+    "关键：撑入分腿马耳他式定格：身体笔直近水平悬空，双臂向两侧伸展于肩高握环支撑，双腿保持大分开伸直，脚尖绷直。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3298",
+   "expectedName": "straddle planche",
+   "sourceId": "ai-codex-fill128-3298",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "63f3b70444051eb3a7172436ec58b20074d06d841c149b5510562af054b05dbb",
+    "1c5d4d92bf58de37f7b19487e1f41acd3c69c7a8e0b53ecb9322ea253ce67bec"
+   ],
+   "phases": [
+    "起始：俯卧撑高位平板，双手与肩同宽撑地，身体成一条直线，双腿大幅分开、双脚撑地（分腿）。",
+    "关键：将重心大幅前移过双手并下沉：双肩位于手前方，双肘弯曲，身体笔直近水平贴近地面，双腿保持大分开伸直、双脚刚离地（入门分腿俄式挺身前倾式，按目录文字呈现）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0803",
+   "expectedName": "superman push-up",
+   "sourceId": "ai-codex-fill128-0803",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "5bc0244908a7a55a1f1b40e0a8c9008e9736c31b036c941f2501eda9f8b74fe5",
+    "fc703d1adfb089bd86fe990cadde77ca1e39e00d19afe2405c96160ecb2af82a"
+   ],
+   "phases": [
+    "起始：俯卧撑高位平板，双手略宽于肩，双臂伸直，身体成一条直线，双脚并拢，四点均撑地。",
+    "关键：下降至俯卧撑底部时，右臂向前伸直离地、左腿向后伸直离地（超人伸展），仅靠弯曲的左臂与右脚支撑，胸部贴近地面，身体保持平直。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3318",
+   "expectedName": "swing 360",
+   "sourceId": "ai-codex-fill128-3318",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "3e530a817a0f0e4b1f222d44b93c83fd8dc322fa3750401b1771c33e40458698",
+    "51ebfb63b2d9ce7e2bfe9249557df07391f0b075d7dcb996a5b2c5b3b0df5ed3"
+   ],
+   "phases": [
+    "起始：站立，双脚与肩同宽，双膝微屈，双臂向前伸直于肩高、与地面平行，准备旋转挥摆。",
+    "关键：360挥摆的旋转中途定格：躯干已向右旋转约180度，双臂随圆周挥摆至身体右侧、仍伸直于肩高，双脚在地面上拧转，头部随转，动作动态。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0815",
+   "expectedName": "triceps dips floor",
+   "sourceId": "ai-codex-fill128-0815",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d8ef0283cd2616dced246d59fb21c095d287c5b84b2641e46888f3985db27f6c",
+    "8204e68864c5b59b49c63518e47806f2f0a1856509925bcb0b48e70913eb2913"
+   ],
+   "phases": [
+    "起始：坐于地面、双腿向前伸直，双手撑于臀旁地面、手指朝前，臀部已离地，双臂伸直（肘微屈）。按条目名于地面完成（目录文字写椅/凳沿，与名称不符，按名称的地面式呈现）。",
+    "关键：屈肘约90度将身体下降，臀部贴近地面但不落座，双肘向后指，双腿仍向前伸直，仅双手撑地。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0816",
+   "expectedName": "triceps press",
+   "sourceId": "ai-codex-fill128-0816",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "dc7c97567718d9bf8290bc9ab4fe9bddbdf78166897a5a265ccba17a1017803a",
+    "dc94172996b865dc0a22306e9197b5ffc4835ce386b82f3ab3d33f6edf8d8cdc"
+   ],
+   "phases": [
+    "起始：俯卧于地面，双前臂平贴地面于面前，双肘位于肩下，掌心贴地，双腿向后伸直贴地。按标准自重式呈现（目录文字站姿与地面步骤混杂、不可照字面完成）。",
+    "关键：伸直双肘将前臂撑离地面，双手平掌支撑、双臂伸直，上身抬起，髋部与双腿仍贴地，头部抬起（斯芬克斯推起顶端）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0826",
+   "expectedName": "vertical leg raise (on parallel bars)",
+   "sourceId": "ai-codex-fill128-0826",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "0332137561149f271459d444301e6f3630ff7299122468fa6923576f21bc7075",
+    "3bb01e51a4e2f02a60428be8e9762bdb972ccffb9b441013b9f20428a49b8279"
+   ],
+   "phases": [
+    "起始：双手撑于双杠之间，双臂完全伸直，身体悬空笔直，双腿向下伸直悬垂，双脚离地。",
+    "关键：双腿伸直向前抬起至与地面平行或略高，与躯干成L形，脚尖绷直，仍以直臂撑于双杠。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2987",
+   "expectedName": "weighted close grip chin-up on dip cage",
+   "sourceId": "ai-codex-fill128-2987",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f1e09b24db10656852621aaeaa473f56ce7ba096caa912e4cd6cbab3b58caf70",
+    "5eabafee63971a832c77ce2f0a1de671d8d0b830df1eb43bc383b5d352627ed0"
+   ],
+   "phases": [
+    "起始：以贴近的反手握（掌心向自己，握距不宽于肩）悬挂于直杆（双杠笼顶杆），双臂完全伸直，身体笔直，腰间负重腰带悬挂一片杠铃片（负重元素），双脚离地。",
+    "关键：拉升至下巴过杠，双肘弯曲贴近体侧，身体贴近杠下，负重片仍悬于腰间，双脚离地。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
