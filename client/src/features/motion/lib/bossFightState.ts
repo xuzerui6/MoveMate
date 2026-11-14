@@ -25,6 +25,31 @@ export const HP_STATE_NAME: Record<BossHpState, string> = {
 }
 
 // ---------------------------------------------------------------------------
+// 二期约定段模式（纯函数，页面与测试共用）
+// ---------------------------------------------------------------------------
+
+/** 这场是不是约定段模式（旧快照没有 mode 字段时按摄像头模式处理） */
+export function isSegmentFight(snap: BossFightSnapshot | null | undefined): boolean {
+  return snap?.mode === 'segments'
+}
+
+/** 还剩几格（段模式 hp 就是剩余格数，直接取服务端权威值） */
+export function remainingSegments(snap: BossFightSnapshot): number {
+  const total = snap.segments_total ?? 0
+  const done = snap.segments_done ?? 0
+  return Math.max(0, total - done)
+}
+
+/**
+ * 段模式的怪状态图档位：与一期 hpStateKey 同一条 60%/30% 线——
+ * 剩余格占比 >60% 精神抖擞、30%~60% 有点喘了、<30% 快撑不住了。
+ * 段模式 hp/max_hp 恰好就是剩余格/总格，直接复用 hpStateKey。
+ */
+export function segmentStateKey(snap: BossFightSnapshot): BossHpState {
+  return hpStateKey(snap.hp, snap.max_hp)
+}
+
+// ---------------------------------------------------------------------------
 // 快照与版本守卫
 // ---------------------------------------------------------------------------
 
@@ -34,6 +59,11 @@ export interface BossParticipant {
   ready: boolean
   status: string // joined / left
   has_session: boolean
+  /** 二期段模式：本人已确认参加（只管自己，不挡别人） */
+  participated?: boolean
+  /** 二期段模式战报自愿记录（纯纪念，不换算） */
+  record_km?: number | null
+  record_minutes?: number | null
   avatar: {
     gender: string
     outfit: string
@@ -44,6 +74,15 @@ export interface BossParticipant {
   } | null
   /** 只有本人条目才有这个字段（服务端保证）；别人的条目永远没有 */
   my_damage?: number
+}
+
+/** 二期段模式账本里的一段（seq 从 1 开始） */
+export interface BossFightSegment {
+  seq: number
+  recorded_by: number
+  recorded_at: string
+  /** live = 当场记的；wrapup = 收场时补记的 */
+  source: 'live' | 'wrapup' | string
 }
 
 export interface BossFightSnapshot {
@@ -62,6 +101,15 @@ export interface BossFightSnapshot {
   started_at: string | null
   ends_at: string | null
   ended_at: string | null
+  // 二期约定段模式（摄像头场次服务端返回 mode:'camera' 与空约定，字段恒在）
+  mode?: 'camera' | 'segments' | string
+  template_id?: string | null
+  segment_format?: string | null
+  segment_label?: string | null
+  total_label?: string | null
+  segments_total?: number
+  segments_done?: number
+  segments?: BossFightSegment[]
   server_ts: number
   participants: BossParticipant[]
   my_reward: { item_id: string; status: string } | null

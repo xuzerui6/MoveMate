@@ -16,9 +16,41 @@ function unwrap<T>(res: any): T {
 
 export async function createFight(
   gameId: string | number,
-  input: { movement: string; bossId: string; durationSec: number },
+  input: {
+    movement?: string;
+    bossId?: string;
+    durationSec?: number;
+    // 二期约定段模式：mode='segments' 时带上打法/动作选择（可选字段，服务端按模板拍约定）
+    mode?: 'camera' | 'segments';
+    segmentFormat?: string;
+    segmentMovement?: string;
+  },
 ): Promise<BossFightSnapshot> {
   return unwrap(await client.post(`/games/${gameId}/boss-fight`, input));
+}
+
+// ---------------------------------------------------------------------------
+// 二期约定段模式：记一段 / 收场结算 / 确认参加 / 战报自愿记录。
+// 都返回服务端权威快照（一期 unwrap 口径：只剥一层信封，null 原样保留）。
+// ---------------------------------------------------------------------------
+
+export async function recordSegment(gameId: string | number): Promise<BossFightSnapshot> {
+  return unwrap(await client.post(`/games/${gameId}/boss-fight/segment`, {}));
+}
+
+export async function settleSegments(gameId: string | number, segmentsDone: number): Promise<BossFightSnapshot> {
+  return unwrap(await client.post(`/games/${gameId}/boss-fight/settle-segments`, { segmentsDone }));
+}
+
+export async function confirmParticipation(gameId: string | number): Promise<BossFightSnapshot> {
+  return unwrap(await client.post(`/games/${gameId}/boss-fight/confirm-participation`, {}));
+}
+
+export async function saveRecordNote(
+  gameId: string | number,
+  note: { km?: number; minutes?: number },
+): Promise<BossFightSnapshot> {
+  return unwrap(await client.post(`/games/${gameId}/boss-fight/record-note`, note));
 }
 
 export async function fetchFight(gameId: string | number): Promise<BossFightSnapshot | null> {

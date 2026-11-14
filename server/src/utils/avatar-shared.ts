@@ -100,6 +100,7 @@ export function unlockedOutfitsMap(counts: AvatarCounts): Record<string, boolean
  * kunkun」且默认场可打、赢了发 kunkun_medal），所以它显式标 fight；
  * 官方客户端从不发 kunkun（图鉴里也没有它），标 fight 不新增用户可见面。
  * 不要调整顺序。
+
  */
 export interface BossCatalogEntry {
   boss_id: string;
