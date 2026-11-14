@@ -135,6 +135,28 @@ test('Jilin University flows are unchanged and its games stay invisible to the o
   assert.equal(jlsuJoin.status, 403);
 });
 
-// 注：main 线上还有一条「好友动态流/邀请按学校隔离」的用例，依赖社交一期
-// （friends/friends-feed/invites 接口），生产谱系没有社交功能，故不在此保留；
-// 其跨校隔离断言（详情 404）已由上面两条用例覆盖。
+test('friends feed and invites respect school scope even for cross-school friends', async () => {
+  // 跨校好友可以存在（邀请码加好友），但好友局不能因此跨校漏出
+  const sent = await request('/friends/requests', { userId: jluUser.id, greeting: '一起练' }, jlsuHost.token);
+  assert.equal(sent.status, 200, JSON.stringify(sent.body));
+  const incoming = await request('/friends/requests', undefined, jluUser.token);
+  const reqRow = incoming.body.data.requests.find((r: any) => r.requester_id === jlsuHost.id);
+  assert.ok(reqRow, 'friend request must arrive');
+  const accepted = await request(`/friends/requests/${reqRow.id}/accept`, {}, jluUser.token);
+  assert.equal(accepted.status, 200, JSON.stringify(accepted.body));
+
+  const created = await createGame(jlsuHost.token, { campus_id: 5, venue_id: 39, title: '吉体好友局', visibility: 'friends' });
+  assert.equal(created.status, 200, JSON.stringify(created.body));
+  const gameId = created.body.data.game.id;
+
+  const jluFeed = await request('/games/friends-feed', undefined, jluUser.token);
+  assert.ok(!jluFeed.body.data.games.some((g: any) => g.id === gameId), 'cross-school friend must not see the friends game in the feed');
+  const jluDetail = await request(`/games/${gameId}`, undefined, jluUser.token);
+  assert.equal(jluDetail.status, 404);
+
+  const invite = await request(`/games/${gameId}/invites`, { userIds: [jluUser.id] }, jlsuHost.token);
+  assert.equal(invite.status, 200, JSON.stringify(invite.body));
+  assert.deepEqual(invite.body.data.invited, []);
+  assert.equal(invite.body.data.skipped.length, 1);
+  assert.equal(invite.body.data.skipped[0].user_id, jluUser.id);
+});
