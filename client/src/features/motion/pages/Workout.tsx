@@ -24,6 +24,8 @@ import { sessionStartMs } from '../lib/pickerExercises'
 
 import {COPY_CALIBRATED,COPY_PREPARE,framingCopyFor,milestoneLine} from '../lib/companionCopy'
 import {createDwellState,dwellPush} from '../lib/statusDwell'
+import {milestoneForRep} from '../lib/milestones'
+import {createTrackingLossState,pushTrackingSample,resetTrackingLoss} from '../lib/trackingLoss'
 import {loadRecognitionPreference,selectNewRecognitionStrategy,selectRecognitionStrategy,type RecognitionPreference} from '../lib/adaptiveRecognition'
 
 const format = (seconds: number) => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
@@ -162,7 +164,11 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     if (!active || metrics.reps <= syncedRepRef.current) return
     syncedRepRef.current = metrics.reps
     voiceRef.current.notifyCompletedRep(metrics.reps, metrics.lastRepIssues)
-  }, [active, metrics.reps, metrics.lastRepIssues])
+    // 里程碑陪伴：关键节点才出声（第一个/每 5 个/过半/还剩 3/达标/破纪录），
+    // 事实来自本地计数，出声与否由教练侧的优先级准入决定。
+    const milestone = milestoneForRep(metrics.reps, metrics.targetReps, exercise.unit, personalBest)
+    if (milestone) voiceRef.current.notifyMilestone(milestone)
+  }, [active, metrics.reps, metrics.lastRepIssues, metrics.targetReps, exercise.unit, personalBest])
   useEffect(() => {
     if (active) return
     syncedRepRef.current = existing?.reps||0
@@ -193,6 +199,41 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     const cue = decideCorrectionCue(metrics.lastRepIssues, Date.now(), correctionGateRef.current, exerciseType)
     if (cue) voiceRef.current.say(cue.text, 'high')
   }, [active, simulatedPose, metrics.reps, metrics.lastRepIssues])
+
+  // 达成目标 = 这一组结束：开组间休息窗（小智先总结，再听你说话），只开一次。
+  const targetWindowRef = useRef(false)
+  useEffect(() => {
+    if (!active || metrics.targetReps <= 0 || metrics.reps < metrics.targetReps) return
+    if (targetWindowRef.current) return
+    targetWindowRef.current = true
+    voiceRef.current.noteSetBoundary()
+    voiceRef.current.openRestWindow({ reachedTarget: true })
+  }, [active, metrics.reps, metrics.targetReps])
+  useEffect(() => { if (!active) targetWindowRef.current = false }, [active])
+
+  // 追踪丢失（训练页自己的语音路径）：首次校准前是准备阶段不算丢；
+  // 持续 900ms 才亮大信号，喊话最多 6 秒一次（纪律在 trackingLoss 里）。
+  const trackingStateRef = useRef(createTrackingLossState())
+  const trackingVisibleRef = useRef(true)
+  const [trackingLost, setTrackingLost] = useState(false)
+  useEffect(() => {
+    trackingVisibleRef.current = !calibratedOnce.current
+      ? true
+      : metrics.poseFeedback.calibrated && diagnostics.stage !== 'tracking_lost'
+  }, [metrics.poseFeedback.calibrated, diagnostics.stage])
+  useEffect(() => {
+    if (!active || paused || busy || simulatedPose || ending) {
+      resetTrackingLoss(trackingStateRef.current)
+      setTrackingLost(false)
+      return
+    }
+    const timer = window.setInterval(() => {
+      const sample = pushTrackingSample(trackingStateRef.current, trackingVisibleRef.current, Date.now())
+      setTrackingLost(sample.active)
+      if (sample.cue) voiceRef.current.cueTrackingLoss()
+    }, 300)
+    return () => window.clearInterval(timer)
+  }, [active, paused, busy, simulatedPose, ending])
 
   const cancelPrepare = () => { prepChoiceRef.current?.('cancelled'); attempt.current++; pose.stop(); setPreparing(false); setBusy(false); locked.current = false; setPrepPhase(null) }
   const begin = async (demo: boolean, forceLite = false) => {
@@ -233,6 +274,12 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
       if(action==='resume'&&adaptive&&!simulatedPose&&!await pose.start())throw new Error(pose.errorReason.current||'请重试摄像头后继续')
       const row = await act(serverId.current, action, progress.current)
       setPendingAction(null); setSyncFailed(false); setPaused(row.status !== 'running')
+      if (!leaveAfter) {
+        // 暂停 = 进组间休息：开休息窗（小智先开口）；继续 = 关窗回组中纪律。
+        voiceRef.current.noteSetBoundary()
+        if (row.status !== 'running') voiceRef.current.openRestWindow({ reachedTarget: metrics.targetReps > 0 && metrics.reps >= metrics.targetReps })
+        else voiceRef.current.closeRestWindow()
+      }
       if (leaveAfter) { closing.current = true; setVoiceEnabled(false); pose.stop(); back() }
     } catch (error) { setPendingAction(action); setFailure(getErrorMessage(error)) }
     finally { if (alive.current) setBusy(false); locked.current = false }
@@ -387,6 +434,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
             <p className={`training-hud-coach${unclear?' amber':''}`}><span>陪练说</span>{coachLine}</p></>}
           </div>
         </div>}
+        {active && trackingLost && !paused && !ending && <div className="training-hud-lost" role="alert"><b>看不到你啦</b><span>回到画面中间，我接着数</span></div>}
         {paused && <div className="camera-paused"><Icon name="pause" size={30}/><b>{ending ? '正在保存' : pendingAction ? '等待状态确认' : '已暂停'}</b><span>已完成 {metrics.reps} {exercise.unit}</span>{adaptive&&!ending&&!pendingAction&&<small>{preparedToResume?'起始姿势已准备好，可直接继续':'休息不计数、不计时'}</small>}</div>}
         {preparing && !adaptive && <div className="camera-paused"><Icon name="camera"/><b>正在准备摄像头与模型</b><span>此时尚未开始新记录</span></div>}
         {active && <div className="training-camera-tools"><button ref={cameraExpandButton} type="button" aria-pressed={cameraExpanded} onClick={() => setCameraExpanded(value => !value)}><Icon name={cameraExpanded ? 'collapse' : 'expand'} size={18}/>{cameraExpanded ? '收起画面' : '放大画面'}</button>
@@ -399,6 +447,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
         <div className="training-numbers"><div className={"training-reps"+(metrics.reps>0&&metrics.reps>=metrics.targetReps?" motion-set-done":"")}><strong key={metrics.reps} className="motion-rep-num">{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}</span></div>{calibratedOnce.current&&<div><strong>{format(seconds)}</strong><span>有效时长</span></div>}</div>
         <p className="training-coach" role="status"><span>{paused ? '已暂停' : '陪练说'}</span>{coachLine}</p>
         {['standing_leg_curl','one_arm_row','mountain_climber','split_squat'].includes(exerciseType)&&<p className="recognition-side-count">左侧 {metrics.scoreAccumulator.leftReps||0} 次 · 右侧 {metrics.scoreAccumulator.rightReps||0} 次 · 左右合计</p>}
+        {voiceEnabled && (voice.outage || voice.state === 'fallback' || voice.state === 'failed') && <div className="training-voice-outage" role="alert">语音断开 · 计数继续</div>}
         <div className="training-voice"><Icon name="mic" size={26}/><span><b>{voiceEnabled ? VOICE_LABEL[voice.state] : '语音陪练'}</b><small>{voiceEnabled ? voice.errorMessage || (voice.state === 'speaking' ? voice.reply : voice.transcript) || '连接后点击对话' : '语音指导你的动作节奏与要点'}</small></span>
           <button className="secondary" disabled={ending} onClick={!voiceEnabled ? toggleVoice : voice.state === 'idle' ? voice.wake : ['failed', 'fallback'].includes(voice.state) ? voice.retry : voice.inConversation ? voice.interrupt : toggleVoice}>{!voiceEnabled ? '开启' : voice.state === 'idle' ? '对话' : ['failed', 'fallback'].includes(voice.state) ? '重试' : voice.inConversation ? '打断' : '关闭'}</button>
         </div>
