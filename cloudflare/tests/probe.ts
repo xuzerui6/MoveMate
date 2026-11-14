@@ -33,6 +33,10 @@ export class TestBackend extends MoveMateBackend {
     this.ctx.storage.sql.exec("UPDATE actor_meta SET value='1' WHERE key='lifecycle_due'");
     await this.alarm();
   }
+  async rewindGameStart(id: number, startTime: string) {
+    // A deterministic test clock; these RPCs do not exist in production.
+    this.ctx.storage.sql.exec('UPDATE games SET start_time=? WHERE id=?', startTime, id);
+  }
   async ageSession(id: string, seconds: number) {
     // A deterministic test clock; these RPCs do not exist in production.
     const since = new Date(Date.now() - seconds * 1000).toISOString();
