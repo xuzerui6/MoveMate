@@ -24,6 +24,7 @@ import {
   isTier1Movement,
   type Tier1Movement,
 } from '../utils/avatar-shared';
+import { resolveSegmentContract } from '../utils/boss-segments';
 import { avatarDisplay } from './avatar.service';
 
 export const DEFAULT_BOSS_ID = BOSS_CATALOG[0].boss_id;
@@ -64,6 +65,14 @@ interface FightRow {
   ended_at: string | null;
   settle_key: string | null;
   settled_at: string | null;
+  /** 二期约定段模式：mode='camera' 时以下字段为空/0，行为与一期完全一致 */
+  mode: string;
+  template_id: string | null;
+  segment_format: string | null;
+  segment_label: string | null;
+  total_label: string | null;
+  segments_total: number;
+  segments_done: number;
 }
 
 interface ParticipantRow {
@@ -76,6 +85,12 @@ interface ParticipantRow {
   accepted_reps: number;
   last_report_at: string | null;
   joined_at: string;
+  /** 二期段模式：本人确认参加（只标记自己，不阻塞任何人） */
+  participated: number;
+  participated_at: string | null;
+  /** 二期段模式战报里的自愿记录（纯纪念，不换算、不影响结果） */
+  record_km: number | null;
+  record_minutes: number | null;
 }
 
 const TERMINAL_GAME_STATUSES = ['completed', 'cancelled', 'archived'];
@@ -163,6 +178,29 @@ async function settleWin(db: Db, fight: FightRow, endedAtIso: string): Promise<F
  * 纪念物实际发放：胜局队员的计数在宽限期内「正常结束并结算」才落袋。
  * 可重复调用（胜局瞬间、队员结束计数时、读状态时都会调），靠账本状态 + 收藏唯一键保证只发一次。
  */
+/**
+ * 段模式胜局结算：先落终局，再给名单里每个人建一行发放账本（先一律 pending）。
+ * 实际发放由 tryGrantRewards 按「本人已确认参加」落袋——确认就是这个模式的证据链；
+ * 没确认的人留着 pending，24 小时补确认窗口内确认了再发（见 confirmParticipation）。
+ */
+async function settleWinSegments(db: Db, fight: FightRow, endedAtIso: string): Promise<FightRow | null> {
+  const won = await transitionFight(db, fight, 'won', endedAtIso);
+  if (!won) return null;
+  const boss = bossById(won.boss_id) || BOSS_CATALOG[0];
+  const participants = (await db.query<ParticipantRow>(
+    'SELECT * FROM boss_fight_participants WHERE fight_id = $1',
+    [won.id],
+  )).rows;
+  for (const part of participants) {
+    await db.query(
+      `INSERT INTO boss_fight_rewards (fight_id, user_id, item_id, status, created_at)
+       VALUES ($1, $2, $3, 'pending', $4) ON CONFLICT (fight_id, user_id, item_id) DO NOTHING`,
+      [won.id, part.user_id, boss.souvenir_item_id, endedAtIso],
+    );
+  }
+  return won;
+}
+
 export async function tryGrantRewards(fight: FightRow): Promise<number> {
   if (fight.status !== 'won' || !fight.ended_at) return 0;
   const pending = (await pool.query<any>(
@@ -172,6 +210,29 @@ export async function tryGrantRewards(fight: FightRow): Promise<number> {
   let granted = 0;
   for (const reward of pending) {
     const part = await loadParticipant(pool, fight.id, reward.user_id);
+    if (fight.mode === 'segments') {
+      // 段模式没有计数会话可查：确认参加就是发放依据；窗口（24 小时）过了还没确认就过期
+      if (!part?.participated) {
+        if (Date.now() > Date.parse(fight.ended_at) + SETTLE_GRACE_MS) {
+          await pool.query(
+            `UPDATE boss_fight_rewards SET status = 'expired' WHERE id = $1 AND status = 'pending'`,
+            [reward.id],
+          );
+        }
+        continue;
+      }
+      await pool.query(
+        `INSERT INTO avatar_souvenirs (user_id, item_id, source, source_id, granted_at)
+         VALUES ($1, $2, 'boss_fight', $3, $4) ON CONFLICT (user_id, item_id) DO NOTHING`,
+        [reward.user_id, reward.item_id, fight.id, iso(Date.now())],
+      );
+      const marked = await pool.query(
+        `UPDATE boss_fight_rewards SET status = 'granted', granted_at = $2 WHERE id = $1 AND status = 'pending' RETURNING id`,
+        [reward.id, iso(Date.now())],
+      );
+      if (marked.rows.length) granted++;
+      continue;
+    }
     if (!part?.session_id) continue;
     const session = (await pool.query<{ status: string; settled: number; ended_at: string | null }>(
       'SELECT status, settled, ended_at FROM sport_sessions WHERE id = $1',
@@ -232,6 +293,9 @@ async function buildSnapshot(fight: FightRow, viewerId: number | null) {
       ready: Boolean(part.ready),
       status: part.status,
       has_session: Boolean(part.session_id),
+      participated: Boolean(part.participated),
+      record_km: part.record_km == null ? null : Number(part.record_km),
+      record_minutes: part.record_minutes == null ? null : Number(part.record_minutes),
       avatar: await avatarDisplay(part.user_id),
     };
     // 个人伤害只给自己看：广播快照 viewerId 为空，谁的伤害都不带
@@ -247,6 +311,13 @@ async function buildSnapshot(fight: FightRow, viewerId: number | null) {
     if (reward) myReward = { item_id: reward.item_id, status: reward.status };
   }
   const boss = bossById(fight.boss_id);
+  const isSegments = fight.mode === 'segments';
+  const segments = isSegments
+    ? (await pool.query<{ seq: number; recorded_by: number; recorded_at: string; source: string }>(
+      'SELECT seq, recorded_by, recorded_at, source FROM boss_fight_segments WHERE fight_id = $1 ORDER BY seq ASC',
+      [fight.id],
+    )).rows
+    : [];
   return {
     id: fight.id,
     game_id: fight.game_id,
@@ -266,6 +337,20 @@ async function buildSnapshot(fight: FightRow, viewerId: number | null) {
     server_ts: Date.now(),
     participants,
     my_reward: myReward,
+    // 二期约定段模式（摄像头模式恒为 camera + 空约定，旧客户端可忽略）
+    mode: isSegments ? 'segments' : 'camera',
+    template_id: fight.template_id,
+    segment_format: fight.segment_format,
+    segment_label: fight.segment_label,
+    total_label: fight.total_label,
+    segments_total: Number(fight.segments_total || 0),
+    segments_done: Number(fight.segments_done || 0),
+    segments: segments.map((s) => ({
+      seq: Number(s.seq),
+      recorded_by: s.recorded_by,
+      recorded_at: s.recorded_at,
+      source: s.source,
+    })),
   };
 }
 
@@ -305,14 +390,25 @@ async function validateSessionLink(db: Db, fight: FightRow, userId: number, sess
 export async function createFight(
   gameId: number,
   creatorId: number,
-  input: { movement?: string; bossId?: string; durationSec?: number },
+  input: {
+    movement?: string;
+    bossId?: string;
+    durationSec?: number;
+    mode?: string;
+    segmentFormat?: string;
+    segmentMovement?: string;
+  },
 ) {
-  const movement = String(input.movement || '');
-  if (!isTier1Movement(movement)) {
-    throw new ValidationError('这个动作暂时不能用来打怪，先用深蹲、开合跳、俯卧撑或高抬腿');
+  // 可用性门禁（与正式版一致）：只有标了 'fight' 的怪能被发起挑战，其余当场拦下
+  let bossId = DEFAULT_BOSS_ID;
+  if (input.bossId) {
+    const boss = bossById(input.bossId);
+    if (!boss) throw new ValidationError('没找到这只怪');
+    if (boss.availability !== 'fight') {
+      throw new ValidationError(`「${boss.name}」还没开放，暂时不能发起挑战`);
+    }
+    bossId = boss.boss_id;
   }
-  const bossId = input.bossId && bossById(input.bossId) ? input.bossId : DEFAULT_BOSS_ID;
-  const durationSec = Math.min(1800, Math.max(60, Math.floor(Number(input.durationSec) || FIGHT_DURATION_SEC)));
   return withTransaction(async (client) => {
     const game = await loadGame(client, gameId);
     if (Number(game.host_id) !== creatorId) throw new ForbiddenError('只有本局发起人可以发起打怪');
@@ -325,12 +421,42 @@ export async function createFight(
         throw new InvalidStateError('本局已经有一场打怪了');
       }
     }
+    // 模式定夺：显式传 mode 最优先；没传时，一期客户端总会带 movement → 摄像头模式
+    // （一期行为一字不变）；连 movement 都没传，才按运动定（健身默认摄像头、其余约定段）
+    const sportType = String(game.sport_type || '');
+    let mode: 'camera' | 'segments';
+    if (input.mode === 'segments' || input.mode === 'camera') mode = input.mode;
+    else if (input.movement) mode = 'camera';
+    else mode = sportType === 'fitness' ? 'camera' : 'segments';
+
     const now = iso(Date.now());
-    const fight = (await client.query<FightRow>(
-      `INSERT INTO boss_fights (id, game_id, boss_id, movement, status, duration_sec, created_by, created_at)
-       VALUES ($1, $2, $3, $4, 'gathering', $5, $6, $7) RETURNING *`,
-      [randomUUID(), gameId, bossId, movement, durationSec, creatorId, now],
-    )).rows[0];
+    let fight: FightRow;
+    if (mode === 'camera') {
+      const movement = String(input.movement || '');
+      if (!isTier1Movement(movement)) {
+        throw new ValidationError('这个动作暂时不能用来打怪，先用深蹲、开合跳、俯卧撑或高抬腿');
+      }
+      const durationSec = Math.min(1800, Math.max(60, Math.floor(Number(input.durationSec) || FIGHT_DURATION_SEC)));
+      fight = (await client.query<FightRow>(
+        `INSERT INTO boss_fights (id, game_id, boss_id, movement, status, duration_sec, created_by, created_at, mode)
+         VALUES ($1, $2, $3, $4, 'gathering', $5, $6, $7, 'camera') RETURNING *`,
+        [randomUUID(), gameId, bossId, movement, durationSec, creatorId, now],
+      )).rows[0];
+    } else {
+      // 约定段模式：约定在创建时按模板拍死（打法、一段是什么、总格数），开打后不改
+      const contract = resolveSegmentContract(sportType, {
+        segmentFormat: input.segmentFormat,
+        segmentMovement: input.segmentMovement,
+      });
+      fight = (await client.query<FightRow>(
+        `INSERT INTO boss_fights
+           (id, game_id, boss_id, movement, status, duration_sec, created_by, created_at,
+            mode, template_id, segment_format, segment_label, total_label, segments_total, segments_done)
+         VALUES ($1, $2, $3, '', 'gathering', 0, $4, $5, 'segments', $6, $7, $8, $9, $10, 0) RETURNING *`,
+        [randomUUID(), gameId, bossId, creatorId, now,
+          contract.templateId, contract.segmentFormat, contract.segmentLabel, contract.totalLabel, contract.segmentsTotal],
+      )).rows[0];
+    }
     await client.query(
       `INSERT INTO boss_fight_participants (fight_id, user_id, ready, status, joined_at)
        VALUES ($1, $2, 0, 'joined', $3)`,
@@ -449,6 +575,19 @@ export async function startFight(gameId: number, userId: number) {
     if (parts.length > MAX_FIGHTERS) throw new InvalidStateError('队伍最多 6 个人');
     if (parts.some((part) => !part.ready)) throw new InvalidStateError('还有队员没点准备好');
     const nowMs = Date.now();
+    if (fight.mode === 'segments') {
+      // 约定段模式开打：名单就此锁定，血量就是总格数，没有倒计时（打完或收场才结束）
+      const total = Number(fight.segments_total || 0);
+      const startedSeg = (await client.query<FightRow>(
+        `UPDATE boss_fights
+         SET status = 'fighting', max_hp = $2, hp = $2, started_at = $3, ends_at = NULL, version = version + 1
+         WHERE id = $1 AND status = 'gathering' RETURNING *`,
+        [fight.id, total, iso(nowMs)],
+      )).rows[0];
+      if (!startedSeg) throw new InvalidStateError('这场打怪已经开始或结束了');
+      scheduleBroadcast(fight.id);
+      return buildSnapshot(startedSeg, userId);
+    }
     const maxHp = computeMaxHp(fight.movement, parts.length, fight.duration_sec);
     // 开打瞬间给每个人的计数拍一张基准照：只算开打之后新增的次数
     for (const part of parts) {
@@ -494,6 +633,173 @@ export async function leaveFight(gameId: number, userId: number) {
       await client.query('UPDATE boss_fights SET version = version + 1 WHERE id = $1', [fight.id]);
       scheduleBroadcast(fight.id);
     }
+    const fresh = (await client.query<FightRow>('SELECT * FROM boss_fights WHERE id = $1', [fight.id])).rows[0];
+    return buildSnapshot(fresh, userId);
+  });
+}
+
+/** 段模式胜局后，发放/过期判定在事务提交后跑（账本已落库，tryGrantRewards 幂等） */
+function scheduleSegmentGrants(fightId: string) {
+  afterCommit(() => {
+    void (async () => {
+      const fight = (await pool.query<FightRow>('SELECT * FROM boss_fights WHERE id = $1', [fightId])).rows[0];
+      if (fight?.status === 'won') await tryGrantRewards(fight);
+    })().catch((error) => console.error('[boss-fight] segment grant pass failed', error));
+  });
+}
+
+async function loadSegmentFight(client: Db, gameId: number): Promise<FightRow> {
+  await loadGame(client, gameId);
+  let fight = await loadOpenFight(client, gameId);
+  if (!fight) {
+    // 已经结算过的段模式场次：记段/收场再来要说清「已经结算过了」，不是「还没有打怪」
+    const latest = await loadLatestFight(client, gameId);
+    if (latest?.mode === 'segments' && latest.status !== 'gathering' && latest.status !== 'fighting') {
+      throw new InvalidStateError('这一场已经结算过了');
+    }
+    throw new NotFoundError('本局还没有打怪');
+  }
+  fight = await refreshFight(client, fight);
+  if (fight.mode !== 'segments') throw new InvalidStateError('这一场不是约定段模式');
+  return fight;
+}
+
+async function requireFighter(client: Db, fight: FightRow, userId: number) {
+  const part = await loadParticipant(client, fight.id, userId);
+  if (!part) throw new ForbiddenError('先加入这一场，才能一起打');
+  return part;
+}
+
+/**
+ * 记一段（任何队员可点）：往账本里追加一段，格子碎一格；
+ * 记满总格数就在这一刻打赢，胜局结算与纪念账本同事务落定。
+ */
+export async function recordSegment(gameId: number, userId: number) {
+  return withTransaction(async (client) => {
+    const fight = await loadSegmentFight(client, gameId);
+    if (fight.status !== 'fighting') throw new InvalidStateError('还没开打，不能记段');
+    const part = await requireFighter(client, fight, userId);
+    if (part.status !== 'joined') throw new InvalidStateError('你已经离开这一场了');
+    const total = Number(fight.segments_total || 0);
+    const done = Number(fight.segments_done || 0);
+    if (done >= total) throw new InvalidStateError('已经全部打完啦');
+    const now = iso(Date.now());
+    const seq = done + 1;
+    await client.query(
+      `INSERT INTO boss_fight_segments (fight_id, seq, recorded_by, recorded_at, source)
+       VALUES ($1, $2, $3, $4, 'live')`,
+      [fight.id, seq, userId, now],
+    );
+    let fresh = (await client.query<FightRow>(
+      `UPDATE boss_fights SET segments_done = $2, hp = $3, version = version + 1
+       WHERE id = $1 RETURNING *`,
+      [fight.id, seq, Math.max(0, total - seq)],
+    )).rows[0];
+    if (seq >= total) {
+      const won = await settleWinSegments(client, fresh, now);
+      if (won) fresh = won;
+      scheduleSegmentGrants(fight.id);
+    }
+    scheduleBroadcast(fight.id);
+    return buildSnapshot(fresh, userId);
+  });
+}
+
+/**
+ * 收场结算（任何队员可点）：步进器口径——只能在已记段数的基础上往上补，
+ * 补满总格数就是打赢；没补满就此结算，怪带着剩下的格逃走。
+ */
+export async function settleSegments(gameId: number, userId: number, input: { segmentsDone?: number }) {
+  return withTransaction(async (client) => {
+    const fight = await loadSegmentFight(client, gameId);
+    if (fight.status !== 'fighting') throw new InvalidStateError('这一场已经结算过了');
+    const part = await requireFighter(client, fight, userId);
+    if (part.status !== 'joined') throw new InvalidStateError('你已经离开这一场了');
+    const total = Number(fight.segments_total || 0);
+    const recorded = Number(fight.segments_done || 0);
+    const requested = Math.floor(Number(input.segmentsDone));
+    if (!Number.isFinite(requested) || requested < recorded) {
+      throw new ValidationError('只能往上补记，不能比已经记下的段数还少');
+    }
+    const target = Math.min(total, requested);
+    const now = iso(Date.now());
+    for (let seq = recorded + 1; seq <= target; seq++) {
+      await client.query(
+        `INSERT INTO boss_fight_segments (fight_id, seq, recorded_by, recorded_at, source)
+         VALUES ($1, $2, $3, $4, 'wrapup')`,
+        [fight.id, seq, userId, now],
+      );
+    }
+    let fresh = (await client.query<FightRow>(
+      `UPDATE boss_fights SET segments_done = $2, hp = $3, version = version + 1
+       WHERE id = $1 RETURNING *`,
+      [fight.id, target, Math.max(0, total - target)],
+    )).rows[0];
+    if (target >= total) {
+      const won = await settleWinSegments(client, fresh, now);
+      if (won) fresh = won;
+      scheduleSegmentGrants(fight.id);
+    } else {
+      const escaped = await transitionFight(client, fresh, 'escaped', now);
+      if (escaped) fresh = escaped;
+    }
+    scheduleBroadcast(fight.id);
+    return buildSnapshot(fresh, userId);
+  });
+}
+
+/**
+ * 确认参加（只管自己）：开打后随时可点；结算后 24 小时内是补确认窗口——
+ * 补确认只补参加标记（胜局时顺手把首胜纪念落袋），永不改段数、不改胜负。
+ */
+export async function confirmParticipation(gameId: number, userId: number) {
+  return withTransaction(async (client) => {
+    await loadGame(client, gameId);
+    let fight = (await loadOpenFight(client, gameId)) || (await loadLatestFight(client, gameId));
+    if (!fight) throw new NotFoundError('本局还没有打怪');
+    fight = await refreshFight(client, fight);
+    if (fight.mode !== 'segments') throw new InvalidStateError('这一场不是约定段模式');
+    const part = await requireFighter(client, fight, userId);
+    if (fight.status === 'gathering') throw new InvalidStateError('还没开打，开打后就能确认参加');
+    if (fight.status === 'aborted') throw new InvalidStateError('这一场没打成，不用确认了');
+    if (fight.status === 'won' || fight.status === 'escaped') {
+      if (!fight.ended_at || Date.now() > Date.parse(fight.ended_at) + SETTLE_GRACE_MS) {
+        throw new InvalidStateError('已经过了补确认的时间了');
+      }
+    }
+    if (!part.participated) {
+      await client.query(
+        'UPDATE boss_fight_participants SET participated = 1, participated_at = $3 WHERE fight_id = $1 AND user_id = $2',
+        [fight.id, userId, iso(Date.now())],
+      );
+      await client.query('UPDATE boss_fights SET version = version + 1 WHERE id = $1', [fight.id]);
+    }
+    if (fight.status === 'won') scheduleSegmentGrants(fight.id);
+    scheduleBroadcast(fight.id);
+    const fresh = (await client.query<FightRow>('SELECT * FROM boss_fights WHERE id = $1', [fight.id])).rows[0];
+    return buildSnapshot(fresh, userId);
+  });
+}
+
+/** 战报自愿记录（纯纪念）：只能填自己的，结算后可填，不换算、不影响任何结果 */
+export async function saveRecordNote(gameId: number, userId: number, input: { km?: number; minutes?: number }) {
+  return withTransaction(async (client) => {
+    await loadGame(client, gameId);
+    const fight = await loadLatestFight(client, gameId);
+    if (!fight) throw new NotFoundError('本局还没有打怪');
+    if (fight.mode !== 'segments') throw new InvalidStateError('这一场不是约定段模式');
+    if (fight.status !== 'won' && fight.status !== 'escaped') throw new InvalidStateError('结算后才能填记录');
+    await requireFighter(client, fight, userId);
+    const km = input.km == null ? null : Number(input.km);
+    const minutes = input.minutes == null ? null : Math.floor(Number(input.minutes));
+    if (km != null && (!Number.isFinite(km) || km < 0 || km > 1000)) throw new ValidationError('公里数不太对');
+    if (minutes != null && (!Number.isFinite(minutes) || minutes < 0 || minutes > 100000)) throw new ValidationError('分钟数不太对');
+    await client.query(
+      'UPDATE boss_fight_participants SET record_km = $3, record_minutes = $4 WHERE fight_id = $1 AND user_id = $2',
+      [fight.id, userId, km, minutes],
+    );
+    await client.query('UPDATE boss_fights SET version = version + 1 WHERE id = $1', [fight.id]);
+    scheduleBroadcast(fight.id);
     const fresh = (await client.query<FightRow>('SELECT * FROM boss_fights WHERE id = $1', [fight.id])).rows[0];
     return buildSnapshot(fresh, userId);
   });

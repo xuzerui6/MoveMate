@@ -35,7 +35,7 @@ import {
   unblockUser,
   updateSocialSettings,
 } from '../src/api/social.ts';
-import { createFight, fetchFight, fetchFightLatency, joinFight, leaveFight, linkSession, setReady, startFight } from '../src/api/bossFight.ts';
+import { confirmParticipation, createFight, fetchFight, fetchFightLatency, joinFight, leaveFight, linkSession, recordSegment, saveRecordNote, setReady, settleSegments, startFight } from '../src/api/bossFight.ts';
 
 // API 契约测试（2026-11-14，Codex 交叉评审提案落地）：
 // 用真实 axios client + 自定义 adapter（模式沿用 auth-recovery.test.ts），
@@ -807,3 +807,53 @@ test(
     } finally { restore(); }
   },
 );
+
+// ---------------------------------------------------------------------------
+// bossFight 二期约定段模式：新 api 函数与一期同族——mock 按真实信封
+// {code, message, data} 返回，只剥一层、快照原样透传；请求体字段不许丢。
+// ---------------------------------------------------------------------------
+
+const segmentSnapshotFixture = {
+  ...snapshotFixture,
+  movement: '',
+  status: 'fighting',
+  max_hp: 4,
+  hp: 3,
+  duration_sec: 0,
+  mode: 'segments',
+  template_id: 'basketball',
+  segment_format: 'minutes10',
+  segment_label: '打完一轮 10 分钟的比赛，算一段',
+  total_label: '本场共 4 段，打满 4 轮就是打赢',
+  segments_total: 4,
+  segments_done: 1,
+  segments: [{ seq: 1, recorded_by: 7, recorded_at: '2026-11-14T03:00:00.000Z', source: 'live' }],
+};
+
+test('contract: createFight in segment mode posts the mode fields and returns the snapshot', async () => {
+  const restore = installAdapter();
+  handler = route('post', /^\/games\/9\/boss-fight$/, segmentSnapshotFixture);
+  try {
+    const snap = await createFight(9, { mode: 'segments', bossId: 'aoye_yanshi', segmentFormat: 'minutes10' });
+    assert.deepEqual(snap, segmentSnapshotFixture as any);
+    assert.deepEqual(captured[0].body, { mode: 'segments', bossId: 'aoye_yanshi', segmentFormat: 'minutes10' });
+  } finally { restore(); }
+});
+
+test('contract: segment actions return the updated snapshot and carry their inputs', async () => {
+  const restore = installAdapter();
+  handler = routes(
+    route('post', /^\/games\/9\/boss-fight\/segment$/, segmentSnapshotFixture),
+    route('post', /^\/games\/9\/boss-fight\/settle-segments$/, segmentSnapshotFixture),
+    route('post', /^\/games\/9\/boss-fight\/confirm-participation$/, segmentSnapshotFixture),
+    route('post', /^\/games\/9\/boss-fight\/record-note$/, segmentSnapshotFixture),
+  );
+  try {
+    assert.deepEqual(await recordSegment(9), segmentSnapshotFixture as any);
+    assert.deepEqual(await settleSegments(9, 4), segmentSnapshotFixture as any);
+    assert.deepEqual(captured[1].body, { segmentsDone: 4 });
+    assert.deepEqual(await confirmParticipation(9), segmentSnapshotFixture as any);
+    assert.deepEqual(await saveRecordNote(9, { km: 2.5, minutes: 40 }), segmentSnapshotFixture as any);
+    assert.deepEqual(captured[3].body, { km: 2.5, minutes: 40 });
+  } finally { restore(); }
+});

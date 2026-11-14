@@ -118,12 +118,23 @@ export function useBossFight(gameId: string | undefined) {
     myParticipant,
     myDamage: myParticipant?.my_damage ?? null,
     isParticipant: Boolean(myParticipant) && myParticipant?.status === 'joined',
-    create: (input: { movement: string; bossId: string; durationSec: number }) =>
-      act(() => bossApi.createFight(gameId!, input)),
+    create: (input: {
+      movement?: string
+      bossId?: string
+      durationSec?: number
+      mode?: 'camera' | 'segments'
+      segmentFormat?: string
+      segmentMovement?: string
+    }) => act(() => bossApi.createFight(gameId!, input)),
     join: (sessionId?: string) => act(() => bossApi.joinFight(gameId!, sessionId)),
     linkSession: (sessionId: string) => act(() => bossApi.linkSession(gameId!, sessionId)),
     setReady: (ready: boolean) => act(() => bossApi.setReady(gameId!, ready)),
     start: () => act(() => bossApi.startFight(gameId!)),
     leave: () => act(() => bossApi.leaveFight(gameId!)),
+    // 二期约定段模式动作（规则全在服务端，这里只是转发 + 吃下新快照）
+    recordSegment: () => act(() => bossApi.recordSegment(gameId!)),
+    settleSegments: (segmentsDone: number) => act(() => bossApi.settleSegments(gameId!, segmentsDone)),
+    confirmParticipation: () => act(() => bossApi.confirmParticipation(gameId!)),
+    saveRecordNote: (note: { km?: number; minutes?: number }) => act(() => bossApi.saveRecordNote(gameId!, note)),
   }
 }

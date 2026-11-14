@@ -16,11 +16,13 @@ import {
   FIGHT_DURATIONS, FIGHT_MOVEMENTS, PHASE1_BOSS_ID, bossInfo, estimateMaxHp,
 } from '../../features/motion/lib/bossCatalog'
 import {
-  HP_STATE_NAME, estimateServerNow, formatClock, hpStateKey,
+  HP_STATE_NAME, estimateServerNow, formatClock, hpStateKey, isSegmentFight,
   publicParticipantView, recordLatencySample, remainingSeconds, teammateStatusLabel,
   crossedRepMilestone, deriveFrameAlert, hpStageAnnouncement, isPoseFresh, FRAME_ALERT_WORD,
   type BossFightSnapshot, type BossHpState, type FrameAlert,
 } from '../../features/motion/lib/bossFightState'
+import { segmentTemplateFor } from '../../features/motion/lib/segmentTemplates'
+import { SegmentFightView, SegmentReport } from './SegmentFight'
 import { announceCue, announceFrameAlert, announceRepMilestone, loadBossSoundOn, playHit, primeBossAudio, releaseBossAudio, saveBossSoundOn } from '../../features/motion/lib/bossSounds'
 import { exerciseInfo, type CameraExerciseType } from '../../features/motion/lib/exercises'
 import { getOutfitAvatar } from '../../features/motion/lib/outfits'
@@ -341,10 +343,11 @@ export default function BossFightPage() {
     ? remainingSeconds(snapshot.ends_at, estimateServerNow(snapshot.server_ts, fight.receivedAt, nowMs))
     : 0
   useEffect(() => {
-    if (snapshot?.status !== 'fighting' || remain > 0) return
+    // 约定段模式没有倒计时（ends_at 为空），不走这条「到点补拉」逻辑
+    if (snapshot?.status !== 'fighting' || !snapshot?.ends_at || remain > 0) return
     const timer = window.setTimeout(() => void fight.refresh(), 1500)
     return () => window.clearTimeout(timer)
-  }, [remain, snapshot?.status]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [remain, snapshot?.status, snapshot?.ends_at]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const myFightReps = Math.max(0, metrics.reps - baselineRef.current)
 
@@ -461,6 +464,17 @@ export default function BossFightPage() {
     )
   }
 
+  const segmentActions = {
+    join: fight.join,
+    setReady: fight.setReady,
+    start: fight.start,
+    leave: fight.leave,
+    recordSegment: fight.recordSegment,
+    settleSegments: fight.settleSegments,
+    confirmParticipation: fight.confirmParticipation,
+    saveRecordNote: fight.saveRecordNote,
+  }
+
   // 还没有打怪：发起人建场，其他人等
   if (!snapshot) {
     return (
@@ -468,30 +482,61 @@ export default function BossFightPage() {
         <CreatePanel
           isHost={isHost}
           gameReady={game?.status === 'in_progress'}
+          sportType={game?.sport_type}
           busy={actionBusy === 'create'}
           onCreate={(movementId, durationSec) => void runAction('create', () => fight.create({ movement: movementId, bossId: PHASE1_BOSS_ID, durationSec }), '打怪发起啦，喊大家来集合')}
+          onCreateSegment={(opts) => void runAction('create', () => fight.create({ mode: 'segments', bossId: PHASE1_BOSS_ID, ...opts }), '约定好啦，喊大家来集合')}
         />
         <p className="bf-privacy">{PRIVACY_LINE}</p>
       </div>
     )
   }
 
-  // 终局：结算
+  // 终局：结算（约定段模式走自己的战报，两种模式分开讲、不混着算）
   if (snapshot.status === 'won' || snapshot.status === 'escaped' || snapshot.status === 'aborted') {
     return (
       <div className="bf-page">{header}
-        <SettlementPanel
+        {isSegmentFight(snapshot) ? (
+          <SegmentReport
+            snapshot={snapshot}
+            userId={user?.id}
+            isHost={isHost}
+            busy={actionBusy}
+            runAction={runAction}
+            actions={segmentActions}
+            onRebook={() => void rebook()}
+            onBack={() => navigate(`/game/${gameId}`)}
+          />
+        ) : (
+          <SettlementPanel
+            snapshot={snapshot}
+            isHost={isHost}
+            myReps={myFightReps}
+            myDamage={fight.myDamage}
+            hasSession={Boolean(sessionId)}
+            sessionDone={sessionDone}
+            finishing={finishing}
+            onFinishSession={() => void finishSession()}
+            onRebook={() => void rebook()}
+            onBack={() => navigate(`/game/${gameId}`)}
+          />
+        )}
+      </div>
+    )
+  }
+
+  // 约定段模式的集结与战斗：没有摄像头，约定与格子就是全部
+  if (isSegmentFight(snapshot)) {
+    return (
+      <div className="bf-page far">{header}
+        <SegmentFightView
           snapshot={snapshot}
-          isHost={isHost}
-          myReps={myFightReps}
-          myDamage={fight.myDamage}
-          hasSession={Boolean(sessionId)}
-          sessionDone={sessionDone}
-          finishing={finishing}
-          onFinishSession={() => void finishSession()}
-          onRebook={() => void rebook()}
-          onBack={() => navigate(`/game/${gameId}`)}
+          userId={user?.id}
+          busy={actionBusy}
+          runAction={runAction}
+          actions={segmentActions}
         />
+        <button type="button" className="bf-text-btn" onClick={() => navigate(`/game/${gameId}`)}>回组局页</button>
       </div>
     )
   }
@@ -664,18 +709,31 @@ export default function BossFightPage() {
 function CreatePanel(props: {
   isHost: boolean
   gameReady: boolean
+  sportType?: string
   busy: boolean
   onCreate: (movement: string, durationSec: number) => void
+  onCreateSegment: (opts: { segmentFormat?: string; segmentMovement?: string }) => void
 }) {
   const [movement, setMovement] = useState<string>('squat')
   const [durationSec, setDurationSec] = useState<number>(300)
+  // 二期：健身局可以二选一（摄像头计数 / 约定段）；其他运动只有约定段
+  const isFitnessGame = !props.sportType || props.sportType === 'fitness'
+  const [mode, setMode] = useState<'camera' | 'segments'>(isFitnessGame ? 'camera' : 'segments')
+  const segTemplate = segmentTemplateFor(props.sportType)
+  const [segFormat, setSegFormat] = useState<string>(segTemplate.formats?.[0]?.value || '')
+  const [segMovement, setSegMovement] = useState<string>(segTemplate.movements?.[0]?.value || '')
+  const activeSegLabel = segTemplate.formats
+    ? segTemplate.formats.find((f) => f.value === segFormat)?.segmentLabel || segTemplate.segmentLabel
+    : segTemplate.movements
+      ? segTemplate.movements.find((m) => m.value === segMovement)?.segmentLabel || segTemplate.segmentLabel
+      : segTemplate.segmentLabel
   const boss = bossInfo(PHASE1_BOSS_ID)
   if (!props.gameReady) {
     return (
       <section className="bf-create">
         <img className="bf-create-boss" src={boss?.image} alt={boss?.name} draggable={false} />
         <h2>{boss?.name}</h2>
-        <p>活动开始以后，就能在这里发起打怪了。大家到场签到后，一起开摄像头打它。</p>
+        <p>活动开始以后，就能在这里发起打怪了。大家到场签到后，就能一起打它了。</p>
       </section>
     )
   }
@@ -689,11 +747,76 @@ function CreatePanel(props: {
       </section>
     )
   }
+  const segmentForm = (
+    <>
+      {segTemplate.formats && (
+        <>
+          <h3>先定打法 <small>开打就不能改了</small></h3>
+          <div className="bf-chips" role="radiogroup" aria-label="选打法">
+            {segTemplate.formats.map((f) => (
+              <button key={f.value} type="button" role="radio" aria-checked={segFormat === f.value} className={segFormat === f.value ? 'active' : ''} onClick={() => setSegFormat(f.value)}>
+                {f.name}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+      {segTemplate.movements && (
+        <>
+          <h3>选动作 <small>全队一起做同一个</small></h3>
+          <div className="bf-chips" role="radiogroup" aria-label="选段动作">
+            {segTemplate.movements.map((m) => (
+              <button key={m.value} type="button" role="radio" aria-checked={segMovement === m.value} className={segMovement === m.value ? 'active' : ''} onClick={() => setSegMovement(m.value)}>
+                {m.name}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+      <div className="bf-seg-preview">
+        <p className="bf-seg-bigline">{activeSegLabel}</p>
+        <p className="bf-note">{segTemplate.totalLabel}。打满就赢，没打满它会带着剩下的格跑掉——先把约定说清，省得打完吵架。</p>
+      </div>
+      <button
+        type="button"
+        className="btn btn--primary btn--block bf-big-btn"
+        disabled={props.busy}
+        onClick={() => props.onCreateSegment({
+          ...(segTemplate.formats ? { segmentFormat: segFormat } : {}),
+          ...(segTemplate.movements ? { segmentMovement: segMovement } : {}),
+        })}
+      >
+        {props.busy ? '正在发起…' : '就这么约，喊大家集合'}
+      </button>
+    </>
+  )
+  if (!isFitnessGame) {
+    return (
+      <section className="bf-create">
+        <img className="bf-create-boss" src={boss?.image} alt={boss?.name} draggable={false} />
+        <h2>{boss?.name} · {boss?.tier}</h2>
+        <p>{boss?.blurb}</p>
+        <p>这一局不用摄像头：大家先把约定说好，打完一段记一格，格子打满就赢。</p>
+        {segmentForm}
+      </section>
+    )
+  }
   return (
     <section className="bf-create">
       <img className="bf-create-boss" src={boss?.image} alt={boss?.name} draggable={false} />
       <h2>{boss?.name} · {boss?.tier}</h2>
       <p>{boss?.blurb}</p>
+      <h3>这次怎么打</h3>
+      <div className="bf-chips" role="radiogroup" aria-label="选打怪方式">
+        <button type="button" role="radio" aria-checked={mode === 'camera'} className={mode === 'camera' ? 'active' : ''} onClick={() => setMode('camera')}>
+          摄像头计数
+        </button>
+        <button type="button" role="radio" aria-checked={mode === 'segments'} className={mode === 'segments' ? 'active' : ''} onClick={() => setMode('segments')}>
+          约定段
+        </button>
+      </div>
+      {mode === 'segments' ? segmentForm : (
+      <>
       <h3>选动作 <small>全队一起练同一个</small></h3>
       <div className="bf-chips" role="radiogroup" aria-label="选动作">
         {FIGHT_MOVEMENTS.map((m) => (
@@ -717,6 +840,8 @@ function CreatePanel(props: {
       <button type="button" className="btn btn--primary btn--block bf-big-btn" disabled={props.busy} onClick={() => props.onCreate(movement, durationSec)}>
         {props.busy ? '正在发起…' : '发起打怪，喊大家集合'}
       </button>
+      </>
+      )}
     </section>
   )
 }

@@ -27,13 +27,22 @@ function gameId(req: Request): number {
 }
 
 const createSchema = z.object({
-  movement: z.string().min(1).max(50),
+  movement: z.string().min(1).max(50).optional(),
   bossId: z.string().min(1).max(50).optional(),
   durationSec: z.number().int().min(60).max(1800).optional(),
+  // 二期约定段模式：一期客户端不传这些字段，行为一字不变
+  mode: z.enum(['camera', 'segments']).optional(),
+  segmentFormat: z.string().min(1).max(50).optional(),
+  segmentMovement: z.string().min(1).max(50).optional(),
 });
 const joinSchema = z.object({ sessionId: z.string().min(1).max(100).optional() });
 const linkSchema = z.object({ sessionId: z.string().min(1).max(100) });
 const readySchema = z.object({ ready: z.boolean() });
+const settleSegmentsSchema = z.object({ segmentsDone: z.number().int().min(0).max(100) });
+const recordNoteSchema = z.object({
+  km: z.number().min(0).max(1000).optional(),
+  minutes: z.number().int().min(0).max(100000).optional(),
+});
 
 router.post('/games/:id/boss-fight', asyncHandler(async (req, res) => {
   const body = createSchema.parse(req.body || {});
@@ -69,6 +78,25 @@ router.post('/games/:id/boss-fight/leave', asyncHandler(async (req, res) => {
 
 router.get('/games/:id/boss-fight/latency', asyncHandler(async (req, res) => {
   success(res, await BossFight.latencySummary(gameId(req), req.user!.id));
+}));
+
+// 二期约定段模式：记段 / 收场结算 / 确认参加 / 战报自愿记录（规则全在 service）
+router.post('/games/:id/boss-fight/segment', asyncHandler(async (req, res) => {
+  success(res, await BossFight.recordSegment(gameId(req), req.user!.id), '记上一段');
+}));
+
+router.post('/games/:id/boss-fight/settle-segments', asyncHandler(async (req, res) => {
+  const body = settleSegmentsSchema.parse(req.body || {});
+  success(res, await BossFight.settleSegments(gameId(req), req.user!.id, body), '结算好了');
+}));
+
+router.post('/games/:id/boss-fight/confirm-participation', asyncHandler(async (req, res) => {
+  success(res, await BossFight.confirmParticipation(gameId(req), req.user!.id), '确认好了');
+}));
+
+router.post('/games/:id/boss-fight/record-note', asyncHandler(async (req, res) => {
+  const body = recordNoteSchema.parse(req.body || {});
+  success(res, await BossFight.saveRecordNote(gameId(req), req.user!.id, body), '记下来了');
 }));
 
 export default router;

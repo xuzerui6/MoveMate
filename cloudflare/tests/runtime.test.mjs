@@ -133,6 +133,25 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.equal(c.preserved.user.nickname,'老实例房主');assert.equal(c.preserved.chat.content,'老消息你好');
  assert.equal(c.preserved.createdGames,1);
  });
+ await t.test('boss segment upgrade: phase-1 boss tables gain segment columns and the ledger table in place, rows preserved',async()=>{
+ const namespace=await mf.getDurableObjectNamespace('BACKEND');const actor=namespace.get(namespace.idFromName('boss-segment-upgrade'));
+ const c=await actor.bossSegmentUpgradeCase();
+ // Before: the phase-2 columns and ledger table simply do not exist on the long-lived instance.
+ assert.ok(!c.before.fightColumns.includes('mode'));assert.ok(!c.before.fightColumns.includes('segments_total'));
+ assert.ok(!c.before.partColumns.includes('participated'));assert.equal(c.before.segmentsTable,0);
+ assert.match(c.before.modeError,/no such column|has no column/);
+ // After the boot path: every phase-2 column exists, the ledger table exists and starts empty.
+ for(const col of ['mode','template_id','segment_format','segment_label','total_label','segments_total','segments_done'])assert.ok(c.after.fightColumns.includes(col),'boss_fights.'+col);
+ for(const col of ['participated','participated_at','record_km','record_minutes'])assert.ok(c.after.partColumns.includes(col),'boss_fight_participants.'+col);
+ assert.equal(c.after.segmentsTable,1);assert.equal(c.after.segmentsRows,0);
+ // The settled phase-1 fight is untouched and reads as a camera fight under the new defaults.
+ assert.equal(c.after.fight.movement,'squat');assert.equal(c.after.fight.status,'won');
+ assert.equal(c.after.fight.mode,'camera');assert.equal(Number(c.after.fight.segments_total),0);
+ assert.equal(c.after.fight.settle_key,'fight-old-1:settle');
+ assert.deepEqual(c.after.participants.map(r=>Number(r.baseline_reps)),[40,35]);
+ assert.deepEqual(c.after.participants.map(r=>Number(r.accepted_reps)),[55,48]);
+ assert.deepEqual(c.after.participants.map(r=>Number(r.participated)),[0,0]);
+ });
  await t.test('school gate upgrade: pre-decoupling instance gains the registration switch; JLSU venues open for games, registration stays closed',async()=>{
  const namespace=await mf.getDurableObjectNamespace('BACKEND');const actor=namespace.get(namespace.idFromName('school-gate-upgrade'));
  const c=await actor.schoolGateUpgradeCase();

@@ -350,6 +350,9 @@ function ensureSchema(conn: DatabaseSync): void {
     );
 
     -- 组队打怪（附四一期）：一场打怪挂在一个组局上，服务端权威账本
+    -- 二期加约定段模式：mode 区分两种模式（默认 camera，一期行为不变）；
+    -- 段模式创建时把约定拍快照存进 fight 行（template_id/segment_format/
+    -- segment_label/total_label/segments_total），开打后不随模板表变化。
     CREATE TABLE IF NOT EXISTS boss_fights (
       id TEXT PRIMARY KEY,
       game_id INTEGER NOT NULL REFERENCES games(id),
@@ -366,7 +369,14 @@ function ensureSchema(conn: DatabaseSync): void {
       ends_at TEXT,
       ended_at TEXT,
       settle_key TEXT UNIQUE,
-      settled_at TEXT
+      settled_at TEXT,
+      mode TEXT NOT NULL DEFAULT 'camera',
+      template_id TEXT,
+      segment_format TEXT,
+      segment_label TEXT,
+      total_label TEXT,
+      segments_total INTEGER NOT NULL DEFAULT 0,
+      segments_done INTEGER NOT NULL DEFAULT 0
     );
     CREATE UNIQUE INDEX IF NOT EXISTS one_open_boss_fight_per_game
       ON boss_fights (game_id) WHERE status IN ('gathering', 'fighting');
@@ -381,8 +391,24 @@ function ensureSchema(conn: DatabaseSync): void {
       accepted_reps INTEGER NOT NULL DEFAULT 0,
       last_report_at TEXT,
       joined_at TEXT NOT NULL,
+      participated INTEGER NOT NULL DEFAULT 0,
+      participated_at TEXT,
+      record_km REAL,
+      record_minutes INTEGER,
       PRIMARY KEY (fight_id, user_id)
     );
+
+    -- 二期约定段账本：一段一行（live=当场记、wrapup=收场补记），战报逐段列时间
+    CREATE TABLE IF NOT EXISTS boss_fight_segments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      fight_id TEXT NOT NULL REFERENCES boss_fights(id),
+      seq INTEGER NOT NULL,
+      recorded_by INTEGER NOT NULL REFERENCES users(id),
+      recorded_at TEXT NOT NULL,
+      source TEXT NOT NULL DEFAULT 'live',
+      UNIQUE (fight_id, seq)
+    );
+    CREATE INDEX IF NOT EXISTS idx_boss_fight_segments_fight ON boss_fight_segments (fight_id);
     CREATE UNIQUE INDEX IF NOT EXISTS one_fight_per_session
       ON boss_fight_participants (session_id) WHERE session_id IS NOT NULL;
 
@@ -468,6 +494,18 @@ function ensureSchema(conn: DatabaseSync): void {
   ensureColumn('chat_messages', 'kind', "TEXT NOT NULL DEFAULT 'user'");
   // 注册开关与校区启用解耦：旧库的 schools 还没有这一列，补上后由 seed/门维护写正确值
   ensureColumn('schools', 'registration_open', 'INTEGER NOT NULL DEFAULT 1');
+  // 打怪二期约定段模式：存量实例的 boss 表没有这些列，补齐后老行按默认值即一期摄像头口径
+  ensureColumn('boss_fights', 'mode', "TEXT NOT NULL DEFAULT 'camera'");
+  ensureColumn('boss_fights', 'template_id', 'TEXT');
+  ensureColumn('boss_fights', 'segment_format', 'TEXT');
+  ensureColumn('boss_fights', 'segment_label', 'TEXT');
+  ensureColumn('boss_fights', 'total_label', 'TEXT');
+  ensureColumn('boss_fights', 'segments_total', 'INTEGER NOT NULL DEFAULT 0');
+  ensureColumn('boss_fights', 'segments_done', 'INTEGER NOT NULL DEFAULT 0');
+  ensureColumn('boss_fight_participants', 'participated', 'INTEGER NOT NULL DEFAULT 0');
+  ensureColumn('boss_fight_participants', 'participated_at', 'TEXT');
+  ensureColumn('boss_fight_participants', 'record_km', 'REAL');
+  ensureColumn('boss_fight_participants', 'record_minutes', 'INTEGER');
 }
 
 // ================================================================

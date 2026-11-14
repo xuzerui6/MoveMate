@@ -177,3 +177,58 @@
 .bf-reframe-view canvas { width: 100%; height: 100%; }
 .bf-reframe-view video { max-width: 100%; }
 .bf-reframe .bf-cam-chip { top: 10px; left: 10px; font-size: 13px; }
+
+/* ---- 二期约定段模式 ---- */
+.bf-seg-stage {
+  position: relative; height: min(46vh, 420px); min-height: 260px;
+  border-radius: 18px; overflow: hidden; background: #17141f;
+  border: 1px solid #e3e0ee; margin-top: 6px;
+}
+.bf-seg-stage img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.bf-seg-contract { margin-top: 14px; }
+.bf-seg-contract h2 { font-size: 20px; margin: 0 0 6px; }
+.bf-seg-bigline { font-size: 21px; font-weight: 700; line-height: 1.45; margin: 6px 0; color: #1d1d24; }
+.bf-seg-total { font-size: 16px; color: #33333d; margin: 8px 0 4px; }
+.bf-pips { display: flex; gap: 8px; margin: 10px 0; flex-wrap: wrap; }
+.bf-pip { width: 30px; height: 30px; border-radius: 9px; border: 2px solid #c9c4e4; background: #fff; }
+.bf-pip.done { background: linear-gradient(135deg, #e2483d, #f0734f); border-color: #d2402f; }
+.bf-pips.huge { gap: 10px; }
+.bf-pips.huge .bf-pip { width: 46px; height: 46px; border-radius: 12px; border-width: 3px; }
+.bf-seg-fight { margin-top: 14px; }
+.bf-seg-remain { font-size: 26px; font-weight: 700; }
+.bf-seg-remain b { font-size: 44px; color: #d2402f; font-variant-numeric: tabular-nums; }
+.bf-seg-remind { font-size: 17px; color: #33333d; margin: 4px 0 10px; }
+.bf-seg-done-btn { min-height: 76px; font-size: 26px; font-weight: 800; border-radius: 16px; margin-top: 8px; }
+.bf-seg-confirm { border: 2px solid #e2483d; border-radius: 16px; padding: 14px; margin-top: 8px; background: #fff5f3; }
+.bf-seg-confirm p { font-size: 19px; font-weight: 700; margin: 0 0 10px; }
+.bf-seg-confirm-actions { display: flex; gap: 10px; }
+.bf-seg-confirm-actions .btn { min-height: 56px; font-size: 18px; flex: 1; }
+.bf-seg-combo { font-size: 20px; font-weight: 700; color: #7a4fd0; text-align: center; margin: 10px 0 0; }
+.bf-seg-log { list-style: none; padding: 0; margin: 14px 0 0; color: #55555f; font-size: 14px; line-height: 1.9; }
+.bf-seg-log em { font-style: normal; color: #a05a00; margin-left: 6px; }
+.bf-seg-log.report { text-align: left; }
+.bf-seg-me { margin-top: 12px; }
+.bf-seg-confirmed { font-size: 16px; font-weight: 700; color: #1e7d46; text-align: center; }
+.bf-seg-wrap { border: 1px solid #d8d8de; border-radius: 16px; padding: 14px; margin-top: 10px; }
+.bf-seg-stepper { display: flex; align-items: center; gap: 14px; margin: 10px 0; }
+.bf-seg-stepper button {
+  width: 56px; height: 56px; border-radius: 50%; border: 1px solid #c9c4e4;
+  background: #fff; font-size: 26px; cursor: pointer;
+}
+.bf-seg-stepper button:disabled { opacity: 0.35; cursor: default; }
+.bf-seg-stepper b { font-size: 34px; font-variant-numeric: tabular-nums; }
+.bf-seg-preview { margin-top: 4px; }
+.bf-seg-mode-tag {
+  display: inline-block; background: #efeaff; color: #5b3bb8; border-radius: 999px;
+  padding: 4px 12px; font-size: 13px; font-weight: 700; margin-bottom: 8px;
+}
+.bf-seg-report-summary { margin: 12px 0; }
+.bf-seg-roster { margin: 12px 0; display: grid; gap: 8px; }
+.bf-seg-note { border: 1px solid #e3e0ee; border-radius: 16px; padding: 14px; margin: 14px 0; text-align: left; }
+.bf-seg-note p { font-size: 14px; color: #55555f; line-height: 1.6; margin: 0 0 10px; }
+.bf-seg-note-inputs { display: flex; gap: 12px; flex-wrap: wrap; }
+.bf-seg-note-inputs label { font-size: 15px; display: inline-flex; align-items: center; gap: 6px; }
+.bf-seg-note-inputs input {
+  width: 92px; min-height: 48px; font-size: 16px; border: 1px solid #c9c4e4;
+  border-radius: 10px; padding: 6px 10px;
+}
