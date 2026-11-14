@@ -1,6 +1,7 @@
-import { withTransaction } from '../../server/src/db/pool';
+import { pool, withTransaction } from '../../server/src/db/pool';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import type { ActorDatabase } from './db';
+import type { VoicePool } from './voice-pool';
 import { readAvatar, saveAvatar } from '../../server/src/storage/avatars';
 import { provisionAdmin } from '../../server/src/services/admin-provision.service';
 import { provisionUser } from '../../server/src/services/user-provision.service';
@@ -19,8 +20,22 @@ export function authorized(request: Request, secret?: string): boolean {
   return actual.length === expected.length && timingSafeEqual(actual, expected);
 }
 
+const voiceDeviceSlot = (value: unknown): number => {
+  if (!Number.isInteger(value) || Number(value) < 1 || Number(value) > 5) throw new Error('设备位置不存在');
+  return Number(value);
+};
+
 export class Migration {
-  constructor(private db: ActorDatabase) {}
+  constructor(private db: ActorDatabase, private voicePool?: VoicePool, private onDeviceRevoke?: (leaseIds: string[]) => Promise<void>) {}
+
+  /** 语音池运维快照：设置 + 设备行（不含密封身份） + 当前租约数。 */
+  private async voiceSettingsSnapshot() {
+    const settings = await this.voicePool!.settings();
+    const devices = (await pool.query('SELECT slot,state,enabled,verified FROM voice_devices ORDER BY slot')).rows
+      .map(row => ({ slot: Number(row.slot), state: String(row.state), enabled: !!row.enabled, verified: !!row.verified }));
+    const leases = Number((await pool.query('SELECT COUNT(*) AS n FROM voice_leases')).rows[0]?.n ?? 0);
+    return { settings, devices, leases };
+  }
   meta(key: string): string | undefined { return this.db.storage.sql.exec('SELECT value FROM actor_meta WHERE key=?', key).toArray()[0]?.value as string | undefined; }
   set(key: string, value: string) { this.db.storage.sql.exec('INSERT INTO actor_meta(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value', key, value); }
   active() { return this.meta('active') === 'true'; }
@@ -43,6 +58,44 @@ export class Migration {
           nickname: input.nickname, email: input.email, ['password']: input.password,
           schoolId: input.schoolId as number, campusId: input.campusId as number,
         }));
+      }
+      if (action === 'voice-settings' && (request.method === 'GET' || request.method === 'POST')) {
+        if (!this.active()) throw new Error('Instance is not active');
+        if (!this.voicePool) throw new Error('Voice pool is not wired on this instance');
+        if (request.method === 'POST') {
+          const input = (body ?? {}) as { enabled?: unknown; quotaConfirmed?: unknown; validationUsers?: unknown };
+          if ((input.enabled !== undefined && typeof input.enabled !== 'boolean')
+            || (input.quotaConfirmed !== undefined && typeof input.quotaConfirmed !== 'boolean')
+            || (input.validationUsers !== undefined && !Array.isArray(input.validationUsers))) throw new Error('Invalid voice-settings input');
+          // 与管理员 PATCH /api/v1/admin/voice 完全同一条校验路径（VoicePool.configure）：
+          // 验证账号须存在且最多五个；开启总开关须已确认额度且至少一台 bound+enabled+verified 设备。
+          await this.voicePool.configure(input);
+        }
+        return Response.json(await this.voiceSettingsSnapshot());
+      }
+      if (action === 'voice-device-create' && request.method === 'POST') {
+        if (!this.active()) throw new Error('Instance is not active');
+        if (!this.voicePool) throw new Error('Voice pool is not wired on this instance');
+        const input = (body ?? {}) as { slot?: unknown; activate?: unknown };
+        const slot = voiceDeviceSlot(input.slot);
+        // 与管理员 POST /api/v1/admin/voice/devices/:slot/(create|activate) 完全同一条路径（VoicePool.bind）：
+        // 默认生成新设备身份并向上游取激活码；activate=true 时改为轮询已生成激活码的完成状态
+        // （人工在小智端输完码后由运维通道确认 bound，校验与拒绝文案都走 bind 原样）。
+        await this.voicePool.bind(slot, input.activate !== true);
+        // 与管理员创建接口同一份快照（VoicePool.snapshot）：含 activation 激活码字段，不另拆形状、
+        // 也不多带任何密封身份材料——管理员快照本身就是运维可见面。
+        return Response.json(await this.voicePool.snapshot());
+      }
+      if (action === 'voice-device-flags' && request.method === 'POST') {
+        if (!this.active()) throw new Error('Instance is not active');
+        if (!this.voicePool) throw new Error('Voice pool is not wired on this instance');
+        const input = (body ?? {}) as { slot?: unknown; enabled?: unknown; verified?: unknown };
+        const slot = voiceDeviceSlot(input.slot);
+        // 与管理员 PATCH /api/v1/admin/voice/devices/:slot 完全同一条路径（VoicePool.changeDevice，非重置）：
+        // 标志缺省即保持原值；未绑定设备不许启用/验证（「设备尚未绑定」）；停用/取消验证回收其租约。
+        const revoke = await this.voicePool.changeDevice(slot, input, false);
+        if (revoke.length && this.onDeviceRevoke) await this.onDeviceRevoke(revoke);
+        return Response.json(await this.voiceSettingsSnapshot());
       }
       if (action === 'status' && request.method === 'GET') return Response.json({ active: this.active(), manifest: JSON.parse(this.meta('manifest') || 'null'), verified: this.meta('verified') || null, parts: this.db.storage.sql.exec('SELECT snapshot,part,hash FROM import_checkpoints ORDER BY part').toArray() });
       if (action === 'begin' && request.method === 'POST') {
@@ -119,6 +172,8 @@ export class Migration {
         this.db.seedSchoolRegistry();
         // 同理，导入前建好的表可能缺后加的列：开放后按当前结构再补一次（幂等）
         this.db.upgradeColumns();
+        // 学校开关解耦：导入的数据里吉体校区还没启用、注册开关列可能刚补上，开放后再维护一次
+        this.db.applySchoolGates();
         return Response.json({ ok: true, active: true });
       }
       return Response.json({ error: 'Unknown migration action' }, { status: 404 });

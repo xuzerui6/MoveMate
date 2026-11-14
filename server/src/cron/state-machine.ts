@@ -59,11 +59,20 @@ async function notifyMembersByEmail(
 
 // ================================================================
 // 定时任务 1：check_game_ready
-// 扫描 recruiting/full 且距开始 ≤30min 的局 → ready
+// 扫描 recruiting/full 且开始时间在 [now-30min, now+30min] 内的局 → ready
+//
+// 下界取 now-30min 而不是 now（严格未来）：建局后不足一个 tick 就到开始
+// 时间的局，可能没有任何一次 tick 落在「已建局且未到开始时间」的窗口里
+// （如开始前 45 秒建局、tick 在整分钟边界执行）。旧下界下这类局开始时间
+// 一过便永远匹配不上，卡在 recruiting/full 无法签到、无法开始，直到
+// 30 分钟后被超时取消（2026-11-14 线上事故，正式版局 id 10）。
+// 下界与 auto_cancel_expired 的取消线（开始后 30 分钟）对齐：取消线以内
+// 的局先补推进到 ready，再由 start_in_progress 按既有规则在同一 tick 内
+// 开始（≥2 人）或取消（<2 人）；取消线以外仍归 auto_cancel_expired。
 // ================================================================
 async function checkGameReady(): Promise<void> {
-  const now = isoNow();
   const thirtyMinLater = isoFromNow(30 * 60 * 1000);
+  const thirtyMinAgo = isoFromNow(-30 * 60 * 1000);
 
   // Step 1: SELECT 受影响的局
   let { rows: affected } = await pool.query(
@@ -71,7 +80,7 @@ async function checkGameReady(): Promise<void> {
      WHERE status IN ('recruiting', 'full')
        AND julianday(start_time) <= julianday($1)
        AND julianday(start_time) > julianday($2)`,
-    [thirtyMinLater, now],
+    [thirtyMinLater, thirtyMinAgo],
   );
 
   if (affected.length === 0) return;

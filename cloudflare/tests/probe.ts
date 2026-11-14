@@ -33,6 +33,10 @@ export class TestBackend extends MoveMateBackend {
     this.ctx.storage.sql.exec("UPDATE actor_meta SET value='1' WHERE key='lifecycle_due'");
     await this.alarm();
   }
+  async rewindGameStart(id: number, startTime: string) {
+    // A deterministic test clock; these RPCs do not exist in production.
+    this.ctx.storage.sql.exec('UPDATE games SET start_time=? WHERE id=?', startTime, id);
+  }
   async ageSession(id: string, seconds: number) {
     // A deterministic test clock; these RPCs do not exist in production.
     const since = new Date(Date.now() - seconds * 1000).toISOString();
@@ -226,6 +230,143 @@ export class TestBackend extends MoveMateBackend {
       invite: await attempt(() => ensureInviteCode(hostId)),
       blocks: await attempt(async () => (await listBlocks(hostId)).length),
     }));
+  }
+  /**
+   * School-gate upgrade case (regression for the registration/games decoupling):
+   * rewinds schools/campuses/venues to their pre-decoupling shape (no
+   * registration_open column, JLSU campuses/venues inactive, stale sport types
+   * on the Linhe gym), replays the constructor boot path, and proves the
+   * instance lands on the decoupled standing state with rows preserved.
+   */
+  async schoolGateUpgradeCase() {
+    const sql = this.ctx.storage.sql;
+    sql.exec('DROP TABLE IF EXISTS venues');
+    sql.exec('DROP TABLE IF EXISTS campuses');
+    sql.exec('DROP TABLE IF EXISTS schools');
+    sql.exec(`CREATE TABLE schools (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      code TEXT NOT NULL UNIQUE,
+      name TEXT NOT NULL,
+      is_active INTEGER NOT NULL DEFAULT 1
+    )`);
+    sql.exec(`CREATE TABLE campuses (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      school_id INTEGER NOT NULL REFERENCES schools(id),
+      code TEXT NOT NULL,
+      name TEXT NOT NULL,
+      is_active INTEGER NOT NULL DEFAULT 1
+    )`);
+    sql.exec(`CREATE TABLE venues (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      school_id INTEGER NOT NULL REFERENCES schools(id),
+      campus_id INTEGER NOT NULL REFERENCES campuses(id),
+      name TEXT NOT NULL,
+      sport_types TEXT DEFAULT '[]',
+      is_active INTEGER NOT NULL DEFAULT 1
+    )`);
+    sql.exec("INSERT INTO schools(id,code,name,is_active) VALUES(1,'jlu','吉林大学',1),(2,'jlsu','吉林体育学院',1)");
+    sql.exec("INSERT INTO campuses(id,school_id,code,name,is_active) VALUES(1,1,'qianwei-center','前卫校区（中心校区）',1),(4,2,'jlsu-nanling','南岭校区',0),(5,2,'jlsu-linhe','临河校区',0)");
+    sql.exec("INSERT INTO venues(id,school_id,campus_id,name,sport_types,is_active) VALUES(10,1,1,'宋治平体育馆篮球比赛馆','[\"basketball\"]',1)");
+    // 注意：吉体的四间场地故意不预置——存量实例里它们从没落过库（venues 不在注册表回补范围内），
+    // 启动路径必须能把种子场地补出来，否则吉体账号建局时无场地可选。
+    const columns = () => sql.exec('PRAGMA table_info(schools)').toArray().map(row => String(row.name));
+    const before = {
+      columns: columns(),
+      linheActive: Number(sql.exec('SELECT is_active FROM campuses WHERE id=5').one().is_active),
+    };
+    await this.ctx.storage.transaction(async () => {
+      const db = new ActorDatabase(this.ctx.storage);
+      db.bootstrap();
+      db.seedSchoolRegistry();
+      db.applySchoolGates();
+    });
+    return {
+      before,
+      after: {
+        columns: columns(),
+        jlu: sql.exec("SELECT registration_open FROM schools WHERE code='jlu'").one(),
+        jlsu: sql.exec("SELECT registration_open FROM schools WHERE code='jlsu'").one(),
+        jlsuCampuses: sql.exec('SELECT id, is_active FROM campuses WHERE school_id=2 ORDER BY id').toArray(),
+        jlsuVenues: sql.exec('SELECT id, name, is_active FROM venues WHERE school_id=2 ORDER BY id').toArray(),
+        linheGym: sql.exec("SELECT sport_types FROM venues WHERE school_id=2 AND name='临河校区健身馆'").one(),
+      },
+      preserved: {
+        sentinel: sql.exec('SELECT name, is_active, sport_types FROM venues WHERE id=10').one(),
+        campusCount: Number(sql.exec('SELECT COUNT(*) AS n FROM campuses').one().n),
+        venueCount: Number(sql.exec('SELECT COUNT(*) AS n FROM venues').one().n),
+      },
+    };
+  }
+  /**
+   * Boss phase-2 existing-instance upgrade: rewind the boss tables to their
+   * phase-1 shapes (no mode/segment columns, no segments ledger), seed a
+   * settled camera fight, then run the real boot path and prove the segment
+   * columns/table arrive in place with every phase-1 row preserved.
+   */
+  async bossSegmentUpgradeCase() {
+    const sql = this.ctx.storage.sql;
+    sql.exec('DROP TABLE IF EXISTS boss_fight_segments');
+    sql.exec('DROP TABLE IF EXISTS boss_fight_participants');
+    sql.exec('DROP TABLE IF EXISTS boss_fights');
+    sql.exec(`CREATE TABLE boss_fights (
+      id TEXT PRIMARY KEY,
+      game_id INTEGER NOT NULL REFERENCES games(id),
+      boss_id TEXT NOT NULL DEFAULT 'kunkun',
+      movement TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'gathering',
+      max_hp INTEGER NOT NULL DEFAULT 0,
+      hp INTEGER NOT NULL DEFAULT 0,
+      version INTEGER NOT NULL DEFAULT 0,
+      duration_sec INTEGER NOT NULL DEFAULT 600,
+      created_by INTEGER NOT NULL REFERENCES users(id),
+      created_at TEXT NOT NULL,
+      started_at TEXT,
+      ends_at TEXT,
+      ended_at TEXT,
+      settle_key TEXT UNIQUE,
+      settled_at TEXT
+    )`);
+    sql.exec(`CREATE TABLE boss_fight_participants (
+      fight_id TEXT NOT NULL REFERENCES boss_fights(id),
+      user_id INTEGER NOT NULL REFERENCES users(id),
+      ready INTEGER NOT NULL DEFAULT 0,
+      status TEXT NOT NULL DEFAULT 'joined',
+      session_id TEXT REFERENCES sport_sessions(id),
+      baseline_reps INTEGER NOT NULL DEFAULT 0,
+      accepted_reps INTEGER NOT NULL DEFAULT 0,
+      last_report_at TEXT,
+      joined_at TEXT NOT NULL,
+      PRIMARY KEY (fight_id, user_id)
+    )`);
+    sql.exec("INSERT OR IGNORE INTO users(id,nickname,email,password_hash,student_id) VALUES(901,'老实例队长','boss-upgrade-901@dajju.local','x','stu-901'),(902,'老实例队员','boss-upgrade-902@dajju.local','x','stu-902')");
+    sql.exec("INSERT OR IGNORE INTO games(id,host_id,sport_type,location,max_players,start_time,status) VALUES(901,901,'fitness','老实例球场',10,'2026-11-14T00:00:00.000Z','in_progress')");
+    sql.exec("INSERT INTO boss_fights(id,game_id,boss_id,movement,status,max_hp,hp,version,duration_sec,created_by,created_at,started_at,ends_at,ended_at,settle_key,settled_at) VALUES('fight-old-1',901,'aoye_yanshi','squat','won',120,0,7,300,901,'2026-11-13T00:00:00.000Z','2026-11-13T00:01:00.000Z','2026-11-13T00:06:00.000Z','2026-11-13T00:06:00.000Z','fight-old-1:settle','2026-11-13T00:06:00.000Z')");
+    sql.exec("INSERT INTO boss_fight_participants(fight_id,user_id,ready,status,baseline_reps,accepted_reps,joined_at) VALUES('fight-old-1',901,1,'joined',40,55,'2026-11-13T00:00:30.000Z'),('fight-old-1',902,1,'joined',35,48,'2026-11-13T00:00:40.000Z')");
+    const fightColumns = () => sql.exec('PRAGMA table_info(boss_fights)').toArray().map(row => String(row.name));
+    const partColumns = () => sql.exec('PRAGMA table_info(boss_fight_participants)').toArray().map(row => String(row.name));
+    let modeError = '';
+    try { sql.exec('SELECT mode FROM boss_fights').toArray(); } catch (error) { modeError = String((error as Error)?.message || error); }
+    const before = {
+      fightColumns: fightColumns(),
+      partColumns: partColumns(),
+      modeError,
+      segmentsTable: sql.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='boss_fight_segments'").toArray().length,
+    };
+    await this.ctx.storage.transaction(async () => {
+      const db = new ActorDatabase(this.ctx.storage);
+      db.bootstrap();
+    });
+    return {
+      before,
+      after: {
+        fightColumns: fightColumns(),
+        partColumns: partColumns(),
+        segmentsTable: sql.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='boss_fight_segments'").toArray().length,
+        segmentsRows: Number(sql.exec('SELECT COUNT(*) AS n FROM boss_fight_segments').one().n),
+        fight: sql.exec('SELECT movement,status,mode,segments_total,segments_done,settle_key FROM boss_fights WHERE id=?', 'fight-old-1').one(),
+        participants: sql.exec('SELECT user_id,baseline_reps,accepted_reps,participated FROM boss_fight_participants WHERE fight_id=? ORDER BY user_id', 'fight-old-1').toArray(),
+      },
+    };
   }
   async brokenOutbox(repair = false) {
     if (repair) this.ctx.storage.sql.exec("UPDATE event_outbox SET payload='{}' WHERE payload='not-json'");

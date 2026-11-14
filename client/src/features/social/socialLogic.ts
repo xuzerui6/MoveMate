@@ -111,6 +111,23 @@ export function removalLock(startTime: string, now: Date = new Date()): { locked
 
 /* ---------- 邀请好友 ---------- */
 
+export type InviteGate = 'can-invite' | 'ready-blocked' | 'hidden';
+
+/**
+ * 邀请入口的形态（与服务端 inviteToGame 同口径）：只有发起人能邀请人进局，
+ * 且只在招募中/已满员时能邀；到了「即将开始」（ready）谁都不能再邀。
+ * 页面据此决定按钮长什么样，别让人点开对话框、选完人再吃一个必然失败的提交：
+ * - can-invite：发起人且还在招募/满员阶段，按钮可点；
+ * - ready-blocked：发起人但已到 ready，按钮置灰并给一句说明；
+ * - hidden：其他所有情况（普通成员、已开始/已结束等），不显示邀请按钮。
+ */
+export function inviteGate(input: { isCreator: boolean; status: string }): InviteGate {
+  if (!input.isCreator) return 'hidden';
+  if (input.status === 'ready') return 'ready-blocked';
+  if (input.status === 'recruiting' || input.status === 'full') return 'can-invite';
+  return 'hidden';
+}
+
 /** 邀请名单：好友里排除已经在局里的人 */
 export function inviteCandidates(friends: FriendEntry[], memberIds: Iterable<number>): FriendEntry[] {
   const members = new Set(memberIds);

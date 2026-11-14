@@ -166,6 +166,21 @@ export class XiaozhiAudio {
     this.sending = value
   }
 
+  /** 麦克风采集是否正在运行（worklet 节点已建）。 */
+  get capturing(): boolean {
+    return this.node !== null
+  }
+
+  /**
+   * 本地播放队列还要多久才真正放完（毫秒）。
+   * 服务端说「说完了」时队列里常还压着一截声音；回声门要等这个值归零
+   * 才算排空。没有在播的音频时为 0。
+   */
+  playbackRemainingMs(): number {
+    if (!this.context || !this.scheduledSources.size) return 0
+    return Math.max(0, Math.round((this.nextPlayAt - this.context.currentTime) * 1000))
+  }
+
   clearPlayback(): void {
     for (const source of this.scheduledSources) {
       try { source.onended = null; source.stop() } catch { /* already stopped */ }

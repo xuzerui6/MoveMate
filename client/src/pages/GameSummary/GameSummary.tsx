@@ -31,7 +31,8 @@ const GameSummary: React.FC = () => {
 
   const loadRebooked = useCallback(async (gameId: number) => {
     try {
-      setRebooked(await gamesApi.fetchGameDetail(String(gameId)));
+      const res = await gamesApi.fetchGameDetail(String(gameId));
+      setRebooked(gamesApi.extractGameDetail(res));
     } catch {
       setRebooked(null);
     }

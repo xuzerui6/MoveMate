@@ -356,6 +356,44 @@ test('cron readiness, attendance and completion settle personal XP exactly once'
   assert.match((await send(viewer, game.id, '已结束不能发送')).error, /只读/);
 });
 
+test('a full game whose start passes before any tick still recovers: ready, check-in and play after auto-start', async () => {
+  // 复现 2026-11-14 线上事故：局在开始前不到一个 tick 建好并满员，没有任何一次
+  // tick 落在「已建局且开始时间仍在未来」的窗口里；旧逻辑下开始时间一过便永远
+  // 卡在 full——签到被拒、发起人也无法开始。
+  const game = await games.createGame(input(2, 10)); await games.joinGame(game.id, player1.user.id);
+  assert.equal((await games.getGameDetail(game.id)).game.status, 'full');
+  await assert.rejects(games.checkInForGame(game.id, host.user.id), /不可签到/);
+  await assert.rejects(games.startGameWithAuth(game.id, host.user.id), /只能开始/);
+  // 时钟越过开始时间（把开始时间拨到 2 分钟前，等价于所有 tick 都错过了窗口）
+  await pool.query('UPDATE games SET start_time = $2 WHERE id = $1', [game.id, new Date(Date.now() - 2 * 60000).toISOString()]);
+  await runCronTick();
+  // 同一 tick 内先被补推进到 ready（签到提醒为凭据），再按既有自动开始规则进入 in_progress
+  assert.equal((await games.getGameDetail(game.id)).game.status, 'in_progress');
+  const reminders = await notifications.getNotifications(player1.user.id);
+  assert.ok(reminders.notifications.some((n: any) => n.type === 'check_in_reminder' && Number(n.game_id) === Number(game.id)));
+  // 自动开始之后仍可签到、确认到场——恢复局的成员不会被签到门槛锁死
+  await games.checkInForGame(game.id, host.user.id);
+  await games.checkInForGame(game.id, player1.user.id);
+  await games.confirmAttendance(game.id, host.user.id, player1.user.id);
+  // 签到是局内运动计时的前置：签到后可正常为本局开计时
+  const session = await motion.createSession(host.user.id, { sportType: 'basketball', source: 'timer', gameId: game.id });
+  assert.ok(session.id);
+  await games.completeGameWithAuth(game.id, host.user.id);
+});
+
+test('recovery never crosses the 30-minute cancel horizon, and under-subscribed stuck games follow normal ready rules', async () => {
+  // 开始已过 31 分钟（取消线以外）：不捞回，仍由 auto_cancel_expired 取消
+  const expired = await games.createGame(input(2, 10)); await games.joinGame(expired.id, player1.user.id);
+  await pool.query('UPDATE games SET start_time = $2 WHERE id = $1', [expired.id, new Date(Date.now() - 31 * 60000).toISOString()]);
+  await runCronTick();
+  assert.equal((await games.getGameDetail(expired.id)).game.status, 'cancelled');
+  // 只有发起人一人的局错过窗口：补到 ready 后与正常 ready 局同规则——到点人数不足自动取消
+  const lonely = await games.createGame(input(4, 10));
+  await pool.query('UPDATE games SET start_time = $2 WHERE id = $1', [lonely.id, new Date(Date.now() - 2 * 60000).toISOString()]);
+  await runCronTick();
+  assert.equal((await games.getGameDetail(lonely.id)).game.status, 'cancelled');
+});
+
 test('sport rates use only volume and round accumulated seconds', () => {
   for(const sport of ['basketball','badminton','soccer','volleyball','tennis','table_tennis','dance','taekwondo']) assert.equal(motion.calculateXp(sport,90,500,'timer'),3);
   assert.equal(motion.calculateXp('running',40,0,'timer'),2);

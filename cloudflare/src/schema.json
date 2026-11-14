@@ -1,10 +1,10 @@
 {
   "schema": [
-    "CREATE TABLE IF NOT EXISTS motion_profiles (\n      user_id INTEGER PRIMARY KEY REFERENCES users(id), total_xp INTEGER NOT NULL DEFAULT 0,\n      avatar_gender TEXT NOT NULL DEFAULT 'male', active_outfit TEXT NOT NULL DEFAULT 'default',\n      equipped TEXT NOT NULL DEFAULT '{}', seen_outfits TEXT NOT NULL DEFAULT '[\"default\"]', age INTEGER NOT NULL DEFAULT 24\n    )",
+    "CREATE TABLE IF NOT EXISTS motion_profiles (\n      user_id INTEGER PRIMARY KEY REFERENCES users(id), total_xp INTEGER NOT NULL DEFAULT 0,\n      avatar_gender TEXT NOT NULL DEFAULT 'male', active_outfit TEXT NOT NULL DEFAULT 'default',\n      equipped TEXT NOT NULL DEFAULT '{}', seen_outfits TEXT NOT NULL DEFAULT '[\"default\"]', age INTEGER NOT NULL DEFAULT 24,\n      avatar_look TEXT NOT NULL DEFAULT ''\n    )",
     "CREATE TABLE IF NOT EXISTS sport_sessions (\n      id TEXT PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id), game_id INTEGER REFERENCES games(id),\n      sport_type TEXT NOT NULL, source TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'running',\n      active_since TEXT, effective_ms INTEGER NOT NULL DEFAULT 0, reps INTEGER NOT NULL DEFAULT 0,\n      metrics TEXT NOT NULL DEFAULT '{}', xp INTEGER NOT NULL DEFAULT 0, settled INTEGER NOT NULL DEFAULT 0,\n      created_at TEXT NOT NULL, ended_at TEXT\n    )",
     "CREATE TABLE IF NOT EXISTS sport_intervals (\n      id INTEGER PRIMARY KEY AUTOINCREMENT, session_id TEXT NOT NULL REFERENCES sport_sessions(id),\n      started_at TEXT NOT NULL, ended_at TEXT, effective_ms INTEGER NOT NULL DEFAULT 0\n    )",
     "CREATE TABLE IF NOT EXISTS xp_ledger (\n      session_id TEXT PRIMARY KEY REFERENCES sport_sessions(id), user_id INTEGER NOT NULL REFERENCES users(id),\n      xp INTEGER NOT NULL, created_at TEXT NOT NULL\n    )",
-    "CREATE TABLE IF NOT EXISTS schools (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      code TEXT NOT NULL UNIQUE,\n      name TEXT NOT NULL,\n      is_active INTEGER NOT NULL DEFAULT 1\n    )",
+    "CREATE TABLE IF NOT EXISTS schools (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      code TEXT NOT NULL UNIQUE,\n      name TEXT NOT NULL,\n      is_active INTEGER NOT NULL DEFAULT 1,\n      registration_open INTEGER NOT NULL DEFAULT 1\n    )",
     "CREATE TABLE IF NOT EXISTS campuses (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      school_id INTEGER NOT NULL REFERENCES schools(id),\n      code TEXT NOT NULL,\n      name TEXT NOT NULL,\n      is_active INTEGER NOT NULL DEFAULT 1\n    )",
     "CREATE TABLE IF NOT EXISTS venues (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      school_id INTEGER NOT NULL REFERENCES schools(id),\n      campus_id INTEGER NOT NULL REFERENCES campuses(id),\n      name TEXT NOT NULL,\n      sport_types TEXT DEFAULT '[]',\n      is_active INTEGER NOT NULL DEFAULT 1\n    )",
     "CREATE TABLE IF NOT EXISTS users (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      nickname TEXT NOT NULL,\n      email TEXT NOT NULL UNIQUE,\n      password_hash TEXT NOT NULL,\n      avatar_url TEXT DEFAULT '',\n      department TEXT DEFAULT '',\n      student_id TEXT NOT NULL,\n      email_verified INTEGER DEFAULT 0,\n      school_id INTEGER DEFAULT 1,\n      campus_id INTEGER DEFAULT 1,\n      is_admin INTEGER NOT NULL DEFAULT 0,\n      reward_points INTEGER NOT NULL DEFAULT 0,\n      reward_level INTEGER NOT NULL DEFAULT 1,\n      reward_streak INTEGER NOT NULL DEFAULT 0,\n      completed_games INTEGER NOT NULL DEFAULT 0,\n      hosted_completed_games INTEGER NOT NULL DEFAULT 0,\n      reward_badges TEXT DEFAULT '[]',\n      last_rewarded_date TEXT,\n      qq_email TEXT DEFAULT '',\n      sport_preferences TEXT NOT NULL DEFAULT '[]',\n      created_at TEXT DEFAULT (datetime('now')),\n      updated_at TEXT DEFAULT (datetime('now'))\n    , invite_code TEXT)",
@@ -18,8 +18,9 @@
     "CREATE TABLE IF NOT EXISTS game_removals (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      game_id INTEGER NOT NULL REFERENCES games(id),\n      user_id INTEGER NOT NULL REFERENCES users(id),\n      host_id INTEGER NOT NULL REFERENCES users(id),\n      created_at TEXT DEFAULT (datetime('now'))\n    )",
     "CREATE TABLE IF NOT EXISTS reports (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      reporter_id INTEGER NOT NULL REFERENCES users(id),\n      target_type TEXT NOT NULL,\n      target_id TEXT NOT NULL,\n      reason TEXT DEFAULT '',\n      evidence TEXT DEFAULT '{}',\n      status TEXT NOT NULL DEFAULT 'pending',\n      resolution_note TEXT DEFAULT '',\n      appeal TEXT,\n      appeal_status TEXT,\n      handled_by INTEGER REFERENCES users(id),\n      handled_at TEXT,\n      created_at TEXT DEFAULT (datetime('now'))\n    )",
     "CREATE TABLE IF NOT EXISTS user_social_settings (\n      user_id INTEGER PRIMARY KEY REFERENCES users(id),\n      friend_request_scope TEXT NOT NULL DEFAULT 'anyone',\n      updated_at TEXT DEFAULT (datetime('now'))\n    )",
-    "CREATE TABLE IF NOT EXISTS boss_fights (\n      id TEXT PRIMARY KEY,\n      game_id INTEGER NOT NULL REFERENCES games(id),\n      boss_id TEXT NOT NULL DEFAULT 'kunkun',\n      movement TEXT NOT NULL,\n      status TEXT NOT NULL DEFAULT 'gathering',\n      max_hp INTEGER NOT NULL DEFAULT 0,\n      hp INTEGER NOT NULL DEFAULT 0,\n      version INTEGER NOT NULL DEFAULT 0,\n      duration_sec INTEGER NOT NULL DEFAULT 600,\n      created_by INTEGER NOT NULL REFERENCES users(id),\n      created_at TEXT NOT NULL,\n      started_at TEXT,\n      ends_at TEXT,\n      ended_at TEXT,\n      settle_key TEXT UNIQUE,\n      settled_at TEXT\n    )",
-    "CREATE TABLE IF NOT EXISTS boss_fight_participants (\n      fight_id TEXT NOT NULL REFERENCES boss_fights(id),\n      user_id INTEGER NOT NULL REFERENCES users(id),\n      ready INTEGER NOT NULL DEFAULT 0,\n      status TEXT NOT NULL DEFAULT 'joined',\n      session_id TEXT REFERENCES sport_sessions(id),\n      baseline_reps INTEGER NOT NULL DEFAULT 0,\n      accepted_reps INTEGER NOT NULL DEFAULT 0,\n      last_report_at TEXT,\n      joined_at TEXT NOT NULL,\n      PRIMARY KEY (fight_id, user_id)\n    )",
+    "CREATE TABLE IF NOT EXISTS boss_fights (\n      id TEXT PRIMARY KEY,\n      game_id INTEGER NOT NULL REFERENCES games(id),\n      boss_id TEXT NOT NULL DEFAULT 'kunkun',\n      movement TEXT NOT NULL,\n      status TEXT NOT NULL DEFAULT 'gathering',\n      max_hp INTEGER NOT NULL DEFAULT 0,\n      hp INTEGER NOT NULL DEFAULT 0,\n      version INTEGER NOT NULL DEFAULT 0,\n      duration_sec INTEGER NOT NULL DEFAULT 600,\n      created_by INTEGER NOT NULL REFERENCES users(id),\n      created_at TEXT NOT NULL,\n      started_at TEXT,\n      ends_at TEXT,\n      ended_at TEXT,\n      settle_key TEXT UNIQUE,\n      settled_at TEXT,\n      mode TEXT NOT NULL DEFAULT 'camera',\n      template_id TEXT,\n      segment_format TEXT,\n      segment_label TEXT,\n      total_label TEXT,\n      segments_total INTEGER NOT NULL DEFAULT 0,\n      segments_done INTEGER NOT NULL DEFAULT 0\n    )",
+    "CREATE TABLE IF NOT EXISTS boss_fight_participants (\n      fight_id TEXT NOT NULL REFERENCES boss_fights(id),\n      user_id INTEGER NOT NULL REFERENCES users(id),\n      ready INTEGER NOT NULL DEFAULT 0,\n      status TEXT NOT NULL DEFAULT 'joined',\n      session_id TEXT REFERENCES sport_sessions(id),\n      baseline_reps INTEGER NOT NULL DEFAULT 0,\n      accepted_reps INTEGER NOT NULL DEFAULT 0,\n      last_report_at TEXT,\n      joined_at TEXT NOT NULL,\n      participated INTEGER NOT NULL DEFAULT 0,\n      participated_at TEXT,\n      record_km REAL,\n      record_minutes INTEGER,\n      PRIMARY KEY (fight_id, user_id)\n    )",
+    "CREATE TABLE IF NOT EXISTS boss_fight_segments (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      fight_id TEXT NOT NULL REFERENCES boss_fights(id),\n      seq INTEGER NOT NULL,\n      recorded_by INTEGER NOT NULL REFERENCES users(id),\n      recorded_at TEXT NOT NULL,\n      source TEXT NOT NULL DEFAULT 'live',\n      UNIQUE (fight_id, seq)\n    )",
     "CREATE TABLE IF NOT EXISTS boss_fight_rewards (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      fight_id TEXT NOT NULL REFERENCES boss_fights(id),\n      user_id INTEGER NOT NULL REFERENCES users(id),\n      item_id TEXT NOT NULL,\n      status TEXT NOT NULL DEFAULT 'pending',\n      created_at TEXT NOT NULL,\n      granted_at TEXT,\n      UNIQUE (fight_id, user_id, item_id)\n    )",
     "CREATE TABLE IF NOT EXISTS avatar_souvenirs (\n      user_id INTEGER NOT NULL REFERENCES users(id),\n      item_id TEXT NOT NULL,\n      source TEXT NOT NULL DEFAULT 'boss_fight',\n      source_id TEXT,\n      granted_at TEXT NOT NULL,\n      PRIMARY KEY (user_id, item_id)\n    )",
     "CREATE TABLE IF NOT EXISTS boss_fight_latency (\n      id INTEGER PRIMARY KEY AUTOINCREMENT,\n      fight_id TEXT NOT NULL,\n      user_id INTEGER NOT NULL,\n      reported_total INTEGER NOT NULL,\n      accepted_delta INTEGER NOT NULL,\n      received_at TEXT NOT NULL,\n      processing_ms REAL NOT NULL,\n      client_ts INTEGER\n    )",
@@ -40,6 +41,7 @@
     "CREATE UNIQUE INDEX IF NOT EXISTS one_game_sport ON sport_sessions(game_id,user_id) WHERE game_id IS NOT NULL",
     "CREATE UNIQUE INDEX IF NOT EXISTS one_open_interval ON sport_intervals(session_id) WHERE ended_at IS NULL",
     "CREATE UNIQUE INDEX IF NOT EXISTS one_open_boss_fight_per_game\n      ON boss_fights (game_id) WHERE status IN ('gathering', 'fighting')",
+    "CREATE INDEX IF NOT EXISTS idx_boss_fight_segments_fight ON boss_fight_segments (fight_id)",
     "CREATE UNIQUE INDEX IF NOT EXISTS one_fight_per_session\n      ON boss_fight_participants (session_id) WHERE session_id IS NOT NULL",
     "CREATE INDEX IF NOT EXISTS idx_boss_fight_latency_fight ON boss_fight_latency (fight_id)",
     "CREATE INDEX IF NOT EXISTS gym_workouts_owner ON gym_workouts(user_id,created_at)",
@@ -47,21 +49,23 @@
   ],
   "metadata": [
     {
-      "sql": "INSERT OR IGNORE INTO schools (id,code,name,is_active) VALUES (?,?,?,?)",
+      "sql": "INSERT OR IGNORE INTO schools (id,code,name,is_active,registration_open) VALUES (?,?,?,?,?)",
       "args": [
         1,
         "jlu",
         "吉林大学",
+        1,
         1
       ]
     },
     {
-      "sql": "INSERT OR IGNORE INTO schools (id,code,name,is_active) VALUES (?,?,?,?)",
+      "sql": "INSERT OR IGNORE INTO schools (id,code,name,is_active,registration_open) VALUES (?,?,?,?,?)",
       "args": [
         2,
         "jlsu",
         "吉林体育学院",
-        1
+        1,
+        0
       ]
     },
     {
@@ -101,7 +105,7 @@
         2,
         "jlsu-nanling",
         "南岭校区",
-        0
+        1
       ]
     },
     {
@@ -111,7 +115,7 @@
         2,
         "jlsu-linhe",
         "临河校区",
-        0
+        1
       ]
     },
     {
@@ -518,7 +522,7 @@
         4,
         "南岭校区室内篮球馆武术馆",
         "[\"basketball\",\"fitness\"]",
-        0
+        1
       ]
     },
     {
@@ -529,7 +533,7 @@
         4,
         "南岭校区摔跤柔道馆",
         "[\"fitness\"]",
-        0
+        1
       ]
     },
     {
@@ -540,7 +544,7 @@
         5,
         "临河校区田径场",
         "[\"running\",\"soccer\"]",
-        0
+        1
       ]
     },
     {
@@ -551,7 +555,7 @@
         5,
         "临河校区健身馆",
         "[\"fitness\",\"basketball\",\"volleyball\",\"badminton\",\"dance\",\"taekwondo\"]",
-        0
+        1
       ]
     }
   ]

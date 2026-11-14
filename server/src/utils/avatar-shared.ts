@@ -94,7 +94,10 @@ export function unlockedOutfitsMap(counts: AvatarCounts): Record<string, boolean
  * - 夜幕兽群其余成员（wuya_shou / yeyi_fu / chenyuan_yingjiao / lieyue_manniu）先只进图鉴；
  * - ziye_yanlong 子夜魇龙、suiyue_shoumo 碎月睡魔：周怪槽位，未开放；
  * - ziye_zhong 子夜钟巨像：活动槽位，未开放。
- * availability 只是图鉴/前端展示口径；kunkun 保留在首位是历史默认
+ * availability 是图鉴/前端展示口径，也是服务端发起门禁口径：只有标 'fight' 的怪
+ * 能被发起挑战（与正式版 2026-11-13 的可用性门禁一致）。kunkun 是占位默认怪，
+ * 官方客户端从不指定它；显式标 'fight' 是数据修正，保证「不指定 boss 时默认
+ * kunkun」的历史行为在门禁下不变。kunkun 保留在首位是历史默认
  * （boss-fight 测试冻结了「不指定 boss 时默认 kunkun」），不要调整顺序。
  */
 export interface BossCatalogEntry {
@@ -108,7 +111,7 @@ export interface BossCatalogEntry {
 }
 
 export const BOSS_CATALOG: Array<BossCatalogEntry> = [
-  { boss_id: 'kunkun', name: '困困兽', souvenir_item_id: 'kunkun_medal' },
+  { boss_id: 'kunkun', name: '困困兽', souvenir_item_id: 'kunkun_medal', availability: 'fight' },
   { boss_id: 'aoye_yanshi', name: '熬夜魇狮', souvenir_item_id: 'aoye_yanshi_medal', tier: '首领', availability: 'fight' },
   { boss_id: 'wuya_shou', name: '雾牙兽', souvenir_item_id: 'wuya_shou_medal', tier: '普通', availability: 'roster' },
   { boss_id: 'yeyi_fu', name: '夜翼蝠', souvenir_item_id: 'yeyi_fu_medal', tier: '普通', availability: 'roster' },

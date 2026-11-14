@@ -2,7 +2,19 @@
  * 运动局 API: CRUD + 加入/退出 + 确认开始/结束
  */
 import client from './client';
-import type { CreateGameData, Game, GameFilter, PaginatedResponse } from '../types';
+import type { CreateGameData, Game, GameFilter, GameMeta, PaginatedResponse } from '../types';
+
+// 与 auth.ts 相同的解包约定：axios 拦截器解析出的是服务端信封
+// {code, message, data}，api 函数必须取内层 data 再交给页面。
+function unwrap<T>(response: T | { data: T }): T {
+  return (response as { data?: T }).data ?? (response as T);
+}
+
+/** 建局表单数据（仅当前用户学校的校区/场地，服务端按学校过滤） */
+export async function fetchGameMeta(): Promise<GameMeta> {
+  const response = await client.get('/games/meta');
+  return unwrap<GameMeta>(response);
+}
 
 /** 获取运动局列表（支持筛选） */
 export async function fetchGames(
@@ -19,6 +31,20 @@ export async function fetchGames(
 /** 获取单个运动局详情 */
 export async function fetchGameDetail(id: string): Promise<Game> {
   return client.get(`/games/${id}`);
+}
+
+/**
+ * 详情响应 → Game：fetchGameDetail 原样透传（信封或载荷都可能），消费方统一走
+ * 这里提取：取内层 {game, members} 的 game，并把 members 挂成 participants。
+ * （useGameDetail 与 GameSummary 共用此规则。GameSummary 曾直接把信封当 Game
+ * 存下，participants/status 恒为 undefined：确认名单永远为空、「加入下周局」
+ * 按钮永远不渲染——接口层检查全过、真页面坏，2026-11-14 契约测试抓出。）
+ */
+export function extractGameDetail(res: any): Game {
+  const body = res.data || res;
+  const gameData = body.game || body;
+  if (body.members) gameData.participants = body.members;
+  return gameData as Game;
 }
 
 /** 创建运动局 */

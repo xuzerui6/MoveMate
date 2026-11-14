@@ -14,6 +14,7 @@ const designSystem = fs.readFileSync(path.join(root, 'src/design-system.css'), '
 const lobby = fs.readFileSync(path.join(root, 'src/pages/Lobby/Lobby.tsx'), 'utf8');
 const app = fs.readFileSync(path.join(root, 'src/App.tsx'), 'utf8');
 const gameDetail = fs.readFileSync(path.join(root, 'src/pages/GameDetail/GameDetail.tsx'), 'utf8');
+const bossState = fs.readFileSync(path.join(root, 'src/features/motion/lib/bossFightState.ts'), 'utf8');
 
 /* ---------- Residual A: /groups top action row can never overlap ---------- */
 
@@ -178,9 +179,14 @@ test('C2: the detail page renders the muted teaser from the shared predicate, wi
   assert.match(gameDetail, /bossFightTeaserVisible\(\{isMember,checkedInAt:member\?\.checked_in_at,gameStatus:game\.status\}\)/);
   assert.match(gameDetail, /boss-fight-teaser/);
   assert.match(gameDetail, /开局后开启/);
+  // 文案由共享函数的模式分流产出，详情页只负责调用（文案本体在 bossFightState）。
+  assert.match(gameDetail, /bossTeaserCopy\(game\.sport_type,hasCheckedIn\)/);
+  assert.match(gameDetail, /bossEntryCopy\(game\.sport_type\)/);
   // 未签到：开局 + 签到两个条件都写明；已签到：只差开局，文案不能再要求签到。
-  assert.match(gameDetail, /活动开始、你签到之后/);
-  assert.match(gameDetail, /你已经签到啦，活动一开始/);
+  assert.match(bossState, /活动开始、你签到之后/);
+  assert.match(bossState, /你已经签到啦，活动一开始/);
+  // 非健身局（篮球/跑步等）不用摄像头：入口与预告文案走约定段口径，绝不提摄像头。
+  assert.match(bossState, /先把约定说好，打完一段记一格/);
   // 预告卡只能去图鉴看看，不能有直达打怪页的按钮冒充真入口。
   const teaser = gameDetail.match(/bossFightTeaserVisible\(\{[^}]*\}\)&&<section[\s\S]*?<\/section>/);
   assert.ok(teaser, 'teaser section missing');

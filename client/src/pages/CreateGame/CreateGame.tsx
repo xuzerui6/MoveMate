@@ -5,7 +5,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { showToast } from '../../hooks/useAuth';
 import * as gamesApi from '../../api/games';
-import * as authApi from '../../api/auth';
 import { getErrorMessage } from '../../api/client';
 import SportPicker from '../../components/SportPicker';
 import { useAuthStore } from '../../stores/authStore';
@@ -56,7 +55,7 @@ const CreateGame: React.FC = () => {
   const defaultStartTime = getDefaultTime();
   const minStartTime = useMemo(() => formatDateTimeLocal(new Date()), []);
 
-  const [bootstrapError,setBootstrapError]=useState('');
+  const [metaError,setMetaError]=useState('');
   const [sportType, setSportType] = useState<SportType | undefined>();
   const [startTime, setStartTime] = useState(defaultStartTime);
   const [endTime, setEndTime] = useState(getDefaultEndTime(defaultStartTime));
@@ -74,7 +73,8 @@ const CreateGame: React.FC = () => {
   const [showVenueRecommendations, setShowVenueRecommendations] = useState(false);
 
   useEffect(() => {
-    authApi.fetchBootstrap()
+    // 建局数据走登录态接口：服务端只返回本校的校区/场地，切换不同学校的账号也不会串
+    gamesApi.fetchGameMeta()
       .then((data) => {
         setCampuses(data.campuses || []);
         setVenues(data.venues || []);
@@ -83,7 +83,7 @@ const CreateGame: React.FC = () => {
         }
       })
       .catch((e) => {
-        setBootstrapError(getErrorMessage(e));
+        setMetaError(getErrorMessage(e));
         setCampuses([]);
         setVenues([]);
       });
@@ -198,7 +198,7 @@ const CreateGame: React.FC = () => {
       </div>
 
       <div className="ui-pages-creategame-creategame-section">
-{bootstrapError&&<div className="inline-error" role="alert"><p>校区和场地信息暂时无法读取：{bootstrapError}</p><button type="button" className="btn btn--secondary" onClick={()=>window.location.reload()}>重新加载</button></div>}
+{metaError&&<div className="inline-error" role="alert"><p>校区和场地信息暂时无法读取：{metaError}</p><button type="button" className="btn btn--secondary" onClick={()=>window.location.reload()}>重新加载</button></div>}
         <label className="form-label">运动类型</label>
         <SportPicker value={sportType} onChange={setSportType} />
       </div>

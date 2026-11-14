@@ -6,9 +6,10 @@ import {waitForVideoFrame} from '../lib/videoReady';
 import {openPoseTransport, poseModelLabel, type PoseTransport} from '../lib/poseTransport';
 import {evaluateProbe, sustainedDegradation, percentile50, percentile95, type PoseFrame, type PoseModel, type PoseTelemetry, type ProbeFailureReason} from '../lib/poseProtocol';
 import type {ExerciseMetrics,RecognitionDiagnostics} from '../lib/exerciseMetrics';
+import type {GateCounters} from '../lib/gateCounters';
 export type PoseFailurePhase='camera'|'model'|'framing'|'performance'|'inference';
 export type AdaptiveOptions={type:string;key:string;target:number;restored:Partial<ExerciseMetrics>;warmWhenPaused?:boolean};
-export type EngineSnapshot={metrics:ExerciseMetrics;diagnostics:RecognitionDiagnostics};
+export type EngineSnapshot={metrics:ExerciseMetrics;diagnostics:RecognitionDiagnostics;gateCounters:GateCounters};
 type Video=HTMLVideoElement&{requestVideoFrameCallback?:(cb:(now:number,metadata:{mediaTime:number})=>void)=>number;cancelVideoFrameCallback?:(id:number)=>void};
 type Runtime={controller:AbortController;transport:PoseTransport|null;stream:MediaStream|null;runId:number;frameId:number;origin:number|null;lastMedia:number;lastDecoded:number;inFlight:boolean;callback:number;raf:boolean;forceRaf:boolean;appleCamera:boolean;playRetried:boolean;fallbackTimer:ReturnType<typeof setTimeout>|null;preparing:boolean;passive:boolean;probing:boolean;probePhase:'off'|'warm'|'measure';probeKind:'full'|'sanity';warmCount:number;warmSince:number;probeTimer:ReturnType<typeof setTimeout>|null;probeTimes:number[];latencies:number[];times:number[];slowSince:number|null;degradeReason:'fps'|'frame-age'|null;startedAt:number;lastReceived:number;lastSubmitted:number;model:PoseModel;engine:AdaptiveRecognition;key:string;finish:((ready:boolean)=>void)|null;timer:ReturnType<typeof setTimeout>|null;inferTimes:number[];experiment:PoseModel|null;recoveredFrom:PoseModel|null;ladder:PoseRung[];rungIndex:number;selection:PoseSelectionSource;events:string[];stepping:boolean};
 const REASON_LABEL:Record<ProbeFailureReason,string>={'fps':'帧率不足','frame-age':'帧龄过高',stall:'推理停滞','init-error':'初始化失败','inference-error':'推理出错'};
@@ -23,7 +24,7 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
  const [failurePhase,setFailurePhase]=useState<PoseFailurePhase|null>(null);
  const [status,setStatus]=useState<'idle'|'loading'|'ready'|'denied'|'error'>('idle');
  const [state,setState]=useState<{landmarks:Point[]|null;worldLandmarks:Point[]|null;frame:PoseFrame|null;engine:EngineSnapshot|null;key:string;telemetry:PoseTelemetry|null}>({landmarks:null,worldLandmarks:null,frame:null,engine:null,key:'',telemetry:null});
- const publish=(r:Runtime,reason:string,f?:PoseFrame)=>{if(!mounted.current||runtime.current!==r)return;lastStats.current={key:r.key,metrics:structuredClone(r.engine.metrics)};const elapsed=r.times.length>1?r.times[r.times.length-1]-r.times[0]:0;setState({landmarks:f?.landmarks||null,worldLandmarks:f?.worldLandmarks||null,frame:f||null,key:r.key,engine:{metrics:{...r.engine.metrics},diagnostics:{...r.engine.diagnostics}},telemetry:{model:r.model,mode:r.transport?.mode||null,fps:elapsed>0?(r.times.length-1)*1000/elapsed:0,latency:Number.isFinite(percentile95(r.latencies))?percentile95(r.latencies):0,latency50:Number.isFinite(percentile50(r.latencies))?percentile50(r.latencies):0,inference:Number.isFinite(percentile95(r.inferTimes))?percentile95(r.inferTimes):0,experiment:r.experiment,recoveredFrom:r.recoveredFrom,reason,preparing:r.preparing,lowPerformance:r.slowSince!==null&&performance.now()-r.slowSince>=3000,rung:poseRungId(r.ladder[r.rungIndex]),selection:r.selection,events:[...r.events]}});};
+ const publish=(r:Runtime,reason:string,f?:PoseFrame)=>{if(!mounted.current||runtime.current!==r)return;lastStats.current={key:r.key,metrics:structuredClone(r.engine.metrics)};const elapsed=r.times.length>1?r.times[r.times.length-1]-r.times[0]:0;setState({landmarks:f?.landmarks||null,worldLandmarks:f?.worldLandmarks||null,frame:f||null,key:r.key,engine:{metrics:{...r.engine.metrics},diagnostics:{...r.engine.diagnostics},gateCounters:r.engine.gateCountersSnapshot()},telemetry:{model:r.model,mode:r.transport?.mode||null,fps:elapsed>0?(r.times.length-1)*1000/elapsed:0,latency:Number.isFinite(percentile95(r.latencies))?percentile95(r.latencies):0,latency50:Number.isFinite(percentile50(r.latencies))?percentile50(r.latencies):0,inference:Number.isFinite(percentile95(r.inferTimes))?percentile95(r.inferTimes):0,experiment:r.experiment,recoveredFrom:r.recoveredFrom,reason,preparing:r.preparing,lowPerformance:r.slowSince!==null&&performance.now()-r.slowSince>=3000,rung:poseRungId(r.ladder[r.rungIndex]),selection:r.selection,events:[...r.events]}});};
  const release=(r:Runtime)=>{r.runId=++serial.current;r.controller.abort();r.transport?.close();r.stream?.getTracks().forEach(t=>t.stop());if(r.timer)clearTimeout(r.timer);if(r.probeTimer)clearTimeout(r.probeTimer);if(r.fallbackTimer)clearTimeout(r.fallbackTimer);r.finish?.(false);r.finish=null;const v=videoRef.current as Video|null;if(v){if(r.raf)cancelAnimationFrame(r.callback);else v.cancelVideoFrameCallback?.(r.callback);v.srcObject=null;}};
  const stop=useCallback(()=>{const r=runtime.current;if(r){release(r);runtime.current=null;}if(mounted.current){setStatus('idle');setFailurePhase(null);setState(s=>({...s,landmarks:null,worldLandmarks:null,frame:null}));}},[]);
  const performanceFailure=(r:Runtime)=>{setFailurePhase('performance');r.engine.interrupt('画面有点跟不上，我先停在这里。这一组就先数到这儿，歇一下再试，或者改用手动记数。');activeRef.current=false;errorReason.current='这台设备刚才有点跟不上，我先停了下来。歇一下重新开始，或者改用手动记数就好。';release(r);setStatus('error');publish(r,errorReason.current);};
@@ -222,14 +223,17 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
   };
   if(v.requestVideoFrameCallback&&!r.forceRaf){r.raf=false;r.callback=v.requestVideoFrameCallback(callback);r.fallbackTimer=setTimeout(()=>{if(r.controller.signal.aborted)return;v.cancelVideoFrameCallback?.(r.callback);r.forceRaf=true;callback(performance.now());},500);}else{r.raf=true;r.callback=requestAnimationFrame(callback);}
  };
- const start=useCallback(async(forceLite=false)=>{
+ const start=useCallback(async(forceLite=false,externalStream?:MediaStream)=>{
+  // 调用方在用户手势内先行申请好的流（打怪页）：被本 hook 接管（r.stream）
+  // 或在任何不用的出口停掉，绝不悬空占用摄像头。不传则保持原行为。
+  const stopExternal=()=>{externalStream?.getTracks().forEach(t=>t.stop());};
   const appleCamera=usesMainThreadLite(navigator.userAgent,navigator.platform,navigator.maxTouchPoints);
   const plan=planPoseSession(loadPoseModelPreference(),appleCamera,forceLite,loadPoseVerdict());
   const previous=runtime.current;
   if(previous&&!forceLite&&!previous.controller.signal.aborted&&previous.key===opts.current.key&&status==='ready'&&performance.now()-previous.lastReceived<=200){
    const elapsed=previous.times.length>1?previous.times[previous.times.length-1]-previous.times[0]:0,fps=elapsed>0?(previous.times.length-1)*1000/elapsed:0;
    const nextRun=serial.current+1;
-   if(fps>=8&&previous.engine.continuePrepared(nextRun)){serial.current=nextRun;previous.runId=nextRun;previous.frameId=0;previous.passive=false;publish(previous,'起始姿势已准备好，正在继续');return true;}
+   if(fps>=8&&previous.engine.continuePrepared(nextRun)){serial.current=nextRun;previous.runId=nextRun;previous.frameId=0;previous.passive=false;publish(previous,'起始姿势已准备好，正在继续');stopExternal();return true;}
   }
   const oldStats=previous?.key===opts.current.key?previous.engine.metrics:lastStats.current?.key===opts.current.key?lastStats.current.metrics:undefined,saved=oldStats&&oldStats.reps>(opts.current.restored.reps||0)?oldStats:opts.current.restored;
   const startRungId=poseRungId(plan.ladder[plan.startRung]);
@@ -239,8 +243,10 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
   let phase:PoseFailurePhase='camera';errorReason.current='';setFailurePhase(null);setStatus('loading');publish(r,reuse?'正在恢复识别':'正在准备摄像头');
   try{
    if(!reuse){
-    const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:720},height:{ideal:960},aspectRatio:{ideal:3/4}},audio:false});
-    if(r.controller.signal.aborted||!videoRef.current){stream.getTracks().forEach(t=>t.stop());return false;}r.stream=stream;videoRef.current.muted=true;videoRef.current.playsInline=true;videoRef.current.srcObject=stream;await videoRef.current.play();await waitForVideoFrame(videoRef.current,r.controller.signal);phase='model';
+    const stream=externalStream??await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:720},height:{ideal:960},aspectRatio:{ideal:3/4}},audio:false});
+    if(r.controller.signal.aborted){stream.getTracks().forEach(t=>t.stop());return false;}
+    if(!videoRef.current){stream.getTracks().forEach(t=>t.stop());setFailurePhase('camera');errorReason.current='摄像头画面还没准备好，退出这一页再进来试一次。';setStatus('error');return false;}
+    r.stream=stream;videoRef.current.muted=true;videoRef.current.playsInline=true;videoRef.current.srcObject=stream;await videoRef.current.play();await waitForVideoFrame(videoRef.current,r.controller.signal);phase='model';
     publish(r,'正在准备识别');
     // Open the starting rung; an init failure steps down the ladder with its
     // reason recorded instead of jumping straight to Lite.
@@ -259,9 +265,12 @@ export function useAdaptivePose(active:boolean,options:AdaptiveOptions){
     }
     if(r.controller.signal.aborted){r.transport?.close();return false;}
     schedule(r);
+   }else{
+    // 复用已有管线的路径用不上新流，立刻释放，避免摄像头被空占
+    stopExternal();
    }
    return await new Promise<boolean>(resolve=>{r.finish=resolve;if(reuse)frameDeadline(r);else if(r.rungIndex>=r.ladder.length-1)settleProbed(r);else armProbe(r,r.selection==='cache'?'sanity':'full');});
-  }catch(e){if(r.controller.signal.aborted)return false;release(r);setFailurePhase(phase);if(!(e instanceof DOMException&&e.name==='NotAllowedError'))console.error(e);errorReason.current=e instanceof DOMException&&e.name==='NotAllowedError'?'摄像头权限被拒绝，请允许后重试':phase==='camera'?'没找到能用的摄像头，检查一下设备再试。':'识别没能准备好，检查一下网络，再试一次。';setStatus(e instanceof DOMException&&e.name==='NotAllowedError'?'denied':'error');publish(r,errorReason.current);return false;}
+  }catch(e){stopExternal();if(r.controller.signal.aborted)return false;release(r);setFailurePhase(phase);if(!(e instanceof DOMException&&e.name==='NotAllowedError'))console.error(e);errorReason.current=e instanceof DOMException&&e.name==='NotAllowedError'?'摄像头权限被拒绝，请允许后重试':phase==='camera'?'没找到能用的摄像头，检查一下设备再试。':'识别没能准备好，检查一下网络，再试一次。';setStatus(e instanceof DOMException&&e.name==='NotAllowedError'?'denied':'error');publish(r,errorReason.current);return false;}
  },[status]);
  useEffect(()=>{const r=runtime.current;if(!r||r.preparing||r.controller.signal.aborted)return;if(!active){if(!opts.current.warmWhenPaused){r.passive=false;r.runId=++serial.current;r.engine.interrupt();publish(r,'我先停一下，等你回来继续');return;}if(r.key!==opts.current.key){r.passive=false;r.engine.interrupt();return;}const saved=structuredClone(r.engine.metrics);r.runId=++serial.current;r.frameId=0;r.engine=new AdaptiveRecognition(opts.current.type,opts.current.target,saved,r.runId);r.passive=true;r.times=[];publish(r,'已暂停 · 回到起始姿势后自动准备，不计次数或时长');}else{r.passive=false;r.startedAt=performance.now();r.lastReceived=performance.now();r.times=[];r.slowSince=null;r.degradeReason=null;}},[active,options.warmWhenPaused]);
  useEffect(()=>{mounted.current=true;return()=>{mounted.current=false;const r=runtime.current;if(r)release(r);runtime.current=null;};},[]);

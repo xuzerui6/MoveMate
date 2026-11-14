@@ -7,6 +7,7 @@ import extended from '../gym/new-recognition.json';
 import {isExtendedRecognition,requireRecognitionVersion,requireStrategyVersion} from '../gym/recognition-version';
 import * as BossFight from './boss-fight.service';
 import {SOUVENIR_CATALOG,SR_ALT_TIER1_SESSIONS,isTier1Movement,unlockedOutfitsMap} from '../utils/avatar-shared';
+import {parseStoredLook,unlockedPartsMap,validateAvatarLook} from '../utils/avatar-parts';
 
 export const CAMERA_TYPES = new Set(['squat','jumping_jack','high_knees','push_up',...Object.keys(extended)]);
 // Types whose trackers count every rep on exactly one side and report
@@ -298,7 +299,9 @@ export async function trainingState(userId:number) {
     const history=rows.filter(r=>r.status==='finished').map(r=>({ ...decode<any>(r.metrics,{}), id:r.id, workoutId:r.workout_id||undefined,exerciseType:r.sport_type, sportType:r.sport_type, source:r.source, gameId:r.game_id, startTime:r.created_at,endTime:r.ended_at,durationSeconds:Math.floor(r.effective_ms/1000),reps:r.reps,targetReps:20,formScore:Number(decode<any>(r.metrics,{}).formScore||0),xpEarned:r.xp,settled:Boolean(r.settled),unlocked:[],unlockedOutfits:[] }));
     const souvenirRows=(await pool.query<{item_id:string;granted_at:string}>('SELECT item_id,granted_at FROM avatar_souvenirs WHERE user_id=$1 ORDER BY granted_at',[userId])).rows;
     const souvenirs=souvenirRows.map(r=>({item_id:r.item_id,name:SOUVENIR_CATALOG[r.item_id]?.name||r.item_id,granted_at:r.granted_at}));
-    return {nickname:user.nickname,age:profile.age,totalXp:profile.total_xp,xp,level,avatarGender:profile.avatar_gender,activeOutfit:profile.active_outfit,unlockedOutfits,seenOutfits:seen,newlyUnlockedOutfits:Object.keys(unlockedOutfits).filter(k=>(unlockedOutfits as any)[k]&&!seen.includes(k)),equipped:{...defaultEquipment,...decode(profile.equipped,{})},ownedEquipment:ownedIds,completedWorkoutCount:real.length,workouts:real.length,highScoreWorkoutCount:high,srAlternative:{tier1CameraSessions:tier1Sessions,required:SR_ALT_TIER1_SESSIONS,unlocked:tier1Sessions>=SR_ALT_TIER1_SESSIONS},souvenirs,totalSquats:real.reduce((sum,r)=>sum+(r.sport_type==='squat'?r.reps:decode<any>(r.metrics,{}).planSquatReps||0),0),history,sessions:rows.map(sessionView)};
+    const unlockedParts=unlockedPartsMap({real:real.length,high,tier1:tier1Sessions,totalXp:profile.total_xp,level},souvenirRows.map(r=>r.item_id));
+    const avatarLook=parseStoredLook(profile.avatar_look,profile.active_outfit);
+    return {nickname:user.nickname,age:profile.age,totalXp:profile.total_xp,xp,level,avatarGender:profile.avatar_gender,activeOutfit:profile.active_outfit,avatarLook,unlockedParts,unlockedOutfits,seenOutfits:seen,newlyUnlockedOutfits:Object.keys(unlockedOutfits).filter(k=>(unlockedOutfits as any)[k]&&!seen.includes(k)),equipped:{...defaultEquipment,...decode(profile.equipped,{})},ownedEquipment:ownedIds,completedWorkoutCount:real.length,workouts:real.length,highScoreWorkoutCount:high,srAlternative:{tier1CameraSessions:tier1Sessions,required:SR_ALT_TIER1_SESSIONS,unlocked:tier1Sessions>=SR_ALT_TIER1_SESSIONS},souvenirs,totalSquats:real.reduce((sum,r)=>sum+(r.sport_type==='squat'?r.reps:decode<any>(r.metrics,{}).planSquatReps||0),0),history,sessions:rows.map(sessionView)};
   });
 }
 export async function updateAvatar(userId:number,data:any) {
@@ -312,7 +315,16 @@ export async function updateAvatar(userId:number,data:any) {
       (equipped as any)[slot]=id;
     }
     const seen=[...new Set([...state.seenOutfits,...(Array.isArray(data.seenOutfits)?data.seenOutfits.filter((x:any)=>Object.prototype.hasOwnProperty.call(state.unlockedOutfits,x)&&(state.unlockedOutfits as any)[x]):[])])];
-    await pool.query('UPDATE motion_profiles SET avatar_gender=$2,active_outfit=$3,equipped=$4,seen_outfits=$5 WHERE user_id=$1',[userId,data.avatarGender||state.avatarGender,data.activeOutfit||state.activeOutfit,JSON.stringify(equipped),JSON.stringify(seen)]);
+    // 分身形象（look）：给了 avatarLook 就整份校验后落库；只改套装时同步派生一份 outfit 口径，
+    // 保证新旧两条渲染路径看到的永远是同一个形象。预设位在两种路径间保留不丢。
+    let nextLook=state.avatarLook;
+    if (data.avatarLook!==undefined) {
+      nextLook=validateAvatarLook(data.avatarLook,{unlockedOutfits:state.unlockedOutfits,unlockedParts:state.unlockedParts});
+      if (nextLook.mode==='outfit'&&nextLook.outfit) data={...data,activeOutfit:nextLook.outfit};
+    } else if (data.activeOutfit) {
+      nextLook=validateAvatarLook({mode:'outfit',outfit:data.activeOutfit,presets:state.avatarLook.presets||[]},{unlockedOutfits:state.unlockedOutfits,unlockedParts:state.unlockedParts});
+    }
+    await pool.query('UPDATE motion_profiles SET avatar_gender=$2,active_outfit=$3,equipped=$4,seen_outfits=$5,avatar_look=$6 WHERE user_id=$1',[userId,data.avatarGender||state.avatarGender,data.activeOutfit||state.activeOutfit,JSON.stringify(equipped),JSON.stringify(seen),JSON.stringify(nextLook)]);
     return trainingState(userId);
   });
 }

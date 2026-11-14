@@ -13,6 +13,7 @@ import { pgToSqlite, toSqliteDialect, coerceRow, coerceParams } from './sql-dial
 export { pgToSqlite, toSqliteDialect, coerceRow, coerceParams } from './sql-dialect';
 import { DatabaseSync } from 'node:sqlite';
 import { gymSchema } from '../gym/schema';
+import { SCHOOL_GATE_SQL } from './school-gates';
 import '../config';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -157,7 +158,8 @@ function ensureSchema(conn: DatabaseSync): void {
     CREATE TABLE IF NOT EXISTS motion_profiles (
       user_id INTEGER PRIMARY KEY REFERENCES users(id), total_xp INTEGER NOT NULL DEFAULT 0,
       avatar_gender TEXT NOT NULL DEFAULT 'male', active_outfit TEXT NOT NULL DEFAULT 'default',
-      equipped TEXT NOT NULL DEFAULT '{}', seen_outfits TEXT NOT NULL DEFAULT '["default"]', age INTEGER NOT NULL DEFAULT 24
+      equipped TEXT NOT NULL DEFAULT '{}', seen_outfits TEXT NOT NULL DEFAULT '["default"]', age INTEGER NOT NULL DEFAULT 24,
+      avatar_look TEXT NOT NULL DEFAULT ''
     );
     CREATE TABLE IF NOT EXISTS sport_sessions (
       id TEXT PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id), game_id INTEGER REFERENCES games(id),
@@ -186,7 +188,8 @@ function ensureSchema(conn: DatabaseSync): void {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       code TEXT NOT NULL UNIQUE,
       name TEXT NOT NULL,
-      is_active INTEGER NOT NULL DEFAULT 1
+      is_active INTEGER NOT NULL DEFAULT 1,
+      registration_open INTEGER NOT NULL DEFAULT 1
     );
 
     CREATE TABLE IF NOT EXISTS campuses (
@@ -348,6 +351,9 @@ function ensureSchema(conn: DatabaseSync): void {
     );
 
     -- 组队打怪（附四一期）：一场打怪挂在一个组局上，服务端权威账本
+    -- 二期加约定段模式：mode 区分两种模式（默认 camera，一期行为不变）；
+    -- 段模式创建时把约定拍快照存进 fight 行（template_id/segment_format/
+    -- segment_label/total_label/segments_total），开打后不随模板表变化。
     CREATE TABLE IF NOT EXISTS boss_fights (
       id TEXT PRIMARY KEY,
       game_id INTEGER NOT NULL REFERENCES games(id),
@@ -364,7 +370,14 @@ function ensureSchema(conn: DatabaseSync): void {
       ends_at TEXT,
       ended_at TEXT,
       settle_key TEXT UNIQUE,
-      settled_at TEXT
+      settled_at TEXT,
+      mode TEXT NOT NULL DEFAULT 'camera',
+      template_id TEXT,
+      segment_format TEXT,
+      segment_label TEXT,
+      total_label TEXT,
+      segments_total INTEGER NOT NULL DEFAULT 0,
+      segments_done INTEGER NOT NULL DEFAULT 0
     );
     CREATE UNIQUE INDEX IF NOT EXISTS one_open_boss_fight_per_game
       ON boss_fights (game_id) WHERE status IN ('gathering', 'fighting');
@@ -379,8 +392,24 @@ function ensureSchema(conn: DatabaseSync): void {
       accepted_reps INTEGER NOT NULL DEFAULT 0,
       last_report_at TEXT,
       joined_at TEXT NOT NULL,
+      participated INTEGER NOT NULL DEFAULT 0,
+      participated_at TEXT,
+      record_km REAL,
+      record_minutes INTEGER,
       PRIMARY KEY (fight_id, user_id)
     );
+
+    -- 二期约定段账本：一段一行（live=当场记、wrapup=收场补记），战报逐段列时间
+    CREATE TABLE IF NOT EXISTS boss_fight_segments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      fight_id TEXT NOT NULL REFERENCES boss_fights(id),
+      seq INTEGER NOT NULL,
+      recorded_by INTEGER NOT NULL REFERENCES users(id),
+      recorded_at TEXT NOT NULL,
+      source TEXT NOT NULL DEFAULT 'live',
+      UNIQUE (fight_id, seq)
+    );
+    CREATE INDEX IF NOT EXISTS idx_boss_fight_segments_fight ON boss_fight_segments (fight_id);
     CREATE UNIQUE INDEX IF NOT EXISTS one_fight_per_session
       ON boss_fight_participants (session_id) WHERE session_id IS NOT NULL;
 
@@ -448,6 +477,7 @@ function ensureSchema(conn: DatabaseSync): void {
   ensureColumn('users', 'last_rewarded_date', 'TEXT');
   ensureColumn('users', 'qq_email', "TEXT DEFAULT ''");
   ensureColumn('users', 'sport_preferences', "TEXT NOT NULL DEFAULT '[]'");
+  ensureColumn('motion_profiles', 'avatar_look', "TEXT NOT NULL DEFAULT ''");
   ensureColumn('games', 'school_id', 'INTEGER DEFAULT 1');
   ensureColumn('games', 'campus_id', 'INTEGER DEFAULT 1');
   ensureColumn('games', 'venue_id', 'INTEGER');
@@ -464,6 +494,20 @@ function ensureSchema(conn: DatabaseSync): void {
   ensureColumn('games', 'auto_fill', 'INTEGER DEFAULT 0');
   ensureColumn('games', 'rebooked_from_id', 'INTEGER');
   ensureColumn('chat_messages', 'kind', "TEXT NOT NULL DEFAULT 'user'");
+  // 注册开关与校区启用解耦：旧库的 schools 还没有这一列，补上后由 seed/门维护写正确值
+  ensureColumn('schools', 'registration_open', 'INTEGER NOT NULL DEFAULT 1');
+  // 打怪二期约定段模式：存量实例的 boss 表没有这些列，补齐后老行按默认值即一期摄像头口径
+  ensureColumn('boss_fights', 'mode', "TEXT NOT NULL DEFAULT 'camera'");
+  ensureColumn('boss_fights', 'template_id', 'TEXT');
+  ensureColumn('boss_fights', 'segment_format', 'TEXT');
+  ensureColumn('boss_fights', 'segment_label', 'TEXT');
+  ensureColumn('boss_fights', 'total_label', 'TEXT');
+  ensureColumn('boss_fights', 'segments_total', 'INTEGER NOT NULL DEFAULT 0');
+  ensureColumn('boss_fights', 'segments_done', 'INTEGER NOT NULL DEFAULT 0');
+  ensureColumn('boss_fight_participants', 'participated', 'INTEGER NOT NULL DEFAULT 0');
+  ensureColumn('boss_fight_participants', 'participated_at', 'TEXT');
+  ensureColumn('boss_fight_participants', 'record_km', 'REAL');
+  ensureColumn('boss_fight_participants', 'record_minutes', 'INTEGER');
 }
 
 // ================================================================
@@ -571,10 +615,19 @@ const JLSU_VENUES: Array<[number, number, string, string]> = [
   [2, 5, '临河校区健身馆', '["fitness","basketball","volleyball","badminton","dance","taekwondo"]'],
 ];
 
+/** 把学校开关维护到站立状态（存量库：吉体校区/场地启用、注册保持关闭）；空库跳过 */
+function applySchoolGates(conn: DatabaseSync): void {
+  const count = (conn.prepare('SELECT COUNT(*) AS total FROM schools').get() as { total: number }).total;
+  if (!count) return;
+  for (const sql of SCHOOL_GATE_SQL) conn.exec(sql);
+}
+
 function seedJlsuMetadata(conn: DatabaseSync): void {
-  const insertSchool = conn.prepare('INSERT OR IGNORE INTO schools (id, code, name, is_active) VALUES (?, ?, ?, 1)');
-  const insertCampus = conn.prepare('INSERT OR IGNORE INTO campuses (id, school_id, code, name, is_active) VALUES (?, ?, ?, ?, 0)');
-  const insertVenue = conn.prepare('INSERT OR IGNORE INTO venues (id, school_id, campus_id, name, sport_types, is_active) VALUES (?, ?, ?, ?, ?, 0)');
+  // 注册开关与组局可用解耦：学校注册保持关闭（registration_open=0），
+  // 但校区/场地是启用的，内测账号能在自己学校里组局（注册拦截只看注册开关）。
+  const insertSchool = conn.prepare('INSERT OR IGNORE INTO schools (id, code, name, is_active, registration_open) VALUES (?, ?, ?, 1, 0)');
+  const insertCampus = conn.prepare('INSERT OR IGNORE INTO campuses (id, school_id, code, name, is_active) VALUES (?, ?, ?, ?, 1)');
+  const insertVenue = conn.prepare('INSERT OR IGNORE INTO venues (id, school_id, campus_id, name, sport_types, is_active) VALUES (?, ?, ?, ?, ?, 1)');
   const findVenue = conn.prepare('SELECT id FROM venues WHERE school_id = ? AND campus_id = ? AND name = ?');
 
   conn.exec('BEGIN');
@@ -683,6 +736,7 @@ export async function initSQLite(): Promise<void> {
     try {
       ensureSchema(connection);
       seedJluMetadata(connection);
+      applySchoolGates(connection);
       backfillLegacyData(connection);
       seedAdmin(connection);
       db = connection;

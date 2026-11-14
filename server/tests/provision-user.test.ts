@@ -112,8 +112,9 @@ test('provisioning into the closed school does not open it, and public registrat
   const boot = await request('/auth/bootstrap');
   assert.equal(boot.status, 200);
   const jlsu = boot.body.data.schools.find((s: any) => s.code === 'jlsu');
-  assert.equal(jlsu.registration_open, false, 'provisioned members must not flip the derived closed state');
-  assert.ok(boot.body.data.campuses.every((c: any) => c.school_id !== jlsu.id), 'closed school campuses stay unselectable');
+  assert.equal(jlsu.registration_open, false, 'provisioned members must not flip the registration switch');
+  // 解耦后吉体校区在列表里是启用的（组局要用），注册关闭只认 registration_open 开关
+  assert.ok(boot.body.data.campuses.some((c: any) => c.school_id === jlsu.id), 'decoupled: closed school campuses are selectable for games');
   const jlu = boot.body.data.schools.find((s: any) => s.code === 'jlu');
   assert.equal(jlu.registration_open, true);
 

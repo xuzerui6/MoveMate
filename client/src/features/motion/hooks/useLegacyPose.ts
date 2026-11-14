@@ -17,7 +17,7 @@ export function useLegacyPose(active: boolean) {
     if (videoRef.current) videoRef.current.srcObject = null
     if (mounted.current) { setSample({landmarks:null,worldLandmarks:null}); setStatus('idle') }
   }, [])
-  const start = useCallback(async () => {
+  const start = useCallback(async (externalStream?: MediaStream) => {
     stop()
     errorReason.current = ''
     let cameraOpened = false
@@ -25,8 +25,18 @@ export function useLegacyPose(active: boolean) {
     setStatus('loading')
     try {
       const phone = window.matchMedia('(max-width: 699px)').matches
-      const stream = await navigator.mediaDevices.getUserMedia({ video: phone ? { facingMode: 'user', width: { ideal: 720 }, height: { ideal: 960 }, aspectRatio: { ideal: 3 / 4 } } : { facingMode: 'user', width: 720, height: 960 }, audio: false })
-      if (!current.own(() => stream.getTracks().forEach(track => track.stop())) || !videoRef.current) { current.cancel(); return false }
+      // 调用方可在用户手势内先行申请好流再交进来（打怪页）；接管后由本
+      // hook 按既有 ResourceScope 规则负责停止，没交进来时保持原行为。
+      const stream = externalStream ?? await navigator.mediaDevices.getUserMedia({ video: phone ? { facingMode: 'user', width: { ideal: 720 }, height: { ideal: 960 }, aspectRatio: { ideal: 3 / 4 } } : { facingMode: 'user', width: 720, height: 960 }, audio: false })
+      if (!current.own(() => stream.getTracks().forEach(track => track.stop()))) { current.cancel(); return false }
+      if (!videoRef.current) {
+        // 画面元素没挂载时绝不静默失败：给一个能区分于权限问题的原因，
+        // 免得页面又把一切都写成「检查一下权限」（2026-11-14 事故教训）
+        errorReason.current = '摄像头画面还没准备好，退出这一页再进来试一次。'
+        current.cancel()
+        if (mounted.current) setStatus('error')
+        return false
+      }
       videoRef.current.srcObject = stream
       await videoRef.current.play()
       cameraOpened = true

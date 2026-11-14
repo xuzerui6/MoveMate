@@ -296,8 +296,13 @@ export function isFillOpenNow(game: Pick<GameRow, 'visibility' | 'fill_open' | '
   return false;
 }
 
-/** SQL 版开放补位判断（别名 g） */
-const FILL_OPEN_SQL = `(g.visibility IS NULL OR g.visibility = 'public' OR g.fill_open = 1 OR (g.auto_fill = 1 AND g.member_count < g.max_players AND g.start_time <= datetime('now', '+24 hours')))`;
+/**
+ * SQL 版开放补位判断（别名 g），与 isFillOpenNow 同口径。
+ * start_time 存的是带 T 的 ISO 文本，datetime('now') 是空格分隔文本，
+ * 直接字符串比较会在「同一 UTC 日期」上比错（'T' > ' '），
+ * 所以两侧都过 julianday 按时刻比较，两种格式通吃。
+ */
+const FILL_OPEN_SQL = `(g.visibility IS NULL OR g.visibility = 'public' OR g.fill_open = 1 OR (g.auto_fill = 1 AND g.member_count < g.max_players AND julianday(g.start_time) <= julianday('now', '+24 hours')))`;
 
 function parseDbTime(raw: unknown): number {
   if (!raw) return 0;
@@ -543,6 +548,12 @@ export async function joinGame(
     }
 
     const game = toGameRow(rows[0]);
+
+    // --- 学校隔离：只能加入本校的局（跨校局在大厅里也看不到） ---
+    const joinerContext = await getUserContext(userId);
+    if (game.school_id !== joinerContext.school_id) {
+      throw new ForbiddenError('只能加入本校的运动局');
+    }
 
     // --- 校验状态：只有 recruiting/full 可加入 ---
     if (game.status !== 'recruiting' && game.status !== 'full') {
@@ -1089,6 +1100,25 @@ export async function completeGameBySystem(gameId: number): Promise<GameRow> {
 // ================================================================
 
 /**
+ * getGameMeta() —— 建局表单数据（按当前用户学校隔离）
+ *
+ * 只返回当前用户自己学校的启用校区/场地。不要用未登录的 bootstrap 全量列表：
+ * 那是给注册页的，建局必须以服务端按学校过滤后的这份为准。
+ */
+export async function getGameMeta(userId: number): Promise<{ campuses: any[]; venues: any[] }> {
+  const userContext = await getUserContext(userId);
+  const { rows: campuses } = await pool.query(
+    `SELECT id, school_id, code, name FROM campuses WHERE school_id = $1 AND is_active = 1 ORDER BY id ASC`,
+    [userContext.school_id],
+  );
+  const { rows: venues } = await pool.query(
+    `SELECT id, school_id, campus_id, name, sport_types FROM venues WHERE school_id = $1 AND is_active = 1 ORDER BY campus_id ASC, id ASC`,
+    [userContext.school_id],
+  );
+  return { campuses, venues };
+}
+
+/**
  * listGames() —— 大厅列表
  *
  * 默认只返回 recruiting / full 状态的局
@@ -1257,6 +1287,14 @@ export async function getGameDetail(
 
   const game = toGameRow(gameRows[0]);
 
+  // 学校隔离：别的学校的局对当前用户装作不存在（与好友局不可见同一口径）
+  if (requestUserId) {
+    const viewerContext = await getUserContext(requestUserId);
+    if (viewerContext.school_id !== game.school_id) {
+      throw new NotFoundError('运动局不存在');
+    }
+  }
+
   // 查询活跃成员列表（含用户信息）
   const { rows: memberRows } = await pool.query<MemberRow>(
     `SELECT gm.user_id, u.nickname, u.avatar_url,
@@ -1316,9 +1354,10 @@ export async function getGameDetail(
  * 对好友可见这一条已经覆盖了「被邀请」的场景。
  */
 export async function listFriendsFeed(userId: number): Promise<ListGamesResult> {
+  const viewerContext = await getUserContext(userId);
   const friendIds = [...(await getFriendIds(userId))];
   const friendClause = friendIds.length
-    ? `OR g.host_id IN (${friendIds.map((_, i) => `$${i + 2}`).join(',')})`
+    ? `OR g.host_id IN (${friendIds.map((_, i) => `$${i + 3}`).join(',')})`
     : '';
   const { rows } = await pool.query(
     `SELECT g.*, s.name AS school_name, c.name AS campus_name,
@@ -1331,13 +1370,14 @@ export async function listFriendsFeed(userId: number): Promise<ListGamesResult> 
      LEFT JOIN users u ON u.id = g.host_id
      LEFT JOIN motion_profiles mp ON mp.user_id = u.id
      WHERE g.visibility = 'friends'
+       AND g.school_id = $2
        AND g.status IN ('recruiting', 'full', 'ready')
        AND (g.host_id = $1
             OR EXISTS (SELECT 1 FROM game_members gm WHERE gm.game_id = g.id AND gm.user_id = $1 AND gm.left_at IS NULL)
             ${friendClause})
      ORDER BY g.start_time ASC
      LIMIT 50`,
-    [userId, ...friendIds],
+    [userId, viewerContext.school_id, ...friendIds],
   );
   const games = rows.map(toGameRow);
   return { games, pagination: { page: 1, page_size: games.length, total: games.length, total_pages: 1 } };
@@ -1364,6 +1404,8 @@ export async function inviteToGame(
   for (const uid of [...new Set(userIds)]) {
     if (uid === inviterId) { skipped.push({ user_id: uid, reason: '不能邀请自己' }); continue; }
     if (!(await areFriends(inviterId, uid))) { skipped.push({ user_id: uid, reason: '只能邀请你的好友' }); continue; }
+    const inviteeContext = await getUserContext(uid).catch(() => null);
+    if (!inviteeContext || inviteeContext.school_id !== game.school_id) { skipped.push({ user_id: uid, reason: '只能邀请本校的同学' }); continue; }
     if (await isBlockedEitherWay(inviterId, uid)) { skipped.push({ user_id: uid, reason: '你们之间暂时没法邀请' }); continue; }
     const { rows: memberRows } = await pool.query(
       'SELECT id FROM game_members WHERE game_id = $1 AND user_id = $2 AND left_at IS NULL',
@@ -1400,7 +1442,7 @@ export async function setFillOpen(gameId: number, hostId: number, open: boolean)
 /** 局分享链接（应用内路径，不建新表） */
 export async function getShareLink(gameId: number, requestUserId: number) {
   const detail = await getGameDetail(gameId, requestUserId);
-  return { game_id: gameId, path: `/games/${gameId}`, title: detail.game.title };
+  return { game_id: gameId, path: `/game/${gameId}`, title: detail.game.title };
 }
 
 /** 约下周再练：按原局克隆一个 +7 天的新局，老成员逐个收到邀请、自己点加入确认 */

@@ -133,6 +133,43 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.equal(c.preserved.user.nickname,'老实例房主');assert.equal(c.preserved.chat.content,'老消息你好');
  assert.equal(c.preserved.createdGames,1);
  });
+ await t.test('boss segment upgrade: phase-1 boss tables gain segment columns and the ledger table in place, rows preserved',async()=>{
+ const namespace=await mf.getDurableObjectNamespace('BACKEND');const actor=namespace.get(namespace.idFromName('boss-segment-upgrade'));
+ const c=await actor.bossSegmentUpgradeCase();
+ // Before: the phase-2 columns and ledger table simply do not exist on the long-lived instance.
+ assert.ok(!c.before.fightColumns.includes('mode'));assert.ok(!c.before.fightColumns.includes('segments_total'));
+ assert.ok(!c.before.partColumns.includes('participated'));assert.equal(c.before.segmentsTable,0);
+ assert.match(c.before.modeError,/no such column|has no column/);
+ // After the boot path: every phase-2 column exists, the ledger table exists and starts empty.
+ for(const col of ['mode','template_id','segment_format','segment_label','total_label','segments_total','segments_done'])assert.ok(c.after.fightColumns.includes(col),'boss_fights.'+col);
+ for(const col of ['participated','participated_at','record_km','record_minutes'])assert.ok(c.after.partColumns.includes(col),'boss_fight_participants.'+col);
+ assert.equal(c.after.segmentsTable,1);assert.equal(c.after.segmentsRows,0);
+ // The settled phase-1 fight is untouched and reads as a camera fight under the new defaults.
+ assert.equal(c.after.fight.movement,'squat');assert.equal(c.after.fight.status,'won');
+ assert.equal(c.after.fight.mode,'camera');assert.equal(Number(c.after.fight.segments_total),0);
+ assert.equal(c.after.fight.settle_key,'fight-old-1:settle');
+ assert.deepEqual(c.after.participants.map(r=>Number(r.baseline_reps)),[40,35]);
+ assert.deepEqual(c.after.participants.map(r=>Number(r.accepted_reps)),[55,48]);
+ assert.deepEqual(c.after.participants.map(r=>Number(r.participated)),[0,0]);
+ });
+ await t.test('school gate upgrade: pre-decoupling instance gains the registration switch; JLSU venues open for games, registration stays closed',async()=>{
+ const namespace=await mf.getDurableObjectNamespace('BACKEND');const actor=namespace.get(namespace.idFromName('school-gate-upgrade'));
+ const c=await actor.schoolGateUpgradeCase();
+ // Before: no switch column, Linhe campus inactive (the coupled legacy state).
+ assert.ok(!c.before.columns.includes('registration_open'));assert.equal(c.before.linheActive,0);
+ // After the boot path: the switch exists and reads closed for JLSU, open for JLU.
+ assert.ok(c.after.columns.includes('registration_open'));
+ assert.equal(Number(c.after.jlsu.registration_open),0);assert.equal(Number(c.after.jlu.registration_open),1);
+ // JLSU campuses/venues are game-active now, the four venues were seeded by the boot path
+ // (they never existed in this rewound instance), and the Linhe gym sport list is the canonical one.
+ assert.deepEqual(c.after.jlsuCampuses.map(r=>Number(r.is_active)),[1,1]);
+ assert.deepEqual(c.after.jlsuVenues.map(r=>r.name),['南岭校区室内篮球馆武术馆','南岭校区摔跤柔道馆','临河校区田径场','临河校区健身馆']);
+ assert.deepEqual(c.after.jlsuVenues.map(r=>Number(r.is_active)),[1,1,1,1]);
+ assert.equal(c.after.linheGym.sport_types,'["fitness","basketball","volleyball","badminton","dance","taekwondo"]');
+ // Pre-existing rows are preserved untouched (registry seed may only add the missing JLU campuses 2/3).
+ assert.equal(c.preserved.sentinel.name,'宋治平体育馆篮球比赛馆');assert.equal(Number(c.preserved.sentinel.is_active),1);assert.equal(c.preserved.sentinel.sport_types,'["basketball"]');
+ assert.equal(c.preserved.campusCount,5);assert.equal(c.preserved.venueCount,5);
+ });
  const {manifest,parts}=fixture({largeAvatar:true});
  await t.test('snapshot import resumes, validates checkpoints and preserves hashes',async()=>{
  assert.equal((await migrate('begin',manifest)).status,200);
@@ -152,7 +189,7 @@ await test('Workers runtime migration and business regression', async t=>{
  const schools=boot.data.data.schools;assert.equal(schools.length,2);
  const jlu=schools.find(s=>s.code==='jlu');assert.equal(jlu.name,'吉林大学');assert.equal(jlu.registration_open,true);
  const jlsu=schools.find(s=>s.code==='jlsu');assert.equal(jlsu.name,'吉林体育学院');assert.equal(jlsu.registration_open,false);
- assert.ok(boot.data.data.campuses.every(c=>c.school_id!==jlsu.id),'closed school campuses stay out of the selectable list');
+ assert.ok(boot.data.data.campuses.some(c=>c.school_id===jlsu.id),'decoupled: closed school campuses are listed, they are for games');
  const rejected=await call('/api/v1/auth/register',{method:'POST',body:{email:'hopeful@mails.jlu.edu.cn',password:'password',nickname:'新生',campus_id:4,verify_code:'123456'}});
  assert.equal(rejected.status,400,JSON.stringify(rejected.data));assert.match(rejected.data.message,/小范围测试/);
  });
@@ -254,6 +291,30 @@ await test('Workers runtime migration and business regression', async t=>{
  await actor.brokenOutbox(true);await actor.forceAlarm();
  assert.equal(await actor.pendingEvents(),0);
  });
+ await t.test('alarm recovers a full game whose start passed before any tick; the cancel horizon still holds',async()=>{
+ const namespace=await mf.getDurableObjectNamespace('BACKEND');const actor=namespace.get(namespace.idFromName('test'));
+ const created=await call('/api/v1/games',{method:'POST',token:tokens[0],body:{sport_type:'basketball',title:'Missed-window recovery',campus_id:1,venue_id:10,max_players:2,start_time:new Date(Date.now()+60000).toISOString()}});
+ assert.equal(created.status,200);const id=created.data.data.game.id;
+ assert.equal((await call(`/api/v1/games/${id}/join`,{method:'POST',token:tokens[1],body:{}})).status,200);
+ assert.equal((await call(`/api/v1/games/${id}`,{token:tokens[0]})).data.data.game.status,'full');
+ // 满员状态下签到被拒——2026-11-14 线上事故的用户症状
+ assert.equal((await call(`/api/v1/games/${id}/check-in`,{method:'POST',token:tokens[0],body:{}})).status,409);
+ // 时钟越过开始时间而没有任何 alarm 落在窗口内：开始时间拨到 2 分钟前，状态仍是 full
+ await actor.rewindGameStart(id,new Date(Date.now()-120000).toISOString());
+ await actor.forceAlarm();
+ // 同一 tick 内补推进 ready 再按既有规则自动开始；自动开始之后仍可签到、确认到场
+ assert.equal((await call(`/api/v1/games/${id}`,{token:tokens[0]})).data.data.game.status,'in_progress');
+ for(const token of tokens.slice(0,2))assert.equal((await call(`/api/v1/games/${id}/check-in`,{method:'POST',token,body:{}})).status,200);
+ assert.equal((await call(`/api/v1/games/${id}/attendance/confirm`,{method:'POST',token:tokens[0],body:{user_id:2}})).status,200);
+ assert.equal((await call(`/api/v1/games/${id}/complete`,{method:'POST',token:tokens[0],body:{}})).status,200);
+ // 开始已过 31 分钟（取消线以外）：恢复逻辑不捞，alarm 后被自动取消
+ const late=await call('/api/v1/games',{method:'POST',token:tokens[0],body:{sport_type:'basketball',title:'Beyond cancel horizon',campus_id:1,venue_id:10,max_players:2,start_time:new Date(Date.now()+60000).toISOString()}});
+ assert.equal(late.status,200);const lateId=late.data.data.game.id;
+ assert.equal((await call(`/api/v1/games/${lateId}/join`,{method:'POST',token:tokens[1],body:{}})).status,200);
+ await actor.rewindGameStart(lateId,new Date(Date.now()-31*60000).toISOString());
+ await actor.forceAlarm();
+ assert.equal((await call(`/api/v1/games/${lateId}`,{token:tokens[0]})).data.data.game.status,'cancelled');
+ });
  await t.test('native voice bridge preserves hello and binary audio beyond handshake timeout',async()=>{
  const initialized=await call('/api/xiaozhi/device',{method:'POST',token:tokens[2],body:{}});
  assert.equal(initialized.status,200);assert.equal(initialized.data.status,'ready');
@@ -313,7 +374,7 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.equal(await bcrypt.compare('wrong-password',row.password_hash),false);
  // Provisioned members do not open the closed school.
  const boot=await call('/api/v1/auth/bootstrap');const jlsu=boot.data.data.schools.find(s=>s.code==='jlsu');assert.equal(jlsu.registration_open,false);
- assert.ok(boot.data.data.campuses.every(c=>c.school_id!==jlsu.id));
+ assert.ok(boot.data.data.campuses.some(c=>c.school_id===jlsu.id),'decoupled: campuses active for games, registration still closed');
  }finally{
  // Remove the provisioned account so later fixed-id test seeding (voice users 5/6) is unaffected.
  await actor.deleteUserByEmail('provisioned@dajju.local');
@@ -478,6 +539,37 @@ await test('Workers runtime migration and business regression', async t=>{
  const fin=await call(`/api/v1/sport-sessions/${sid}/finish`,{method:'POST',token:tokens[0],body:{}});
  assert.equal(fin.status,200);assert.equal(fin.data.data.xpEarned,10);
  });
- await voicePoolTests(t,{mf,call,tokens,adminToken,sockets,password});
+ await t.test('recognition gate diagnostics are user-scoped and operator-readable',async()=>{
+ const counters={formInterrupts:{'请直立站稳，保持双上臂在体侧':7},softInterrupts:{'画面中断':2},framingRejects:3,freezeEpisodes:1,frozenMs:900,peaksConfirmed:[4,5],returnsConfirmed:[3,5],hammerPendingWipes:1,calibrationRelatches:2,returnAnchor:[148.4,150.2],returnThreshold:[138.4,140.2],returnBasis:['world','image'],returnMaxima:[[139.9,141],[138]],returnQualifyingMs:[1234,1500],returnWindowExpirations:[1,0],returnCompletionsAbsolute:[1,2],returnCompletionsRelative:[2,3],cycleReplacements:[1,1],freezeInvalidatedCycles:[0,1]};
+ assert.equal((await call('/api/v1/diagnostics/recognition',{method:'POST',body:{exerciseType:'hammer_curl',counters}})).status,401);
+ assert.equal((await call('/api/migration/diagnostics')).status,401);
+ // A forged userId in the body is ignored: the row is keyed by the token's actor.
+ const forged=await call('/api/v1/diagnostics/recognition',{method:'POST',token:tokens[0],body:{userId:2,exerciseType:'hammer_curl',counters}});
+ assert.equal(forged.status,200,JSON.stringify(forged.data));
+ const other=await call('/api/v1/diagnostics/recognition',{method:'POST',token:tokens[1],body:{exerciseType:'squat',counters:{...counters,framingRejects:9}}});
+ assert.equal(other.status,200,JSON.stringify(other.data));
+ const diag=await call('/api/migration/diagnostics',{migration:true});
+ assert.equal(diag.status,200,JSON.stringify(diag.data));assert.ok(Array.isArray(diag.data.voice));
+ const byUser=Object.fromEntries(diag.data.recognition.map(r=>[r.userId,r]));
+ assert.equal(diag.data.recognition.length,2);
+ assert.equal(byUser[1].exerciseType,'hammer_curl');assert.equal(byUser[1].counters.formInterrupts['请直立站稳，保持双上臂在体侧'],7);assert.deepEqual(byUser[1].counters.peaksConfirmed,[4,5]);assert.equal(byUser[1].counters.frozenMs,900);
+ // Return-gate round 2 fields survive the coercion with degree fidelity and basis whitelisting.
+ assert.deepEqual(byUser[1].counters.returnAnchor,[148.4,150.2]);assert.deepEqual(byUser[1].counters.returnThreshold,[138.4,140.2]);assert.deepEqual(byUser[1].counters.returnBasis,['world','image']);assert.deepEqual(byUser[1].counters.returnMaxima,[[139.9,141],[138]]);assert.deepEqual(byUser[1].counters.returnQualifyingMs,[1234,1500]);assert.deepEqual(byUser[1].counters.returnCompletionsRelative,[2,3]);assert.deepEqual(byUser[1].counters.cycleReplacements,[1,1]);assert.deepEqual(byUser[1].counters.freezeInvalidatedCycles,[0,1]);
+ assert.equal(byUser[2].exerciseType,'squat');assert.equal(byUser[2].counters.framingRejects,9);
+ // Latest set wins for the same user; the other user's row is untouched.
+ const again=await call('/api/v1/diagnostics/recognition',{method:'POST',token:tokens[0],body:{exerciseType:'hammer_curl',counters:{...counters,framingRejects:4}}});
+ assert.equal(again.status,200);
+ const diag2=await call('/api/migration/diagnostics',{migration:true});
+ assert.equal(diag2.data.recognition.length,2);
+ const byUser2=Object.fromEntries(diag2.data.recognition.map(r=>[r.userId,r]));
+ assert.equal(byUser2[1].counters.framingRejects,4);assert.equal(byUser2[2].counters.framingRejects,9);
+ // Junk values are coerced to counters, never stored raw.
+ const junk=await call('/api/v1/diagnostics/recognition',{method:'POST',token:tokens[0],body:{exerciseType:'hammer_curl',counters:{framingRejects:-5,frozenMs:'x',peaksConfirmed:'no',formInterrupts:{'坏值':'NaN'}}}});
+ assert.equal(junk.status,200,JSON.stringify(junk.data));
+ const diag3=await call('/api/migration/diagnostics',{migration:true});
+ const mine=Object.fromEntries(diag3.data.recognition.map(r=>[r.userId,r]))[1];
+ assert.equal(mine.counters.framingRejects,0);assert.equal(mine.counters.frozenMs,0);assert.deepEqual(mine.counters.peaksConfirmed,[0,0]);assert.equal(mine.counters.formInterrupts['坏值'],0);
+ });
+ await voicePoolTests(t,{mf,call,tokens,adminToken,sockets,password,migrate});
  }finally{for(const ws of sockets){try{ws.close()}catch{}}await mf.dispose()}
 });

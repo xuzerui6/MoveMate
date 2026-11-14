@@ -30,6 +30,50 @@ interface Env {
 }
 type Identity = { userId?: number; exp?: number; rooms: number[]; deadline: number };
 
+/**
+ * WS2 recognition gate diagnostics: the client posts its own per-set gate
+ * counters (numbers only, no frame data). The payload is re-built field by
+ * field — unknown keys are dropped, every value is coerced to a non-negative
+ * integer, reason maps are capped — and the caller identity comes from the
+ * verified token, never from the body, so one user can only ever overwrite
+ * their own `recognition_diagnostic:<id>` row (latest set wins).
+ */
+export function recognitionDiagnosticPayload(userId: number, input: any, receivedAt = new Date().toISOString()) {
+  if (!input || typeof input !== 'object' || Array.isArray(input)) throw new VoiceError('请求格式不正确', 400);
+  const num = (v: unknown) => typeof v === 'number' && Number.isFinite(v) && v > 0 ? Math.floor(v) : 0;
+  const reasons = (v: unknown) => {
+    const out: Record<string, number> = {};
+    if (v && typeof v === 'object' && !Array.isArray(v)) for (const [k, val] of Object.entries(v).slice(0, 32)) out[k.slice(0, 120)] = num(val);
+    return out;
+  };
+  const pair = (v: unknown): [number, number] => Array.isArray(v) ? [num(v[0]), num(v[1])] : [0, 0];
+  /* Return-gate round 2 fields carry degrees: keep 0.1° fidelity (num() would
+   * floor them away). Absent/null anchor reads back as 0 = "no anchor". */
+  const deg = (v: unknown) => typeof v === 'number' && Number.isFinite(v) && v > 0 ? Math.round(Math.min(360, v) * 10) / 10 : 0;
+  const degPair = (v: unknown): [number, number] => Array.isArray(v) ? [deg(v[0]), deg(v[1])] : [0, 0];
+  const degList = (v: unknown): number[] => Array.isArray(v) ? v.slice(0, 64).map(deg) : [];
+  const degLists = (v: unknown): [number[], number[]] => Array.isArray(v) ? [degList(v[0]), degList(v[1])] : [[], []];
+  const basisPair = (v: unknown): [string, string] => {
+    const one = (x: unknown) => x === 'world' || x === 'image' ? x : '';
+    return Array.isArray(v) ? [one(v[0]), one(v[1])] : ['', ''];
+  };
+  const c = (input.counters && typeof input.counters === 'object' && !Array.isArray(input.counters)) ? input.counters : {};
+  return {
+    userId, exerciseType: typeof input.exerciseType === 'string' ? input.exerciseType.slice(0, 64) : '', receivedAt,
+    counters: {
+      formInterrupts: reasons(c.formInterrupts), softInterrupts: reasons(c.softInterrupts),
+      framingRejects: num(c.framingRejects), freezeEpisodes: num(c.freezeEpisodes), frozenMs: num(c.frozenMs),
+      peaksConfirmed: pair(c.peaksConfirmed), returnsConfirmed: pair(c.returnsConfirmed),
+      hammerPendingWipes: num(c.hammerPendingWipes), calibrationRelatches: num(c.calibrationRelatches),
+      returnAnchor: degPair(c.returnAnchor), returnThreshold: degPair(c.returnThreshold), returnBasis: basisPair(c.returnBasis),
+      returnMaxima: degLists(c.returnMaxima), returnQualifyingMs: pair(c.returnQualifyingMs),
+      returnWindowExpirations: pair(c.returnWindowExpirations),
+      returnCompletionsAbsolute: pair(c.returnCompletionsAbsolute), returnCompletionsRelative: pair(c.returnCompletionsRelative),
+      cycleReplacements: pair(c.cycleReplacements), freezeInvalidatedCycles: pair(c.freezeInvalidatedCycles),
+    },
+  };
+}
+
 // HTTP only. Upgrade handling uses native WebSocket APIs, never Node upgrade listeners.
 const app = createHttpApp({ initialize: async () => { await pool.query('SELECT 1'); }, uploads: cloudUploadsRouter });
 const http = createServer(app);
@@ -48,8 +92,11 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
     super(ctx, env);
     this.db = new ActorDatabase(ctx.storage);
     this.scope = new DatabaseScope(this.db);
-    this.migration = new Migration(this.db);
     this.voicePool = new VoicePool(env.XIAOZHI_POOL_SECRET, this.generation);
+    this.migration = new Migration(this.db, this.voicePool, async leaseIds => {
+      // 与管理员设备 PATCH/DELETE 相同的租约回收：有活连接先断开，否则直接释放。
+      for (const id of leaseIds) { const connection = this.voiceConnections.get(id); if (connection) connection.close(4001, 'voice device disabled'); else await this.voicePool.release(id); }
+    });
     this.ready = ctx.blockConcurrencyWhile(async () => {
       const needsGymBackup = !ctx.storage.sql.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='gym_workouts'").toArray().length;
       const needsStage2Backup = !ctx.storage.sql.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='gym_schedule'").toArray().length;
@@ -58,6 +105,7 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
       await ctx.storage.transaction(async () => {
         this.db.bootstrap();
         this.db.seedSchoolRegistry();
+        this.db.applySchoolGates();
         if(beforeStage2) this.migration.set('pre_gym_stage2_bookmark',JSON.stringify({bookmark:beforeStage2,createdAt:new Date().toISOString()}));
         if (beforeGym) this.migration.set('pre_gym_bookmark', JSON.stringify({bookmark:beforeGym,createdAt:new Date().toISOString()}));
       });
@@ -87,7 +135,11 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
       if (path.startsWith('/api/migration/')) {
         if (!authorized(request, this.env.MIGRATION_SECRET)) return new Response('Unauthorized', { status: 401 });
         // Migration commands share the actor's database operation queue.
-        if (path === '/api/migration/diagnostics') return Response.json((await pool.query("SELECT value FROM actor_meta WHERE key='voice_diagnostic'")).rows.map(row => JSON.parse(row.value)));
+        if (path === '/api/migration/diagnostics') {
+          const voice = (await pool.query("SELECT value FROM actor_meta WHERE key='voice_diagnostic'")).rows.map(row => JSON.parse(row.value));
+          const recognition = (await pool.query("SELECT value FROM actor_meta WHERE key LIKE 'recognition_diagnostic:%' ORDER BY key")).rows.map(row => JSON.parse(row.value));
+          return Response.json({ voice, recognition });
+        }
         if (path === '/api/migration/gym-backup') return Response.json({backup:this.migration.meta('pre_gym_bookmark')||null,stage2:this.migration.meta('pre_gym_stage2_bookmark')||null});
         if (path.startsWith('/api/migration/pitr/')) {
           const ops = new PitrOps(this.ctx.storage, this.env.INSTANCE);
@@ -131,6 +183,21 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
       if (!this.migration.active()) return Response.json({ code: 50300, message: '系统迁移维护中，请稍后再试', data: null }, { status: 503, headers: { 'Retry-After': '60' } });
       const native = await this.voiceRequest(request);
       if (native) { native.headers.set('Cache-Control', 'no-store'); await this.schedule(); return native; }
+      if (path === '/api/v1/diagnostics/recognition' && request.method === 'POST') {
+        // WS2: a signed-in user stores their own latest set's recognition
+        // gate counters for the operator diagnostics channel. User-scoped by
+        // construction: the row key derives from the verified token's actor.
+        try {
+          const actor = await this.voicePool.actor(request);
+          const payload = recognitionDiagnosticPayload(actor.id, await this.jsonInput(request));
+          await pool.query("INSERT INTO actor_meta(key,value) VALUES($1,$2) ON CONFLICT(key) DO UPDATE SET value=$2", ['recognition_diagnostic:' + actor.id, JSON.stringify(payload)]);
+          return Response.json({ code: 0, message: 'ok', data: { ok: true } });
+        } catch (error) {
+          const status = error instanceof VoiceError ? error.status : 500;
+          const message = error instanceof VoiceError ? error.message : '诊断上报失败';
+          return Response.json({ code: status * 100, message, error: message, data: null }, { status });
+        }
+      }
       if (path === '/api/realtime/socket') {
         const origin = request.headers.get('origin');
         if (!origin || origin !== new URL(request.url).origin) return new Response('Forbidden origin', { status: 403 });
@@ -430,6 +497,9 @@ export default {
       }
       headers.set('Cache-Control', response.status===416?'no-store': /\.[a-f0-9]{12}\./.test(url.pathname) || url.pathname.startsWith('/assets/') ? 'public, max-age=31536000, immutable' : 'public, max-age=0, must-revalidate');
     }
+    // version.json drives the client's gentle update banner (UpdateBanner):
+    // it must always describe the latest deployment, never a cached copy.
+    else if (url.pathname === '/version.json') headers.set('Cache-Control', 'no-store');
     else if (headers.get('Content-Type')?.includes('text/html')) headers.set('Cache-Control', 'no-store');
     headers.set('X-Content-Type-Options', 'nosniff');
     headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
