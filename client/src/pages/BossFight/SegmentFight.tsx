@@ -8,7 +8,7 @@ import {
   segmentStateKey,
   type BossFightSnapshot,
 } from '../../features/motion/lib/bossFightState'
-import { getOutfitAvatar } from '../../features/motion/lib/outfits'
+import { LayeredAvatar } from '../../features/motion/components/LayeredAvatar'
 
 /**
  * 组队打怪二期 · 约定段模式的三块界面（设计稿 2026-11-14）：
@@ -30,10 +30,13 @@ export interface SegmentActions {
 type RunAction = (name: string, fn: () => Promise<unknown>, okMsg?: string) => Promise<void>
 
 function AvatarWithFrame({ avatar, name }: { avatar: any; name: string }) {
-  const img = avatar ? getOutfitAvatar(avatar.gender as any, avatar.outfit as any, 'front') : ''
   return (
     <span className={`bf-avatar frame-${avatar?.highest_rarity || 'N'}`} title={avatar ? `${name} · ${avatar.highest_rarity_name}` : name}>
-      {img ? <img src={img} alt={`${name}的形象`} draggable={false} /> : <Icon name="user" size={22} />}
+      {avatar ? (
+        <LayeredAvatar look={avatar.look} gender={(avatar.gender as any) || 'male'} outfit={avatar.look ? undefined : (avatar.outfit as any)} />
+      ) : (
+        <Icon name="user" size={22} />
+      )}
     </span>
   )
 }

@@ -1,0 +1,19 @@
+/* 分身拼图：同画布图层绝对定位叠放，容器给多大就铺多大 */
+.layered-avatar {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.layered-avatar-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+/* 打怪队友框是正方形小框：沿用旧整图的 cover 取景 */
+.bf-avatar .layered-avatar-img {
+  object-fit: cover;
+}

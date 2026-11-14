@@ -158,7 +158,8 @@ function ensureSchema(conn: DatabaseSync): void {
     CREATE TABLE IF NOT EXISTS motion_profiles (
       user_id INTEGER PRIMARY KEY REFERENCES users(id), total_xp INTEGER NOT NULL DEFAULT 0,
       avatar_gender TEXT NOT NULL DEFAULT 'male', active_outfit TEXT NOT NULL DEFAULT 'default',
-      equipped TEXT NOT NULL DEFAULT '{}', seen_outfits TEXT NOT NULL DEFAULT '["default"]', age INTEGER NOT NULL DEFAULT 24
+      equipped TEXT NOT NULL DEFAULT '{}', seen_outfits TEXT NOT NULL DEFAULT '["default"]', age INTEGER NOT NULL DEFAULT 24,
+      avatar_look TEXT NOT NULL DEFAULT ''
     );
     CREATE TABLE IF NOT EXISTS sport_sessions (
       id TEXT PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id), game_id INTEGER REFERENCES games(id),
@@ -475,6 +476,7 @@ function ensureSchema(conn: DatabaseSync): void {
   ensureColumn('users', 'last_rewarded_date', 'TEXT');
   ensureColumn('users', 'qq_email', "TEXT DEFAULT ''");
   ensureColumn('users', 'sport_preferences', "TEXT NOT NULL DEFAULT '[]'");
+  ensureColumn('motion_profiles', 'avatar_look', "TEXT NOT NULL DEFAULT ''");
   ensureColumn('games', 'school_id', 'INTEGER DEFAULT 1');
   ensureColumn('games', 'campus_id', 'INTEGER DEFAULT 1');
   ensureColumn('games', 'venue_id', 'INTEGER');

@@ -15,12 +15,14 @@ type Store = {
   finishWorkout:(session:WorkoutSession)=>Promise<WorkoutSession>;
   equip:(slot:Slot,id:string)=>Promise<boolean>; setAvatarGender:(gender:AppState['avatarGender'])=>Promise<boolean>;
   setActiveOutfit:(outfit:AppState['activeOutfit'])=>Promise<boolean>; markOutfitsSeen:(outfits?:AppState['newlyUnlockedOutfits'])=>Promise<boolean>;
+  setAvatarLook:(look:AppState['avatarLook'])=>Promise<boolean>;
 };
 const Context=createContext<Store|null>(null);
 const adapt=(data:any):AppState=>{
   const history=(data.history||[]).map((item:any)=>({...item,currentBpm:item.currentBpm??null,averageBpm:item.averageBpm??null,maxBpm:item.maxBpm??null,heartRateSource:item.heartRateSource??null,zone1Seconds:item.zone1Seconds||0,zone2Seconds:item.zone2Seconds||0,zone3Seconds:item.zone3Seconds||0,zone4Seconds:item.zone4Seconds||0,zone5Seconds:item.zone5Seconds||0,perfectReps:item.perfectReps||0,visionInsights:[],formBreakdown:item.formBreakdown||{depth:0,stability:0,trunk:0,symmetry:0},correctionCounts:item.correctionCounts||{}}));
   const real=history.filter((item:any)=>item.source!=='demo' && item.settled);
-  return {...initialState,...data,history,equipment:equipmentSeed.map(item=>({...item,owned:data.ownedEquipment.includes(item.id)})),dailyMissionProgress:calculateDailyMissionProgress(real),streakDays:calculateStreakDays(real)};
+  const avatarLook=data.avatarLook&&typeof data.avatarLook==='object'&&data.avatarLook.mode?data.avatarLook:{v:1,mode:'outfit',outfit:data.activeOutfit||'default'};
+  return {...initialState,...data,avatarLook,unlockedParts:data.unlockedParts||{},history,equipment:equipmentSeed.map(item=>({...item,owned:data.ownedEquipment.includes(item.id)})),dailyMissionProgress:calculateDailyMissionProgress(real),streakDays:calculateStreakDays(real)};
 };
 export function StoreProvider({children}:{children:React.ReactNode}) {
   const userId=useAuthStore(s=>s.user?.id);
@@ -95,7 +97,7 @@ export function StoreProvider({children}:{children:React.ReactNode}) {
       unlockedOutfits:growth?Object.keys(growth.unlockedOutfits).filter(id=>growth.unlockedOutfits[id]&&!(before.unlockedOutfits as any)[id]) as any:[]};
   };
   const avatar=async(data:any)=>{if(!alive.current || useAuthStore.getState().user?.id!==userId)return false;try{const res:any=await client.patch('/training/avatar',data);if(!alive.current)return false;apply(res.data);setError('');return true;}catch(err){if(alive.current)setError(getErrorMessage(err));return false;}};
-  return <Context.Provider value={{state,sessions,loading,loaded,source,error,refresh,startSession,lookupSession,act,finishWorkout,equip:(slot,id)=>avatar({equipped:{[slot]:id}}),setAvatarGender:avatarGender=>avatar({avatarGender}),setActiveOutfit:activeOutfit=>avatar({activeOutfit,seenOutfits:[activeOutfit]}),markOutfitsSeen:(seenOutfits=state.newlyUnlockedOutfits)=>avatar({seenOutfits})}}>
+  return <Context.Provider value={{state,sessions,loading,loaded,source,error,refresh,startSession,lookupSession,act,finishWorkout,equip:(slot,id)=>avatar({equipped:{[slot]:id}}),setAvatarGender:avatarGender=>avatar({avatarGender}),setActiveOutfit:activeOutfit=>avatar({activeOutfit,seenOutfits:[activeOutfit]}),markOutfitsSeen:(seenOutfits=state.newlyUnlockedOutfits)=>avatar({seenOutfits}),setAvatarLook:avatarLook=>avatar({avatarLook})}}>
     {children}
   </Context.Provider>;
 }
