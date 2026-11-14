@@ -49,7 +49,10 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
     this.db = new ActorDatabase(ctx.storage);
     this.scope = new DatabaseScope(this.db);
     this.voicePool = new VoicePool(env.XIAOZHI_POOL_SECRET, this.generation);
-    this.migration = new Migration(this.db, this.voicePool);
+    this.migration = new Migration(this.db, this.voicePool, async leaseIds => {
+      // 与管理员设备 PATCH/DELETE 相同的租约回收：有活连接先断开，否则直接释放。
+      for (const id of leaseIds) { const connection = this.voiceConnections.get(id); if (connection) connection.close(4001, 'voice device disabled'); else await this.voicePool.release(id); }
+    });
     this.ready = ctx.blockConcurrencyWhile(async () => {
       const needsGymBackup = !ctx.storage.sql.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='gym_workouts'").toArray().length;
       const needsStage2Backup = !ctx.storage.sql.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='gym_schedule'").toArray().length;
