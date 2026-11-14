@@ -48,8 +48,8 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
     super(ctx, env);
     this.db = new ActorDatabase(ctx.storage);
     this.scope = new DatabaseScope(this.db);
-    this.migration = new Migration(this.db);
     this.voicePool = new VoicePool(env.XIAOZHI_POOL_SECRET, this.generation);
+    this.migration = new Migration(this.db, this.voicePool);
     this.ready = ctx.blockConcurrencyWhile(async () => {
       const needsGymBackup = !ctx.storage.sql.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='gym_workouts'").toArray().length;
       const needsStage2Backup = !ctx.storage.sql.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='gym_schedule'").toArray().length;

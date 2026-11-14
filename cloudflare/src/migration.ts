@@ -1,6 +1,7 @@
-import { withTransaction } from '../../server/src/db/pool';
+import { pool, withTransaction } from '../../server/src/db/pool';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import type { ActorDatabase } from './db';
+import type { VoicePool } from './voice-pool';
 import { readAvatar, saveAvatar } from '../../server/src/storage/avatars';
 import { provisionAdmin } from '../../server/src/services/admin-provision.service';
 import { provisionUser } from '../../server/src/services/user-provision.service';
@@ -20,7 +21,16 @@ export function authorized(request: Request, secret?: string): boolean {
 }
 
 export class Migration {
-  constructor(private db: ActorDatabase) {}
+  constructor(private db: ActorDatabase, private voicePool?: VoicePool) {}
+
+  /** 语音池运维快照：设置 + 设备行（不含密封身份） + 当前租约数。 */
+  private async voiceSettingsSnapshot() {
+    const settings = await this.voicePool!.settings();
+    const devices = (await pool.query('SELECT slot,state,enabled,verified FROM voice_devices ORDER BY slot')).rows
+      .map(row => ({ slot: Number(row.slot), state: String(row.state), enabled: !!row.enabled, verified: !!row.verified }));
+    const leases = Number((await pool.query('SELECT COUNT(*) AS n FROM voice_leases')).rows[0]?.n ?? 0);
+    return { settings, devices, leases };
+  }
   meta(key: string): string | undefined { return this.db.storage.sql.exec('SELECT value FROM actor_meta WHERE key=?', key).toArray()[0]?.value as string | undefined; }
   set(key: string, value: string) { this.db.storage.sql.exec('INSERT INTO actor_meta(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value', key, value); }
   active() { return this.meta('active') === 'true'; }
@@ -43,6 +53,20 @@ export class Migration {
           nickname: input.nickname, email: input.email, ['password']: input.password,
           schoolId: input.schoolId as number, campusId: input.campusId as number,
         }));
+      }
+      if (action === 'voice-settings' && (request.method === 'GET' || request.method === 'POST')) {
+        if (!this.active()) throw new Error('Instance is not active');
+        if (!this.voicePool) throw new Error('Voice pool is not wired on this instance');
+        if (request.method === 'POST') {
+          const input = (body ?? {}) as { enabled?: unknown; quotaConfirmed?: unknown; validationUsers?: unknown };
+          if ((input.enabled !== undefined && typeof input.enabled !== 'boolean')
+            || (input.quotaConfirmed !== undefined && typeof input.quotaConfirmed !== 'boolean')
+            || (input.validationUsers !== undefined && !Array.isArray(input.validationUsers))) throw new Error('Invalid voice-settings input');
+          // 与管理员 PATCH /api/v1/admin/voice 完全同一条校验路径（VoicePool.configure）：
+          // 验证账号须存在且最多五个；开启总开关须已确认额度且至少一台 bound+enabled+verified 设备。
+          await this.voicePool.configure(input);
+        }
+        return Response.json(await this.voiceSettingsSnapshot());
       }
       if (action === 'status' && request.method === 'GET') return Response.json({ active: this.active(), manifest: JSON.parse(this.meta('manifest') || 'null'), verified: this.meta('verified') || null, parts: this.db.storage.sql.exec('SELECT snapshot,part,hash FROM import_checkpoints ORDER BY part').toArray() });
       if (action === 'begin' && request.method === 'POST') {

@@ -539,6 +539,6 @@ await test('Workers runtime migration and business regression', async t=>{
  const fin=await call(`/api/v1/sport-sessions/${sid}/finish`,{method:'POST',token:tokens[0],body:{}});
  assert.equal(fin.status,200);assert.equal(fin.data.data.xpEarned,10);
  });
- await voicePoolTests(t,{mf,call,tokens,adminToken,sockets,password});
+ await voicePoolTests(t,{mf,call,tokens,adminToken,sockets,password,migrate});
  }finally{for(const ws of sockets){try{ws.close()}catch{}}await mf.dispose()}
 });

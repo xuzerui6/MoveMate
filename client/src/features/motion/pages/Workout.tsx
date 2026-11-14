@@ -25,7 +25,7 @@ import { sessionStartMs } from '../lib/pickerExercises'
 import {COPY_CALIBRATED,COPY_PREPARE,framingCopyFor,milestoneLine} from '../lib/companionCopy'
 import {createDwellState,dwellPush} from '../lib/statusDwell'
 import {milestoneForRep} from '../lib/milestones'
-import {createTrackingLossState,pushTrackingSample,resetTrackingLoss} from '../lib/trackingLoss'
+import {createTrackingLossState,frameSeesPerson,pushPresenceSample,resetTrackingLoss} from '../lib/trackingLoss'
 import {loadRecognitionPreference,selectNewRecognitionStrategy,selectRecognitionStrategy,type RecognitionPreference} from '../lib/adaptiveRecognition'
 
 const format = (seconds: number) => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
@@ -211,16 +211,15 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   }, [active, metrics.reps, metrics.targetReps])
   useEffect(() => { if (!active) targetWindowRef.current = false }, [active])
 
-  // 追踪丢失（训练页自己的语音路径）：首次校准前是准备阶段不算丢；
-  // 持续 900ms 才亮大信号，喊话最多 6 秒一次（纪律在 trackingLoss 里）。
+  // 追踪丢失（训练页自己的语音路径）：「看得见人」只认原始关键点——
+  // 肩/髋任一核心关节在画面里就是人在，与校准、与引擎 stage 完全脱钩
+  // （宿舍练上肢时下半身出画，校准永远完不成，人却明明在画面中间）。
+  // 首次看见人之前是准备阶段不算丢；持续 900ms 没看见才亮大信号，
+  // 喊话最多 6 秒一次（纪律在 trackingLoss 里）。
   const trackingStateRef = useRef(createTrackingLossState())
-  const trackingVisibleRef = useRef(true)
+  const landmarksRef = useRef(pose.landmarks)
+  useEffect(() => { landmarksRef.current = pose.landmarks }, [pose.landmarks])
   const [trackingLost, setTrackingLost] = useState(false)
-  useEffect(() => {
-    trackingVisibleRef.current = !calibratedOnce.current
-      ? true
-      : metrics.poseFeedback.calibrated && diagnostics.stage !== 'tracking_lost'
-  }, [metrics.poseFeedback.calibrated, diagnostics.stage])
   useEffect(() => {
     if (!active || paused || busy || simulatedPose || ending) {
       resetTrackingLoss(trackingStateRef.current)
@@ -228,7 +227,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
       return
     }
     const timer = window.setInterval(() => {
-      const sample = pushTrackingSample(trackingStateRef.current, trackingVisibleRef.current, Date.now())
+      const sample = pushPresenceSample(trackingStateRef.current, frameSeesPerson(landmarksRef.current), Date.now())
       setTrackingLost(sample.active)
       if (sample.cue) voiceRef.current.cueTrackingLoss()
     }, 300)
@@ -382,9 +381,11 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const capsuleDwell = useRef(createDwellState())
   const coachDwell = useRef(createDwellState())
   const panelDwell = useRef(createDwellState())
-  const liveCapsule = dwellPush(capsuleDwell.current, !metrics.poseFeedback.calibrated ? '正在找你 · 站好就行' : unclear ? '我有点看不清' : `陪你练 · ${exercise.name}`, Date.now())
+  const liveCapsule = dwellPush(capsuleDwell.current, trackingLost ? `陪你练 · ${exercise.name}` : !metrics.poseFeedback.calibrated ? '正在找你 · 站好就行' : unclear ? '我有点看不清' : `陪你练 · ${exercise.name}`, Date.now())
   const liveCoach = dwellPush(coachDwell.current, metrics.feedback, Date.now(), 1200, 350)
-  const coachLine = paused || ending || pendingAction ? hint : eventLine || (metrics.poseFeedback.primaryIssue ? metrics.poseFeedback.message : liveCoach)
+  // 大信号亮起时它就是唯一一句「看不见」的话：没有事件句时，陪练句不再
+  // 叠引擎的看不清/没找到类反馈，换成一句事实，免得上下两处说同一件事。
+  const coachLine = paused || ending || pendingAction ? hint : trackingLost && !eventLine ? '计时在走 · 数到的都在' : eventLine || (metrics.poseFeedback.primaryIssue ? metrics.poseFeedback.message : liveCoach)
   const capsuleText = ending ? '正在确认结束' : paused ? '已暂停 · 休息不计时' : liveCapsule
   const hudCalibrated = dwellPush(panelDwell.current, metrics.poseFeedback.calibrated ? 'cal' : 'find', Date.now()) === 'cal'
   return <div className={`page workout-page training-workout ${active ? 'live' : 'setup'}${cameraExpanded ? ' camera-expanded' : ''}`}>
@@ -429,7 +430,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
                 tracking loss exactly like a resume from pause — so the
                 subline may only claim the timer has not started before the
                 FIRST latch. After it, say what is true instead. */}
-              <div><b>{metrics.feedback}</b><span>{calibratedOnce.current?'计时在走 · 站回来，我接着数':'计时还没开始 · 计数也是'}</span></div>
+              <div><b>{trackingLost?(calibratedOnce.current?'计时在走':'计时还没开始'):metrics.feedback}</b><span>{trackingLost?(calibratedOnce.current?'数到的都在 · 不会丢':'计时和计数都还没开始'):calibratedOnce.current?'计时在走 · 站回来，我接着数':'计时还没开始 · 计数也是'}</span></div>
             </div>:<><div className="training-hud-count"><strong key={metrics.reps} className="motion-rep-num">{metrics.reps}</strong><span>/ {metrics.targetReps} {exercise.unit}<br/>这一组的目标</span></div>
             <p className={`training-hud-coach${unclear?' amber':''}`}><span>陪练说</span>{coachLine}</p></>}
           </div>
