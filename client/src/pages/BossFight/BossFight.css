@@ -41,6 +41,10 @@
   z-index: 3; background: #000;
 }
 .bf-cam-layer canvas, .bf-cam-layer video { max-width: 100%; }
+/* 画面层：常驻挂载（video 元素必须先于「开启」点击存在）；没开时整层
+   移到屏幕外并隐藏，开了才回到小窗内铺满 */
+.bf-cam-live { position: absolute; inset: 0; }
+.bf-cam-live--standby { inset: auto; left: -9999px; top: 0; width: 360px; height: 410px; visibility: hidden; }
 .bf-reframe-btn {
   position: absolute; right: 6px; top: 6px; z-index: 4; min-height: 36px;
   border: 1px solid rgba(255, 255, 255, 0.5); background: rgba(20, 20, 28, 0.78); color: #fff;
