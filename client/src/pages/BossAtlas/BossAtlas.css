@@ -1,4 +1,14 @@
 .ba-page { max-width: 960px; margin: 0 auto; padding: 0 16px 40px; }
+/* 页头在本页必须不透明：共享 .page-header 是 85% 玻璃面（透出 15%）+
+   背景模糊，别的页面透出的多是浅色内容、看不出来；图鉴卡是大面积
+   深色剪影加粗字，透出来依然看得清，滚动时像内容和标题撞在一起
+   （2026-11-14 老板 iPhone 录屏）。本页把页头压实为纯色并关掉模糊，
+   其他页面的玻璃面不动。 */
+.ba-page .page-header {
+  background-color: var(--color-bg);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
 .ba-intro { color: #55555f; line-height: 1.7; margin: 8px 0 16px; }
 .ba-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
 .ba-card { border: 1px solid #e6e3f0; border-radius: 16px; padding: 12px; background: #fff; }
