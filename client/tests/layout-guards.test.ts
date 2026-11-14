@@ -214,6 +214,37 @@ test('no stylesheet may put left/transform on a .page-header outside .motion-vie
   assert.deepEqual(violations, [], 'bare .page-header rules must stay free of left/transform (sticky centering-pair trap)');
 });
 
+// 7) The avatar editor's two phone-width sticky pieces ghosted/trailed on
+//    the owner's iPhone (2026-11-14 recording, confirmed live by the owner):
+//    the editing showcase rendered doubled while scrolling and the save bar
+//    trailed the scroll. Same mechanism as (3): both live inside the
+//    .motion-screen sub-scroller, whose sticky elements iOS Safari
+//    composites separately, repainting the tiles under them late during
+//    momentum scrolls. The save bar therefore anchors to the viewport
+//    exactly like the gym editor bar and the page reserves bottom room for
+//    it; the showcase gives up pinning on phone widths and scrolls with
+//    the page (its compact editing size stays; every part card's thumbnail
+//    already renders the full resulting look, so the combo stays visible
+//    per-card). Preset-slot action labels must never wrap mid-word on the
+//    narrow cards (「存当前搭/配」, same recording).
+test('avatar editor phone save bar is viewport-anchored, showcase unpinned', () => {
+  const uncommented = motionCss.replace(/\/\*[\s\S]*?\*\//g, '');
+  const mobile = mediaRules(uncommented, '(max-width:700px)');
+  const bars = mobile.filter(r => r.selector === '.motion-view .look-save-bar');
+  assert.ok(bars.some(r => /position:\s*fixed/.test(r.body) && /bottom:\s*calc\(80px \+ env\(safe-area-inset-bottom/.test(r.body)), 'phone look-save-bar must be fixed above the bottom nav (80px + safe-area)');
+  assert.ok(!bars.some(r => /position:\s*sticky/.test(r.body)), 'phone look-save-bar must not be sticky inside the sub-scroller');
+  const showcases = mobile.filter(r => r.selector === '.motion-view .avatar-showcase.editing');
+  assert.ok(showcases.length > 0, 'editing showcase rule must exist at phone widths');
+  assert.ok(!showcases.some(r => /position:\s*sticky/.test(r.body)), 'editing showcase must not be sticky on phone widths (iOS sub-scroller ghosting)');
+  const pages = mobile.filter(r => r.selector === '.motion-view .avatar-page');
+  assert.ok(pages.some(r => /padding-bottom:\s*120px/.test(r.body)), 'avatar page clears the fixed save bar');
+});
+
+test('preset slot action labels never wrap mid-word', () => {
+  const rule = declarations(motionCss, '.motion-view .preset-actions button');
+  assert.match(rule, /white-space:\s*nowrap/);
+});
+
 test('.motion-view .page-header keeps exactly its ≥769px rendering', () => {
   const rules = mediaRules(motionCss, '(min-width: 769px)').filter(r => r.selector === '.motion-view .page-header');
   const joined = rules.map(r => r.body).join('\n');
