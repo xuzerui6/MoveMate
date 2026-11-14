@@ -824,7 +824,7 @@ const segmentSnapshotFixture = {
   template_id: 'basketball',
   segment_format: 'minutes10',
   segment_label: '打完一轮 10 分钟的比赛，算一段',
-  total_label: '本场共 4 段，打满 4 轮就是打赢',
+  total_label: '本场共 4 段，打满 4 段就是打赢',
   segments_total: 4,
   segments_done: 1,
   segments: [{ seq: 1, recorded_by: 7, recorded_at: '2026-11-14T03:00:00.000Z', source: 'live' }],

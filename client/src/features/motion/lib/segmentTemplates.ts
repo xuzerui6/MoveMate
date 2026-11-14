@@ -30,7 +30,7 @@ export const SEGMENT_TEMPLATES: Record<string, SegmentTemplate> = {
     templateId: 'basketball',
     segmentsTotal: 4,
     segmentLabel: '打完一轮 10 分钟的比赛，算一段',
-    totalLabel: '本场共 4 段，打满 4 轮就是打赢',
+    totalLabel: '本场共 4 段，打满 4 段就是打赢',
     formats: [
       { value: 'minutes10', name: '10 分钟一轮', segmentLabel: '打完一轮 10 分钟的比赛，算一段' },
       { value: 'points21', name: '21 分一局', segmentLabel: '打完一局，先到 21 分的一方赢下这局，算一段' },

@@ -490,7 +490,6 @@ export default function BossFightPage() {
           onCreate={(movementId, durationSec) => void runAction('create', () => fight.create({ movement: movementId, bossId: PHASE1_BOSS_ID, durationSec }), '打怪发起啦，喊大家来集合')}
           onCreateSegment={(opts) => void runAction('create', () => fight.create({ mode: 'segments', bossId: PHASE1_BOSS_ID, ...opts }), '约定好啦，喊大家来集合')}
         />
-        <p className="bf-privacy">{PRIVACY_LINE}</p>
       </div>
     )
   }
@@ -535,6 +534,7 @@ export default function BossFightPage() {
         <SegmentFightView
           snapshot={snapshot}
           userId={user?.id}
+          isHost={isHost}
           busy={actionBusy}
           runAction={runAction}
           actions={segmentActions}
@@ -672,9 +672,14 @@ export default function BossFightPage() {
                   大家都准备好了，开打！
                 </button>
               ) : (
-                <p className="bf-note">{joined.length < 2 ? '至少 2 个人组队才能开打，再喊一个人来。' : `还有 ${joined.filter((p) => !p.ready).length} 个人没点准备好。`}</p>
+                <>
+                  <p className="bf-note">{joined.length < 2 ? '至少 2 个人组队才能开打，再喊一个人来。' : `还有 ${joined.filter((p) => !p.ready).length} 个人没点准备好。`}</p>
+                  {joined.length >= 2 && (
+                    <p className="bf-note">{isHost ? '都准备好后，你就能开打了。' : '都准备好后，就能开打了。'}</p>
+                  )}
+                </>
               )}
-              <button type="button" className="bf-text-btn" disabled={actionBusy === 'leave'} onClick={() => void runAction('leave', () => fight.leave(), '已退出队伍')}>
+              <button type="button" className="btn btn--secondary btn--block bf-big-btn" disabled={actionBusy === 'leave'} onClick={() => void runAction('leave', () => fight.leave(), '已退出队伍')}>
                 退出队伍
               </button>
             </>
@@ -845,6 +850,8 @@ function CreatePanel(props: {
       </button>
       </>
       )}
+      {/* 摄像头隐私提醒只在摄像头模式出现；约定段模式不用摄像头，不显示 */}
+      {mode === 'camera' && <p className="bf-privacy">{PRIVACY_LINE}</p>}
     </section>
   )
 }

@@ -5,6 +5,8 @@ import {
   FRAME_ALERT_WORD,
   POSE_STALE_MS,
   acceptSnapshot,
+  bossEntryCopy,
+  bossTeaserCopy,
   crossedRepMilestone,
   deriveFrameAlert,
   estimateMaxHp,
@@ -232,4 +234,27 @@ test('远距离模式：出画方向判定（原始坐标，预览镜像）', ()
   assert.equal(deriveFrameAlert(makePoints(noLower)), 'back')
   // 四种报警都有大字文案
   for (const kind of ['gone', 'left', 'right', 'back'] as const) assert.ok(FRAME_ALERT_WORD[kind].length > 0)
+})
+
+test('局详情打怪卡文案按模式分流：健身说摄像头，其他运动说约定段', () => {
+  // 入口卡：健身 = 摄像头口径；篮球/跑步 = 约定口径，绝不提摄像头
+  assert.match(bossEntryCopy('fitness'), /开摄像头练/)
+  for (const sport of ['basketball', 'running', 'soccer']) {
+    const copy = bossEntryCopy(sport)
+    assert.match(copy, /先把约定说好/)
+    assert.match(copy, /打完一段记一格/)
+    assert.doesNotMatch(copy, /摄像头/)
+    assert.match(copy, /首胜纪念/)
+  }
+  // 预告卡：两种签到状态都跟模式走
+  assert.match(bossTeaserCopy('fitness', true), /你已经签到啦/)
+  assert.match(bossTeaserCopy('fitness', false), /活动开始、你签到之后/)
+  assert.match(bossTeaserCopy('fitness', true), /开摄像头练/)
+  for (const checked of [true, false]) {
+    const copy = bossTeaserCopy('basketball', checked)
+    assert.match(copy, /先把约定说好/)
+    assert.doesNotMatch(copy, /摄像头/)
+  }
+  assert.match(bossTeaserCopy('running', true), /你已经签到啦/)
+  assert.match(bossTeaserCopy('running', false), /活动开始、你签到之后/)
 })

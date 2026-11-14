@@ -72,6 +72,7 @@ const COMBO_LINES = [
 export function SegmentFightView(props: {
   snapshot: BossFightSnapshot
   userId: number | string | undefined
+  isHost: boolean
   busy: string
   runAction: RunAction
   actions: SegmentActions
@@ -233,9 +234,14 @@ export function SegmentFightView(props: {
                   就这么约，开始打怪
                 </button>
               ) : (
-                <p className="bf-note">{joined.length < 2 ? '至少 2 个人组队才能开打，再喊一个人来。' : `还有 ${joined.filter((p) => !p.ready).length} 个人没点准备好。`}</p>
+                <>
+                  <p className="bf-note">{joined.length < 2 ? '至少 2 个人组队才能开打，再喊一个人来。' : `还有 ${joined.filter((p) => !p.ready).length} 个人没点准备好。`}</p>
+                  {joined.length >= 2 && (
+                    <p className="bf-note">{props.isHost ? '都准备好后，你就能开打了。' : '都准备好后，就能开打了。'}</p>
+                  )}
+                </>
               )}
-              <button type="button" className="bf-text-btn" disabled={props.busy === 'leave'} onClick={() => void runAction('leave', () => actions.leave(), '已退出队伍')}>
+              <button type="button" className="btn btn--secondary btn--block bf-big-btn" disabled={props.busy === 'leave'} onClick={() => void runAction('leave', () => actions.leave(), '已退出队伍')}>
                 退出队伍
               </button>
             </>
@@ -253,7 +259,7 @@ export function SegmentFightView(props: {
             </button>
           )}
           {!wrapOpen ? (
-            <button type="button" className="bf-text-btn" onClick={() => setWrapOpen(true)}>结束今天的挑战</button>
+            <button type="button" className="btn btn--secondary btn--block bf-big-btn" onClick={() => setWrapOpen(true)}>结束今天的挑战</button>
           ) : (
             <div className="bf-seg-wrap" role="group" aria-label="收场结算">
               <p>已经记上 <b>{done}</b> 段。要是有打完但没记上的，在这里补上，只能往上补：</p>
