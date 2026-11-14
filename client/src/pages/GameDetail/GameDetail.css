@@ -1,4 +1,15 @@
 /* 局详情页页面自有样式 (参照 Profile.css 模式)。2026-11-06 自 foundation.css 迁入 (foundation 退役)。 */
+/* 已有详情时刷新失败的小提示条：只提示、不换页（2026-11-14 韧性修复） */
+.game-refresh-note {
+  margin: 0 0 1rem;
+  padding: 0.625rem 0.875rem;
+  border-radius: 0.75rem;
+  background: #fff7e6;
+  border: 1px solid #f3dfae;
+  color: #8a6d1f;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
 .chat-message--mine {
   margin-left: auto;
   flex-direction: row-reverse;
