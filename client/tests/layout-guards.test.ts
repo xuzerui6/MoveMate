@@ -145,6 +145,75 @@ test('bare .page-header never receives the centering pair at ≥769px', () => {
   assert.match(joined, /margin:\s*0 auto/, 'bare header keeps margin:auto centering (safe under sticky)');
 });
 
+// 6) The "/friends still broken after the shared fix" report (2026-11-14)
+//    was bisected in a real Chromium and traced to a STALE DOCUMENT, not a
+//    page defect: the tab had been loaded before the fix deploy, and asset
+//    retention keeps every old hashed bundle servable, so that document
+//    kept running the pre-fix entry CSS while /invite — checked after a
+//    fresh load — already used the fixed one. With current assets /friends
+//    and /invite render identically (header hit-tests pass); with only the
+//    pre-fix stylesheet swapped back in, BOTH break identically (header
+//    x −45, back button off-screen) — one document can never show the
+//    split outcome. What makes every generation safe is the invariant the
+//    guards above only check inside motion.css's ≥769px blocks. Lock it
+//    across ALL stylesheets and ALL blocks instead: any rule whose subject
+//    is .page-header without the .motion-view scope (the only
+//    position:relative header context) must never set left/transform —
+//    under position:sticky, left:50% resolves against the scroll
+//    container, gets clamped by the sticky constraint rectangle, and the
+//    unclamped translateX(−50%) then shoves the header half a width
+//    off-screen on every bare-header page at once.
+
+function everyRule(css: string): Array<{selector: string; body: string}> {
+  const clean = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  const rules: Array<{selector: string; body: string}> = [];
+  const walk = (text: string) => {
+    let i = 0;
+    while (i < text.length) {
+      const open = text.indexOf('{', i);
+      if (open < 0) break;
+      const selector = text.slice(i, open).trim();
+      let depth = 0;
+      let end = text.length - 1;
+      for (let j = open; j < text.length; j++) {
+        if (text[j] === '{') depth++;
+        else if (text[j] === '}' && --depth === 0) { end = j; break; }
+      }
+      const body = text.slice(open + 1, end);
+      if (selector.startsWith('@media') || selector.startsWith('@supports')) walk(body);
+      else if (selector && !selector.startsWith('@')) rules.push({selector, body});
+      i = end + 1;
+    }
+  };
+  walk(clean);
+  return rules;
+}
+
+function cssFiles(dir: string): string[] {
+  return fs.readdirSync(dir, {withFileTypes: true}).flatMap(entry => {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) return cssFiles(full);
+    return entry.name.endsWith('.css') ? [full] : [];
+  });
+}
+
+test('no stylesheet may put left/transform on a .page-header outside .motion-view scope', () => {
+  const violations: string[] = [];
+  for (const file of cssFiles(path.join(root, 'src'))) {
+    for (const rule of everyRule(fs.readFileSync(file, 'utf8'))) {
+      for (const selector of rule.selector.split(',').map(s => s.trim())) {
+        const subject = selector.split(/[\s>+~]+/).filter(Boolean).pop() || '';
+        if (!subject.includes('.page-header')) continue;
+        if (selector.includes('.motion-view')) continue;
+        if (/(?:^|;)\s*left\s*:/.test(rule.body) || /(?:^|;)\s*transform\s*:/.test(rule.body)) {
+          violations.push(`${path.relative(root, file)} :: ${selector} { ${rule.body.trim().slice(0, 80)} }`);
+        }
+      }
+    }
+  }
+  assert.deepEqual(violations, [], 'bare .page-header rules must stay free of left/transform (sticky centering-pair trap)');
+});
+
 test('.motion-view .page-header keeps exactly its ≥769px rendering', () => {
   const rules = mediaRules(motionCss, '(min-width: 769px)').filter(r => r.selector === '.motion-view .page-header');
   const joined = rules.map(r => r.body).join('\n');
