@@ -852,3 +852,13 @@ html,body,#root{height:100%;min-width:320px;margin:0;width:100%}body{background:
 .groups-page .group-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-bottom:16px}
 .groups-page .group-actions .group-create{position:static;float:none;margin:0}
 @media (max-width:700px){.groups-page .group-actions{justify-content:flex-start}}
+
+/* 新版本提示条（UpdateBanner）：底部悬浮小卡，位于移动端底栏（80px+安全区）之上，
+   不推挤内容、不遮挡训练界面（训练中由组件层抑制展示），层级在底栏之上、弹窗之下。 */
+.update-banner{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:300;width:min(calc(100% - 32px),480px);display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-lg);padding:12px 14px;animation:toastIn .3s ease}
+.update-banner-text{margin:0;flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.update-banner-text strong{font-size:15px;color:var(--ink)}
+.update-banner-text span{font-size:12px;color:var(--muted);line-height:1.5}
+.update-banner-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.update-banner-later{min-height:44px;padding:8px 10px;border:0;background:transparent;color:var(--muted);font-size:14px;cursor:pointer}
+@media (min-width:700px){.update-banner{bottom:20px}}

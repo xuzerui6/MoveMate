@@ -431,6 +431,9 @@ export default {
       }
       headers.set('Cache-Control', response.status===416?'no-store': /\.[a-f0-9]{12}\./.test(url.pathname) || url.pathname.startsWith('/assets/') ? 'public, max-age=31536000, immutable' : 'public, max-age=0, must-revalidate');
     }
+    // version.json drives the client's gentle update banner (UpdateBanner):
+    // it must always describe the latest deployment, never a cached copy.
+    else if (url.pathname === '/version.json') headers.set('Cache-Control', 'no-store');
     else if (headers.get('Content-Type')?.includes('text/html')) headers.set('Cache-Control', 'no-store');
     headers.set('X-Content-Type-Options', 'nosniff');
     headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
