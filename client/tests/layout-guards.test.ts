@@ -15,6 +15,7 @@ import path from 'node:path';
 const root = path.resolve(import.meta.dirname, '..');
 const designSystem = fs.readFileSync(path.join(root, 'src/design-system.css'), 'utf8');
 const gymCss = fs.readFileSync(path.join(root, 'src/features/gym/gym.css'), 'utf8');
+const bossAtlasCss = fs.readFileSync(path.join(root, 'src/pages/BossAtlas/BossAtlas.css'), 'utf8');
 
 function declarations(css: string, selector: string): string {
   const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -78,4 +79,33 @@ test('plan editor save bar is viewport-anchored below 1100px, keyboard still unf
   assert.ok(blocks.some(b => /position:\s*fixed/.test(b) && /left:\s*86px/.test(b)), 'tablet editor bar must be fixed beside the rail');
   const keyboard = declarations(gymCss, '.keyboard-open .gym-editor-save-bar');
   assert.match(keyboard, /position:\s*static/);
+});
+
+// 4) The avatar editor wraps showcase+customize in .look-layout (Avatar.tsx),
+//    but the ≥1100px design-system block still placed the OLD direct children
+//    (.avatar-showcase/.avatar-customize) into a 350px + 1fr page grid, so
+//    .look-layout auto-placed into the 350px column and its own ≥900px
+//    340px + 1fr grid crushed the editing column to a sliver (browser
+//    inspection 2026-11-14). The wrapper must span the full page grid and
+//    the obsolete direct-child placements must stay retired.
+test('avatar editor look-layout spans the full page width at ≥1100px', () => {
+  const layout = declarations(designSystem, '.motion-view .avatar-page .look-layout');
+  assert.match(layout, /grid-column:\s*1\/-1/);
+  for (const stale of ['.motion-view .avatar-page .avatar-showcase', '.motion-view .avatar-page .avatar-customize']) {
+    const blocks = allDeclarations(designSystem, stale);
+    assert.ok(!blocks.some(b => /grid-column|grid-row/.test(b)), `${stale} must not carry grid placement (retired with the .look-layout wrapper)`);
+  }
+});
+
+// 5) Boss Atlas uses the shared .page-header outside .motion-view. Its base
+//    rule is position:sticky, but the ≥769px centering pair
+//    (left:50% + translateX(-50%)) only cancels out under position:relative
+//    (the .motion-view override) — under sticky the header is shoved half
+//    its width off the left edge, leaving a blank band where the title and
+//    back button should be (browser inspection 2026-11-14). BossAtlas.css
+//    must neutralize that pair inside the page scope.
+test('boss Atlas page header neutralizes the sticky-breaking centering pair', () => {
+  const rule = declarations(bossAtlasCss, '.ba-page .page-header');
+  assert.match(rule, /left:\s*auto/);
+  assert.match(rule, /transform:\s*none/);
 });
