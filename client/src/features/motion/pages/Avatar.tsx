@@ -1,4 +1,4 @@
-import {useEffect,useMemo,useState} from 'react';
+import {useEffect,useState} from 'react';
 import {LayeredAvatar} from '../components/LayeredAvatar';
 import {Header} from '../components/Header';
 import {Icon} from '../components/Icons';
@@ -6,7 +6,7 @@ import {useStore} from '../lib/store';
 import {getOutfitAvatar,outfitLabels,outfitPresets,outfitRarities,outfitUnlockCopy} from '../lib/outfits';
 import {
   AVATAR_PART_BY_ID, AVATAR_SLOT_LABELS, AVATAR_SLOT_ORDER, HAIR_HIDING_FACE_PARTS,
-  decomposeOutfit, defaultCore, outfitLook, partName, partRarityName, partUnlockCopy, partsForSlot,
+  avatarCoresEqual, decomposeOutfit, defaultCore, outfitLook, partName, partRarityName, partUnlockCopy, partsForSlot,
 } from '../lib/avatarParts';
 import {requiredXp} from '../lib/rewards';
 import type {AvatarCustomCore,AvatarGender,AvatarLook,AvatarPartGroup,AvatarSkin,AvatarSlotKey,OutfitPreset,Slot} from '../types';
@@ -36,11 +36,14 @@ export function Avatar({inventory}:{inventory:()=>void}){
  };
  const ensureDraft=()=>draft??seedCore();
  const editing=draft!==null;
- const draftDirty=useMemo(()=>{
-   if(!draft)return false;
-   if(savedLook.mode!=='custom'||!savedLook.custom)return true;
-   return JSON.stringify(draft)!==JSON.stringify(savedLook.custom);
- },[draft,savedLook]);
+ // 已保存搭配的等价核心：自定义口径就是存着的核心本身；整套造型口径是它拆件
+ // 后的核心（即 seedCore 的派生）。草稿改回和它一模一样时不算未保存修改——
+ // 旧逻辑整套口径无条件算脏、自定义口径又用字符串比较吃键序，换回原发型也
+ // 一直亮着「保存形象/放弃修改」（2026-11-14 浏览器实测）。
+ const savedCore:AvatarCustomCore=savedLook.mode==='custom'&&savedLook.custom?savedLook.custom:seedCore();
+ const draftDirty=draft!==null&&!avatarCoresEqual(draft,savedCore);
+ // 草稿一旦回到已保存的搭配就直接丢弃，保存条回到「已是最新形象」。
+ useEffect(()=>{if(draft&&!draftDirty)setDraft(null);},[draft,draftDirty]);
  const previewLook:AvatarLook=editing&&draft?{v:1,mode:'custom',custom:draft}:savedLook;
  const currentCore=draft??(savedLook.mode==='custom'&&savedLook.custom?savedLook.custom:seedCore());
 

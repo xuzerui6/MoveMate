@@ -15,11 +15,7 @@
 .ba-tier { font-size: 12px; background: #efeaff; color: #5b4bc4; border-radius: 999px; padding: 2px 9px; }
 .ba-card p { color: #55555f; font-size: 13px; line-height: 1.6; margin: 6px 0; }
 .ba-card small { color: #8a8a96; font-size: 12px; }
-/* 页头修正：共享 .page-header 的基础规则是 position:sticky，而 ≥769px 的
-   居中写法（left:50% + translateX(-50%)）是按 position:relative 的位移
-   抵消设计的——.motion-view 内的页面有 position:relative 覆盖所以正常，
-   本页没有，位移不抵消，标题和返回键会被整体推到画面左侧外，只剩一条
-   空灰带。这里在本页作用域内关掉这组位移，保留吸顶。 */
-@media (min-width: 769px) {
-  .ba-page .page-header { left: auto; transform: none; }
-}
+/* 页头：共享 .page-header 在 ≥769px 曾把居中对（left:50% + translateX(-50%)）
+   写在基础规则上，在 position:sticky 下不抵消、把本页页头推出画面。本页曾有
+   一条作用域内关掉位移的补丁；2026-11-14 起 motion.css 已把居中对收进
+   .motion-view 作用域从源头修好，本页补丁随之移除（layout-guards 有守卫）。 */

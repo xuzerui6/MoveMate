@@ -5,7 +5,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
   AVATAR_PARTS, AVATAR_PART_BY_ID, HAIR_HIDING_FACE_PARTS,
-  decomposeOutfit, defaultCore, layerPlan, outfitLook,
+  avatarCoresEqual, decomposeOutfit, defaultCore, layerPlan, outfitLook,
 } from '../src/features/motion/lib/avatarCatalog'
 import type { AvatarLook } from '../src/features/motion/types'
 
@@ -113,4 +113,23 @@ test('default cores are valid starting points for both groups', () => {
     assert.ok(plan && plan.partIds.length >= 4)
     for (const partId of plan.partIds) assert.equal(AVATAR_PART_BY_ID[partId].group, group)
   }
+})
+
+test('avatarCoresEqual: returning to the saved combination reads as unchanged', () => {
+  const saved = decomposeOutfit('violet_court')
+  // 草稿换了发型再换回来（且部件记录的键序被重排过）——仍是同一套搭配
+  const roundTrip = JSON.parse(JSON.stringify(saved))
+  roundTrip.parts = Object.fromEntries(Object.entries(saved.parts).reverse())
+  roundTrip.parts.hair = 'hair-default'
+  assert.equal(avatarCoresEqual(roundTrip, saved), false, 'a different hairstyle is a change')
+  roundTrip.parts.hair = saved.parts.hair
+  assert.equal(avatarCoresEqual(roundTrip, saved), true, 'picking the original part back restores equality regardless of key order')
+  assert.equal(avatarCoresEqual(saved, JSON.parse(JSON.stringify(saved))), true, 'a deep copy equals the original')
+  assert.equal(avatarCoresEqual({ ...saved, skin: 'wheat' }, saved), false, 'skin change counts')
+  assert.equal(avatarCoresEqual({ ...saved, face: 'calm' }, saved), false, 'face change counts')
+  assert.equal(avatarCoresEqual(defaultCore('A'), defaultCore('B')), false, 'group change counts')
+  assert.equal(
+    avatarCoresEqual({ ...saved, parts: { ...saved.parts, glasses: null } }, { ...saved, parts: { ...saved.parts, glasses: 'glasses-black' } }),
+    false, 'null vs a worn part counts',
+  )
 })
