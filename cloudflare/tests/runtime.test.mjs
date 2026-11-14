@@ -291,6 +291,30 @@ await test('Workers runtime migration and business regression', async t=>{
  await actor.brokenOutbox(true);await actor.forceAlarm();
  assert.equal(await actor.pendingEvents(),0);
  });
+ await t.test('alarm recovers a full game whose start passed before any tick; the cancel horizon still holds',async()=>{
+ const namespace=await mf.getDurableObjectNamespace('BACKEND');const actor=namespace.get(namespace.idFromName('test'));
+ const created=await call('/api/v1/games',{method:'POST',token:tokens[0],body:{sport_type:'basketball',title:'Missed-window recovery',campus_id:1,venue_id:10,max_players:2,start_time:new Date(Date.now()+60000).toISOString()}});
+ assert.equal(created.status,200);const id=created.data.data.game.id;
+ assert.equal((await call(`/api/v1/games/${id}/join`,{method:'POST',token:tokens[1],body:{}})).status,200);
+ assert.equal((await call(`/api/v1/games/${id}`,{token:tokens[0]})).data.data.game.status,'full');
+ // 满员状态下签到被拒——2026-11-14 线上事故的用户症状
+ assert.equal((await call(`/api/v1/games/${id}/check-in`,{method:'POST',token:tokens[0],body:{}})).status,409);
+ // 时钟越过开始时间而没有任何 alarm 落在窗口内：开始时间拨到 2 分钟前，状态仍是 full
+ await actor.rewindGameStart(id,new Date(Date.now()-120000).toISOString());
+ await actor.forceAlarm();
+ // 同一 tick 内补推进 ready 再按既有规则自动开始；自动开始之后仍可签到、确认到场
+ assert.equal((await call(`/api/v1/games/${id}`,{token:tokens[0]})).data.data.game.status,'in_progress');
+ for(const token of tokens.slice(0,2))assert.equal((await call(`/api/v1/games/${id}/check-in`,{method:'POST',token,body:{}})).status,200);
+ assert.equal((await call(`/api/v1/games/${id}/attendance/confirm`,{method:'POST',token:tokens[0],body:{user_id:2}})).status,200);
+ assert.equal((await call(`/api/v1/games/${id}/complete`,{method:'POST',token:tokens[0],body:{}})).status,200);
+ // 开始已过 31 分钟（取消线以外）：恢复逻辑不捞，alarm 后被自动取消
+ const late=await call('/api/v1/games',{method:'POST',token:tokens[0],body:{sport_type:'basketball',title:'Beyond cancel horizon',campus_id:1,venue_id:10,max_players:2,start_time:new Date(Date.now()+60000).toISOString()}});
+ assert.equal(late.status,200);const lateId=late.data.data.game.id;
+ assert.equal((await call(`/api/v1/games/${lateId}/join`,{method:'POST',token:tokens[1],body:{}})).status,200);
+ await actor.rewindGameStart(lateId,new Date(Date.now()-31*60000).toISOString());
+ await actor.forceAlarm();
+ assert.equal((await call(`/api/v1/games/${lateId}`,{token:tokens[0]})).data.data.game.status,'cancelled');
+ });
  await t.test('native voice bridge preserves hello and binary audio beyond handshake timeout',async()=>{
  const initialized=await call('/api/xiaozhi/device',{method:'POST',token:tokens[2],body:{}});
  assert.equal(initialized.status,200);assert.equal(initialized.data.status,'ready');
