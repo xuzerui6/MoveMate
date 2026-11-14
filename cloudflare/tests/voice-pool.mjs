@@ -141,4 +141,53 @@ export async function voicePoolTests(t, { mf, call, tokens, adminToken, sockets,
     // 收尾恢复关闭态
     assert.equal((await migrate('voice-settings', { enabled: false, validationUsers: [] })).status, 200);
   });
+  await t.test('operator voice-device actions create and flag devices behind the migration secret only', async () => {
+    // 路由器先验迁移密钥：只有登录 token、或错误的 Bearer，都进不来
+    assert.equal((await call('/api/migration/voice-device-create', { token: tokens[0], method: 'POST', body: { slot: 5 }, headers: { Connection: 'close' } })).status, 401);
+    assert.equal((await call('/api/migration/voice-device-flags', { token: tokens[0], method: 'POST', body: { slot: 5, enabled: true }, headers: { Connection: 'close' } })).status, 401);
+    assert.equal((await call('/api/migration/voice-device-create', { method: 'POST', body: { slot: 5 }, headers: { Authorization: 'Bearer ' + 'w'.repeat(64), Connection: 'close' } })).status, 401);
+    // 先用管理员 DELETE 把 5 号位重置成空位，运维通道才有空位可建
+    assert.equal((await admin('/devices/5', undefined, 'DELETE')).status, 200);
+    let snap = await migrate('voice-settings');
+    assert.deepEqual(snap.data.devices[4], { slot: 5, state: 'empty', enabled: false, verified: false });
+    // 空位上：轮询激活被拒（还没生成激活码）、启用未绑定设备被拒——与管理端同一句话、同一 409
+    const earlyActivate = await migrate('voice-device-create', { slot: 5, activate: true });
+    assert.equal(earlyActivate.status, 409); assert.match(earlyActivate.data.error, /请先生成激活码/);
+    const earlyFlags = await migrate('voice-device-flags', { slot: 5, enabled: true });
+    assert.equal(earlyFlags.status, 409); assert.match(earlyFlags.data.error, /设备尚未绑定/);
+    const noSlot = await migrate('voice-device-flags', { slot: 9, enabled: true });
+    assert.equal(noSlot.status, 409); assert.match(noSlot.data.error, /设备位置不存在/);
+    // 创建：假上游直接下发连接配置，设备当场 bound；返回与管理端同一份快照形状（含 activation 字段）
+    const created = await migrate('voice-device-create', { slot: 5 });
+    assert.equal(created.status, 200, JSON.stringify(created.data));
+    assert.equal(created.data.maxConnections, 5);
+    const device = created.data.devices[4];
+    assert.equal(device.slot, 5); assert.equal(device.bound, true); assert.equal(device.state, 'unverified');
+    assert.ok('activation' in device, '创建响应须带 activation 字段（真上游未激活时为 {code, expiresAt}）');
+    assert.equal(device.activation, null, '假上游即时激活时 activation 为 null');
+    const rawCreated = JSON.stringify(created.data); for (const key of ['identity', 'deviceId', 'clientId', 'challenge', 'synthetic-test-token']) assert(!rawCreated.includes(key), key);
+    snap = await migrate('voice-settings');
+    assert.deepEqual(snap.data.devices[4], { slot: 5, state: 'bound', enabled: false, verified: false });
+    // 同一位置重复创建：与管理端同一句拒绝；激活轮询在已 bound 设备上可重复调用（输码后的确认步骤）
+    const duplicate = await migrate('voice-device-create', { slot: 5 });
+    assert.equal(duplicate.status, 409); assert.match(duplicate.data.error, /该位置已有设备，请先重置/);
+    const polled = await migrate('voice-device-create', { slot: 5, activate: true });
+    assert.equal(polled.status, 200, JSON.stringify(polled.data)); assert.equal(polled.data.devices[4].bound, true);
+    // 标记：启用 + 验证，响应为运维快照形状且回读一致
+    const flagged = await migrate('voice-device-flags', { slot: 5, enabled: true, verified: true });
+    assert.equal(flagged.status, 200, JSON.stringify(flagged.data));
+    assert.deepEqual(flagged.data.devices[4], { slot: 5, state: 'bound', enabled: true, verified: true });
+    assert.deepEqual(Object.keys(flagged.data).sort(), ['devices', 'leases', 'settings']);
+    // 完整解锁演练：额度确认 + 验证名单就绪后，名单内账号能真的经 acquire() 租到设备
+    assert.equal((await actor.voiceLeaseRows()).length, 0);
+    const configured = await migrate('voice-settings', { quotaConfirmed: true, validationUsers: [1] });
+    assert.equal(configured.status, 200, JSON.stringify(configured.data));
+    const lease = await acquire(tokens[0]);
+    assert.equal(lease.status, 200, JSON.stringify(lease.data));
+    assert.equal((await migrate('voice-settings')).data.leases, 1);
+    await release(lease, tokens[0]);
+    await settle(async () => (await actor.voiceLeaseRows()).length === 0);
+    // 收尾恢复关闭态
+    assert.equal((await migrate('voice-settings', { enabled: false, validationUsers: [] })).status, 200);
+  });
 }
