@@ -4,14 +4,16 @@
 
 **每次运动，都算数。**
 
-把训练计划、AI 动作计数、语音陪练与找搭子，放进同一个运动社区。
+把训练计划、AI 动作计数、小智语音陪练、找搭子与组队打怪，放进同一个校园运动社区。
 
 [在线体验](https://dongban.xyz) · [开发指南](docs/development.md) · [文档中心](docs/README.md) · [反馈问题](https://github.com/xuzerui6/MoveMate/issues/new/choose)
 
 [![CI](https://github.com/xuzerui6/MoveMate/actions/workflows/ci.yml/badge.svg)](https://github.com/xuzerui6/MoveMate/actions/workflows/ci.yml)
 ![React 18](https://img.shields.io/badge/React-18-149eca)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178c6?logo=typescript&logoColor=white)
-![Node 24](https://img.shields.io/badge/Node.js-24-43853d)
+![TypeScript 5](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)
+![Node.js 24](https://img.shields.io/badge/Node.js-24-43853d)
+![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-f38020?logo=cloudflare&logoColor=white)
+![MediaPipe](https://img.shields.io/badge/MediaPipe-姿态识别-0097a7)
 [![MIT code](https://img.shields.io/badge/code-MIT-green)](LICENSE)
 
 </div>
@@ -22,9 +24,17 @@
 
 | 动作库条目 | 图文完整 | 照片示范 | 摄像头识别动作 |
 | :---: | :---: | :---: | :---: |
-| **1,329** | **497** | **384** | **43** |
+| **1,329** | **1,064** | **1,058** | **56** |
 
 </div>
+
+## 产品亮点
+
+- **AI 动作计数**：56 个动作能开摄像头练，姿态识别和计数都在手机本地完成，不上传视频。
+- **小智语音陪练**：训练时全程能聊——报数、看关键帧给指导、累了给你打气；产品里的语音都由小智来说。
+- **组队打怪**：约上朋友一起开摄像头打怪，健身靠真实次数打伤害，其他运动按约定完成一段段目标。
+- **能换装的分身**：发型、眼镜、衣服等七个部位自由搭配，部件靠训练和打怪解锁，不花钱。
+- **校园组局**：13 类运动发局找搭子，局只在本校内可见；吉林大学已开放注册，吉林体育学院内测中。
 
 ## 产品能力
 
@@ -32,32 +42,40 @@ MoveMate 整合「动伴」的运动陪练、成长形象和「搭个局」的�
 
 | 模块 | 可以做什么 |
 | --- | --- |
-| AI 动作训练 | 基础四种，加试用锤式弯举、前平举、俯身臂屈伸、罗马尼亚硬拉、地面臀桥、站姿后屈腿；本地计数、评分与纠错 |
-| 计划与自由训练 | 动作库、可编辑模板、周计划／循环安排、逐组重量与次数、组间休息、暂停及刷新恢复 |
-| 计划内摄像头 | 43 个指定条目：覆盖四套内置模板动作，并支持坐姿弯举／侧平举、仰卧臂屈伸、硬拉、卧推等标准形式；新能力为试用 |
+| AI 动作训练 | 56 个摄像头动作：深蹲、开合跳、高抬腿、俯卧撑 4 种正式支持，其余 52 种为试用；计数在设备本地完成，评分与提示用来帮你调整动作 |
+| 小智语音陪练 | 所有语音都走小智：训练时是能对话的陪练——报数、看关键帧给指导和鼓励；组队打怪时负责播报节点。小智不可用时改走音效与屏幕提示，训练不中断 |
+| 智能复核 | 摄像头训练默认开启：陪练会看关键帧帮你复核动作，本站不保存图片 |
+| 计划与自由训练 | 动作库、可编辑模板、周计划／循环安排、逐组重量与次数、组间休息、暂停及刷新恢复；计划内的组也能开摄像头计数 |
+| 组队打怪 | 和朋友组局一起打怪：健身动作按真实计数打伤害；篮球、跑步、游泳等其他运动按各类目的「完成约定」一段段推进，没打完怪会逃走；赢了有首胜纪念，每人只发一次，24 小时内补确认可补发纪念（不补胜场） |
+| 找搭子 | 发局、加入、聊天、通知、签到、到场确认、个人运动记录和活动统一结算；组局按学校隔离，只看得到本校的局 |
+| 个人形象 | 可换装的插画分身：发型、眼睛、眼镜、面饰、上衣、裤子、鞋七个部位自由搭配，另有整套造型预设；部件靠训练场次和打怪首胜解锁，不用 XP 购买 |
+| 运动与成长 | 个人计时、训练历史、趋势、身体记录、XP 与等级；服务端确认结算 |
 | 动作示范 | 图文步骤、同源分解帧、点击播放的视频、肌群展示；与摄像头能力分开标识 |
-| 运动与成长 | 个人计时、训练历史、趋势、身体记录、XP、像素形象和装备；服务端确认结算 |
-| 找搭子 | 发局、加入、聊天、通知、签到、到场确认、个人运动记录和活动统一结算 |
-| 语音陪练 | 可选小智接入与设备池；未配置时使用本地文字反馈，不阻塞训练 |
 | 数据工具 | 历史导入导出、计划草稿、进阶建议、配重计算、单位偏好与 PWA 只读缓存 |
 
 <div align="center">
 
 | 首页：成长与入口 | 训练入口 |
 | :---: | :---: |
-| ![动伴首页：个人成长、像素分身与运动入口](docs/images/home.png) | ![动伴训练入口](docs/images/training.png) |
+| ![动伴首页：个人成长、分身与运动入口](docs/images/home.png) | ![动伴训练入口](docs/images/training.png) |
 
 </div>
 
-截图来自演示账号的实际页面；截图不代表摄像头实拍质量验收。新动作识别为试用，评分用于反馈，不代表专业认证。
+截图来自演示账号的实际页面；截图不代表摄像头实拍质量验收。新动作识别为试用，评分用于反馈，不代表专业认证；个别评分项暂时评不了时会如实显示，不硬凑分数。
 
 ## 场景渲染
 
 | 摄像头就是教练 | 一起练，更有动力 | 每一次训练，都留下成长 |
 | --- | --- | --- |
-| ![摄像头教练特写渲染：哑铃弯举的角度与计数](docs/images/render-coach.jpg) | ![多人组局渲染：校园里一起训练](docs/images/render-group.jpg) | ![像素分身成长渲染：从新手到装备齐全](docs/images/render-avatar.jpg) |
+| ![摄像头教练特写渲染：哑铃弯举的角度与计数](docs/images/render-coach.jpg) | ![多人组局渲染：校园里一起训练](docs/images/render-group.jpg) | ![个人形象成长渲染：从新手到装备齐全](docs/images/render-avatar.jpg) |
 
 以上为概念渲染图，用于呈现使用场景与设计方向；产品实际页面见上方截图。
+
+## 谁能用
+
+- **吉林大学**：开放注册，用校园邮箱收验证码即可。
+- **吉林体育学院**：已在学校列表里，目前内测中，暂不开放注册。
+- 组局、好友与打怪都按学校隔离：只能看到、加入本校的活动。
 
 ## 快速开始
 
@@ -86,17 +104,18 @@ Windows 配置好素材后，双击根目录 [`start-demo.bat`](start-demo.bat)�
 
 ```mermaid
 flowchart LR
-    A["浏览器<br/>React 18 · TypeScript · Vite · MediaPipe"] -->|"同源 API · 实时消息 · 可选语音"| B["本机部署<br/>Express · node:sqlite · Socket.IO"]
-    A --> C["云端部署<br/>Cloudflare Worker · Static Assets"]
-    C --> D["Durable Object<br/>SQLite 持久化 · 原生 WebSocket · Alarm"]
+    A["浏览器 PWA<br/>React · TypeScript<br/>MediaPipe 本地姿态识别与计数"] -->|"同源 API · 实时消息"| B["Cloudflare Worker<br/>API 与静态资源"]
+    B --> C["Durable Objects<br/>SQLite 持久化 · WebSocket · Alarm"]
+    A -->|"语音陪练与播报"| D["小智云端<br/>对话 · 报数 · 关键帧视觉"]
+    A -->|"模型与示范素材（失败自动回退本站）"| E["媒体 CDN<br/>pose.xzrcloud.xyz"]
 ```
 
-生产入口为 [dongban.xyz](https://dongban.xyz)，采用 Cloudflare Workers 与 Durable Objects。当前使用免费方案，不自动开通付费资源；免费额度和网络状态会影响可用性。Vercel／Turso 为历史迁移方案，不是当前运行依赖。
+生产入口为 [dongban.xyz](https://dongban.xyz)，采用 Cloudflare Workers 与 Durable Objects。本机部署形态（Express · node:sqlite · Socket.IO）保留用于本地演示与开发。当前使用免费方案，不自动开通付费资源；免费额度和网络状态会影响可用性。Vercel／Turso 为历史迁移方案，不是当前运行依赖。
 
 - [架构与目录](docs/architecture.md)
 - [Cloudflare 部署与回滚](docs/cloudflare-deployment.md)
 - [训练规则与数据边界](docs/plan-training.md)
-- [语音配置与学习演示限制](docs/shared-voice.md)
+- [统一语音陪练（小智）说明](docs/shared-voice.md)
 
 ## 源码检查
 
@@ -118,9 +137,9 @@ GitHub Actions 使用 Node 24 检查后端、前端类型、Workers 与公开媒
 
 ## 当前边界
 
-- 动作库共 1,329 项，目前 **384 项有照片示范（349 项真人图片、35 项 AI 生成图片）、113 项有原创图解、15 个动作 ID 有连续视频（12 段独立视频）**；全库均有逐条来源对照结果，497 项完成图文对照，832 项仍待核对或补齐（截至 2026-11-07 第四十二批）。自第十三批起新补只用真人实拍、图解逐步替换；真人候选池审完后，按产品负责人决定以 AI 生成图片续补（逐张对照条目定义核验、来源如实标注），见[第四十二批记录](docs/exercise-media-batch42.md)。没有把待核对条目计为已完成，[本次实际补齐清单](docs/exercise-library-completion-2026-10-29.md)、[全库覆盖与未完成清单](docs/exercise-library-full-audit.md)。有示范不等于支持识别。
-- 计划按有效运动每分钟 1 XP，摄像头不重复奖励；独立四动作训练按每次／对 2 XP。演示始终 0 XP，导入或补录不补发 XP。
-- 摄像头在本地分析；视觉复核须单独授权。本站不保存原始音视频和完整陪练对话，上游服务另有其数据政策。
+- 动作库共 1,329 项，目前 **1,058 项有照片示范（349 项真人图片、709 项 AI 生成图片）、6 项有原创图解、18 个动作有连续视频（15 段独立视频）**；1,064 项完成图文对照，265 项仍待核对或补齐（截至 2026-11-13）。新补图片逐张对照条目定义核验、来源如实标注，见[全库覆盖与未完成清单](docs/exercise-library-full-audit.md)。有示范不等于支持识别。
+- 计划按有效运动每分钟 1 XP，摄像头不重复奖励；独立 AI 动作训练按每次／对 2 XP。演示始终 0 XP，导入或补录不补发 XP。
+- 姿态识别与计数在设备本地完成；智能复核会把关键帧交给小智云端看，本站不保存图片、原始音视频和完整陪练对话，上游服务另有其数据政策。
 - 新版自适应识别已对新记录自动启用（支持的 20 种动作；已有记录固定原策略，不支持的动作沿用旧版），准备区提供仅作用于新记录的旧版改选（本机偏好，已有记录不受影响）；姿态模型同样在准备区选择：默认（自动）按本机实测逐级落位（Worker/GPU Full → 主线程 Full → 主线程 Lite，探测不达标自动恢复 Lite 且已计次数保留），Full／Heavy 为手动实验档，判定只存本机；**基础四种真人对照已在 iPhone／Windows 实测（定性准确，未逐组记录），不宣称量化准确度提升**，详见[识别时序与稳定性改进](docs/camera-accuracy.md)。真实摄像头质量、BLE、语音有声结果按[实际验收记录](docs/README.md#验收记录)报告，不用回放冒充实拍。
 - 小程序目录为历史样例，未纳入当前网页发布；离线缓存不提供新的正式运动计时。
 
