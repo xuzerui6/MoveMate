@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision'
 import { type ExerciseMetrics } from '../lib/exerciseMetrics'
 import {createRecognitionTracker,recognitionDemonstration} from '../lib/recognition'
+import type {GateCounters} from '../lib/gateCounters'
 import type {EngineSnapshot} from './useAdaptivePose'
 import type { CameraExerciseType } from '../lib/exercises'
 
@@ -30,5 +31,9 @@ export function useExerciseMetrics(type:CameraExerciseType, landmarks:Normalized
     }
     tick();const interval=window.setInterval(tick,100);return()=>window.clearInterval(interval)
   },[active,paused,simulated,type,key])
-  return {metrics:override&&!simulated?override.metrics:metrics,diagnostics:override&&!simulated?override.diagnostics:diagnostics,demoLandmarks}
+  /** WS2 gate counters of the tracker this hook drives directly (legacy
+   * path). The adaptive path's counters ride the engine snapshot instead —
+   * this hook's own tracker idles unused there, so callers must pick by mode. */
+  const gateCounters=():GateCounters|null=>(tracker.current as {gateCountersSnapshot?:()=>GateCounters}|undefined)?.gateCountersSnapshot?.()??null
+  return {metrics:override&&!simulated?override.metrics:metrics,diagnostics:override&&!simulated?override.diagnostics:diagnostics,demoLandmarks,gateCounters}
 }

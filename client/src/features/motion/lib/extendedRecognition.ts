@@ -1,6 +1,8 @@
 import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
 import type {ExerciseMetrics,RecognitionDiagnostics} from './exerciseMetrics';
 import {medianLandmarks,poseIssueCopy} from './poseFeedback';
+import {framingGateIndices} from './framingFeedback';
+import {bumpReason,cloneGateCounters,emptyGateCounters,type GateCounters} from './gateCounters';
 import { COPY_CALIBRATED, COPY_HALF_REP, COPY_OUT_OF_FRAME, cannotAssessCopyFor, notSeenCopyFor } from './companionCopy';
 import { allNumericAssessments, frontRaiseBandFor, syncCategoryForOffset, totalWithheld, type AxisAssessments, type DepthBandCounts } from './axisAssessment';
 import {emptyCorrectionCounts,emptyFormBreakdown,medianOf} from './sessionMigration';
@@ -392,6 +394,11 @@ const sideJoints=(s:Side)=>s==='left'?[11,23,25,27]:[12,24,26,28];
 export class ExtendedExerciseTracker {
   metrics:ExerciseMetrics;
   diagnostics:RecognitionDiagnostics={fps:0,confidence:0,side:null,angle:null,stage:'calibrating',calibrationProgress:0,pairedSides:[],lastResetReason:null};
+  /** WS2 gate counters: pure measurement of where frames/reps die in this
+   * tracker (see gateCounters.ts). Never read by any counting/scoring path. */
+  readonly gateCounters=emptyGateCounters();
+  private everLatched=false;
+  gateCountersSnapshot():GateCounters{return cloneGateCounters(this.gateCounters);}
   private frames:Point[][]=[];
   private worlds:Point[][]=[];
   private last:number|null=null;
@@ -472,6 +479,9 @@ export class ExtendedExerciseTracker {
     // A tracker restored from a session that had already latched (or counted)
     // is in a re-arm context from birth: its next latch is a RE-arm.
     this.strictRearm=!!restored.poseFeedback?.calibrated||(restored.reps||0)>0;
+    // A tracker restored from a latched/counted session re-arms on its next
+    // latch: that latch is a RE-latch for the gate counters.
+    this.everLatched=this.strictRearm;
     this.metrics={...restored,reps:Math.max(0,restored.reps||0),targetReps,perfectReps:restored.perfectReps||0,formScore:acc.count?Math.round(acc.total/acc.count):0,phase:'standing',feedback:definitions[type].placement,scoreAccumulator:acc,formBreakdown:emptyFormBreakdown(),correctionCounts:{...emptyCorrectionCounts(),...restored.correctionCounts},lastRepIssues:[],repeatedIssue:null,poseFeedback:{status:'uncertain',confidence:0,issues:[],primaryIssue:null,affectedJoints:[],calibrated:false,message:'站到起始姿势，陪我停两秒'}};
     this.updateAverage();
   }
@@ -569,6 +579,9 @@ export class ExtendedExerciseTracker {
     return this.upperArmDevAt!==null&&now-this.upperArmDevAt>=UPPER_ARM_SUSTAIN_MS;
   }
   interrupt(reason='先停一下，继续时重新校准',feedback=reason,opts?:{preserveCalibration?:boolean;preserveReady?:boolean;preserveCycle?:boolean;preservePeerPeak?:boolean;preserveHammerCycle?:boolean}){
+    // WS2: a hammer pending completion that does not survive this interrupt
+    // (after every preservation path below has had its say) was wiped.
+    const pendingBefore=this.hammerPending;
     // preserveCalibration (round 3): the calibration bank, the open hold segment
     // and the calibration baseline survive. The baseline is calibration state
     // too — the per-side updaters dereference it unconditionally once ready, so
@@ -605,6 +618,7 @@ export class ExtendedExerciseTracker {
     if(wasReady&&!ready&&!preserve)this.strictRearm=true;
     if(keepCycle&&raiseSides&&lastPeak){this.raiseSides=raiseSides;this.raisePending=raisePending;this.lastPeak=lastPeak;}
     if(keepHammer&&hammerSides&&hammerPeak){this.hammerSides=hammerSides;this.hammerPending=hammerPending;this.lastPeak=hammerPeak;}
+    if(pendingBefore&&!this.hammerPending)this.gateCounters.hammerPendingWipes++;
     if(peerPeaks)this.lastPeak=peerPeaks;
     if(!keepCycle&&!peerPeaks&&!keepHammer)this.cycleHoleStart=null;
     this.diagnostics={...this.diagnostics,stage:'tracking_lost',fps:0,calibrationProgress:progress,lastResetReason:reason};
@@ -633,6 +647,7 @@ export class ExtendedExerciseTracker {
    * resume stale progress. Once ready, ready persists for the rest of the
    * session against transient gates. */
   private softInterrupt(reason:string,now:number,feedback:string=reason){
+    bumpReason(this.gateCounters.softInterrupts,reason);
     this.noteUnmeasurable(now);
     if(!this.ready&&this.lastStartAt!==null&&now-this.lastStartAt>CALIBRATION_STALE_MS){this.calibrationBank=0;this.calibration=null;}
     // Round 4: for front raise, a transient gate also preserves the in-flight
@@ -659,6 +674,7 @@ export class ExtendedExerciseTracker {
    * fabricate a rep out of the rejected pose (the standing-leg-curl side-switch
    * case). Recalibration then re-earns the hold on top of the preserved bank. */
   private formInterrupt(reason:string,now:number){
+    bumpReason(this.gateCounters.formInterrupts,reason);
     // Only cannot-confirm rejections （暂时无法…) are evidence loss: the
     // pose was seen and found unjudgeable. A rejection that names a visible
     // wrong posture （俯身/站姿不计入…) is the system seeing the user clearly
@@ -1048,7 +1064,7 @@ export class ExtendedExerciseTracker {
       // merely clip the zone still confirms — with its interpolated depth scored.
       const ev=feedPeakTrack(cyc.track,now,80-e);
       if(ev.best){cyc.peakPosture=f.posture;cyc.peakOther=other;}
-      if(ev.closed?.valid){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=80-ev.closed.depth;cyc.peakAmp=cap((160-cyc.peakElbow)/95*100);cyc.peakWindows.push({start:ev.closed.start,end:ev.closed.end});}
+      if(ev.closed?.valid){cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=80-ev.closed.depth;cyc.peakAmp=cap((160-cyc.peakElbow)/95*100);cyc.peakWindows.push({start:ev.closed.start,end:ev.closed.end});this.gateCounters.peaksConfirmed[s]++;}
       // Return confirmation: accumulate the interpolated in-zone dwell (≥145°) inside
       // a 500 ms window, so elbow jitter cannot stall the rep and coarse sampling
       // cannot shrink a genuine dwell below the hold (see zonePortion).
@@ -1058,6 +1074,7 @@ export class ExtendedExerciseTracker {
         if(cyc.returnSince===null||portion.start-cyc.returnSince>RETURN_WINDOW_MS){cyc.returnSince=portion.start;cyc.returnAccum=0;}
         cyc.returnAccum+=Math.min(RETURN_FRAME_CAP_MS,portion.ms);
         if(cyc.returnAccum>=RETURN_HOLD_MS){
+          this.gateCounters.returnsConfirmed[s]++;
           const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax),peakWindows:cyc.peakWindows,cycleStart:cyc.movingAt??cyc.peakStart,returnedAt:cyc.returnSince??now};
           this.lastPeak[s]={at:(done.peakStart+done.peakEnd)/2,value:done.peakElbow};
           this.hammerSides[s]=freshSideCycle();replaced=true;
@@ -1595,7 +1612,15 @@ export class ExtendedExerciseTracker {
     if(this.last!==null&&now<=this.last)return this.metrics;
     if(this.last!==null&&now-this.last>750){if(this.freezeBridged)this.freezeBridged=false;else this.softInterrupt('画面中断',now,COPY_HALF_REP);}
     const required=this.needed(raw);
-    if(required.some(i=>(raw[i].visibility??0)<.25||raw[i].x<0||raw[i].x>1||raw[i].y<0||raw[i].y>1))return this.softInterrupt('必要关节离开画面或被遮挡',now,COPY_OUT_OF_FRAME);
+    if(required.some(i=>(raw[i].visibility??0)<.25))return this.softInterrupt('必要关节离开画面或被遮挡',now,COPY_OUT_OF_FRAME);
+    // WS1: the in-frame (coordinate) part of this gate is a FRAMING gate: for
+    // wrapper-fed (prefiltered) trackers it runs over the same per-type
+    // subset as the adaptive wrapper's framing test — upper-body movements
+    // do not lose every frame to extrapolated hips below the bottom edge.
+    // The visibility part above keeps the full required set, and direct
+    // (non-prefiltered) trackers keep the full coordinate gate.
+    const frameGate=this.prefiltered?framingGateIndices(this.type,required):required;
+    if(frameGate.some(i=>raw[i].x<0||raw[i].x>1||raw[i].y<0||raw[i].y>1))return this.softInterrupt('必要关节离开画面或被遮挡',now,COPY_OUT_OF_FRAME);
     this.frames=[...this.frames,raw].slice(-(this.prefiltered?1:5));const smooth=medianLandmarks(this.frames)!;
     // Front raise reads every angle from world landmarks (validity gated separately in
     // measure), while kneeling systematically tanks image-space hip visibility — so for
@@ -1627,6 +1652,9 @@ export class ExtendedExerciseTracker {
         // the open segment and restarts it (see SEGMENT_GAP_MS).
         if(this.calibration!==null&&prevMeasuredAt!==null&&now-prevMeasuredAt>SEGMENT_GAP_MS){this.calibrationBank+=prevMeasuredAt-this.calibration;this.calibration=now;}
         if(this.calibration===null)this.calibration=now;this.baseline=f;const segment=now-this.calibration;if((!this.strictRearm||segment>=REARM_MIN_SEGMENT_MS)&&(this.armOnStart||this.calibrationBank+segment>=2000))this.ready=true;}
+      // WS2: count re-latches (the first latch of a fresh tracker is not one;
+      // a restored/lost tracker re-arming is — see everLatched).
+      if(this.ready){if(this.everLatched)this.gateCounters.calibrationRelatches++;this.everLatched=true;}
       // Progress reports distance to the latch: on a strict re-arm the
       // continuous hold is usually the binding requirement, so banked
       // fragments alone must not fill the ring (they cap at the current

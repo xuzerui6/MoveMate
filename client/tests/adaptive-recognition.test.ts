@@ -275,3 +275,38 @@ test('walking test: a teleport with a shape change reads as a subject switch, a 
  r.send(fixture('hammer_curl'),true,f=>{const lm=f.landmarks!;lm.forEach(p=>p.x+=.3);const mid=(lm[11].x+lm[12].x)/2;lm[11].x=mid+(lm[11].x-mid)*.5;lm[12].x=mid+(lm[12].x-mid)*.5;});
  assert.equal(r.tracker.metrics.feedback,COPY_SUBJECT_SWITCH);assert.equal(r.tracker.ready,false);
 });
+
+function closeFramingHammerRig(edit:(lm:ReturnType<typeof newDemonstrationPose>['landmarks'])=>void){
+ const tracker=new AdaptiveRecognition('hammer_curl',20,{},1);let now=0,id=0;
+ let current=newDemonstrationPose('hammer_curl','neutral');
+ const send=(landmarks:ReturnType<typeof newDemonstrationPose>['landmarks'])=>{
+  const lm=landmarks.map(p=>({...p}));edit(lm);
+  const f:PoseFrame={runId:1,frameId:++id,capturedAt:now+=50,receivedAt:now+10,width:720,height:960,landmarks:lm,worldLandmarks:null,model:'lite',mode:'main-cpu'};
+  tracker.update(f);
+ };
+ const feed=(stage:'neutral'|'peak',ms:number)=>{
+  const from=current,to=newDemonstrationPose('hammer_curl',stage),steps=Math.max(1,Math.round(ms/50));
+  for(let i=1;i<=steps;i++){const u=Math.min(1,i*50/600);send(from.landmarks.map((p,j)=>({...p,x:p.x+(to.landmarks[j].x-p.x)*u,y:p.y+(to.landmarks[j].y-p.y)*u})));}
+  current=to;
+ };
+ return {tracker,feed};
+}
+test('hammer curl: hips extrapolated below the frame no longer block calibration or counting (dorm close framing)',()=>{
+ const r=closeFramingHammerRig(lm=>{lm[23]={...lm[23],y:1.15};lm[24]={...lm[24],y:1.15};});
+ r.feed('neutral',1600);
+ assert.equal(r.tracker.ready,true,r.tracker.metrics.feedback);
+ assert.ok(!/出画/.test(r.tracker.metrics.feedback),r.tracker.metrics.feedback);
+ r.feed('peak',1600);r.feed('neutral',1600);
+ assert.equal(r.tracker.metrics.reps,1,r.tracker.metrics.feedback);
+ assert.equal(r.tracker.gateCountersSnapshot().framingRejects,0);
+});
+test('hammer curl: a wrist below the frame still framing-rejects, with arm wording',()=>{
+ const r=closeFramingHammerRig(lm=>{lm[15]={...lm[15],y:1.12};});
+ r.feed('neutral',600);
+ assert.equal(r.tracker.ready,false);
+ assert.match(r.tracker.metrics.feedback,/左手腕出画/);
+ assert.match(r.tracker.metrics.feedback,/让手臂完整入镜/);
+ assert.ok(!/脚部/.test(r.tracker.metrics.feedback));
+ assert.ok(r.tracker.gateCountersSnapshot().framingRejects>0);
+ assert.equal(r.tracker.metrics.reps,0);
+});

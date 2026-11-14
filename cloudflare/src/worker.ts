@@ -30,6 +30,35 @@ interface Env {
 }
 type Identity = { userId?: number; exp?: number; rooms: number[]; deadline: number };
 
+/**
+ * WS2 recognition gate diagnostics: the client posts its own per-set gate
+ * counters (numbers only, no frame data). The payload is re-built field by
+ * field — unknown keys are dropped, every value is coerced to a non-negative
+ * integer, reason maps are capped — and the caller identity comes from the
+ * verified token, never from the body, so one user can only ever overwrite
+ * their own `recognition_diagnostic:<id>` row (latest set wins).
+ */
+export function recognitionDiagnosticPayload(userId: number, input: any, receivedAt = new Date().toISOString()) {
+  if (!input || typeof input !== 'object' || Array.isArray(input)) throw new VoiceError('请求格式不正确', 400);
+  const num = (v: unknown) => typeof v === 'number' && Number.isFinite(v) && v > 0 ? Math.floor(v) : 0;
+  const reasons = (v: unknown) => {
+    const out: Record<string, number> = {};
+    if (v && typeof v === 'object' && !Array.isArray(v)) for (const [k, val] of Object.entries(v).slice(0, 32)) out[k.slice(0, 120)] = num(val);
+    return out;
+  };
+  const pair = (v: unknown): [number, number] => Array.isArray(v) ? [num(v[0]), num(v[1])] : [0, 0];
+  const c = (input.counters && typeof input.counters === 'object' && !Array.isArray(input.counters)) ? input.counters : {};
+  return {
+    userId, exerciseType: typeof input.exerciseType === 'string' ? input.exerciseType.slice(0, 64) : '', receivedAt,
+    counters: {
+      formInterrupts: reasons(c.formInterrupts), softInterrupts: reasons(c.softInterrupts),
+      framingRejects: num(c.framingRejects), freezeEpisodes: num(c.freezeEpisodes), frozenMs: num(c.frozenMs),
+      peaksConfirmed: pair(c.peaksConfirmed), returnsConfirmed: pair(c.returnsConfirmed),
+      hammerPendingWipes: num(c.hammerPendingWipes), calibrationRelatches: num(c.calibrationRelatches),
+    },
+  };
+}
+
 // HTTP only. Upgrade handling uses native WebSocket APIs, never Node upgrade listeners.
 const app = createHttpApp({ initialize: async () => { await pool.query('SELECT 1'); }, uploads: cloudUploadsRouter });
 const http = createServer(app);
@@ -91,7 +120,11 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
       if (path.startsWith('/api/migration/')) {
         if (!authorized(request, this.env.MIGRATION_SECRET)) return new Response('Unauthorized', { status: 401 });
         // Migration commands share the actor's database operation queue.
-        if (path === '/api/migration/diagnostics') return Response.json((await pool.query("SELECT value FROM actor_meta WHERE key='voice_diagnostic'")).rows.map(row => JSON.parse(row.value)));
+        if (path === '/api/migration/diagnostics') {
+          const voice = (await pool.query("SELECT value FROM actor_meta WHERE key='voice_diagnostic'")).rows.map(row => JSON.parse(row.value));
+          const recognition = (await pool.query("SELECT value FROM actor_meta WHERE key LIKE 'recognition_diagnostic:%' ORDER BY key")).rows.map(row => JSON.parse(row.value));
+          return Response.json({ voice, recognition });
+        }
         if (path === '/api/migration/gym-backup') return Response.json({backup:this.migration.meta('pre_gym_bookmark')||null,stage2:this.migration.meta('pre_gym_stage2_bookmark')||null});
         if (path.startsWith('/api/migration/pitr/')) {
           const ops = new PitrOps(this.ctx.storage, this.env.INSTANCE);
@@ -135,6 +168,21 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
       if (!this.migration.active()) return Response.json({ code: 50300, message: '系统迁移维护中，请稍后再试', data: null }, { status: 503, headers: { 'Retry-After': '60' } });
       const native = await this.voiceRequest(request);
       if (native) { native.headers.set('Cache-Control', 'no-store'); await this.schedule(); return native; }
+      if (path === '/api/v1/diagnostics/recognition' && request.method === 'POST') {
+        // WS2: a signed-in user stores their own latest set's recognition
+        // gate counters for the operator diagnostics channel. User-scoped by
+        // construction: the row key derives from the verified token's actor.
+        try {
+          const actor = await this.voicePool.actor(request);
+          const payload = recognitionDiagnosticPayload(actor.id, await this.jsonInput(request));
+          await pool.query("INSERT INTO actor_meta(key,value) VALUES($1,$2) ON CONFLICT(key) DO UPDATE SET value=$2", ['recognition_diagnostic:' + actor.id, JSON.stringify(payload)]);
+          return Response.json({ code: 0, message: 'ok', data: { ok: true } });
+        } catch (error) {
+          const status = error instanceof VoiceError ? error.status : 500;
+          const message = error instanceof VoiceError ? error.message : '诊断上报失败';
+          return Response.json({ code: status * 100, message, error: message, data: null }, { status });
+        }
+      }
       if (path === '/api/realtime/socket') {
         const origin = request.headers.get('origin');
         if (!origin || origin !== new URL(request.url).origin) return new Response('Forbidden origin', { status: 403 });

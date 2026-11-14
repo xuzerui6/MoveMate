@@ -539,6 +539,35 @@ await test('Workers runtime migration and business regression', async t=>{
  const fin=await call(`/api/v1/sport-sessions/${sid}/finish`,{method:'POST',token:tokens[0],body:{}});
  assert.equal(fin.status,200);assert.equal(fin.data.data.xpEarned,10);
  });
+ await t.test('recognition gate diagnostics are user-scoped and operator-readable',async()=>{
+ const counters={formInterrupts:{'请直立站稳，保持双上臂在体侧':7},softInterrupts:{'画面中断':2},framingRejects:3,freezeEpisodes:1,frozenMs:900,peaksConfirmed:[4,5],returnsConfirmed:[3,5],hammerPendingWipes:1,calibrationRelatches:2};
+ assert.equal((await call('/api/v1/diagnostics/recognition',{method:'POST',body:{exerciseType:'hammer_curl',counters}})).status,401);
+ assert.equal((await call('/api/migration/diagnostics')).status,401);
+ // A forged userId in the body is ignored: the row is keyed by the token's actor.
+ const forged=await call('/api/v1/diagnostics/recognition',{method:'POST',token:tokens[0],body:{userId:2,exerciseType:'hammer_curl',counters}});
+ assert.equal(forged.status,200,JSON.stringify(forged.data));
+ const other=await call('/api/v1/diagnostics/recognition',{method:'POST',token:tokens[1],body:{exerciseType:'squat',counters:{...counters,framingRejects:9}}});
+ assert.equal(other.status,200,JSON.stringify(other.data));
+ const diag=await call('/api/migration/diagnostics',{migration:true});
+ assert.equal(diag.status,200,JSON.stringify(diag.data));assert.ok(Array.isArray(diag.data.voice));
+ const byUser=Object.fromEntries(diag.data.recognition.map(r=>[r.userId,r]));
+ assert.equal(diag.data.recognition.length,2);
+ assert.equal(byUser[1].exerciseType,'hammer_curl');assert.equal(byUser[1].counters.formInterrupts['请直立站稳，保持双上臂在体侧'],7);assert.deepEqual(byUser[1].counters.peaksConfirmed,[4,5]);assert.equal(byUser[1].counters.frozenMs,900);
+ assert.equal(byUser[2].exerciseType,'squat');assert.equal(byUser[2].counters.framingRejects,9);
+ // Latest set wins for the same user; the other user's row is untouched.
+ const again=await call('/api/v1/diagnostics/recognition',{method:'POST',token:tokens[0],body:{exerciseType:'hammer_curl',counters:{...counters,framingRejects:4}}});
+ assert.equal(again.status,200);
+ const diag2=await call('/api/migration/diagnostics',{migration:true});
+ assert.equal(diag2.data.recognition.length,2);
+ const byUser2=Object.fromEntries(diag2.data.recognition.map(r=>[r.userId,r]));
+ assert.equal(byUser2[1].counters.framingRejects,4);assert.equal(byUser2[2].counters.framingRejects,9);
+ // Junk values are coerced to counters, never stored raw.
+ const junk=await call('/api/v1/diagnostics/recognition',{method:'POST',token:tokens[0],body:{exerciseType:'hammer_curl',counters:{framingRejects:-5,frozenMs:'x',peaksConfirmed:'no',formInterrupts:{'坏值':'NaN'}}}});
+ assert.equal(junk.status,200,JSON.stringify(junk.data));
+ const diag3=await call('/api/migration/diagnostics',{migration:true});
+ const mine=Object.fromEntries(diag3.data.recognition.map(r=>[r.userId,r]))[1];
+ assert.equal(mine.counters.framingRejects,0);assert.equal(mine.counters.frozenMs,0);assert.deepEqual(mine.counters.peaksConfirmed,[0,0]);assert.equal(mine.counters.formInterrupts['坏值'],0);
+ });
  await voicePoolTests(t,{mf,call,tokens,adminToken,sockets,password,migrate});
  }finally{for(const ws of sockets){try{ws.close()}catch{}}await mf.dispose()}
 });
