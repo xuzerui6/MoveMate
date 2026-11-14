@@ -9,6 +9,7 @@ import { useBossFight } from '../../features/motion/hooks/useBossFight'
 import { useExerciseMetrics } from '../../features/motion/hooks/useExerciseMetrics'
 import { usePose } from '../../features/motion/hooks/usePose'
 import { usePosePrepare } from '../../features/motion/hooks/usePosePrepare'
+import { acquireCameraStream, cameraErrorCopy, classifyCameraError, poseFailureCopy } from '../../features/motion/lib/cameraStream'
 import { useSessionClock } from '../../features/motion/hooks/useSessionClock'
 import { useWorkoutSession } from '../../features/motion/hooks/useWorkoutSession'
 import { loadRecognitionPreference, selectNewRecognitionStrategy } from '../../features/motion/lib/adaptiveRecognition'
@@ -180,7 +181,17 @@ export default function BossFightPage() {
     primeBossAudio()
     setCamBusy(true)
     setCamError('')
+    // 先在点击手势里把摄像头流拿到手，再做模型准备等慢活：iOS Safari 的
+    // 手势授权窗口很短，先下载模型再申请摄像头会被系统当成无手势调用
+    // 拒绝（2026-11-14 事故；训练页靠进门预下载避开了，本页没有预下载）。
+    let heldStream: MediaStream | null = null
     try {
+      try {
+        heldStream = await acquireCameraStream()
+      } catch (err) {
+        setCamError(cameraErrorCopy(classifyCameraError(err)))
+        return
+      }
       let forceLite = false
       if (adaptive && !posePrepare.ready) {
         setPreparing(true)
@@ -188,8 +199,13 @@ export default function BossFightPage() {
         setPreparing(false)
         if (!ok) forceLite = true
       }
-      if (!await pose.start(forceLite)) {
-        setCamError('摄像头没能打开，检查一下权限，再点一次试试。')
+      // 流交给识别层接管（停止/释放归它），本函数不再持有
+      const streamToHandOff = heldStream
+      heldStream = null
+      if (!await pose.start(forceLite, streamToHandOff)) {
+        // 用识别层给出的具体原因（权限/占用/没设备/模型没准备好），
+        // 不再把所有失败都写成同一句「检查一下权限」
+        setCamError(poseFailureCopy(pose.failurePhase, pose.errorReason?.current))
         return
       }
       const strategy = adaptive && !forceLite ? 'adaptive-v1' : 'legacy'
@@ -209,6 +225,8 @@ export default function BossFightPage() {
     } catch (err) {
       setCamError(getErrorMessage(err))
     } finally {
+      // 没能交出去的流（准备阶段异常等）必须当场释放，别占着摄像头
+      heldStream?.getTracks().forEach((t) => t.stop())
       setCamBusy(false)
       setPreparing(false)
     }
@@ -426,20 +444,24 @@ export default function BossFightPage() {
   const allReady = joined.length >= 2 && joined.every((p) => p.ready)
   // 摄像头画面（小窗与取景弹窗共用同一个，切换时只是搬地方）：
   // 帧不新鲜就只给画面、不给骨骼——追踪断了要立刻看得出来。
-  const camSurface = camOn ? (
+  // 注意：这里绝不能按 camOn 条件渲染——PoseCanvas 里的 <video> 是全页
+  // 唯一的摄像头元素，必须在点「开启摄像头计数」之前就挂载好；否则
+  // pose.start() 拿到的 videoRef 永远是空的，双引擎都会静默失败
+  // （2026-11-14 双平台事故：iOS、Android 都打不开，文案却怪权限）。
+  const camSurface = (
     <>
       <PoseCanvas
         videoRef={pose.videoRef}
-        landmarks={poseFresh ? pose.landmarks : null}
+        landmarks={camOn && poseFresh ? pose.landmarks : null}
         demo={false}
         phase={metrics.phase}
         fit="contain"
         keepVideoRendering={adaptive}
         frame={pose.frame}
       />
-      <span className="bf-cam-chip">{metrics.poseFeedback.calibrated && poseFresh ? '识别中' : '正在找你 · 站到画面中间'}</span>
+      {camOn && <span className="bf-cam-chip">{metrics.poseFeedback.calibrated && poseFresh ? '识别中' : '正在找你 · 站到画面中间'}</span>}
     </>
-  ) : null
+  )
   const header = (
     <Header
       title="组队打怪"
@@ -580,16 +602,16 @@ export default function BossFightPage() {
           <span className="bf-boss-tag">{snapshot.boss_name} · {HP_STATE_NAME[hpState]}</span>
         </div>
         <div className={`bf-cam-layer${camOn ? '' : ' idle'}`}>
-          {camOn ? (
-            reframeOpen ? (
-              <div className="bf-cam-moved">正在取景…</div>
-            ) : (
-              <>
-                {camSurface}
-                <button type="button" className="bf-reframe-btn" onClick={() => setReframeOpen(true)}>取景</button>
-              </>
-            )
-          ) : (
+          {/* 画面层常驻挂载（没开时移出屏幕藏起来），保证点「开启」时
+              video 元素已就位；只有取景弹窗打开时才按原样搬去弹窗。 */}
+          {!(camOn && reframeOpen) && (
+            <div className={`bf-cam-live${camOn ? '' : ' bf-cam-live--standby'}`}>
+              {camSurface}
+              {camOn && <button type="button" className="bf-reframe-btn" onClick={() => setReframeOpen(true)}>取景</button>}
+            </div>
+          )}
+          {camOn && reframeOpen && <div className="bf-cam-moved">正在取景…</div>}
+          {!camOn && (
             <div className="bf-cam-idle">
               <Icon name="camera" size={30} />
               <p>{exercise.placement}</p>
