@@ -21239,6 +21239,438 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0697",
+   "expectedName": "self assisted inverse leg curl",
+   "sourceId": "ai-codex-fill127-0697",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "95a39cc0f187a41cde124635b24ba9fa5898e06d2571a9a87a2d3a3aba3e2d4a",
+    "51bf94f11cfc6e855b8b159923ec4b33b1d5f43654bb3076774582d353ecd453"
+   ],
+   "phases": [
+    "起始：仰卧于垫上，双腿伸直，双手垫于臀部下方支撑，头部贴地。",
+    "关键：屈膝收腿，大腿收向胸部，双脚离地，小腿折叠，双手仍垫于臀下辅助。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1766",
+   "expectedName": "self assisted inverse leg curl",
+   "sourceId": "ai-codex-fill127-1766",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e07dbe046ef5ef5e57361213eb9490b748be10e27bd0b03b494d1c4c4d51cec6",
+    "15e556ff1069496ca1639b50a8f9885f9ec1bfe1ab3ec12aec603a251c4e2ea2"
+   ],
+   "phases": [
+    "起始：俯卧于卧式腿弯举机，双腿伸直，脚踝钩于带垫杠杆滚轴下方，双手握机器侧把手支撑。",
+    "关键：双膝尽量屈曲，滚轴垫被卷至臀部下方贴近，腘绳肌收缩，仍俯卧握侧把手，上身保持贴垫。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3656",
+   "expectedName": "short stride run",
+   "sourceId": "ai-codex-fill127-3656",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "30bb93714420f44f9bac8540caaa9d6353b3e91f09d94e25918f33df5606b793",
+    "fa11bfba0edfb27f30d175e2c82d65e075c8f3cd75dccc130b123c44be1205a5"
+   ],
+   "phases": [
+    "起始：站立于开阔地面，双脚与髋同宽，准备以小步幅快跑起步。",
+    "关键：小步幅快跑中途，右脚以短步刚落于身前近处，左腿在身后已抬起，双膝不高（碎步贴地），双臂于体侧快速摆动。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0716",
+   "expectedName": "side push neck stretch",
+   "sourceId": "ai-codex-fill127-0716",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "bc2c125871999b630392acd26034e5ee5b4520fa8a25beecd09ff26ce8430236",
+    "ae9c727a93fb91ea5cc3e6b8fffc73e6b2f56d9d1f37eb9c0bb3e03080cbc7ba"
+   ],
+   "phases": [
+    "起始：站立面对镜头，头部正直居中，双肩放松下沉，双臂垂于体侧。",
+    "关键：头部向右侧屈，右耳靠向右肩，右手置于头部左上方轻压加深拉伸，左臂放松，双肩保持水平。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0727",
+   "expectedName": "single leg calf raise (on a dumbbell)",
+   "sourceId": "ai-codex-fill127-0727",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f0d1b1acc0a24dde3aff29061b54bd2dfd357538212d461eb97f949617126971",
+    "86d306b57e60b75f0aaa51d6015c0f368474c682aeb17aa142966abef58ba568"
+   ],
+   "phases": [
+    "起始：右脚前脚掌踩在一只平放的哑铃上（作踏沿），脚跟下沉悬于哑铃后方，左脚离地，左手握一只哑铃垂于体侧。",
+    "关键：右脚跟尽力抬高至最高，踝完全伸展踮起脚尖，身体挺直，左脚仍离地，左手仍持哑铃。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0730",
+   "expectedName": "single leg platform slide",
+   "sourceId": "ai-codex-fill127-0730",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e24cf88ae1b0e38f86d2947673061a39a569676846dd264ee777737d92e179b7",
+    "f247b1dc8abde1e9172086c1ccd1528c493066fa82c6aae9c415cd5294b5b408"
+   ],
+   "phases": [
+    "起始：站立，左脚踩实地面，右脚置于地面小滑行盘上、靠近左脚，重心主要在左腿，双膝近伸直。",
+    "关键：右腿在滑行盘上向正后方滑出伸直，身体下沉、左膝加深弯曲支撑，躯干保持直立，右脚尖仍压盘。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:2142",
+   "expectedName": "ski ergometer",
+   "sourceId": "ai-codex-fill127-2142",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "1274f641d28e45af6fba2503761b08e6ae8daa554f0ead0fad1f713dd9912994",
+    "66c73cbf3d63338a5226c6575c31530c9aee2d182b4a12f7b68ac120c235ae3f"
+   ],
+   "phases": [
+    "起始：面对滑雪测功仪（高位主机、双握把绳索自顶部垂下）站立，双脚与肩同宽，双手握把举过头顶、双臂向上伸展，躯干直立。",
+    "关键：将双手把向下拉至大腿水平，双肘弯曲内收，躯干随牵拉微前俯，双膝柔和，绳索自双手连回机器上方（站姿标准式；目录文字中的座椅/脚踏为模板误植）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3671",
+   "expectedName": "ski step",
+   "sourceId": "ai-codex-fill127-3671",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "1d101a8889166e7ea858fdba315406a8df5e735d40ef3974a48fa44ccae3c174",
+    "942c7d99c69f17098c320f3f650282d144ceeeac8a5f437e760d16b0e5fb19aa"
+   ],
+   "phases": [
+    "起始：站立，双脚与肩同宽，双膝微屈，背部挺直，准备侧向跳跃。",
+    "关键：向右跳跃瞬间：右脚向右外侧落地，左腿摆至右腿后方交叉，身体向落点倾斜，双臂侧摆平衡如速滑姿态。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0742",
+   "expectedName": "sled forward angled calf raise",
+   "sourceId": "ai-codex-fill127-0742",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "7582ce27a38ed9e4d1f46459d69be4c2a1186d05965b16cc03d8678c9af91597",
+    "a20f2d71ea15204d9565dd890a433a102417c47b66d370160416d6c261d7c3b1"
+   ],
+   "phases": [
+    "起始：置身45度雪橇机，背肩抵住靠垫，双脚前脚掌踩平台下缘、脚跟悬空下沉，双膝伸直，双手握侧方把手。",
+    "关键：克服雪橇阻力将脚跟尽力抬高，踮起脚尖、踝完全伸展，双腿伸直，仍抵住机器。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1496",
+   "expectedName": "sledge hammer",
+   "sourceId": "ai-codex-fill127-1496",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d80053e87a1352918520edce1035a6d275419ec19bd6990fb6d51848446e143a",
+    "269ed771a33fa8f81e85a1b6910a91044b32238bf55cda657f45253e7a142a53"
+   ],
+   "phases": [
+    "起始：双脚与肩同宽面对平放的大轮胎站立，双手握长柄大锤垂于身前。",
+    "关键：大锤刚砸中轮胎顶面，躯干随挥动旋转前俯，双臂向前下方伸展，锤头贴轮胎表面，重心压入击打。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0759",
+   "expectedName": "smith incline shoulder raises",
+   "sourceId": "ai-codex-fill127-0759",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "458748b5de4eeaefb3cebf539b34b0238ac1bdf0b121e61f98e058ce7e9bd9ab",
+    "ac79bbf101fb1fc0abac26546663713ee83e7b962931aca9230031763207edbf"
+   ],
+   "phases": [
+    "起始：面对史密斯机站立，双脚与肩同宽，正手握杠（略宽于肩），双臂伸直下垂，杠位于大腿前方，背部挺直。",
+    "关键：以肘引导将杠上提至上胸/面部高度，双肘弯曲高举外张高于杠面，双肩上耸发力，仍面对机器。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1683",
+   "expectedName": "smith machine bicep curl",
+   "sourceId": "ai-codex-fill127-1683",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "704bd1ddf27e6a9321f00afd8e3f1ecb2cbe6d0cc568168ec1ef8aaa6599983b",
+    "d13f50b2704743cfb5f375fc06fefd251218ec6e8bf9f413de7d265ee07f1cbf"
+   ],
+   "phases": [
+    "起始：面对史密斯机站立，杠位于约腰高，双脚与肩同宽，反手握杠（略宽于肩），双臂伸直下垂，肘贴近身体。",
+    "关键：将杠沿导轨弯举至肩高，双肘完全屈曲，前臂竖直，杠位于肩前，上臂仍静止于体侧，反握不变。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1752",
+   "expectedName": "smith machine incline tricep extension",
+   "sourceId": "ai-codex-fill127-1752",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d58613aac376f3db4be66f994a24b393e14aee8069cdc3f3a5eb378e6ac4f0dd",
+    "262c3f46b3a3154dea6fa357da40693f4f8e507b2d2068b68fe09c2fad7b7414"
+   ],
+   "phases": [
+    "起始：坐于史密斯机下上斜凳，背靠凳垫，双脚平放，正手握杠（略宽于肩），双臂完全伸直将杠举于胸部正上方。",
+    "关键：杠沿导轨降至前额正上方，双肘弯曲贴近头部两侧，上臂保持上斜角度，前臂折回覆于面前，仍坐于上斜凳。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0761",
+   "expectedName": "smith narrow row",
+   "sourceId": "ai-codex-fill127-0761",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "a6d5e24a203b9546074965733b71560efb45ae83798a8cca1376045c437c0974",
+    "e70b312ccebc6e11473cc4294672c10bbb9c94d88763a556f3020b8f722f05d1"
+   ],
+   "phases": [
+    "起始：在史密斯机前屈髋前俯、背部平直、躯干约45度，窄握正手（窄于肩）握杠，双臂伸直下垂，杠悬于膝下。",
+    "关键：将杠拉向小腹，双肘后屈引向身后，肩胛收紧挤压，背部保持平直同角度屈髋，窄握不变。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1393",
+   "expectedName": "smith one leg floor calf raise",
+   "sourceId": "ai-codex-fill127-1393",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "cada4c3d529d93f8c0080f388276014aecaffee384c57d800f9910afe2fa529a",
+    "3430ccb90d1f7c8891ce7b2e3053cd974c1cb7e7aa6b2a20d63b5962bc5eea24"
+   ],
+   "phases": [
+    "起始：背对史密斯机站立，杠下放抵于右小腿后侧脚踝上方，右脚前脚掌踩在一片杠铃片上、脚跟悬空下沉，左脚离地，双手在胯侧握杠稳定。",
+    "关键：右脚跟尽力抬高，踮起右脚尖，身体上提，低位杠仍抵于右小腿后侧，左脚仍离地。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1395",
+   "expectedName": "smith seated one leg calf raise",
+   "sourceId": "ai-codex-fill127-1395",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b3511b4907cc001b2e9c75f8537debcb21c5b58c7880e0370a5465ff43829cbb",
+    "64c7917d1a54d5cfd80ae097af1ff264ff84e264cb4e56fe4051221d11e9ae6a"
+   ],
+   "phases": [
+    "起始：坐于史密斯机下长凳，杠（带护垫）横置大腿上方近膝处，右脚前脚掌踩在一片杠铃片上、脚跟悬空下沉，左脚踏于地面避开杠铃片。",
+    "关键：右脚跟尽力抬高，踮起右脚尖，杠压于大腿随踝伸而动，左脚仍离片，仍保持坐姿仅踝发力。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1426",
+   "expectedName": "smith seated wrist curl",
+   "sourceId": "ai-codex-fill127-1426",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "187269b51a57e31d13174b9563961f01a8e7310c891431b805275128377ba8d8",
+    "a4a0a8e39970912d6a10be5a670ed41d38557fcc97e2d6ff5e6dd31e5a4e3f84"
+   ],
+   "phases": [
+    "起始：坐于史密斯机前长凳上，双脚平放，前倾将双前臂贴放于大腿上、手腕刚过膝部，反握低位杠（与肩同宽），手腕下垂伸展。",
+    "关键：双手腕向上卷曲将杠拉向前臂，前臂仍贴大腿，仅腕部发力，肘肩不动，仍保持坐姿。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1396",
+   "expectedName": "smith toe raise",
+   "sourceId": "ai-codex-fill127-1396",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "dec8f2001e0b6d906c2d5b9c2be4f2bfe852cb28496e27265e34dea6a4d7ff0a",
+    "9e4c408f76328972fd78cf1695e2fb03564e59f12bf82c6912e8920c973022dd"
+   ],
+   "phases": [
+    "起始：站于史密斯机杠下，杠担于上背/双肩，双脚与肩同宽，前脚掌踩在高台（厚杠铃片）边缘、脚跟悬空低于台面，双手握杠于肩侧。",
+    "关键：脚跟尽力抬高，踮脚尖立于台缘，身体挺直升高，踝完全伸展，杠稳担于肩上沿导轨。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0776",
+   "expectedName": "snatch pull",
+   "sourceId": "ai-codex-fill127-0776",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "2523302d5a5c605daa8a1bd53e8756031d76e64637d2325df0a4eecea0bf7c5a",
+    "eceeedb5e29e6f5511428eb5dd2d84bb9ececc8257bea1c49a6346c8738094e3"
+   ],
+   "phases": [
+    "起始：双脚与肩同宽跨于落地的杠铃上方，屈髋屈膝下沉、背部平直，以宽握正手（抓举握距）握杠，挺胸。",
+    "关键：爆发力高拉：杠升至髋部高度仍在上升，脚跟离地踮起，双肩高耸，双肘高拉向两侧，背部挺直伸展（拉举峰值，非过头接杠）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1363",
+   "expectedName": "spine stretch",
+   "sourceId": "ai-codex-fill127-1363",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "cfbc0f8946f4f6136d0b4ce639a752c0df22412f145f9b1706544d4d9e271b8e",
+    "e8dd39538d290b011a095441ce3ceb2ac6768b45101d0153427865f6a2de49ae"
+   ],
+   "phases": [
+    "起始：坐于地面，双腿向前伸直，躯干直立，双手撑于身后地面、手指指向身体。",
+    "关键：向后倾斜约40度，背部挺直拉长，胸部打开上提，双臂伸直以掌撑地承重，双腿仍伸直，目光上抬。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1705",
+   "expectedName": "squat on bosu ball",
+   "sourceId": "ai-codex-fill127-1705",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "d7c4f64d86da32e1beb3faa2af43262e56f3a84834e79fdd1ab1283ea2b057c9",
+    "eb3b47d30b6533b0a54cd0fcee32f9cd3909605cce6ea05953a08a168bea795a"
+   ],
+   "phases": [
+    "起始：站立于博苏球球面顶部（平面朝下、球面朝上），双脚与肩同宽立于球面，躯干直立，双臂垂于体侧。",
+    "关键：在博苏球上下蹲至大腿约与地面平行，髋部后坐下沉，双膝屈于球面上方，挺胸，双臂前伸至肩高平衡，双脚仍踩球面。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3291",
+   "expectedName": "stalder press",
+   "sourceId": "ai-codex-fill127-3291",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "117183a7b7dcdd422811e94c6a86eac10d2d3011158db8a40b512bf9dccbce6e",
+    "f423e91c7fbdf04ba423413fc70131265fb3b6051b1f28d6fe05175aac1b5f12"
+   ],
+   "phases": [
+    "起始：站立，双脚与肩同宽，双臂向上完全伸直过头顶，躯干直立，双膝微屈，核心收紧。",
+    "关键：下蹲至全深蹲底部（髋近脚跟、脚跟踩实、挺胸），同时双臂向下压、手伸至双脚旁地面附近，双臂伸直下压。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3669",
+   "expectedName": "standing archer",
+   "sourceId": "ai-codex-fill127-3669",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "c03e1447455b661c07724b9c4126c461a36819898dfa8490f7f764b657ca20b6",
+    "b5039366d6d82ba9cee54ab8852b7a3a85753cd930e0b5fbbb0ea79a8b954f3b"
+   ],
+   "phases": [
+    "起始：站立，双脚与肩同宽，双膝微屈，双臂向前伸直至肩高、与地面平行，躯干面向正前。",
+    "关键：躯干向右旋转成射手式：右臂向前伸直于肩高如瞄准，左臂屈肘后拉如拉弓弦贴近脸颊，躯干已转，背部挺直，双脚仍踩实。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1599",
+   "expectedName": "standing hamstring and calf stretch with strap",
+   "sourceId": "ai-codex-fill127-1599",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "67e4b27fde98f4f3b9600bb9eb0271058a038867bb6ce3b97d7368e4e9888240",
+    "f0ce95da3a7b077eb74e4224ae05eedf01d061ba33b4b9534d8014c2fd2c12e0"
+   ],
+   "phases": [
+    "起始：站直，双脚与肩同宽，长拉力带绕于右脚前脚掌，双手握带两端垂于身前，右腿伸直。",
+    "关键：以髋为轴向前俯身于伸直的右腿上方，背部平直，躯干大幅前倾，拉力带由双手至右前脚掌拉直紧绷，腘绳肌与小腿明显拉伸，左腿伸直撑地。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
