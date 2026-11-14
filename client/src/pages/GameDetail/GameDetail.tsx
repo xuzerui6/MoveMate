@@ -17,7 +17,7 @@ import HostActions from './HostActions';
 import GroupPlan from '../../features/gym/GroupPlan';
 import SportTimer from '../../features/motion/SportTimer';
 import InviteFriendsDialog from '../../features/social/InviteFriendsDialog';
-import {fillMode} from '../../features/social/socialLogic';
+import {fillMode,inviteGate} from '../../features/social/socialLogic';
 import {bossFightEntryVisible,bossFightTeaserVisible,bossEntryCopy,bossTeaserCopy} from '../../features/motion/lib/bossFightState';
 import type {FriendshipStatus} from '../../types';
 import './GameDetail.css';
@@ -66,6 +66,8 @@ export default function GameDetail(){
    finally{setFillBusy(false);}
  };
  const showSocialActions=(isMember||isCreator)&&['recruiting','full','ready'].includes(game.status);
+ // 邀请按钮跟服务端 inviteToGame 同口径：仅发起人、且未到 ready 才能邀
+ const inviteState=inviteGate({isCreator,status:game.status});
  const showEndBanner=isMember&&['completed','archived'].includes(game.status);
  return <div className="game-detail-page"><Header title="组局详情" back={()=>navigate('/groups')}/>
  {refreshNotice&&<div className="game-refresh-note" role="status">{refreshNotice}</div>}
@@ -77,7 +79,7 @@ export default function GameDetail(){
  {bossFightTeaserVisible({isMember,checkedInAt:member?.checked_in_at,gameStatus:game.status})&&<section className="activity-personal boss-fight-teaser"><div className="section-title"><h2>组队打怪</h2><span className="activity-attendance boss-fight-teaser__badge">开局后开启</span></div><p>{bossTeaserCopy(game.sport_type,hasCheckedIn)}</p><button className="btn btn--secondary" onClick={()=>navigate('/boss-Atlas')}>先看看怪兽图鉴</button></section>}
  {showEndBanner&&<section className="game-end-banner"><h2>这一局结束啦</h2><p>看看这局的纪念页：把一起练的人加成好友，顺手约好下周再练。</p><button className="btn btn--primary" onClick={()=>navigate(`/game/${game.id}/summary`)}>去看看</button></section>}
  <MemberList participants={game.participants||[]} creatorId={game.host_id} isCreator={isCreator} gameState={game.status} actionLoading={actionLoading} onConfirmAttendance={confirmAttendance} gameId={String(game.id)} gameStartTime={game.start_time} friendStatus={friendStatusMap} onSocialChanged={refreshSocial} onRemoved={refetch}/>
- {showSocialActions&&<section className="game-social-actions"><h3>喊好友来</h3><div className="game-social-buttons"><button className="btn btn--primary" onClick={()=>setInviteOpen(true)}>邀请好友</button><button className="btn btn--secondary" onClick={()=>void copyShareLink()}>复制局链接</button></div>
+ {showSocialActions&&<section className="game-social-actions"><h3>喊好友来</h3><div className="game-social-buttons">{inviteState==='can-invite'&&<button className="btn btn--primary" onClick={()=>setInviteOpen(true)}>邀请好友</button>}{inviteState==='ready-blocked'&&<button className="btn btn--primary" disabled>邀请好友</button>}<button className="btn btn--secondary" onClick={()=>void copyShareLink()}>复制局链接</button></div>{inviteState==='ready-blocked'&&<p className="game-fill-status">活动马上开始，不能再邀请人了。</p>}
  {game.visibility==='friends'&&isCreator&&<div className="game-fill-control">
    {mode==='public'&&<p className="game-fill-status">这个局已经在大厅里了，谁都能来。</p>}
    {mode==='closed'&&<><p className="game-fill-status">还剩 {remaining} 个位置，现在只有你的好友能进。</p><button className="btn btn--outline" disabled={fillBusy} onClick={()=>void toggleFill(true)}>{fillBusy?'处理中...':'开放补位'}</button></>}
@@ -90,6 +92,6 @@ export default function GameDetail(){
  {chatError&&<div className="inline-error" role="alert"><p>{chatError}</p><button className="btn btn--secondary" onClick={()=>void retryChat()}>重试读取消息</button></div>}
  {!disabled&&isMember&&<ChatInput onSend={sendMessage} disabled={readOnly} placeholder={readOnly?'活动结束，交流记录已保存':'说点什么，一起协调…'}/>}
  {!isMember&&!disabled&&<p className="chat-join-note">加入活动后，就可以和搭子交流了。</p>}</aside></div>
- {inviteOpen&&<InviteFriendsDialog gameId={String(game.id)} members={game.participants||[]} onClose={()=>setInviteOpen(false)}/>}
+ {inviteOpen&&inviteState==='can-invite'&&<InviteFriendsDialog gameId={String(game.id)} members={game.participants||[]} onClose={()=>setInviteOpen(false)}/>}
  </div>;
 }

@@ -8,6 +8,7 @@ import {
   friendActionKind,
   friendMetaLine,
   inviteCandidates,
+  inviteGate,
   isFillOpenNow,
   lastSportText,
   memorialCardFields,
@@ -120,6 +121,20 @@ const friend = (user_id: number) => ({
   last_sport_at: null,
   together_count: 0,
   last_played_at: null,
+})
+
+test('inviteGate matches the server invite rule across host/member and states', () => {
+  // 服务端 inviteToGame：仅发起人、且只在 recruiting/full 能邀；ready 谁都不能邀
+  for (const status of ['recruiting', 'full']) {
+    assert.equal(inviteGate({ isCreator: true, status }), 'can-invite', `host in ${status}`)
+    assert.equal(inviteGate({ isCreator: false, status }), 'hidden', `member in ${status}`)
+  }
+  assert.equal(inviteGate({ isCreator: true, status: 'ready' }), 'ready-blocked')
+  assert.equal(inviteGate({ isCreator: false, status: 'ready' }), 'hidden')
+  for (const status of ['in_progress', 'completed', 'cancelled', 'archived']) {
+    assert.equal(inviteGate({ isCreator: true, status }), 'hidden', `host in ${status}`)
+    assert.equal(inviteGate({ isCreator: false, status }), 'hidden', `member in ${status}`)
+  }
 })
 
 test('inviteCandidates excludes people already in the game', () => {
