@@ -33,7 +33,11 @@ export interface PoseFeedback {
 
 export interface VisionInsight {
   id: string
+  /** 结果到达时刻 */
   createdAt: string
+  /** 真实拍照时刻（ISO）。旧代码曾把到达时刻冒充拍照时刻，过期结果会
+   * 被当成实时指导——新鲜度判断以这个字段为准（见 visionGuidance.ts）。 */
+  capturedAt?: string
   trigger: 'user' | 'completed_rep' | 'repeated_issue'
   issue: PoseIssue | null
   rep?: number
@@ -55,6 +59,8 @@ export interface McpTextResult {
 export interface VisionFrameJob {
   id: string
   rep: number | null
+  /** 拍照时刻（ms epoch），入队时记录，不是结果回来时补的 */
+  capturedAt: number
   image: string
   question: string
   trigger: VisionInsight['trigger']

@@ -5,12 +5,21 @@ import { cancelAnnouncement } from '../lib/xiaozhiAnnounce'
 import { WakeWordWindow } from '../lib/wakeWord'
 import { XiaozhiAudio } from '../lib/xiaozhiAudio'
 import { abortMessage, helloMessage, listenMessage, mapXiaozhiEmotion, mcpError, mcpNotification, mcpResult, mcpTextResult } from '../lib/xiaozhiProtocol'
+import { ACOUSTIC_TAIL_MS, createEchoGate, echoGateDrained, echoGateRequeued, echoGateReset, echoGateResumed, echoGateShouldResume, echoGateTtsStart, echoGateTtsStop } from '../lib/echoGate'
+import { conversationWindowExpired, extendConversationWindow, openConversationWindow, thinkingTimedOut, THINKING_RECOVERY_MS, type ConversationWindow } from '../lib/companionWindow'
+import { admitSpeech, pendingSpeechExpired, type ChannelPhase, type PendingSpeech, type SpeechEvent } from '../lib/speechAdmission'
+import { classifyVisionFreshness, createGuidanceGateState, enqueueVisionJob, observeVision } from '../lib/visionGuidance'
+import { poseIssueCopy } from '../lib/poseFeedback'
+import { COPY_OUT_OF_FRAME } from '../lib/companionCopy'
+import type { MilestoneEvent } from '../lib/milestones'
 import type { CoachEmotion, PoseIssue, VisionFrameJob, VisionInsight, WorkoutContext, XiaozhiDataSyncState, XiaozhiDeviceBootstrap, XiaozhiIdentityMode, XiaozhiState } from '../types'
 
 type CoachSource = 'xiaozhi' | 'compatible' | 'local'
 type CuePriority = 'low' | 'normal' | 'high'
 const PRIORITY: Record<CuePriority, number> = { low: 1, normal: 2, high: 3 }
 const RECONNECT_DELAYS = [1_000, 2_000, 4_000, 8_000, 15_000]
+/** speaking 态最长容忍：服务端迟迟不发 stop 时按已排空处理 */
+const SPEAKING_WATCHDOG_MS = 30_000
 const XIAOZHI_ENABLED = (import.meta.env.VITE_XIAOZHI_ENABLED as string | undefined) !== 'false'
 
 interface Options {
@@ -82,7 +91,6 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
   const audioRef = useRef<XiaozhiAudio | null>(null)
   const wakeRecognitionRef = useRef<MBRecognition | null>(null)
   const wakeRunningRef = useRef(false)
-  const conversationUntilRef = useRef(0)
   const queuedCueRef = useRef<{ text: string; priority: CuePriority } | null>(null)
   const visionAvailableRef = useRef(false)
   const visionPendingRef = useRef(new Map<string, VisionFrameJob>())
@@ -96,6 +104,25 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
   const pumpVisionQueueRef = useRef<() => void>(() => undefined)
   const wakeWindowRef = useRef(new WakeWordWindow())
   const wakeDetectedTimerRef = useRef(0)
+  // Phase 1 陪伴策略（纯逻辑在各 lib 模块里，这里只持有状态）：
+  const echoGateRef = useRef(createEchoGate())
+  const windowRef = useRef<ConversationWindow | null>(null)
+  const thinkingSinceRef = useRef(0)
+  const speakingSinceRef = useRef(0)
+  const pendingSpeechRef = useRef<PendingSpeech | null>(null)
+  const guidanceRef = useRef(createGuidanceGateState())
+  /** 我们刚注入了一个主动触发句；紧接着的 stt 是它的回声，不算用户发言 */
+  const injectedTurnRef = useRef(0)
+  /** 正在播/刚播完的回复是否来自主动投递（tracking 能否打断它看这个） */
+  const playingAutoRef = useRef(false)
+  const drainTimerRef = useRef(0)
+  const repFrameCapturedAtRef = useRef(0)
+  /** 断线未恢复：到下一个组间边界前不投递主动语音（见 noteSetBoundary） */
+  const outageRef = useRef(false)
+  const transportOkRef = useRef(false)
+  const boundaryArmedRef = useRef(false)
+  const hadSessionRef = useRef(false)
+  const [voiceOutage, setVoiceOutage] = useState(false)
 
   useEffect(() => { contextRef.current = context }, [context])
   useEffect(() => { stateRef.current = state }, [state])
@@ -135,18 +162,131 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
   useEffect(() => { pumpVisionQueueRef.current = pumpVisionQueue }, [pumpVisionQueue])
 
   const enqueueVision = useCallback((job: VisionFrameJob) => {
-    if (job.priority === 'automatic') {
-      const automaticCount = visionQueueRef.current.filter(item => item.priority === 'automatic').length
-        + [...visionPendingRef.current.values()].filter(item => item.priority === 'automatic').length
-      if (automaticCount >= Math.max(1, contextRef.current.targetReps)) return false
-      visionQueueRef.current.push(job)
-    } else {
-      visionQueueRef.current.unshift(job)
-    }
+    // 排队纪律在 visionGuidance.enqueueVisionJob（纯函数）：自动只留最新，
+    // 用户点名的插最前。在飞任务由 pumpVisionQueue 的并发上限（2）兜底。
+    visionQueueRef.current = enqueueVisionJob(visionQueueRef.current, job)
     setDataSyncState(current => ({ ...current, visionRep: job.rep, visionStatus: 'queued' }))
     pumpVisionQueueRef.current()
     return true
   }, [])
+
+  /** 当前训练状态快照（本地权威值；MCP 工具读的、进度同步推的都是它）。 */
+  const buildWorkoutStatus = useCallback(() => ({
+    ...contextRef.current,
+    lastRepAt: lastRepAtRef.current,
+    lastRepIssues: lastRepIssuesRef.current,
+    latestVisionInsight: latestVisionInsightRef.current,
+    updatedAt: new Date().toISOString(),
+  }), [])
+
+  /** 把最新状态同步进会话上下文。用户问「我做了几个」时，LLM 手里的
+   * 上下文和它能调的工具都指向这份实时值，不许拿旧上下文回答。 */
+  const syncWorkoutStatus = useCallback(() => {
+    if (!mcpReadyRef.current || !sessionIdRef.current) return false
+    if (!sendJson(mcpNotification('notifications/workout_progress', buildWorkoutStatus(), sessionIdRef.current))) return false
+    setDataSyncState(current => ({ ...current, lastRepSynced: contextRef.current.reps }))
+    return true
+  }, [buildWorkoutStatus, sendJson])
+
+  const channelPhase = useCallback((): ChannelPhase => {
+    if (fallbackMode || outageRef.current) return 'offline'
+    switch (stateRef.current) {
+      case 'idle': return 'idle'
+      case 'listening': return 'listening'
+      case 'thinking': return 'thinking'
+      case 'speaking': return 'speaking'
+      default: return 'offline'
+    }
+  }, [fallbackMode])
+
+  /** 真正把一句主动的话投递进对话通道（触发句是第一人称真实状态汇报）。 */
+  const deliverSpeech = useCallback((event: SpeechEvent, interrupt = false) => {
+    if (outageRef.current) return false
+    if (socketRef.current?.readyState !== WebSocket.OPEN || !sessionIdRef.current) return false
+    if (interrupt) {
+      audioRef.current?.clearPlayback()
+      echoGateReset(echoGateRef.current)
+      sendJson(abortMessage('tracking_priority', sessionIdRef.current))
+    }
+    // 正在听（listen 模式）时先停听再发 detect —— detect 本来就是
+    // 「不在听的时候」用的入口（唤醒路径同理），避免服务端忽略。
+    if (stateRef.current === 'listening') sendJson(listenMessage('stop', sessionIdRef.current))
+    injectedTurnRef.current = Date.now()
+    playingAutoRef.current = true
+    return sendJson(listenMessage('detect', sessionIdRef.current, event.prompt))
+  }, [sendJson])
+
+  /**
+   * 主动发言入口：事实行先上屏（字幕），出声走优先级准入。
+   * 忙时只攒一个最要紧的，过期作废；静音时只上屏不出声。
+   */
+  const offerSpeech = useCallback((event: SpeechEvent) => {
+    setReply(event.text)
+    if (mutedRef.current || fallbackMode) return
+    const verdict = admitSpeech(event, channelPhase(), Date.now(), pendingSpeechRef.current, playingAutoRef.current)
+    if (verdict.action === 'now') {
+      pendingSpeechRef.current = null
+      deliverSpeech(event, verdict.interrupt)
+    } else if (verdict.action === 'hold') {
+      pendingSpeechRef.current = verdict.pending
+    }
+  }, [channelPhase, deliverSpeech, fallbackMode])
+
+  /** 通道空下来时，把攒着的那句（还没过期的话）递出去。 */
+  const flushPendingSpeech = useCallback(() => {
+    const pending = pendingSpeechRef.current
+    if (!pending) return
+    if (pendingSpeechExpired(pending, Date.now())) { pendingSpeechRef.current = null; return }
+    const phase = channelPhase()
+    if (phase !== 'idle' && phase !== 'listening') return
+    pendingSpeechRef.current = null
+    deliverSpeech(pending)
+  }, [channelPhase, deliverSpeech])
+
+  /**
+   * 一段回复真正结束（服务端 stop + 本地排空 + 声学尾巴，见 echoGate）后
+   * 才走这里：窗口还开着就恢复上行继续听；没窗口就关麦回 idle，
+   * 不再像旧代码那样 stop 一到就立刻把麦打开。
+   */
+  const finishDrainResume = useCallback(() => {
+    window.clearInterval(drainTimerRef.current)
+    drainTimerRef.current = 0
+    echoGateResumed(echoGateRef.current)
+    playingAutoRef.current = false
+    speakingSinceRef.current = 0
+    const now = Date.now()
+    const audio = audioRef.current
+    if (windowRef.current && !conversationWindowExpired(windowRef.current, now) && audio?.capturing) {
+      extendConversationWindow(windowRef.current, now)
+      audio.setSending(true)
+      setState('listening')
+      setEmotion('listening')
+      sendJson(listenMessage('start', sessionIdRef.current))
+    } else {
+      windowRef.current = null
+      if (audio?.capturing) void audio.stopCapture()
+      setState('idle')
+      setEmotion('neutral')
+    }
+    flushPendingSpeech()
+  }, [flushPendingSpeech, sendJson])
+
+  /** 服务端 stop 后开始盯本地排空；排空 + 尾巴过了才 finishDrainResume。 */
+  const startDrainWatch = useCallback(() => {
+    window.clearInterval(drainTimerRef.current)
+    drainTimerRef.current = window.setInterval(() => {
+      const gate = echoGateRef.current
+      if (gate.phase !== 'draining') {
+        window.clearInterval(drainTimerRef.current)
+        drainTimerRef.current = 0
+        return
+      }
+      const audio = audioRef.current
+      if (!audio || audio.playbackRemainingMs() <= 0) echoGateDrained(gate, Date.now())
+      else echoGateRequeued(gate)
+      if (echoGateShouldResume(gate, Date.now())) finishDrainResume()
+    }, 100)
+  }, [finishDrainResume])
 
   const stopWakeRecognition = useCallback(() => {
     try { wakeRecognitionRef.current?.stop() } catch { /* already stopped */ }
@@ -157,6 +297,12 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
     if (fallbackMode) return fallback.openConversation()
     if (socketRef.current?.readyState !== WebSocket.OPEN || stateRef.current === 'activating') return
     stopWakeRecognition()
+    // 用户亲手重新进入对话 = 一个新的边界：断线未恢复状态就此解除。
+    if (outageRef.current) {
+      outageRef.current = false
+      boundaryArmedRef.current = false
+      setVoiceOutage(false)
+    }
     let audio: XiaozhiAudio | null = null
     try {
       if (!audioRef.current) {
@@ -169,8 +315,11 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
       await audio.startCapture()
       if (audioRef.current !== audio) { await audio.dispose(); return }
       setXiaozhiVoiceReady(true)
-      audioRef.current.setSending(true)
-      conversationUntilRef.current = Date.now() + 25_000
+      // 回声门关着（正在播报）时不要抢先放行上行，等排空再由门放行。
+      audioRef.current.setSending(echoGateRef.current.phase === 'open')
+      playingAutoRef.current = false
+      windowRef.current = openConversationWindow('followup', Date.now())
+      syncWorkoutStatus()
       setEmotion('listening')
       setState('listening')
       sendJson(listenMessage('start', sessionIdRef.current))
@@ -180,7 +329,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
       setFallbackMode(true)
       setState('fallback')
     }
-  }, [fallbackMode, fallback.openConversation, sendJson, stopWakeRecognition])
+  }, [fallbackMode, fallback.openConversation, sendJson, stopWakeRecognition, syncWorkoutStatus])
 
   const handleMcp = useCallback(async (payload: { id?: string | number; method?: string; params?: Record<string, unknown> }, incomingSessionId?: string) => {
     if (payload.id === undefined || !payload.method) return
@@ -217,26 +366,21 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
     if (payload.method !== 'tools/call') return sendJson(mcpError(payload.id, `不支持的方法：${payload.method}`, sessionId))
     const params = payload.params as { name?: string; arguments?: { question?: string } } | undefined
     if (params?.name === 'self.motion.get_workout_status') {
-      const status = {
-        ...contextRef.current,
-        lastRepAt: lastRepAtRef.current,
-        lastRepIssues: lastRepIssuesRef.current,
-        latestVisionInsight: latestVisionInsightRef.current,
-        updatedAt: new Date().toISOString(),
-      }
-      return sendJson(mcpTextResult(payload.id, status, sessionId))
+      // 工具读的是实时本地状态（contextRef 每次渲染都同步）——用户问
+      // 「我做了几个」时答案以这个为准，不许用会话里的旧上下文。
+      return sendJson(mcpTextResult(payload.id, buildWorkoutStatus(), sessionId))
     }
     if (params?.name !== 'self.camera.take_photo') return sendJson(mcpError(payload.id, '只允许读取训练状态和当前关键帧', sessionId))
     const image = videoRef.current ? frameDataUrl(videoRef.current) : null
     if (!image) return sendJson(mcpTextResult(payload.id, '当前摄像头画面不可用', sessionId, true))
     const requestId = crypto.randomUUID()
     enqueueVision({
-      id: requestId, rep: contextRef.current.reps || null, image,
+      id: requestId, rep: contextRef.current.reps || null, capturedAt: Date.now(), image,
       question: params.arguments?.question || '请看看我的动作，并只说最值得调整的一点。',
       trigger: 'user', issue: contextRef.current.poseIssues[0] || null, retries: 0, priority: 'user',
       mcpId: payload.id, sessionId,
     })
-  }, [enqueueVision, sendJson, videoRef])
+  }, [buildWorkoutStatus, enqueueVision, sendJson, videoRef])
 
   useEffect(() => {
     if (!enabled || fallbackMode || !XIAOZHI_ENABLED) {
@@ -308,8 +452,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
             window.setTimeout(() => {
               if (disposed) return
               const retryJob = { ...job, retries: job.retries + 1 }
-              if (retryJob.priority === 'user') visionQueueRef.current.unshift(retryJob)
-              else visionQueueRef.current.push(retryJob)
+              visionQueueRef.current = enqueueVisionJob(visionQueueRef.current, retryJob)
               pumpVisionQueueRef.current()
             }, 1_500)
             pumpVisionQueueRef.current()
@@ -323,16 +466,33 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
             return
           }
           const insight: VisionInsight = {
-            id: message.requestId, createdAt: new Date().toISOString(), trigger: job.trigger, issue: job.issue, rep: job.rep || undefined,
+            id: message.requestId, createdAt: new Date().toISOString(),
+            // 拍照时刻来自任务本身（入队时记的），不是结果到达时刻——
+            // 旧代码拿到达时刻冒充，新鲜度判断会把旧画面当实时。
+            capturedAt: new Date(job.capturedAt).toISOString(),
+            trigger: job.trigger, issue: job.issue, rep: job.rep || undefined,
             summary: resultText(message.result).slice(0, 180),
           }
           latestVisionInsightRef.current = insight
           setVisionInsights(current => [...current, insight].slice(-6))
           setDataSyncState(current => ({ ...current, visionRep: job.rep, visionStatus: 'reviewed' }))
           if (job.mcpId !== undefined) sendJson(mcpTextResult(job.mcpId, {
-            success: true, summary: insight.summary, rep: job.rep, capturedAt: insight.createdAt,
+            success: true, summary: insight.summary, rep: job.rep, capturedAt: insight.capturedAt,
             note: '逐次计数与实时矫姿以浏览器本地 MediaPipe 为准。',
           }, job.sessionId || sessionIdRef.current))
+          // 自动复核的开口纪律：只有够新鲜的结果才有资格当实时指导；
+          // 同一问题有佐证（多次看到）才升级开口，改善只确认一次。
+          // 用户点名看的（mcpId）不走这里——用户问了就答。
+          if (job.mcpId === undefined && job.priority === 'automatic'
+            && classifyVisionFreshness(job.capturedAt, Date.now(), job.rep, contextRef.current.reps) === 'live') {
+            const decision = observeVision(guidanceRef.current, { issue: job.issue, at: Date.now() })
+            if (decision.type === 'cue') {
+              const copy = poseIssueCopy(decision.issue, contextRef.current.exerciseType)
+              offerSpeech({ kind: 'formCue', text: copy.action, prompt: `我这个动作老是${copy.label}，提醒我一下` })
+            } else if (decision.type === 'improved') {
+              offerSpeech({ kind: 'encouragement', text: '比刚才好啦，就保持这个感觉', prompt: '刚才那个问题好像好点了' })
+            }
+          }
           pumpVisionQueueRef.current()
           return
         }
@@ -344,22 +504,44 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
           const sampleRate = Number(message.audio_params?.sample_rate) || 24_000
           audioRef.current ||= new XiaozhiAudio(packet => socketRef.current?.send(packet), () => undefined)
           audioRef.current.configureDecoder(sampleRate)
+          transportOkRef.current = true
+          hadSessionRef.current = true
+          echoGateReset(echoGateRef.current)
+          // 断线恢复要在组间边界才算数（noteSetBoundary 已arm 时在此解除）；
+          // 半路重连成功也先不投递主动语音，免得组中突然出声吓人。
+          if (outageRef.current && boundaryArmedRef.current) {
+            outageRef.current = false
+            boundaryArmedRef.current = false
+            setVoiceOutage(false)
+          }
           setState('idle')
           setEmotion('neutral')
           return
         }
         if (message.type === 'stt') {
           setTranscript(message.text || '')
+          // 我们主动投递的触发句会有 stt 回声：它不是用户发言，不计轮次、
+          // 不顺延窗口（窗口顺延只认用户真的开口）。
+          const injectedAt = injectedTurnRef.current
+          const isInjectedEcho = injectedAt > 0 && Date.now() - injectedAt < 10_000
+          if (isInjectedEcho) injectedTurnRef.current = 0
+          if (!isInjectedEcho) {
+            setConversationTurnCount(count => count + 1)
+            if (windowRef.current) extendConversationWindow(windowRef.current, Date.now())
+            // 趁回复组装前把最新状态同步过去（工具读实时值是硬保证，这里是双保险）。
+            syncWorkoutStatus()
+          }
+          thinkingSinceRef.current = Date.now()
           setState('thinking')
           setEmotion('thinking')
-          setConversationTurnCount(count => count + 1)
-          conversationUntilRef.current = Date.now() + 25_000
           return
         }
         if (message.type === 'llm') return setEmotion(mapXiaozhiEmotion(message.emotion))
         if (message.type === 'tts') {
           if (message.state === 'sentence_start' && message.text) setReply(message.text)
           if (message.state === 'start') {
+            echoGateTtsStart(echoGateRef.current)
+            speakingSinceRef.current = Date.now()
             audioRef.current?.setSending(false)
             void audioRef.current?.ensurePlaybackReady().then(
               () => setXiaozhiVoiceReady(true),
@@ -368,11 +550,10 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
             setState('speaking')
           }
           if (message.state === 'stop') {
-            audioRef.current?.setSending(true)
-            setState('listening')
-            setEmotion('listening')
-            conversationUntilRef.current = Date.now() + 25_000
-            sendJson(listenMessage('start', sessionIdRef.current))
+            // 不在这里恢复上行：服务端说完 ≠ 本地放完。回声门等本地
+            // 排空 + 声学尾巴后才在 finishDrainResume 里放行。
+            echoGateTtsStop(echoGateRef.current, Date.now())
+            startDrainWatch()
           }
           return
         }
@@ -386,6 +567,25 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
         sessionIdRef.current = ''
         mcpReadyRef.current = false
         setDataSyncState(current => ({ ...current, mcpReady: false }))
+        // 连接一断，先把本地收干净：停麦上行、清掉没播完的旧音频、
+        // 攒着的主动发言和没完成的视觉任务，不许重连后补播旧内容。
+        transportOkRef.current = false
+        void audioRef.current?.stopCapture()
+        audioRef.current?.clearPlayback()
+        echoGateReset(echoGateRef.current)
+        window.clearInterval(drainTimerRef.current)
+        drainTimerRef.current = 0
+        windowRef.current = null
+        pendingSpeechRef.current = null
+        visionPendingRef.current.clear()
+        visionQueueRef.current = []
+        activeVisionJobsRef.current = 0
+        // 真正建立过会话又断了 = 语音中断。页面会挂出「语音断开 · 计数
+        // 继续」大信号；恢复要等组间边界（或用户亲手重新打开对话）。
+        if (hadSessionRef.current) {
+          outageRef.current = true
+          setVoiceOutage(true)
+        }
         if (event.code === 4001 && identityModeRef.current === 'shared') {
           setErrorMessage('语音已断开（有一阵没说话，或语音服务停了），点一下可以重新开启')
           setFallbackMode(true)
@@ -488,6 +688,11 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
       releaseLease(leaseId)
       sessionIdRef.current = ''
       mcpReadyRef.current = false
+      window.clearInterval(drainTimerRef.current)
+      drainTimerRef.current = 0
+      windowRef.current = null
+      pendingSpeechRef.current = null
+      transportOkRef.current = false
       pendingProgressRef.current = []
       visionPendingRef.current.clear()
       visionQueueRef.current = []
@@ -503,7 +708,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
       audioRef.current = null
       setXiaozhiVoiceReady(false)
     }
-  }, [enabled, fallbackMode, retryNonce, testSlot, handleMcp, sendJson, stopWakeRecognition])
+  }, [enabled, fallbackMode, retryNonce, testSlot, handleMcp, sendJson, stopWakeRecognition, offerSpeech, startDrainWatch, syncWorkoutStatus])
 
   // 空闲时监听宽松唤醒词。Chrome 拆开的 final 结果会在六秒窗口中合并，
   // interim 连续命中两次才触发，final 命中则立即触发。
@@ -549,17 +754,46 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
     }
   }, [enabled, fallbackMode, state, wake, sendJson])
 
+  // 窗口与超时巡查：三件事分开计——
+  // 1) listening 的沉默超时看对话窗口（companionWindow），过期就关麦回 idle；
+  // 2) thinking 有自己的超时：回复迟迟不来时回到 listening，而不是像旧
+  //    代码那样被沉默计时连麦一起关掉（回复还在路上就被打回 idle）；
+  // 3) speaking 看门狗：服务端迟迟不发 stop 时按已排空处理，别永久卡住。
   useEffect(() => {
-    if (fallbackMode || (state !== 'listening' && state !== 'thinking')) return
+    if (fallbackMode) return
     const timer = window.setInterval(() => {
-      if (Date.now() < conversationUntilRef.current) return
+      const now = Date.now()
+      const current = stateRef.current
+      if (current === 'thinking') {
+        if (thinkingTimedOut(thinkingSinceRef.current, now)) {
+          thinkingSinceRef.current = now
+          if (windowRef.current) {
+            windowRef.current.deadline = Math.max(windowRef.current.deadline, now + THINKING_RECOVERY_MS)
+          }
+          setState('listening')
+          setEmotion('listening')
+        }
+        return
+      }
+      if (current === 'speaking') {
+        if (speakingSinceRef.current > 0 && now - speakingSinceRef.current > SPEAKING_WATCHDOG_MS
+          && echoGateRef.current.phase === 'gated') {
+          echoGateTtsStop(echoGateRef.current, now)
+          echoGateDrained(echoGateRef.current, now - ACOUSTIC_TAIL_MS - 100)
+          if (echoGateShouldResume(echoGateRef.current, now)) finishDrainResume()
+        }
+        return
+      }
+      if (current !== 'listening') return
+      if (!conversationWindowExpired(windowRef.current, now)) return
+      windowRef.current = null
       sendJson(listenMessage('stop', sessionIdRef.current))
       void audioRef.current?.stopCapture()
       setState('idle')
       setEmotion('neutral')
-    }, 1_000)
-    return () => clearInterval(timer)
-  }, [fallbackMode, state, sendJson])
+    }, 500)
+    return () => window.clearInterval(timer)
+  }, [fallbackMode, sendJson, finishDrainResume])
 
   useEffect(() => () => {
     clearTimeout(wakeDetectedTimerRef.current)
@@ -594,10 +828,17 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
   const interrupt = useCallback(() => {
     if (fallbackMode) return cancelAnnouncement()
     audioRef.current?.clearPlayback()
+    echoGateReset(echoGateRef.current)
+    window.clearInterval(drainTimerRef.current)
+    drainTimerRef.current = 0
+    speakingSinceRef.current = 0
+    playingAutoRef.current = false
+    pendingSpeechRef.current = null
     audioRef.current?.setSending(true)
     sendJson(abortMessage('user_interrupt', sessionIdRef.current))
     sendJson(listenMessage('start', sessionIdRef.current))
-    conversationUntilRef.current = Date.now() + 25_000
+    if (windowRef.current) extendConversationWindow(windowRef.current, Date.now())
+    else windowRef.current = openConversationWindow('followup', Date.now())
     setState('listening')
     setEmotion('listening')
   }, [fallbackMode, sendJson])
@@ -608,7 +849,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
     if (!image) return false
     const requestId = crypto.randomUUID()
     return enqueueVision({
-      id: requestId, rep: contextRef.current.reps || null, image, question, trigger, issue,
+      id: requestId, rep: contextRef.current.reps || null, capturedAt: Date.now(), image, question, trigger, issue,
       retries: 0, priority: trigger === 'user' ? 'user' : 'automatic', sessionId: sessionIdRef.current,
     })
   }, [enqueueVision, fallbackMode, videoRef])
@@ -618,6 +859,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
     const image = frameDataUrl(videoRef.current)
     if (!image) return false
     repFrameCandidateRef.current = image
+    repFrameCapturedAtRef.current = Date.now()
     return true
   }, [fallbackMode, videoRef])
 
@@ -626,8 +868,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
     lastRepAtRef.current = completedAt
     lastRepIssuesRef.current = [...issues]
     const status = {
-      ...contextRef.current, reps: rep, lastRepAt: completedAt, lastRepIssues: issues,
-      latestVisionInsight: latestVisionInsightRef.current, updatedAt: completedAt,
+      ...buildWorkoutStatus(), reps: rep, lastRepAt: completedAt, lastRepIssues: issues, updatedAt: completedAt,
     }
     if (mcpReadyRef.current && sessionIdRef.current && sendJson(mcpNotification('notifications/workout_progress', status, sessionIdRef.current))) {
       setDataSyncState(current => ({ ...current, lastRepSynced: rep }))
@@ -635,21 +876,106 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
       pendingProgressRef.current.push(status)
       pendingProgressRef.current = pendingProgressRef.current.slice(-Math.max(1, contextRef.current.targetReps))
     }
+    // 动作边界：攒着的动作提示（视觉指导）只在这里递，不在动作做到一半时开口。
+    flushPendingSpeech()
 
     if (fallbackMode || !visionAvailableRef.current) {
       repFrameCandidateRef.current = null
+      repFrameCapturedAtRef.current = 0
       return false
     }
-    const image = repFrameCandidateRef.current || (videoRef.current ? frameDataUrl(videoRef.current) : null)
+    const candidate = repFrameCandidateRef.current
+    const image = candidate || (videoRef.current ? frameDataUrl(videoRef.current) : null)
+    // 拍照时刻跟着帧走：候选帧是动作最低点抓的，就用那一刻；现抓的用现在。
+    const capturedAt = candidate ? repFrameCapturedAtRef.current || Date.now() : Date.now()
     repFrameCandidateRef.current = null
+    repFrameCapturedAtRef.current = 0
     if (!image) return false
     const issue = issues[0] || null
     return enqueueVision({
-      id: crypto.randomUUID(), rep, image,
+      id: crypto.randomUUID(), rep, capturedAt, image,
       question: `这是第 ${rep} ${contextRef.current.countUnit}完整${exerciseInfo(contextRef.current.exerciseType).name}在动作关键阶段的关键帧。本地检测问题：${issues.length ? issues.join('、') : '无明显问题'}。请简短复核最值得保持或调整的一点，不做医疗诊断，不推翻本地计数。`,
       trigger: 'completed_rep', issue, retries: 0, priority: 'automatic', sessionId: sessionIdRef.current,
     })
-  }, [enqueueVision, fallbackMode, sendJson, videoRef])
+  }, [buildWorkoutStatus, enqueueVision, fallbackMode, flushPendingSpeech, sendJson, videoRef])
+
+  /** 里程碑陪伴：事实行先上屏，出声按优先级准入（忙时攒着、过期作废）。 */
+  const notifyMilestone = useCallback((event: MilestoneEvent) => {
+    offerSpeech({ kind: 'milestone', text: event.text, prompt: event.prompt })
+  }, [offerSpeech])
+
+  /** 追踪丢失喊话（训练页自己的路径，900ms/6s 纪律在 trackingLoss 里）。 */
+  const cueTrackingLoss = useCallback(() => {
+    offerSpeech({ kind: 'tracking', text: COPY_OUT_OF_FRAME, prompt: '我好像没在画面里了' })
+  }, [offerSpeech])
+
+  /**
+   * 组间休息窗：小智先开口（本组事实总结 + 鼓励 + 最多一个视觉要点），
+   * 然后开窗听用户说话。只有用户开过语音陪练才会走到这里（enabled 门控
+   * 在页面层），绝不自动开麦。正在聊/正在说时只开窗+同步，不抢话。
+   */
+  const openRestWindow = useCallback((input: { reachedTarget: boolean }) => {
+    const ctx = contextRef.current
+    const { reps, targetReps: target, countUnit: unit } = ctx
+    setReply(input.reachedTarget
+      ? `这一组 ${reps} ${unit}，目标完成了`
+      : `先休息一下，已经做了 ${reps} ${unit}`)
+    if (fallbackMode || outageRef.current) return
+    if (socketRef.current?.readyState !== WebSocket.OPEN || !sessionIdRef.current) return
+    windowRef.current = openConversationWindow('rest', Date.now())
+    syncWorkoutStatus()
+    const current = stateRef.current
+    if (current === 'thinking' || current === 'speaking') return
+    const visionPoint = latestVisionInsightRef.current ? '，也说说你看到的最值得注意的一点，一个就行' : ''
+    const prompt = input.reachedTarget
+      ? `这一组做完了，我一共做了 ${reps} ${unit}，目标是 ${target} ${unit}。帮我总结这一组，再鼓励我一下${visionPoint}`
+      : `我先暂停休息一下，刚做了 ${reps} ${unit}，目标 ${target} ${unit}。跟我说说刚才这段，再鼓励我一下${visionPoint}`
+    void (async () => {
+      try {
+        if (!audioRef.current) {
+          audioRef.current = new XiaozhiAudio(
+            packet => { if (socketRef.current?.readyState === WebSocket.OPEN) socketRef.current.send(packet) },
+            () => undefined,
+          )
+        }
+        const audio = audioRef.current
+        await audio.startCapture()
+        if (audioRef.current !== audio) return
+        setXiaozhiVoiceReady(true)
+        audio.setSending(echoGateRef.current.phase === 'open')
+      } catch { /* 麦打不开也先让它把总结说了；窗口到点会自己关 */ }
+      if (socketRef.current?.readyState !== WebSocket.OPEN || !sessionIdRef.current) return
+      if (stateRef.current === 'listening') sendJson(listenMessage('stop', sessionIdRef.current))
+      injectedTurnRef.current = Date.now()
+      playingAutoRef.current = true
+      sendJson(listenMessage('detect', sessionIdRef.current, prompt))
+    })()
+  }, [fallbackMode, sendJson, syncWorkoutStatus])
+
+  /** 休息结束回到组中：关掉休息窗（组中回到唤醒/点按才开口的纪律）。 */
+  const closeRestWindow = useCallback(() => {
+    if (windowRef.current?.kind !== 'rest') return
+    windowRef.current = null
+    if (stateRef.current === 'listening') {
+      sendJson(listenMessage('stop', sessionIdRef.current))
+      void audioRef.current?.stopCapture()
+      setState('idle')
+      setEmotion('neutral')
+    }
+  }, [sendJson])
+
+  /**
+   * 组间边界标记（暂停/继续/达成目标时由页面调用）：断线恢复要等边界
+   * 才算恢复——半路重连成功也先不投递主动语音，免得组中突然出声。
+   */
+  const noteSetBoundary = useCallback(() => {
+    boundaryArmedRef.current = true
+    if (outageRef.current && transportOkRef.current) {
+      outageRef.current = false
+      boundaryArmedRef.current = false
+      setVoiceOutage(false)
+    }
+  }, [])
 
   const retry = useCallback(() => {
     setErrorMessage('')
@@ -698,6 +1024,8 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
     source, wake, interrupt, retry, prepareAudio,
     sendWorkoutContext,
     say, requestVision, captureRepFrame, notifyCompletedRep, dataSyncState,
+    notifyMilestone, cueTrackingLoss, openRestWindow, closeRestWindow, noteSetBoundary,
+    outage: voiceOutage,
     activationCode, activationMessage, identityMode, errorMessage: [errorMessage, fallbackMode ? fallback.errorMessage : ''].filter(Boolean).join(' '),
     muted, toggleMute, supported: fallbackMode ? fallback.supported : Boolean(recognizerCtor()),
     inConversation: publicState === 'listening' || publicState === 'thinking' || publicState === 'speaking',
