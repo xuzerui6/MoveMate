@@ -2,7 +2,8 @@ import {createRecognitionTracker} from './recognition';
 import {FrameOrder,TimeFilter,type PoseFrame} from './poseProtocol';
 import type {ExerciseMetrics} from './exerciseMetrics';
 import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
-import {framingFeedback} from './framingFeedback';
+import {framingFeedback,framingGateIndices} from './framingFeedback';
+import {cloneGateCounters,emptyGateCounters,mergeGateCounters,type GateCounters} from './gateCounters';
 import {COPY_BASIS_UNSTABLE,COPY_HALF_REP,COPY_SUBJECT_SWITCH,COPY_UNCLEAR,notSeenCopyFor} from './companionCopy';
 import type {PoseModelPreference} from './poseCompatibility';
 import {analyzeSquatFrame,squatSideVisible} from './squatMetrics';
@@ -48,6 +49,10 @@ export class AdaptiveRecognition {
  private weak:number|null=null;private weakWorld:number|null=null;private source:boolean|null=null;private shape:number[]|null=null;private previous:Point[]|null=null;private previousShoulder=11;
  private stepBridge=false;
  private frozenAt:number|null=null;private lastFreezeAt:number|null=null;
+ /** WS2 gate counters owned by the wrapper itself (framing rejects, evidence
+  * freezes); gateCountersSnapshot() merges in the base tracker's tallies. */
+ private wrapperCounters=emptyGateCounters();
+ private freezeEpisodeStart:number|null=null;private lastFrameAt:number|null=null;
  private width=0;private height=0;private scoring=true;
  usableFrame=false;
  constructor(readonly type:string,readonly target:number,readonly restored:Partial<ExerciseMetrics>,runId:number){this.base=createRecognitionTracker(type,target,restored,true,true);this.order=new FrameOrder(runId);}
@@ -75,7 +80,20 @@ export class AdaptiveRecognition {
   * flag on its own. */
  carryToRun(runId:number){this.order.rebind(runId);this.source=null;this.stepBridge=true;}
 
+ /** WS2: a copy of this set's gate counters (wrapper + base tracker merged). */
+ gateCountersSnapshot():GateCounters{
+  const base=(this.base as {gateCountersSnapshot?:()=>GateCounters}).gateCountersSnapshot?.();
+  return base?mergeGateCounters(this.wrapperCounters,base):cloneGateCounters(this.wrapperCounters);
+ }
+ private noteFreezeStart(capturedAt:number){
+  if(this.freezeEpisodeStart===null){this.wrapperCounters.freezeEpisodes++;this.freezeEpisodeStart=capturedAt;}
+ }
+ private closeFreeze(at:number|null){
+  if(this.freezeEpisodeStart===null||at===null)return;
+  this.wrapperCounters.frozenMs+=Math.max(0,at-this.freezeEpisodeStart);this.freezeEpisodeStart=null;
+ }
  interrupt(reason='识别已暂停，继续后识别下一个完整动作'){
+  this.closeFreeze(this.lastFrameAt);
   this.usableFrame=false;
   this.base.interrupt(reason);this.image.reset();this.world.reset();this.previous=null;this.shape=null;this.source=null;this.weak=null;this.weakWorld=null;this.scoring=true;this.frozenAt=null;this.lastFreezeAt=null;
  }
@@ -83,6 +101,7 @@ export class AdaptiveRecognition {
   * tracker, so its per-side cycle state (including an already-reached peak) survives.
   * Past the grace the half rep is voided with the caller's usual reason. */
  private freezeHammer(capturedAt:number,message:string,expiredReason:string){
+  this.noteFreezeStart(capturedAt);
   if(this.frozenAt===null){this.frozenAt=capturedAt;this.lastFreezeAt=capturedAt;}
   if(capturedAt-this.frozenAt>HAMMER_FREEZE_GRACE_MS){this.frozenAt=null;return this.reject(expiredReason);}
   const frozen=message;
@@ -91,6 +110,7 @@ export class AdaptiveRecognition {
  }
  private reject(reason:string){this.interrupt(reason);return this.metrics;}
  private freezeSquat(capturedAt:number,_message:string,affectedJoints:number[]=[]){
+  this.noteFreezeStart(capturedAt);
   this.weak??=capturedAt;
   if(capturedAt-this.weak>200)return this.reject(COPY_HALF_REP);
   this.scoring=false;
@@ -100,11 +120,17 @@ export class AdaptiveRecognition {
  update(f:PoseFrame,count=true){
   this.usableFrame=false;
   if(!this.order.accept(f))return this.metrics;
+  this.lastFrameAt=f.capturedAt;
   if(this.width&&(f.width!==this.width||f.height!==this.height))this.interrupt('画面变了一下，回到起始姿势，我们重新开始');this.width=f.width;this.height=f.height;
   const raw=f.landmarks;
   if(!raw||raw.length!==33||raw.some(p=>!p||![p.x,p.y,p.visibility??0].every(Number.isFinite)))return this.type==='squat'?this.freezeSquat(f.capturedAt,'未检测到可用的深蹲关节'):this.reject(notSeenCopyFor(this.type));
   const needed=this.base.requiredIndices(raw);
-  const framing=framingFeedback(raw,needed);
+  // WS1: the framing (in-frame) test runs over the per-type gate subset —
+  // for upper-body movements the hips are out of the gate, so a dorm's
+  // close framing (extrapolated hips below the bottom edge) no longer
+  // hard-rejects every frame. needed() itself is untouched and still
+  // drives the visibility gate below and everything inside the tracker.
+  const framing=framingFeedback(raw,framingGateIndices(this.type,needed));
   if(this.type==='squat'){
    const side=needed.includes(12)?'right':'left';
    if(!squatSideVisible(raw,side)){
@@ -113,7 +139,7 @@ export class AdaptiveRecognition {
     if(!framing)return this.reject('让我看清你同一侧的肩、髋、膝和脚踝');
    }
   }
-  if(framing){this.reject(framing.message);this.base.metrics.poseFeedback={...this.metrics.poseFeedback,affectedJoints:framing.affected};return this.metrics;}
+  if(framing){this.wrapperCounters.framingRejects++;this.reject(framing.message);this.base.metrics.poseFeedback={...this.metrics.poseFeedback,affectedJoints:framing.affected};return this.metrics;}
   if(needed.some(i=>(raw[i].visibility??0)<.55)){
    if(this.type==='hammer_curl')return this.freezeHammer(f.capturedAt,COPY_UNCLEAR,COPY_HALF_REP);
    this.weak??=f.capturedAt;if(f.capturedAt-this.weak>200)return this.reject(COPY_HALF_REP);
@@ -164,6 +190,7 @@ export class AdaptiveRecognition {
   }
   if(this.stepBridge){this.stepBridge=false;(this.base as {bridgeFreezeGap?:(now:number)=>void}).bridgeFreezeGap?.(f.capturedAt);}
   const before=structuredClone(this.metrics),stage=this.diagnostics.stage;
+  this.closeFreeze(f.capturedAt);
   this.base.update(this.image.apply(raw,f.capturedAt),f.capturedAt,aspect,world?this.world.apply(world,f.capturedAt):null);
   this.usableFrame=this.diagnostics.stage!=='tracking_lost';
   if(stage!=='ready'||this.diagnostics.stage!=='ready'){

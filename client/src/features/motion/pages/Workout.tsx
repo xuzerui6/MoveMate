@@ -47,6 +47,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const [simulatedPose, setSimulatedPose] = useState(restored?.source === 'demo'), [paused, setPaused] = useState(false)
   const [pendingAction, setPendingAction] = useState<'pause'|'resume'|null>(null)
   const frozenFinish = useRef<WorkoutSession | null>(null)
+  const gateReported = useRef(false)
   const [ending, setEnding] = useState(false)
   const [cameraExpanded, setCameraExpanded] = useState(false), [cameraFit, setCameraFit] = useState<CameraFit>('contain')
   const cameraExpandButton = useRef<HTMLButtonElement>(null)
@@ -79,7 +80,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const heartRef = useRef(heartRate); heartRef.current = heartRate
   useEffect(() => () => heartRef.current.disconnect(), [])
   const record = sessions.find(item => item.id === serverId.current) || restored
-  const { metrics, diagnostics, demoLandmarks } = useExerciseMetrics(exerciseType, pose.landmarks, simulatedPose, active, paused || busy || ending,
+  const { metrics, diagnostics, demoLandmarks, gateCounters: legacyGateCounters } = useExerciseMetrics(exerciseType, pose.landmarks, simulatedPose, active, paused || busy || ending,
     pose.videoRef.current?.videoWidth && pose.videoRef.current.videoHeight ? pose.videoRef.current.videoWidth / pose.videoRef.current.videoHeight : 1,
     restored ? { ...restored.metrics, reps: restored.reps } : {},20,'standalone',pose.worldLandmarks,pose.engine)
   // The session clock does not run before the first completed calibration: until the
@@ -307,6 +308,13 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     const completed = frozenFinish.current || workout.finish() || recovered
     if (!completed) return
     if (!frozenFinish.current) frozenFinish.current = structuredClone({ ...completed, id: serverId.current, source: simulatedPose ? 'demo' : 'camera', recognitionStrategy:adaptive&&!simulatedPose?'adaptive-v1':'legacy', visionInsights: [], conversationTurnCount: active ? conversationCount : completed.conversationTurnCount })
+    // WS2 识别门计数随本组结束上报运维诊断通道（只有计数，没有画面数据，
+    // 页面上不显示）：自适应路径读引擎快照里的计数，旧路径读本页跟踪器的。
+    // 演示不报。失败静默——诊断永远不能挡住结算。
+    if (!simulatedPose && accountToken.current && !gateReported.current) {
+      const gateCounters = adaptive ? pose.engine?.gateCounters ?? null : legacyGateCounters()
+      if (gateCounters) { gateReported.current = true; void fetch('/api/v1/diagnostics/recognition', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accountToken.current }, body: JSON.stringify({ exerciseType, counters: gateCounters }), keepalive: true }).catch(() => undefined) }
+    }
     locked.current = true; closing.current = true; setEnding(true); setPaused(true); setBusy(true); setVoiceEnabled(false); setFailure(''); pose.stop(); heartRate.disconnect()
     try { await finish(frozenFinish.current) }
     catch (error) { if (alive.current) setFailure(getErrorMessage(error)) }
