@@ -296,7 +296,7 @@
 .motion-view .preset-empty{width:84px;height:112px;display:flex;align-items:center;justify-content:center;color:var(--muted);background:#f4f6f4;border-radius:12px;font-size:14px}
 .motion-view .preset-slot b{font-size:14px}
 .motion-view .preset-actions{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
-.motion-view .preset-actions button{min-height:48px;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:13px}
+.motion-view .preset-actions button{min-height:48px;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:13px;white-space:nowrap}
 .motion-view .look-base-row{display:flex;flex-wrap:wrap;gap:10px 22px;margin:4px 0 14px}
 .motion-view .look-base-group{display:flex;align-items:center;gap:8px}
 .motion-view .look-base-group>span{font-size:14px;color:var(--muted)}
@@ -328,11 +328,20 @@
   .motion-view .part-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
 }
 @media (max-width:700px){
-  .motion-view .avatar-showcase.editing{position:sticky;top:8px;z-index:6;min-height:0;padding:10px 14px}
+  /* 编辑态预览与保存条不用 position:sticky：两者都在内层滚动容器 .motion-screen 里，
+     iOS Safari 对子滚动容器内的 sticky 元素单独合成，动量滚动时被它覆盖的 tiles
+     重绘滞后——2026-11-14 机主实测：预览重影叠印、保存条跟着滚动拖尾（与 2026-11-12
+     训练设置/计划编辑保存条同因同录，那两处已改 fixed 并由 layout-guards 守卫）。
+     预览改为随页滚动（紧凑尺寸保留；每个部件卡的缩略图本就是整套效果图，不怕预览
+     滚出视野）；保存条按 .gym-editor-save-bar 同范式锚定视口（浮动卡改全宽条，
+     与 .training-controls 一致），页面补底部内边距，保证末尾内容不被固定条遮住。 */
+  .motion-view .avatar-showcase.editing{position:relative;min-height:0;padding:10px 14px}
   .motion-view .avatar-showcase.editing .avatar-figure{height:132px;width:99px}
   .motion-view .avatar-showcase.editing .level-row{display:none}
-  .motion-view .look-save-bar{position:sticky;bottom:10px;z-index:6;background:#fff;padding:8px;border-radius:14px;box-shadow:0 4px 18px rgba(0,40,20,.14)}
+  .motion-view .look-save-bar{position:fixed;left:0;right:0;bottom:calc(80px + env(safe-area-inset-bottom,0px));z-index:60;margin:0;background:#fff;border-top:1px solid var(--line);padding:10px 20px 12px}
+  .motion-view .avatar-page{padding-bottom:120px}
   .motion-view .preset-slots{gap:8px}
+  .motion-view .preset-actions button{padding:8px 6px}
   .motion-view .part-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
   .motion-view .part-card{min-height:158px;padding:8px 4px}
   .motion-view .part-card .part-thumb{height:88px}
