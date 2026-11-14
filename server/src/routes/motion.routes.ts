@@ -10,5 +10,5 @@ router.get('/sport-sessions/active',wrap((req:any)=>motion.activeSession(req.use
 router.post('/sport-sessions',wrap((req:any)=>motion.createSession(req.user.id,create.parse(req.body),req.get('X-MoveMate-Recognition-Version'))));
 for(const action of ['pause','resume','finish','progress'] as const) router.post('/sport-sessions/:id/'+action,wrap((req:any)=>motion.sessionAction(req.params.id,req.user.id,action,metrics.parse(req.body||{}),false,req.get('X-MoveMate-Recognition-Version'))));
 router.get('/training/state',wrap((req:any)=>motion.trainingState(req.user.id)));
-router.patch('/training/avatar',wrap((req:any)=>motion.updateAvatar(req.user.id,z.object({avatarGender:z.enum(['male','female']).optional(),activeOutfit:z.string().max(30).optional(),equipped:z.record(z.string().max(60)).optional(),seenOutfits:z.array(z.string().max(30)).max(7).optional()}).parse(req.body))));
+router.patch('/training/avatar',wrap((req:any)=>motion.updateAvatar(req.user.id,z.object({avatarGender:z.enum(['male','female']).optional(),activeOutfit:z.string().max(30).optional(),equipped:z.record(z.string().max(60)).optional(),seenOutfits:z.array(z.string().max(30)).max(7).optional(),avatarLook:z.any().optional()}).parse(req.body))));
 export default router;

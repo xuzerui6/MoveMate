@@ -14,6 +14,7 @@ import {
   unlockedOutfitsMap,
   type AvatarCounts,
 } from '../utils/avatar-shared';
+import { parseStoredLook, type AvatarLook } from '../utils/avatar-parts';
 
 // 与 motion.service 的 progress() 同一条等级曲线（该函数是训练域的，不在此反向引用以免循环）
 function levelOf(totalXp: number): number {
@@ -66,11 +67,13 @@ export interface AvatarDisplay {
   highest_rarity: string;
   highest_rarity_name: string;
   level: number;
+  /** 分身形象本体（自定义搭配或套装口径），展示端优先用它拼图 */
+  look: AvatarLook;
 }
 
 export async function avatarDisplay(userId: number): Promise<AvatarDisplay> {
-  const profile = (await pool.query<{ avatar_gender: string; active_outfit: string; total_xp: number }>(
-    'SELECT avatar_gender, active_outfit, total_xp FROM motion_profiles WHERE user_id = $1',
+  const profile = (await pool.query<{ avatar_gender: string; active_outfit: string; total_xp: number; avatar_look: string }>(
+    'SELECT avatar_gender, active_outfit, total_xp, avatar_look FROM motion_profiles WHERE user_id = $1',
     [userId],
   )).rows[0];
   const counts = await avatarCounts(userId);
@@ -85,5 +88,6 @@ export async function avatarDisplay(userId: number): Promise<AvatarDisplay> {
     highest_rarity: highest,
     highest_rarity_name: RARITY_NAME[highest] || RARITY_NAME.N,
     level: counts.level,
+    look: parseStoredLook(profile?.avatar_look, outfit),
   };
 }

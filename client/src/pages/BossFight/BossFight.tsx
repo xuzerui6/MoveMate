@@ -25,7 +25,7 @@ import { segmentTemplateFor } from '../../features/motion/lib/segmentTemplates'
 import { SegmentFightView, SegmentReport } from './SegmentFight'
 import { announceCue, announceFrameAlert, announceRepMilestone, loadBossSoundOn, playHit, primeBossAudio, releaseBossAudio, saveBossSoundOn } from '../../features/motion/lib/bossSounds'
 import { exerciseInfo, type CameraExerciseType } from '../../features/motion/lib/exercises'
-import { getOutfitAvatar } from '../../features/motion/lib/outfits'
+import { LayeredAvatar } from '../../features/motion/components/LayeredAvatar'
 import { useStore, type SportSession } from '../../features/motion/lib/store'
 import { showToast } from '../../hooks/useAuth'
 import { useAuthStore } from '../../stores/authStore'
@@ -34,10 +34,13 @@ import './BossFight.css'
 const PRIVACY_LINE = '识别在你手机上完成，视频不会上传；队友只能看到你的次数和形象。镜头里可能拍到室友，架手机时留意一下。'
 
 function AvatarWithFrame({ avatar, name }: { avatar: any; name: string }) {
-  const img = avatar ? getOutfitAvatar(avatar.gender as any, avatar.outfit as any, 'front') : ''
   return (
     <span className={`bf-avatar frame-${avatar?.highest_rarity || 'N'}`} title={avatar ? `${name} · ${avatar.highest_rarity_name}` : name}>
-      {img ? <img src={img} alt={`${name}的形象`} draggable={false} /> : <Icon name="user" size={22} />}
+      {avatar ? (
+        <LayeredAvatar look={avatar.look} gender={(avatar.gender as any) || 'male'} outfit={avatar.look ? undefined : (avatar.outfit as any)} />
+      ) : (
+        <Icon name="user" size={22} />
+      )}
     </span>
   )
 }

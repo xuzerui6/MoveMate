@@ -20,7 +20,7 @@ export const equipmentSeed: Equipment[] = [
 ]
 
 export const initialState: AppState = {
-  avatarGender: 'male', activeOutfit: 'default', unlockedOutfits: { default: true, penguin: false, sakura: false, sunset_sakura: false, sea_runner: false, violet_court: false, sunlight_explorer: false },
+  avatarGender: 'male', activeOutfit: 'default', avatarLook: { v: 1, mode: 'outfit', outfit: 'default' }, unlockedParts: {}, unlockedOutfits: { default: true, penguin: false, sakura: false, sunset_sakura: false, sea_runner: false, violet_court: false, sunlight_explorer: false },
   seenOutfits: ['default'], newlyUnlockedOutfits: [],
   nickname: 'Jero', age: 24, level: 1, xp: 0, totalXp: 0, streakDays: 0, workouts: 0, completedWorkoutCount: 0, highScoreWorkoutCount: 0, totalSquats: 0,
   equipment: equipmentSeed,

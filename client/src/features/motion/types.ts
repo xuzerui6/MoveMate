@@ -167,9 +167,34 @@ export interface DailyMissionProgress {
   hasHighScoreWorkout: boolean
 }
 
+/** 分身自定义（与 server/src/utils/avatar-parts.ts 的 look 结构一致） */
+export type AvatarSlotKey = 'hair' | 'eyes' | 'glasses' | 'face' | 'top' | 'pants' | 'shoes'
+export type AvatarFace = 'genki' | 'calm'
+export type AvatarSkin = 'fair' | 'natural' | 'wheat'
+export type AvatarPartGroup = 'A' | 'B'
+
+export interface AvatarCustomCore {
+  group: AvatarPartGroup
+  face: AvatarFace
+  skin: AvatarSkin
+  parts: Record<AvatarSlotKey, string | null>
+}
+
+export interface AvatarLook {
+  v: 1
+  mode: 'outfit' | 'custom'
+  outfit?: OutfitPreset
+  custom?: AvatarCustomCore
+  presets?: Array<AvatarCustomCore | null>
+}
+
 export interface AppState {
   avatarGender: AvatarGender
   activeOutfit: OutfitPreset
+  /** 当前形象（自定义搭配或套装口径）；旧缓存没有时由 adapt 派生 */
+  avatarLook: AvatarLook
+  /** 已解锁部件（partId → bool，服务端按下发） */
+  unlockedParts: Record<string, boolean>
   unlockedOutfits: Record<OutfitPreset, boolean>
   seenOutfits: OutfitPreset[]
   newlyUnlockedOutfits: OutfitPreset[]
