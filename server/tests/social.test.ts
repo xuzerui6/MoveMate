@@ -341,7 +341,45 @@ test('share link returns in-app path and respects friends-game visibility', asyn
   const game = await games.createGame(gameInput(host.user.id));
   const link = await request(`/games/${game.id}/share-link`, undefined, stranger.token);
   assert.equal(link.status, 200);
-  assert.equal(link.body.data.path, `/games/${game.id}`);
+  // 应用内真实路由是单数 /game/:id（App.tsx），复数 /games/:id 不存在
+  assert.equal(link.body.data.path, `/game/${game.id}`);
+});
+
+test('lobby auto-fill window: inside 24h shows, outside hides, UTC date edge included', async () => {
+  const host = await account('soc-fill-host'), viewer = await account('soc-fill-viewer');
+  const HOUR = 3600000;
+  const mk = (startMs: number, extra: Record<string, unknown> = {}) =>
+    games.createGame(gameInput(host.user.id, {
+      visibility: 'friends', auto_fill: true, start_time: new Date(startMs).toISOString(), ...extra,
+    }));
+  const now = Date.now();
+  const inside = await mk(now + 2 * HOUR);
+  const outside = await mk(now + 30 * HOUR);
+  // 日期边界：开局时刻与「现在 + 24 小时」落在同一个 UTC 日期、且确实在 24 小时内。
+  // 老 SQL 拿带 T 的 ISO 文本与空格分隔的 datetime 文本直接比大小（'T' > ' '），
+  // 这一档会被误藏；按时刻（julianday）比较才与 JS 判断同口径。
+  const cutoff = now + 24 * HOUR;
+  let edgeStart = cutoff - HOUR;
+  if (new Date(edgeStart).getUTCDate() !== new Date(cutoff).getUTCDate()) edgeStart = cutoff;
+  const edge = await mk(edgeStart);
+  const noAuto = await mk(now + 2 * HOUR, { auto_fill: false });
+
+  // JS 版判断（isFillOpenNow）与大厅 SQL 必须同口径
+  const row = (startMs: number, auto = true) => ({
+    visibility: 'friends' as const, fill_open: false, auto_fill: auto,
+    member_count: 1, max_players: 6, start_time: new Date(startMs).toISOString(),
+  });
+  assert.equal(games.isFillOpenNow(row(now + 2 * HOUR)), true);
+  assert.equal(games.isFillOpenNow(row(edgeStart)), true);
+  assert.equal(games.isFillOpenNow(row(now + 30 * HOUR)), false);
+  assert.equal(games.isFillOpenNow(row(now + 2 * HOUR, false)), false);
+
+  const listed = await games.listGames({ page: 1, page_size: 500 }, viewer.user.id);
+  const ids = new Set(listed.games.map((g: any) => g.id));
+  assert.ok(ids.has(inside.id), 'auto-fill game inside 24h should be listed in the lobby');
+  assert.ok(ids.has(edge.id), 'auto-fill game on the UTC date edge inside 24h should be listed');
+  assert.ok(!ids.has(outside.id), 'auto-fill game outside 24h should stay hidden');
+  assert.ok(!ids.has(noAuto.id), 'friends game without auto_fill should stay hidden');
 });
 
 test('join and leave leave system tips in the game chat', async () => {

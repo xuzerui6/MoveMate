@@ -296,8 +296,13 @@ export function isFillOpenNow(game: Pick<GameRow, 'visibility' | 'fill_open' | '
   return false;
 }
 
-/** SQL 版开放补位判断（别名 g） */
-const FILL_OPEN_SQL = `(g.visibility IS NULL OR g.visibility = 'public' OR g.fill_open = 1 OR (g.auto_fill = 1 AND g.member_count < g.max_players AND g.start_time <= datetime('now', '+24 hours')))`;
+/**
+ * SQL 版开放补位判断（别名 g），与 isFillOpenNow 同口径。
+ * start_time 存的是带 T 的 ISO 文本，datetime('now') 是空格分隔文本，
+ * 直接字符串比较会在「同一 UTC 日期」上比错（'T' > ' '），
+ * 所以两侧都过 julianday 按时刻比较，两种格式通吃。
+ */
+const FILL_OPEN_SQL = `(g.visibility IS NULL OR g.visibility = 'public' OR g.fill_open = 1 OR (g.auto_fill = 1 AND g.member_count < g.max_players AND julianday(g.start_time) <= julianday('now', '+24 hours')))`;
 
 function parseDbTime(raw: unknown): number {
   if (!raw) return 0;
@@ -1437,7 +1442,7 @@ export async function setFillOpen(gameId: number, hostId: number, open: boolean)
 /** 局分享链接（应用内路径，不建新表） */
 export async function getShareLink(gameId: number, requestUserId: number) {
   const detail = await getGameDetail(gameId, requestUserId);
-  return { game_id: gameId, path: `/games/${gameId}`, title: detail.game.title };
+  return { game_id: gameId, path: `/game/${gameId}`, title: detail.game.title };
 }
 
 /** 约下周再练：按原局克隆一个 +7 天的新局，老成员逐个收到邀请、自己点加入确认 */

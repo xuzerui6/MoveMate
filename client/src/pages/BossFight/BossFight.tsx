@@ -752,11 +752,14 @@ function CreatePanel(props: {
   const segTemplate = segmentTemplateFor(props.sportType)
   const [segFormat, setSegFormat] = useState<string>(segTemplate.formats?.[0]?.value || '')
   const [segMovement, setSegMovement] = useState<string>(segTemplate.movements?.[0]?.value || '')
-  const activeSegLabel = segTemplate.formats
-    ? segTemplate.formats.find((f) => f.value === segFormat)?.segmentLabel || segTemplate.segmentLabel
+  const activeSegOption = segTemplate.formats
+    ? segTemplate.formats.find((f) => f.value === segFormat)
     : segTemplate.movements
-      ? segTemplate.movements.find((m) => m.value === segMovement)?.segmentLabel || segTemplate.segmentLabel
-      : segTemplate.segmentLabel
+      ? segTemplate.movements.find((m) => m.value === segMovement)
+      : undefined
+  const activeSegLabel = activeSegOption?.segmentLabel || segTemplate.segmentLabel
+  // 总述跟着选中的打法/动作走：选了俯卧撑就不能还写深蹲的总数
+  const activeTotalLabel = activeSegOption?.totalLabel || segTemplate.totalLabel
   const boss = bossInfo(PHASE1_BOSS_ID)
   if (!props.gameReady) {
     return (
@@ -805,7 +808,7 @@ function CreatePanel(props: {
       )}
       <div className="bf-seg-preview">
         <p className="bf-seg-bigline">{activeSegLabel}</p>
-        <p className="bf-note">{segTemplate.totalLabel}。打满就赢，没打满它会带着剩下的格跑掉——先把约定说清，省得打完吵架。</p>
+        <p className="bf-note">{activeTotalLabel}打满就赢，没打满它会带着剩下的格跑掉——先把约定说清，省得打完吵架。</p>
       </div>
       <button
         type="button"

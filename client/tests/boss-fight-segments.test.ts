@@ -1,10 +1,13 @@
 /**
  * 组队打怪二期 · 约定段模式客户端纯逻辑回归。
- * 模板镜像必须与服务端 server/src/utils/boss-segments.ts 逐条一致；
+ * 模板镜像的唯一源头是服务端 server/src/utils/boss-segments.ts：本文件用
+ * scripts/segment-templates-data.ts（直接读服务端模块）逐字段比对生成物，
+ * 服务端改了任何文案没重新生成，镜像测试就会红，漂移进不了主干。
  * 状态图档位必须与一期 hpStateKey 同一条 60%/30% 线。
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { buildSegmentTemplateData } from '../scripts/segment-templates-data.ts';
 import {
   GENERIC_SEGMENT_TEMPLATE,
   SEGMENT_TEMPLATES,
@@ -40,8 +43,8 @@ function segSnapshot(patch: Partial<BossFightSnapshot> = {}): BossFightSnapshot 
     mode: 'segments',
     template_id: 'basketball',
     segment_format: 'minutes10',
-    segment_label: '打完一轮 10 分钟的比赛，算一段',
-    total_label: '本场共 4 段，打满 4 段就是打赢',
+    segment_label: '打满 10 分钟比赛（暂停、场边休息不计入）',
+    total_label: '本场共 4 段：每段打满 10 分钟，一共 40 分钟比赛，休息另算。',
     segments_total: 4,
     segments_done: 0,
     segments: [],
@@ -49,12 +52,18 @@ function segSnapshot(patch: Partial<BossFightSnapshot> = {}): BossFightSnapshot 
   };
 }
 
-test('segment templates mirror the approved server table', () => {
-  const expected: Record<string, number> = {
+test('segment templates mirror the server source of truth field-by-field', () => {
+  // 逐字段比对：templateId / 格数 / segmentLabel / totalLabel /
+  // 篮球两种打法的 id、名字与两条文案 / 健身每个动作的两条文案，全都要一致
+  const expected = buildSegmentTemplateData();
+  assert.deepEqual(SEGMENT_TEMPLATES, expected.templates);
+  assert.deepEqual(GENERIC_SEGMENT_TEMPLATE, expected.generic);
+
+  const counts: Record<string, number> = {
     basketball: 4, soccer: 3, badminton: 4, volleyball: 4, tennis: 6,
     table_tennis: 6, swimming: 4, running: 4, roller_skating: 4, skateboarding: 4, fitness: 4,
   };
-  for (const [sport, total] of Object.entries(expected)) {
+  for (const [sport, total] of Object.entries(counts)) {
     assert.equal(segmentTemplateFor(sport).segmentsTotal, total, sport);
   }
   assert.equal(segmentTemplateFor('dance').templateId, 'generic');
@@ -62,15 +71,18 @@ test('segment templates mirror the approved server table', () => {
   assert.equal(segmentTemplateFor(undefined).templateId, 'generic');
   assert.equal(GENERIC_SEGMENT_TEMPLATE.segmentsTotal, 4);
   assert.match(GENERIC_SEGMENT_TEMPLATE.segmentLabel, /15 分钟/);
-  // 篮球二选一打法、健身固定动作清单都在镜像里
   assert.deepEqual(SEGMENT_TEMPLATES.basketball.formats?.map((f) => f.value), ['minutes10', 'points21']);
-  assert.match(SEGMENT_TEMPLATES.basketball.formats![1].segmentLabel, /21 分/);
-  // 篮球总述是两种打法共用的：只能按「段」说，不能用「轮」（21 分一局没有轮）
-  assert.equal(SEGMENT_TEMPLATES.basketball.totalLabel, '本场共 4 段，打满 4 段就是打赢');
+  // 篮球总述只能按「段」说，不能用「轮」（21 分一局没有轮）
   assert.doesNotMatch(SEGMENT_TEMPLATES.basketball.totalLabel, /轮/);
+  for (const f of SEGMENT_TEMPLATES.basketball.formats!) assert.doesNotMatch(f.totalLabel, /轮/);
+  // 冻结口径的几个关键说法逐字钉住（服务端是权威，客户端预览必须一字不差地承诺）
+  assert.equal(SEGMENT_TEMPLATES.tennis.totalLabel, '本场共 6 段：一共打完 6 个发球局。');
+  assert.match(SEGMENT_TEMPLATES.swimming.segmentLabel, /全员都完成才算一段/);
+  assert.equal(SEGMENT_TEMPLATES.fitness.templateId, 'fitness');
   assert.equal(SEGMENT_TEMPLATES.fitness.movements?.length, 5);
-  assert.match(SEGMENT_TEMPLATES.swimming.totalLabel, /800 米/);
-  assert.match(SEGMENT_TEMPLATES.running.totalLabel, /4 公里/);
+  const pushUp = SEGMENT_TEMPLATES.fitness.movements!.find((m) => m.value === 'seg_push_up')!;
+  assert.match(pushUp.segmentLabel, /俯卧撑（15 次）/);
+  assert.match(pushUp.totalLabel, /4 大组俯卧撑/);
 });
 
 test('segment state image switches on the same 60%/30% lines as camera hp', () => {

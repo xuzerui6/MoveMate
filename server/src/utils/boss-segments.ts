@@ -6,7 +6,9 @@
  *   （人数的分量已经写进「一段」的定义里：个人完成类每人一份、比赛类一个完整单元）。
  * - 「一段是什么」按运动写死；篮球有两种写死的打法，开打前二选一、全场不变。
  * - 没有专属模板的运动一律走通用模板：每人各累计活动 15 分钟。
- * - 客户端有一份镜像（client/src/features/motion/lib/segmentTemplates.ts），改这边必须同步那边。
+ * - 本文件是约定文案的唯一源头。客户端镜像（client/src/features/motion/lib/
+ *   segmentTemplates.ts）由 client/scripts/generate-segment-templates.ts 从本文件
+ *   生成，不要手改；客户端测试会逐字段比对，改了这边没重新生成就会红。
  */
 
 export interface SegmentFormat {
@@ -46,13 +48,13 @@ export const SEGMENT_TEMPLATES: Record<string, SegmentTemplate> = {
     formats: [
       {
         id: 'minutes10',
-        name: '按时间打 · 每段 10 分钟',
+        name: '10 分钟一轮',
         segmentLabel: '打满 10 分钟比赛（暂停、场边休息不计入）',
         totalLabel: '本场共 4 段：每段打满 10 分钟，一共 40 分钟比赛，休息另算。',
       },
       {
         id: 'points21',
-        name: '按比分打 · 每段一局 21 分',
+        name: '21 分一局',
         segmentLabel: '打完一局 21 分比赛',
         totalLabel: '本场共 4 段：每段打完一局 21 分，一共 4 局。',
       },
