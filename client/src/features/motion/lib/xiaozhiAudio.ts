@@ -75,7 +75,7 @@ export class XiaozhiAudio {
     await this.ensurePlaybackReady()
     if (this.disposed || generation !== this.captureGeneration) throw new Error('语音已关闭')
     const context = this.context
-    if (!context) throw new Error('小智音频上下文初始化失败')
+    if (!context) throw new Error('语音音频上下文初始化失败')
     const stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true }, video: false })
     if (this.disposed || generation !== this.captureGeneration) { stream.getTracks().forEach(track => track.stop()); throw new Error('语音已关闭') }
     this.stream = stream

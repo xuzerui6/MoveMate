@@ -66,7 +66,7 @@ export class VoicePool {
       if (typeof input.enabled === 'boolean') settings.enabled = input.enabled;
       if (settings.enabled) {
         this.key();
-        if (!settings.quotaConfirmed) throw new VoiceError('请先确认当前小智免费额度允许所需设备和并发');
+        if (!settings.quotaConfirmed) throw new VoiceError('请先确认当前语音服务免费额度允许所需设备和并发');
         if (!(await pool.query("SELECT slot FROM voice_devices WHERE state='bound' AND enabled=1 AND verified=1 LIMIT 1")).rowCount) throw new VoiceError('没有通过隔离验证的可用设备');
       }
       await pool.query("INSERT INTO actor_meta(key,value) VALUES('voice_settings',$1) ON CONFLICT(key) DO UPDATE SET value=$1", [JSON.stringify(settings)]);
