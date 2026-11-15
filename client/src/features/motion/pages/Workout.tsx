@@ -461,10 +461,9 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
           <button className="secondary" disabled={ending} onClick={!voiceEnabled ? toggleVoice : voice.state === 'idle' ? voice.wake : ['failed', 'fallback'].includes(voice.state) ? voice.retry : voice.inConversation ? voice.interrupt : toggleVoice}>{!voiceEnabled ? '开启' : voice.state === 'idle' ? '对话' : ['failed', 'fallback'].includes(voice.state) ? '重试' : voice.inConversation ? '打断' : '关闭'}</button>
         </div>
         <details className="training-details"><summary>连接与设备详情</summary><p>{voiceEnabled ? voice.errorMessage || VOICE_LABEL[voice.state] : '语音尚未开启，不占用设备。'} 本站不保存完整录音。</p>{voiceEnabled && <div className="training-detail-actions"><button className="secondary" onClick={toggleVoice}>关闭语音</button>{voice.source === 'xiaozhi' && <button className="secondary" onClick={voice.toggleMute}>{voice.muted ? '打开声音' : '静音'}</button>}</div>}
-          {voice.state === 'activating' && voice.identityMode === 'personal' && <p>本机个人模式绑定码：<strong>{voice.activationCode}</strong>。<a href="https://xiaozhi.me" target="_blank" rel="noreferrer">前往小智绑定</a></p>}
-          {voiceEnabled && <p>{voice.source === 'xiaozhi' ? '云端语音已连接' : '当前使用本地文字反馈'}{voice.dataSyncState.lastRepSynced ? ` · 已同步第 ${voice.dataSyncState.lastRepSynced} ${exercise.unit}` : ''}{voice.visionAvailable ? ' · 关键帧复核可用' : ''}</p>}
+          {voice.state === 'activating' && voice.identityMode === 'personal' && <p>本机个人模式绑定码：<strong>{voice.activationCode}</strong>。<a href="https://xiaozhi.me" target="_blank" rel="noreferrer">前往绑定页面</a></p>}
+          {voiceEnabled && <p>{voice.source === 'xiaozhi' ? '云端语音已连接' : '当前使用本地文字反馈'}</p>}
           {voiceEnabled && voice.transcript && <p>你：{voice.transcript}</p>}{voiceEnabled && voice.reply && <p>陪练：{voice.reply}</p>}
-          {testSlot !== undefined && <p>管理员测试设备 {testSlot}</p>}
           <p>{heartRate.connected ? `心率 ${heartRate.signalInterrupted ? '信号中断' : heartRate.currentBpm || '等待数据'} BPM` : '未连接心率设备'}</p>
         </details>
       </section>}
