@@ -26,7 +26,7 @@ export async function fetchOta(identity: VirtualDeviceIdentity): Promise<OtaResp
       board: { type: 'web', name: 'motion-buddy', ip: '0.0.0.0', mac: identity.deviceId },
     }),
   })
-  if (!response.ok) throw new Error(`小智 OTA 返回 HTTP ${response.status}`)
+  if (!response.ok) throw new Error(`语音服务 OTA 返回 HTTP ${response.status}`)
   return response.json() as Promise<OtaResponse>
 }
 
@@ -41,5 +41,5 @@ export async function pollActivation(identity: VirtualDeviceIdentity): Promise<'
   })
   if (response.status === 200) return 'ready'
   if (response.status === 202) return 'waiting'
-  throw new Error(`小智激活返回 HTTP ${response.status}`)
+  throw new Error(`语音服务激活返回 HTTP ${response.status}`)
 }

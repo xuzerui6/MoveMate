@@ -35,7 +35,7 @@ export async function bridgeXiaozhi(request: Request, report: (stage: string, de
     }, signal: controller.signal }); } finally { clearTimeout(timeout); }
     await report('upstream_response', upstreamResponse.status);
     const upstream = upstreamResponse.webSocket;
-    if (!upstream || upstreamResponse.status !== 101) throw new Error(`小智上游返回 HTTP ${upstreamResponse.status}`);
+    if (!upstream || upstreamResponse.status !== 101) throw new Error(`语音服务上游返回 HTTP ${upstreamResponse.status}`);
     const [client, browser] = Object.values(new WebSocketPair());
     // Workers now defaults binary messages to Blob. The audio codec and bridge
     // expect ArrayBuffer, as the local ws transport does.
@@ -109,13 +109,13 @@ export async function bridgeXiaozhi(request: Request, report: (stage: string, de
     });
     upstream.addEventListener('close', event => { void report('upstream_closed', event.code).catch(() => undefined); console.warn('[Xiaozhi] upstream close', event.code); close(event.code, 'upstream closed'); void lease?.release().catch(() => { console.warn('[Voice] lease release pending recovery'); }); });
     browser.addEventListener('close', () => close());
-    for (const socket of [browser, upstream]) socket.addEventListener('error', () => { send(browser, JSON.stringify({ bridge: 'error', message: '小智上游连接失败' })); close(1011, 'upstream error'); });
+    for (const socket of [browser, upstream]) socket.addEventListener('error', () => { send(browser, JSON.stringify({ bridge: 'error', message: '语音服务上游连接失败' })); close(1011, 'upstream error'); });
     await report('bridge_ready');
     send(browser, JSON.stringify({ bridge: 'ready' }));
     return new Response(null, { status: 101, webSocket: client });
   } catch (error) {
     await lease?.release();
-    const message = error instanceof Error && /^小智(?:上游返回| OTA 返回) HTTP \d{3}$/.test(error.message) ? error.message : '上游语音连接失败，请稍后重试';
+    const message = error instanceof Error && /^语音服务(?:上游返回| OTA 返回) HTTP \d{3}$/.test(error.message) ? error.message : '上游语音连接失败，请稍后重试';
     await report('connect_error', message); console.warn('[Xiaozhi] connection failed', message);
     return Response.json({ error: message }, { status: 502 });
   }

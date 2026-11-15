@@ -108,11 +108,11 @@ wss.on('connection', async (browser, request) => {
       if (browser.readyState === WebSocket.OPEN) browser.close(upstreamCloseCode(code), closeReason(reason))
     })
     upstream.on('error', () => {
-      if (browser.readyState === WebSocket.OPEN) browser.send(json({ bridge: 'error', message: '小智上游连接失败' }))
+      if (browser.readyState === WebSocket.OPEN) browser.send(json({ bridge: 'error', message: '语音服务上游连接失败' }))
     })
   } catch (error) {
     if (browser.readyState === WebSocket.OPEN) {
-      browser.send(json({ bridge: 'error', message: error instanceof Error ? error.message : '小智连接失败' }))
+      browser.send(json({ bridge: 'error', message: error instanceof Error ? error.message : '语音连接失败' }))
       browser.close(1011, 'upstream unavailable')
     }
     return

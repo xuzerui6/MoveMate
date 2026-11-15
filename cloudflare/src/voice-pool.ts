@@ -95,7 +95,7 @@ export class VoicePool {
         identity.activated = false;
         identity.activation = { code: ota.activation.code, challenge: ota.activation.challenge, message: ota.activation.message || '', expiresAt: Date.now() + Math.min(300000, ota.activation.timeout_ms || 300000) };
       } else {
-        if (!ota.websocket?.url || !ota.websocket.token) throw new Error('小智未返回可用语音配置');
+        if (!ota.websocket?.url || !ota.websocket.token) throw new Error('语音服务未返回可用语音配置');
         identity.activated = true; delete identity.activation;
       }
       await withTransaction(async () => {

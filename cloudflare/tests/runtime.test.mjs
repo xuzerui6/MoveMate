@@ -5,6 +5,7 @@ import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
 import { fixture, password } from './fixture.mjs';
 import bcrypt from '../../server/node_modules/bcryptjs/index.js';
 import { voicePoolTests } from './voice-pool.mjs';
+import { bridgeErrorPairingTests } from './bridge-errors.mjs';
 const migrationSecret = 'm'.repeat(64);
 const mf = new Miniflare(convertV4MiniflareOptions({ workers:[{name:'app',outboundService:'voice-provider', modules: true, scriptPath:'dist/test-worker.js', compatibilityDate:'2026-10-14', compatibilityFlags:['nodejs_compat'], durableObjects:{BACKEND:{className:'TestBackend',useSQLite:true},PROBE:{className:'RuntimeProbe',useSQLite:true}}, bindings:{INSTANCE:'test',JWT_SECRET:'j'.repeat(64),STUDENT_ID_SALT:'s'.repeat(64),XIAOZHI_COOKIE_SECRET:'x'.repeat(64),XIAOZHI_POOL_SECRET:'p'.repeat(64),MIGRATION_SECRET:migrationSecret,NODE_ENV:'production',CLOUDFLARE:'1',XIAOZHI_IDENTITY_MODE:'personal'}, serviceBindings:{ASSETS:request=>new URL(request.url).pathname==='/assets/missing.js'?new Response('<html>SPA</html>',{headers:{'Content-Type':'text/html'}}):new Response('asset')} },{name:'voice-provider',modules:true,compatibilityDate:'2026-10-14',script:`
 export default {async fetch(request){
@@ -581,5 +582,6 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.equal(mine.counters.framingRejects,0);assert.equal(mine.counters.frozenMs,0);assert.deepEqual(mine.counters.peaksConfirmed,[0,0]);assert.equal(mine.counters.formInterrupts['坏值'],0);
  });
  await voicePoolTests(t,{mf,call,tokens,adminToken,sockets,password,migrate});
+ await bridgeErrorPairingTests(t);
  }finally{for(const ws of sockets){try{ws.close()}catch{}}await mf.dispose()}
 });
