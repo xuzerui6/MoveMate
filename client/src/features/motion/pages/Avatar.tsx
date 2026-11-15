@@ -54,7 +54,7 @@ export function Avatar({inventory}:{inventory:()=>void}){
    try{if(await setAvatarLook({...outfitLook(outfit),presets})){setDraft(null);setLockNotice(false);setNotice('已保存 · '+outfitLabels[outfit]);}}
    finally{setBusy(false);setPending('');}
  };
- const gender=async(value:AvatarGender)=>{if(busy||value===state.avatarGender)return;setBusy(true);try{if(await setAvatarGender(value))setLockNotice(false);setNotice('角色形象已保存');}finally{setBusy(false);}};
+ const gender=async(value:AvatarGender)=>{if(busy||value===state.avatarGender)return;setBusy(true);try{if(await setAvatarGender(value)){setLockNotice(false);setNotice('角色形象已保存');}else setNotice('保存失败，请检查网络后重试');}finally{setBusy(false);}};
  const pickPart=(partId:string|null,lockedCopy?:string)=>{
    if(lockedCopy){setLockNotice(true);setNotice(lockedCopy);return;}
    const core=ensureDraft();
@@ -65,7 +65,7 @@ export function Avatar({inventory}:{inventory:()=>void}){
  };
  const saveDraft=async()=>{
    if(busy||!draft)return;setBusy(true);setNotice('');
-   try{if(await setAvatarLook({v:1,mode:'custom',custom:draft,presets}))setLockNotice(false);setNotice('形象已保存');}
+   try{if(await setAvatarLook({v:1,mode:'custom',custom:draft,presets})){setLockNotice(false);setNotice('形象已保存');}else setNotice('保存失败，请检查网络后重试');}
    finally{setBusy(false);}
  };
  const storePreset=async(index:number)=>{
