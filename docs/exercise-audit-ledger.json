@@ -4147,11 +4147,26 @@
         "sourceRecordSha256": "98f5c9476a53a78e571da1d0220bbd6d03aad0b60ad619d384c75a410ab58a49",
         "steps": 6
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
       "complete": false,
-      "sources": []
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fill129-1370",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch129.md",
+          "version": "2026-11-14 · 生成批次 129",
+          "sourceSha256": [
+            "b409c0a2f7ea611e3892e35c184b983674a53dc050f973ef275b860ae6910993",
+            "0f7f8252a70ceaa5aae6d096d10112cd01dfbe405c5f0b290ab27912c491c63f"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0039",
@@ -45102,11 +45117,26 @@
         "sourceRecordSha256": "adff8ada63d6c4bcd39aa88cb1352ba87aa87f9460f75125026aa549c82a3d2d",
         "steps": 7
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
       "complete": false,
-      "sources": []
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fill129-1310",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch129.md",
+          "version": "2026-11-14 · 生成批次 129",
+          "sourceSha256": [
+            "e35b2573ef7eccab701be72a87c39a1f3a9f30843ccac581ad3471a8ea90af78",
+            "63cb42b8cc73c8ee5c1e328499243c3b2f052ba6f63a773afdedf8bfbb4893f0"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:2135",
@@ -45192,11 +45222,26 @@
         "sourceRecordSha256": "30c518611498c1bba981cbc5795fec2d8d397573ef96ae75876ed5f938655658",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
       "complete": false,
-      "sources": []
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fill129-0866",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch129.md",
+          "version": "2026-11-14 · 生成批次 129",
+          "sourceSha256": [
+            "0202e9e0adcb236b2ed7b0439cc727d1bd411ed3d5e945812b47650cceada35d",
+            "486ceead4d6c29c3bb5dfaf42c8345acc94b17670506b424b80d7479dd8e43b9"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0835",
@@ -45247,11 +45292,26 @@
         "sourceRecordSha256": "eb768a30f5b840dc87f5cee1b19728d7101633cb359229ddf46d40b2fd467b8d",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
       "complete": false,
-      "sources": []
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fill129-3641",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch129.md",
+          "version": "2026-11-14 · 生成批次 129",
+          "sourceSha256": [
+            "b00f5d749293abbda20f397e2e35765d81aeaf2b9387b8ea5787f18cfa9d6440",
+            "2e5e8bd6c056f2a38131df0bce36a6d97aecef67daad57c48b20bcb74b108268"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3644",
@@ -45302,11 +45362,26 @@
         "sourceRecordSha256": "66589818dff36325a3eeadf078172179a8d9594e8da8df782d438bca335dbdfa",
         "steps": 6
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
       "complete": false,
-      "sources": []
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fill129-3286",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch129.md",
+          "version": "2026-11-14 · 生成批次 129",
+          "sourceSha256": [
+            "2f2d35b955e9cc55e49333581922b1a95cab8b8c1605a81ec1472720bd910ebd",
+            "dfdd8c808ccbd9f349613a65843c180e51148c7727cbff50e9952795adf99c29"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3312",
@@ -45357,11 +45432,26 @@
         "sourceRecordSha256": "e15e0ac1c84abf50598c87fcbd413d4f8a51fa498f700bb4e0462264ba3214f1",
         "steps": 6
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
       "complete": false,
-      "sources": []
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fill129-3290",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch129.md",
+          "version": "2026-11-14 · 生成批次 129",
+          "sourceSha256": [
+            "818d89fcaf6ec7bf9f0be3e7fb278f2ba7b82e280917d8d0d7935dd12dee4adf",
+            "04674756b3aa55083b9746bc02a13b34d395b6e0718a769f3ee4ecc4f21fe713"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0840",
@@ -45447,11 +45537,26 @@
         "sourceRecordSha256": "8559e36491618af501efedb2b889901ea3760d5087879f0b0c37192e1343f488",
         "steps": 6
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
       "complete": false,
-      "sources": []
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fill129-0844",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch129.md",
+          "version": "2026-11-14 · 生成批次 129",
+          "sourceSha256": [
+            "56b13d7fa07521dab494c679a7871e5572cd4fa839557db1ae0573a3faadc6a6",
+            "4ce361b5ceabd777e3de54363648ce11482b93284e282709820ed2103430c8a0"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0846",
@@ -45557,11 +45662,26 @@
         "sourceRecordSha256": "a0b034d1da781d34f225eeabc9065326be567f631c6b51e03389dbc1a4073460",
         "steps": 6
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
       "complete": false,
-      "sources": []
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fill129-0847",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch129.md",
+          "version": "2026-11-14 · 生成批次 129",
+          "sourceSha256": [
+            "43cf3d9112b734f64ce58af79dcfdba2844a1239962acf350a5d3ffe2b88ea21",
+            "f2551da7c97bd60f9ba2402a3c56328729a08d0e3e8b014c9175362ea1b789b2"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0849",
@@ -45752,11 +45872,26 @@
         "sourceRecordSha256": "7b82f357f08408b8fb68fc2b172dea438fe21e4e77e9e6b03aa878a160e2a036",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
       "complete": false,
-      "sources": []
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fill129-0854",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch129.md",
+          "version": "2026-11-14 · 生成批次 129",
+          "sourceSha256": [
+            "f2a6775e19bf0ae9623c58ae4e0d6333bcd68340bbd0fe9512dfabd0f2bb5dd0",
+            "385ea37069dea020af5956a568efc8bb8260e8c06690bdaefed3b7e1e93959d5"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3313",
@@ -45772,11 +45907,26 @@
         "sourceRecordSha256": "2eec2c41a5782ef4770b80d8261420541205cbf78ebd84fbc71b4dcecec5f9b2",
         "steps": 4
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
       "complete": false,
-      "sources": []
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fill129-3313",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch129.md",
+          "version": "2026-11-14 · 生成批次 129",
+          "sourceSha256": [
+            "510a163ae07f5eba0f079bf5d45bcdfbee085a3c4f32419f707b10f524bdffce",
+            "956b3a0646e51f9d43522cf60801f50aa55e801ffabcc29dea77d4e35f7f07e0"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:3642",
@@ -45792,11 +45942,26 @@
         "sourceRecordSha256": "413f864861b3a21593583a9139a93b84c1276a3ada049f12e18220796bfb0e26",
         "steps": 6
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
       "complete": false,
-      "sources": []
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fill129-3642",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch129.md",
+          "version": "2026-11-14 · 生成批次 129",
+          "sourceSha256": [
+            "e8fe072cf81e53663527af759246fdaf736b89446ee8f9d5dd2d0651ad8e6730",
+            "ecf142afc4b5036eb03c1035170c807486c46724030f38ce21b4e59a8681f2fa"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:0856",
@@ -45987,11 +46152,26 @@
         "sourceRecordSha256": "e55bb2cc04a9b499fecb0a217c41a4d84a61eb542102e0068e46701f75998cc0",
         "steps": 5
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
       "complete": false,
-      "sources": []
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fill129-3637",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch129.md",
+          "version": "2026-11-14 · 生成批次 129",
+          "sourceSha256": [
+            "bae80bb09e17feda56d2faeaa0e5332ae41cc9532ea7c4234e6bdd18647536b8",
+            "5b90bad587757bd9b4d07275a4ae38e67282c3621a60fcf1009a58a3d9708b8c"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1429",
@@ -46204,11 +46384,26 @@
         "sourceRecordSha256": "7a260606f9ac16ad08dfc3be7f3d734952475d35f3067c85acc1ba4b9dc77263",
         "steps": 6
       },
-      "photo": false,
+      "photo": true,
       "illustration": false,
       "video": false,
       "complete": false,
-      "sources": []
+      "sources": [
+        {
+          "name": "AI 生成 / ai-codex-fill129-1604",
+          "author": "MoveMate 项目（AI 生成图片，无摄影师）",
+          "license": "Unlicense",
+          "licenseUrl": "/exercise-media/UNLICENSE.txt",
+          "url": "https://github.com/xuzerui6/MoveMate/blob/main/docs/exercise-media-batch129.md",
+          "version": "2026-11-14 · 生成批次 129",
+          "sourceSha256": [
+            "1e212573b0d22383506fd85ed73a440ec8c90bb78c0c50bb82f2842076853554",
+            "46b240aea860289ac8c57117b943f004f8ecf94ff1e0cd4955960cd689517306"
+          ],
+          "changes": "本项目以 ChatGPT 图片生成制作的写实图片，经逐条对照条目定义（器械、握法、支撑、体位与动作阶段）核验后采用；按原比例缩小并转为 WebP，未裁切。",
+          "distribution": "repository"
+        }
+      ]
     },
     {
       "id": "exdb:1428",
