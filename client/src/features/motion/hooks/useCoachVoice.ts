@@ -392,7 +392,7 @@ export function useCoachVoice(enabled: boolean, context: CoachContext, options: 
           if (!disposedRef.current) say('我在，说「你好动伴」随时叫我。')
         }, 600)
       } else {
-        setReply('小智语音暂不可用，当前仅保留文字反馈。')
+        setReply('语音陪练暂不可用，当前仅保留文字反馈。')
         startRecognition()
       }
     } else {

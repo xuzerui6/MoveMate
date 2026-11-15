@@ -289,7 +289,7 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
         register: (close, check) => { this.voiceConnections.set(claim.lease.id, { connectionId: claim.connectionId, close, check }); },
       });
       if (response.status !== 101) {
-        if (response.status === 401) await pool.query("UPDATE voice_devices SET state='error',enabled=0,verified=0,last_error='小智绑定已失效，请重新检查设备绑定' WHERE slot=$1", [claim.lease.slot]);
+        if (response.status === 401) await pool.query("UPDATE voice_devices SET state='error',enabled=0,verified=0,last_error='语音绑定已失效，请重新检查设备绑定' WHERE slot=$1", [claim.lease.slot]);
         await release();
       }
       await this.schedule(); return response;
