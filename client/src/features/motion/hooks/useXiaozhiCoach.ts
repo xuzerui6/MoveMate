@@ -421,7 +421,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
         socket.send(JSON.stringify({ bridge: 'ping' }))
       }, 15_000)
       handshakeTimer = window.setTimeout(() => {
-        setErrorMessage('小智语音连接超时，请稍后重试')
+        setErrorMessage('语音陪练连接超时，请稍后重试')
         socket.close(4000, 'voice handshake timeout')
       }, 20_000)
       socket.onmessage = event => {
@@ -442,7 +442,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
           setVisionAvailable(true)
           return
         }
-        if (message.bridge === 'error') return setErrorMessage(message.message || '小智连接出了点问题')
+        if (message.bridge === 'error') return setErrorMessage(message.message || '语音陪练连接出了点问题')
         if (message.bridge === 'vision_result') {
           const job = visionPendingRef.current.get(message.requestId)
           if (!job) return
@@ -600,7 +600,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
           }
           setFallbackMode(true)
           setState('fallback')
-          setErrorMessage('小智还没激活好，先用文字陪练')
+          setErrorMessage('语音陪练还没准备好，先用文字陪练')
           return
         }
         if (event.code === 4403) {
@@ -610,7 +610,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
           return
         }
         if (reconnectIndex >= RECONNECT_DELAYS.length) {
-          setErrorMessage('小智语音试了几次都没连上，已切换到文字陪练，点重试可以再连。')
+          setErrorMessage('语音陪练试了几次都没连上，已切换到文字陪练，点重试可以再连。')
           setFallbackMode(true)
           setState('fallback')
           return
@@ -620,7 +620,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
         reconnectIndex += 1
         reconnectTimer = window.setTimeout(() => { if (identityModeRef.current === 'shared') void initialize(); else connect() }, delay)
       }
-      socket.onerror = () => setErrorMessage('小智连接中断，正在尝试恢复')
+      socket.onerror = () => setErrorMessage('语音陪练连接中断，正在尝试恢复')
     }
 
     const initialize = async () => {
@@ -670,7 +670,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
         connect()
       } catch (error) {
         if(disposed) return
-        setErrorMessage(error instanceof Error ? error.message : '小智服务不可用')
+        setErrorMessage(error instanceof Error ? error.message : '语音陪练暂时连不上')
         setFallbackMode(true)
         setState('fallback')
       }
@@ -995,7 +995,7 @@ export function useXiaozhiCoach({ enabled, context, videoRef, testSlot }: Option
       error => {
         if (audioRef.current !== audio) return
         setXiaozhiVoiceReady(false)
-        setErrorMessage(error instanceof Error ? error.message : '小智声音没准备好，请重试')
+        setErrorMessage(error instanceof Error ? error.message : '语音陪练还没准备好，请重试')
       },
     )
   }, [fallbackMode])
