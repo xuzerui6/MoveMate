@@ -4,6 +4,7 @@ import type {ExerciseMetrics} from './exerciseMetrics';
 import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
 import {framingFeedback,framingGateIndices} from './framingFeedback';
 import {cloneGateCounters,emptyGateCounters,mergeGateCounters,type GateCounters} from './gateCounters';
+import type {GateTracePayload} from './gateTrace';
 import {COPY_BASIS_UNSTABLE,COPY_HALF_REP,COPY_SUBJECT_SWITCH,COPY_UNCLEAR,notSeenCopyFor} from './companionCopy';
 import type {PoseModelPreference} from './poseCompatibility';
 import {analyzeSquatFrame,squatSideVisible} from './squatMetrics';
@@ -92,6 +93,16 @@ export class AdaptiveRecognition {
  gateCountersSnapshot():GateCounters{
   const base=(this.base as {gateCountersSnapshot?:()=>GateCounters}).gateCountersSnapshot?.();
   return base?mergeGateCounters(this.wrapperCounters,base):cloneGateCounters(this.wrapperCounters);
+ }
+ /** Round 3: the base tracker's per-sample gate trace (hammer curl only;
+  * null for every other type and before the first gated frame). */
+ gateTraceSnapshot():GateTracePayload|null{
+  return (this.base as {gateTraceSnapshot?:()=>GateTracePayload|null}).gateTraceSnapshot?.()??null;
+ }
+ /** Round 3: set-end finalization on the base tracker (hammer curl only;
+  * every other type is a no-op). True when a rep was emitted. */
+ finalizeSetEnd():boolean{
+  return (this.base as {finalizeSetEnd?:()=>boolean}).finalizeSetEnd?.()??false;
  }
  private noteFreezeStart(capturedAt:number){
   if(this.freezeEpisodeStart===null){this.wrapperCounters.freezeEpisodes++;this.freezeEpisodeStart=capturedAt;}

@@ -3,6 +3,7 @@ import type { NormalizedLandmark } from '@mediapipe/tasks-vision'
 import { type ExerciseMetrics } from '../lib/exerciseMetrics'
 import {createRecognitionTracker,recognitionDemonstration} from '../lib/recognition'
 import type {GateCounters} from '../lib/gateCounters'
+import type {GateTracePayload} from '../lib/gateTrace'
 import type {EngineSnapshot} from './useAdaptivePose'
 import type { CameraExerciseType } from '../lib/exercises'
 
@@ -35,5 +36,15 @@ export function useExerciseMetrics(type:CameraExerciseType, landmarks:Normalized
    * path). The adaptive path's counters ride the engine snapshot instead —
    * this hook's own tracker idles unused there, so callers must pick by mode. */
   const gateCounters=():GateCounters|null=>(tracker.current as {gateCountersSnapshot?:()=>GateCounters}|undefined)?.gateCountersSnapshot?.()??null
-  return {metrics:override&&!simulated?override.metrics:metrics,diagnostics:override&&!simulated?override.diagnostics:diagnostics,demoLandmarks,gateCounters}
+  /** Round 3: the same split for the per-sample gate trace. */
+  const gateTrace=():GateTracePayload|null=>(tracker.current as {gateTraceSnapshot?:()=>GateTracePayload|null}|undefined)?.gateTraceSnapshot?.()??null
+  /** Round 3: set-end finalization on this hook's own tracker (legacy path).
+   * Returns the post-finalization metrics synchronously — the state update
+   * alone would land a render too late for the caller settling the set. */
+  const finalizeSetEnd=():ExerciseMetrics|null=>{
+    const t=tracker.current as {finalizeSetEnd?:()=>boolean;metrics:ExerciseMetrics}|undefined
+    if(!t?.finalizeSetEnd)return null
+    t.finalizeSetEnd();const fresh={...t.metrics};setMetrics(fresh);return fresh
+  }
+  return {metrics:override&&!simulated?override.metrics:metrics,diagnostics:override&&!simulated?override.diagnostics:diagnostics,demoLandmarks,gateCounters,gateTrace,finalizeSetEnd}
 }

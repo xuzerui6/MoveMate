@@ -80,7 +80,7 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const heartRef = useRef(heartRate); heartRef.current = heartRate
   useEffect(() => () => heartRef.current.disconnect(), [])
   const record = sessions.find(item => item.id === serverId.current) || restored
-  const { metrics, diagnostics, demoLandmarks, gateCounters: legacyGateCounters } = useExerciseMetrics(exerciseType, pose.landmarks, simulatedPose, active, paused || busy || ending,
+  const { metrics, diagnostics, demoLandmarks, gateCounters: legacyGateCounters, gateTrace: legacyGateTrace, finalizeSetEnd: legacyFinalizeSetEnd } = useExerciseMetrics(exerciseType, pose.landmarks, simulatedPose, active, paused || busy || ending,
     pose.videoRef.current?.videoWidth && pose.videoRef.current.videoHeight ? pose.videoRef.current.videoWidth / pose.videoRef.current.videoHeight : 1,
     restored ? { ...restored.metrics, reps: restored.reps } : {},20,'standalone',pose.worldLandmarks,pose.engine)
   // The session clock does not run before the first completed calibration: until the
@@ -305,15 +305,24 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
       xpEarned: 0, unlocked: [], formBreakdown: { depth: 0, stability: 0, trunk: 0, symmetry: 0 }, correctionCounts: {} as any, visionInsights: [], conversationTurnCount: 0,
       ...restored.metrics,
     } : null
-    const completed = frozenFinish.current || workout.finish() || recovered
+    // Round 3 组末终局（锤式弯举，其他动作无操作）：在任何关闭动作之前，
+    // 先让计数门用已经采集到的样本把悬而未决的周期评完——达标的按同一套
+    // 配对规则补记，证据不足的保持不记（追踪丢失不产生证据）。终局返回的
+    // 最新指标/计数/轨迹随即用于结算与诊断上报：页面状态的异步刷新赶不上
+    // 本函数的同步结算。已冻结的结算重放不再重复终局。
+    const fin = !frozenFinish.current && !simulatedPose && adaptive ? pose.finalizeSetEnd() : null
+    const legacyFin = !frozenFinish.current && !simulatedPose && !adaptive ? legacyFinalizeSetEnd() : null
+    const completed = frozenFinish.current || workout.finish(fin?.metrics ?? legacyFin ?? undefined) || recovered
     if (!completed) return
     if (!frozenFinish.current) frozenFinish.current = structuredClone({ ...completed, id: serverId.current, source: simulatedPose ? 'demo' : 'camera', recognitionStrategy:adaptive&&!simulatedPose?'adaptive-v1':'legacy', visionInsights: [], conversationTurnCount: active ? conversationCount : completed.conversationTurnCount })
     // WS2 识别门计数随本组结束上报运维诊断通道（只有计数，没有画面数据，
     // 页面上不显示）：自适应路径读引擎快照里的计数，旧路径读本页跟踪器的。
-    // 演示不报。失败静默——诊断永远不能挡住结算。
+    // 演示不报。失败静默——诊断永远不能挡住结算。Round 3 起锤式弯举另带
+    // 逐帧关卡轨迹（角度与关卡状态，没有画面/关键点数据），同通道同行存储。
     if (!simulatedPose && accountToken.current && !gateReported.current) {
-      const gateCounters = adaptive ? pose.engine?.gateCounters ?? null : legacyGateCounters()
-      if (gateCounters) { gateReported.current = true; void fetch('/api/v1/diagnostics/recognition', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accountToken.current }, body: JSON.stringify({ exerciseType, counters: gateCounters }), keepalive: true }).catch(() => undefined) }
+      const gateCounters = fin ? fin.gateCounters : adaptive ? pose.engine?.gateCounters ?? null : legacyGateCounters()
+      const gateTrace = fin ? fin.gateTrace : adaptive ? pose.engine?.gateTrace ?? null : legacyGateTrace()
+      if (gateCounters) { gateReported.current = true; void fetch('/api/v1/diagnostics/recognition', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accountToken.current }, body: JSON.stringify({ exerciseType, counters: gateCounters, ...(gateTrace ? { trace: gateTrace } : {}) }), keepalive: true }).catch(() => undefined) }
     }
     locked.current = true; closing.current = true; setEnding(true); setPaused(true); setBusy(true); setVoiceEnabled(false); setFailure(''); pose.stop(); heartRate.disconnect()
     try { await finish(frozenFinish.current) }

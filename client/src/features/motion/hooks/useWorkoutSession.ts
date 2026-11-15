@@ -105,12 +105,12 @@ export function useWorkoutSession(
     previousPacket.current = null
   }, [paused, heartRate.packetCount])
 
-  const finish = () => {
+  const finish = (override?: SessionMetrics) => {
     const current = sessionRef.current
     if (!current) return null
     const liveHeart = heartRateRef.current
     const finished: WorkoutSession = {
-      ...current, ...metricsRef.current, ...assistantRef.current, endTime: new Date().toISOString(),
+      ...current, ...(override ?? metricsRef.current), ...assistantRef.current, endTime: new Date().toISOString(),
       currentBpm: liveHeart.connected && !liveHeart.signalInterrupted ? current.currentBpm : null,
     }
     return finished
