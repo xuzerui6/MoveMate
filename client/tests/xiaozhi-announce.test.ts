@@ -309,3 +309,47 @@ test('stop：打断当前播报并释放租约', async () => {
   assert.deepEqual(h.released, ['lease-1'])
   assert.equal(h.announcer.state(), 'off')
 })
+
+test('stop 发生在 bootstrap 在途时：在途一代不许复活（租约归还、不开 socket、不留定时器）', async () => {
+  const clock = new FakeClock()
+  const socket = new FakeSocket()
+  const playback = new FakePlayback()
+  const released: Array<string | null> = []
+  let openSocketCalls = 0
+  let resolveBoot: (value: { leaseId: string | null } | null) => void = () => undefined
+  const env: AnnouncerEnv = {
+    bootstrap: () => new Promise(resolve => { resolveBoot = resolve }),
+    release: id => { released.push(id) },
+    openSocket: () => { openSocketCalls += 1; return socket },
+    createPlayback: () => playback,
+    now: clock.now,
+    setTimeout: clock.setTimeout,
+    clearTimeout: clock.clearTimeout,
+    setInterval: clock.setInterval,
+    clearInterval: clock.clearInterval,
+  }
+  const announcer = createXiaozhiAnnouncer(env)
+  announcer.prime()
+  announcer.stop()
+  assert.equal(announcer.state(), 'off')
+  // bootstrap 在 stop 之后才回来，还带着一个租约
+  resolveBoot({ leaseId: 'lease-late' })
+  await flushMicro()
+  assert.deepEqual(released, ['lease-late'], '在途一代拿到的租约必须立刻归还')
+  assert.equal(openSocketCalls, 0, 'stop 后不许再开 socket')
+  assert.equal(announcer.state(), 'off', 'stop 后的状态不许被在途一代改写')
+  clock.advance(120_000)
+  assert.equal(announcer.state(), 'off', '不许有定时器把已停会话拉活')
+  assert.equal(openSocketCalls, 0)
+  // 代际作废不毒化后续启动：重新 prime 必须能正常建会话
+  announcer.prime()
+  resolveBoot({ leaseId: 'lease-2' })
+  await flushMicro()
+  assert.equal(openSocketCalls, 1)
+  socket.emitJson({ type: 'hello', session_id: 's-late', audio_params: { sample_rate: 24000 } })
+  await flushMicro()
+  assert.equal(announcer.state(), 'ready')
+  announcer.stop()
+  assert.deepEqual(released, ['lease-late', 'lease-2'])
+  assert.equal(announcer.state(), 'off')
+})

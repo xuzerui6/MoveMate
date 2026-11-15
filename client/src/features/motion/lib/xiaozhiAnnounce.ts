@@ -139,6 +139,9 @@ export function createXiaozhiAnnouncer(env: AnnouncerEnv): XiaozhiAnnouncer {
   let leaseId: string | null = null
   let pending: Pending | null = null
   let bootPromise: Promise<boolean> | null = null
+  // bootstrap 代际：stop() 自增后，在途的那一代 bootstrap 即使随后成功，
+  // 也不许再落租约 / 开 socket / 起定时器 / 改状态（防已停会话复活）。
+  let bootGeneration = 0
   let bootAttempts = 0
   let lastBootFailAt = 0
   let transportStrikes = 0
@@ -358,9 +361,18 @@ export function createXiaozhiAnnouncer(env: AnnouncerEnv): XiaozhiAnnouncer {
     if (bootPromise) return bootPromise
     if (state === 'ready' && socket) return Promise.resolve(true)
     state = 'booting'
-    bootPromise = (async () => {
+    const generation = ++bootGeneration
+    // finally 里要认领自己这一代的 promise；finally 只会在首次 await 之后
+    // 运行，那时下面的赋值早已完成，故用确定赋值声明。
+    let promise!: Promise<boolean>
+    promise = (async () => {
       try {
         const boot = await env.bootstrap(clientId)
+        if (generation !== bootGeneration) {
+          // stop() 已作废这一代：刚拿到的租约立刻归还，什么都不许再建
+          if (boot) env.release(boot.leaseId)
+          return false
+        }
         if (!boot) {
           bootAttempts += 1
           lastBootFailAt = now()
@@ -401,15 +413,19 @@ export function createXiaozhiAnnouncer(env: AnnouncerEnv): XiaozhiAnnouncer {
         }
         return currentState() === 'ready'
       } catch {
-        bootAttempts += 1
-        lastBootFailAt = now()
-        if (!broken) state = 'down'
+        if (generation === bootGeneration) {
+          bootAttempts += 1
+          lastBootFailAt = now()
+          if (!broken) state = 'down'
+        }
         return false
       } finally {
-        bootPromise = null
+        // 只清自己这一代的 promise，别把 stop 后新一代的 bootPromise 误清
+        if (bootPromise === promise) bootPromise = null
       }
     })()
-    return bootPromise
+    bootPromise = promise
+    return promise
   }
 
   function backoffAllows(): boolean {
@@ -506,6 +522,10 @@ export function createXiaozhiAnnouncer(env: AnnouncerEnv): XiaozhiAnnouncer {
   }
 
   function stop() {
+    // 先作废在途 bootstrap 并摘掉 bootPromise：在途的那一代回来时只会
+    // 归还它刚拿到的租约，不会把已停的会话再拉活。
+    bootGeneration += 1
+    bootPromise = null
     if (socket) sendJson(abortMessage('announcer_stop', sessionId || undefined))
     failPending(false)
     releaseDrainBarrier()
