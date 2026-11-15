@@ -27,10 +27,10 @@ export const outfitRarities: Record<OutfitPreset, Rarity> = {
 export const outfitUnlockCopy: Record<OutfitPreset, string> = {
   default: '默认拥有',
   penguin: '完成 3 次训练解锁',
-  sakura: '累计 3 次评分 90+ 的训练解锁',
+  sakura: '累计 3 次评分 90+ 的训练，或一级动作摄像头训练 10 次解锁',
   sunset_sakura: '完成 5 次训练且累计 1000 XP，或达到 Lv.5',
   sea_runner: '完成 3 次有效训练解锁，与企鹅伙伴套条件相同',
-  violet_court: '累计 3 次评分 90+ 的有效训练，与樱花训练套条件相同',
+  violet_court: '累计 3 次评分 90+ 的训练，或一级动作摄像头训练 10 次解锁，与樱花训练套条件相同',
   sunlight_explorer: '完成 5 次有效训练且累计 1000 XP，或达到 Lv.5',
 }
 
