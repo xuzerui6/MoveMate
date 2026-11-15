@@ -53,6 +53,11 @@ export interface GateCounters {
   cycleReplacements: [number, number]
   /** Cycles invalidated because frozen time exceeded the 2000 ms cap. */
   freezeInvalidatedCycles: [number, number]
+  /** Peak-latched, still-uncompleted cycles destroyed by an interrupt
+   * (round 3). The pending cycle's state at that moment rides the gate
+   * trace's 'loss' events; cycles an interrupt PRESERVED are events too
+   * but are not counted here — this tally is losses only. */
+  pendingCyclesLost: [number, number]
 }
 export const emptyGateCounters = (): GateCounters => ({
   formInterrupts: {}, softInterrupts: {}, framingRejects: 0, freezeEpisodes: 0, frozenMs: 0,
@@ -60,7 +65,7 @@ export const emptyGateCounters = (): GateCounters => ({
   returnAnchor: [null, null], returnThreshold: [null, null], returnBasis: ['', ''],
   returnMaxima: [[], []], returnQualifyingMs: [0, 0], returnWindowExpirations: [0, 0],
   returnCompletionsAbsolute: [0, 0], returnCompletionsRelative: [0, 0],
-  cycleReplacements: [0, 0], freezeInvalidatedCycles: [0, 0],
+  cycleReplacements: [0, 0], freezeInvalidatedCycles: [0, 0], pendingCyclesLost: [0, 0],
 });
 export function bumpReason(map: Record<string, number>, reason: string) { map[reason] = (map[reason] || 0) + 1; }
 export function cloneGateCounters(c: GateCounters): GateCounters {
@@ -78,6 +83,7 @@ export function cloneGateCounters(c: GateCounters): GateCounters {
     returnCompletionsRelative: [c.returnCompletionsRelative[0], c.returnCompletionsRelative[1]],
     cycleReplacements: [c.cycleReplacements[0], c.cycleReplacements[1]],
     freezeInvalidatedCycles: [c.freezeInvalidatedCycles[0], c.freezeInvalidatedCycles[1]],
+    pendingCyclesLost: [c.pendingCyclesLost[0], c.pendingCyclesLost[1]],
   };
 }
 /** Sum two partial counter sets (the adaptive wrapper merges its own tallies
@@ -104,5 +110,6 @@ export function mergeGateCounters(a: GateCounters, b: GateCounters): GateCounter
     returnCompletionsRelative: [a.returnCompletionsRelative[0] + b.returnCompletionsRelative[0], a.returnCompletionsRelative[1] + b.returnCompletionsRelative[1]],
     cycleReplacements: [a.cycleReplacements[0] + b.cycleReplacements[0], a.cycleReplacements[1] + b.cycleReplacements[1]],
     freezeInvalidatedCycles: [a.freezeInvalidatedCycles[0] + b.freezeInvalidatedCycles[0], a.freezeInvalidatedCycles[1] + b.freezeInvalidatedCycles[1]],
+    pendingCyclesLost: [a.pendingCyclesLost[0] + b.pendingCyclesLost[0], a.pendingCyclesLost[1] + b.pendingCyclesLost[1]],
   };
 }

@@ -3,6 +3,7 @@ import type {ExerciseMetrics,RecognitionDiagnostics} from './exerciseMetrics';
 import {medianLandmarks,poseIssueCopy} from './poseFeedback';
 import {framingGateIndices} from './framingFeedback';
 import {bumpReason,cloneGateCounters,emptyGateCounters,type GateCounters} from './gateCounters';
+import {GateTraceBuffer,TRACE_FLAG,TRACE_PHASE,type GateTracePayload} from './gateTrace';
 import { COPY_CALIBRATED, COPY_HALF_REP, COPY_OUT_OF_FRAME, cannotAssessCopyFor, notSeenCopyFor } from './companionCopy';
 import { allNumericAssessments, frontRaiseBandFor, syncCategoryForOffset, totalWithheld, type AxisAssessments, type DepthBandCounts } from './axisAssessment';
 import {emptyCorrectionCounts,emptyFormBreakdown,medianOf} from './sessionMigration';
@@ -449,6 +450,13 @@ export class ExtendedExerciseTracker {
   readonly gateCounters=emptyGateCounters();
   private everLatched=false;
   gateCountersSnapshot():GateCounters{return cloneGateCounters(this.gateCounters);}
+  /** Per-sample live gate trace (round 3, see gateTrace.ts): recorded only
+   * by the hammer-curl gate — the one place the gate state lives — but the
+   * buffer and this accessor are exercise-agnostic, so another camera
+   * exercise can adopt the same capture by pushing from its own updater.
+   * Never read by any counting/scoring path. */
+  private gateTrace=new GateTraceBuffer();
+  gateTraceSnapshot():GateTracePayload|null{return this.gateTrace.snapshot(this.type);}
   private frames:Point[][]=[];
   private worlds:Point[][]=[];
   private last:number|null=null;
@@ -539,6 +547,9 @@ export class ExtendedExerciseTracker {
   private controlPenalty=0;
   private hammerSides:[SideCycle,SideCycle]=[freshSideCycle(),freshSideCycle()];
   private hammerPending:SideCompletion|null=null;
+  /** The most recent measurement the hammer gate processed — set-end
+   * finalization evaluates and emits against it (never a fabricated one). */
+  private lastHammerMeasurement:Measurement|null=null;
   private rowSides:[SideCycle,SideCycle]=[freshSideCycle(),freshSideCycle()];
   private raiseSides:[SideCycle,SideCycle]=[freshSideCycle(),freshSideCycle()];
   private raisePending:SideCompletion|null=null;
@@ -682,6 +693,21 @@ export class ExtendedExerciseTracker {
     // WS2: a hammer pending completion that does not survive this interrupt
     // (after every preservation path below has had its say) was wiped.
     const pendingBefore=this.hammerPending;
+    // Gate trace (round 3): snapshot any peak-latched, still-uncompleted
+    // cycle BEFORE the preservation/reset logic below decides its fate, so
+    // a future verdict can see an unevaluated cycle existed and exactly how
+    // far its return had gotten. Only the preserveHammerCycle path keeps
+    // the cycle itself alive; every other interrupt loses it and tallies.
+    if(this.type==='hammer_curl'){
+      const keptCycle=!!opts?.preserveHammerCycle;
+      for(const s of [0,1] as const){
+        const cyc=this.hammerSides[s];
+        if(cyc.peakStart!==null){
+          this.gateTrace.addEvent({k:'loss',t:this.last??0,side:s,kept:keptCycle,peakElbow:Math.round(cyc.peakElbow*10)/10,qualMs:Math.round(cyc.retQual),retMax:Math.round(cyc.retMax*10)/10});
+          if(!keptCycle)this.gateCounters.pendingCyclesLost[s]++;
+        }
+      }
+    }
     // preserveCalibration (round 3): the calibration bank, the open hold segment
     // and the calibration baseline survive. The baseline is calibration state
     // too — the per-side updaters dereference it unconditionally once ready, so
@@ -1156,11 +1182,79 @@ export class ExtendedExerciseTracker {
     return true;
   }
   /** Hammer curls count per side: an alternating curl scores one rep per arm, while two sides whose peaks overlap merge into a single synchronized rep. */
+  private pushReturnMax(s:0|1,v:number){const mx=this.gateCounters.returnMaxima[s];mx.push(Math.round(v*10)/10);if(mx.length>64)mx.splice(0,mx.length-64);}
+
+  /** One side's return has satisfied the decision rule: bank the completion
+   * and run the pairing/pending machinery. Shared by the per-frame loop and
+   * set-end finalization so both paths count IDENTICALLY. Returns true when
+   * a rep was emitted by this call (a completion can also park as the
+   * pending single awaiting its pair partner or the pairing-window flush). */
+  private completeHammerReturn(s:0|1,cyc:SideCycle,f:Measurement,now:number):boolean{
+    this.gateCounters.returnsConfirmed[s]++;
+    this.gateCounters.returnCompletionsAbsolute[s]++;
+    if(cyc.retMax>0)this.pushReturnMax(s,cyc.retMax);
+    const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart!,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax),peakWindows:cyc.peakWindows,cycleStart:cyc.movingAt??cyc.peakStart!,returnedAt:cyc.returnSince??now};
+    this.lastPeak[s]={at:(done.peakStart+done.peakEnd)/2,value:done.peakElbow};
+    this.hammerSides[s]=freshSideCycle();
+    let emitted=false;
+    if(this.hammerPending){
+      const pending=this.hammerPending;
+      // Pair identity (counting-mechanism repair, 2026-11-09; Lead 1): the
+      // test consults EVERY peak episode each cycle latched, not only the
+      // window each cycle finally kept. On a fragmented channel one side's
+      // plateau closes as several episodes and the cycle keeps the last, so
+      // the two kept windows can sit ~330 ms apart on one synchronous
+      // effort — the shipped split — while a discarded fragment of the same
+      // plateau overlapped the partner's window all along. The ±150 ms
+      // tolerance itself is unchanged; what changed is which windows it
+      // compares. A genuinely staggered effort — each side exactly one
+      // episode, windows apart (the step-3 loose-sync and alternating
+      // fixtures) — still fails every pairing and emits as singles.
+      const overlap=done.peakWindows.some(w=>pending.peakWindows.some(p=>w.start<=p.end+150&&p.start<=w.end+150));
+      if(pending.side!==s&&overlap){this.hammerPending=null;if(this.emitHammerRep([pending,done],f))emitted=true;}
+      else{this.hammerPending=null;if(this.emitHammerRep([pending],f,this.peerPeakFor(pending,this.hammerSides)))emitted=true;this.hammerPending=done;}
+    }else this.hammerPending=done;
+    return emitted;
+  }
+
+  /** Set-end finalization (round 3): run BEFORE the set closes, over the
+   * evidence the frames already collected — nothing is re-measured and
+   * nothing is manufactured. Each still-pending cycle is re-checked against
+   * the SAME predicate the per-frame loop applies (150 ms of qualifying
+   * measured dwell, fresh-after-freeze satisfied, window not lapsed in
+   * measured time); a cycle that qualifies completes through the identical
+   * pairing path, and a completed single still parked in the pairing window
+   * is flushed as a single (the per-frame flush would have done this 600 ms
+   * later — set end simply settles it now). A cycle cut short by tracking
+   * loss has only its collected samples: if they do not satisfy the rule it
+   * stays uncounted — no exception, no estimate. Every pending cycle's
+   * outcome is recorded as a gate-trace 'end' event either way. */
+  finalizeSetEnd():boolean{
+    if(this.type!=='hammer_curl')return false;
+    const f=this.lastHammerMeasurement;if(!f)return false;
+    const now=this.last??0;let emitted=false;
+    for(const s of [0,1] as const){
+      const cyc=this.hammerSides[s];
+      if(cyc.peakStart===null)continue;
+      const windowLapsed=cyc.retWinMeas!==null&&cyc.retQual>0&&cyc.retMeas-cyc.retWinMeas>RETURN_WINDOW_MS;
+      const qualifies=!windowLapsed&&cyc.retQual>=RETURN_HOLD_MS&&cyc.retNeedFresh<=0;
+      let counted=false;
+      if(qualifies){this.completeHammerReturn(s,cyc,f,now);counted=true;}
+      this.gateTrace.addEvent({k:'end',t:now,side:s,counted,peakElbow:Math.round(cyc.peakElbow*10)/10,qualMs:Math.round(cyc.retQual),retMax:Math.round(cyc.retMax*10)/10});
+    }
+    if(this.hammerPending){
+      const pending=this.hammerPending;this.hammerPending=null;
+      if(this.emitHammerRep([pending],f,this.peerPeakFor(pending,this.hammerSides)))emitted=true;
+    }
+    return emitted;
+  }
+
   private updateHammerCurl(f:Measurement,now:number):ExerciseMetrics{
     const elbows=f.elbows!;
+    this.lastHammerMeasurement=f;
     let completed=false;
-    const pushReturnMax=(s:0|1,v:number)=>{const mx=this.gateCounters.returnMaxima[s];mx.push(Math.round(v*10)/10);if(mx.length>64)mx.splice(0,mx.length-64);};
     if(this.hammerPending&&now-this.hammerPending.at>600){const pending=this.hammerPending;this.hammerPending=null;if(this.emitHammerRep([pending],f,this.peerPeakFor(pending,this.hammerSides)))completed=true;}
+    const completedNow:[boolean,boolean]=[false,false],holeNow:[boolean,boolean]=[false,false];
     for(const s of [0,1] as const){
       let cyc=this.hammerSides[s];const e=elbows[s],other=elbows[1-s];
       // Return gate round 2 — interval facts. An interval touching a wrapper-
@@ -1171,6 +1265,7 @@ export class ExtendedExerciseTracker {
       const prevAt=cyc.prevAt,dt=prevAt===null?0:now-prevAt;
       const frozenMs=prevAt===null?0:this.frozenOverlap(prevAt,now);
       const hole=frozenMs>0,dtMeas=hole?0:dt;
+      holeNow[s]=hole;
       if(hole&&(cyc.movingAt!==null||cyc.peakStart!==null||cyc.track.open)){
         cyc.frozenCycleMs+=frozenMs;
         if(frozenMs>RETURN_FREEZE_CAP_MS||cyc.frozenCycleMs>RETURN_FREEZE_CAP_MS){
@@ -1199,7 +1294,7 @@ export class ExtendedExerciseTracker {
           // without the reopening never reaches this branch and stays one
           // peak episode group on the same cycle.
           this.gateCounters.cycleReplacements[s]++;
-          if(cyc.retMax>0)pushReturnMax(s,cyc.retMax);
+          if(cyc.retMax>0)this.pushReturnMax(s,cyc.retMax);
           const keep=freshSideCycle();keep.track=cyc.track;keep.peakPosture=cyc.peakPosture;keep.peakOther=cyc.peakOther;keep.scoring=cyc.scoring;keep.prevAt=cyc.prevAt;keep.prevAngle=cyc.prevAngle;
           this.hammerSides[s]=keep;cyc=keep;
         }
@@ -1248,30 +1343,9 @@ export class ExtendedExerciseTracker {
         // (or an interpolated crossing) can never finish a return alone.
         if(hole)cyc.retNeedFresh=RETURN_FRESH_AFTER_FREEZE_MS;
         if(cyc.retQual>=RETURN_HOLD_MS&&cyc.retNeedFresh<=0){
-          this.gateCounters.returnsConfirmed[s]++;
-          this.gateCounters.returnCompletionsAbsolute[s]++;
-          if(cyc.retMax>0)pushReturnMax(s,cyc.retMax);
-          const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax),peakWindows:cyc.peakWindows,cycleStart:cyc.movingAt??cyc.peakStart,returnedAt:cyc.returnSince??now};
-          this.lastPeak[s]={at:(done.peakStart+done.peakEnd)/2,value:done.peakElbow};
-          this.hammerSides[s]=freshSideCycle();replaced=true;
-          if(this.hammerPending){
-            const pending=this.hammerPending;
-            // Pair identity (counting-mechanism repair, 2026-11-09; Lead 1):
-            // the test consults EVERY peak episode each cycle latched, not
-            // only the window each cycle finally kept. On a fragmented
-            // channel one side's plateau closes as several episodes and the
-            // cycle keeps the last, so the two kept windows can sit ~330 ms
-            // apart on one synchronous effort — the shipped split — while a
-            // discarded fragment of the same plateau overlapped the
-            // partner's window all along. The ±150 ms tolerance itself is
-            // unchanged; what changed is which windows it compares.
-            // A genuinely staggered effort — each side exactly one episode,
-            // windows apart (the step-3 loose-sync and alternating
-            // fixtures) — still fails every pairing and emits as singles.
-            const overlap=done.peakWindows.some(w=>pending.peakWindows.some(p=>w.start<=p.end+150&&p.start<=w.end+150));
-            if(pending.side!==s&&overlap){this.hammerPending=null;if(this.emitHammerRep([pending,done],f))completed=true;}
-            else{this.hammerPending=null;if(this.emitHammerRep([pending],f,this.peerPeakFor(pending,this.hammerSides)))completed=true;this.hammerPending=done;}
-          }else this.hammerPending=done;
+          completedNow[s]=true;
+          if(this.completeHammerReturn(s,cyc,f,now))completed=true;
+          replaced=true;
         }
       }
       // Reopening evidence (cycle identity): after a confirmed peak, holding
@@ -1303,6 +1377,21 @@ export class ExtendedExerciseTracker {
       const cur=this.hammerSides[s];
       cur.prevAt=now;cur.prevAngle=e;
       if(replaced){cur.track.prevAt=now;cur.track.prevDepth=80-e;}
+    }
+    // Live gate trace (round 3): one sample per processed frame, gate state
+    // read back AFTER both sides processed, so the phases are the frame's
+    // outcome. The one frame this misses is the freeze-cap invalidation
+    // return above — that story is told by the interrupt's loss event.
+    {
+      const phaseOf=(c:SideCycle,done:boolean):number=>done?TRACE_PHASE.completed:c.peakStart!==null?TRACE_PHASE.latched:c.track.open?TRACE_PHASE.peakOpen:c.movingAt!==null?TRACE_PHASE.moving:TRACE_PHASE.idle;
+      let flags=0;
+      if(f.scorable)flags|=TRACE_FLAG.scorable;
+      if(holeNow[0]||holeNow[1])flags|=TRACE_FLAG.hole;
+      if(f.channel==='image')flags|=TRACE_FLAG.imageBasis;
+      if(f.start)flags|=TRACE_FLAG.startPose;
+      this.gateTrace.push(now,elbows[0],elbows[1],flags,
+        phaseOf(this.hammerSides[0],completedNow[0]),this.hammerSides[0].retQual,
+        phaseOf(this.hammerSides[1],completedNow[1]),this.hammerSides[1].retQual);
     }
     const anyPeak=this.hammerSides.some(c=>c.peakStart!==null||c.track.open)||this.hammerPending!==null;
     const stage=this.metrics.reps>=this.metrics.targetReps?'complete':anyPeak?(f.start?'returning':'peak'):f.start?'ready':'moving';

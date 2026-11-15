@@ -570,6 +570,23 @@ await test('Workers runtime migration and business regression', async t=>{
  const diag3=await call('/api/migration/diagnostics',{migration:true});
  const mine=Object.fromEntries(diag3.data.recognition.map(r=>[r.userId,r]))[1];
  assert.equal(mine.counters.framingRejects,0);assert.equal(mine.counters.frozenMs,0);assert.deepEqual(mine.counters.peaksConfirmed,[0,0]);assert.equal(mine.counters.formInterrupts['坏值'],0);
+ // Round 3 gate trace round-trips through storage and the operator read-back,
+ // rebuilt field by field: valid samples keep 0.1° fidelity, the −1 absent
+ // marker survives, junk rows/events are dropped, whitelisted keys only.
+ const traceIn={v:1,type:'hammer_curl',t0:1000,dropped:2,samples:[[1000,148.2,-1,1,0,0,0,0],[1042,76.5,160,3,3,120,1,0],'junk',[1083,150,158.4,0,4,150,0,0]],events:[{k:'loss',t:2000,side:1,kept:false,peakElbow:72.3,qualMs:90,retMax:150.2,evil:'x'},{k:'end',t:3000,side:0,counted:true,peakElbow:70,qualMs:150,retMax:151},{k:'nope',t:1,side:0}]};
+ const traced=await call('/api/v1/diagnostics/recognition',{method:'POST',token:tokens[0],body:{exerciseType:'hammer_curl',counters:{...counters,pendingCyclesLost:[1,2]},trace:traceIn}});
+ assert.equal(traced.status,200,JSON.stringify(traced.data));
+ const diag4=await call('/api/migration/diagnostics',{migration:true});
+ const mine4=Object.fromEntries(diag4.data.recognition.map(r=>[r.userId,r]))[1];
+ assert.deepEqual(mine4.counters.pendingCyclesLost,[1,2]);
+ assert.equal(mine4.trace.v,1);assert.equal(mine4.trace.type,'hammer_curl');assert.equal(mine4.trace.t0,1000);assert.equal(mine4.trace.dropped,2);
+ assert.deepEqual(mine4.trace.samples,[[1000,148.2,-1,1,0,0,0,0],[1042,76.5,160,3,3,120,1,0],[1083,150,158.4,0,4,150,0,0]]);
+ assert.equal(mine4.trace.events.length,2);assert.deepEqual(mine4.trace.events[0],{k:'loss',t:2000,side:1,peakElbow:72.3,qualMs:90,retMax:150.2,kept:false});assert.deepEqual(mine4.trace.events[1],{k:'end',t:3000,side:0,peakElbow:70,qualMs:150,retMax:151,counted:true});
+ // A trace with no usable samples stores null, not a husk.
+ const emptyTrace=await call('/api/v1/diagnostics/recognition',{method:'POST',token:tokens[0],body:{exerciseType:'hammer_curl',counters,trace:{v:1,type:'hammer_curl',samples:['junk'],events:[]}}});
+ assert.equal(emptyTrace.status,200);
+ const diag5=await call('/api/migration/diagnostics',{migration:true});
+ assert.equal(Object.fromEntries(diag5.data.recognition.map(r=>[r.userId,r]))[1].trace,null);
  });
  await voicePoolTests(t,{mf,call,tokens,adminToken,sockets,password,migrate});
  await bridgeErrorPairingTests(t);

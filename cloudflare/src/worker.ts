@@ -32,11 +32,13 @@ type Identity = { userId?: number; exp?: number; rooms: number[]; deadline: numb
 
 /**
  * WS2 recognition gate diagnostics: the client posts its own per-set gate
- * counters (numbers only, no frame data). The payload is re-built field by
- * field — unknown keys are dropped, every value is coerced to a non-negative
- * integer, reason maps are capped — and the caller identity comes from the
- * verified token, never from the body, so one user can only ever overwrite
- * their own `recognition_diagnostic:<id>` row (latest set wins).
+ * counters plus, since round 3 (2026-11-15), the hammer gate's per-sample
+ * live trace (elbow angles and gate state only — no image or landmark
+ * data). The payload is re-built field by field — unknown keys are dropped,
+ * every value is coerced and capped, reason maps are capped — and the
+ * caller identity comes from the verified token, never from the body, so
+ * one user can only ever overwrite their own `recognition_diagnostic:<id>`
+ * row (latest set wins).
  */
 export function recognitionDiagnosticPayload(userId: number, input: any, receivedAt = new Date().toISOString()) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) throw new VoiceError('请求格式不正确', 400);
@@ -57,6 +59,30 @@ export function recognitionDiagnosticPayload(userId: number, input: any, receive
     const one = (x: unknown) => x === 'world' || x === 'image' ? x : '';
     return Array.isArray(v) ? [one(v[0]), one(v[1])] : ['', ''];
   };
+  /* Round 3 gate trace: [t, leftDeg, rightDeg, flags, leftPhase, leftQualMs,
+   * rightPhase, rightQualMs] samples plus loss/end events. Rebuilt row by
+   * row with the client's own caps re-enforced server-side (2400 samples
+   * tail-kept, 64 events) so a hostile or buggy client cannot bloat the
+   * stored row; anything malformed is dropped, never stored raw. */
+  const clampInt = (v: unknown, hi: number) => typeof v === 'number' && Number.isFinite(v) && v > 0 ? Math.min(hi, Math.floor(v)) : 0;
+  const degOrAbsent = (v: unknown) => v === -1 ? -1 : deg(v);
+  const trace = (v: any) => {
+    if (!v || typeof v !== 'object' || Array.isArray(v) || !Array.isArray(v.samples)) return null;
+    const samples: number[][] = [];
+    for (const s of v.samples.slice(-2400)) {
+      if (!Array.isArray(s)) continue;
+      samples.push([clampInt(s[0], 1e9), degOrAbsent(s[1]), degOrAbsent(s[2]), clampInt(s[3], 15), clampInt(s[4], 4), clampInt(s[5], 9999), clampInt(s[6], 4), clampInt(s[7], 9999)]);
+    }
+    if (!samples.length) return null;
+    const events: Record<string, unknown>[] = [];
+    if (Array.isArray(v.events)) for (const e of v.events.slice(-64)) {
+      if (!e || typeof e !== 'object' || (e.k !== 'loss' && e.k !== 'end')) continue;
+      const ev: Record<string, unknown> = { k: e.k, t: clampInt(e.t, 1e9), side: e.side === 1 ? 1 : 0, peakElbow: deg(e.peakElbow), qualMs: clampInt(e.qualMs, 9999), retMax: deg(e.retMax) };
+      if (e.k === 'loss') ev.kept = e.kept === true; else ev.counted = e.counted === true;
+      events.push(ev);
+    }
+    return { v: 1, type: typeof v.type === 'string' ? v.type.slice(0, 64) : '', t0: samples[0][0], dropped: num(v.dropped), samples, events };
+  };
   const c = (input.counters && typeof input.counters === 'object' && !Array.isArray(input.counters)) ? input.counters : {};
   return {
     userId, exerciseType: typeof input.exerciseType === 'string' ? input.exerciseType.slice(0, 64) : '', receivedAt,
@@ -70,7 +96,9 @@ export function recognitionDiagnosticPayload(userId: number, input: any, receive
       returnWindowExpirations: pair(c.returnWindowExpirations),
       returnCompletionsAbsolute: pair(c.returnCompletionsAbsolute), returnCompletionsRelative: pair(c.returnCompletionsRelative),
       cycleReplacements: pair(c.cycleReplacements), freezeInvalidatedCycles: pair(c.freezeInvalidatedCycles),
+      pendingCyclesLost: pair(c.pendingCyclesLost),
     },
+    trace: trace(input.trace),
   };
 }
 
