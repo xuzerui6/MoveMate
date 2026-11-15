@@ -28,21 +28,26 @@ export interface GateCounters {
   /** Calibration latches after the first one (re-arms inside a set). */
   calibrationRelatches: number
   /** Hammer return gate (2026-11-14 round 2) — per-side trusted rest anchor
-   * captured at the calibration latch and the return threshold in force
-   * (null = no trusted anchor for that side / absolute 145° route). */
+   * captured at the calibration latch and the threshold the relative route
+   * WOULD have used. Since round 3 (2026-11-15) both are telemetry only:
+   * the counting decision is the absolute 145° route always (null anchor =
+   * no trusted anchor was signed for that side). */
   returnAnchor: [number | null, number | null]
   returnThreshold: [number | null, number | null]
   /** Measurement basis the anchor/threshold belong to ('world' | 'image', '' = none). */
   returnBasis: [string, string]
   /** Elbow maximum reached in each finished cycle's return phase (capped list). */
   returnMaxima: [number[], number[]]
-  /** Cumulative qualifying in-zone measured ms credited at the threshold. */
+  /** Cumulative qualifying in-zone measured ms credited at the absolute 145°. */
   returnQualifyingMs: [number, number]
   /** Return windows that lapsed in measured time with credit unspent. */
   returnWindowExpirations: [number, number]
   /** Completed returns via the absolute 145° accumulation. */
   returnCompletionsAbsolute: [number, number]
-  /** Completed returns via the anchor-relative threshold (below 145°). */
+  /** Completed returns via the anchor-relative threshold (below 145°).
+   * Retired as a decision route in round 3 (2026-11-15): nothing increments
+   * this anymore — it stays in the payload shape so stored diagnostics keep
+   * one schema, and a nonzero value in a stored record dates it to round 2. */
   returnCompletionsRelative: [number, number]
   /** Uncompleted cycles discarded when a distinct new peak replaced them. */
   cycleReplacements: [number, number]

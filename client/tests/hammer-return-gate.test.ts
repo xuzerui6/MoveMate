@@ -14,6 +14,14 @@ import type {NormalizedLandmark as Point} from '@mediapipe/tasks-vision';
  * ≥145° return dwell is unreachable when the bottom-edge channel reads a full
  * re-extension as ~135–140°, and freezes kept breaking the wall-clock window.
  * Fixtures are synthetic landmark sequences, never camera evidence.
+ *
+ * Round 3 (2026-11-15): the relative route was retired from the DECISION by
+ * the verification-set verdict (structurally inert for rest anchors ≥155°;
+ * every evaluated return passed at 145°). The decision is the absolute 145°
+ * route always; the anchor and the would-be threshold remain as telemetry.
+ * Tests that used to assert relative completions now assert the opposite —
+ * sub-145° returns never complete — plus the telemetry staying intact. The
+ * freeze/window/cycle-identity mechanics are unchanged and still covered.
  */
 function elbowPose(deg:number):Point[]{
   const p:Point[]=Array.from({length:33},()=>({x:.5,y:.5,z:0,visibility:1}));
@@ -44,20 +52,23 @@ function directRig(rest:number,world=true,fps=24){
   return {tracker,hold,ramp,rep};
 }
 
-test('return gate: tonight\u2019s signature — anchor ~148°, full returns reading ~140° — counts every rep, classified relative',()=>{
+test('return gate: the retired relative route decides nothing — returns to 140° never complete; anchor/threshold stay as telemetry',()=>{
   const r=directRig(148);
   for(let i=0;i<10;i++)r.rep(70,140);
-  assert.equal(r.tracker.metrics.reps,10);
+  assert.equal(r.tracker.metrics.reps,0);
   const c=r.tracker.gateCountersSnapshot();
   assert.deepEqual(c.peaksConfirmed,[10,10]);
-  assert.deepEqual(c.returnsConfirmed,[10,10]);
-  assert.deepEqual(c.returnCompletionsRelative,[10,10]);
+  assert.deepEqual(c.returnsConfirmed,[0,0]);
+  assert.deepEqual(c.returnCompletionsRelative,[0,0]);
   assert.deepEqual(c.returnCompletionsAbsolute,[0,0]);
-  assert.deepEqual(c.cycleReplacements,[0,0]);
+  // Telemetry is intact: the anchor signed, the would-be threshold is the
+  // round-2 formula's 138°, and each uncompleted cycle was discarded by the
+  // next distinct peak (never paid out, never folded in).
   assert.ok(Math.abs((c.returnAnchor[0]??0)-148)<0.6&&Math.abs((c.returnAnchor[1]??0)-148)<0.6,`anchors ${c.returnAnchor}`);
   assert.deepEqual(c.returnThreshold,[138,138]);
   assert.deepEqual(c.returnBasis,['world','world']);
-  assert.equal(c.returnMaxima[0].length,10);
+  assert.ok(c.cycleReplacements[0]>=8&&c.cycleReplacements[1]>=8,`replacements ${c.cycleReplacements}`);
+  assert.ok(c.returnMaxima[0].length>=8);
   assert.ok(c.returnMaxima[0].every(v=>v>=138&&v<=142),`maxima ${c.returnMaxima[0]}`);
 });
 
@@ -75,7 +86,7 @@ test('return gate: a high anchor still demands the absolute 145° — returns to
   assert.ok(c.returnMaxima[0].length>=8);
 });
 
-test('return gate: returns to 130° against a 138° threshold give zero completions',()=>{
+test('return gate: returns to 130° give zero completions (below the would-be 138° telemetry threshold and the 145° decision alike)',()=>{
   const r=directRig(148);
   for(let i=0;i<4;i++)r.rep(70,130);
   assert.equal(r.tracker.metrics.reps,0);
@@ -100,13 +111,14 @@ test('return gate: partial returns at or below 115° give zero completions, with
   assert.deepEqual(c.cycleReplacements,[0,0]);
 });
 
-test('return gate: successively lower plateaus do not ratchet the anchor down',()=>{
+test('return gate: successively lower plateaus do not ratchet the anchor down (telemetry stays frozen; none of them completes)',()=>{
   const r=directRig(148);
   r.rep(70,142);r.rep(70,140);r.rep(70,134);r.rep(70,130);
-  assert.equal(r.tracker.metrics.reps,2);
+  assert.equal(r.tracker.metrics.reps,0);
   const c=r.tracker.gateCountersSnapshot();
-  assert.deepEqual(c.returnsConfirmed,[2,2]);
-  assert.deepEqual(c.returnCompletionsRelative,[2,2]);
+  assert.deepEqual(c.returnsConfirmed,[0,0]);
+  assert.deepEqual(c.returnCompletionsRelative,[0,0]);
+  assert.deepEqual(c.returnCompletionsAbsolute,[0,0]);
   // The anchor is frozen at the calibration value after all four plateaus.
   assert.ok(Math.abs((c.returnAnchor[0]??0)-148)<0.6,`anchor ${c.returnAnchor}`);
   assert.deepEqual(c.returnThreshold,[138,138]);
@@ -146,48 +158,58 @@ test('return gate: an unstable calibration hold signs no anchor — absolute rou
 
 test('return gate: return evidence separated by more than 500 ms of measured time cannot accumulate',()=>{
   const r=directRig(148);
-  r.ramp(70,450);r.ramp(140,450);r.hold(140,100);   // ~100 ms of credit, then gone
-  r.ramp(120,300);r.hold(120,600);                    // window lapses in measured time
-  r.ramp(140,300);r.hold(140,100);                    // a second, separate ~100 ms
-  r.ramp(120,300);r.hold(120,100);
+  r.ramp(70,450);r.ramp(150,450);r.hold(150,80);    // ~125 ms of credit (ascent + hold + fast descent), then gone
+  r.ramp(120,100);r.hold(120,600);                    // window lapses in measured time
+  r.ramp(150,300);r.hold(150,80);                     // a second, separate partial credit
+  r.ramp(120,100);r.hold(120,100);
   assert.equal(r.tracker.metrics.reps,0);
   const c=r.tracker.gateCountersSnapshot();
   assert.ok(c.returnWindowExpirations[0]>=1&&c.returnWindowExpirations[1]>=1,`expirations ${c.returnWindowExpirations}`);
-  r.ramp(140,300);r.hold(140,500);                    // one honest dwell completes it
+  r.ramp(150,300);r.hold(150,500);                    // one honest dwell completes it
   assert.equal(r.tracker.metrics.reps,1);
   assert.deepEqual(r.tracker.gateCountersSnapshot().returnsConfirmed,[1,1]);
 });
 
-test('return gate: measurement-basis change clears return evidence; the relative route needs an anchor for the new basis',()=>{
+test('return gate: measurement-basis change clears return evidence; each basis earns its own absolute dwell',()=>{
   const r=directRig(148,true);
-  r.rep(70,140);                                      // world, relative — counts
+  r.rep(70,150);                                      // world — counts via the absolute route
   assert.equal(r.tracker.metrics.reps,1);
-  r.rep(70,140,600,false);                            // image basis: no image anchor, 140° < 145°
+  r.rep(70,140,600,false);                            // image basis: 140° < 145° never completes
   assert.equal(r.tracker.metrics.reps,1);
   let c=r.tracker.gateCountersSnapshot();
   assert.deepEqual(c.returnBasis,['image','image']);
-  assert.deepEqual(c.returnCompletionsRelative,[1,1]);
-  r.rep(70,140);                                      // world anchor is still there
+  assert.deepEqual(c.returnCompletionsAbsolute,[1,1]);
+  assert.deepEqual(c.returnCompletionsRelative,[0,0]);
+  r.rep(70,150);                                      // world again — counts
   assert.equal(r.tracker.metrics.reps,2);
-  // Mid-cycle flip: world credit at 140°, then image frames at 150° — the
-  // world credit is cleared at the flip; the image side must earn its own
-  // absolute 150 ms, and the completion classifies as absolute.
-  r.ramp(70,450,true);r.ramp(140,450,true);r.hold(140,100,true);
-  r.ramp(150,300,false);r.hold(150,700,false);
+  // Mid-cycle flip: world credit at 150°, then the basis flips while the
+  // arm is down at 120° — the world credit is cleared at the flip; the
+  // image side must earn its own full absolute 150 ms (a ~100 ms image
+  // dwell alone cannot complete), and the completion classifies absolute.
+  r.ramp(70,450,true);r.ramp(150,450,true);r.hold(150,60,true);
+  r.ramp(120,100,true);r.hold(120,100,false);
+  r.ramp(150,200,false);r.hold(150,80,false);
+  assert.equal(r.tracker.metrics.reps,2);
+  r.hold(150,500,false);
   assert.equal(r.tracker.metrics.reps,3);
   c=r.tracker.gateCountersSnapshot();
-  assert.deepEqual(c.returnCompletionsAbsolute,[1,1]);
-  assert.deepEqual(c.returnCompletionsRelative,[2,2]);
+  assert.deepEqual(c.returnCompletionsAbsolute,[3,3]);
+  assert.deepEqual(c.returnCompletionsRelative,[0,0]);
 });
 
-test('return gate: image-basis calibration signs an image anchor and relative returns count',()=>{
+test('return gate: image-basis calibration signs an image anchor (telemetry); the decision stays absolute',()=>{
   const r=directRig(148,false);
   for(let i=0;i<3;i++)r.rep(70,140);
-  assert.equal(r.tracker.metrics.reps,3);
-  const c=r.tracker.gateCountersSnapshot();
+  assert.equal(r.tracker.metrics.reps,0);
+  let c=r.tracker.gateCountersSnapshot();
   assert.deepEqual(c.returnBasis,['image','image']);
-  assert.deepEqual(c.returnCompletionsRelative,[3,3]);
+  assert.ok(Math.abs((c.returnAnchor[0]??0)-148)<0.6&&Math.abs((c.returnAnchor[1]??0)-148)<0.6,`anchors ${c.returnAnchor}`);
   assert.deepEqual(c.returnThreshold,[138,138]);
+  assert.deepEqual(c.returnCompletionsRelative,[0,0]);
+  for(let i=0;i<2;i++)r.rep(70,150);
+  assert.equal(r.tracker.metrics.reps,2);
+  c=r.tracker.gateCountersSnapshot();
+  assert.deepEqual(c.returnCompletionsAbsolute,[2,2]);
 });
 
 test('return gate: arm-swing oscillation that never reaches the peak zone counts nothing',()=>{
@@ -221,14 +243,14 @@ for(const freezeMs of [50,150,400,1000]){
   test(`return gate (wrapper): a ${freezeMs} ms freeze mid-return preserves the cycle; frozen time earns no credit`,()=>{
     const r=wrapperRig();
     r.ramp(70,700);r.hold(70,250);                    // the filtered signal needs a real peak dwell
-    r.ramp(140,700);r.hold(140,50);                   // partial credit (<150 ms), then the freeze
+    r.ramp(150,700);r.hold(150,50);                   // partial credit (<150 ms), then the freeze
     r.freeze(freezeMs);
-    r.hold(140,900);                                  // fresh post-resume evidence completes it
+    r.hold(150,900);                                  // fresh post-resume evidence completes it
     assert.equal(r.engine.metrics.reps,1);
     const c=r.engine.gateCountersSnapshot();
     assert.deepEqual(c.returnsConfirmed,[1,1]);
     assert.deepEqual(c.freezeInvalidatedCycles,[0,0]);
-    assert.deepEqual(c.returnCompletionsRelative,[1,1]);
+    assert.deepEqual(c.returnCompletionsAbsolute,[1,1]);
     assert.ok(c.frozenMs>=freezeMs-100,`frozenMs ${c.frozenMs}`);
   });
 }
@@ -236,9 +258,9 @@ for(const freezeMs of [50,150,400,1000]){
 test('return gate (wrapper): cumulative frozen time over 2000 ms inside one cycle invalidates it to the re-arm',()=>{
   const r=wrapperRig();
   r.ramp(70,700);r.hold(70,250);
-  r.ramp(140,700);r.hold(140,50);
-  r.freeze(1200);r.hold(140,50);                     // resume briefly — 1200 ms cumulative is still under the cap
-  r.freeze(1200);r.hold(140,400);                    // second resume crosses 2400 ms cumulative
+  r.ramp(150,700);r.hold(150,50);
+  r.freeze(1200);r.hold(150,50);                     // resume briefly — 1200 ms cumulative is still under the cap
+  r.freeze(1200);r.hold(150,400);                    // second resume crosses 2400 ms cumulative
   assert.equal(r.engine.metrics.reps,0);
   const c=r.engine.gateCountersSnapshot();
   assert.ok(c.freezeInvalidatedCycles[0]+c.freezeInvalidatedCycles[1]>=1,`invalidated ${c.freezeInvalidatedCycles}`);
@@ -261,7 +283,7 @@ test('return gate (wrapper): a peak already proven before the freeze survives it
   const r=wrapperRig();
   r.ramp(70,600);r.hold(70,400);                     // measured dwell proves the peak pre-freeze
   r.freeze(400);
-  r.ramp(140,600);r.hold(140,900);
+  r.ramp(150,600);r.hold(150,900);
   assert.equal(r.engine.metrics.reps,1);
   const c=r.engine.gateCountersSnapshot();
   assert.deepEqual(c.peaksConfirmed,[1,1]);

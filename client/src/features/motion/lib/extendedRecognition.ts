@@ -36,11 +36,11 @@ type RaiseSide={raised:number;forward:boolean;latDom:boolean;elbow:number};
 type RaiseSample={t:number;raised:number;elbow:number;fwd:boolean;lat:boolean};
 /** A run of consecutive same-verdict direction samples (direction latch). */
 type SustainRun={start:number;last:number;n:number}|null;
-type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;otherBase:number;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;retMeas:number;retWinMeas:number|null;retQual:number;retQualAbs:number;retNeedFresh:number;retMax:number;retChannel:string|null;retAnchor:number|null;retThreshold:number|null;reopenAccum:number;reopened:boolean;frozenCycleMs:number;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number;controlSamples:TimedValue[];speedSpans:TimedSpan[];samples:RaiseSample[];overshoot:boolean;dirLatched:boolean;dirMixed:boolean;dirTurned:boolean;fwdRun:SustainRun;latRun:SustainRun;supportBase:Point|null;supportPeak:Point|null;peakWindows:{start:number;end:number}[];returnTouched:boolean;returnTouchAt:number|null;evidence:PeakEvidenceVerdict|null};
+type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;otherBase:number;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;retMeas:number;retWinMeas:number|null;retQual:number;retNeedFresh:number;retMax:number;retChannel:string|null;retAnchor:number|null;retThreshold:number|null;reopenAccum:number;reopened:boolean;frozenCycleMs:number;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number;controlSamples:TimedValue[];speedSpans:TimedSpan[];samples:RaiseSample[];overshoot:boolean;dirLatched:boolean;dirMixed:boolean;dirTurned:boolean;fwdRun:SustainRun;latRun:SustainRun;supportBase:Point|null;supportPeak:Point|null;peakWindows:{start:number;end:number}[];returnTouched:boolean;returnTouchAt:number|null;evidence:PeakEvidenceVerdict|null};
 type SideCompletion={side:number;at:number;peakStart:number;peakEnd:number;peakAmp:number;peakPosture:number;peakOther:number;peakElbow:number;duration:number;scoring:boolean;control:number;shift:number;speed:number;peakWindows:{start:number;end:number}[];cycleStart:number;returnedAt:number};
 /** One side's confirmed peak: midpoint time + peak value in the movement's peak units (see lastPeak). */
 type PeakMark={at:number;value:number};
-const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,otherBase:180,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,retMeas:0,retWinMeas:null,retQual:0,retQualAbs:0,retNeedFresh:0,retMax:0,retChannel:null,retAnchor:null,retThreshold:null,reopenAccum:0,reopened:false,frozenCycleMs:0,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180,controlSamples:[],speedSpans:[],samples:[],overshoot:false,dirLatched:false,dirMixed:false,dirTurned:false,fwdRun:null,latRun:null,supportBase:null,supportPeak:null,peakWindows:[],returnTouched:false,returnTouchAt:null,evidence:null});
+const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,otherBase:180,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,retMeas:0,retWinMeas:null,retQual:0,retNeedFresh:0,retMax:0,retChannel:null,retAnchor:null,retThreshold:null,reopenAccum:0,reopened:false,frozenCycleMs:0,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180,controlSamples:[],speedSpans:[],samples:[],overshoot:false,dirLatched:false,dirMixed:false,dirTurned:false,fwdRun:null,latRun:null,supportBase:null,supportPeak:null,peakWindows:[],returnTouched:false,returnTouchAt:null,evidence:null});
 /** Timestamped stability evidence: a point sample of the control penalty (held
  * until the next sample) or one angular-velocity window with its true span. */
 type TimedValue={t:number;v:number};
@@ -155,7 +155,24 @@ const RETURN_HOLD_MS=150,RETURN_WINDOW_MS=500,RETURN_FRAME_CAP_MS=100;
  *   the cycle through the existing tracking-loss re-arm;
  * — a confirmed peak followed by a measured reopening (≥110° for 100 ms) and
  *   then a DISTINCT new validated peak discards the uncompleted cycle instead
- *   of folding the new rep into it. */
+ *   of folding the new rep into it.
+ *
+ * Round 3 revision (2026-11-15; verdict set + offline re-analysis + Codex
+ * consult 2026-11-15-hammer-peaks): the relative route no longer DECIDES
+ * anything. The 2026-11-15 verification set proved it structurally inert for
+ * this user — a relaxed hanging arm honestly reads 158–172° in the world
+ * basis, so any truthful anchor ≥155° collapses T back to 145° (the route
+ * engaged zero times: returnCompletionsRelative [0,0]) — and every return
+ * the gate actually evaluated passed at 145° with room (maxima 150.4–158°),
+ * so there is no evidence a lower threshold is needed. The decision is the
+ * absolute 145° route, always. What round 2 got right stays: the measured-
+ * time window, the freeze-pause (holes earn zero credit, fresh evidence
+ * after resumption, the 2000 ms invalidation cap) and the cycle identity —
+ * the freeze/gap accounting is the plausibly effective half. The anchor is
+ * still sampled and the would-be threshold T still computed and recorded
+ * (gateCounters returnAnchor / returnThreshold / returnBasis) as pure
+ * telemetry, so a future set can still show what the relative route WOULD
+ * have decided; it just never lowers the bar again. */
 const RETURN_ABSOLUTE_DEG=145,RETURN_FLOOR_DEG=125,RETURN_ANCHOR_MARGIN_DEG=10;
 const ANCHOR_WINDOW_MS=500,ANCHOR_MIN_SAMPLES=5,ANCHOR_MAX_GAP_MS=150,ANCHOR_MAX_SPREAD_DEG=10;
 const RETURN_REOPEN_DEG=110,RETURN_REOPEN_MS=100;
@@ -1187,11 +1204,13 @@ export class ExtendedExerciseTracker {
           this.hammerSides[s]=keep;cyc=keep;
         }
         cyc.peakStart=ev.closed.start;cyc.peakEnd=ev.closed.end;cyc.peakElbow=80-ev.closed.depth;cyc.peakAmp=cap((160-cyc.peakElbow)/95*100);cyc.peakWindows.push({start:ev.closed.start,end:ev.closed.end});this.gateCounters.peaksConfirmed[s]++;
-        // The return gate this cycle will be judged by: the trusted anchor of
-        // the CURRENT basis (frozen at the calibration latch), or the
-        // absolute 145° route when this basis has none. An anchor the latch
-        // could not sign (arm-on-start: no real hold yet) is filled here —
-        // once, from the pre-set rest samples — never from a rep.
+        // Telemetry (round 3): the trusted anchor of the CURRENT basis
+        // (frozen at the calibration latch) and the threshold the retired
+        // relative route WOULD have used — recorded on the cycle and the
+        // gate counters, never consulted by the decision below, which is
+        // the absolute 145° route always. An anchor the latch could not
+        // sign (arm-on-start: no real hold yet) is filled here — once, from
+        // the pre-set rest samples — never from a rep.
         if(this.hammerAnchors[f.channel][s]===null&&this.calibElbowSamples.length){const filled=this.evalHammerAnchor(f.channel,s,this.calibElbowSamples[this.calibElbowSamples.length-1].t);if(filled!==null)this.hammerAnchors[f.channel][s]=filled;}
         cyc.retChannel=f.channel;cyc.retAnchor=this.hammerAnchors[f.channel][s];
         cyc.retThreshold=cyc.retAnchor===null?RETURN_ABSOLUTE_DEG:Math.min(RETURN_ABSOLUTE_DEG,Math.max(RETURN_FLOOR_DEG,cyc.retAnchor-RETURN_ANCHOR_MARGIN_DEG));
@@ -1200,29 +1219,27 @@ export class ExtendedExerciseTracker {
         this.gateCounters.returnThreshold[s]=cyc.retThreshold;this.gateCounters.returnBasis[s]=f.channel;
       }
       // Return confirmation on MEASURED time: 150 ms of interpolated in-zone
-      // dwell at the cycle's threshold inside a 500 ms measured window. A
-      // parallel accumulation at the absolute 145° runs alongside — reaching
-      // it classifies the completion as absolute, so the shipped route stays
-      // available (and visible) whenever the channel truly gets there.
+      // dwell at the absolute 145° inside a 500 ms measured window (round 3:
+      // the decision threshold is the absolute route always; the cycle's
+      // would-be relative threshold survives only as telemetry above).
       if(cyc.peakStart!==null){
         if(cyc.retChannel!==f.channel){
           // Basis change mid-cycle: return evidence never crosses bases. The
-          // relative route needs a trusted anchor for the NEW basis.
-          cyc.retChannel=f.channel;cyc.retQual=0;cyc.retQualAbs=0;cyc.retWinMeas=null;cyc.returnSince=null;
+          // telemetry anchor/threshold re-derive for the NEW basis.
+          cyc.retChannel=f.channel;cyc.retQual=0;cyc.retWinMeas=null;cyc.returnSince=null;
           cyc.retAnchor=this.hammerAnchors[f.channel][s];
           cyc.retThreshold=cyc.retAnchor===null?RETURN_ABSOLUTE_DEG:Math.min(RETURN_ABSOLUTE_DEG,Math.max(RETURN_FLOOR_DEG,cyc.retAnchor-RETURN_ANCHOR_MARGIN_DEG));
           this.gateCounters.returnAnchor[s]=cyc.retAnchor===null?null:Math.round(cyc.retAnchor*10)/10;
           this.gateCounters.returnThreshold[s]=cyc.retThreshold;this.gateCounters.returnBasis[s]=f.channel;
         }
         cyc.retMax=Math.max(cyc.retMax,e);
-        if(cyc.retWinMeas!==null&&cyc.retQual>0&&cyc.retMeas-cyc.retWinMeas>RETURN_WINDOW_MS){this.gateCounters.returnWindowExpirations[s]++;cyc.retQual=0;cyc.retQualAbs=0;cyc.retWinMeas=null;cyc.returnSince=null;}
+        if(cyc.retWinMeas!==null&&cyc.retQual>0&&cyc.retMeas-cyc.retWinMeas>RETURN_WINDOW_MS){this.gateCounters.returnWindowExpirations[s]++;cyc.retQual=0;cyc.retWinMeas=null;cyc.returnSince=null;}
         if(prevAt!==null&&!hole){
-          const portion=zonePortion(cyc.prevAngle,e,cyc.retThreshold??RETURN_ABSOLUTE_DEG,true,prevAt,now);
+          const portion=zonePortion(cyc.prevAngle,e,RETURN_ABSOLUTE_DEG,true,prevAt,now);
           if(portion.ms>0){
             const credit=Math.min(RETURN_FRAME_CAP_MS,portion.ms);
             if(cyc.retWinMeas===null){cyc.retWinMeas=cyc.retMeas-(now-portion.start);cyc.returnSince=portion.start;}
             cyc.retQual+=credit;this.gateCounters.returnQualifyingMs[s]+=credit;
-            cyc.retQualAbs+=Math.min(RETURN_FRAME_CAP_MS,zonePortion(cyc.prevAngle,e,RETURN_ABSOLUTE_DEG,true,prevAt,now).ms);
             if(cyc.retNeedFresh>0)cyc.retNeedFresh=Math.max(0,cyc.retNeedFresh-credit);
           }
         }
@@ -1232,7 +1249,7 @@ export class ExtendedExerciseTracker {
         if(hole)cyc.retNeedFresh=RETURN_FRESH_AFTER_FREEZE_MS;
         if(cyc.retQual>=RETURN_HOLD_MS&&cyc.retNeedFresh<=0){
           this.gateCounters.returnsConfirmed[s]++;
-          if(cyc.retQualAbs>=RETURN_HOLD_MS)this.gateCounters.returnCompletionsAbsolute[s]++;else this.gateCounters.returnCompletionsRelative[s]++;
+          this.gateCounters.returnCompletionsAbsolute[s]++;
           if(cyc.retMax>0)pushReturnMax(s,cyc.retMax);
           const done:SideCompletion={side:s,at:now,peakStart:cyc.peakStart,peakEnd:cyc.peakEnd,peakAmp:cyc.peakAmp,peakPosture:cyc.peakPosture,peakOther:cyc.peakOther,peakElbow:cyc.peakElbow,duration:(now-(cyc.movingAt??now))/1000,scoring:cyc.scoring,control:sustainedPeak(controlSpans(cyc.controlSamples,now),cyc.controlMax),shift:cyc.shiftMax,speed:sustainedPeak(cyc.speedSpans,cyc.speedMax),peakWindows:cyc.peakWindows,cycleStart:cyc.movingAt??cyc.peakStart,returnedAt:cyc.returnSince??now};
           this.lastPeak[s]={at:(done.peakStart+done.peakEnd)/2,value:done.peakElbow};
