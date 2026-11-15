@@ -40,6 +40,19 @@ type Identity = { userId?: number; exp?: number; rooms: number[]; deadline: numb
  * one user can only ever overwrite their own `recognition_diagnostic:<id>`
  * row (latest set wins).
  */
+/**
+ * Body-read cap for the diagnostics route only. The shared jsonInput cap
+ * (8192 chars) predates the gate trace: a traced set's body runs to tens
+ * of KB (the trace's own serialized design cap is 128 KB), so every
+ * traced POST was rejected 400 before validation — silently, because the
+ * client never inspected the response (2026-11-15 set 2's counters+trace
+ * died exactly here; the counters-only set 1, ~0.6 KB, landed). The
+ * payload builder below re-caps everything it stores (2400 samples, 64
+ * events, whitelisted counter fields), so a larger read window for this
+ * one route does not weaken the store contract.
+ */
+const RECOGNITION_DIAGNOSTIC_MAX_BODY = 256 * 1024;
+
 export function recognitionDiagnosticPayload(userId: number, input: any, receivedAt = new Date().toISOString()) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) throw new VoiceError('请求格式不正确', 400);
   const num = (v: unknown) => typeof v === 'number' && Number.isFinite(v) && v > 0 ? Math.floor(v) : 0;
@@ -217,7 +230,7 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
         // construction: the row key derives from the verified token's actor.
         try {
           const actor = await this.voicePool.actor(request);
-          const payload = recognitionDiagnosticPayload(actor.id, await this.jsonInput(request));
+          const payload = recognitionDiagnosticPayload(actor.id, await this.jsonInput(request, RECOGNITION_DIAGNOSTIC_MAX_BODY));
           await pool.query("INSERT INTO actor_meta(key,value) VALUES($1,$2) ON CONFLICT(key) DO UPDATE SET value=$2", ['recognition_diagnostic:' + actor.id, JSON.stringify(payload)]);
           return Response.json({ code: 0, message: 'ok', data: { ok: true } });
         } catch (error) {
@@ -250,9 +263,9 @@ export class MoveMateBackend extends DurableObject<Env> implements EventSink {
       return new Response(bytes, { status: response.status, headers });
     });
   }
-  private async jsonInput(request: Request) {
+  private async jsonInput(request: Request, maxLength = 8192) {
     const text = await request.text();
-    if (text.length > 8192) throw new VoiceError('请求内容过长', 400);
+    if (text.length > maxLength) throw new VoiceError('请求内容过长', 400);
     try { const input = text ? JSON.parse(text) : {}; if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error(); return input; }
     catch { throw new VoiceError('请求格式不正确', 400); }
   }

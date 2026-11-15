@@ -14,6 +14,11 @@ import './motion-layer.css';
 import { useAuthStore } from './stores/authStore';
 useAuthStore.getState().init();
 void useAuthStore.getState().hydrateSession();
+
+// 识别诊断发件箱：补发上一会话没送出去的组末计数/轨迹（只有服务器
+// 2xx 才出箱），并挂上在会话内的退避重试与 pagehide 兜底。
+import { startRecognitionDiagnosticsOutbox } from './features/motion/lib/diagnosticsOutbox';
+startRecognitionDiagnosticsOutbox();
 window.addEventListener('online', () => { void useAuthStore.getState().hydrateSession(); });
 window.addEventListener('storage', event => {
   if (event.storageArea !== localStorage || (event.key !== null && !['token', 'user'].includes(event.key))) return;

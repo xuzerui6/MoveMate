@@ -27,6 +27,7 @@ import {createDwellState,dwellPush} from '../lib/statusDwell'
 import {milestoneForRep} from '../lib/milestones'
 import {createTrackingLossState,frameSeesPerson,pushPresenceSample,resetTrackingLoss} from '../lib/trackingLoss'
 import {loadRecognitionPreference,selectNewRecognitionStrategy,selectRecognitionStrategy,type RecognitionPreference} from '../lib/adaptiveRecognition'
+import {enqueueRecognitionDiagnostics,type RecognitionDiagnosticsBody} from '../lib/diagnosticsOutbox'
 
 const format = (seconds: number) => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
 const VOICE_LABEL: Record<XiaozhiState, string> = {
@@ -47,7 +48,6 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const [simulatedPose, setSimulatedPose] = useState(restored?.source === 'demo'), [paused, setPaused] = useState(false)
   const [pendingAction, setPendingAction] = useState<'pause'|'resume'|null>(null)
   const frozenFinish = useRef<WorkoutSession | null>(null)
-  const gateReported = useRef(false)
   const [ending, setEnding] = useState(false)
   const [cameraExpanded, setCameraExpanded] = useState(false), [cameraFit, setCameraFit] = useState<CameraFit>('contain')
   const cameraExpandButton = useRef<HTMLButtonElement>(null)
@@ -96,15 +96,37 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
   const progress = useRef<Record<string, unknown>>({})
   progress.current = { ...session, ...metrics }
   const activeRef = useRef(false); activeRef.current = active
+  // 诊断发件箱的条目 id：一组一条（服务器会话 id），同组重捕即替换，
+  // 与服务端 latest-set-wins 同语义。会话 id 还没建时退到本页挂载 id。
+  const mountId = useRef('')
+  if (!mountId.current) mountId.current = Math.random().toString(36).slice(2) + Date.now().toString(36)
+  const diagnosticsEntryId = () => 'recognition:' + (serverId.current || mountId.current)
+  // 未终局的实时快照（不跑 finalizeSetEnd、不碰计数状态）：给离开/卸载/
+  // pagehide 这些到不了 done() 的收尾路径兜底——先落盘，之后若这组被
+  // 恢复并正式结束，done() 会以同 id 用终局载荷替换它。只在本页真正
+  // 开过组（active）时才捕，免得恢复会话的准备页一进一出就把上一组
+  // 的诊断盖成空快照。
+  const readLiveGateBody = (): RecognitionDiagnosticsBody | null => {
+    if (!activeRef.current || simulatedPose || !accountToken.current || !serverId.current) return null
+    const counters = adaptive ? pose.engine?.gateCounters ?? null : legacyGateCounters()
+    if (!counters) return null
+    const trace = adaptive ? pose.engine?.gateTrace ?? null : legacyGateTrace()
+    return { exerciseType, counters, ...(trace ? { trace } : {}) }
+  }
+  const exitCaptureRef = useRef<(opts?: { pageHide?: boolean }) => void>(() => {})
+  exitCaptureRef.current = (opts) => {
+    const body = readLiveGateBody()
+    if (body) enqueueRecognitionDiagnostics(diagnosticsEntryId(), body, {}, opts)
+  }
   useEffect(() => {
     alive.current = true
     const flush = (action = 'progress') => {
       if (!serverId.current || closing.current || !activeRef.current || !accountToken.current) return
       void fetch('/api/v1/sport-sessions/' + serverId.current + '/' + action, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-MoveMate-Recognition-Version': '6', Authorization: 'Bearer ' + accountToken.current }, body: JSON.stringify(progress.current), keepalive: true }).catch(() => undefined)
     }
-    const hide = () => flush()
+    const hide = () => { flush(); exitCaptureRef.current({ pageHide: true }) }
     window.addEventListener('pagehide', hide)
-    return () => { alive.current = false; attempt.current++; window.removeEventListener('pagehide', hide); flush('pause') }
+    return () => { alive.current = false; attempt.current++; window.removeEventListener('pagehide', hide); flush('pause'); exitCaptureRef.current() }
   }, [])
   useEffect(() => { document.querySelector('.motion-screen')?.scrollTo({ top: 0 }) }, [active])
   useEffect(()=>{
@@ -317,12 +339,17 @@ export function Workout({ back, finish, existing, exerciseType }: { exerciseType
     if (!frozenFinish.current) frozenFinish.current = structuredClone({ ...completed, id: serverId.current, source: simulatedPose ? 'demo' : 'camera', recognitionStrategy:adaptive&&!simulatedPose?'adaptive-v1':'legacy', visionInsights: [], conversationTurnCount: active ? conversationCount : completed.conversationTurnCount })
     // WS2 识别门计数随本组结束上报运维诊断通道（只有计数，没有画面数据，
     // 页面上不显示）：自适应路径读引擎快照里的计数，旧路径读本页跟踪器的。
-    // 演示不报。失败静默——诊断永远不能挡住结算。Round 3 起锤式弯举另带
+    // 演示不报。诊断永远不能挡住结算。Round 3 起锤式弯举另带
     // 逐帧关卡轨迹（角度与关卡状态，没有画面/关键点数据），同通道同行存储。
-    if (!simulatedPose && accountToken.current && !gateReported.current) {
+    // 2026-11-15 起走持久化发件箱（diagnosticsOutbox）：先落盘再发送，
+    // 只有服务器 2xx 才出箱，失败退避重试、下次打开 App 补发。旧写法是
+    // 一次性 fire-and-forget：上报闩在结果未知时先翻、响应从不检查
+    // （HTTP 错误对 fetch 来说也是"成功"），16:52 那组（俯身追踪丢失
+    // 收尾）的计数与轨迹就是这样静默丢掉的——那种丢法不许再发生。
+    if (!simulatedPose && accountToken.current) {
       const gateCounters = fin ? fin.gateCounters : adaptive ? pose.engine?.gateCounters ?? null : legacyGateCounters()
       const gateTrace = fin ? fin.gateTrace : adaptive ? pose.engine?.gateTrace ?? null : legacyGateTrace()
-      if (gateCounters) { gateReported.current = true; void fetch('/api/v1/diagnostics/recognition', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accountToken.current }, body: JSON.stringify({ exerciseType, counters: gateCounters, ...(gateTrace ? { trace: gateTrace } : {}) }), keepalive: true }).catch(() => undefined) }
+      if (gateCounters) enqueueRecognitionDiagnostics(diagnosticsEntryId(), { exerciseType, counters: gateCounters, ...(gateTrace ? { trace: gateTrace } : {}) })
     }
     locked.current = true; closing.current = true; setEnding(true); setPaused(true); setBusy(true); setVoiceEnabled(false); setFailure(''); pose.stop(); heartRate.disconnect()
     try { await finish(frozenFinish.current) }

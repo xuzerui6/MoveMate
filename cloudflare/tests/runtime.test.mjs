@@ -587,6 +587,23 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.equal(emptyTrace.status,200);
  const diag5=await call('/api/migration/diagnostics',{migration:true});
  assert.equal(Object.fromEntries(diag5.data.recognition.map(r=>[r.userId,r]))[1].trace,null);
+ // A real traced set's body is tens of KB (600 samples ≈ 20 KB) — far
+ // past the shared jsonInput cap of 8192 chars that every other route
+ // keeps. The diagnostics route must read it whole: that cap is what
+ // silently 400'd 2026-11-15 set 2's counters+trace upload while the
+ // counters-only set 1 (~0.6 KB) landed.
+ const bigSamples=Array.from({length:600},(_,i)=>[1000+i*33,150.5,160.2,1,0,0,0,0]);
+ const big=await call('/api/v1/diagnostics/recognition',{method:'POST',token:tokens[0],body:{exerciseType:'hammer_curl',counters,trace:{v:1,type:'hammer_curl',t0:1000,dropped:0,samples:bigSamples,events:[]}}});
+ assert.equal(big.status,200,JSON.stringify(big.data));
+ const diag6=await call('/api/migration/diagnostics',{migration:true});
+ const mine6=Object.fromEntries(diag6.data.recognition.map(r=>[r.userId,r]))[1];
+ assert.equal(mine6.trace.samples.length,600);
+ assert.deepEqual(mine6.trace.samples[599],[1000+599*33,150.5,160.2,1,0,0,0,0]);
+ // The route's own ceiling still exists (256 KB): an unbounded body is
+ // refused, never read into the validator.
+ const hugeSamples=Array.from({length:10000},(_,i)=>[1000+i*33,150.5,160.2,1,0,0,0,0]);
+ const huge=await call('/api/v1/diagnostics/recognition',{method:'POST',token:tokens[0],body:{exerciseType:'hammer_curl',counters,trace:{v:1,type:'hammer_curl',t0:1000,dropped:0,samples:hugeSamples,events:[]}}});
+ assert.equal(huge.status,400,JSON.stringify(huge.data));
  });
  await voicePoolTests(t,{mf,call,tokens,adminToken,sockets,password,migrate});
  await bridgeErrorPairingTests(t);
