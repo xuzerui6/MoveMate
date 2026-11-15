@@ -338,6 +338,17 @@ export interface PaginatedResponse<T> {
   size: number;
 }
 
+/**
+ * 服务端统一响应信封。axios 拦截器只剥掉 HTTP 外壳（返回 response.data），
+ * 所以 api 函数拿到的就是这个信封本身，业务载荷在 data 里。原样透传信封的
+ * api 函数必须把返回类型声明成 ApiEnvelope<载荷>，不许谎报成载荷本身。
+ */
+export interface ApiEnvelope<T> {
+  code: number;
+  message: string;
+  data: T;
+}
+
 export interface BootstrapData {
   school: School | null;
   schools: School[];
