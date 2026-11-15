@@ -21851,6 +21851,240 @@
    ],
    "generated": true,
    "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1310",
+   "expectedName": "weighted drop push up",
+   "sourceId": "ai-codex-fill129-1310",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e35b2573ef7eccab701be72a87c39a1f3a9f30843ccac581ad3471a8ea90af78",
+    "63cb42b8cc73c8ee5c1e328499243c3b2f052ba6f63a773afdedf8bfbb4893f0"
+   ],
+   "phases": [
+    "起始：俯卧撑高位平板，穿黑色负重背心，双手略宽于肩撑地，双臂伸直，身体成一条直线，双脚并拢。",
+    "关键：爆发推起的腾空瞬间：全身刚离地，双手离地并向两侧张开更宽，身体平直、水平，负重背心仍在，双脚仍触地（落点式俯卧撑的飞行时刻）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0866",
+   "expectedName": "weighted hanging leg-hip raise",
+   "sourceId": "ai-codex-fill129-0866",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "0202e9e0adcb236b2ed7b0439cc727d1bd411ed3d5e945812b47650cceada35d",
+    "486ceead4d6c29c3bb5dfaf42c8345acc94b17670506b424b80d7479dd8e43b9"
+   ],
+   "phases": [
+    "起始：正握悬挂于单杠，双臂完全伸直，身体笔直悬垂，双脚踝均系小负重，双腿向下伸直，双脚离地。",
+    "关键：双腿伸直抬起至平行以上、髋部卷起抬升（腿举加卷髋），双腿指向斜上方，脚踝负重仍在，双手仍握杠悬垂。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3641",
+   "expectedName": "weighted kneeling step with swing",
+   "sourceId": "ai-codex-fill129-3641",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b00f5d749293abbda20f397e2e35765d81aeaf2b9387b8ea5787f18cfa9d6440",
+    "2e5e8bd6c056f2a38131df0bce36a6d97aecef67daad57c48b20bcb74b108268"
+   ],
+   "phases": [
+    "起始：双膝跪姿挺直，双膝约与髋同宽，背部挺直，每手握一只哑铃、双臂伸直垂于大腿前方（名中 step 未见于正文，按正文跪姿挥铃呈现）。",
+    "关键：一次挥摆将双哑铃举过头顶：双臂伸直于头顶上方握铃，仍跪姿挺直，核心收紧。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3286",
+   "expectedName": "weighted muscle up",
+   "sourceId": "ai-codex-fill129-3286",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "2f2d35b955e9cc55e49333581922b1a95cab8b8c1605a81ec1472720bd910ebd",
+    "dfdd8c808ccbd9f349613a65843c180e51148c7727cbff50e9952795adf99c29"
+   ],
+   "phases": [
+    "起始：以正握（掌心向外，握距略宽于肩）悬挂于直单杠，双臂完全伸直，身体笔直悬垂，腰间负重腰带悬挂一片杠铃片（负重元素），双脚离地。",
+    "关键：爆发拉升至胸触杠、下巴过杠高，双肘弯曲贴近体侧，负重片仍悬于腰间，双脚离地（按目录文字终点呈现，未含翻腕撑起过渡）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3290",
+   "expectedName": "weighted one hand pull up",
+   "sourceId": "ai-codex-fill129-3290",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "818d89fcaf6ec7bf9f0be3e7fb278f2ba7b82e280917d8d0d7935dd12dee4adf",
+    "04674756b3aa55083b9746bc02a13b34d395b6e0718a769f3ee4ecc4f21fe713"
+   ],
+   "phases": [
+    "起始：仅右手握杠悬挂，左手扶住右手腕作辅助，双臂伸直，身体笔直悬垂，腰间负重腰带悬挂一片杠铃片，双脚离地（按条目名单手式呈现；目录文字写双手引体，不取）。",
+    "关键：单手拉升至下巴与杠平，右肘完全弯曲、身体拉起贴于右手旁，左手仍扶右腕，负重片仍悬于腰间，双脚离地。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0844",
+   "expectedName": "weighted round arm",
+   "sourceId": "ai-codex-fill129-0844",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "56b13d7fa07521dab494c679a7871e5572cd4fa839557db1ae0573a3faadc6a6",
+    "4ce361b5ceabd777e3de54363648ce11482b93284e282709820ed2103430c8a0"
+   ],
+   "phases": [
+    "起始：站立，双脚与肩同宽，双手各握一只哑铃垂于体侧，双膝微屈，髋部轻微前屈，背部挺直。",
+    "关键：双臂向两侧抬起至与地面平行，肘部保持柔和的圆弧微屈，哑铃位于肩高两侧，躯干保持同一轻微前屈，背部挺直（未推过头顶）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0847",
+   "expectedName": "weighted seated bicep curl (on stability ball)",
+   "sourceId": "ai-codex-fill129-0847",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "43cf3d9112b734f64ce58af79dcfdba2844a1239962acf350a5d3ffe2b88ea21",
+    "f2551da7c97bd60f9ba2402a3c56328729a08d0e3e8b014c9175362ea1b789b2"
+   ],
+   "phases": [
+    "起始：挺坐于瑜伽球，双脚平放地面，背部挺直，双手以反手握法托住一只药球、置于大腿前方，双臂伸直（药球即负重，无哑铃）。",
+    "关键：将药球弯举至胸前高度，双肘完全弯曲，药球由双手托于胸前/肩前，上臂仍贴体侧，仍挺坐于瑜伽球上。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:0854",
+   "expectedName": "weighted standing hand squeeze",
+   "sourceId": "ai-codex-fill129-0854",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "f2a6775e19bf0ae9623c58ae4e0d6333bcd68340bbd0fe9512dfabd0f2bb5dd0",
+    "385ea37069dea020af5956a568efc8bb8260e8c06690bdaefed3b7e1e93959d5"
+   ],
+   "phases": [
+    "起始：站立，双脚与肩同宽，双臂向前伸直于胸高，每手握一只小杠铃片，掌心相对，两片分开。",
+    "关键：双手在胸前中央用力合压，两片杠铃片贴紧相压，手指扣住片缘，前臂绷紧发力，双臂仍向前伸直于胸高。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3313",
+   "expectedName": "weighted straight bar dip",
+   "sourceId": "ai-codex-fill129-3313",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "510a163ae07f5eba0f079bf5d45bcdfbee085a3c4f32419f707b10f524bdffce",
+    "956b3a0646e51f9d43522cf60801f50aa55e801ffabcc29dea77d4e35f7f07e0"
+   ],
+   "phases": [
+    "起始：以双臂伸直支撑于一根约髋高的单根直杠、杠位于髋前，身体微前倾悬于杠前，双腿向下伸直悬垂，腰间负重腰带悬挂一片杠铃片，双脚离地（单杠式，非双杠）。",
+    "关键：在杠前下沉至上臂约与地面平行，双肘弯曲指后方，身体微前倾于杠前，双腿仍向下伸直，负重片仍悬于腰间，双脚离地。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3642",
+   "expectedName": "weighted stretch lunge",
+   "sourceId": "ai-codex-fill129-3642",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "e8fe072cf81e53663527af759246fdaf736b89446ee8f9d5dd2d0651ad8e6730",
+    "ecf142afc4b5036eb03c1035170c807486c46724030f38ce21b4e59a8681f2fa"
+   ],
+   "phases": [
+    "起始：直立，双脚与肩同宽，每手握一只哑铃垂于体侧，背部挺直，准备向前跨步（目录步骤未点名负重，按名称每手持铃呈现）。",
+    "关键：前弓步到底：右大腿与地面平行，右膝位于右脚上方，左腿向后伸直、膝悬空贴近地面不触地，躯干直立，哑铃仍垂于体侧（按正文右侧示范）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:3637",
+   "expectedName": "wheel run",
+   "sourceId": "ai-codex-fill129-3637",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "bae80bb09e17feda56d2faeaa0e5332ae41cc9532ea7c4234e6bdd18647536b8",
+    "5b90bad587757bd9b4d07275a4ae38e67282c3621a60fcf1009a58a3d9708b8c"
+   ],
+   "phases": [
+    "起始：俯卧撑高位平板，双手握健腹轮于肩下，身体成一条直线，双脚撑地于身后，准备向前滚出。",
+    "关键：健腹轮完全滚出：身体拉长贴近地面、头至脚跟近乎一直线，双臂向前伸直握轮于远处，核心收紧，双膝离地（完整滚出，非塌腰）。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1604",
+   "expectedName": "world greatest stretch",
+   "sourceId": "ai-codex-fill129-1604",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "1e212573b0d22383506fd85ed73a440ec8c90bb78c0c50bb82f2842076853554",
+    "46b240aea860289ac8c57117b943f004f8ecf94ff1e0cd4955960cd689517306"
+   ],
+   "phases": [
+    "起始：深弓步：右脚向前屈膝，左腿向后伸直、左膝落于地面，双手撑于右脚两侧地面（按目录文字的步骤顺序呈现，右侧示范）。",
+    "关键：完成式拉伸定格：右腿伸直、脚掌平放地面，躯干向右旋转，右臂直指天花板，左手仍撑于伸直的右腿旁地面，左膝仍跪地，视线跟随举起的手。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
+  },
+  {
+   "exerciseId": "exdb:1370",
+   "expectedName": "barbell floor calf raise",
+   "sourceId": "ai-codex-fill129-1370",
+   "sourceUrl": "",
+   "license": "AI-generated",
+   "author": "MoveMate Codex CLI generation",
+   "sourceSha256": [
+    "b409c0a2f7ea611e3892e35c184b983674a53dc050f973ef275b860ae6910993",
+    "0f7f8252a70ceaa5aae6d096d10112cd01dfbe405c5f0b290ab27912c491c63f"
+   ],
+   "phases": [
+    "起始（近景脚部）：双脚前脚掌踏于杠铃片圆边，脚跟低落至片面以下的地面，小腿拉长，双膝伸直，一手扶深蹲架立柱保持平衡（按目录正文“脚掌放在杠铃边缘，脚跟悬垂”呈现）。",
+    "关键（近景脚部）：以前脚掌为支点尽可能高地踮起，脚跟大幅抬离片面，脚踝充分伸展，小腿明显收紧，双膝仍伸直，前脚掌始终贴于杠铃片圆边。"
+   ],
+   "generated": true,
+   "note": "生成图双帧分解，按顺序查看；不是连续动画。"
   }
  ],
  "videos": [
