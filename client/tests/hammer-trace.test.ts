@@ -68,7 +68,7 @@ test('gate trace: the 2400-sample cap tail-keeps — a long set keeps its END, n
   assert.ok(last[0]>trace.samples[0][0]);
 });
 
-test('gate trace: an interrupt over a pending cycle records a loss event and tallies it; a preserved cycle is an event but no loss',()=>{
+test('gate trace: an interrupt over a pending cycle records a loss event; preserved cycles are kept, unpreserved ones are PARKED (round 4), not tallied lost',()=>{
   // Preserved: the bounded form-interrupt path keeps the cycle — event with
   // kept=true, no tally.
   const kept=rig(148);
@@ -81,7 +81,10 @@ test('gate trace: an interrupt over a pending cycle records a loss event and tal
   assert.ok(keptEvents.every(e=>e.kept===true));
   assert.deepEqual(kept.tracker.gateCountersSnapshot().pendingCyclesLost,[0,0]);
 
-  // Lost: a hard interrupt destroys the pending cycles mid-return.
+  // Parked: a hard interrupt over a mid-return cycle no longer destroys
+  // it — the loss event records parked=true and NO loss tally moves;
+  // set-end finalization (not run here) is the parked cycle's evaluator,
+  // so neither parked tally has moved yet either.
   const lost=rig(148);
   lost.ramp(70,450);lost.ramp(150,450);lost.hold(150,100);
   lost.tracker.interrupt();
@@ -91,11 +94,14 @@ test('gate trace: an interrupt over a pending cycle records a loss event and tal
   assert.equal(lossEvents.length,2);
   for(const e of lossEvents){
     assert.equal(e.kept,false);
+    assert.equal(e.parked,true);
     assert.ok(e.qualMs>0&&e.qualMs<150,`qual at loss ${e.qualMs}`); // partial credit, honestly short
     assert.ok(e.retMax>=145,`return max at loss ${e.retMax}`);
     assert.ok(e.peakElbow<=82,`peak at loss ${e.peakElbow}`);
   }
-  assert.deepEqual(lost.tracker.gateCountersSnapshot().pendingCyclesLost,[1,1]);
+  assert.deepEqual(lost.tracker.gateCountersSnapshot().pendingCyclesLost,[0,0]);
+  assert.deepEqual(lost.tracker.gateCountersSnapshot().parkedCyclesCredited,[0,0]);
+  assert.deepEqual(lost.tracker.gateCountersSnapshot().parkedCyclesLost,[0,0]);
 });
 
 test('gate trace: non-hammer exercises record nothing',()=>{

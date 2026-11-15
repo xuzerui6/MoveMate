@@ -604,6 +604,30 @@ await test('Workers runtime migration and business regression', async t=>{
  const hugeSamples=Array.from({length:10000},(_,i)=>[1000+i*33,150.5,160.2,1,0,0,0,0]);
  const huge=await call('/api/v1/diagnostics/recognition',{method:'POST',token:tokens[0],body:{exerciseType:'hammer_curl',counters,trace:{v:1,type:'hammer_curl',t0:1000,dropped:0,samples:hugeSamples,events:[]}}});
  assert.equal(huge.status,400,JSON.stringify(huge.data));
+ // Round 4: parked-cycle counters round-trip, and the trace's new event
+ // kinds (freeze/presence transitions, parked flags, the final summary
+ // end event) rebuild field-by-field alongside the old shapes.
+ const trace4={v:1,type:'hammer_curl',t0:1000,dropped:0,samples:[[1000,148.2,150,1,0,0,0,0],[1042,76.5,160,3,3,0,3,0]],events:[
+  {k:'loss',t:2000,side:0,kept:false,parked:true,peakElbow:76.4,qualMs:0,retMax:89.4},
+  {k:'presence',t:2000,phase:'lost',reason:'画面中断'},
+  {k:'freeze',t:2100,phase:'start'},{k:'freeze',t:8400,phase:'end'},
+  {k:'presence',t:8500,phase:'found'},
+  {k:'end',t:9000,side:0,parked:true,counted:true,peakElbow:76.4,qualMs:150,retMax:155},
+  {k:'end',t:9000,final:true,parkedSeen:2,parkedCredited:2,parkedDropped:0,pendingFlushed:false},
+ ]};
+ const posted4=await call('/api/v1/diagnostics/recognition',{method:'POST',token:tokens[0],body:{exerciseType:'hammer_curl',counters:{...counters,parkedCyclesCredited:[3,4],parkedCyclesLost:[5,6]},trace:trace4}});
+ assert.equal(posted4.status,200,JSON.stringify(posted4.data));
+ const diag7=await call('/api/migration/diagnostics',{migration:true});
+ const mine7=Object.fromEntries(diag7.data.recognition.map(r=>[r.userId,r]))[1];
+ assert.deepEqual(mine7.counters.parkedCyclesCredited,[3,4]);assert.deepEqual(mine7.counters.parkedCyclesLost,[5,6]);
+ assert.deepEqual(mine7.trace.events,[
+  {k:'loss',t:2000,side:0,peakElbow:76.4,qualMs:0,retMax:89.4,kept:false,parked:true},
+  {k:'presence',t:2000,phase:'lost',reason:'画面中断'},
+  {k:'freeze',t:2100,phase:'start'},{k:'freeze',t:8400,phase:'end'},
+  {k:'presence',t:8500,phase:'found'},
+  {k:'end',t:9000,side:0,peakElbow:76.4,qualMs:150,retMax:155,counted:true,parked:true},
+  {k:'end',t:9000,final:true,parkedSeen:2,parkedCredited:2,parkedDropped:0,pendingFlushed:false},
+ ]);
  });
  await voicePoolTests(t,{mf,call,tokens,adminToken,sockets,password,migrate});
  await bridgeErrorPairingTests(t);

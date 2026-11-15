@@ -37,11 +37,11 @@ type RaiseSide={raised:number;forward:boolean;latDom:boolean;elbow:number};
 type RaiseSample={t:number;raised:number;elbow:number;fwd:boolean;lat:boolean};
 /** A run of consecutive same-verdict direction samples (direction latch). */
 type SustainRun={start:number;last:number;n:number}|null;
-type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;otherBase:number;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;retMeas:number;retWinMeas:number|null;retQual:number;retNeedFresh:number;retMax:number;retChannel:string|null;retAnchor:number|null;retThreshold:number|null;reopenAccum:number;reopened:boolean;frozenCycleMs:number;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number;controlSamples:TimedValue[];speedSpans:TimedSpan[];samples:RaiseSample[];overshoot:boolean;dirLatched:boolean;dirMixed:boolean;dirTurned:boolean;fwdRun:SustainRun;latRun:SustainRun;supportBase:Point|null;supportPeak:Point|null;peakWindows:{start:number;end:number}[];returnTouched:boolean;returnTouchAt:number|null;evidence:PeakEvidenceVerdict|null};
+type SideCycle={movingAt:number|null;peakStart:number|null;peakEnd:number;peakElbow:number;peakAmp:number;peakPosture:number;peakOther:number;otherBase:number;track:PeakTrack;prevAt:number|null;prevAngle:number;returnSince:number|null;returnAccum:number;retMeas:number;retWinMeas:number|null;retQual:number;retNeedFresh:number;retQualified:boolean;retMax:number;retChannel:string|null;retAnchor:number|null;retThreshold:number|null;reopenAccum:number;reopened:boolean;frozenCycleMs:number;gapPending:boolean;scoring:boolean;controlMax:number;shiftMax:number;speedMax:number;sampleAt:number|null;sampleAngle:number;controlSamples:TimedValue[];speedSpans:TimedSpan[];samples:RaiseSample[];overshoot:boolean;dirLatched:boolean;dirMixed:boolean;dirTurned:boolean;fwdRun:SustainRun;latRun:SustainRun;supportBase:Point|null;supportPeak:Point|null;peakWindows:{start:number;end:number}[];returnTouched:boolean;returnTouchAt:number|null;evidence:PeakEvidenceVerdict|null};
 type SideCompletion={side:number;at:number;peakStart:number;peakEnd:number;peakAmp:number;peakPosture:number;peakOther:number;peakElbow:number;duration:number;scoring:boolean;control:number;shift:number;speed:number;peakWindows:{start:number;end:number}[];cycleStart:number;returnedAt:number};
 /** One side's confirmed peak: midpoint time + peak value in the movement's peak units (see lastPeak). */
 type PeakMark={at:number;value:number};
-const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,otherBase:180,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,retMeas:0,retWinMeas:null,retQual:0,retNeedFresh:0,retMax:0,retChannel:null,retAnchor:null,retThreshold:null,reopenAccum:0,reopened:false,frozenCycleMs:0,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180,controlSamples:[],speedSpans:[],samples:[],overshoot:false,dirLatched:false,dirMixed:false,dirTurned:false,fwdRun:null,latRun:null,supportBase:null,supportPeak:null,peakWindows:[],returnTouched:false,returnTouchAt:null,evidence:null});
+const freshSideCycle=():SideCycle=>({movingAt:null,peakStart:null,peakEnd:0,peakElbow:180,peakAmp:0,peakPosture:100,peakOther:180,otherBase:180,track:freshPeakTrack(),prevAt:null,prevAngle:180,returnSince:null,returnAccum:0,retMeas:0,retWinMeas:null,retQual:0,retNeedFresh:0,retQualified:false,retMax:0,retChannel:null,retAnchor:null,retThreshold:null,reopenAccum:0,reopened:false,frozenCycleMs:0,gapPending:false,scoring:true,controlMax:0,shiftMax:0,speedMax:0,sampleAt:null,sampleAngle:180,controlSamples:[],speedSpans:[],samples:[],overshoot:false,dirLatched:false,dirMixed:false,dirTurned:false,fwdRun:null,latRun:null,supportBase:null,supportPeak:null,peakWindows:[],returnTouched:false,returnTouchAt:null,evidence:null});
 /** Timestamped stability evidence: a point sample of the control penalty (held
  * until the next sample) or one angular-velocity window with its true span. */
 type TimedValue={t:number;v:number};
@@ -496,6 +496,15 @@ export class ExtendedExerciseTracker {
     this.frozenSpans.push({from,to});
     if(this.frozenSpans.length>32)this.frozenSpans=this.frozenSpans.slice(-32);
   }
+  /** Wrapper → tracker trace notification (hammer curl only, round 4): a
+   * wrapper-layer state transition the gate itself cannot see — during a
+   * wrapper evidence freeze its frames simply stop arriving. Recorded on
+   * the gate trace so a sample blackout can be attributed to the layer
+   * that caused it (freeze episode vs presence loss vs no frames at all). */
+  noteTraceTransition(kind:'freeze'|'presence',phase:'start'|'end'|'lost'|'found',at:number,reason?:string){
+    if(this.type!=='hammer_curl'||!Number.isFinite(at))return;
+    this.gateTrace.addEvent({k:kind,t:at,phase,reason:reason?reason.slice(0,120):undefined});
+  }
   private frozenOverlap(from:number,to:number):number{
     let ms=0;for(const s of this.frozenSpans)ms+=Math.max(0,Math.min(to,s.to)-Math.max(from,s.from));
     return ms;
@@ -547,6 +556,22 @@ export class ExtendedExerciseTracker {
   private controlPenalty=0;
   private hammerSides:[SideCycle,SideCycle]=[freshSideCycle(),freshSideCycle()];
   private hammerPending:SideCompletion|null=null;
+  /** Round 4 (2026-11-15, set-3 verdict): peak-LATCHED hammer cycles an
+   * interrupt met mid-return are PARKED here (one per side) instead of
+   * destroyed. The set-3 trace showed the old policy converting any
+   * >~1 s tracking blackout into a guaranteed zero for an in-flight
+   * cycle: the set's one bilateral latch was wiped 1.3 s into a 6.4 s
+   * sample blackout although the samples that resumed at full extension
+   * proved the return happened inside it. A parked cycle leaves the
+   * live gate (its side starts fresh) but keeps collecting RETURN
+   * evidence from measured frames (see the shadow feed in
+   * updateHammerCurl); the blackout gap itself is "unknown" — it earns
+   * no credit, advances no window, and demands fresh evidence after it,
+   * exactly the freeze-pause principles extended across the gap.
+   * finalizeSetEnd is the only evaluator: parked cycles count there, or
+   * never. Unlatched cycles are never parked — they keep the old loss
+   * behaviour exactly. */
+  private hammerParked:[SideCycle|null,SideCycle|null]=[null,null];
   /** The most recent measurement the hammer gate processed — set-end
    * finalization evaluates and emits against it (never a fabricated one). */
   private lastHammerMeasurement:Measurement|null=null;
@@ -693,18 +718,28 @@ export class ExtendedExerciseTracker {
     // WS2: a hammer pending completion that does not survive this interrupt
     // (after every preservation path below has had its say) was wiped.
     const pendingBefore=this.hammerPending;
+    const lastBefore=this.last;
     // Gate trace (round 3): snapshot any peak-latched, still-uncompleted
     // cycle BEFORE the preservation/reset logic below decides its fate, so
     // a future verdict can see an unevaluated cycle existed and exactly how
     // far its return had gotten. Only the preserveHammerCycle path keeps
-    // the cycle itself alive; every other interrupt loses it and tallies.
+    // the cycle itself alive in the live gate.
+    // Round 4: every other interrupt PARKS a latched cycle whose side's
+    // park slot is free (the move itself is applied after the reset
+    // below, alongside the other preservation restores) — it leaves the
+    // live gate but keeps collecting return evidence for set-end
+    // finalization. Only a latched cycle whose slot is already occupied
+    // is still destroyed here, and only it tallies pendingCyclesLost.
+    const parkCycles:[SideCycle|null,SideCycle|null]=[null,null];
     if(this.type==='hammer_curl'){
       const keptCycle=!!opts?.preserveHammerCycle;
       for(const s of [0,1] as const){
         const cyc=this.hammerSides[s];
         if(cyc.peakStart!==null){
-          this.gateTrace.addEvent({k:'loss',t:this.last??0,side:s,kept:keptCycle,peakElbow:Math.round(cyc.peakElbow*10)/10,qualMs:Math.round(cyc.retQual),retMax:Math.round(cyc.retMax*10)/10});
-          if(!keptCycle)this.gateCounters.pendingCyclesLost[s]++;
+          const parked=!keptCycle&&this.hammerParked[s]===null;
+          if(parked)parkCycles[s]=cyc;
+          this.gateTrace.addEvent({k:'loss',t:this.last??0,side:s,kept:keptCycle,parked,peakElbow:Math.round(cyc.peakElbow*10)/10,qualMs:Math.round(cyc.retQual),retMax:Math.round(cyc.retMax*10)/10});
+          if(!keptCycle&&!parked)this.gateCounters.pendingCyclesLost[s]++;
         }
       }
     }
@@ -747,6 +782,12 @@ export class ExtendedExerciseTracker {
     if(wasReady&&!ready&&!preserve)this.strictRearm=true;
     if(keepCycle&&raiseSides&&lastPeak){this.raiseSides=raiseSides;this.raisePending=raisePending;this.lastPeak=lastPeak;}
     if(keepHammer&&hammerSides&&hammerPeak){this.hammerSides=hammerSides;this.hammerPending=hammerPending;this.lastPeak=hammerPeak;}
+    // Round 4: apply the park moves decided above. resetCycle() does not
+    // touch hammerParked, and a preserved cycle (keepHammer) never parks —
+    // parkCycles only holds cycles from the non-preserved path. The gap
+    // flag marks that the next frame this cycle is shadow-fed spans the
+    // blackout: unknown evidence, handled in updateHammerCurl.
+    for(const s of [0,1] as const){const p=parkCycles[s];if(p){p.gapPending=true;this.hammerParked[s]=p;}}
     if(pendingBefore&&!this.hammerPending)this.gateCounters.hammerPendingWipes++;
     if(peerPeaks)this.lastPeak=peerPeaks;
     if(!keepCycle&&!peerPeaks&&!keepHammer)this.cycleHoleStart=null;
@@ -762,6 +803,11 @@ export class ExtendedExerciseTracker {
       this.diagnostics={...this.diagnostics,stage:'cannot_assess'};
       this.metrics={...this.metrics,feedback:copy,poseFeedback:{...this.metrics.poseFeedback,message:copy}};
     }
+    // Gate trace (round 4): the presence boundary — the gate stopped
+    // consuming measured frames here, for this reason, as of the last
+    // measured frame. The matching 'found' fires in update() when a
+    // frame measures again. Hammer only, like every trace record.
+    if(this.type==='hammer_curl')this.gateTrace.addEvent({k:'presence',t:lastBefore??0,phase:'lost',reason:reason.slice(0,120)});
     return this.metrics;
   }
   /** Transient-gate interrupt inside update(): the frame stream hiccupped — a
@@ -1228,7 +1274,13 @@ export class ExtendedExerciseTracker {
    * later — set end simply settles it now). A cycle cut short by tracking
    * loss has only its collected samples: if they do not satisfy the rule it
    * stays uncounted — no exception, no estimate. Every pending cycle's
-   * outcome is recorded as a gate-trace 'end' event either way. */
+   * outcome is recorded as a gate-trace 'end' event either way.
+   * Round 4: cycles an interrupt PARKED mid-blackout are evaluated here
+   * too, over the pre-gap evidence plus whatever the shadow feed collected
+   * after the gap — the gap itself contributed nothing either way. And
+   * every call closes with a summary 'end' event (final=true), so the
+   * trace positively records that finalization ran and what it settled,
+   * even when nothing was left pending. */
   finalizeSetEnd():boolean{
     if(this.type!=='hammer_curl')return false;
     const f=this.lastHammerMeasurement;if(!f)return false;
@@ -1242,10 +1294,37 @@ export class ExtendedExerciseTracker {
       if(qualifies){this.completeHammerReturn(s,cyc,f,now);counted=true;}
       this.gateTrace.addEvent({k:'end',t:now,side:s,counted,peakElbow:Math.round(cyc.peakElbow*10)/10,qualMs:Math.round(cyc.retQual),retMax:Math.round(cyc.retMax*10)/10});
     }
+    // Parked cycles (round 4): settled on the qualification their shadow
+    // feed LATCHED (see updateHammerCurl) — the live predicate, satisfied
+    // at the moment the live loop would have completed the cycle, with
+    // the blackout gap contributing nothing either way. Completion runs
+    // through completeHammerReturn, which consumes the cycle out of
+    // hammerSides[s] — so the parked cycle is swapped into the live slot
+    // for the call and the side's current cycle (fresh, or mid-excursion
+    // on a later rep) is restored after; the pairing machinery sees
+    // exactly the state the live path would have produced. A parked
+    // cycle that never latched qualified is dropped here — finalization
+    // is its last evaluator.
+    let parkedSeen=0,parkedCredited=0;
+    for(const s of [0,1] as const){
+      const park=this.hammerParked[s];if(!park)continue;
+      this.hammerParked[s]=null;parkedSeen++;
+      let counted=false;
+      if(park.retQualified){
+        const active=this.hammerSides[s];
+        this.hammerSides[s]=park;
+        this.completeHammerReturn(s,park,f,now);
+        this.hammerSides[s]=active;
+        counted=true;parkedCredited++;this.gateCounters.parkedCyclesCredited[s]++;
+      }else this.gateCounters.parkedCyclesLost[s]++;
+      this.gateTrace.addEvent({k:'end',t:now,side:s,parked:true,counted,peakElbow:Math.round(park.peakElbow*10)/10,qualMs:Math.round(park.retQual),retMax:Math.round(park.retMax*10)/10});
+    }
+    let pendingFlushed=false;
     if(this.hammerPending){
-      const pending=this.hammerPending;this.hammerPending=null;
+      const pending=this.hammerPending;this.hammerPending=null;pendingFlushed=true;
       if(this.emitHammerRep([pending],f,this.peerPeakFor(pending,this.hammerSides)))emitted=true;
     }
+    this.gateTrace.addEvent({k:'end',t:now,final:true,parkedSeen,parkedCredited,parkedDropped:parkedSeen-parkedCredited,pendingFlushed});
     return emitted;
   }
 
@@ -1377,6 +1456,49 @@ export class ExtendedExerciseTracker {
       const cur=this.hammerSides[s];
       cur.prevAt=now;cur.prevAngle=e;
       if(replaced){cur.track.prevAt=now;cur.track.prevDepth=80-e;}
+    }
+    // Round 4 shadow feed: parked latched cycles keep collecting RETURN
+    // evidence from measured frames. The rules mirror the live loop's
+    // return accounting exactly — measured time only, interpolated
+    // in-zone credit capped per frame, window lapse judged on the
+    // measured clock, basis changes clear the evidence — with one
+    // extension: an interval that spans the blackout (the first frame
+    // after parking, any frozen overlap, or a gap past the tracker's own
+    // 750 ms frame-gap guard) is UNKNOWN evidence. It advances nothing,
+    // credits nothing, lapses nothing, and — like a freeze hole — demands
+    // fresh qualifying evidence after it. The moment the accumulated
+    // evidence satisfies the live completion predicate (150 ms within
+    // the window, fresh-after-gap met), the cycle LATCHES qualified —
+    // the same instant the live loop would have completed it — and later
+    // window lapses cannot revoke it, exactly as a live completion
+    // cannot be revoked. Only the EMISSION is deferred: finalizeSetEnd
+    // settles latched-qualified cycles, so a parked cycle never fires
+    // mid-set and never counts on evidence the live gate did not see.
+    for(const s of [0,1] as const){
+      const park=this.hammerParked[s];if(!park)continue;
+      const e=elbows[s],prevAt=park.prevAt;
+      park.retMax=Math.max(park.retMax,e);
+      if(prevAt===null){park.prevAt=now;park.prevAngle=e;continue;}
+      if(!park.retQualified){
+        const frozenMs=this.frozenOverlap(prevAt,now);
+        const gap=park.gapPending||frozenMs>0||now-prevAt>750;
+        if(gap)park.retNeedFresh=RETURN_FRESH_AFTER_FREEZE_MS;
+        else{
+          park.retMeas+=now-prevAt;
+          if(park.retChannel!==f.channel){park.retChannel=f.channel;park.retQual=0;park.retWinMeas=null;park.returnSince=null;}
+          if(park.retWinMeas!==null&&park.retQual>0&&park.retMeas-park.retWinMeas>RETURN_WINDOW_MS){this.gateCounters.returnWindowExpirations[s]++;park.retQual=0;park.retWinMeas=null;park.returnSince=null;}
+          const portion=zonePortion(park.prevAngle,e,RETURN_ABSOLUTE_DEG,true,prevAt,now);
+          if(portion.ms>0){
+            const credit=Math.min(RETURN_FRAME_CAP_MS,portion.ms);
+            if(park.retWinMeas===null){park.retWinMeas=park.retMeas-(now-portion.start);park.returnSince=portion.start;}
+            park.retQual+=credit;this.gateCounters.returnQualifyingMs[s]+=credit;
+            if(park.retNeedFresh>0)park.retNeedFresh=Math.max(0,park.retNeedFresh-credit);
+          }
+          if(park.retQual>=RETURN_HOLD_MS&&park.retNeedFresh<=0)park.retQualified=true;
+        }
+      }
+      park.gapPending=false;
+      park.prevAt=now;park.prevAngle=e;
     }
     // Live gate trace (round 3): one sample per processed frame, gate state
     // read back AFTER both sides processed, so the phases are the frame's
@@ -1914,6 +2036,11 @@ export class ExtendedExerciseTracker {
     // cannot-assess state; the assessability map refreshes with it.
     this.unmeasurableSince=null;
     if(this.cannotAssess){this.cannotAssess=false;this.metrics.axisAssessment=this.assessments();}
+    // Gate trace (round 4): re-acquisition — the first measured frame
+    // after a tracking-lost / cannot-assess stage closes the presence
+    // boundary the interrupt opened (the matching 'lost' rode out of
+    // interrupt() with the last pre-loss frame's time).
+    if(this.type==='hammer_curl'&&(this.diagnostics.stage==='tracking_lost'||this.diagnostics.stage==='cannot_assess'))this.gateTrace.addEvent({k:'presence',t:now,phase:'found'});
     const prevMeasuredAt=this.last;
     this.last=now;this.cycleHoleStart=null;this.times=[...this.times,now].filter(t=>now-t<=2000);
     this.diagnostics={...this.diagnostics,fps:this.times.length>1?Math.round((this.times.length-1)*1000/(now-this.times[0])):0,confidence:f.confidence,side:f.side||null,angle:f.angle,basis:f.basis,motion:f.motion};

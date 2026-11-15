@@ -105,11 +105,20 @@ export class AdaptiveRecognition {
   return (this.base as {finalizeSetEnd?:()=>boolean}).finalizeSetEnd?.()??false;
  }
  private noteFreezeStart(capturedAt:number){
-  if(this.freezeEpisodeStart===null){this.wrapperCounters.freezeEpisodes++;this.freezeEpisodeStart=capturedAt;}
+  if(this.freezeEpisodeStart===null){this.wrapperCounters.freezeEpisodes++;this.freezeEpisodeStart=capturedAt;this.noteTraceTransition('freeze','start',capturedAt);}
  }
  private closeFreeze(at:number|null){
   if(this.freezeEpisodeStart===null||at===null)return;
-  this.wrapperCounters.frozenMs+=Math.max(0,at-this.freezeEpisodeStart);this.freezeEpisodeStart=null;
+  this.wrapperCounters.frozenMs+=Math.max(0,at-this.freezeEpisodeStart);this.freezeEpisodeStart=null;this.noteTraceTransition('freeze','end',at);
+ }
+ /** Round 4: report wrapper-layer transitions to the base tracker's gate
+  * trace (hammer curl only — the base ignores every other type), so a
+  * sample blackout in the trace can be attributed to the freeze layer
+  * that held the frames. Fired only on real episode boundaries:
+  * noteFreezeStart's null→set transition and closeFreeze's open→closed
+  * one (a fed frame resuming, or the wrapper's own interrupt). */
+ private noteTraceTransition(kind:'freeze'|'presence',phase:'start'|'end'|'lost'|'found',at:number){
+  (this.base as {noteTraceTransition?:(kind:'freeze'|'presence',phase:'start'|'end'|'lost'|'found',at:number)=>void}).noteTraceTransition?.(kind,phase,at);
  }
  interrupt(reason='识别已暂停，继续后识别下一个完整动作'){
   this.closeFreeze(this.lastFrameAt);

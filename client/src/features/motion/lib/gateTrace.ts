@@ -26,20 +26,49 @@ export const TRACE_FLAG = { scorable: 1, hole: 2, imageBasis: 4, startPose: 8 } 
 
 export interface GateTraceEvent {
   /** 'loss': an interrupt met a pending (peak-latched, uncompleted) cycle.
-   * 'end': set-end finalization evaluated a still-pending cycle. */
-  k: 'loss' | 'end'
+   * 'end': set-end finalization evaluated a still-pending cycle — or, with
+   * final=true, the one summary record of everything a finalizeSetEnd call
+   * did (emitted on EVERY call, so a set whose cycles all died mid-set
+   * still proves finalization ran).
+   * 'freeze': a wrapper evidence-freeze episode boundary (round 4).
+   * 'presence': the gate stopped / resumed consuming measured frames
+   * (round 4) — together with 'freeze', these let a verdict attribute a
+   * sample blackout to a layer: freeze episodes are the wrapper holding
+   * frames it received; presence loss is an interrupt (its reason rides
+   * along); a gap with neither is the pose pipeline producing nothing. */
+  k: 'loss' | 'end' | 'freeze' | 'presence'
   t: number
-  side: 0 | 1
+  /** Cycle events (loss / per-cycle end) only: which side's cycle. */
+  side?: 0 | 1
   /** loss only: true when the cycle survived the interrupt (preserved). */
   kept?: boolean
+  /** loss: true when the cycle was PARKED for set-end re-evaluation
+   * instead of destroyed (round 4). end: true when the evaluated cycle
+   * was a parked one. */
+  parked?: boolean
   /** end only: true when finalization counted the pending cycle. */
   counted?: boolean
-  /** The pending cycle's latched peak elbow (degrees). */
-  peakElbow: number
-  /** Decision qualifying ms the cycle had accumulated when captured. */
-  qualMs: number
-  /** Highest elbow the cycle's return phase reached. */
-  retMax: number
+  /** freeze / presence only: the transition direction — freeze
+   * 'start' | 'end', presence 'lost' | 'found'. */
+  phase?: 'start' | 'end' | 'lost' | 'found'
+  /** presence 'lost' only: the interrupt reason that stopped the gate. */
+  reason?: string
+  /** end only: true on the single per-call summary event. */
+  final?: boolean
+  /** final summary only: parked cycles this call evaluated / credited /
+   * dropped (seen = credited + dropped). */
+  parkedSeen?: number
+  parkedCredited?: number
+  parkedDropped?: number
+  /** final summary only: a completed single was flushed out of the
+   * 600 ms pairing window by this call. */
+  pendingFlushed?: boolean
+  /** Cycle events only: the pending cycle's latched peak elbow (degrees). */
+  peakElbow?: number
+  /** Cycle events only: decision qualifying ms accumulated when captured. */
+  qualMs?: number
+  /** Cycle events only: highest elbow the return phase reached. */
+  retMax?: number
 }
 
 export interface GateTracePayload {
@@ -83,8 +112,25 @@ export class GateTraceBuffer {
   }
 
   addEvent(e: GateTraceEvent) {
+    const transition = e.k === 'freeze' || e.k === 'presence';
+    // Transition coalescing (round 4): a transition that repeats the
+    // immediately preceding one (same kind, same phase — an interrupt
+    // storm re-firing 'lost', a freeze boundary re-reported) carries no
+    // new information; dropping it keeps flicker from flooding the cap.
+    if (transition) {
+      const last = this.events[this.events.length - 1];
+      if (last && last.k === e.k && last.phase === e.phase) return;
+    }
     this.events.push(e);
-    if (this.events.length > GATE_TRACE_MAX_EVENTS) this.events.splice(0, this.events.length - GATE_TRACE_MAX_EVENTS);
+    while (this.events.length > GATE_TRACE_MAX_EVENTS) {
+      // Evict the oldest TRANSITION event first: cycle loss/end records
+      // are the counting evidence a verdict needs, while transitions are
+      // attribution context whose totals also live in the gate counters
+      // (freezeEpisodes / frozenMs). Only when no transition remains does
+      // the oldest event overall go (the round-3 tail-keep behaviour).
+      const idx = this.events.findIndex(x => x.k === 'freeze' || x.k === 'presence');
+      this.events.splice(idx >= 0 ? idx : 0, 1);
+    }
   }
 
   get size() { return this.count; }

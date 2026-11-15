@@ -70,26 +70,44 @@ test('set end: a pending cycle whose return never reached the rule is NOT counte
   assert.deepEqual(r.tracker.gateCountersSnapshot().returnsConfirmed,[0,0]);
   const trace=r.tracker.gateTraceSnapshot();
   assert.ok(trace);
-  const ends=trace.events.filter(e=>e.k==='end');
+  const ends=trace.events.filter(e=>e.k==='end'&&!e.final);
   assert.equal(ends.length,2);
   for(const e of ends){assert.equal(e.counted,false);assert.ok(e.retMax>=138&&e.retMax<=142,`retMax ${e.retMax}`);}
+  // Round 4: the call also left its summary record — finalization ran,
+  // and there was nothing parked for it to settle.
+  const summary=trace.events.filter(e=>e.k==='end'&&e.final);
+  assert.equal(summary.length,1);
+  assert.equal(summary[0].parkedSeen,0);
 });
 
 test('set end: a return truncated by tracking loss stays uncounted — loss creates no evidence',()=>{
   const r=rig(148);
   r.rampBoth(70,450);r.rampBoth(150,450);r.hold(150,150,100); // ~100 ms of qualifying dwell: honestly short of 150 ms
-  r.tracker.interrupt(); // tracking loss destroys the pending cycles
+  r.tracker.interrupt(); // tracking loss: round 4 PARKS the pending cycles instead of destroying them
+  // Parked, not lost: no loss tally, and the loss events say so.
+  assert.deepEqual(r.tracker.gateCountersSnapshot().pendingCyclesLost,[0,0]);
+  const trace0=r.tracker.gateTraceSnapshot();
+  assert.ok(trace0);
+  const losses=trace0.events.filter(e=>e.k==='loss');
+  assert.equal(losses.length,2);
+  for(const e of losses){assert.equal(e.kept,false);assert.equal(e.parked,true);assert.ok(e.qualMs>0&&e.qualMs<150,`qual at loss ${e.qualMs}`);}
+  // No post-gap evidence ever arrives, so finalization evaluates the
+  // parked cycles on their pre-gap samples alone: ~100 ms is short of
+  // the rule and stays uncounted — parking preserves the QUESTION, it
+  // does not manufacture the answer.
   r.tracker.finalizeSetEnd();
   assert.equal(r.tracker.metrics.reps,0);
   assert.deepEqual(r.tracker.gateCountersSnapshot().returnsConfirmed,[0,0]);
-  assert.deepEqual(r.tracker.gateCountersSnapshot().pendingCyclesLost,[1,1]);
+  assert.deepEqual(r.tracker.gateCountersSnapshot().parkedCyclesCredited,[0,0]);
+  assert.deepEqual(r.tracker.gateCountersSnapshot().parkedCyclesLost,[1,1]);
   const trace=r.tracker.gateTraceSnapshot();
   assert.ok(trace);
-  const losses=trace.events.filter(e=>e.k==='loss');
-  assert.equal(losses.length,2);
-  for(const e of losses){assert.equal(e.kept,false);assert.ok(e.qualMs>0&&e.qualMs<150,`qual at loss ${e.qualMs}`);}
-  // The cycles were already gone when finalization ran: nothing to evaluate.
-  assert.equal(trace.events.filter(e=>e.k==='end').length,0);
+  const ends=trace.events.filter(e=>e.k==='end'&&e.parked);
+  assert.equal(ends.length,2);
+  for(const e of ends)assert.equal(e.counted,false);
+  const summary=trace.events.filter(e=>e.k==='end'&&e.final);
+  assert.equal(summary.length,1);
+  assert.equal(summary[0].parkedSeen,2);assert.equal(summary[0].parkedCredited,0);assert.equal(summary[0].parkedDropped,2);
 });
 
 test('set end: finalization is a no-op for other exercises and before any frame',()=>{

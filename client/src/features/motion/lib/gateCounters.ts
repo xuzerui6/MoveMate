@@ -56,8 +56,18 @@ export interface GateCounters {
   /** Peak-latched, still-uncompleted cycles destroyed by an interrupt
    * (round 3). The pending cycle's state at that moment rides the gate
    * trace's 'loss' events; cycles an interrupt PRESERVED are events too
-   * but are not counted here — this tally is losses only. */
+   * but are not counted here — this tally is losses only. Since round 4
+   * a latched cycle an interrupt cannot park (its side's park slot is
+   * already occupied) is the only way this tally still moves. */
   pendingCyclesLost: [number, number]
+  /** Round 4 (set-3 verdict): peak-latched cycles a tracking blackout
+   * PARKED instead of destroying, settled by set-end finalization —
+   * credited when post-gap evidence satisfied the return rule, lost
+   * when it never did. The two tallies together account for every
+   * parked cycle finalization evaluated (their sum is the trace summary
+   * event's parkedSeen accumulated over the set's finalize calls). */
+  parkedCyclesCredited: [number, number]
+  parkedCyclesLost: [number, number]
 }
 export const emptyGateCounters = (): GateCounters => ({
   formInterrupts: {}, softInterrupts: {}, framingRejects: 0, freezeEpisodes: 0, frozenMs: 0,
@@ -66,6 +76,7 @@ export const emptyGateCounters = (): GateCounters => ({
   returnMaxima: [[], []], returnQualifyingMs: [0, 0], returnWindowExpirations: [0, 0],
   returnCompletionsAbsolute: [0, 0], returnCompletionsRelative: [0, 0],
   cycleReplacements: [0, 0], freezeInvalidatedCycles: [0, 0], pendingCyclesLost: [0, 0],
+  parkedCyclesCredited: [0, 0], parkedCyclesLost: [0, 0],
 });
 export function bumpReason(map: Record<string, number>, reason: string) { map[reason] = (map[reason] || 0) + 1; }
 export function cloneGateCounters(c: GateCounters): GateCounters {
@@ -84,6 +95,8 @@ export function cloneGateCounters(c: GateCounters): GateCounters {
     cycleReplacements: [c.cycleReplacements[0], c.cycleReplacements[1]],
     freezeInvalidatedCycles: [c.freezeInvalidatedCycles[0], c.freezeInvalidatedCycles[1]],
     pendingCyclesLost: [c.pendingCyclesLost[0], c.pendingCyclesLost[1]],
+    parkedCyclesCredited: [c.parkedCyclesCredited[0], c.parkedCyclesCredited[1]],
+    parkedCyclesLost: [c.parkedCyclesLost[0], c.parkedCyclesLost[1]],
   };
 }
 /** Sum two partial counter sets (the adaptive wrapper merges its own tallies
@@ -111,5 +124,7 @@ export function mergeGateCounters(a: GateCounters, b: GateCounters): GateCounter
     cycleReplacements: [a.cycleReplacements[0] + b.cycleReplacements[0], a.cycleReplacements[1] + b.cycleReplacements[1]],
     freezeInvalidatedCycles: [a.freezeInvalidatedCycles[0] + b.freezeInvalidatedCycles[0], a.freezeInvalidatedCycles[1] + b.freezeInvalidatedCycles[1]],
     pendingCyclesLost: [a.pendingCyclesLost[0] + b.pendingCyclesLost[0], a.pendingCyclesLost[1] + b.pendingCyclesLost[1]],
+    parkedCyclesCredited: [a.parkedCyclesCredited[0] + b.parkedCyclesCredited[0], a.parkedCyclesCredited[1] + b.parkedCyclesCredited[1]],
+    parkedCyclesLost: [a.parkedCyclesLost[0] + b.parkedCyclesLost[0], a.parkedCyclesLost[1] + b.parkedCyclesLost[1]],
   };
 }

@@ -73,10 +73,14 @@ export function recognitionDiagnosticPayload(userId: number, input: any, receive
     return Array.isArray(v) ? [one(v[0]), one(v[1])] : ['', ''];
   };
   /* Round 3 gate trace: [t, leftDeg, rightDeg, flags, leftPhase, leftQualMs,
-   * rightPhase, rightQualMs] samples plus loss/end events. Rebuilt row by
+   * rightPhase, rightQualMs] samples plus loss/end events. Round 4 adds
+   * freeze/presence transition events, a parked flag on cycle events and
+   * the final summary end event. Rebuilt row by
    * row with the client's own caps re-enforced server-side (2400 samples
    * tail-kept, 64 events) so a hostile or buggy client cannot bloat the
-   * stored row; anything malformed is dropped, never stored raw. */
+   * stored row; anything malformed is dropped, never stored raw. Old-shape
+   * traces (loss/end only, no parked/final/transition fields) rebuild
+   * exactly as before — the new keys are copied only when present. */
   const clampInt = (v: unknown, hi: number) => typeof v === 'number' && Number.isFinite(v) && v > 0 ? Math.min(hi, Math.floor(v)) : 0;
   const degOrAbsent = (v: unknown) => v === -1 ? -1 : deg(v);
   const trace = (v: any) => {
@@ -89,9 +93,21 @@ export function recognitionDiagnosticPayload(userId: number, input: any, receive
     if (!samples.length) return null;
     const events: Record<string, unknown>[] = [];
     if (Array.isArray(v.events)) for (const e of v.events.slice(-64)) {
-      if (!e || typeof e !== 'object' || (e.k !== 'loss' && e.k !== 'end')) continue;
+      if (!e || typeof e !== 'object') continue;
+      if (e.k === 'freeze') { events.push({ k: 'freeze', t: clampInt(e.t, 1e9), phase: e.phase === 'end' ? 'end' : 'start' }); continue; }
+      if (e.k === 'presence') {
+        const ev: Record<string, unknown> = { k: 'presence', t: clampInt(e.t, 1e9), phase: e.phase === 'found' ? 'found' : 'lost' };
+        if (typeof e.reason === 'string' && e.reason) ev.reason = e.reason.slice(0, 120);
+        events.push(ev); continue;
+      }
+      if (e.k !== 'loss' && e.k !== 'end') continue;
+      if (e.k === 'end' && e.final === true) {
+        events.push({ k: 'end', t: clampInt(e.t, 1e9), final: true, parkedSeen: clampInt(e.parkedSeen, 2), parkedCredited: clampInt(e.parkedCredited, 2), parkedDropped: clampInt(e.parkedDropped, 2), pendingFlushed: e.pendingFlushed === true });
+        continue;
+      }
       const ev: Record<string, unknown> = { k: e.k, t: clampInt(e.t, 1e9), side: e.side === 1 ? 1 : 0, peakElbow: deg(e.peakElbow), qualMs: clampInt(e.qualMs, 9999), retMax: deg(e.retMax) };
       if (e.k === 'loss') ev.kept = e.kept === true; else ev.counted = e.counted === true;
+      if (e.parked === true) ev.parked = true;
       events.push(ev);
     }
     return { v: 1, type: typeof v.type === 'string' ? v.type.slice(0, 64) : '', t0: samples[0][0], dropped: num(v.dropped), samples, events };
@@ -110,6 +126,7 @@ export function recognitionDiagnosticPayload(userId: number, input: any, receive
       returnCompletionsAbsolute: pair(c.returnCompletionsAbsolute), returnCompletionsRelative: pair(c.returnCompletionsRelative),
       cycleReplacements: pair(c.cycleReplacements), freezeInvalidatedCycles: pair(c.freezeInvalidatedCycles),
       pendingCyclesLost: pair(c.pendingCyclesLost),
+      parkedCyclesCredited: pair(c.parkedCyclesCredited), parkedCyclesLost: pair(c.parkedCyclesLost),
     },
     trace: trace(input.trace),
   };
