@@ -2,12 +2,22 @@
  * 运动局 API: CRUD + 加入/退出 + 确认开始/结束
  */
 import client from './client';
-import type { CreateGameData, Game, GameFilter, GameMeta, PaginatedResponse } from '../types';
+import type { ApiEnvelope, CreateGameData, Game, GameFilter, GameMeta, PaginatedResponse, Participant } from '../types';
 
-// 与 auth.ts 相同的解包约定：axios 拦截器解析出的是服务端信封
-// {code, message, data}，api 函数必须取内层 data 再交给页面。
+// 本文件的解包约定分两类，改任何一边前先看清消费方站在哪一边：
+// 拦截器只剥 axios 外壳，api 函数拿到的是服务端信封 {code, message, data}。
+// - fetchGameMeta 在 api 层用 unwrap() 取内层 data 再交给页面（与 auth.ts 同款）；
+// - 其余函数原样透传信封，返回类型如实声明为 ApiEnvelope<载荷>，由消费方
+//   自行取 .data（useGameDetail / gameStore / useChat 等历来如此）。把透传
+//   函数的声明改成载荷类型、或给它们擅自 unwrap，都会把消费方弄坏。
 function unwrap<T>(response: T | { data: T }): T {
   return (response as { data?: T }).data ?? (response as T);
+}
+
+/** 详情接口的内层载荷：局本体 + 成员名单（extractGameDetail 负责提取） */
+export interface GameDetailData {
+  game: Game;
+  members?: Participant[];
 }
 
 /** 建局表单数据（仅当前用户学校的校区/场地，服务端按学校过滤） */
@@ -19,7 +29,7 @@ export async function fetchGameMeta(): Promise<GameMeta> {
 /** 获取运动局列表（支持筛选） */
 export async function fetchGames(
   filter: GameFilter = {}
-): Promise<PaginatedResponse<Game>> {
+): Promise<ApiEnvelope<PaginatedResponse<Game>>> {
   const params: Record<string, unknown> = { ...filter };
   if (filter.size !== undefined) {
     params.page_size = filter.size;
@@ -29,7 +39,7 @@ export async function fetchGames(
 }
 
 /** 获取单个运动局详情 */
-export async function fetchGameDetail(id: string): Promise<Game> {
+export async function fetchGameDetail(id: string): Promise<ApiEnvelope<GameDetailData>> {
   return client.get(`/games/${id}`);
 }
 
@@ -48,32 +58,32 @@ export function extractGameDetail(res: any): Game {
 }
 
 /** 创建运动局 */
-export async function createGame(data: CreateGameData): Promise<Game> {
+export async function createGame(data: CreateGameData): Promise<ApiEnvelope<{ game: Game }>> {
   return client.post('/games', data);
 }
 
 /** 加入运动局 */
-export async function joinGame(gameId: string): Promise<Game> {
+export async function joinGame(gameId: string): Promise<ApiEnvelope<{ game: Game }>> {
   return client.post(`/games/${gameId}/join`);
 }
 
 /** 退出运动局 */
-export async function leaveGame(gameId: string): Promise<Game> {
+export async function leaveGame(gameId: string): Promise<ApiEnvelope<{ game: Game }>> {
   return client.post(`/games/${gameId}/leave`);
 }
 
 /** 签到 */
-export async function checkInGame(gameId: string): Promise<{ checked_in_at: string }> {
+export async function checkInGame(gameId: string): Promise<ApiEnvelope<{ checked_in_at: string }>> {
   return client.post(`/games/${gameId}/check-in`);
 }
 
 /** 发起人确认成员到场 */
-export async function confirmAttendance(gameId: string, userId: number | string): Promise<{ confirmed: boolean }> {
+export async function confirmAttendance(gameId: string, userId: number | string): Promise<ApiEnvelope<{ confirmed: boolean }>> {
   return client.post(`/games/${gameId}/attendance/confirm`, { user_id: Number(userId) });
 }
 
 /** 取消运动局（仅发起人） */
-export async function cancelGame(gameId: string): Promise<Game> {
+export async function cancelGame(gameId: string): Promise<ApiEnvelope<{ game: Game }>> {
   return client.post(`/games/${gameId}/cancel`);
 }
 
@@ -137,11 +147,11 @@ export async function removeMember(gameId: string, userId: number): Promise<{ re
 }
 
 /** 获取当前用户发起/加入的局 */
-export async function fetchMyGames(): Promise<Game[]> {
+export async function fetchMyGames(): Promise<ApiEnvelope<Game[]>> {
   return client.get('/users/me/games');
 }
 
 /** 从“我的局”移除已结束记录 */
-export async function removeMyGame(gameId: string): Promise<{ game_id: number }> {
+export async function removeMyGame(gameId: string): Promise<ApiEnvelope<{ game_id: number }>> {
   return client.delete(`/users/me/games/${gameId}`);
 }
