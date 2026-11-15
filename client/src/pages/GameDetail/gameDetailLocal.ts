@@ -11,6 +11,51 @@ import type { Game, Participant } from '../../types';
 /** 已有详情时刷新失败的小提示文案（大白话） */
 export const REFRESH_NOTICE = '网络有点慢，这个页面显示的是刚才的内容，正在重新读取…';
 
+/** 签到窗口在开始前 30 分钟开放（与服务端状态机 checkGameReady 同口径） */
+export const CHECK_IN_LEAD_MINUTES = 30;
+
+const beijingClock = new Intl.DateTimeFormat('zh-CN', {
+  timeZone: 'Asia/Shanghai',
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  hourCycle: 'h23',
+});
+
+function beijingPartsOf(d: Date): Record<string, string> {
+  return Object.fromEntries(beijingClock.formatToParts(d).map((p) => [p.type, p.value]));
+}
+
+/**
+ * 签到开放时间提示：成员/发起人在「招募中 / 满员」且签到窗口还没开时，
+ * 告诉用户签到几点开放（北京时间），免得对着没有签到入口的页面干等。
+ * 窗口已开、状态已推进（ready 等）、非成员 → 返回 null，不显示。
+ * 开放时刻 = 开始时间 − 30 分钟；不是今天开放则带上日期。
+ */
+export function checkInOpensHint(input: {
+  status: Game['status'] | string;
+  isMemberOrCreator: boolean;
+  startTime: string;
+  now?: Date;
+}): string | null {
+  if (!input.isMemberOrCreator) return null;
+  if (input.status !== 'recruiting' && input.status !== 'full') return null;
+  const start = new Date(input.startTime);
+  if (Number.isNaN(start.getTime())) return null;
+  const now = input.now ?? new Date();
+  const opensAt = new Date(start.getTime() - CHECK_IN_LEAD_MINUTES * 60_000);
+  if (opensAt.getTime() <= now.getTime()) return null;
+  const open = beijingPartsOf(opensAt);
+  const today = beijingPartsOf(now);
+  const hhmm = `${open.hour}:${open.minute}`;
+  const sameDay = open.year === today.year && open.month === today.month && open.day === today.day;
+  return sameDay
+    ? `签到将在 ${hhmm} 开放`
+    : `签到将在 ${Number(open.month)}月${Number(open.day)}日 ${hhmm} 开放`;
+}
+
 /**
  * 详情读取失败时的去向决策：
  * - 还没有加载出详情（首次进入）→ 整页错误（带重试入口）；

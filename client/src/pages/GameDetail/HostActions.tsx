@@ -8,6 +8,8 @@ import React, { useState } from 'react';
 interface Props {
   isCreator: boolean;
   gameState: string;
+  /** 签到窗口未开时的开放时刻提示（招募中/满员且开始在 30 分钟后才有值） */
+  checkInOpensHint?: string | null;
   onJoin: () => void;
   onLeave: () => void;
   onCancel: () => void;
@@ -25,6 +27,7 @@ type ConfirmType = 'cancel' | 'leave' | 'end' | null;
 const HostActions: React.FC<Props> = ({
   isCreator,
   gameState,
+  checkInOpensHint,
   onJoin,
   onLeave,
   onCancel,
@@ -103,6 +106,11 @@ const HostActions: React.FC<Props> = ({
       {/* ---- 成员（非发起人）：退出按钮 ---- */}
       {isMember && !isCreator && (
         <div className="ui-pages-gamedetail-hostactions-memberActions">
+          {checkInOpensHint && (
+            <p className="ui-pages-gamedetail-hostactions-closedHint">
+              {checkInOpensHint}，请按时到场。
+            </p>
+          )}
           {(gameState === 'ready' || gameState === 'in_progress') && (
             <button
               
@@ -126,6 +134,11 @@ const HostActions: React.FC<Props> = ({
       {/* ---- 发起人操作 ---- */}
       {isCreator && (
         <div className="ui-pages-gamedetail-hostactions-creatorActions">
+          {checkInOpensHint && (
+            <p className="ui-pages-gamedetail-hostactions-closedHint">
+              {checkInOpensHint}，开放后你和成员就可以签到了。
+            </p>
+          )}
           {(gameState === 'ready' || gameState === 'in_progress') && (
             <button
               
