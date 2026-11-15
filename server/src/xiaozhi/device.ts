@@ -30,7 +30,7 @@ export default async function handler(request: Request, response: Response) {
       identity.activated = false
       identity.activation = {
         code: ota.activation.code, challenge: ota.activation.challenge,
-        message: ota.activation.message || '请在小智控制台输入激活码',
+        message: ota.activation.message || '请在语音服务控制台输入激活码',
         expiresAt: Date.now() + Math.min(300_000, ota.activation.timeout_ms || 300_000),
       }
       writeIdentity(response, identity)
@@ -42,6 +42,6 @@ export default async function handler(request: Request, response: Response) {
     writeIdentity(response, identity)
     return response.status(200).json({ status: 'ready', mode })
   } catch (error) {
-    return response.status(502).json({ error: error instanceof Error ? error.message : '小智设备初始化失败' })
+    return response.status(502).json({ error: error instanceof Error ? error.message : '语音设备初始化失败' })
   }
 }
