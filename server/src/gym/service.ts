@@ -596,6 +596,27 @@ const axisStateSchema = z.union([
   z.object({ kind: z.literal("category"), category: z.enum(["sync", "slight", "alternating"]) }),
   z.object({ kind: z.literal("bands"), left: z.enum(["below", "shoulder", "over"]).optional(), right: z.enum(["below", "shoulder", "over"]).optional() }),
 ]);
+/** Per-rep evidence arrays are SANITIZED, never rejected (accumulator-poison
+ * fix, 2026-11-16 — the semantics motion.service's cleanMetrics applies on
+ * the standalone path, ported to this plan-workout schema, whose per-element
+ * range checks used to fail the whole operation on one stale entry): entries
+ * that are not finite numbers inside [0, max] are dropped in order, a
+ * wrong-typed field is ignored, and the score transform below truncates to
+ * count. The scalar sums keep their strict checks (the schema minimums plus
+ * actWorkout's count×100 consistency check), and depthBandCounts keeps its
+ * strict per-field ranges — only measured per-rep evidence is sanitized. */
+const evidenceArray = (max: number) =>
+  z
+    .unknown()
+    .transform((v): number[] | undefined =>
+      Array.isArray(v)
+        ? v.filter(
+            (n): n is number =>
+              typeof n === "number" && Number.isFinite(n) && n >= 0 && n <= max,
+          )
+        : undefined,
+    )
+    .optional();
 const actionSchema = z.object({
   operationId: z.string().min(1).max(80),
   version: z.number().int().positive(),
@@ -638,13 +659,14 @@ const actionSchema = z.object({
       leftReps: z.number().int().min(0).max(100000).optional(),
       rightReps: z.number().int().min(0).max(100000).optional(),
       /** Per-rep symmetry values (hammer curls): kept with the score so a
-       * restored set can aggregate symmetry by median, as the tracker does. */
-      symmetryValues: z.array(z.number().min(0).max(100)).max(100000).optional(),
+       * restored set can aggregate symmetry by median, as the tracker does.
+       * Sanitized per evidenceArray above, never a whole-operation reject. */
+      symmetryValues: evidenceArray(100),
       /** Step-3 evidence (2026-11-08): hammer peak-timing offsets and
        * front-raise per-side depth-band tallies, plus the set's axis
        * assessability map — kept with the score so a restored set presents
        * categories / unassessable axes instead of reverting them to numbers. */
-      symmetryOffsetsMs: z.array(z.number().min(0).max(10000)).max(100000).optional(),
+      symmetryOffsetsMs: evidenceArray(10000),
       depthBandCounts: z
         .object({
           left: z.object({ below: z.number().int().min(0).max(100000).optional(), shoulder: z.number().int().min(0).max(100000).optional(), over: z.number().int().min(0).max(100000).optional() }).optional(),
@@ -660,6 +682,11 @@ const actionSchema = z.object({
         })
         .optional(),
     })
+    .transform((s) => ({
+      ...s,
+      symmetryValues: s.symmetryValues?.slice(0, s.count),
+      symmetryOffsetsMs: s.symmetryOffsetsMs?.slice(0, s.count),
+    }))
     .optional(),
 });
 export async function actWorkout(uid: number, id: string, input: any, recognitionVersion?:unknown) {

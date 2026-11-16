@@ -125,9 +125,53 @@ test('step-3 axis assessments and per-rep evidence survive standalone sync and r
  await motion.sessionAction(s.id,uid,'resume',{},false,2);
  await assert.rejects(motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:acc,axisAssessment:{...assessment,symmetry:{kind:'category',category:'sideways'}}},false,2),/评分轴状态无效/);
  await assert.rejects(motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:acc,axisAssessment:{...assessment,symmetry:{kind:'unassessable',reason:' vibes '}}},false,2),/评分轴状态无效/);
- await assert.rejects(motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:{...acc,symmetryOffsetsMs:[1,2,3]}},false,2),/评分累计值无效/);
- await assert.rejects(motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:{...acc,symmetryOffsetsMs:[-5,400]}},false,2),/评分累计值无效/);
+ // Poison tolerance (2026-11-16): out-of-range offset entries are dropped,
+ // never a reason to reject the whole sync — one stale entry used to wedge
+ // every later progress call and the finish behind it (评分累计值无效).
+ const dropped=await motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:{...acc,symmetryOffsetsMs:[375,14000]}},false,2);
+ assert.deepEqual(dropped.metrics.scoreAccumulator.symmetryOffsetsMs,[375]);
+ const capped=await motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:{...acc,symmetryOffsetsMs:[1,2,3]}},false,2);
+ assert.deepEqual(capped.metrics.scoreAccumulator.symmetryOffsetsMs,[1,2]);
+ const negged=await motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:{...acc,symmetryOffsetsMs:[-5,400]}},false,2);
+ assert.deepEqual(negged.metrics.scoreAccumulator.symmetryOffsetsMs,[400]);
  await motion.sessionAction(s.id,uid,'finish',{},false,2);
+});
+
+test('a poisoned accumulator no longer wedges the finish — progress and finish sanitize and the session settles',async()=>{
+ const s=await motion.createSession(uid,{id:randomUUID(),sportType:'hammer_curl',source:'camera'},2);
+ // The exact stuck-page shape: an accumulator carrying one offset minted
+ // from a >10 s stale cross-side peak (plus one stale symmetry value),
+ // replayed identically by every progress sync and by the frozen finish.
+ const poisoned={count:2,total:180,depth:185,stability:175,trunk:180,symmetry:0,symmetryOffsetsMs:[375,15900],symmetryValues:[90,140]};
+ const p=await motion.sessionAction(s.id,uid,'progress',{reps:2,scoreAccumulator:poisoned},false,2);
+ assert.deepEqual(p.metrics.scoreAccumulator.symmetryOffsetsMs,[375]);
+ assert.deepEqual(p.metrics.scoreAccumulator.symmetryValues,[90]);
+ const done=await motion.sessionAction(s.id,uid,'finish',{reps:2,scoreAccumulator:poisoned},false,2);
+ assert.equal(done.status,'finished');assert.equal(done.xpEarned,4);
+ assert.deepEqual(done.metrics.scoreAccumulator.symmetryOffsetsMs,[375]);
+ // Settlement stays idempotent: the retried finish returns the settled row.
+ assert.equal((await motion.sessionAction(s.id,uid,'finish',{reps:2,scoreAccumulator:poisoned},false,2)).xpEarned,4);
+});
+
+test('a poisoned accumulator no longer wedges a PLAN set — the gym schema sanitizes evidence the same way',async()=>{
+ const exerciseId=(definitions as any).hammer_curl.exerciseIds[0];
+ let w=await gym.startWorkout(uid,{id:randomUUID(),free:{exercises:[{exerciseId,sets:[{reps:3}]}]}});
+ const act=(action:string,extra:any={})=>gym.actWorkout(uid,w.id,{operationId:randomUUID(),version:w.version,action,setId:w.sets[w.cursor]?.id,...extra},2);
+ w=await act('start',{inputMode:'camera'});
+ // The same stuck-set shape through the plan entry: the zod schema used to
+ // reject the whole operation on the 15900 entry (and on the 140 value).
+ const poisoned={count:2,total:180,depth:185,stability:175,trunk:180,symmetry:0,symmetryOffsetsMs:[375,15900],symmetryValues:[90,140]};
+ w=await act('progress',{reps:2,score:poisoned});
+ assert.deepEqual(w.sets[0].score.symmetryOffsetsMs,[375]);
+ assert.deepEqual(w.sets[0].score.symmetryValues,[90]);
+ // A wrong-typed evidence field is ignored, never a whole-operation reject.
+ w=await act('progress',{reps:2,score:{...poisoned,symmetryOffsetsMs:'junk'}});
+ assert.equal(w.sets[0].score.symmetryOffsetsMs,undefined);
+ // Scalar sums stay strict on this path too (total beyond count×100).
+ await assert.rejects(act('progress',{reps:2,score:{...poisoned,total:201}}),/识别评分与次数不一致/);
+ w=await act('complete',{reps:2,score:poisoned});
+ assert.deepEqual(w.sets[0].score.symmetryOffsetsMs,[375]);
+ w=await act('finish');assert.equal(w.phase,'finished');
 });
 
 test('axis-validity suspension (control) survives standalone + plan sync; XP stays rep-derived',async()=>{

@@ -160,22 +160,37 @@ function cleanMetrics(data:any, previous:any={}) {
       out.scoreAccumulator[key]=n;
     }
     // Per-rep symmetry values (hammer curls, recorded by the client tracker):
-    // validated and stored with the accumulator, and the set symmetry below is
-    // their median — without this the stored record would silently revert the
+    // stored with the accumulator, and the set symmetry below is their
+    // median — without this the stored record would silently revert the
     // axis to the mean of the symmetry sum on every sync.
+    // Per-rep evidence arrays are SANITIZED, never rejected (accumulator-
+    // poison fix, 2026-11-16): one out-of-range entry used to throw
+    // 评分累计值无效 and wedge every later progress sync AND the finish, so
+    // a completed set could never save. Offending entries are dropped, not
+    // clamped — a clamped value would still drag the median with fabricated
+    // evidence, while a dropped entry honestly records that the rep
+    // contributed no usable measurement. The scalar sums above keep their
+    // strict checks: the client only ever adds capped per-rep values to
+    // them and the derived formScore is computed from them, so silently
+    // rewriting one would fabricate a score rather than drop evidence.
+    // (depthBandCounts keeps its strict checks for the same reason in
+    // reverse: its tallies are client-side counters incremented once per
+    // scored rep, structurally bounded by count — no measured, unbounded
+    // value ever flows into them.)
     let symmetryMedian:number|null=null;
-    if(acc.symmetryValues!==undefined){
-      if(!Array.isArray(acc.symmetryValues)||acc.symmetryValues.length>acc.count||acc.symmetryValues.some((n:unknown)=>typeof n!=='number'||!Number.isFinite(n)||n<0||n>100))throw new ValidationError('评分累计值无效');
-      out.scoreAccumulator.symmetryValues=[...acc.symmetryValues];
-      if(acc.symmetryValues.length)symmetryMedian=Math.round(medianOf(acc.symmetryValues));
+    if(acc.symmetryValues!==undefined&&Array.isArray(acc.symmetryValues)){
+      const kept=acc.symmetryValues.filter((n:unknown)=>typeof n==='number'&&Number.isFinite(n)&&n>=0&&n<=100).slice(0,acc.count);
+      out.scoreAccumulator.symmetryValues=kept;
+      if(kept.length)symmetryMedian=Math.round(medianOf(kept));
     }
     // Step-3 evidence fields (hammer peak-timing offsets, front-raise band
-    // tallies): stored verbatim with the accumulator so a restored set can
-    // present the timing category / per-side bands the live tracker showed,
-    // instead of silently reverting those axes to numbers.
-    if(acc.symmetryOffsetsMs!==undefined){
-      if(!Array.isArray(acc.symmetryOffsetsMs)||acc.symmetryOffsetsMs.length>acc.count||acc.symmetryOffsetsMs.some((n:unknown)=>typeof n!=='number'||!Number.isFinite(n)||n<0||n>10000))throw new ValidationError('评分累计值无效');
-      out.scoreAccumulator.symmetryOffsetsMs=[...acc.symmetryOffsetsMs];
+    // tallies): stored with the accumulator so a restored set can present
+    // the timing category / per-side bands the live tracker showed, instead
+    // of silently reverting those axes to numbers. The offsets array is
+    // sanitized like symmetryValues above (the 2026-11-16 poison was a
+    // single >10000 ms entry minted from a stale cross-side peak).
+    if(acc.symmetryOffsetsMs!==undefined&&Array.isArray(acc.symmetryOffsetsMs)){
+      out.scoreAccumulator.symmetryOffsetsMs=acc.symmetryOffsetsMs.filter((n:unknown)=>typeof n==='number'&&Number.isFinite(n)&&n>=0&&n<=10000).slice(0,acc.count);
     }
     if(acc.depthBandCounts!==undefined)out.scoreAccumulator.depthBandCounts=cleanDepthBandCounts(acc.depthBandCounts,acc.count);
     if(acc.axisAssessment!==undefined)out.scoreAccumulator.axisAssessment=cleanAxisAssessment(acc.axisAssessment);
