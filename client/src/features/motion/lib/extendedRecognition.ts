@@ -1011,7 +1011,17 @@ export class ExtendedExerciseTracker {
     // records the offset between the two sides' confirmed peak midpoints —
     // from the pair itself, from the peer peak the round-3 machinery found,
     // or, for a single with neither, from the other side's most recent
-    // confirmed peak wherever it sits (an alternating rep's honest record).
+    // confirmed peak — under the SAME PEAK_PAIR_WINDOW_MS bound peerPeakFor
+    // applies. That bound is load-bearing (accumulator-poison fix,
+    // 2026-11-16): the fallback read used to be unbounded, so when the
+    // other side's cycle died in a tracking freeze and this side finished
+    // >10 s later, the stale peak produced a >10000 ms "offset" the server
+    // rejected — and because the accumulator rides every progress sync and
+    // the finish, one stale read wedged the whole set's saving. A peak
+    // outside the pair window is not this rep's bilateral evidence: the
+    // rep records nothing, exactly like a rep whose other side has never
+    // peaked (the median consumer tolerates missing entries — with none at
+    // all the axis honestly reports no-bilateral-evidence).
     // A rep whose other side has never peaked records nothing: no bilateral
     // evidence exists for it. The set presentation is the category of the
     // median offset (see assessments()); the offsets join the accumulator
@@ -1021,7 +1031,7 @@ export class ExtendedExerciseTracker {
     let offsetMs:number|null=null;
     if(pair)offsetMs=Math.abs(mid(parts[0])-mid(parts[1]));
     else if(peer)offsetMs=Math.abs(mid(parts[0])-peer.at);
-    else{const lastOther=this.lastPeak[1-parts[0].side];if(lastOther)offsetMs=Math.abs(mid(parts[0])-lastOther.at);}
+    else{const lastOther=this.lastPeak[1-parts[0].side];if(lastOther&&Math.abs(mid(parts[0])-lastOther.at)<=PEAK_PAIR_WINDOW_MS)offsetMs=Math.abs(mid(parts[0])-lastOther.at);}
     const breakdown={depth,stability:cap(100-Math.max(0,speed-260)*.08-Math.max(0,.6-duration)*70-control),trunk:cap(posture-shift*1.5)};
     const score=Math.round((breakdown.depth*.35+breakdown.stability*.25+breakdown.trunk*.2)/.8),scored=parts.every(p=>p.scoring)&&f.scorable,issues:PoseIssue[]=[];
     // Suspended constructs stop correcting (2026-11-09, Codex round-4):

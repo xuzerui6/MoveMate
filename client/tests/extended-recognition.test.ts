@@ -408,15 +408,21 @@ test('hammer curls record peak-timing offsets for loosely synchronized bilateral
   assert.equal(tracker.metrics.formBreakdown.symmetry,0);
   assert.equal(tracker.metrics.scoreAccumulator.symmetry,0);
 });
-test('hammer curls read true alternating curls as 明显交替 from peak timing (step 3)',()=>{
+test('hammer alternating singles record no offsets — a partner peak outside the pair window is not this rep\'s evidence (step 3, bounded by the 2026-11-16 poison fix)',()=>{
   const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
   const step=1000/24;let t=0;
   const feed=(l:number,r:number)=>{const raw=curlPose(l,r);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
   for(let c=0;c<63;c++)feed(160,160);
   // Arms alternate whole cycles (≈1.2 s each): peaks land ≈1.2 s apart, far
   // outside the 800 ms pairing window. Pre-contract the resting-arm formula
-  // scored these ≈90+; step 3 reads the same stream as what it is — peaks
-  // that never coincide — and records the ≈1.2 s offset per rep.
+  // scored these ≈90+; step 3 originally read the previous partner peak as
+  // each rep's offset and called the set 明显交替. That read was unbounded —
+  // the same path minted a >10000 ms "offset" from a peak left stale by a
+  // tracking freeze, and the server rejected the accumulator on every sync
+  // and on the finish. The fallback now applies the pair window: a peak
+  // that far away is not this rep's bilateral evidence, so alternating
+  // singles record nothing and the axis honestly reports no bilateral
+  // evidence for the set.
   const P=29;
   const wave=(k:number)=>{const u=(k%P)/P;return 160-85*(1-Math.cos(2*Math.PI*u))/2;};
   for(let k=0;k<4*P;k++){
@@ -426,13 +432,8 @@ test('hammer curls read true alternating curls as 明显交替 from peak timing 
   for(let c=0;c<40;c++)feed(160,160);
   assert.equal(tracker.metrics.reps,4);
   const offsets=tracker.metrics.scoreAccumulator.symmetryOffsetsMs;
-  // Three of four reps record: the FIRST rep emits on the +600 ms pending
-  // flush, before the partner's first peak has locked — at emit time it
-  // genuinely has no bilateral evidence yet. Later reps read the previous
-  // partner peak (≈1.2 s away) and record it.
-  assert.equal(offsets?.length,3);
-  assert.ok(offsets!.every(o=>o>800),`offsets ${offsets} should all exceed the 800 ms pairing window`);
-  assert.deepEqual(tracker.metrics.axisAssessment?.symmetry,{kind:'category',category:'alternating'});
+  assert.equal(offsets?.length??0,0);
+  assert.deepEqual(tracker.metrics.axisAssessment?.symmetry,{kind:'unassessable',reason:'no-bilateral-evidence'});
 });
 test('hammer curls record no bilateral evidence when the resting arm never peaks (step 3: unassessable, not a penalty)',()=>{
   const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
@@ -516,6 +517,47 @@ test('hammer peer-peak memory does not survive a hole past the preservation boun
   assert.equal(tracker.metrics.scoreAccumulator.symmetryOffsetsMs?.length??0,0);
   assert.deepEqual(tracker.metrics.axisAssessment?.symmetry,{kind:'unassessable',reason:'no-bilateral-evidence'});
 });
+test('hammer stale cross-side peak mints no offset after an interrupt-killed cycle and a >10 s gap (accumulator poison, 2026-11-16)',()=>{
+  const tracker=new ExtendedExerciseTracker('hammer_curl',20,{},true);
+  const step=1000/24;let t=0;
+  const feed=(l:number,r:number)=>{const raw=curlPose(l,r);tracker.update(raw,t,1,structuredClone(raw));t+=step;};
+  for(let c=0;c<63;c++)feed(160,160);
+  assert.equal(tracker.diagnostics.stage,'ready');
+  const P=48;
+  const wave=(k:number)=>{const u=(k%P)/P;return 160-85*(1-Math.cos(2*Math.PI*u))/2;};
+  // The right arm completes one clean rep alone; the left never peaks, so
+  // the rep itself records no offset — but lastPeak[right] is now on the
+  // books.
+  for(let k=0;k<P;k++)feed(160,wave(k));
+  for(let c=0;c<40;c++)feed(160,160);
+  assert.equal(tracker.metrics.reps,1);
+  assert.equal(tracker.metrics.scoreAccumulator.symmetryOffsetsMs?.length??0,0);
+  // The left arm starts a cycle and a tracking interrupt kills it
+  // mid-flight — the live set-4 shape: a freeze / re-acquisition swallowed
+  // one side's cycle while the other side's last peak stayed recorded.
+  for(let k=0;k<12;k++)feed(wave(k),160);
+  tracker.interrupt();
+  // >10 s pass at rest (re-latch included) before the left arm works again.
+  for(let c=0;c<280;c++)feed(160,160);
+  // The left arm completes a full rep alone. Pre-fix, its emit read
+  // lastPeak[right] — by now >10 s stale — and pushed a >10000 ms offset
+  // into the accumulator, which the server then rejected on every progress
+  // sync and on the finish: the set could never save. The rep must now
+  // record NO offset at all.
+  for(let k=0;k<P;k++)feed(wave(k),160);
+  for(let c=0;c<40;c++)feed(160,160);
+  assert.equal(tracker.metrics.reps,2);
+  const offsets=tracker.metrics.scoreAccumulator.symmetryOffsetsMs;
+  assert.equal(offsets?.length??0,0);
+  assert.deepEqual(tracker.metrics.axisAssessment?.symmetry,{kind:'unassessable',reason:'no-bilateral-evidence'});
+  // Paired reps still emit offsets through the unchanged pair path.
+  for(let k=0;k<P;k++)feed(wave(k),wave(k));
+  for(let c=0;c<40;c++)feed(160,160);
+  assert.equal(tracker.metrics.reps,3);
+  const after=tracker.metrics.scoreAccumulator.symmetryOffsetsMs;
+  assert.equal(after?.length,1);
+  assert.ok(after![0]<=800,`paired offset ${after![0]} must sit inside the pair window`);
+});
 test('medianOf takes the middle value, averaging the two middles on even counts',()=>{
   assert.equal(medianOf([]),0);
   assert.equal(medianOf([46]),46);
@@ -536,15 +578,16 @@ test('hammer set symmetry category is the median of per-rep offsets, so one alte
     for(let c=0;c<40;c++)feed(160,160);
   };
   // Three synchronized efforts (peaks ≈83 ms apart, merged pairs, one offset
-  // each) around one alternating effort (peaks ≈917 ms apart, two singles,
-  // one offset each): offsets [83, 917, 917, 83, 83] → median 83 = 同步,
-  // while the mean (≈417) would report 略有错峰 — the median keeps one
-  // loose effort from mislabelling a synchronized set, as it did for the
-  // retired numeric axis.
+  // each) around one alternating effort (peaks ≈917 ms apart, two singles):
+  // since the 2026-11-16 poison fix the alternating singles record no
+  // offsets at all (their partner peaks sit outside the pair window), so
+  // the recorded offsets are [83, 83, 83] → median 83 = 同步. The median's
+  // original point stands a fortiori: one loose effort cannot mislabel a
+  // synchronized set, as it could not for the retired numeric axis either.
   effort(2);effort(22);effort(2);effort(2);
   assert.equal(tracker.metrics.reps,5);
   const offsets=tracker.metrics.scoreAccumulator.symmetryOffsetsMs;
-  assert.equal(offsets?.length,5);
+  assert.equal(offsets?.length,3);
   assert.deepEqual(tracker.metrics.axisAssessment?.symmetry,{kind:'category',category:'sync'});
 });
 test('hammer true single-arm sets record no timing offsets — no phantom peer evidence',()=>{
