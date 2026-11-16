@@ -28,4 +28,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </React.StrictMode>
 );
 
+// Boot signal for the CDN-shell watchdog (injected into the production
+// index.html by cloudflare/scripts/web.mjs): reaching this line means the
+// entry module executed and the render was kicked off, so the shell —
+// whichever host served it — did its job and the watchdog must stand down.
+// Nothing reads the flag in other builds; it lives in shared code on
+// purpose, so every shell variant behaves the same.
+(window as unknown as { __MOVEMATE_BOOTED__?: boolean }).__MOVEMATE_BOOTED__ = true;
+
 if(import.meta.env.PROD&&"serviceWorker" in navigator)window.addEventListener("load",()=>{void navigator.serviceWorker.register("/sw.js").catch(()=>{});});

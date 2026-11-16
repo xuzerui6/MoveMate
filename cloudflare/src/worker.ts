@@ -446,14 +446,17 @@ export default {
       const id = env.BACKEND.idFromName(env.INSTANCE || 'production');
       return env.BACKEND.get(id, { locationHint: 'apac' }).fetch(request);
     }
-    // Public static assets (pose models/WASM, library media) are read
-    // cross-origin: the CDN host pose.xzrcloud.xyz origin-pulls these very
-    // responses, and client fetch() of model/WASM bytes only accepts them
-    // with CORS headers. Answer preflight here — Workers Assets replies 405
-    // to OPTIONS — and stamp the allow-origin header on the responses below.
-    // Public, non-credentialed bytes only: no credentials header, and no
-    // other path (API included) gets these headers.
-    const corsAssetPath = url.pathname.startsWith('/pose/') || url.pathname.startsWith('/exercise-media/');
+    // Public static assets are read cross-origin: the CDN host
+    // pose.xzrcloud.xyz origin-pulls these very responses, client fetch() of
+    // model/WASM bytes only accepts them with CORS headers, and — since the
+    // 2026-11-16 CDN-shell release — the production index.html itself loads
+    // its JS/CSS from that host while the page stays on dongban.xyz, so
+    // /assets/ module scripts and stylesheets are CORS-mode fetches too.
+    // Answer preflight here — Workers Assets replies 405 to OPTIONS — and
+    // stamp the allow-origin header on the responses below. Public,
+    // non-credentialed bytes only: no credentials header, and no other path
+    // (API included) gets these headers.
+    const corsAssetPath = url.pathname.startsWith('/pose/') || url.pathname.startsWith('/exercise-media/') || url.pathname.startsWith('/assets/');
     if (corsAssetPath && request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: {
         'Access-Control-Allow-Origin': '*',
@@ -461,10 +464,27 @@ export default {
         'Access-Control-Max-Age': '86400',
       } });
     }
+    // CDN-shell fallback (2026-11-16): the production index.html loads its
+    // JS/CSS from the CDN host and carries a boot watchdog (see
+    // scripts/shell-watchdog.mjs); if that host is dead the watchdog reloads
+    // the same page with ?shell=origin and the Worker serves the
+    // origin-based shell variant (index-origin.html, emitted by the same
+    // production build) instead of the CDN-based SPA shell. Only page
+    // navigations are rewritten — asset, media and version requests pass
+    // through untouched — and on builds without the variant (preview) the
+    // Assets SPA fallback returns the normal shell, so this is a no-op.
+    const shellFallback = url.searchParams.get('shell') === 'origin'
+      && request.method === 'GET'
+      && !url.pathname.startsWith('/assets/')
+      && !url.pathname.startsWith('/pose/')
+      && !url.pathname.startsWith('/exercise-media/')
+      && url.pathname !== '/version.json';
     const demoVideo=url.pathname.startsWith('/exercise-media/')&&url.pathname.endsWith('.mp4');
     const assetHeaders=new Headers(request.headers);
     if(demoVideo){assetHeaders.delete('Range');assetHeaders.set('Accept-Encoding','identity');}
-    let response = await env.ASSETS.fetch(demoVideo?new Request(request,{headers:assetHeaders}):request);
+    let response = await env.ASSETS.fetch(shellFallback
+      ? new Request(new URL('/index-origin.html', url.origin), { method: 'GET', headers: request.headers })
+      : demoVideo ? new Request(request,{headers:assetHeaders}) : request);
     if(demoVideo&&response.ok&&!response.headers.get('Content-Type')?.includes('text/html'))response=applyVideoRange(request,response,(demoVideoSizes as Record<string,number>)[url.pathname]);
     const headers = new Headers(response.headers);
     // Pose models and WASM are pinned by version/checksum in the client and are

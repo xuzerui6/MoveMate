@@ -1,7 +1,8 @@
 import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { homedir } from 'node:os';
-import { mkdir, readdir, readFile, writeFile, copyFile, open, rename, stat, unlink } from 'node:fs/promises';
+import { mkdir, readdir, readFile, writeFile, copyFile, open, rename, stat, unlink, rm } from 'node:fs/promises';
+import { injectShellWatchdog } from './shell-watchdog.mjs';
 const root = resolve(import.meta.dirname, '../..');
 const cwd = resolve(root, 'client');
 // Version stamp: the git commit this build is made from. web.mjs embeds it in
@@ -15,7 +16,15 @@ if (!buildId) {
   try { buildId = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(); }
   catch { buildId = `build-${Date.now()}`; }
 }
-const env = { ...process.env, VITE_REALTIME_TRANSPORT: 'cloudflare', VITE_BUILD_ID: buildId };
+// CDN shell (production builds only, via `npm run build:web:production`):
+// MOVEMATE_SHELL_BASE points the Vite asset base at the NoDepend CDN host so
+// the served index.html loads its JS/CSS from there (see client/vite.config.ts
+// and scripts/shell-watchdog.mjs). When set, this script ALSO builds an
+// origin-based variant of the same source and merges it into dist (see the
+// post-build block below), so the Worker's ?shell=origin fallback always has
+// a same-version origin shell to serve. Preview builds never set it.
+const shellBase = process.env.MOVEMATE_SHELL_BASE || '';
+const env = { ...process.env, VITE_REALTIME_TRANSPORT: 'cloudflare', VITE_BUILD_ID: buildId, ...(shellBase ? { MOVEMATE_SHELL_BASE: shellBase } : {}) };
 const assets = resolve(cwd, 'dist/assets');
 // Retention must follow the DEPLOYMENT, not the build worktree: deploys rotate
 // between fresh checkouts, and a per-worktree cache starts empty there, so the
@@ -110,6 +119,34 @@ await withHistoryLock(async () => {
 });
 execFileSync(process.execPath, [resolve(cwd, 'node_modules/typescript/bin/tsc'), '-b'], { cwd, env, stdio: 'inherit' });
 execFileSync(process.execPath, [resolve(cwd, 'node_modules/vite/bin/vite.js'), 'build', '--outDir', 'dist'], { cwd, env, stdio: 'inherit' });
+if (shellBase) {
+  // Origin shell variant: identical source built with the origin base into a
+  // scratch outDir, then merged into dist BEFORE the retention step below,
+  // so the shared history records the union and both generations are
+  // retained together. Chunk file names are content hashes — a name present
+  // in both builds must have identical bytes; anything else means the two
+  // builds diverged unexpectedly, and merging them would corrupt both
+  // shells, so fail loudly instead.
+  const originEnv = { ...env };
+  delete originEnv.MOVEMATE_SHELL_BASE;
+  execFileSync(process.execPath, [resolve(cwd, 'node_modules/vite/bin/vite.js'), 'build', '--outDir', 'dist-origin'], { cwd, env: originEnv, stdio: 'inherit' });
+  const originAssets = resolve(cwd, 'dist-origin/assets');
+  for (const name of await readdir(originAssets)) {
+    const from = resolve(originAssets, name);
+    const to = resolve(assets, name);
+    if (await fileExists(to)) {
+      const [a, b] = await Promise.all([readFile(from), readFile(to)]);
+      if (!a.equals(b)) throw new Error(`web.mjs: origin-shell asset ${name} differs from the CDN-shell build under the same content-hash name; refusing to merge divergent generations.`);
+    } else await copyFile(from, to);
+  }
+  await writeFile(resolve(cwd, 'dist/index-origin.html'), await readFile(resolve(cwd, 'dist-origin/index.html'), 'utf8'));
+  await rm(resolve(cwd, 'dist-origin'), { recursive: true, force: true });
+  // The watchdog goes ONLY into the CDN-based index.html: the origin
+  // variant is the fallback of last resort and must never navigate away.
+  const indexPath = resolve(cwd, 'dist/index.html');
+  await writeFile(indexPath, injectShellWatchdog(await readFile(indexPath, 'utf8')));
+  console.log(`web.mjs: CDN shell base ${shellBase} — origin variant merged into dist, boot watchdog injected.`);
+}
 const current = await readdir(assets);
 const currentSet = new Set(current);
 await withHistoryLock(async () => {

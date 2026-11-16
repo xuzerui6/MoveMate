@@ -4,6 +4,12 @@ import { exerciseMediaPlugin } from '../scripts/exercise-media-assets.mjs';
 import {poseAssetsPlugin} from '../scripts/pose-assets.mjs';
 
 export default defineConfig({
+  // Production CDN shell (2026-11-16): cloudflare/scripts/web.mjs sets
+  // MOVEMATE_SHELL_BASE only for production builds (npm run
+  // build:web:production), pointing the emitted asset URLs at the NoDepend
+  // CDN host that origin-pulls this very dist. Every other build (preview,
+  // local, Vercel) leaves it unset and keeps the origin base '/'.
+  base: process.env.MOVEMATE_SHELL_BASE || '/',
   plugins: [
     react(),
     exerciseMediaPlugin(),

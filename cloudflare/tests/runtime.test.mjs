@@ -6,8 +6,9 @@ import { fixture, password } from './fixture.mjs';
 import bcrypt from '../../server/node_modules/bcryptjs/index.js';
 import { voicePoolTests } from './voice-pool.mjs';
 import { bridgeErrorPairingTests } from './bridge-errors.mjs';
+import { shellWatchdogTests } from './shell-watchdog.mjs';
 const migrationSecret = 'm'.repeat(64);
-const mf = new Miniflare(convertV4MiniflareOptions({ workers:[{name:'app',outboundService:'voice-provider', modules: true, scriptPath:'dist/test-worker.js', compatibilityDate:'2026-10-14', compatibilityFlags:['nodejs_compat'], durableObjects:{BACKEND:{className:'TestBackend',useSQLite:true},PROBE:{className:'RuntimeProbe',useSQLite:true}}, bindings:{INSTANCE:'test',JWT_SECRET:'j'.repeat(64),STUDENT_ID_SALT:'s'.repeat(64),XIAOZHI_COOKIE_SECRET:'x'.repeat(64),XIAOZHI_POOL_SECRET:'p'.repeat(64),MIGRATION_SECRET:migrationSecret,NODE_ENV:'production',CLOUDFLARE:'1',XIAOZHI_IDENTITY_MODE:'personal'}, serviceBindings:{ASSETS:request=>new URL(request.url).pathname==='/assets/missing.js'?new Response('<html>SPA</html>',{headers:{'Content-Type':'text/html'}}):new Response('asset')} },{name:'voice-provider',modules:true,compatibilityDate:'2026-10-14',script:`
+const mf = new Miniflare(convertV4MiniflareOptions({ workers:[{name:'app',outboundService:'voice-provider', modules: true, scriptPath:'dist/test-worker.js', compatibilityDate:'2026-10-14', compatibilityFlags:['nodejs_compat'], durableObjects:{BACKEND:{className:'TestBackend',useSQLite:true},PROBE:{className:'RuntimeProbe',useSQLite:true}}, bindings:{INSTANCE:'test',JWT_SECRET:'j'.repeat(64),STUDENT_ID_SALT:'s'.repeat(64),XIAOZHI_COOKIE_SECRET:'x'.repeat(64),XIAOZHI_POOL_SECRET:'p'.repeat(64),MIGRATION_SECRET:migrationSecret,NODE_ENV:'production',CLOUDFLARE:'1',XIAOZHI_IDENTITY_MODE:'personal'}, serviceBindings:{ASSETS:request=>{const path=new URL(request.url).pathname;if(path==='/assets/missing.js')return new Response('<html>SPA</html>',{headers:{'Content-Type':'text/html'}});if(path==='/index-origin.html')return new Response('ORIGIN-SHELL',{headers:{'Content-Type':'text/html'}});return new Response('asset')}} },{name:'voice-provider',modules:true,compatibilityDate:'2026-10-14',script:`
 export default {async fetch(request){
  if(new URL(request.url).hostname==='api.tenclass.net')return Response.json({websocket:{url:'wss://voice.invalid/socket',token:'synthetic-test-token'}});
  if(request.headers.get('upgrade')!=='websocket')return new Response('missing upgrade',{status:400});
@@ -52,12 +53,30 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.ok(preflight.headers.get('Access-Control-Max-Age'));
  const mediaPreflight=await mf.dispatchFetch('http://localhost/exercise-media/photo.webp',{method:'OPTIONS',headers:{...origin,'Access-Control-Request-Method':'GET'}});
  assert.equal(mediaPreflight.status,204);assert.equal(mediaPreflight.headers.get('Access-Control-Allow-Origin'),'*');
+ // The CDN shell loads /assets/ cross-origin from the CDN host (2026-11-16):
+ // chunks carry the header on plain responses and answer preflight too.
+ const shellChunk=await mf.dispatchFetch('http://localhost/assets/valid.js',{headers:origin});
+ assert.equal(shellChunk.status,200);assert.equal(shellChunk.headers.get('Access-Control-Allow-Origin'),'*');
+ const shellPreflight=await mf.dispatchFetch('http://localhost/assets/valid.js',{method:'OPTIONS',headers:{...origin,'Access-Control-Request-Method':'GET'}});
+ assert.equal(shellPreflight.status,204);assert.equal(shellPreflight.headers.get('Access-Control-Allow-Origin'),'*');
  });
- await t.test('API and non-routed paths get no CDN CORS header',async()=>{
+ await t.test('API gets no CDN CORS header; /assets/ carries it for the CDN shell',async()=>{
  const api=await call('/api/cron');
  assert.equal(api.headers.get('Access-Control-Allow-Origin'),null);
  const chunk=await mf.dispatchFetch('http://localhost/assets/valid.js',{headers:{Origin:'https://dongban.xyz'}});
- assert.equal(chunk.headers.get('Access-Control-Allow-Origin'),null);
+ assert.equal(chunk.headers.get('Access-Control-Allow-Origin'),'*');
+ });
+ await t.test('shell=origin serves the origin shell variant and never rewrites assets or version.json',async()=>{
+ const root=await mf.dispatchFetch('http://localhost/?shell=origin');
+ assert.equal(await root.text(),'ORIGIN-SHELL');assert.equal(root.headers.get('Cache-Control'),'no-store');
+ const deep=await mf.dispatchFetch('http://localhost/games/123?shell=origin');
+ assert.equal(await deep.text(),'ORIGIN-SHELL');
+ const plain=await mf.dispatchFetch('http://localhost/');
+ assert.equal(await plain.text(),'asset');
+ const chunk=await mf.dispatchFetch('http://localhost/assets/valid.js?shell=origin');
+ assert.equal(await chunk.text(),'asset');
+ const version=await mf.dispatchFetch('http://localhost/version.json?shell=origin');
+ assert.equal(await version.text(),'asset');assert.equal(version.headers.get('Cache-Control'),'no-store');
  });
  await t.test('unimported instance stays closed and migration endpoint requires a secret',async()=>{
  assert.equal((await call('/health')).status,503);assert.equal((await call('/api/migration/status')).status,401);
@@ -583,5 +602,6 @@ await test('Workers runtime migration and business regression', async t=>{
  });
  await voicePoolTests(t,{mf,call,tokens,adminToken,sockets,password,migrate});
  await bridgeErrorPairingTests(t);
+ await shellWatchdogTests(t);
  }finally{for(const ws of sockets){try{ws.close()}catch{}}await mf.dispose()}
 });

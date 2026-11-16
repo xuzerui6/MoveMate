@@ -9,8 +9,9 @@
     "dev": "npm run bundle && wrangler dev",
     "test": "node scripts/test.mjs",
     "deploy:preview": "npm run build:web && npm run bundle && wrangler deploy --env preview",
-    "deploy": "npm run build:web && npm run bundle && wrangler deploy",
+    "deploy": "npm run build:web:production && npm run bundle && wrangler deploy",
     "build:web": "node scripts/web.mjs",
+    "build:web:production": "MOVEMATE_SHELL_BASE=https://pose.xzrcloud.xyz/ node scripts/web.mjs",
     "typecheck": "node ../server/node_modules/typescript/bin/tsc -p tsconfig.json"
   },
   "devDependencies": {
