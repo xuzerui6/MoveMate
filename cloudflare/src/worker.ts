@@ -453,10 +453,12 @@ export default {
     // its JS/CSS from that host while the page stays on dongban.xyz, so
     // /assets/ module scripts and stylesheets are CORS-mode fetches too.
     // Answer preflight here — Workers Assets replies 405 to OPTIONS — and
-    // stamp the allow-origin header on the responses below. Public,
+    // stamp the allow-origin header on the responses below. The web app
+    // manifest rides along: the CDN-based index.html points it at the CDN
+    // host too, and manifest fetches are CORS-mode. Public,
     // non-credentialed bytes only: no credentials header, and no other path
     // (API included) gets these headers.
-    const corsAssetPath = url.pathname.startsWith('/pose/') || url.pathname.startsWith('/exercise-media/') || url.pathname.startsWith('/assets/');
+    const corsAssetPath = url.pathname.startsWith('/pose/') || url.pathname.startsWith('/exercise-media/') || url.pathname.startsWith('/assets/') || url.pathname === '/manifest.webmanifest';
     if (corsAssetPath && request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: {
         'Access-Control-Allow-Origin': '*',

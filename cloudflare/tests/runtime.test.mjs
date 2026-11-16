@@ -59,6 +59,10 @@ await test('Workers runtime migration and business regression', async t=>{
  assert.equal(shellChunk.status,200);assert.equal(shellChunk.headers.get('Access-Control-Allow-Origin'),'*');
  const shellPreflight=await mf.dispatchFetch('http://localhost/assets/valid.js',{method:'OPTIONS',headers:{...origin,'Access-Control-Request-Method':'GET'}});
  assert.equal(shellPreflight.status,204);assert.equal(shellPreflight.headers.get('Access-Control-Allow-Origin'),'*');
+ // The CDN-based index.html also points the manifest at the CDN host, and
+ // manifest fetches are CORS-mode: it must carry the header too.
+ const manifest=await mf.dispatchFetch('http://localhost/manifest.webmanifest',{headers:origin});
+ assert.equal(manifest.status,200);assert.equal(manifest.headers.get('Access-Control-Allow-Origin'),'*');
  });
  await t.test('API gets no CDN CORS header; /assets/ carries it for the CDN shell',async()=>{
  const api=await call('/api/cron');
